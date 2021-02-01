@@ -43,10 +43,28 @@
 		"lodash": "^4.17.20"
 	},
 	"devDependencies": {
+		"@commitlint/cli": "11.0.0",
+		"@commitlint/config-conventional": "11.0.0",
 		"@types/lodash": "^4.14.165",
 		"@types/vscode": "^1.40.0",
 		"typescript": "^3.9.7",
+		"husky": "4.3.8",
 		"vsce": "^1.69.0",
 		"vscode-test": "^1.2.2"
+	},
+	"husky": {
+		"hooks": {
+			"commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+		}
+	},
+	"commitlint": {
+		"extends": [
+			"@commitlint/config-conventional"
+		]
+	},
+	"config": {
+		"commitizen": {
+			"path": "cz-conventional-changelog"
+		}
 	}
 }
