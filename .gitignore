@@ -1,0 +1,16 @@
+out
+reports
+node_modules
+dist
+
+# Output of 'npm pack'
+*.vsix
+
+# Logs
+logs
+package-lock.json
+.nyc_output
+coverage
+
+# Optional eslint cache
+.eslintcache

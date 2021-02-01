@@ -1,0 +1,26 @@
+{
+  "name": "@sap-devx/bas-platform-types",
+  "publisher": "SAPOSS",
+  "version": "0.0.33",
+  "author": "",
+  "license": "Apache-2.0",
+  "description": "An npm package that includes Business Application Studio declarations",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/app-studio-toolkit",
+    "directory": "types"
+  },
+  "main": "./out/src/actions/interfaces",
+  "types": "./out/src/api",
+  "scripts": {
+    "prep": "npm i && cd .. && npm i && npm run compile",
+    "copy": "ncp ../out out",
+    "prepublishOnly": "npm run prep && npm run copy"
+  },
+  "dependencies": {
+    "@types/vscode": "^1.49.0"
+  },
+  "devDependencies": {
+    "ncp": "^2.0.0"
+  }
+}

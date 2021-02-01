@@ -1,0 +1,103 @@
+version: 2.1 # use CircleCI 2.1
+
+default-build: &default-build
+  working_directory: ~/repo    
+  steps:
+    - checkout      
+    - run: npm install            
+    # - run: npm run test
+
+jobs: # a collection of steps
+  build-and-test-node10:
+    docker:
+      - image: circleci/node:10.23 # Current BAS node version
+    <<: *default-build
+
+  build-and-test-node12:
+    docker:
+      - image: circleci/node:12 # Future BAS node version
+    <<: *default-build
+
+  compliance:
+    docker:
+      - image: circleci/python:3.6.4
+    working_directory: ~/workdir
+    steps:
+      - checkout
+      - run:
+          name: compliance check
+          command: |
+            pip3 install --user reuse
+            ~/.local/bin/reuse lint
+
+  build-and-test:
+    docker:
+      - image: circleci/node:14
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: install
+          command: npm install
+      # - run:
+      #     name: test
+      #     command: npm run test
+      # - run:
+      #     command: cat ./reports/coverage/lcov.info | ./node_modules/.bin/coveralls
+      #     environment:
+      #       COVERALLS_SERVICE_NAME: circle-ci
+      #       COVERALLS_GIT_BRANCH: ${CIRCLE_BRANCH}
+      - run:
+          name: Define environment variable with lastest commit's message
+          command: |
+            echo 'export COMMIT_MESSAGE=$(git log -1 --pretty=format:"%s")' >> $BASH_ENV
+            source $BASH_ENV
+      - run:
+          name: Lint commit message
+          command: echo "$COMMIT_MESSAGE" | npx commitlint      
+      - run:
+          name: package
+          command: npm run package
+      - save_cache:
+          paths:
+            - node_modules
+          key: dependency-cache-{{ checksum "package.json" }}
+      - persist_to_workspace:
+          root: .
+          paths: 
+           # https://golang.org/pkg/path/filepath/#Match
+            - bas-platform-*
+  
+  deploy:
+    docker:
+      - image: circleci/golang:1.13
+    steps:
+      - attach_workspace:
+          at: ./dest
+      - run:
+          name: "Publish Release on GitHub"
+          command: |
+            go get github.com/tcnksm/ghr
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} ${CIRCLE_TAG} ./dest/ 
+
+workflows:
+  version: 2
+  test-deploy:
+    jobs:
+      - build-and-test-node10
+      - build-and-test-node12
+      - compliance
+      - build-and-test:
+          filters:
+            tags:
+              only: /.*/
+      - deploy:
+          requires:
+            - build-and-test
+          filters:
+            tags:
+              only: /^v[0-9]+(\.[0-9]+)*/
+            branches:
+              ignore: /.*/

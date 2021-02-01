@@ -1,0 +1,52 @@
+{
+	"name": "bas-platform",
+	"displayName": "App-Studio-Toolkit Extension",
+	"description": "SAP Business Application Studio Toolkit extension",
+	"version": "0.0.33",
+	"publisher": "SAPOSS",
+	"license": "Apache-2.0",
+	"icon": "icon.png",
+	"engines": {
+		"vscode": "^1.44.2"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/SAP/app-studio-toolkit"
+	},
+	"categories": [
+		"Other"
+	],
+	"main": "./out/src/extension.js",
+	"types": "./out/src/api",
+	"activationEvents": [
+		"*"
+	],
+	"contributes": {
+		"configuration": {
+			"title": "Actions",
+			"properties": {
+				"actions": {
+					"type": "array"
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile",
+		"test": "node ./out/test/runTest.js",
+		"package": "vsce package ."
+	},
+	"dependencies": {
+		"lodash": "^4.17.20"
+	},
+	"devDependencies": {
+		"@types/lodash": "^4.14.165",
+		"@types/vscode": "^1.40.0",
+		"typescript": "^3.9.7",
+		"vsce": "^1.69.0",
+		"vscode-test": "^1.2.2"
+	}
+}
