@@ -1,0 +1,54 @@
+{
+	"name": "sample-action-emitter",
+	"displayName": "Sample Action Emitter",
+	"description": "",
+	"version": "0.0.1",
+	"publisher": "SAPOSS",
+	"engines": {
+		"vscode": "^1.44.2"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/SAP/app-studio-toolkit",
+		"directory": "sample-action-emitter"
+	},
+	"categories": [
+		"Other"
+	],
+	"main": "./out/extension.js",
+	"activationEvents": [
+		"onCommand:perform.action.now",
+		"onCommand:schedule.action"
+	],
+	"contributes": {
+		"commands": [
+			{
+				"title": "Perform Action Immediately",
+				"command": "perform.action.now"
+			},
+			{
+				"title": "Schedule Action",
+				"command": "schedule.action"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile",
+		"test": "node ./out/test/runTest.js",
+		"package": "vsce package ."
+	},
+	"devDependencies": {
+		"@sap-devx/bas-platform-types": "0.0.13",
+		"@types/vscode": "^1.40.0",
+		"typescript": "^3.9.7",
+		"vsce": "^1.69.0",
+		"vscode-test": "^1.2.2"
+	},
+	"extensionDependencies": [
+		"SAPOSS.bas-platform"
+	],
+	"dependencies": {}
+}

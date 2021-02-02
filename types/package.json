@@ -1,7 +1,7 @@
 {
   "name": "@sap-devx/bas-platform-types",
   "publisher": "SAPOSS",
-  "version": "0.0.33",
+  "version": "0.0.13",
   "author": "",
   "license": "Apache-2.0",
   "description": "An npm package that includes Business Application Studio declarations",
