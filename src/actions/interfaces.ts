@@ -1,17 +1,20 @@
 import * as vscode from "vscode";
 
+// Don't change the types - used by bas-cli!
 export enum ActionType {
     Execute = "EXECUTE",
     Command = "COMMAND",
     Task = "TASK",
     File = "FILE",
-    Snippet = "SNIPPET"
+    Snippet = "SNIPPET",
+    OpenBrowser = "OPEN_BROWSER"
 }
 
 export type CommandActionParams = any [];
 export type ExecuteActionParams = any [];
 export type SnippetActionParams = any;
 export type FileActionParams = vscode.Uri;
+export type OpenBrowserActionParams = vscode.Uri;
 
 export interface IAction {
     actionType: ActionType | undefined;
@@ -35,4 +38,8 @@ export interface ISnippetAction extends IAction {
 
 export interface IFileAction extends IAction {
     uri: FileActionParams;
+}
+
+export interface IOpenBrowserAction extends IAction {
+    uri: OpenBrowserActionParams;
 }

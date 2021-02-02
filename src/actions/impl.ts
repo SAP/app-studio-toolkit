@@ -1,6 +1,6 @@
 import { Uri } from "vscode";
 import { ActionType, IAction, ICommandAction, IExecuteAction, IFileAction, ISnippetAction,
-    CommandActionParams, ExecuteActionParams, SnippetActionParams, FileActionParams } from "./interfaces";
+    CommandActionParams, ExecuteActionParams, SnippetActionParams, FileActionParams, OpenBrowserActionParams, IOpenBrowserAction } from "./interfaces";
 
 abstract class Action implements IAction {
     actionType: ActionType | undefined;
@@ -51,6 +51,16 @@ export class FileAction extends Action implements IFileAction {
     constructor() {
         super();
         this.actionType = ActionType.File;
+        this.uri = Uri.parse("");
+    }
+}
+
+export class OpenBrowserAction extends Action implements IOpenBrowserAction {
+    uri: OpenBrowserActionParams;
+
+    constructor() {
+        super();
+        this.actionType = ActionType.OpenBrowser;
         this.uri = Uri.parse("");
     }
 }

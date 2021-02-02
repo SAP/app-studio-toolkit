@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { ActionType, IAction, ICommandAction, IExecuteAction, IFileAction, ISnippetAction } from "./interfaces";
+import { ActionType, IAction, ICommandAction, IExecuteAction, IFileAction, ISnippetAction, IOpenBrowserAction } from "./interfaces";
 
 export async function _performAction(action: IAction): Promise<any> {
   if (action) {
@@ -20,6 +20,9 @@ export async function _performAction(action: IAction): Promise<any> {
       case ActionType.File:
         let fileAction = (action as IFileAction);
         return vscode.commands.executeCommand('vscode.open', fileAction.uri, {viewColumn: vscode.ViewColumn.Two});
+      case ActionType.OpenBrowser:
+        let openBrowserAction = (action as IOpenBrowserAction);
+        return vscode.env.openExternal(openBrowserAction.uri);
     }
   }
 }
