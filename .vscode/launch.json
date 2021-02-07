@@ -45,7 +45,7 @@
 			  "${workspaceFolder}/out/**/*.js",
 			  "${workspaceFolder/sample-action-client/out/**/*.js",
 			],
-			// "preLaunchTask": "watch bas-platform"
+			// "preLaunchTask": "watch app-studio-toolkit"
 		  }
 	]
 }

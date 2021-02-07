@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 
 export async function activate(context: vscode.ExtensionContext) {
-    const basAPI = await vscode.extensions.getExtension("SAPOSS.bas-platform")?.exports;
+    const basAPI = await vscode.extensions.getExtension("SAPOSS.app-studio-toolkit")?.exports;
 
     context.subscriptions.push(vscode.commands.registerCommand("perform.action.now", () => {
         const action = new basAPI.actions.CommandAction();
