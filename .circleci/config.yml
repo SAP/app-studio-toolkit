@@ -68,7 +68,7 @@ jobs: # a collection of steps
           root: .
           paths: 
            # https://golang.org/pkg/path/filepath/#Match
-            - bas-platform-*
+            - app-studio-toolkit-*
   
   deploy:
     docker:
