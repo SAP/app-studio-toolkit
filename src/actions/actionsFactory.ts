@@ -1,27 +1,39 @@
 import { Uri } from "vscode";
-import { IAction, ICommandAction, ActionType, IOpenBrowserAction } from './interfaces';
-import { CommandAction, OpenBrowserAction } from './impl';
+import { IAction, ICommandAction, ActionType, IFileAction, ActionJsonKey } from './interfaces';
+import { CommandAction, FileAction } from './impl';
+import _ = require("lodash");
 
 export class ActionsFactory {
     public static createAction(jsonAction: any) : IAction {
-        switch (jsonAction.actionType) {
+        const actionType = jsonAction[ActionJsonKey.ActionType];
+        if (_.isEmpty(actionType)) {
+            throw new Error(`${ActionJsonKey.ActionType} is missing`);
+        }
+        switch (actionType) {
             case ActionType.Command:
                 const commandAction: ICommandAction = new CommandAction();
-                if (jsonAction.commandName) {
-                    commandAction.name = jsonAction.commandName;
+                const commandName = jsonAction[ActionJsonKey.CommandName];
+                if (!_.isNil(commandName)) {
+                    commandAction.name = commandName;
+                } else {
+                    throw new Error(`${ActionJsonKey.CommandName} is missing for actionType=${actionType}`);
                 }
-                if (jsonAction.commandParams) {
-                    commandAction.params = jsonAction.commandParams;
+                const commandParams = jsonAction[ActionJsonKey.CommandParams];
+                if (!_.isEmpty(commandParams)) {
+                    commandAction.params = commandParams;
                 }
                 return commandAction;
-            case ActionType.OpenBrowser:
-                const openBrowserAction: IOpenBrowserAction = new OpenBrowserAction();
-                if (jsonAction.url) {
-                    openBrowserAction.uri = Uri.parse(jsonAction.url, true);
+            case ActionType.File:
+                const fileAction: IFileAction = new FileAction();
+                const uri = jsonAction[ActionJsonKey.Uri];
+                if (!_.isNil(uri)) {
+                    fileAction.uri = Uri.parse(uri, true);
+                }else {
+                    throw new Error(`${ActionJsonKey.Uri} is missing for actionType=${actionType}`);
                 }
-                return openBrowserAction;
+                return fileAction;
             default:
-                throw new Error(`${jsonAction.actionType} is not supported.`);
+                throw new Error(`${ActionJsonKey.ActionType}=${actionType} is not supported`);
         }
     }
 }

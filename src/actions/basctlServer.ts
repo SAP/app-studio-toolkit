@@ -19,10 +19,10 @@ function handleRequest(socket: net.Socket) {
             const action = ActionsFactory.createAction(data);
             result = await _performAction(action);
         } catch (error) {
+            showErrorMessage(error, 'failed to perform action');
             result = false;
         }
 
-        //result = "protocol=https\nhost=github.com\nusername=basica\n\n";
         socket.write(JSON.stringify({ result }));
     });
 }
