@@ -41,14 +41,14 @@
 		"package": "vsce package ."
 	},
 	"devDependencies": {
-		"@sap-devx/bas-platform-types": "0.0.13",
+		"@sap-devx/app-studio-toolkit-types": "0.0.1",
 		"@types/vscode": "^1.40.0",
 		"typescript": "^3.9.7",
 		"vsce": "^1.69.0",
 		"vscode-test": "^1.2.2"
 	},
 	"extensionDependencies": [
-		"SAPOSS.bas-platform"
+		"SAPOSS.app-studio-toolkit"
 	],
 	"dependencies": {}
 }
