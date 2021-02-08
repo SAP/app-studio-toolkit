@@ -8,6 +8,13 @@ export enum ActionType {
     Snippet = "SNIPPET"
 }
 
+export enum ActionJsonKey {
+    ActionType = "actionType",
+    CommandName = "commandName",
+    CommandParams = "commandParams",
+    Uri = "uri"
+}
+
 export type CommandActionParams = any [];
 export type ExecuteActionParams = any [];
 export type SnippetActionParams = any;

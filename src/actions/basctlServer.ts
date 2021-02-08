@@ -2,6 +2,8 @@ import * as vscode from 'vscode';
 import * as net from 'net';
 import * as fs from 'fs';
 import * as _ from 'lodash';
+import { _performAction } from './performer';
+import { ActionsFactory } from './actionsFactory';
 
 const SOCKETFILE = '/extbin/basctlSocket';
 
@@ -9,13 +11,19 @@ let basctlServer: net.Server;
 
 
 function handleRequest(socket: net.Socket) {
-    socket.on('data', dataBuffer => {
+    socket.on('data', async dataBuffer => {
         const data: any = getRequestData(dataBuffer);
 
-        if (data.command === 'openExternal') {
-            const uri = vscode.Uri.parse(data.url, true);
-            vscode.env.openExternal(uri);
+        let result;
+        try {
+            const action = ActionsFactory.createAction(data);
+            result = await _performAction(action);
+        } catch (error) {
+            showErrorMessage(error, 'failed to perform action');
+            result = false;
         }
+
+        socket.write(JSON.stringify({ result }));
     });
 }
 
