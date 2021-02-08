@@ -1,6 +1,6 @@
 {
-	"name": "sample-action-emitter",
-	"displayName": "Sample Action Emitter",
+	"name": "sample-action-client",
+	"displayName": "Sample Action Client",
 	"description": "",
 	"version": "0.0.1",
 	"publisher": "SAPOSS",
@@ -10,7 +10,7 @@
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/SAP/app-studio-toolkit",
-		"directory": "sample-action-emitter"
+		"directory": "sample-action-client"
 	},
 	"categories": [
 		"Other"
@@ -41,7 +41,7 @@
 		"package": "vsce package ."
 	},
 	"devDependencies": {
-		"@sap-devx/app-studio-toolkit-types": "0.0.1",
+		"@sap-devx/app-studio-toolkit-types": "0.0.2",
 		"@types/vscode": "^1.40.0",
 		"typescript": "^3.9.7",
 		"vsce": "^1.69.0",
