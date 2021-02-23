@@ -9,18 +9,21 @@ export const bas = {
 
         const promise = new Promise<T>((resolve, reject) => {
             let intervalId: NodeJS.Timeout;
-            if (!(extension?.isActive)) {
+            if(extension === undefined) {
+                return reject(new Error(`Extension ${extensionId} is not loaded`));
+            }
+            if (!(extension.isActive)) {
                 console.info(`Waiting for activation of ${extensionId}`);
                 intervalId = setInterval(() => {
-                    if (extension?.isActive) {
+                    if (extension.isActive) {
                         console.info(`Detected activation of ${extensionId}`);
                         clearInterval(intervalId);
-                        resolve(extension?.exports as T);
+                        resolve(extension.exports as T);
                     }
                 }, 500);
             } else {
                 console.info(`Detected ${extensionId} is active`);
-                resolve(extension?.exports as T);
+                resolve(extension.exports as T);
             }
         });
     

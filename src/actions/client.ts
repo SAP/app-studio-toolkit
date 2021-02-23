@@ -2,16 +2,16 @@ import * as vscode from 'vscode';
 import { IAction } from "./interfaces";
 import { _performAction } from "./performer";
 
-export function performAction(action: IAction, options?: any): void {
+export async function performAction(action: IAction, options?: any): Promise<void> {
     if (options?.schedule) {
-        _scheduleAction(action);
+        await _scheduleAction(action);
     } else {
         _performAction(action);
     }
 }
 
 /** Schedule an action for execution after restart */
-function _scheduleAction(action: IAction) {
+async function _scheduleAction(action: IAction): Promise<void> {
     const actionsSettings = vscode.workspace.getConfiguration();
     let actionsList: any[] | undefined = actionsSettings.get("actions");
     if (!actionsList) {

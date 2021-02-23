@@ -26,11 +26,11 @@ export class ActionsFactory {
             case ActionType.File:
                 const fileAction: IFileAction = new FileAction();
                 const uri = jsonAction[ActionJsonKey.Uri];
-                if (!_.isNil(uri)) {
+                try {
                     fileAction.uri = Uri.parse(uri, true);
-                }else {
-                    throw new Error(`${ActionJsonKey.Uri} is missing for actionType=${actionType}`);
-                }
+                } catch (error) {
+                    throw new Error(`Failed to parse field ${ActionJsonKey.Uri}: ${uri} for actionType=${actionType}: ${error.message}`);
+                }                
                 return fileAction;
             default:
                 throw new Error(`${ActionJsonKey.ActionType}=${actionType} is not supported`);

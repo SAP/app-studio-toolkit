@@ -11,19 +11,19 @@ let basctlServer: net.Server;
 
 
 function handleRequest(socket: net.Socket) {
-    socket.on('data', async dataBuffer => {
-        const data: any = getRequestData(dataBuffer);
-
-        let result;
-        try {
-            const action = ActionsFactory.createAction(data);
-            result = await _performAction(action);
-        } catch (error) {
-            showErrorMessage(error, 'failed to perform action');
-            result = false;
-        }
-
-        socket.write(JSON.stringify({ result }));
+    socket.on('data', dataBuffer => {
+        (async () => {
+            const data: any = getRequestData(dataBuffer);
+            let result;
+            try {
+                const action = ActionsFactory.createAction(data);
+                result = await _performAction(action);
+            } catch (error) {
+                showErrorMessage(error, 'failed to perform action');
+                result = false;
+            }
+            socket.write(JSON.stringify({ result }));
+        })();        
     });
 }
 
@@ -64,7 +64,7 @@ export function startBasctlServer() {
         } else {
             fs.unlink(SOCKETFILE, err => {
                 if (err) {
-                    throw new Error(err.stack);
+                    throw new Error(`Failed to unlink socket ${SOCKETFILE}:\n` + err.stack);
                 }
                 createBasctlServer();
             });

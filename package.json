@@ -36,7 +36,7 @@
 		"compile": "tsc -p ./",
 		"watch": "tsc -watch -p ./",
 		"pretest": "npm run compile",
-		"test": "nyc mocha -p tsconfig.json --recursive tests/**/*.spec.ts",
+		"test": "nyc mocha -p tsconfig.json --recursive --no-parallel tests/**/*.spec.ts",
 		"lint": "eslint . --ext .ts,.tsx --cache",
 		"lint:fix": "eslint . --ext .ts,.tsx --cache --fix",
 		"package": "vsce package ."
@@ -48,6 +48,7 @@
 		"@commitlint/cli": "11.0.0",
 		"@commitlint/config-conventional": "11.0.0",
 		"@types/chai": "^4.2.14",
+		
 		"@types/sinon": "^9.0.10",
 		"@types/lodash": "^4.14.165",
 		"@types/mocha": "^8.2.0",
@@ -56,6 +57,7 @@
 		"@typescript-eslint/eslint-plugin": "^2.30.0",
 		"@typescript-eslint/parser": "^2.30.0",
 		"chai": "^4.3.0",
+		"chai-as-promised": "^7.1.1",
 		"sinon": "^9.2.4",
 		"eslint": "^6.8.0",
 		"eslint-config-prettier": "^6.11.0",
