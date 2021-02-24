@@ -37,7 +37,7 @@ function getRequestData(dataBuffer: any) {
 }
 
 function showErrorMessage(error: any, defaultError: string) {
-    const errorMessage = _.get(error, 'stack', _.get(error, 'message', defaultError));
+    const errorMessage = _.get(error, 'message', defaultError);
     vscode.window.showErrorMessage(errorMessage);
 }
 
