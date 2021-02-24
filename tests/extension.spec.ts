@@ -80,11 +80,7 @@ describe("extension unit test", () => {
         it("fails when startBasctlServer throws an error", async () => {
             let error = new Error('Socket failure');
             basctlServerMock.expects("startBasctlServer").throws(error);
-            try {
-                await extension.activate();
-            } catch (e) {
-                expect(e).to.be.equal(error);
-            }
+            await expect(extension.activate()).to.be.rejectedWith(error);
         });
 
     });
