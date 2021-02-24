@@ -36,7 +36,7 @@ describe("api unit test", () => {
     
 
     it("active extension exports are resolved", async () => {
-        let extension = { 
+        const extension = { 
             isActive: true,
             exports: "api"
         };
@@ -44,14 +44,14 @@ describe("api unit test", () => {
         const logSpy = sandbox.spy(console, 'info');
 
         extensionsMock.expects("getExtension").withExactArgs("myExt").returns(extension)
-        let result = await bas.getExtensionAPI("myExt");
+        const result = await bas.getExtensionAPI("myExt");
         expect(result).to.be.equal("api");
         assert(logSpy.calledOnceWithExactly("Detected myExt is active"));
         
     });
 
     it("inactive extension is waited for", async () => {
-        let extension = { 
+        const extension = { 
             isActive: false,
             exports: "api"
         };

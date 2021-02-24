@@ -168,7 +168,7 @@ describe("basctlServer", () => {
         actionObject = {
             "name": "myAction"
         }
-        let result = {
+        const result = {
             "status": "success"
         }
         if(options && options.invalidJsonInBuffer) {

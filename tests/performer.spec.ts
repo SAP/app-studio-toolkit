@@ -36,7 +36,7 @@ describe("performer test", () => {
     });
     describe("commandAction", () => {
         it("is successful with params when executeCommand is fulfilled", async () => {
-            let commAction = {
+            const commAction = {
                 actionType: ActionType.Command,
                 name: "commandName",
                 params: ["param1", "param2"]
@@ -45,7 +45,7 @@ describe("performer test", () => {
             expect(await _performAction(commAction)).to.be.equal("success");
         });
         it("is successful without params when executeCommand is fulfilled", async () => {
-            let commAction = {
+            const commAction = {
                 actionType: ActionType.Command,
                 name: "commandName"
             };
@@ -53,7 +53,7 @@ describe("performer test", () => {
             expect(await _performAction(commAction)).to.be.equal("success");
         });
         it("is successful without params when executeCommand is rejected", async () => {
-            let commAction = {
+            const commAction = {
                 actionType: ActionType.Command,
                 name: "commandName",
                 params: ["param1", "param2"]
@@ -64,7 +64,7 @@ describe("performer test", () => {
     });
     describe("executeAction", () => {
         it("is successful with params", async () => {
-            let execAction = {
+            const execAction = {
                 actionType: ActionType.Execute,
                 executeAction: () => {},
                 params: ["param1", "param2"]
@@ -75,7 +75,7 @@ describe("performer test", () => {
             executeActionMock.verify();
         });
         it("is successful without params", async () => {
-            let execAction = {
+            const execAction = {
                 actionType: ActionType.Execute,
                 executeAction: () => {}
             };
@@ -88,7 +88,7 @@ describe("performer test", () => {
     describe("fileAction", () => {
 
         it("is fulfilled if executeCommand is fulfilled", async () => {
-            let fileAction = {
+            const fileAction = {
                 actionType: ActionType.File,
                 uri: 'file:///home/user/projects/myproj/sourcefile.js'
             };
@@ -97,7 +97,7 @@ describe("performer test", () => {
             await _performAction(fileAction);
         });
         it("is rejected if executeCommand rejects", async () => {
-            let fileAction = {
+            const fileAction = {
                 actionType: ActionType.File,
                 uri: 'file:///home/user/projects/myproj/sourcefile.js'
             };
@@ -107,7 +107,7 @@ describe("performer test", () => {
     });
     describe("snippetAction", () => {
         it("is fulfilled if executeCommand is fulfilled", async () => {
-            let snippetAction = {
+            const snippetAction = {
                 actionType: ActionType.Snippet,
                 contributorId: "contributor1",
                 snippetName: "mySnippet",
@@ -118,7 +118,7 @@ describe("performer test", () => {
             await _performAction(snippetAction);
         });
         it("is rejected if executeCommand rejects", async () => {
-            let snippetAction = {
+            const snippetAction = {
                 actionType: ActionType.Snippet,
                 contributorId: "contributor1",
                 snippetName: "mySnippet",
@@ -132,10 +132,10 @@ describe("performer test", () => {
     
 
     it("undefined action type is rejected", async () => {
-        let action = {
+        const action = {
             actionType: "unsupported"
         };
-        let result = _performAction(action as IAction);
+        const result = _performAction(action as IAction);
         await expect(result).to.be.rejectedWith(`${ActionJsonKey.ActionType}=${action.actionType} is not supported`);
     });
 

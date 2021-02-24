@@ -28,32 +28,32 @@ describe("actionsFactory test", () => {
     describe("create command action", () => {
 
         it("suceeds with params", () => {
-            let actionJson = {
+            const actionJson = {
                 [ActionJsonKey.ActionType]: ActionType.Command,
                 [ActionJsonKey.CommandName]: "myCommand",
                 [ActionJsonKey.CommandParams]: ["param1", "param2"]
 
             };
-            let action = ActionsFactory.createAction(actionJson);
+            const action = ActionsFactory.createAction(actionJson);
             expect(action instanceof CommandAction).to.be.true;
             expect((action as CommandAction).name).to.be.equal("myCommand");
             expect((action as CommandAction).params).to.be.deep.equal(["param1", "param2"]);
         });
 
         it("suceeds without params", () => {
-            let actionJson = {
+            const actionJson = {
                 [ActionJsonKey.ActionType]: ActionType.Command,
                 [ActionJsonKey.CommandName]: "myCommand"
 
             };
-            let action = ActionsFactory.createAction(actionJson);
+            const action = ActionsFactory.createAction(actionJson);
             expect(action instanceof CommandAction).to.be.true;
             expect((action as CommandAction).name).to.be.equal("myCommand");
             expect((action as CommandAction).params).to.be.deep.equal([]);
         });
 
         it("fails without name", () => {
-            let actionJson = {
+            const actionJson = {
                 [ActionJsonKey.ActionType]: ActionType.Command
             };
             expect(() => ActionsFactory.createAction(actionJson)).to.throw(`${ActionJsonKey.CommandName} is missing for actionType=${ActionType.Command}`);
@@ -72,20 +72,20 @@ describe("actionsFactory test", () => {
         });
 
         it("suceeds with uri", () => {
-            let myFileUri = "file:///usr/myFile";
-            let actionJson = {
+            const myFileUri = "file:///usr/myFile";
+            const actionJson = {
                 [ActionJsonKey.ActionType]: ActionType.File,
                 [ActionJsonKey.Uri]: myFileUri
 
             };
             uriMock.expects("parse").withExactArgs('').once();
             uriMock.expects("parse").withExactArgs(myFileUri, true).once();
-            let action = ActionsFactory.createAction(actionJson);
+            const action = ActionsFactory.createAction(actionJson);
             expect(action instanceof FileAction).to.be.true;
         });
 
         it("fails without uri", () => {
-            let actionJson = {
+            const actionJson = {
                 [ActionJsonKey.ActionType]: ActionType.File
             };
             uriMock.expects("parse").withExactArgs('').once();
@@ -97,12 +97,12 @@ describe("actionsFactory test", () => {
     describe("create action fails", () => {
 
         it("when no action type defined", () => {
-            let actionJson = {};
+            const actionJson = {};
             expect(() => ActionsFactory.createAction(actionJson)).to.throw(`${ActionJsonKey.ActionType} is missing`);
         });
 
         it("when no unsupported action type used", () => {
-            let actionJson = {
+            const actionJson = {
                 [ActionJsonKey.ActionType]: "Unsupported"
             };
             expect(() => ActionsFactory.createAction(actionJson)).to.throw(`${ActionJsonKey.ActionType}=Unsupported is not supported`);

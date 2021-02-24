@@ -36,7 +36,7 @@ describe("client test", () => {
     describe("perform action", () => {
         it("performs the action without schedule", () => {
             performerMock = sandbox.mock(performer);
-            let myAction = {
+            const myAction = {
                 actionType: ActionType.Command,
                 name: "myAction",
             };
@@ -47,15 +47,15 @@ describe("client test", () => {
         it("schedules the action with schedule (existing action list, update successful)", () => {
             workspaceMock = sandbox.mock(testVscode.workspace);
             
-            let myAction = {
+            const myAction = {
                 actionType: ActionType.Command,
                 name: "myAction",
             };
-            let config = {
+            const config = {
                 get: () => {},
                 update: () => {}
             }
-            let actions: any[] = [myAction, myAction];
+            const actions: any[] = [myAction, myAction];
             let configMock = sandbox.mock(config);
             workspaceMock.expects("getConfiguration").once().returns(config);
             configMock.expects("get").withExactArgs("actions").once().returns(actions);
@@ -67,11 +67,11 @@ describe("client test", () => {
         });
         it("schedules the action with schedule (empy action list, update successful)", () => {
             workspaceMock = sandbox.mock(testVscode.workspace);
-            let myAction = {
+            const myAction = {
                 actionType: ActionType.Command,
                 name: "myAction",
             };
-            let config = {
+            const config = {
                 get: () => {},
                 update: () => {}
             }
@@ -88,15 +88,15 @@ describe("client test", () => {
         it("schedules the action with schedule (existing action list, update rejected)", async () => {
             workspaceMock = sandbox.mock(testVscode.workspace);
             
-            let myAction = {
+            const myAction = {
                 actionType: ActionType.Command,
                 name: "myAction",
             };
-            let config = {
+            const config = {
                 get: () => {},
                 update: () => {}
             }
-            let actions: any[] = [myAction, myAction];
+            const actions: any[] = [myAction, myAction];
             let configMock = sandbox.mock(config);
             workspaceMock.expects("getConfiguration").once().returns(config);
             configMock.expects("get").withExactArgs("actions").once().returns(actions);

@@ -47,9 +47,9 @@ describe("extension unit test", () => {
 
     describe('activate', () => {
         it("performs defined actions", async () => {
-            let action = {actionType: ActionType.Execute};
-            let actionSettingsGet = sandbox.spy(() => [action]);
-            let actionSettingsUpdate = sandbox.spy();
+            const action = {actionType: ActionType.Execute};
+            const actionSettingsGet = sandbox.spy(() => [action]);
+            const actionSettingsUpdate = sandbox.spy();
             _.set(workspaceConfig, "get", actionSettingsGet);
             _.set(workspaceConfig, "update", actionSettingsUpdate);
             basctlServerMock.expects("startBasctlServer").once().returns();
@@ -63,8 +63,8 @@ describe("extension unit test", () => {
         });
 
         it("does nothing with no actions", async () => {
-            let actionSettingsGet = sandbox.spy(() => []);
-            let actionSettingsUpdate = sandbox.spy();
+            const actionSettingsGet = sandbox.spy(() => []);
+            const actionSettingsUpdate = sandbox.spy();
             _.set(workspaceConfig, "get", actionSettingsGet);
             _.set(workspaceConfig, "update", actionSettingsUpdate);
             basctlServerMock.expects("startBasctlServer").once().returns();
@@ -78,7 +78,7 @@ describe("extension unit test", () => {
         });
 
         it("fails when startBasctlServer throws an error", async () => {
-            let error = new Error('Socket failure');
+            const error = new Error('Socket failure');
             basctlServerMock.expects("startBasctlServer").throws(error);
             await expect(extension.activate()).to.be.rejectedWith(error);
         });
