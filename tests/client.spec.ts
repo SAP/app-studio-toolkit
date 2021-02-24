@@ -104,9 +104,7 @@ describe("client test", () => {
             await performAction(myAction, { schedule: true});
             assert(logSpy.calledWith("Couldn't schedule action: Reasons!"), "Expected log entry was not written");
             workspaceMock.verify();
-            configMock.verify();
-            
+            configMock.verify();      
         });
     });
-
 });
