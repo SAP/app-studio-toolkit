@@ -42,7 +42,7 @@ describe("performer test", () => {
                 params: ["param1", "param2"]
             };
             commandsMock.expects("executeCommand").withExactArgs(commAction.name, commAction.params).once().resolves("success");
-            await expect(_performAction(commAction)).to.eventually.be.equal("success");
+            expect(await _performAction(commAction)).to.be.equal("success");
         });
         it("is successful without params when executeCommand is fulfilled", async () => {
             let commAction = {
@@ -50,7 +50,7 @@ describe("performer test", () => {
                 name: "commandName"
             };
             commandsMock.expects("executeCommand").withExactArgs(commAction.name).once().resolves("success");
-            await expect(_performAction(commAction)).to.eventually.be.equal("success");
+            expect(await _performAction(commAction)).to.be.equal("success");
         });
         it("is successful without params when executeCommand is rejected", async () => {
             let commAction = {
@@ -71,7 +71,7 @@ describe("performer test", () => {
             };
             let executeActionMock = sandbox.mock(execAction);
             executeActionMock.expects("executeAction").withExactArgs(execAction.params).once().returns("success");
-            await expect(_performAction(execAction)).to.eventually.be.equal("success");
+            expect(await _performAction(execAction)).to.be.equal("success");
             executeActionMock.verify();
         });
         it("is successful without params", async () => {
@@ -81,20 +81,20 @@ describe("performer test", () => {
             };
             let executeActionMock = sandbox.mock(execAction);
             executeActionMock.expects("executeAction").withExactArgs().once().returns("success");
-            await expect(_performAction(execAction)).to.eventually.be.equal("success");
+            expect(await _performAction(execAction)).to.be.equal("success");
             executeActionMock.verify();
         });
     });
     describe("fileAction", () => {
 
-        it("is fulfilled if executeCommand is fulfilled", () => {
+        it("is fulfilled if executeCommand is fulfilled", async () => {
             let fileAction = {
                 actionType: ActionType.File,
                 uri: 'file:///home/user/projects/myproj/sourcefile.js'
             };
             commandsMock.expects("executeCommand").withExactArgs('vscode.open', fileAction.uri, {viewColumn: 2}).once();
             // check that no error is thrown
-            _performAction(fileAction);
+            await _performAction(fileAction);
         });
         it("is rejected if executeCommand rejects", async () => {
             let fileAction = {

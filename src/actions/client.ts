@@ -4,7 +4,7 @@ import { _performAction } from "./performer";
 
 export async function performAction(action: IAction, options?: any): Promise<void> {
     if (options?.schedule) {
-        await _scheduleAction(action);
+        _scheduleAction(action);
     } else {
         _performAction(action);
     }

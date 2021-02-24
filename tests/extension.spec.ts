@@ -55,7 +55,7 @@ describe("extension unit test", () => {
             basctlServerMock.expects("startBasctlServer").once().returns();
             workspaceMock.expects("getConfiguration").once().returns(workspaceConfig);
             performerMock.expects("_performAction").withExactArgs(action).resolves();
-            let result = await extension.activate();
+            const result = await extension.activate();
             expect(result).to.haveOwnProperty("getExtensionAPI");
             expect(result).to.haveOwnProperty("actions");
             assert(actionSettingsGet.calledWith("actions"))
@@ -70,7 +70,7 @@ describe("extension unit test", () => {
             basctlServerMock.expects("startBasctlServer").once().returns();
             workspaceMock.expects("getConfiguration").once().returns(workspaceConfig);
             performerMock.expects("_performAction").never();
-            let result = await extension.activate();
+            const result = await extension.activate();
             expect(result).to.haveOwnProperty("getExtensionAPI");
             expect(result).to.haveOwnProperty("actions");
             assert(actionSettingsGet.calledWith("actions"));

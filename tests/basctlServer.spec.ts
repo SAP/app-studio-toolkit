@@ -69,7 +69,7 @@ describe("basctlServer", () => {
             serverMock.verify();
             performerMock.verify();
             actionsFactoryMock.verify();
-        }, 50);
+        }, 100);
         sandbox.restore();
     });
 

@@ -64,7 +64,7 @@ export function startBasctlServer() {
         } else {
             fs.unlink(SOCKETFILE, err => {
                 if (err) {
-                    throw new Error(`Failed to unlink socket ${SOCKETFILE}:\n` + err.stack);
+                    throw new Error(`Failed to unlink socket ${SOCKETFILE}:\n${err.message}:\n` + err.stack);
                 }
                 createBasctlServer();
             });
