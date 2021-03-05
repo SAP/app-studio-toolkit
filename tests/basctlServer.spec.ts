@@ -29,7 +29,7 @@ mockVscode(testVscode, "src/actions/performer.ts");
 mockVscode(testVscode, "src/actions/actionsFactory.ts");
 import * as performer from '../src/actions/performer';
 import * as actionsFactory from '../src/actions/actionsFactory';
-import { closeBasctlServer, startBasctlServer } from "../src/actions/basctlServer";
+import { closeBasctlServer, startBasctlServer } from "../src/basctlServer/basctlServer";
 import { Stream } from "stream";
 
 
@@ -93,7 +93,7 @@ describe("basctlServer", () => {
             startBasctlServer()   
     });
 
-    it("startBasctlServer socket exists, " +
+    it.only("startBasctlServer socket exists, " +
        "unlink successfull, " +
        "listen successful, " +
        "handle request received invalid JSON, " + 

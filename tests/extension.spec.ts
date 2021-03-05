@@ -16,7 +16,7 @@ mockVscode(testVscode, "src/actions/performer.ts");
 mockVscode(testVscode, "src/actions/basctlServer.ts");
 import * as extension from "../src/extension";
 import * as performer from '../src/actions/performer';
-import * as basctlServer from '../src/actions/basctlServer';
+import * as basctlServer from '../src/basctlServer/basctlServer';
 import { ActionType } from "../src/actions/interfaces";
 
 describe("extension unit test", () => {

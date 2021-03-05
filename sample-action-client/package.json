@@ -20,6 +20,13 @@
 		"onCommand:perform.action.now",
 		"onCommand:schedule.action"
 	],
+	"BAScontributes": {
+		"actions": [{
+			"id" : "abc123",
+			"actionType" : "command",
+			"command" : "workbench.action.openGlobalSettings"
+		}]
+	},
 	"contributes": {
 		"commands": [
 			{
