@@ -93,7 +93,7 @@ describe("basctlServer", () => {
             startBasctlServer()   
     });
 
-    it.only("startBasctlServer socket exists, " +
+    it("startBasctlServer socket exists, " +
        "unlink successfull, " +
        "listen successful, " +
        "handle request received invalid JSON, " + 
