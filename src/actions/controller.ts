@@ -1,5 +1,4 @@
 import * as vscode from "vscode";
-import { ActionsFactory } from "./actionsFactory";
 import { IAction } from "./interfaces";
 import { _performAction } from "./performer";
 
