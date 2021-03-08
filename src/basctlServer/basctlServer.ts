@@ -2,8 +2,8 @@ import * as vscode from 'vscode';
 import * as net from 'net';
 import * as fs from 'fs';
 import * as _ from 'lodash';
-import { _performAction } from './performer';
-import { ActionsFactory } from './actionsFactory';
+import { _performAction } from '../actions/performer';
+import { ActionsFactory } from '../actions/actionsFactory';
 
 const SOCKETFILE = '/extbin/basctlSocket';
 

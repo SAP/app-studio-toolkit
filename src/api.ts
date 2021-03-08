@@ -37,4 +37,4 @@ export const bas = {
         CommandAction,
         FileAction
     }
-}
+};

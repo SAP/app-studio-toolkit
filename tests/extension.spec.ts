@@ -6,6 +6,19 @@ import * as sinon from "sinon";
 
 const workspaceConfig = {};
 const testVscode = {
+    extensions: {
+        all: [{
+            packageJSON: {
+                BAScontributes: {
+                    actions: [{
+                        id : "abc123",
+                        actionType : "command",
+                        command : "workbench.action.openGlobalSettings"
+                    }]
+                },
+            }
+        }]
+    },
     workspace: {
         getConfiguration: () => workspaceConfig
     }
@@ -13,10 +26,10 @@ const testVscode = {
 
 mockVscode(testVscode, "src/extension.ts");
 mockVscode(testVscode, "src/actions/performer.ts");
-mockVscode(testVscode, "src/actions/basctlServer.ts");
+mockVscode(testVscode, "src/basctlServer/basctlServer.ts");
 import * as extension from "../src/extension";
 import * as performer from '../src/actions/performer';
-import * as basctlServer from '../src/actions/basctlServer';
+import * as basctlServer from '../src/basctlServer/basctlServer';
 import { ActionType } from "../src/actions/interfaces";
 
 describe("extension unit test", () => {
