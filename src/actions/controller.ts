@@ -8,16 +8,12 @@ export class ActionsController {
     private readonly actions: IAction[] = [];
 
     loadActions() {
-        this.getContributorExtension();
-    }
-
-    getContributorExtension() {
-        vscode.extensions.all.forEach((extension) => {
-            if (extension.packageJSON.BAScontributes && extension.packageJSON.BAScontributes.actions)
-            {
-                this.actions.push(extension.packageJSON.BAScontributes.actions);
-            }
-        });
+      vscode.extensions.all.forEach((extension) => {
+        if (extension.packageJSON.BAScontributes && extension.packageJSON.BAScontributes.actions)
+        {
+            this.actions.push(extension.packageJSON.BAScontributes.actions);
+        }
+      });
     }
 
     performScheduledActions() {
@@ -34,19 +30,3 @@ export class ActionsController {
         }
       }
 }
-
-
-
-
-
-  // return _.find(vscode.extensions.all, (extension: vscode.Extension<any>) => {
-  //     const extensionDependencies: string[] = _.get(extension, "packageJSON.extensionDependencies");
-  //     if (_.includes(extensionDependencies, "saposs.code-snippet")) {
-  //         if (contributorId === this.getExtensionId(extension)) {
-  //             return extension;
-  //         }
-  //     }
-
-  //     this.logger.warn(`Extension '${contributorId}' could not be found.`);
-  // });
-
