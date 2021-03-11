@@ -42,7 +42,6 @@
 		"package": "vsce package ."
 	},
 	"dependencies": {
-		"@sap/consume-services-types": "^0.3.6",
 		"lodash": "^4.17.20"
 	},
 	"devDependencies": {
