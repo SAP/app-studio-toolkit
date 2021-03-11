@@ -2,20 +2,27 @@ import * as vscode from "vscode";
 import { IAction } from "./interfaces";
 import { _performAction } from "./performer";
 
-
 export class ActionsController {
-    private readonly actions: IAction[] = [];
+    public static readonly actions: IAction[] = [];
 
-    loadActions() {
+    public static loadActions() {
       vscode.extensions.all.forEach((extension) => {
         if (extension.packageJSON.BAScontributes && extension.packageJSON.BAScontributes.actions)
         {
-            this.actions.push(extension.packageJSON.BAScontributes.actions);
+          ActionsController.actions.push(extension.packageJSON.BAScontributes.actions);
         }
       });
     }
 
-    performScheduledActions() {
+    public static getAction(id: string) {
+      for (const action of ActionsController.actions) {
+        if (action.id === id) {
+          return action;
+        }
+      }
+    }
+
+    public static performScheduledActions() {
         const actionsSettings = vscode.workspace.getConfiguration();
         const actionsList: any[] | undefined = actionsSettings.get("actions");
         if (actionsList && actionsList.length) {

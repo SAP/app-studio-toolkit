@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import { IService } from "@sap/consume-services-types";
 
 export enum ActionType {
     Execute = "EXECUTE",
@@ -17,10 +18,11 @@ export enum ActionJsonKey {
 
 export type CommandActionParams = any [];
 export type ExecuteActionParams = any [];
-export type SnippetActionParams = any;
+export type SnippetActionParams = any | {data: any, service: IService} | {data: any};
 export type FileActionParams = vscode.Uri;
 
 export interface IAction {
+    id?: string;
     actionType: ActionType | undefined;
 }
 

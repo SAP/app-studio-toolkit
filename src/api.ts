@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { performAction } from './actions/client';
+import { ActionsController } from './actions/controller';
 import { ExecuteAction, SnippetAction, CommandAction, FileAction } from './actions/impl';
 export * from "./actions/interfaces";
 
@@ -28,6 +29,10 @@ export const bas = {
         });
     
         return promise;    
+    },
+
+    getAction (actionId: string) {
+        return ActionsController.getAction(actionId);
     },
 
     actions: {
