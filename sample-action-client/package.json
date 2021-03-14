@@ -2,7 +2,7 @@
 	"name": "sample-action-client",
 	"displayName": "Sample Action Client",
 	"description": "",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"publisher": "SAPOSS",
 	"engines": {
 		"vscode": "^1.44.2"
@@ -21,11 +21,13 @@
 		"onCommand:schedule.action"
 	],
 	"BAScontributes": {
-		"actions": [{
-			"id" : "abc123",
-			"actionType" : "command",
-			"command" : "workbench.action.openGlobalSettings"
-		}]
+		"actions": [
+			{
+				"id": "abc123",
+				"actionType": "command",
+				"command": "workbench.action.openGlobalSettings"
+			}
+		]
 	},
 	"contributes": {
 		"commands": [
@@ -48,7 +50,7 @@
 		"package": "vsce package ."
 	},
 	"devDependencies": {
-		"@sap-devx/app-studio-toolkit-types": "0.0.2",
+		"@sap-devx/app-studio-toolkit-types": "0.0.4",
 		"@types/vscode": "^1.40.0",
 		"typescript": "^3.9.7",
 		"vsce": "^1.69.0",
