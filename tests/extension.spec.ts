@@ -25,6 +25,7 @@ const testVscode = {
 };
 
 mockVscode(testVscode, "src/extension.ts");
+mockVscode(testVscode, "src/actions/controller.ts");
 mockVscode(testVscode, "src/actions/performer.ts");
 mockVscode(testVscode, "src/basctlServer/basctlServer.ts");
 import * as extension from "../src/extension";
