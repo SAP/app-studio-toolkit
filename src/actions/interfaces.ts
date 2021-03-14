@@ -17,10 +17,11 @@ export enum ActionJsonKey {
 
 export type CommandActionParams = any [];
 export type ExecuteActionParams = any [];
-export type SnippetActionParams = any;
+export type SnippetActionParams = any | {data: any, service: any} | {data: any};
 export type FileActionParams = vscode.Uri;
 
 export interface IAction {
+    id?: string;
     actionType: ActionType | undefined;
 }
 

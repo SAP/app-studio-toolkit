@@ -41,14 +41,14 @@ jobs: # a collection of steps
       - run:
           name: install
           command: npm install
-      # - run:
-      #     name: test
-      #     command: npm run test
-      # - run:
-      #     command: cat ./reports/coverage/lcov.info | ./node_modules/.bin/coveralls
-      #     environment:
-      #       COVERALLS_SERVICE_NAME: circle-ci
-      #       COVERALLS_GIT_BRANCH: ${CIRCLE_BRANCH}
+      - run:
+          name: test
+          command: npm run test
+      - run:
+          command: cat ./reports/coverage/lcov.info | ./node_modules/.bin/coveralls
+          environment:
+            COVERALLS_SERVICE_NAME: circle-ci
+            COVERALLS_GIT_BRANCH: ${CIRCLE_BRANCH}
       - run:
           name: Define environment variable with lastest commit's message
           command: |

@@ -3,6 +3,7 @@ import { ActionType, IAction, ICommandAction, IExecuteAction, IFileAction, ISnip
     CommandActionParams, ExecuteActionParams, SnippetActionParams, FileActionParams } from "./interfaces";
 
 abstract class Action implements IAction {
+    id?: string;
     actionType: ActionType | undefined;
 }
 
