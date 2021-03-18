@@ -20,7 +20,7 @@
 		"onCommand:perform.action.now",
 		"onCommand:schedule.action"
 	],
-	"BAScontributes": {
+	"BASContributes": {
 		"actions": [
 			{
 				"id": "abc123",

@@ -2,20 +2,13 @@ import * as vscode from "vscode";
 import { IAction } from "./interfaces";
 import { _performAction } from "./performer";
 
-export interface BASContributes {
-  actions?: IAction
-}
-
 export class ActionsController {
     public static readonly actions: IAction[] = [];
 
     public static loadActions() {
       vscode.extensions.all.forEach((extension) => {
-        const jsonObj = extension?.packageJSON;
-			  const basContribute: BASContributes = jsonObj['BASContributes'];
-        if (basContribute && basContribute.actions)
-        {
-          this.actions.push(basContribute.actions);
+        if (extension?.packageJSON?.BASContributes?.actions) {
+          this.actions.push(extension.packageJSON.BASContributes.actions);
         }
       });
     }
