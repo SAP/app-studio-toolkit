@@ -7,15 +7,14 @@ export class ActionsController {
 
     public static loadActions() {
       vscode.extensions.all.forEach((extension) => {
-        if (extension.packageJSON.BAScontributes && extension.packageJSON.BAScontributes.actions)
-        {
-          ActionsController.actions.push(extension.packageJSON.BAScontributes.actions);
+        if (extension?.packageJSON?.BASContributes?.actions) {
+          this.actions.push(extension.packageJSON.BASContributes.actions);
         }
       });
     }
 
     public static getAction(id: string) {
-      for (const action of ActionsController.actions) {
+      for (const action of this.actions) {
         if (action.id === id) {
           return action;
         }
