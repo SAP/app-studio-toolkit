@@ -2,7 +2,7 @@
 	"name": "app-studio-toolkit",
 	"displayName": "App-Studio-Toolkit Extension",
 	"description": "SAP Business Application Studio Toolkit extension",
-	"version": "0.0.5",
+	"version": "0.0.6",
 	"publisher": "SAPOSS",
 	"license": "Apache-2.0",
 	"icon": "icon.png",
@@ -42,7 +42,7 @@
 		"package": "vsce package ."
 	},
 	"dependencies": {
-		"lodash": "^4.17.20"
+		"lodash": "4.17.21"
 	},
 	"devDependencies": {
 		"@commitlint/cli": "12.0.1",
