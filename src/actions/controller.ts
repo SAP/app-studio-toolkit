@@ -8,7 +8,10 @@ export class ActionsController {
     public static loadActions() {
       vscode.extensions.all.forEach((extension) => {
         if (extension?.packageJSON?.BASContributes?.actions) {
-          this.actions.push(extension.packageJSON.BASContributes.actions);
+          const newActions: IAction[] = extension?.packageJSON?.BASContributes?.actions;
+          newActions.forEach((action) => {
+            this.actions.push(action);
+          });
         }
       });
     }
