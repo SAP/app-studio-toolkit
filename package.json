@@ -42,7 +42,7 @@
 		"package": "vsce package ."
 	},
 	"dependencies": {
-		"lodash": "^4.17.20"
+		"lodash": "4.17.21"
 	},
 	"devDependencies": {
 		"@commitlint/cli": "12.0.1",
