@@ -50,7 +50,7 @@
 		"package": "vsce package ."
 	},
 	"devDependencies": {
-		"@sap-devx/app-studio-toolkit-types": "0.0.5",
+		"@sap-devx/app-studio-toolkit-types": "0.0.4",
 		"@types/vscode": "^1.40.0",
 		"typescript": "^3.9.7",
 		"vsce": "^1.69.0",

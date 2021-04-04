@@ -5,6 +5,7 @@ import * as _ from "lodash";
 import * as sinon from "sinon";
 import { IAction, ActionType } from "../src/actions/interfaces";
 import { ActionsController } from '../src/actions/controller';
+import * as vscode from "vscode";
 
 use(chaiAsPromised);
 const extensions = { getExtension: () => {} };
@@ -13,6 +14,7 @@ const testVscode = {
 };
 
 mockVscode(testVscode, "src/api.ts");
+
 import { bas } from "../src/api";
 
 describe("api unit test", () => {
@@ -75,6 +77,26 @@ describe("api unit test", () => {
         const result2 = await bas.getAction("action_2");
         expect(result2).to.includes(action2);
         
+    });
+
+    it("loadActions", async () => {
+        const action: IAction = {
+			"id" : "abc123",
+			"actionType" : ActionType.Command,
+		}
+        const allExtensioms = [{
+            packageJSON: {
+                "BASContributes": {
+                    "actions": [action]
+                },
+            }
+        }]
+        _.set(vscode, "extensions.all", allExtensioms);
+
+        ActionsController.loadActions();
+        const result = await bas.getAction("abc123");
+        expect(result.id).to.be.equal(action.id);
+        expect(result.actionType).to.be.equal(action.actionType);
     });
 
     it("inactive extension is waited for", async () => {

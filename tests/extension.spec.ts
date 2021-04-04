@@ -9,7 +9,7 @@ const testVscode = {
     extensions: {
         all: [{
             packageJSON: {
-                BAScontributes: {
+                BASContributes: {
                     actions: [{
                         id : "abc123",
                         actionType : "command",
