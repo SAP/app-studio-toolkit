@@ -38,6 +38,10 @@
 			{
 				"title": "Schedule Action",
 				"command": "schedule.action"
+			},
+			{
+				"title": "Get Configuration Parameter",
+				"command": "get.parameter"
 			}
 		]
 	},
@@ -50,7 +54,7 @@
 		"package": "vsce package ."
 	},
 	"devDependencies": {
-		"@sap-devx/app-studio-toolkit-types": "0.0.4",
+		"@sap-devx/app-studio-toolkit-types": "0.0.5",
 		"@types/vscode": "^1.40.0",
 		"typescript": "^3.9.7",
 		"vsce": "^1.69.0",
