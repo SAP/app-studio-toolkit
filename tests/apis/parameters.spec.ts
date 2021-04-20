@@ -60,7 +60,7 @@ describe("getParameter API", () => {
     });
       
     context("@sap/plugin loaded", () => {
-        // no test for configuration containing other parameters, because [] behaves the same
+        // no test for configuration containing other parameters, because [] --> to 'member access' behaves the same
         describe("when configuration is empty", () => { 
             let requireMock;
             
