@@ -37,9 +37,7 @@ export const bas = {
         return ActionsController.getAction(actionId);
     },
 
-    async getParameter(parameterName: string) : Promise<string | undefined> {
-        return getParameter(parameterName);
-    },
+    getParameter : getParameter,
 
     actions: {
         performAction,

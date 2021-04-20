@@ -2,7 +2,7 @@
 	"name": "sample-action-client",
 	"displayName": "Sample Action Client",
 	"description": "",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"publisher": "SAPOSS",
 	"engines": {
 		"vscode": "^1.44.2"

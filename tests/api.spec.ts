@@ -16,7 +16,6 @@ const testVscode = {
 mockVscode(testVscode, "src/api.ts");
 
 import { bas } from "../src/api";
-import * as parameters from "../src/apis/parameters";
 
 describe("api unit test", () => {
     let sandbox: any;
@@ -110,14 +109,6 @@ describe("api unit test", () => {
     it("non existing extension is rejected", async () => {
         extensionsMock.expects("getExtension").withExactArgs("myExt").returns(undefined);
         await expect(bas.getExtensionAPI("myExt")).to.be.rejectedWith(`Extension myExt is not loaded`);
-    });
-
-    it("getParameter", async() => {
-        const parametersMock = sandbox.mock(parameters);
-        const parameterName = "param1";
-        parametersMock.expects("getParameter").withExactArgs(parameterName);
-        await bas.getParameter(parameterName);
-        parametersMock.verify();
     });
 });
 
