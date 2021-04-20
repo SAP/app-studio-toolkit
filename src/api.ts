@@ -1,10 +1,10 @@
 import * as vscode from 'vscode';
+//import {isEmpty, get} from 'lodash';
 import { performAction } from './actions/client';
 import { ActionsController } from './actions/controller';
 import { ExecuteAction, SnippetAction, CommandAction, FileAction } from './actions/impl';
 import { getLogger } from './logger/logger';
 export * from "./actions/interfaces";
-import _ = require('lodash');
 
 export const bas = {
     getExtensionAPI: <T>(extensionId: string): Promise<T> => {
@@ -37,28 +37,29 @@ export const bas = {
         return ActionsController.getAction(actionId);
     },
 
-    async getParameter(parameterName: string) : Promise<string | null> {
-        const onBasEnv = "env.WS_BASE_URL";
-        const isInBAS = !_.isEmpty(_.get(process, onBasEnv));
-        if (!isInBAS) {
-            getLogger().trace("Running in VS Code, so returning null.");
-            return null;
-        }
-        getLogger().trace("Running on BAS.");
+    async getParameter(parameterName: string) : Promise<string | undefined> {
+        // const onBasEnv = "env.WS_BASE_URL";
+        // const isInBAS = !isEmpty(get(process, onBasEnv));
+        //const isInBAS = get(process, onBasEnv)?.is;
+        // if (!isInBAS) {
+        //     getLogger().trace("Running in VS Code, so returning undefined.");
+        //     return undefined;
+        // }
+        // getLogger().trace("Running on BAS.");
 
-        let sap;
-        try {
-            sap = require('@sap/plugin');
-        } catch (error) {
-            getLogger().error("Failed to load @sap/plugin, so returning null.", {error});
-            return null;
-        }
+        const optionalRequire = require("optional-require")(require);
+        const noSapPlugin = "noSapPlugin";
+        const sapPlugin = optionalRequire('@sap/plugin') || noSapPlugin;
+        if (sapPlugin === noSapPlugin) {
+            getLogger().error("Failed to load @sap/plugin, so returning undefined.");
+            return undefined;
+        } 
         getLogger().trace("@sap/plugin successfully loaded.");
 
-        const configuration = await sap.window.configuration();
+        const configuration = await sapPlugin.window.configuration();
         getLogger().trace("Configuration successfully received.", {configuration});
 
-        const parameterValue = _.get(configuration, parameterName, null);
+        const parameterValue = configuration?.[parameterName];
         getLogger().trace(`configuration[${parameterName}]=${parameterValue}`, {parameterName, parameterValue});
         return parameterValue;
     },
@@ -71,3 +72,4 @@ export const bas = {
         FileAction
     }
 };
+

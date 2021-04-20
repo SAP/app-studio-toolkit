@@ -23,12 +23,12 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(vscode.commands.registerCommand("get.parameter", async () => {
         const parameterName = await vscode.window.showInputBox({ prompt: "Enter Parameter Name", ignoreFocusOut: true });
-        if (!parameterName) { 
-            // undefined in escape and empty on enter
+        // undefined on escape and empty on enter
+        if (parameterName === undefined || parameterName === "") {
             return;
         }        
         
-        const parameterValue = await basAPI.getParameter(parameterName as string);
+        const parameterValue = await basAPI.getParameter(parameterName);
         vscode.window.showInformationMessage(`${parameterValue} returned for ${parameterName}`,);
     }));
 
