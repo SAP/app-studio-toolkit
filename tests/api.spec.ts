@@ -14,6 +14,7 @@ const testVscode = {
 };
 
 mockVscode(testVscode, "src/api.ts");
+mockVscode(testVscode, "src/logger/logger.ts");
 
 import { bas } from "../src/api";
 

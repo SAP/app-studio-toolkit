@@ -1,30 +1,32 @@
-import { mockVscode } from "../mockUtil";
 import { expect } from "chai";
-import { createSandbox } from "sinon";
+import * as sinon from "sinon";
+import { mockVscode } from "../mockUtil";
 import { getParameter } from '../../src/apis/parameters';
 
-const extensions = { getExtension: () => {} };
 const testVscode = {
-    extensions: extensions
+    window: {
+        createOutputChannel: (name: string) => {}
+    }
 };
 
-mockVscode(testVscode, "src/parameters.ts");
+mockVscode(testVscode, "src/apis/parameters.ts");
+mockVscode(testVscode, "src/logger/logger.ts");
 
 describe("getParameter API", () => {
     let sandbox: any;
-    let extensionsMock: any;
-
-    const parameterName = "param1";
+    let windowMock: any;
 
     beforeEach(() => {
-        sandbox = createSandbox();
-        extensionsMock = sandbox.mock(testVscode.extensions);
+        sandbox = sinon.createSandbox();
+        windowMock = sandbox.mock(testVscode.window);
     });
 
     afterEach(() => {
-        extensionsMock.verify();
+        windowMock.verify();
         sandbox.restore();
     });
+
+    const parameterName = "param1";
 
     context("no @sap/plugin loaded", () => {
         it("should return undefined", async () => {
