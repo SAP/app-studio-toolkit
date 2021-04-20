@@ -1,9 +1,30 @@
-import * as vscode from "vscode";
+import { mockVscode } from "../mockUtil";
 import { expect } from "chai";
+import { createSandbox } from "sinon";
 import { getParameter } from '../../src/apis/parameters';
 
+const extensions = { getExtension: () => {} };
+const testVscode = {
+    extensions: extensions
+};
+
+mockVscode(testVscode, "src/parameters.ts");
+
 describe("getParameter API", () => {
+    let sandbox: any;
+    let extensionsMock: any;
+
     const parameterName = "param1";
+
+    beforeEach(() => {
+        sandbox = createSandbox();
+        extensionsMock = sandbox.mock(testVscode.extensions);
+    });
+
+    afterEach(() => {
+        extensionsMock.verify();
+        sandbox.restore();
+    });
 
     context("no @sap/plugin loaded", () => {
         it("should return undefined", async () => {
