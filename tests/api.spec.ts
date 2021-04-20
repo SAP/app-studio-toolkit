@@ -1,5 +1,5 @@
 import { mockVscode } from "./mockUtil";
-import { expect, assert, use } from "chai";
+import { expect, use } from "chai";
 import * as chaiAsPromised from "chai-as-promised";
 import * as _ from "lodash";
 import * as sinon from "sinon";
@@ -16,8 +16,7 @@ const testVscode = {
 mockVscode(testVscode, "src/api.ts");
 
 import { bas } from "../src/api";
-import { extend, inRange, reject } from "lodash";
-import { stub } from "sinon";
+import * as parameters from "../src/apis/parameters";
 
 describe("api unit test", () => {
     let sandbox: any;
@@ -113,130 +112,13 @@ describe("api unit test", () => {
         await expect(bas.getExtensionAPI("myExt")).to.be.rejectedWith(`Extension myExt is not loaded`);
     });
 
-    context("getParameter", () => {
-        const WS_BASE_URL = "WS-BASE-VALUE";
+    it("getParameter", async() => {
+        const parametersMock = sandbox.mock(parameters);
         const parameterName = "param1";
-
-        beforeEach(() => {
-            extensionsMock = sandbox.mock(testVscode.extensions);
-        });
-    
-        afterEach(() => {
-            extensionsMock.verify();
-        });
-    
-        // it("not on BAS ---> returns undefined", async () => {
-        //     stubEnv({ WS_BASE_URL: "" });
-        //     const parameterValue = await bas.getParameter(parameterName);
-        //     expect(parameterValue).to.be.undefined;
-        // });
-
-        it("no @sap/plugin loaded ---> returns undefined", async () => {
-            stubEnv({ WS_BASE_URL: WS_BASE_URL });
-            const parameterValue = await bas.getParameter(parameterName);
-            expect(parameterValue).to.be.undefined;
-        });
-
-        it("@sap/plugin loaded, configuration is null ---> returns undefined", async () => {
-            stubEnv({ WS_BASE_URL: WS_BASE_URL });
-            const requireMock = require('mock-require');
- 
-            const sapPlugin = {
-                window: {
-                    configuration: () => null
-                }
-            };            
-            requireMock('@sap/plugin', sapPlugin);
-
-            const parameterValue = await bas.getParameter(parameterName);
-            expect(parameterValue).to.be.undefined;
-            requireMock.stop('@sap/plugin');
-        });
-
-        it("@sap/plugin loaded, configuration is undefined ---> returns undefined", async () => {
-            stubEnv({ WS_BASE_URL: WS_BASE_URL });
-            const requireMock = require('mock-require');
- 
-            const sapPlugin = {
-                window: {
-                    configuration: () => undefined
-                }
-            };            
-            requireMock('@sap/plugin', sapPlugin);
-
-            const parameterValue = await bas.getParameter(parameterName);
-            expect(parameterValue).to.be.undefined;
-            requireMock.stop('@sap/plugin');
-        });
-
-        it("@sap/plugin loaded, parameter name doesn't exist in the configuration ---> returns undefined", async () => {
-            stubEnv({ WS_BASE_URL: WS_BASE_URL });
-            const requireMock = require('mock-require');
- 
-            const configuration = {};
-            const sapPlugin = {
-                window: {
-                    configuration: () => configuration
-                }
-            };            
-            requireMock('@sap/plugin', sapPlugin);
-
-            const parameterValue = await bas.getParameter(parameterName);
-            expect(parameterValue).to.be.undefined;
-            requireMock.stop('@sap/plugin');
-        });
-
-        it("@sap/plugin loaded, parameter name exists in the configuration ---> returns the parameter value", async () => {
-            stubEnv({ WS_BASE_URL: WS_BASE_URL });
-            const requireMock = require('mock-require');
-            const expectedParameterValue = "param1value";
-            const configuration = {param1: expectedParameterValue};
-            const sapPlugin = {
-                window: {
-                    configuration: () => configuration
-                }
-            };            
-            requireMock('@sap/plugin', sapPlugin);
-
-            const parameterValue = await bas.getParameter(parameterName);
-            expect(parameterValue).to.be.equal(expectedParameterValue);
-            requireMock.stop('@sap/plugin');
-        });
-
-        it("@sap/plugin loaded, parameter name exists in the configuration with null value ---> returns the parameter value", async () => {
-            stubEnv({ WS_BASE_URL: WS_BASE_URL });
-            const requireMock = require('mock-require');
-            const expectedParameterValue = null;
-            const configuration = {param1: expectedParameterValue};
-            const sapPlugin = {
-                window: {
-                    configuration: () => configuration
-                }
-            };            
-            requireMock('@sap/plugin', sapPlugin);
-
-            const parameterValue = await bas.getParameter(parameterName);
-            expect(parameterValue).to.be.equal(expectedParameterValue);
-            requireMock.stop('@sap/plugin');
-        });
-
-        it("@sap/plugin loaded, parameter name exists in the configuration with undefined value ---> returns the parameter value", async () => {
-            stubEnv({ WS_BASE_URL: WS_BASE_URL });
-            const requireMock = require('mock-require');
-            const expectedParameterValue = undefined;
-            const configuration = {param1: expectedParameterValue};
-            const sapPlugin = {
-                window: {
-                    configuration: () => configuration
-                }
-            };            
-            requireMock('@sap/plugin', sapPlugin);
-
-            const parameterValue = await bas.getParameter(parameterName);
-            expect(parameterValue).to.be.equal(expectedParameterValue);
-            requireMock.stop('@sap/plugin');
-        });
-    })
+        parametersMock.expects("getParameter").withExactArgs(parameterName);
+        await bas.getParameter(parameterName);
+        parametersMock.verify();
+    });
 });
 
 function promiseWithTimeout(promise: any, timeout: number){
@@ -249,12 +131,3 @@ function promiseWithTimeout(promise: any, timeout: number){
     })
   ]);
 }
-
-/**
- * Stub key-> value object to the environment variable for testing purpose
- * @param newValues - The key-> valye to set the environment
- */
- function stubEnv(newValues: Record<string, unknown>): void {
-    const extendedEnv = extend({}, process.env, newValues);
-    stub(process, "env").value(extendedEnv);
-  }
