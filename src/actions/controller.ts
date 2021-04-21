@@ -1,8 +1,10 @@
 import * as vscode from "vscode";
+import { getLogger } from "../logger/logger";
 import { IAction } from "./interfaces";
 import { _performAction } from "./performer";
 
 export class ActionsController {
+    private static readonly loggerLabel = "ActionsController";
     public static readonly actions: IAction[] = [];
 
     public static loadActions() {
@@ -23,17 +25,24 @@ export class ActionsController {
       }
     }
 
-    public static performScheduledActions() {
-        const actionsSettings = vscode.workspace.getConfiguration();
-        const actionsList: any[] | undefined = actionsSettings.get("actions");
-        if (actionsList && actionsList.length) {
-          for (const action of actionsList) {
-            console.log(
-              `performing action ${action.name} of type ${action.constructor.name}`
-            );
-            _performAction(action);
-          }
-          actionsSettings.update("actions", []);
-        }
+    public static performActions(actionsList: any[]) {
+      const logger = getLogger().getChildLogger({label: ActionsController.loggerLabel});
+      for (const action of actionsList) {
+        logger.trace(
+          `performing action ${action.name} of type ${action.constructor.name}`,
+          {action}
+        );
+        _performAction(action);
       }
+    }
+
+    public static performScheduledActions() {
+      const actionsSettings = vscode.workspace.getConfiguration();
+      const actionsList: any[] | undefined = actionsSettings.get("actions");
+      if (actionsList && actionsList.length) {
+        ActionsController.performActions(actionsList);
+        actionsSettings.update("actions", []);
+      }
+    }
+
 }
