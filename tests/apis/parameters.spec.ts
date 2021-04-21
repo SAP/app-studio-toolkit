@@ -6,7 +6,8 @@ import { getParameter } from '../../src/apis/parameters';
 const testVscode = {
     window: {
         createOutputChannel: (name: string) => {}
-    }
+    },
+    ExtensionContext: {}
 };
 
 mockVscode(testVscode, "src/apis/parameters.ts");
