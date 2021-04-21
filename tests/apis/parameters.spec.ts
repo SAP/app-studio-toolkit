@@ -1,7 +1,6 @@
 import { expect } from "chai";
 import * as sinon from "sinon";
 import { mockVscode } from "../mockUtil";
-import { getParameter } from '../../src/apis/parameters';
 
 const testVscode = {
     window: {
@@ -10,23 +9,10 @@ const testVscode = {
     ExtensionContext: {}
 };
 
-mockVscode(testVscode, "src/apis/parameters.ts");
 mockVscode(testVscode, "src/logger/logger.ts");
+import { getParameter } from '../../src/apis/parameters';
 
 describe("getParameter API", () => {
-    let sandbox: any;
-    let windowMock: any;
-
-    beforeEach(() => {
-        sandbox = sinon.createSandbox();
-        windowMock = sandbox.mock(testVscode.window);
-    });
-
-    afterEach(() => {
-        windowMock.verify();
-        sandbox.restore();
-    });
-
     const parameterName = "param1";
 
     context("no @sap/plugin loaded", () => {
