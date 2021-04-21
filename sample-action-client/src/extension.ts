@@ -20,6 +20,18 @@ export async function activate(context: vscode.ExtensionContext) {
         vscode.window.showInformationMessage(`Action ${action.name} was scheduled to run`,);
         basAPI.actions.performAction(action, {schedule: true});
     }));
+
+	context.subscriptions.push(vscode.commands.registerCommand("get.parameter", async () => {
+        const parameterName = await vscode.window.showInputBox({ prompt: "Enter Parameter Name", ignoreFocusOut: true });
+        // undefined on escape and empty on enter
+        if (parameterName === undefined || parameterName === "") {
+            return;
+        }        
+        
+        const parameterValue = await basAPI.getParameter(parameterName);
+        vscode.window.showInformationMessage(`${parameterValue} returned for ${parameterName}`,);
+    }));
+
 }
 
 export function deactivate() {

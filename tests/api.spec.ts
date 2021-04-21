@@ -1,5 +1,5 @@
 import { mockVscode } from "./mockUtil";
-import { expect, assert, use } from "chai";
+import { expect, use } from "chai";
 import * as chaiAsPromised from "chai-as-promised";
 import * as _ from "lodash";
 import * as sinon from "sinon";
@@ -14,6 +14,7 @@ const testVscode = {
 };
 
 mockVscode(testVscode, "src/api.ts");
+mockVscode(testVscode, "src/logger/logger.ts");
 
 import { bas } from "../src/api";
 
@@ -45,13 +46,9 @@ describe("api unit test", () => {
             exports: "api"
         };
 
-        const logSpy = sandbox.spy(console, 'info');
-
         extensionsMock.expects("getExtension").withExactArgs("myExt").returns(extension)
         const result = await bas.getExtensionAPI("myExt");
         expect(result).to.be.equal("api");
-        assert(logSpy.calledOnceWithExactly("Detected myExt is active"));
-        
     });
     
     it("get actions - without defined actions", async () => {
