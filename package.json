@@ -56,7 +56,7 @@
 		"compile": "tsc -p ./",
 		"watch": "tsc -watch -p ./",
 		"pretest": "npm run compile",
-		"test": "nyc mocha -p tsconfig.json --config ./.mocharc.yaml --no-parallel",
+		"test": "nyc mocha --no-parallel",
 		"lint": "eslint . --ext .ts,.tsx --cache",
 		"lint:fix": "eslint . --ext .ts,.tsx --cache --fix",
 		"package": "vsce package ."
