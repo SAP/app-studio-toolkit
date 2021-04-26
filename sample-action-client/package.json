@@ -23,9 +23,9 @@
 	"BASContributes": {
 		"actions": [
 			{
-				"id": "abc123",
-				"actionType": "command",
-				"command": "workbench.action.openGlobalSettings"
+				"id": "openSettingsAction",
+				"actionType": "COMMAND",
+				"name": "workbench.action.openSettings"
 			}
 		]
 	},

@@ -13,9 +13,7 @@ export async function getParameter(parameterName: string) : Promise<string | und
     logger.trace("@sap/plugin successfully loaded.");
 
     const configuration = await sapPlugin.window.configuration();
-    logger.trace("Configuration successfully received.", {configuration});
 
     const parameterValue = configuration?.[parameterName];
-    logger.trace(`configuration[${parameterName}]=${parameterValue}`, {parameterName, parameterValue});
     return parameterValue;
 }

@@ -2,6 +2,7 @@ import * as vscode from "vscode";
 import { getLogger } from "../logger/logger";
 import { IAction } from "./interfaces";
 import { _performAction } from "./performer";
+import { getParameter } from '../apis/parameters';
 
 export class ActionsController {
     private static readonly loggerLabel = "ActionsController";
@@ -25,11 +26,30 @@ export class ActionsController {
       }
     }
 
+    public static async performActionsFromParams() {
+      const logger = getLogger().getChildLogger({label: "performActionsFromParams"});
+      const actionsList = new Array();
+
+      for (let i = 1 ; i <= 10 ; i++) {
+        let actionparam = "action" + i;
+        const actionId = await getParameter(actionparam);
+        logger.trace(`${actionparam} = ${actionId}`)
+        if (actionId !== undefined) {
+          const action = ActionsController.getAction(actionId);
+          if (action){
+            logger.trace(`action ${actionId} found`, {action})
+            actionsList.push(action);
+          }
+        }
+      }
+      ActionsController.performActions(actionsList);
+    }
+
     public static performActions(actionsList: any[]) {
       const logger = getLogger().getChildLogger({label: ActionsController.loggerLabel});
       for (const action of actionsList) {
         logger.trace(
-          `performing action ${action.name} of type ${action.constructor.name}`,
+          `performing action ${action.id} of type ${action.actionType}`,
           {action}
         );
         _performAction(action);
