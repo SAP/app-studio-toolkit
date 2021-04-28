@@ -31,13 +31,13 @@ export class ActionsController {
       const actionsList = new Array();
 
       for (let i = 1 ; i <= 10 ; i++) {
-        let actionparam = "action" + i;
+        const actionparam = "action" + i;
         const actionId = await getParameter(actionparam);
-        logger.trace(`${actionparam} = ${actionId}`)
-        if (actionId !== undefined) {
+        logger.trace(`configuration ${actionparam} = ${actionId}`);
+        if (actionId) {
           const action = ActionsController.getAction(actionId);
           if (action){
-            logger.trace(`action ${actionId} found`, {action})
+            logger.trace(`action ${actionId} found`, {action});
             actionsList.push(action);
           }
         }
