@@ -1,5 +1,5 @@
-import { assert, expect } from "chai";
-import * as sinon from "sinon";
+import { assert } from "chai";
+import { SinonSandbox, SinonMock, createSandbox, SinonSpy } from "sinon";
 import { mockVscode } from "./mockUtil";
 
 const testVscode = {
@@ -7,25 +7,35 @@ const testVscode = {
         Workspace: 2
     },
     workspace: {
-        getConfiguration: () => {}
+        getConfiguration: () => ""
     }
 };
 
 mockVscode(testVscode, "src/actions/client.ts");
 mockVscode(testVscode, "src/actions/performer.ts");
-import { performAction } from "../src/actions/client"
+import { performAction } from "../src/actions/client";
 import * as performer from '../src/actions/performer';
-import { ActionType, IAction } from "../src/api";
-import { ExecuteAction } from "../src/actions/impl";
+import { ActionType } from "../src/api";
 
-describe("client test", () => {
-    let sandbox: any;
-    let workspaceMock: any;
-    let performerMock: any;
-    let logSpy: any;
+describe.only("client test", () => {
+    let sandbox: SinonSandbox;
+    let workspaceMock: SinonMock;
+    let performerMock: SinonMock;
+    let logSpy: SinonSpy;
+    let configMock: SinonMock;
+
+    const config = {
+        get: () => "",
+        update: () => ""
+    };
+
+    const myAction = {
+        actionType: ActionType.Command,
+        name: "myAction"
+    };
 
     before(() => {
-        sandbox = sinon.createSandbox();
+        sandbox = createSandbox();
         logSpy = sandbox.spy(console, 'error');
     });
 
@@ -33,78 +43,46 @@ describe("client test", () => {
         sandbox.restore();
     });
 
+    beforeEach(() => {
+        performerMock = sandbox.mock(performer);
+        workspaceMock = sandbox.mock(testVscode.workspace);
+        configMock = sandbox.mock(config);
+    });
+
+    afterEach(() => {
+        performerMock.verify();
+        workspaceMock.verify();
+        configMock.verify();
+    });
+
     describe("perform action", () => {
-        it("performs the action without schedule", () => {
-            performerMock = sandbox.mock(performer);
-            const myAction = {
-                actionType: ActionType.Command,
-                name: "myAction",
-            };
-            performerMock.expects("_performAction").withExactArgs(myAction).once();
-            performAction(myAction);
-            performerMock.verify();
+        it("performs the action without schedule", async () => {
+            performerMock.expects("_performAction").withExactArgs(myAction);
+            await performAction(myAction);
         });
-        it("schedules the action with schedule (existing action list, update successful)", () => {
-            workspaceMock = sandbox.mock(testVscode.workspace);
-            
-            const myAction = {
-                actionType: ActionType.Command,
-                name: "myAction",
-            };
-            const config = {
-                get: () => {},
-                update: () => {}
-            }
+        it("schedules the action with schedule (existing action list, update successful)", async () => {
             const actions: any[] = [myAction, myAction];
-            let configMock = sandbox.mock(config);
-            workspaceMock.expects("getConfiguration").once().returns(config);
-            configMock.expects("get").withExactArgs("actions").once().returns(actions);
-            configMock.expects("update").withExactArgs("actions", [myAction, myAction, myAction], 2).resolves()
-            performAction(myAction, { schedule: true});
+            workspaceMock.expects("getConfiguration").returns(config);
+            configMock.expects("get").withExactArgs("actions").returns(actions);
+            configMock.expects("update").withExactArgs("actions", [myAction, myAction, myAction], 2).resolves();
+            await performAction(myAction, { schedule: true});
             assert(logSpy.neverCalledWith("Couldn't schedule action"));
-            workspaceMock.verify();
-            configMock.verify();
         });
-        it("schedules the action with schedule (empy action list, update successful)", () => {
-            workspaceMock = sandbox.mock(testVscode.workspace);
-            const myAction = {
-                actionType: ActionType.Command,
-                name: "myAction",
-            };
-            const config = {
-                get: () => {},
-                update: () => {}
-            }
-            let configMock = sandbox.mock(config);
-            workspaceMock.expects("getConfiguration").once().returns(config);
-            configMock.expects("get").withExactArgs("actions").once().returns(undefined);
-            configMock.expects("update").withExactArgs("actions", [myAction], 2).resolves()
-            performAction(myAction, { schedule: true});
+        it("schedules the action with schedule (empy action list, update successful)", async () => {
+            workspaceMock.expects("getConfiguration").returns(config);
+            configMock.expects("get").withExactArgs("actions").returns(undefined);
+            configMock.expects("update").withExactArgs("actions", [myAction], 2).resolves();
+            await performAction(myAction, { schedule: true});
             assert(logSpy.neverCalledWith("Couldn't schedule action"));
-            workspaceMock.verify();
-            configMock.verify();
         });
 
         it("schedules the action with schedule (existing action list, update rejected)", async () => {
-            workspaceMock = sandbox.mock(testVscode.workspace);
-            
-            const myAction = {
-                actionType: ActionType.Command,
-                name: "myAction",
-            };
-            const config = {
-                get: () => {},
-                update: () => {}
-            }
             const actions: any[] = [myAction, myAction];
-            let configMock = sandbox.mock(config);
-            workspaceMock.expects("getConfiguration").once().returns(config);
-            configMock.expects("get").withExactArgs("actions").once().returns(actions);
-            configMock.expects("update").withExactArgs("actions", [myAction, myAction, myAction], 2).rejects("Reasons!")
+            workspaceMock.expects("getConfiguration").returns(config);
+            configMock.expects("get").withExactArgs("actions").returns(actions);
+            configMock.expects("update").withExactArgs("actions", [myAction, myAction, myAction], 2).rejects("Reasons!");
             await performAction(myAction, { schedule: true});
             assert(logSpy.calledWith("Couldn't schedule action: Reasons!"), "Expected log entry was not written");
-            workspaceMock.verify();
-            configMock.verify();      
         });
     });
 });

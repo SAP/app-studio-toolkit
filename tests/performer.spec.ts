@@ -1,11 +1,11 @@
-import { assert, expect } from "chai";
-import * as sinon from "sinon";
+import { expect } from "chai";
+import { SinonSandbox, SinonMock, createSandbox } from "sinon";
 
 import { ActionJsonKey, ActionType, IAction } from "../src/api";
 import { mockVscode } from "./mockUtil";
 
 const testVscode = {
-    commands: { executeCommand: () => {} },
+    commands: { executeCommand: () => "" },
     ViewColumn: {
         Two: 2
     }
@@ -16,11 +16,11 @@ mockVscode(testVscode, "src/actions/interfaces.ts");
 import { _performAction } from "../src/actions/performer";
 
 describe("performer test", () => {
-    let sandbox: any;
-    let commandsMock: any;
+    let sandbox: SinonSandbox;
+    let commandsMock: SinonMock;
 
     before(() => {
-        sandbox = sinon.createSandbox();
+        sandbox = createSandbox();
     });
 
     after(() => {
@@ -66,10 +66,10 @@ describe("performer test", () => {
         it("is successful with params", async () => {
             const execAction = {
                 actionType: ActionType.Execute,
-                executeAction: () => {},
+                executeAction: () => "",
                 params: ["param1", "param2"]
             };
-            let executeActionMock = sandbox.mock(execAction);
+            const executeActionMock = sandbox.mock(execAction);
             executeActionMock.expects("executeAction").withExactArgs(execAction.params).once().returns("success");
             expect(await _performAction(execAction)).to.be.equal("success");
             executeActionMock.verify();
@@ -77,9 +77,9 @@ describe("performer test", () => {
         it("is successful without params", async () => {
             const execAction = {
                 actionType: ActionType.Execute,
-                executeAction: () => {}
+                executeAction: () => ""
             };
-            let executeActionMock = sandbox.mock(execAction);
+            const executeActionMock = sandbox.mock(execAction);
             executeActionMock.expects("executeAction").withExactArgs().once().returns("success");
             expect(await _performAction(execAction)).to.be.equal("success");
             executeActionMock.verify();

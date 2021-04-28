@@ -2,13 +2,13 @@ import { mockVscode } from "./mockUtil";
 import { expect, use } from "chai";
 import * as chaiAsPromised from "chai-as-promised";
 import * as _ from "lodash";
-import * as sinon from "sinon";
+import { SinonSandbox, SinonMock, createSandbox } from "sinon";
 import { IAction, ActionType } from "../src/actions/interfaces";
 import { ActionsController } from '../src/actions/controller';
 import * as vscode from "vscode";
 
 use(chaiAsPromised);
-const extensions = { getExtension: () => {} };
+const extensions = { getExtension: () => "" };
 const testVscode = {
     extensions: extensions
 };
@@ -19,11 +19,11 @@ mockVscode(testVscode, "src/logger/logger.ts");
 import { bas } from "../src/api";
 
 describe("api unit test", () => {
-    let sandbox: any;
-    let extensionsMock: any;
+    let sandbox: SinonSandbox;
+    let extensionsMock: SinonMock;
 
     before(() => {
-        sandbox = sinon.createSandbox();
+        sandbox = createSandbox();
     });
     
     after(() => {
@@ -38,21 +38,19 @@ describe("api unit test", () => {
         extensionsMock.verify();
     });
 
-    
-
     it("active extension exports are resolved", async () => {
         const extension = { 
             isActive: true,
             exports: "api"
         };
 
-        extensionsMock.expects("getExtension").withExactArgs("myExt").returns(extension)
+        extensionsMock.expects("getExtension").withExactArgs("myExt").returns(extension);
         const result = await bas.getExtensionAPI("myExt");
         expect(result).to.be.equal("api");
     });
     
     it("get actions - without defined actions", async () => {
-        const result = await bas.getAction("myExt");
+        const result = bas.getAction("myExt");
         expect(result).to.be.undefined;        
     });
 
@@ -60,18 +58,18 @@ describe("api unit test", () => {
         const action1: IAction = {
 			"id" : "action_1",
 			"actionType" : ActionType.Command
-		}
+		};
         const action2: IAction = {
 			"id" : "action_2",
 			"actionType" : ActionType.Snippet
-		}
+		};
         ActionsController.actions.push(action1);
         ActionsController.actions.push(action2);
 
-        const result = await bas.getAction("action_1");
+        const result = bas.getAction("action_1");
         expect(result).to.includes(action1);
 
-        const result2 = await bas.getAction("action_2");
+        const result2 = bas.getAction("action_2");
         expect(result2).to.includes(action2);
         
     });
@@ -80,18 +78,18 @@ describe("api unit test", () => {
         const action: IAction = {
 			"id" : "abc123",
 			"actionType" : ActionType.Command,
-		}
+		};
         const allExtensioms = [{
             packageJSON: {
                 "BASContributes": {
                     "actions": [action]
                 },
             }
-        }]
+        }];
         _.set(vscode, "extensions.all", allExtensioms);
 
         ActionsController.loadActions();
-        const result = await bas.getAction("abc123");
+        const result = bas.getAction("abc123");
         expect(result.id).to.be.equal(action.id);
         expect(result.actionType).to.be.equal(action.actionType);
     });
@@ -102,7 +100,7 @@ describe("api unit test", () => {
             exports: "api"
         };
 
-        extensionsMock.expects("getExtension").withExactArgs("myExt").returns(extension)
+        extensionsMock.expects("getExtension").withExactArgs("myExt").returns(extension);
         await expect(promiseWithTimeout(bas.getExtensionAPI("myExt"), 1000)).to.be.rejectedWith("Timed out");
         extension.isActive = true;  
     });

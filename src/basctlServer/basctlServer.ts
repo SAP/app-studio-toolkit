@@ -12,7 +12,7 @@ let basctlServer: net.Server;
 
 function handleRequest(socket: net.Socket) {
     socket.on('data', dataBuffer => {
-        (async () => {
+        void (async () => {
             const data: any = getRequestData(dataBuffer);
             let result;
             try {
@@ -38,7 +38,7 @@ function getRequestData(dataBuffer: any) {
 
 function showErrorMessage(error: any, defaultError: string) {
     const errorMessage = _.get(error, 'message', defaultError);
-    vscode.window.showErrorMessage(errorMessage);
+    void vscode.window.showErrorMessage(errorMessage);
 }
 
 export function closeBasctlServer() {
@@ -64,7 +64,7 @@ export function startBasctlServer() {
         } else {
             fs.unlink(SOCKETFILE, err => {
                 if (err) {
-                    throw new Error(`Failed to unlink socket ${SOCKETFILE}:\n${err.message}:\n` + err.stack);
+                    throw new Error(`Failed to unlink socket ${SOCKETFILE}:\n${err.message}:\n${err.stack}`);
                 }
                 createBasctlServer();
             });

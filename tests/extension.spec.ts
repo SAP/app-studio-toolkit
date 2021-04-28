@@ -1,7 +1,7 @@
 import { mockVscode } from "./mockUtil";
 import { expect, assert } from "chai";
 import * as _ from "lodash";
-import * as sinon from "sinon";
+import { SinonSandbox, SinonMock, createSandbox} from "sinon";
 
 
 const workspaceConfig = {};
@@ -34,13 +34,13 @@ import * as basctlServer from '../src/basctlServer/basctlServer';
 import { ActionType } from "../src/actions/interfaces";
 
 describe("extension unit test", () => {
-    let sandbox: any;
-    let workspaceMock: any;
-    let basctlServerMock: any;
-    let performerMock: any;
+    let sandbox: SinonSandbox;
+    let workspaceMock: SinonMock;
+    let basctlServerMock: SinonMock;
+    let performerMock: SinonMock;
 
     before(() => {
-        sandbox = sinon.createSandbox();
+        sandbox = createSandbox();
     });
 
     after(() => {
@@ -66,14 +66,15 @@ describe("extension unit test", () => {
             const actionSettingsUpdate = sandbox.spy();
             _.set(workspaceConfig, "get", actionSettingsGet);
             _.set(workspaceConfig, "update", actionSettingsUpdate);
-            basctlServerMock.expects("startBasctlServer").once().returns();
+            basctlServerMock.expects("startBasctlServer").once();
             workspaceMock.expects("getConfiguration").once().returns(workspaceConfig);
             performerMock.expects("_performAction").withExactArgs(action).resolves();
-            const result = await extension.activate();
+            const context: any = {};
+            const result = await extension.activate(context);
             expect(result).to.haveOwnProperty("getExtensionAPI");
             expect(result).to.haveOwnProperty("actions");
-            assert(actionSettingsGet.calledWith("actions"))
-            assert(actionSettingsUpdate.calledWith("actions", []))
+            assert(actionSettingsGet.calledWith("actions"));
+            assert(actionSettingsUpdate.calledWith("actions", []));
         });
 
         it("does nothing with no actions", async () => {
@@ -81,10 +82,11 @@ describe("extension unit test", () => {
             const actionSettingsUpdate = sandbox.spy();
             _.set(workspaceConfig, "get", actionSettingsGet);
             _.set(workspaceConfig, "update", actionSettingsUpdate);
-            basctlServerMock.expects("startBasctlServer").once().returns();
+            basctlServerMock.expects("startBasctlServer").once();
             workspaceMock.expects("getConfiguration").once().returns(workspaceConfig);
             performerMock.expects("_performAction").never();
-            const result = await extension.activate();
+            const context: any = {};
+            const result = await extension.activate(context);
             expect(result).to.haveOwnProperty("getExtensionAPI");
             expect(result).to.haveOwnProperty("actions");
             assert(actionSettingsGet.calledWith("actions"));
@@ -94,14 +96,14 @@ describe("extension unit test", () => {
         it("fails when startBasctlServer throws an error", async () => {
             const error = new Error('Socket failure');
             basctlServerMock.expects("startBasctlServer").throws(error);
-            await expect(extension.activate()).to.be.rejectedWith(error);
+            const context: any = {};
+            await expect(extension.activate(context)).to.be.rejectedWith(error);
         });
 
     });
 
     it("deactivate", () => {
-        basctlServerMock.expects("closeBasctlServer").once().returns();
+        basctlServerMock.expects("closeBasctlServer").once();
         extension.deactivate();
     });
-
 });

@@ -3,7 +3,7 @@ import * as sinon from "sinon";
 import { mockVscode } from "./mockUtil";
 
 const testVscode = {
-    Uri: { parse: (value?: string, strict?: boolean) => {} }
+    Uri: { parse: () => "" }
 };
 
 mockVscode(testVscode, "src/actions/actionsFactory.ts");
@@ -90,7 +90,8 @@ describe("actionsFactory test", () => {
             };
             uriMock.expects("parse").withExactArgs('').once();
             uriMock.expects("parse").withExactArgs(undefined, true).once().throws(new Error('Failed!'));
-            expect(() => ActionsFactory.createAction(actionJson)).to.throw(`Failed to parse field ${ActionJsonKey.Uri}: undefined for actionType=${ActionType.File}: Failed!`)
+            expect(() => ActionsFactory.createAction(actionJson)).
+                to.throw(`Failed to parse field ${ActionJsonKey.Uri}: undefined for actionType=${ActionType.File}: Failed!`);
         });
     });
 
@@ -113,17 +114,16 @@ describe("actionsFactory test", () => {
 
     // TODO remove those when ExecuteAction and SnippetAction are supported in actionsFactory
     it("create executeAction", () => {
-        const action = new ExecuteAction()
+        const action = new ExecuteAction();
         expect(action.actionType).to.equal(ActionType.Execute);
         expect(action.params).to.deep.equal([]);
     });
 
     it("create executeAction", () => {
-        const action = new SnippetAction()
+        const action = new SnippetAction();
         expect(action.actionType).to.equal(ActionType.Snippet);
         expect(action.contributorId).to.equal("");
         expect(action.snippetName).to.equal("");
         expect(action.context).to.equal("");
     });
-
 });

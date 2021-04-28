@@ -18,7 +18,9 @@ function _scheduleAction(action: IAction): Thenable<void> {
         actionsList = [];
     }
     actionsList.push(action);
-    return actionsSettings.update("actions", actionsList, vscode.ConfigurationTarget.Workspace).then(() => { }, (reason) => {
-        console.error(`Couldn't schedule action: ${reason}`);
+    return actionsSettings.update("actions", actionsList, vscode.ConfigurationTarget.Workspace).then(() => { 
+        console.error("");
+    }, error => {
+        console.error(`Couldn't schedule action: ${error}`);
     });
 }

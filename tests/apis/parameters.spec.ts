@@ -1,10 +1,9 @@
 import { expect } from "chai";
-import * as sinon from "sinon";
 import { mockVscode } from "../mockUtil";
 
 const testVscode = {
     window: {
-        createOutputChannel: (name: string) => {}
+        createOutputChannel: () => ""
     },
     ExtensionContext: {}
 };
@@ -35,7 +34,7 @@ describe("getParameter API", () => {
                     }
                 };
                 requireMock('@sap/plugin', sapPlugin);
-            })
+            });
 
             it("should return undefined", async () => {
                 const parameterValue = await getParameter(parameterName);
@@ -57,11 +56,11 @@ describe("getParameter API", () => {
                 requireMock = require('mock-require');
                 const sapPlugin = {
                     window: {
-                        configuration: () => {}
+                        configuration: () => ""
                     }
                 };
                 requireMock('@sap/plugin', sapPlugin);
-            })
+            });
 
             it("should return undefined", async () => {
                 const parameterValue = await getParameter(parameterName);
@@ -89,7 +88,7 @@ describe("getParameter API", () => {
                     }
                 };
                 requireMock('@sap/plugin', sapPlugin);
-            })
+            });
 
             it("should return parameter value", async () => {
                 const parameterValue = await getParameter(parameterName);
