@@ -6,6 +6,7 @@
       "src/**/*.ts"
     ],
     "exclude": [
+      "src/logger/*.ts"
     ],
     "reporter": [
       "lcov",

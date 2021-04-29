@@ -90,8 +90,9 @@ describe("api unit test", () => {
 
         ActionsController.loadActions();
         const result = bas.getAction("abc123");
-        expect(result.id).to.be.equal(action.id);
-        expect(result.actionType).to.be.equal(action.actionType);
+        expect(result).to.be.not.undefined;
+        expect(result?.id).to.be.equal(action.id);
+        expect(result?.actionType).to.be.equal(action.actionType);
     });
 
     it("inactive extension is waited for", async () => {

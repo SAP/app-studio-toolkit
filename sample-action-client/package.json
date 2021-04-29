@@ -62,6 +62,5 @@
 	},
 	"extensionDependencies": [
 		"SAPOSS.app-studio-toolkit"
-	],
-	"dependencies": {}
+	]
 }

@@ -17,7 +17,7 @@ import { performAction } from "../src/actions/client";
 import * as performer from '../src/actions/performer';
 import { ActionType } from "../src/api";
 
-describe.only("client test", () => {
+describe("client test", () => {
     let sandbox: SinonSandbox;
     let workspaceMock: SinonMock;
     let performerMock: SinonMock;

@@ -24,7 +24,7 @@ describe("getParameter API", () => {
     context("@sap/plugin loaded", () => {
         // no test for configuration is undefined, because . behaves the same on null and undefined
         describe("when configuration is null", () => { 
-            let requireMock;
+            let requireMock: any;
             
             before(() => {
                 requireMock = require('mock-require');
@@ -50,7 +50,7 @@ describe("getParameter API", () => {
     context("@sap/plugin loaded", () => {
         // no test for configuration containing other parameters, because [] --> to 'member access' behaves the same
         describe("when configuration is empty", () => { 
-            let requireMock;
+            let requireMock: any;
             
             before(() => {
                 requireMock = require('mock-require');
@@ -76,7 +76,7 @@ describe("getParameter API", () => {
     context("@sap/plugin loaded", () => {
         // no test for value is undefined or null, because [] behaves the same on any value
         describe("when configuration contains the parameter name", () => { 
-            let requireMock;
+            let requireMock: any;
             const expectedParameterValue = "param1value";
             
             before(() => {

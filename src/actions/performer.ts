@@ -1,5 +1,9 @@
 import { commands, ViewColumn } from "vscode";
-import { ActionJsonKey, ActionType, IAction, ICommandAction, IExecuteAction, IFileAction, ISnippetAction } from "./interfaces";
+import { 
+  ActionJsonKey, ActionType, 
+  IAction, ICommandAction, 
+  IExecuteAction, IFileAction, 
+  ISnippetAction } from "./interfaces";
 
 export async function _performAction(action: IAction): Promise<any> {
   if (action) {
