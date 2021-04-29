@@ -3,7 +3,7 @@ import { getLogger } from "../logger/logger";
 import { IAction } from "./interfaces";
 import { _performAction } from "./performer";
 import { getParameter } from '../apis/parameters';
-import { uniq } from "lodash";
+import { forEach, uniq } from "lodash";
 
 export class ActionsController {
     private static readonly loggerLabel = "ActionsController";
@@ -28,8 +28,7 @@ export class ActionsController {
     }
 
     public static async performActionsFromParams() {
-      const logger = getLogger().getChildLogger({label: "performActionsFromParams"});
-      const actionsList = [];
+      const logger = getLogger().getChildLogger({label: ActionsController.loggerLabel});
 
       const actionParam = await getParameter("action");
       const actionsParam = await getParameter("actions");
@@ -38,36 +37,32 @@ export class ActionsController {
       let actionsIds = actionsParam?.split(",") || [];
       actionsIds = actionsIds.concat(actionIds);
       actionsIds = uniq(actionsIds);
-      if (actionsIds.length > 0) {
-        for (const actionId of actionsIds) {
-          const action = ActionsController.getAction(actionId);
-          if (action){
-            logger.trace(`action ${actionId} found`, {action});
-            actionsList.push(action);
-          } else {
-            logger.trace(`action ${actionId} not found`);
-          }
+      actionsIds.forEach(actionId => {
+        const action = ActionsController.getAction(actionId);
+        if (action){
+          logger.trace(
+            `performing action ${actionId} of type ${action.actionType}`,
+            {action}
+          );
+          _performAction(action);
+        } else {
+          logger.trace(`action ${actionId} not found`);
         }
-        ActionsController.performActions(actionsList);
-      }
+      });
     }
-
-    public static performActions(actionsList: any[]) {
-      const logger = getLogger().getChildLogger({label: ActionsController.loggerLabel});
-      for (const action of actionsList) {
-        logger.trace(
-          `performing action ${action.id} of type ${action.actionType}`,
-          {action}
-        );
-        _performAction(action);
-      }
-    }
-
+  
     public static performScheduledActions() {
+      const logger = getLogger().getChildLogger({label: ActionsController.loggerLabel});
       const actionsSettings = vscode.workspace.getConfiguration();
       const actionsList: any[] | undefined = actionsSettings.get("actions");
       if (actionsList && actionsList.length) {
-        ActionsController.performActions(actionsList);
+        for (const action of actionsList) {
+          logger.trace(
+            `performing action ${action.id} of type ${action.actionType}`,
+            {action}
+          );
+          _performAction(action);
+        }
         actionsSettings.update("actions", []);
       }
     }
