@@ -107,7 +107,7 @@ describe("extension unit test", () => {
         let requireMock;        
         before(() => {
             requireMock = require('mock-require');
-            const configuration = {"action1": "abc123"};
+            const configuration = {"action": "abc123"};
             const sapPlugin = {
                 window: {
                     configuration: () => configuration

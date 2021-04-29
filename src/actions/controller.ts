@@ -28,21 +28,25 @@ export class ActionsController {
 
     public static async performActionsFromParams() {
       const logger = getLogger().getChildLogger({label: "performActionsFromParams"});
-      const actionsList = new Array();
+      const actionsList = [];
 
-      for (let i = 1 ; i <= 10 ; i++) {
-        const actionparam = "action" + i;
-        const actionId = await getParameter(actionparam);
-        logger.trace(`configuration ${actionparam} = ${actionId}`);
-        if (actionId) {
+      const actionParam = await getParameter("action");
+      const actionsParam = await getParameter("actions");
+      logger.trace(`configuration - action= ${actionParam}, actions= ${actionsParam}`);
+      const actionIds = actionsParam?.split(",") || [];
+      if (actionParam) actionIds.push(actionParam);
+      if (actionIds.length > 0) {
+        for (const actionId of actionIds) {
           const action = ActionsController.getAction(actionId);
           if (action){
             logger.trace(`action ${actionId} found`, {action});
             actionsList.push(action);
+          } else {
+            logger.trace(`action ${actionId} not found`);
           }
         }
+        ActionsController.performActions(actionsList);
       }
-      ActionsController.performActions(actionsList);
     }
 
     public static performActions(actionsList: any[]) {
