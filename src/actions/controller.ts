@@ -3,6 +3,7 @@ import { getLogger } from "../logger/logger";
 import { IAction } from "./interfaces";
 import { _performAction } from "./performer";
 import { getParameter } from '../apis/parameters';
+import { uniq } from "lodash";
 
 export class ActionsController {
     private static readonly loggerLabel = "ActionsController";
@@ -33,8 +34,10 @@ export class ActionsController {
       const actionParam = await getParameter("action");
       const actionsParam = await getParameter("actions");
       logger.trace(`configuration - action= ${actionParam}, actions= ${actionsParam}`);
-      const actionIds = actionsParam?.split(",") || [];
-      if (actionParam) actionIds.push(actionParam);
+      const actionIds = actionParam?.split(",") || [];
+      let actionsIds = actionsParam?.split(",") || [];
+      actionsIds = actionsIds.concat(actionIds);
+      actionsIds = uniq(actionsIds);
       if (actionIds.length > 0) {
         for (const actionId of actionIds) {
           const action = ActionsController.getAction(actionId);
