@@ -1,26 +1,29 @@
 {
 	"name": "app-studio-toolkit",
 	"displayName": "App-Studio-Toolkit Extension",
-	"description": "SAP Business Application Studio Toolkit extension",
 	"version": "0.0.7",
-	"publisher": "SAPOSS",
-	"license": "Apache-2.0",
-	"icon": "icon.png",
-	"engines": {
-		"vscode": "^1.44.2"
-	},
+	"description": "SAP Business Application Studio Toolkit extension",
+	"categories": [
+		"Other"
+	],
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/SAP/app-studio-toolkit"
 	},
-	"categories": [
-		"Other"
-	],
+	"license": "Apache-2.0",
+	"publisher": "SAPOSS",
 	"main": "./out/src/extension.js",
 	"types": "./out/src/api",
-	"activationEvents": [
-		"*"
-	],
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile",
+		"test": "nyc mocha --no-parallel",
+		"lint": "eslint . --ext .ts,.tsx --cache",
+		"lint:fix": "eslint . --ext .ts,.tsx --cache --fix",
+		"package": "vsce package ."
+	},
 	"contributes": {
 		"configuration": {
 			"properties": {
@@ -51,15 +54,23 @@
 			}
 		}
 	},
-	"scripts": {
-		"vscode:prepublish": "npm run compile",
-		"compile": "tsc -p ./",
-		"watch": "tsc -watch -p ./",
-		"pretest": "npm run compile",
-		"test": "nyc mocha --no-parallel",
-		"lint": "eslint . --ext .ts,.tsx --cache",
-		"lint:fix": "eslint . --ext .ts,.tsx --cache --fix",
-		"package": "vsce package ."
+	"activationEvents": [
+		"*"
+	],
+	"husky": {
+		"hooks": {
+			"commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+		}
+	},
+	"commitlint": {
+		"extends": [
+			"@commitlint/config-conventional"
+		]
+	},
+	"config": {
+		"commitizen": {
+			"path": "cz-conventional-changelog"
+		}
 	},
 	"dependencies": {
 		"@vscode-logging/wrapper": "1.0.1",
@@ -69,8 +80,8 @@
 	"devDependencies": {
 		"@commitlint/cli": "12.0.1",
 		"@commitlint/config-conventional": "12.0.1",
-		"@types/chai-as-promised": "^7.1.3",
 		"@types/chai": "^4.2.17",
+		"@types/chai-as-promised": "^7.1.3",
 		"@types/lodash": "^4.14.168",
 		"@types/mocha": "^8.2.0",
 		"@types/node": "^14.14.25",
@@ -94,19 +105,8 @@
 		"vsce": "^1.87.1",
 		"vscode-test": "^1.2.2"
 	},
-	"husky": {
-		"hooks": {
-			"commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-		}
+	"engines": {
+		"vscode": "^1.44.2"
 	},
-	"commitlint": {
-		"extends": [
-			"@commitlint/config-conventional"
-		]
-	},
-	"config": {
-		"commitizen": {
-			"path": "cz-conventional-changelog"
-		}
-	}
+	"icon": "icon.png"
 }
