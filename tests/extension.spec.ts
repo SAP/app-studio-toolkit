@@ -33,6 +33,7 @@ import * as extension from "../src/extension";
 import * as performer from '../src/actions/performer';
 import * as basctlServer from '../src/basctlServer/basctlServer';
 import * as logger from "../src/logger/logger";
+import { fail } from "assert";
 
 describe("extension unit test", () => {
     let sandbox: SinonSandbox;
@@ -68,7 +69,7 @@ describe("extension unit test", () => {
     });
 
     describe('activate', () => {
-        it("performs defined actions", async () => {
+        it("performs defined actions", () => {
             const context: any = {};
 
             loggerMock.expects("initLogger").withExactArgs(context);
@@ -82,10 +83,10 @@ describe("extension unit test", () => {
             performerMock.expects("_performAction").withExactArgs(scheduledAction).resolves();
             wsConfigMock.expects("update").withExactArgs("actions", []);
 
-            await extension.activate(context);
+            extension.activate(context);
         });
 
-        it("does nothing with no actions", async () => {
+        it("does nothing with no actions", () => {
             const context: any = {};
 
             loggerMock.expects("initLogger").withExactArgs(context);
@@ -95,17 +96,22 @@ describe("extension unit test", () => {
             wsConfigMock.expects("get").withExactArgs("actions").returns([]);
             wsConfigMock.expects("update").withExactArgs("actions", []);
 
-            await extension.activate(context);
+            extension.activate(context);
         });
 
-        it("fails when startBasctlServer throws an error", async () => {
+        it("fails when startBasctlServer throws an error", () => {
             const context: any = {};
-            const error = new Error('Socket failure');
+            const testError = new Error('Socket failure');
 
             loggerMock.expects("initLogger").withExactArgs(context);
-            basctlServerMock.expects("startBasctlServer").throws(error);
+            basctlServerMock.expects("startBasctlServer").throws(testError);
 
-            await expect(extension.activate(context)).to.be.rejectedWith(error);
+            try {
+                extension.activate(context);
+                fail("test should fail");
+            } catch (error) {
+                expect(error.message).to.be.equal(testError.message);
+            }
         });
     });
 

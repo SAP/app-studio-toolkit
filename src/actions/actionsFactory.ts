@@ -1,25 +1,24 @@
 import { Uri } from "vscode";
 import { IAction, ICommandAction, ActionType, IFileAction, ActionJsonKey } from './interfaces';
 import { CommandAction, FileAction } from './impl';
-import { isNil, isEmpty} from "lodash";
 
 export class ActionsFactory {
     public static createAction(jsonAction: any) : IAction {
         const actionType = jsonAction[ActionJsonKey.ActionType];
-        if (isEmpty(actionType)) {
+        if (!actionType) {
             throw new Error(`${ActionJsonKey.ActionType} is missing`);
         }
         switch (actionType) {
             case ActionType.Command: {
                     const commandAction: ICommandAction = new CommandAction();
                     const commandName = jsonAction[ActionJsonKey.CommandName];
-                    if (!isNil(commandName)) {
+                    if (commandName) {
                         commandAction.name = commandName;
                     } else {
                         throw new Error(`${ActionJsonKey.CommandName} is missing for actionType=${actionType}`);
                     }
                     const commandParams = jsonAction[ActionJsonKey.CommandParams];
-                    if (!isEmpty(commandParams)) {
+                    if (commandParams) {
                         commandAction.params = commandParams;
                     }
                     return commandAction;

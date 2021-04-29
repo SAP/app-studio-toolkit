@@ -4,7 +4,7 @@ import { ActionsController } from './actions/controller';
 import { initLogger, getLogger } from "./logger/logger";
 import { ExtensionContext } from 'vscode';
 
-export async function activate(context: ExtensionContext) {
+export function activate(context: ExtensionContext) {
     initLogger(context);
 
     startBasctlServer();

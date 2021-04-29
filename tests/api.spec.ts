@@ -49,12 +49,12 @@ describe("api unit test", () => {
         expect(result).to.be.equal("api");
     });
     
-    it("get actions - without defined actions", async () => {
+    it("get actions - without defined actions", () => {
         const result = bas.getAction("myExt");
         expect(result).to.be.undefined;        
     });
 
-    it("get actions - with two actions", async () => {
+    it("get actions - with two actions", () => {
         const action1: IAction = {
 			"id" : "action_1",
 			"actionType" : ActionType.Command
@@ -74,7 +74,7 @@ describe("api unit test", () => {
         
     });
 
-    it("loadActions", async () => {
+    it("loadActions", () => {
         const action: IAction = {
 			"id" : "abc123",
 			"actionType" : ActionType.Command,

@@ -35,8 +35,6 @@
         "@typescript-eslint/restrict-template-expressions": "off",
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-non-null-assertion": "off",
-        "@typescript-eslint/no-use-before-define": "off",
-        "@typescript-eslint/require-await": "off",
         "@typescript-eslint/unbound-method": "off",
         "no-async-promise-executor": "off",
         "no-irregular-whitespace": "off",

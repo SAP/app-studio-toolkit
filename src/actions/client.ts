@@ -19,7 +19,7 @@ function _scheduleAction(action: IAction): Thenable<void> {
     }
     actionsList.push(action);
     return actionsSettings.update("actions", actionsList, vscode.ConfigurationTarget.Workspace).then(() => { 
-        console.error("");
+        console.error("Actions successfuly scheduled");
     }, error => {
         console.error(`Couldn't schedule action: ${error}`);
     });

@@ -13,7 +13,7 @@ const testVscode = {
         getConfiguration: () => ""
     },
     window: {
-        showErrorMessage: (): Thenable<string | undefined> => Promise.resolve(undefined)
+        showErrorMessage: () => Promise.reject()
     }
 };
 
@@ -41,8 +41,8 @@ describe("basctlServer", () => {
     let windowMock: SinonMock;
     let fsMock: SinonMock;
     let netMock: SinonMock;
-    let socketMock: any;
-    let serverMock: any;
+    let socketMock: SinonMock;
+    let serverMock: SinonMock;
 
 
     beforeEach(() => {
@@ -68,7 +68,7 @@ describe("basctlServer", () => {
             performerMock.verify();
             actionsFactoryMock.verify();
         }, 100);
-        sandbox.restore();
+       sandbox.restore();
     });
 
     it(`startBasctlServer socket exists, 
@@ -150,7 +150,7 @@ describe("basctlServer", () => {
                 fsMock.expects('unlink').yields(undefined);
             }
         }
-        netMock.expects('createServer').yields(socketMock.object).returns(serverMock.object);
+        netMock.expects('createServer').yields((socketMock as any).object).returns((serverMock as any).object);
         if (options && options.socketInUse) {
             serverMock.expects('listen').withExactArgs('/extbin/basctlSocket').throws(new Error("Socket already serving a server"));
             windowMock.expects('showErrorMessage').withArgs(match("Socket already serving a server"));
