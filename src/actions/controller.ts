@@ -38,8 +38,8 @@ export class ActionsController {
       let actionsIds = actionsParam?.split(",") || [];
       actionsIds = actionsIds.concat(actionIds);
       actionsIds = uniq(actionsIds);
-      if (actionIds.length > 0) {
-        for (const actionId of actionIds) {
+      if (actionsIds.length > 0) {
+        for (const actionId of actionsIds) {
           const action = ActionsController.getAction(actionId);
           if (action){
             logger.trace(`action ${actionId} found`, {action});

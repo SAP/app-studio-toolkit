@@ -157,6 +157,33 @@ describe("extension unit test", () => {
                 expect(result).to.haveOwnProperty("actions");
             });
         });
+
+        describe('actions param', () => {
+            let requireMock;        
+            before(() => {
+                requireMock = require('mock-require');
+                const configuration = {"actions": "abc123,stam"};
+                const sapPlugin = {
+                    window: {
+                        configuration: () => configuration
+                    }
+                };
+                requireMock('@sap/plugin', sapPlugin);
+            })
+            const action = {
+                id : "abc123",
+                actionType : "COMMAND",
+                name : "workbench.action.openGlobalSettings"
+            }
+
+            it("should call _performAction just on one action", async () => {
+                basctlServerMock.expects("startBasctlServer").once().returns();
+                performerMock.expects("_performAction").withExactArgs(action).resolves();
+                const result = await extension.activate();
+                expect(result).to.haveOwnProperty("getExtensionAPI");
+                expect(result).to.haveOwnProperty("actions");
+            });
+        });
     });
 
 });
