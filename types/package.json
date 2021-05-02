@@ -1,8 +1,8 @@
 {
   "name": "@sap-devx/app-studio-toolkit-types",
   "publisher": "SAPOSS",
-  "version": "0.0.5",
-  "author": "",
+  "version": "0.0.6",
+  "author": "SAP SE",
   "license": "Apache-2.0",
   "description": "An npm package that includes Business Application Studio declarations",
   "repository": {
@@ -10,7 +10,7 @@
     "url": "https://github.com/SAP/app-studio-toolkit",
     "directory": "types"
   },
-  "main": "./out/src/actions/interfaces",
+  "main": "./out/src/actions",
   "types": "./out/src/api",
   "scripts": {
     "prep": "npm i && cd .. && npm i && npm run compile",

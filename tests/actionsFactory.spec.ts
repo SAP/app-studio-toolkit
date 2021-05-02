@@ -3,7 +3,7 @@ import * as sinon from "sinon";
 import { mockVscode } from "./mockUtil";
 
 const testVscode = {
-    Uri: { parse: (value?: string, strict?: boolean) => {} }
+    Uri: { parse: () => "" }
 };
 
 mockVscode(testVscode, "src/actions/actionsFactory.ts");
@@ -26,13 +26,11 @@ describe("actionsFactory test", () => {
     });
 
     describe("create command action", () => {
-
         it("suceeds with params", () => {
             const actionJson = {
                 [ActionJsonKey.ActionType]: ActionType.Command,
                 [ActionJsonKey.CommandName]: "myCommand",
                 [ActionJsonKey.CommandParams]: ["param1", "param2"]
-
             };
             const action = ActionsFactory.createAction(actionJson);
             expect(action instanceof CommandAction).to.be.true;
@@ -78,8 +76,8 @@ describe("actionsFactory test", () => {
                 [ActionJsonKey.Uri]: myFileUri
 
             };
-            uriMock.expects("parse").withExactArgs('').once();
-            uriMock.expects("parse").withExactArgs(myFileUri, true).once();
+            uriMock.expects("parse").withExactArgs('');
+            uriMock.expects("parse").withExactArgs(myFileUri, true);
             const action = ActionsFactory.createAction(actionJson);
             expect(action instanceof FileAction).to.be.true;
         });
@@ -88,14 +86,14 @@ describe("actionsFactory test", () => {
             const actionJson = {
                 [ActionJsonKey.ActionType]: ActionType.File
             };
-            uriMock.expects("parse").withExactArgs('').once();
-            uriMock.expects("parse").withExactArgs(undefined, true).once().throws(new Error('Failed!'));
-            expect(() => ActionsFactory.createAction(actionJson)).to.throw(`Failed to parse field ${ActionJsonKey.Uri}: undefined for actionType=${ActionType.File}: Failed!`)
+            uriMock.expects("parse").withExactArgs('');
+            uriMock.expects("parse").withExactArgs(undefined, true).throws(new Error('Failed!'));
+            expect(() => ActionsFactory.createAction(actionJson)).
+                to.throw(`Failed to parse field ${ActionJsonKey.Uri}: undefined for actionType=${ActionType.File}: Failed!`);
         });
     });
 
     describe("create action fails", () => {
-
         it("when no action type defined", () => {
             const actionJson = {};
             expect(() => ActionsFactory.createAction(actionJson)).to.throw(`${ActionJsonKey.ActionType} is missing`);
@@ -109,21 +107,18 @@ describe("actionsFactory test", () => {
         });
     });
     
-
-
     // TODO remove those when ExecuteAction and SnippetAction are supported in actionsFactory
     it("create executeAction", () => {
-        const action = new ExecuteAction()
+        const action = new ExecuteAction();
         expect(action.actionType).to.equal(ActionType.Execute);
         expect(action.params).to.deep.equal([]);
     });
 
-    it("create executeAction", () => {
-        const action = new SnippetAction()
+    it("create snippetAction", () => {
+        const action = new SnippetAction();
         expect(action.actionType).to.equal(ActionType.Snippet);
         expect(action.contributorId).to.equal("");
         expect(action.snippetName).to.equal("");
         expect(action.context).to.equal("");
     });
-
 });

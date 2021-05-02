@@ -1,26 +1,27 @@
 import * as path from "path";
+import * as _ from "lodash";
 
-const Module = require("module"); // eslint-disable-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const Module = require("module"); 
 const originalRequire = Module.prototype.require;
 
-export function mockVscode(oVscodeMock: any, testModulePath?: string) {
+export const mockVscode = (oVscodeMock: any, testModulePath?: string) => {
     clearModuleCache(testModulePath);
 
-    Module.prototype.require = function (request: any) {
-        if (request === "vscode") {
+    Module.prototype.require = function (...args: any[]) {
+        if (_.get(args, "[0]") === "vscode") {
             return oVscodeMock;
         }
 
-        return originalRequire.apply(this, arguments);
+        return originalRequire.apply(this, args);
     };
-}
+};
 
-export function clearModuleCache(testModulePath?: string) {
+export const clearModuleCache = (testModulePath?: string) => {
     if (testModulePath) {
         const key = path.resolve(testModulePath);
         if (require.cache[key]) {
             delete require.cache[key];
         }
     }
-}
-
+};

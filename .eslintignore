@@ -3,4 +3,5 @@ dist
 out
 coverage
 test/resources
-*.d.ts
+*.d.ts,
+sample-action-client

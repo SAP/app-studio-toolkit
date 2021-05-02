@@ -15,7 +15,7 @@ export class ExecuteAction extends Action implements IExecuteAction {
     constructor() {
         super();
         this.actionType = ActionType.Execute;
-        this.executeAction = (params?: ExecuteActionParams) => { return Promise.resolve() }
+        this.executeAction = () => Promise.resolve();
         this.params = [];
     }
 }

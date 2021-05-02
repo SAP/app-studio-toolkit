@@ -6,6 +6,7 @@
       "src/**/*.ts"
     ],
     "exclude": [
+      "src/logger/*.ts"
     ],
     "reporter": [
       "lcov",
@@ -18,8 +19,8 @@
     "temp-dir": "./reports/.nyc_output",
     "report-dir": "./reports/coverage",
     "check-coverage": true,
-    "branches": 83,
+    "branches": 97,
     "lines": 98,
     "functions": 96,
-    "statements": 95
+    "statements": 97
   }
