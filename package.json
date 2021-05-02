@@ -78,7 +78,7 @@
 		"optional-require": "1.0.3"
 	},
 	"devDependencies": {
-		"@commitlint/cli": "12.0.1",
+		"@commitlint/cli": "12.1.1",
 		"@commitlint/config-conventional": "12.0.1",
 		"@types/chai": "^4.2.17",
 		"@types/chai-as-promised": "^7.1.3",
