@@ -1,12 +1,13 @@
 import * as vscode from "vscode";
+import { getLogger } from "../logger/logger";
 import { IAction } from "./interfaces";
 import { _performAction } from "./performer";
-import { forEach, get } from "lodash";
-import { getLogger } from "../logger/logger";
+import { getParameter } from '../apis/parameters';
+import { forEach, uniq } from "lodash";
 
 export class ActionsController {
-  public static readonly actions: IAction[] = [];
-  public static readonly logger = getLogger().getChildLogger({label: ActionsController.name});
+    public static readonly actions: IAction[] = [];
+    private static readonly logger = getLogger().getChildLogger({label: "ActionsController"});
 
   public static loadActions() {
     vscode.extensions.all.forEach(extension => {
@@ -21,16 +22,35 @@ export class ActionsController {
     return this.actions.find(action => action.id === id);
   }
 
-  public static performScheduledActions() {
-    const wsConfiguration = vscode.workspace.getConfiguration();
-    const actions: any[] | undefined = wsConfiguration.get("actions");
-    forEach(actions, action => {
-      this.logger.trace(
-        `performing action ${action.name} of type ${action.constructor.name}`
-      );
-      void _performAction(action);
-    });
-    
-    void wsConfiguration.update("actions", []);
-  }
+    public static async performActionsFromParams() {
+      const actionsParam = await getParameter("actions");
+      ActionsController.logger.trace(`configuration - actions= ${actionsParam}`);
+      let actionsIds = actionsParam?.split(",") || [];
+      actionsIds = uniq(actionsIds);
+      actionsIds.forEach(actionId => {
+        const action = ActionsController.getAction(actionId);
+        if (action){
+          ActionsController.logger.trace(
+            `performing action ${actionId} of type ${action.actionType}`,
+            {action}
+          );
+          _performAction(action);
+        } else {
+          ActionsController.logger.trace(`action ${actionId} not found`);
+        }
+      });
+    }
+  
+    public static performScheduledActions() {
+      const actionsSettings = vscode.workspace.getConfiguration();
+      const actionsList: any[] | undefined = actionsSettings.get("actions");
+      forEach(actionsList, action => {
+        ActionsController.logger.trace(
+          `performing action ${action.id} of type ${action.actionType}`,
+          {action}
+        );
+        _performAction(action);
+      });
+      actionsSettings.update("actions", []);
+    }
 }

@@ -2,7 +2,7 @@
 	"name": "sample-action-client",
 	"displayName": "Sample Action Client",
 	"version": "0.0.3",
-	"description": "",
+	"description": "Sample Action Client",
 	"categories": [
 		"Other"
 	],
@@ -57,8 +57,8 @@
 	"BASContributes": {
 		"actions": [
 			{
-				"id": "abc123",
-				"actionType": "command",
+				"id": "openSettingsAction",
+				"actionType": "COMMAND",
 				"command": "workbench.action.openGlobalSettings"
 			}
 		]

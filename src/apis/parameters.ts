@@ -17,6 +17,5 @@ export async function getParameter(parameterName: string) : Promise<string | und
     logger.trace("Configuration successfully received.", {configuration});
 
     const parameterValue = configuration?.[parameterName];
-    logger.trace(`configuration[${parameterName}]=${parameterValue}`, {parameterName, parameterValue});
     return parameterValue;
 }
