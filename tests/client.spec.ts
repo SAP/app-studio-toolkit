@@ -61,14 +61,14 @@ describe("client test", () => {
         it("schedules the action with schedule (existing action list, update successful)", async () => {
             const actions: any[] = [myAction, myAction];
             workspaceMock.expects("getConfiguration").returns(config);
-            configMock.expects("get").withExactArgs("actions").returns(actions);
+            configMock.expects("get").withExactArgs("actions", []).returns(actions);
             configMock.expects("update").withExactArgs("actions", [myAction, myAction, myAction], 2).resolves();
             await performAction(myAction, { schedule: true}); 
         });
 
         it("schedules the action with schedule (empy action list, update successful)", async () => {
             workspaceMock.expects("getConfiguration").returns(config);
-            configMock.expects("get").withExactArgs("actions").returns(undefined);
+            configMock.expects("get").withExactArgs("actions", []).returns([]);
             configMock.expects("update").withExactArgs("actions", [myAction], 2).resolves();
             await performAction(myAction, { schedule: true});
         });
@@ -76,7 +76,7 @@ describe("client test", () => {
         it("schedules the action with schedule (existing action list, update rejected)", async () => {
             const actions: any[] = [myAction, myAction];
             workspaceMock.expects("getConfiguration").returns(config);
-            configMock.expects("get").withExactArgs("actions").returns(actions);
+            configMock.expects("get").withExactArgs("actions", []).returns(actions);
             configMock.expects("update").withExactArgs("actions", [myAction, myAction, myAction], 2).rejects("Reasons!");
             await performAction(myAction, { schedule: true});
         });

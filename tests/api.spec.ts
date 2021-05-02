@@ -63,8 +63,8 @@ describe("api unit test", () => {
 			"id" : "action_2",
 			"actionType" : ActionType.Snippet
 		};
-        ActionsController.actions.push(action1);
-        ActionsController.actions.push(action2);
+        ActionsController["actions"].push(action1);
+        ActionsController["actions"].push(action2);
 
         const result = bas.getAction("action_1");
         expect(result).to.includes(action1);
