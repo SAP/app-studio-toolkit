@@ -4,8 +4,11 @@ import * as fs from 'fs';
 import * as _ from 'lodash';
 import { _performAction } from '../actions/performer';
 import { ActionsFactory } from '../actions/actionsFactory';
+import { getLogger } from "../logger/logger";
 
 const SOCKETFILE = '/extbin/basctlSocket';
+
+const logger = getLogger().getChildLogger({label: "client"});
 
 let basctlServer: net.Server;
 
@@ -38,6 +41,7 @@ function getRequestData(dataBuffer: any) {
 
 function showErrorMessage(error: any, defaultError: string) {
     const errorMessage = _.get(error, 'message', defaultError);
+    logger.error(errorMessage);
     void vscode.window.showErrorMessage(errorMessage);
 }
 

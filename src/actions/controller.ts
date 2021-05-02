@@ -2,9 +2,11 @@ import * as vscode from "vscode";
 import { IAction } from "./interfaces";
 import { _performAction } from "./performer";
 import { forEach, get } from "lodash";
+import { getLogger } from "../logger/logger";
 
 export class ActionsController {
   public static readonly actions: IAction[] = [];
+  public static readonly logger = getLogger().getChildLogger({label: ActionsController.name});
 
   public static loadActions() {
     vscode.extensions.all.forEach(extension => {
@@ -23,7 +25,7 @@ export class ActionsController {
     const wsConfiguration = vscode.workspace.getConfiguration();
     const actions: any[] | undefined = wsConfiguration.get("actions");
     forEach(actions, action => {
-      console.log(
+      this.logger.trace(
         `performing action ${action.name} of type ${action.constructor.name}`
       );
       void _performAction(action);

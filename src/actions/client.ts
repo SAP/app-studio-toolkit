@@ -1,6 +1,8 @@
 import * as vscode from 'vscode';
 import { IAction } from "./interfaces";
 import { _performAction } from "./performer";
+import { getLogger } from "../logger/logger";
+
 
 export function performAction(action: IAction, options?: any): Thenable<void> {
     if (options?.schedule) {
@@ -9,6 +11,8 @@ export function performAction(action: IAction, options?: any): Thenable<void> {
         return _performAction(action);
     }
 }
+
+const logger = getLogger().getChildLogger({label: "client"});
 
 /** Schedule an action for execution after restart */
 function _scheduleAction(action: IAction): Thenable<void> {
@@ -19,8 +23,8 @@ function _scheduleAction(action: IAction): Thenable<void> {
     }
     actionsList.push(action);
     return actionsSettings.update("actions", actionsList, vscode.ConfigurationTarget.Workspace).then(() => { 
-        console.error("Actions successfuly scheduled");
+        logger.trace("Actions successfuly scheduled");
     }, error => {
-        console.error(`Couldn't schedule action: ${error}`);
+        logger.error(`Couldn't schedule action: ${error}`);
     });
 }
