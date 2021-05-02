@@ -1,11 +1,6 @@
-.vscode/**
-.vscode-test/**
-out/test/**
-src/**
-.gitignore
+**
+!LICENSES
+!README.md
+!package.json
 !icon.png
-vsc-extension-quickstart.md
-**/tsconfig.json
-**/tslint.json
-**/*.map
-**/*.ts
+!out/src/*.js
