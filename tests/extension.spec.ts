@@ -3,7 +3,6 @@ import { expect, assert } from "chai";
 import * as _ from "lodash";
 import * as sinon from "sinon";
 
-
 const workspaceConfig = {};
 const testVscode = {
     extensions: {
@@ -12,8 +11,8 @@ const testVscode = {
                 BASContributes: {
                     actions: [{
                         id : "abc123",
-                        actionType : "command",
-                        command : "workbench.action.openGlobalSettings"
+                        actionType : "COMMAND",
+                        name : "workbench.action.openGlobalSettings"
                     }]
                 },
             }
@@ -88,7 +87,6 @@ describe("extension unit test", () => {
             expect(result).to.haveOwnProperty("getExtensionAPI");
             expect(result).to.haveOwnProperty("actions");
             assert(actionSettingsGet.calledWith("actions"));
-            assert(actionSettingsUpdate.notCalled);
         });
 
         it("fails when startBasctlServer throws an error", async () => {
@@ -102,6 +100,89 @@ describe("extension unit test", () => {
     it("deactivate", () => {
         basctlServerMock.expects("closeBasctlServer").once().returns();
         extension.deactivate();
+    });
+
+    context("activate with actionId as parameters in the URL", () => {
+        describe('a single action', () => {
+            let requireMock;        
+            before(() => {
+                requireMock = require('mock-require');
+                const configuration = {"actions": "abc123"};
+                const sapPlugin = {
+                    window: {
+                        configuration: () => configuration
+                    }
+                };
+                requireMock('@sap/plugin', sapPlugin);
+            })
+            const action = {
+                id : "abc123",
+                actionType : "COMMAND",
+                name : "workbench.action.openGlobalSettings"
+            }
+
+            it("should call _performAction on the action", async () => {
+                basctlServerMock.expects("startBasctlServer").once().returns();
+                performerMock.expects("_performAction").withExactArgs(action).resolves();
+                const result = await extension.activate();
+                expect(result).to.haveOwnProperty("getExtensionAPI");
+                expect(result).to.haveOwnProperty("actions");
+            });
+        });
+
+        describe('action doesnt exist', () => {
+            let requireMock;        
+            before(() => {
+                requireMock = require('mock-require');
+                const configuration = {"actions": "abc"};
+                const sapPlugin = {
+                    window: {
+                        configuration: () => configuration
+                    }
+                };
+                requireMock('@sap/plugin', sapPlugin);
+            })
+            const action = {
+                id : "abc123",
+                actionType : "COMMAND",
+                name : "workbench.action.openGlobalSettings"
+            }
+
+            it("shouldn't call _performAction", async () => {
+                basctlServerMock.expects("startBasctlServer").once().returns();
+                performerMock.expects("_performAction").never();
+                const result = await extension.activate();
+                expect(result).to.haveOwnProperty("getExtensionAPI");
+                expect(result).to.haveOwnProperty("actions");
+            });
+        });
+
+        describe('two actions param', () => {
+            let requireMock;        
+            before(() => {
+                requireMock = require('mock-require');
+                const configuration = {"actions": "abc123,stam"};
+                const sapPlugin = {
+                    window: {
+                        configuration: () => configuration
+                    }
+                };
+                requireMock('@sap/plugin', sapPlugin);
+            })
+            const action = {
+                id : "abc123",
+                actionType : "COMMAND",
+                name : "workbench.action.openGlobalSettings"
+            }
+
+            it("should call _performAction just on one action", async () => {
+                basctlServerMock.expects("startBasctlServer").once().returns();
+                performerMock.expects("_performAction").withExactArgs(action).resolves();
+                const result = await extension.activate();
+                expect(result).to.haveOwnProperty("getExtensionAPI");
+                expect(result).to.haveOwnProperty("actions");
+            });
+        });
     });
 
 });
