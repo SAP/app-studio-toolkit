@@ -1,6 +1,10 @@
-import * as vscode from "vscode";
+import { commands, ViewColumn } from "vscode";
 import { getLogger } from "../logger/logger";
-import { ActionJsonKey, ActionType, IAction, ICommandAction, IExecuteAction, IFileAction, ISnippetAction } from "./interfaces";
+import { 
+  ActionJsonKey, ActionType, 
+  IAction, ICommandAction, 
+  IExecuteAction, IFileAction, 
+  ISnippetAction } from "./interfaces";
 
 export async function _performAction(action: IAction): Promise<any> {
   const logger = getLogger().getChildLogger({label: "_performAction"});
@@ -13,9 +17,9 @@ export async function _performAction(action: IAction): Promise<any> {
       case ActionType.Command: {
         const commandAction = (action as ICommandAction);
         if (commandAction.params) {
-          return vscode.commands.executeCommand(commandAction.name, commandAction.params);
+          return commands.executeCommand(commandAction.name, commandAction.params);
         } else {
-          return vscode.commands.executeCommand(commandAction.name);
+          return commands.executeCommand(commandAction.name);
         }
       }
       case ActionType.Execute: {
@@ -28,16 +32,21 @@ export async function _performAction(action: IAction): Promise<any> {
       }
       case ActionType.Snippet: {
         const snippetAction = (action as ISnippetAction);
-        return vscode.commands.executeCommand("loadCodeSnippet", { viewColumn: vscode.ViewColumn.Two, contributorId: snippetAction.contributorId, snippetName: snippetAction.snippetName, context: snippetAction.context });
+        return commands.executeCommand("loadCodeSnippet", { 
+          viewColumn: ViewColumn.Two, 
+          contributorId: snippetAction.contributorId, 
+          snippetName: snippetAction.snippetName, 
+          context: snippetAction.context 
+        });
       }
       case ActionType.File: {
         const fileAction = (action as IFileAction);
-        return vscode.commands.executeCommand('vscode.open', fileAction.uri, {viewColumn: vscode.ViewColumn.Two});
+        return commands.executeCommand('vscode.open', fileAction.uri);
       }
       default:
         throw new Error(`${ActionJsonKey.ActionType}=${action.actionType} is not supported`);
     }
-  } else {
-    throw new Error(`Action is: ${action} nothing is performed`);
-  }
+  } 
+
+  throw new Error(`Action is not provided`);
 }

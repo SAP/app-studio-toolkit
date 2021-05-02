@@ -4,17 +4,17 @@ import { ActionsController } from './actions/controller';
 import { initLogger, getLogger } from "./logger/logger";
 import { ExtensionContext } from 'vscode';
 
-export async function activate(context: ExtensionContext) {
+export function activate(context: ExtensionContext) {
     initLogger(context);
-    const logger = getLogger().getChildLogger({label: "activate"});
+    const logger = getLogger().getChildLogger({ label: "activate" });
 
     startBasctlServer();
-    
+
     ActionsController.loadActions();
 
     ActionsController.performScheduledActions();
 
-    ActionsController.performActionsFromParams();
+    void ActionsController.performActionsFromParams();
 
     logger.info("The App-Studio-Toolkit Extension is active.");
 
@@ -24,4 +24,3 @@ export async function activate(context: ExtensionContext) {
 export function deactivate() {
     closeBasctlServer();
 }
-

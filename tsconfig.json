@@ -5,16 +5,12 @@
 		"module": "commonjs",
 		"target": "es6",
 		"outDir": "out",
-		"lib": [
-			"es6"
-		],
+		"lib": ["es6"],
 		"allowJs": true,
 		"sourceMap": true,
 		"rootDir": ".",
-		"rootDirs" : [
-			"src"
-		],
+		"rootDirs" : ["./src", "./tests"],
 		"strict": true
 	},
-	"include": ["src/**/*"]
+	"include": ["src/**/*.ts", "tests/**/*.ts", "api.d.ts"]
 }

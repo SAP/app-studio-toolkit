@@ -1,57 +1,56 @@
-import { assert, expect } from "chai";
-import * as sinon from "sinon";
+import { expect } from "chai";
+import { SinonSandbox, SinonMock, createSandbox, match } from "sinon";
 import * as net from 'net';
 import * as fs from 'fs';
 import { ActionJsonKey, ActionType } from "../src/actions/interfaces";
 import { mockVscode } from "./mockUtil";
 
 const testVscode = {
-    Uri: { parse: (value?: string, strict?: boolean) => {} },
+    Uri: {
+        parse: () => ""
+    },
     workspace: {
-        getConfiguration: () => {}
+        getConfiguration: () => ""
     },
     window: {
-        showErrorMessage: (message: string, ...items: string[]): Thenable<string | undefined> => {return Promise.resolve(undefined);}
+        showErrorMessage: () => Promise.reject()
     }
 };
 
 const testSocket = {
-    on: (event: "data", listener: (data: Buffer) => void) => {},
-    write: (buffer: Uint8Array | string, cb?: (err?: Error) => void) => true
-}
+    on: () => "",
+    write: () => true
+};
 
 const testServer = {
-    listen: (path: string, backlog?: number, listeningListener?: () => void) => {},
-    close: (callback?: (err?: Error) => void) => {}
-}
+    listen: () => "",
+    close: () => ""
+};
 
 mockVscode(testVscode, "src/actions/performer.ts");
 mockVscode(testVscode, "src/actions/actionsFactory.ts");
 import * as performer from '../src/actions/performer';
 import * as actionsFactory from '../src/actions/actionsFactory';
 import { closeBasctlServer, startBasctlServer } from "../src/basctlServer/basctlServer";
-import { Stream } from "stream";
 
 
 describe("basctlServer", () => {
-    let sandbox: any;
-    let performerMock: any;
-    let actionsFactoryMock: any;
-    let windowMock: any;
-    let fsMock: any;
-    let netMock: any;
-    let socketMock: any;
-    let serverMock: any;
+    let sandbox: SinonSandbox;
+    let performerMock: SinonMock;
+    let actionsFactoryMock: SinonMock;
+    let windowMock: SinonMock;
+    let fsMock: SinonMock;
+    let netMock: SinonMock;
+    let socketMock: SinonMock;
+    let serverMock: SinonMock;
 
-        
+
     beforeEach(() => {
-        sandbox = sinon.createSandbox();
+        sandbox = createSandbox();
         performerMock = sandbox.mock(performer);
         actionsFactoryMock = sandbox.mock(actionsFactory.ActionsFactory);
         windowMock = sandbox.mock(testVscode.window);
-        // fs
         fsMock = sandbox.mock(fs);
-        // net
         netMock = sandbox.mock(net);
         socketMock = sandbox.mock(testSocket);
         serverMock = sandbox.mock(testServer);
@@ -62,7 +61,6 @@ describe("basctlServer", () => {
             actionsFactoryMock.verify();
             performerMock.verify();
             windowMock.verify();
-    
             fsMock.verify();
             netMock.verify();
             socketMock.verify();
@@ -70,123 +68,123 @@ describe("basctlServer", () => {
             performerMock.verify();
             actionsFactoryMock.verify();
         }, 100);
-        sandbox.restore();
+       sandbox.restore();
     });
 
-    it("startBasctlServer socket exists, " +
-        "unlink successfull, " +
-        "listen successful, " +
-        "handle request received valid JSON, " + 
-        "create action successful," +
-        "perform action successful", () => {    
+    it(`startBasctlServer socket exists, 
+        unlink successfull, 
+        listen successful, 
+        handle request received valid JSON, 
+        create action successful,
+        perform action successful`, () => {
             mockIpc();
-            startBasctlServer()   
+            startBasctlServer();
     });
 
-    it("startBasctlServer socket exists, " +
-       "unlink successfull, " +
-       "listen successful, " +
-       "handle request received valid JSON, " + 
-       "create action successful," +
-       "perform action fails", () => {    
+    it(`startBasctlServer socket exists, 
+        unlink successfull, 
+        listen successful, 
+        handle request received valid JSON, 
+        create action successful,
+        perform action fails`, () => {
             mockIpc({ performFails: true });
-            startBasctlServer()   
+            startBasctlServer();
     });
 
-    it("startBasctlServer socket exists, " +
-       "unlink successfull, " +
-       "listen successful, " +
-       "handle request received invalid JSON, " + 
-       "create action successful," +
-       "perform action successful", () => {    
+    it(`startBasctlServer socket exists, 
+        unlink successfull, 
+        listen successful, 
+        handle request received invalid JSON, 
+        create action successful,
+        perform action successful`, () => {
             mockIpc({ invalidJsonInBuffer: true });
-            startBasctlServer()   
+            startBasctlServer();
     });
 
-    it("startBasctlServer socket exists, " +
-       "unlink successfull, " +
-       "listen fails ", () => {    
+    it(`startBasctlServer socket exists, 
+        unlink successfull, 
+        listen fails`, () => {
             mockIpc({ socketInUse: true });
-            startBasctlServer()   
+            startBasctlServer();
     });
 
-    it("startBasctlServer socket doesn't exist, " +
-       "listen successful ", () => {    
+    it(`startBasctlServer socket doesn't exist, 
+        listen successful`, () => {
             mockIpc({ socketDoesNotExist: true });
-            startBasctlServer()   
-     });
+            startBasctlServer();
+    });
 
-    it("startBasctlServer socket exists, " +
-       "unlink fails", () => {    
+    it(`startBasctlServer socket exists, 
+        unlink fails`, () => {
             mockIpc({ unlinkFails: true });
-            expect(() => startBasctlServer()).to.throw('Failed to unlink socket /extbin/basctlSocket:')
+            expect(() => startBasctlServer()).to.throw('Failed to unlink socket /extbin/basctlSocket:');
     });
 
     it("closes if server exists", () => {
         mockIpc();
-        startBasctlServer()
-        serverMock.expects('close').once();
-        closeBasctlServer()
+        startBasctlServer();
+        serverMock.expects('close');
+        closeBasctlServer();
     });
 
     it("does nothing if server doesn't exist", () => {
-        closeBasctlServer()
+        closeBasctlServer();
     });
 
     function mockIpc(
-        options?: { 
+        options?: {
             socketDoesNotExist?: boolean,
             unlinkFails?: boolean,
             socketInUse?: boolean,
-            performFails?: boolean, 
-            invalidJsonInBuffer?: boolean }) {
-        if(options && options.socketDoesNotExist) {
+            performFails?: boolean,
+            invalidJsonInBuffer?: boolean
+        }) {
+        if (options && options.socketDoesNotExist) {
             fsMock.expects('stat').yields(new Error("Socket does not exist"));
         } else {
             fsMock.expects('stat').yields(undefined);
-            if(options && options.unlinkFails) {
+            if (options && options.unlinkFails) {
                 fsMock.expects('unlink').yields(new Error("Socket is locked !"));
                 return;
             } else {
                 fsMock.expects('unlink').yields(undefined);
             }
         }
-        netMock.expects('createServer').yields(socketMock.object).returns(serverMock.object);
-        if(options && options.socketInUse) {
-            serverMock.expects('listen').withExactArgs('/extbin/basctlSocket').once().throws(new Error("Socket already serving a server"));
-            windowMock.expects('showErrorMessage').withArgs(sinon.match("Socket already serving a server")).once();
+        netMock.expects('createServer').yields((socketMock as any).object).returns((serverMock as any).object);
+        if (options && options.socketInUse) {
+            serverMock.expects('listen').withExactArgs('/extbin/basctlSocket').throws(new Error("Socket already serving a server"));
+            windowMock.expects('showErrorMessage').withArgs(match("Socket already serving a server"));
             return;
         } else {
-            serverMock.expects('listen').withExactArgs('/extbin/basctlSocket').once();
+            serverMock.expects('listen').withExactArgs('/extbin/basctlSocket');
         }
         let dataObject: any;
         dataObject = {
             [ActionJsonKey.ActionType]: ActionType.Command,
             [ActionJsonKey.CommandName]: 'dummy-command'
-        }
-        let actionObject: any;
-        actionObject = {
+        };
+
+        const actionObject = {
             "name": "myAction"
-        }
+        };
         const result = {
             "status": "success"
-        }
-        if(options && options.invalidJsonInBuffer) {
+        };
+        if (options && options.invalidJsonInBuffer) {
             socketMock.expects('on').withArgs('data').yields("invalid json");
-            windowMock.expects('showErrorMessage').withArgs(sinon.match("SyntaxError: Unexpected token i in JSON at position 0")).once();
+            windowMock.expects('showErrorMessage').withArgs(match("SyntaxError: Unexpected token i in JSON at position 0"));
             dataObject = {};
         } else {
             socketMock.expects('on').withArgs('data').yields(JSON.stringify(dataObject));
-        }        
-        
+        }
+
         actionsFactoryMock.expects('createAction').withExactArgs(dataObject).returns(actionObject);
-        if(options && options.performFails) {
+        if (options && options.performFails) {
             performerMock.expects('_performAction').withExactArgs(actionObject).throws(new Error("Perform failed !"));
-            windowMock.expects('showErrorMessage').withArgs(sinon.match("Perform failed !")).once();
+            windowMock.expects('showErrorMessage').withArgs(match("Perform failed !"));
         } else {
             performerMock.expects('_performAction').withExactArgs(actionObject).returns(result);
-            socketMock.expects('write').withExactArgs(JSON.stringify({result}));
+            socketMock.expects('write').withExactArgs(JSON.stringify({ result }));
         }
-        
-    };
+    }
 });
