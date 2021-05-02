@@ -1,8 +1,14 @@
 import * as vscode from "vscode";
+import { getLogger } from "../logger/logger";
 import { ActionJsonKey, ActionType, IAction, ICommandAction, IExecuteAction, IFileAction, ISnippetAction } from "./interfaces";
 
 export async function _performAction(action: IAction): Promise<any> {
+  const logger = getLogger().getChildLogger({label: "_performAction"});
   if (action) {
+    logger.trace(
+      `performing action ${action.id} of type ${action.actionType}`,
+      {action}
+    );
     switch (action.actionType) {
       case ActionType.Command: {
         const commandAction = (action as ICommandAction);
