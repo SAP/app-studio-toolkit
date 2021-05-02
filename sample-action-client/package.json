@@ -1,7 +1,7 @@
 {
 	"name": "sample-action-client",
 	"displayName": "Sample Action Client",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"description": "Sample Action Client",
 	"categories": [
 		"Other"

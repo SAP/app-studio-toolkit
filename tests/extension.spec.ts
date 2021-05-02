@@ -69,7 +69,7 @@ describe("extension unit test", () => {
     });
 
     describe('activate', () => {
-        it("performs defined actions", async () => {
+        it("performs defined actions", () => {
             const context: any = {};
 
             loggerMock.expects("initLogger").withExactArgs(context);
@@ -83,10 +83,10 @@ describe("extension unit test", () => {
             performerMock.expects("_performAction").withExactArgs(scheduledAction).resolves();
             wsConfigMock.expects("update").withExactArgs("actions", []);
 
-            await extension.activate(context);
+            extension.activate(context);
         });
 
-        it("does nothing with no actions", async () => {
+        it("does nothing with no actions", () => {
             const context: any = {};
 
             loggerMock.expects("initLogger").withExactArgs(context);
@@ -97,12 +97,12 @@ describe("extension unit test", () => {
             wsConfigMock.expects("get").withExactArgs("actions", []).returns([]);
             wsConfigMock.expects("update").withExactArgs("actions", []);
 
-            const result = await extension.activate(context);
+            const result = extension.activate(context);
             expect(result).to.haveOwnProperty("getExtensionAPI");
             expect(result).to.haveOwnProperty("actions");
         });
 
-        it("fails when startBasctlServer throws an error", async () => {
+        it("fails when startBasctlServer throws an error", () => {
             const context: any = {};
             const testError = new Error('Socket failure');
 
@@ -110,7 +110,7 @@ describe("extension unit test", () => {
             basctlServerMock.expects("startBasctlServer").throws(testError);
 
             try {
-                await extension.activate(context);
+                extension.activate(context);
                 fail("test should fail");
             } catch (error) {
                 expect(error.message).to.be.equal(testError.message);
@@ -142,11 +142,11 @@ describe("extension unit test", () => {
                 name: "workbench.action.openGlobalSettings"
             };
 
-            it("should call _performAction on the action", async () => {
+            it("should call _performAction on the action", () => {
                 basctlServerMock.expects("startBasctlServer");
                 performerMock.expects("_performAction").withExactArgs(action).resolves();
                 const context: any = {};
-                const result = await extension.activate(context);
+                const result = extension.activate(context);
                 expect(result).to.haveOwnProperty("getExtensionAPI");
                 expect(result).to.haveOwnProperty("actions");
             });
@@ -165,11 +165,11 @@ describe("extension unit test", () => {
                 requireMock('@sap/plugin', sapPlugin);
             });
 
-            it("shouldn't call _performAction", async () => {
+            it("shouldn't call _performAction", () => {
                 basctlServerMock.expects("startBasctlServer");
                 performerMock.expects("_performAction").never();
                 const context: any = {};
-                const result = await extension.activate(context);
+                const result = extension.activate(context);
                 expect(result).to.haveOwnProperty("getExtensionAPI");
                 expect(result).to.haveOwnProperty("actions");
             });
@@ -194,11 +194,11 @@ describe("extension unit test", () => {
                 name: "workbench.action.openGlobalSettings"
             };
 
-            it("should call _performAction just on one action", async () => {
+            it("should call _performAction just on one action", () => {
                 basctlServerMock.expects("startBasctlServer");
                 performerMock.expects("_performAction").withExactArgs(action).resolves();
                 const context: any = {};
-                const result = await extension.activate(context);
+                const result = extension.activate(context);
                 expect(result).to.haveOwnProperty("getExtensionAPI");
                 expect(result).to.haveOwnProperty("actions");
             });
