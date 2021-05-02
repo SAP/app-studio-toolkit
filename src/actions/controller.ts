@@ -6,8 +6,8 @@ import { getParameter } from '../apis/parameters';
 import { forEach, uniq } from "lodash";
 
 export class ActionsController {
-    private static readonly loggerLabel = "ActionsController";
     public static readonly actions: IAction[] = [];
+    private static readonly logger = getLogger().getChildLogger({label: "ActionsController"});
 
     public static loadActions() {
       vscode.extensions.all.forEach((extension) => {
@@ -28,43 +28,34 @@ export class ActionsController {
     }
 
     public static async performActionsFromParams() {
-      const logger = getLogger().getChildLogger({label: ActionsController.loggerLabel});
-
-      const actionParam = await getParameter("action");
       const actionsParam = await getParameter("actions");
-      logger.trace(`configuration - action= ${actionParam}, actions= ${actionsParam}`);
-      const actionIds = actionParam?.split(",") || [];
+      ActionsController.logger.trace(`configuration - actions= ${actionsParam}`);
       let actionsIds = actionsParam?.split(",") || [];
-      actionsIds = actionsIds.concat(actionIds);
       actionsIds = uniq(actionsIds);
       actionsIds.forEach(actionId => {
         const action = ActionsController.getAction(actionId);
         if (action){
-          logger.trace(
+          ActionsController.logger.trace(
             `performing action ${actionId} of type ${action.actionType}`,
             {action}
           );
           _performAction(action);
         } else {
-          logger.trace(`action ${actionId} not found`);
+          ActionsController.logger.trace(`action ${actionId} not found`);
         }
       });
     }
   
     public static performScheduledActions() {
-      const logger = getLogger().getChildLogger({label: ActionsController.loggerLabel});
       const actionsSettings = vscode.workspace.getConfiguration();
       const actionsList: any[] | undefined = actionsSettings.get("actions");
-      if (actionsList && actionsList.length) {
-        for (const action of actionsList) {
-          logger.trace(
-            `performing action ${action.id} of type ${action.actionType}`,
-            {action}
-          );
-          _performAction(action);
-        }
-        actionsSettings.update("actions", []);
-      }
+      forEach(actionsList, action => {
+        ActionsController.logger.trace(
+          `performing action ${action.id} of type ${action.actionType}`,
+          {action}
+        );
+        _performAction(action);
+      });
+      actionsSettings.update("actions", []);
     }
-
 }
