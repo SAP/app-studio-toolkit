@@ -87,7 +87,6 @@ describe("extension unit test", () => {
             expect(result).to.haveOwnProperty("getExtensionAPI");
             expect(result).to.haveOwnProperty("actions");
             assert(actionSettingsGet.calledWith("actions"));
-            assert(actionSettingsUpdate.notCalled);
         });
 
         it("fails when startBasctlServer throws an error", async () => {
@@ -108,7 +107,7 @@ describe("extension unit test", () => {
             let requireMock;        
             before(() => {
                 requireMock = require('mock-require');
-                const configuration = {"action": "abc123"};
+                const configuration = {"actions": "abc123"};
                 const sapPlugin = {
                     window: {
                         configuration: () => configuration
@@ -135,7 +134,7 @@ describe("extension unit test", () => {
             let requireMock;        
             before(() => {
                 requireMock = require('mock-require');
-                const configuration = {"action": "abc"};
+                const configuration = {"actions": "abc"};
                 const sapPlugin = {
                     window: {
                         configuration: () => configuration
@@ -158,7 +157,7 @@ describe("extension unit test", () => {
             });
         });
 
-        describe('actions param', () => {
+        describe('two actions param', () => {
             let requireMock;        
             before(() => {
                 requireMock = require('mock-require');
