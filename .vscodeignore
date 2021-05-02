@@ -3,4 +3,5 @@
 !README.md
 !package.json
 !icon.png
-!out/src/*.js
+!out/src/**/*.js
+!node_modules
