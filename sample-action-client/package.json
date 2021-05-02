@@ -59,7 +59,7 @@
 			{
 				"id": "openSettingsAction",
 				"actionType": "COMMAND",
-				"command": "workbench.action.openGlobalSettings"
+				"name": "workbench.action.openSettings"
 			}
 		]
 	}
