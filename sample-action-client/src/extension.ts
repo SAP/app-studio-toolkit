@@ -24,9 +24,7 @@ export async function activate(context: ExtensionContext) {
         action.executeAction = () => window.showWarningMessage(`Hello from scheduled ExecuteAction`);
 
         void window.showInformationMessage(
-            `Action ${action.id} was scheduled \n
-            to run on loading. \n
-            Reloading in 2 seconds`);
+            `Action ${action.id} was scheduled to run on loading. Reloading in 2 seconds`);
         void basAPI.actions.performAction(action, { schedule: true });
 
         setTimeout(() => {

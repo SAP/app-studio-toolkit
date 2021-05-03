@@ -44,7 +44,7 @@ export class ActionsController {
         const action: IAction = ActionsFactory.createAction(actionAsJson, true);
         void _performAction(action);
       } catch (error) {
-        logger.error(`Faild to execute scheduled action ${actionAsJson}: ${error}`);
+        logger.error(`Failed to execute scheduled action ${JSON.stringify(actionAsJson)}: ${error}`);
       }
     });
     void actionsSettings.update("actions", []);

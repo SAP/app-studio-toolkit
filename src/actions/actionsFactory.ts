@@ -40,12 +40,14 @@ export class ActionsFactory {
                 try {
                     fileAction.uri = Uri.parse(uri, true);
                 } catch (error) {
-                    throw new Error(`Failed to parse field ${ActionJsonKey.Uri}: ${uri} for actionType=${actionType}: ${error.message}`);
+                    throw new Error(
+                        `Failed to parse field ${ActionJsonKey.Uri}: ${uri} for actionType=${actionType}: ${error.message}`
+                    );
                 }
                 return fileAction;
             }
             default:
-                throw new Error(`${ActionJsonKey.ActionType}=${actionType} is not supported`);
+                throw new Error(`Action with ${ActionJsonKey.ActionType}=${actionType} could not be created from json file`);
         }
     }
 }

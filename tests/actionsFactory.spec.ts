@@ -103,7 +103,7 @@ describe("actionsFactory test", () => {
             const actionJson = {
                 [ActionJsonKey.ActionType]: "Unsupported"
             };
-            expect(() => ActionsFactory.createAction(actionJson)).to.throw(`${ActionJsonKey.ActionType}=Unsupported is not supported`);
+            expect(() => ActionsFactory.createAction(actionJson)).to.throw(`Action with ${ActionJsonKey.ActionType}=Unsupported could not be created from json file`);
         });
     });
     
