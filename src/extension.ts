@@ -1,13 +1,12 @@
 import { bas } from './api';
 import { startBasctlServer, closeBasctlServer } from './basctlServer/basctlServer';
 import { ActionsController } from './actions/controller';
-import { initLogger, getLogger } from "./logger/logger";
+import { initLogger, getLogger } from './logger/logger';
 import { ExtensionContext } from 'vscode';
 
 export function activate(context: ExtensionContext) {
     initLogger(context);
-    const logger = getLogger().getChildLogger({ label: "activate" });
-
+    
     startBasctlServer();
 
     ActionsController.loadActions();
@@ -16,7 +15,8 @@ export function activate(context: ExtensionContext) {
 
     void ActionsController.performActionsFromParams();
 
-    logger.info("The App-Studio-Toolkit Extension is active.");
+    const logger = getLogger().getChildLogger({ label: 'activate' });
+    logger.info('The App-Studio-Toolkit Extension is active.');
 
     return bas;
 }

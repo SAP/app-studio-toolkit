@@ -1,7 +1,7 @@
 {
 	"name": "sample-action-client",
 	"displayName": "Sample Action Client",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"description": "Sample Action Client",
 	"categories": [
 		"Other"
@@ -24,29 +24,46 @@
 	"contributes": {
 		"commands": [
 			{
-				"title": "Perform Action Immediately",
-				"command": "perform.action.now"
+				"title": "BAS Toolkit: Display Setting (CommandAction)",
+				"command": "commandaction.display.settings"
 			},
 			{
 				"title": "Schedule Action",
 				"command": "schedule.action"
 			},
 			{
-				"title": "Get Configuration Parameter",
+				"title": "BAS Toolkit: Get Configuration Parameter (getParameter)",
 				"command": "get.parameter"
+			},
+			{
+				"title": "BAS Toolkit: Get Extension API (getExtensionAPI)",
+				"command": "get.extension.api"
+			},
+			{
+				"title": "BAS Toolkit: Open File (FileAction)",
+				"command": "fileaction.open.file"
+			},
+			{
+				"title": "BAS Toolkit: Go To Site (FileAction)",
+				"command": "fileaction.go.to.site"
 			}
 		]
 	},
 	"activationEvents": [
-		"onCommand:perform.action.now",
-		"onCommand:schedule.action"
+		"onCommand:commandaction.display.settings",
+		"onCommand:schedule.action",
+		"onCommand:fileaction.open.file",
+		"onCommand:fileaction.go.to.site",
+		"onCommand:get.extension.api",
+		"onCommand:get.parameter"
 	],
+	"dependencies": {
+		"@sap-devx/app-studio-toolkit-types": "0.0.5"
+	},
 	"devDependencies": {
-		"@sap-devx/app-studio-toolkit-types": "0.0.5",
 		"@types/vscode": "^1.40.0",
-		"typescript": "^3.9.7",
-		"vsce": "^1.69.0",
-		"vscode-test": "^1.2.2"
+		"typescript": "^4.2.4",
+		"vsce": "^1.88.0"
 	},
 	"extensionDependencies": [
 		"SAPOSS.app-studio-toolkit"

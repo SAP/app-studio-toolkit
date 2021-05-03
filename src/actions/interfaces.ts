@@ -1,9 +1,8 @@
-import * as vscode from "vscode";
+import * as vscode from 'vscode';
 
 export enum ActionType {
     Execute = "EXECUTE",
     Command = "COMMAND",
-    Task = "TASK",
     File = "FILE",
     Snippet = "SNIPPET"
 }
