@@ -1,7 +1,7 @@
 {
 	"name": "sample-action-client",
 	"displayName": "Sample Action Client",
-	"version": "0.0.5",
+	"version": "0.0.6",
 	"description": "Sample Action Client",
 	"categories": [
 		"Other"
@@ -46,6 +46,14 @@
 			{
 				"title": "BAS Toolkit: Go To Site (FileAction)",
 				"command": "fileaction.go.to.site"
+			},
+			{
+				"title": "BAS Toolkit: Display Error Messsage (ExecuteAction)",
+				"command": "executeaction.display.error"
+			},
+			{
+				"title": "BAS Toolkit: Display Warning Message After Loading (ExecuteAction - scheduled)",
+				"command": "executeaction.display.warning.scheduled"
 			}
 		]
 	},
@@ -55,7 +63,9 @@
 		"onCommand:fileaction.open.file",
 		"onCommand:fileaction.go.to.site",
 		"onCommand:get.extension.api",
-		"onCommand:get.parameter"
+		"onCommand:get.parameter",
+		"onCommand:executeaction.display.warning.scheduled",
+		"onCommand:executeaction.display.error"
 	],
 	"dependencies": {
 		"@sap-devx/app-studio-toolkit-types": "0.0.5"
@@ -74,9 +84,11 @@
 	"BASContributes": {
 		"actions": [
 			{
-				"id": "openSettingsAction",
+				"id": "slavik8",
 				"actionType": "COMMAND",
-				"name": "workbench.action.openSettings"
+				"name": "vscode.openFolder",
+				
+				"params": ["/path1"]
 			}
 		]
 	}

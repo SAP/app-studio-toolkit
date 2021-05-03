@@ -16,8 +16,8 @@ function _scheduleAction(action: IAction): Thenable<void> {
     const actionsList: any[] = actionsSettings.get("actions", []);
     actionsList.push(action);
     return actionsSettings.update("actions", actionsList, ConfigurationTarget.Workspace).then(() => {
-        logger.trace("Actions successfuly scheduled");
+        logger.trace(`Action '${action.id}' successfuly added to scheduled actions`);
     }, error => {
-        logger.error(`Couldn't schedule action: ${error}`);
+        logger.error(`Couldn't add '${action.id}' action to scheduled actions: ${error}`);
     });
 }

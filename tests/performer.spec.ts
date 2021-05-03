@@ -50,7 +50,7 @@ describe("performer test", () => {
                 actionType: ActionType.Command,
                 name: "commandName"
             };
-            commandsMock.expects("executeCommand").withExactArgs(commAction.name).resolves("success");
+            commandsMock.expects("executeCommand").withExactArgs(commAction.name, []).resolves("success");
             expect(await _performAction(commAction)).to.be.equal("success");
         });
 
@@ -81,12 +81,11 @@ describe("performer test", () => {
         it("is successful without params", async () => {
             const execAction = {
                 actionType: ActionType.Execute,
-                executeAction: () => ""
+                executeAction: () => "success"
             };
-            const executeActionMock = sandbox.mock(execAction);
-            executeActionMock.expects("executeAction").withExactArgs().returns("success");
+            
             expect(await _performAction(execAction)).to.be.equal("success");
-            executeActionMock.verify();
+
         });
     });
 

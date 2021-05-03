@@ -6,6 +6,7 @@ import {
   IExecuteAction, IFileAction,
   ISnippetAction
 } from './interfaces';
+import { get } from 'lodash';
 
 export async function _performAction(action: IAction): Promise<any> {
   const logger = getLogger().getChildLogger({ label: "_performAction" });
@@ -17,19 +18,11 @@ export async function _performAction(action: IAction): Promise<any> {
     switch (action.actionType) {
       case ActionType.Command: {
         const commandAction = (action as ICommandAction);
-        if (commandAction.params) {
-          return commands.executeCommand(commandAction.name, commandAction.params);
-        } else {
-          return commands.executeCommand(commandAction.name);
-        }
+        return commands.executeCommand(commandAction.name, get(commandAction, "params", []));
       }
       case ActionType.Execute: {
         const executeAction = (action as IExecuteAction);
-        if (executeAction.params) {
-          return executeAction.executeAction(executeAction.params);
-        } else {
-          return executeAction.executeAction();
-        }
+        return executeAction.executeAction(get(executeAction, "params", []));
       }
       case ActionType.Snippet: {
         const snippetAction = (action as ISnippetAction);

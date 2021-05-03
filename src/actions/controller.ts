@@ -1,19 +1,18 @@
-import * as vscode from "vscode";
+import { workspace, extensions } from "vscode";
 import { getLogger } from "../logger/logger";
 import { IAction } from "./interfaces";
 import { _performAction } from "./performer";
 import { getParameter } from '../apis/parameters';
+import { ActionsFactory } from './actionsFactory';
 import { forEach, uniq, get, split, compact } from "lodash";
 
 export class ActionsController {
   private static readonly actions: IAction[] = [];
 
   public static loadActions() {
-    vscode.extensions.all.forEach(extension => {
-      const extActions = get(extension, "packageJSON.BASContributes.actions", []);
-      extActions.forEach((action: IAction) => {
-        ActionsController.actions.push(action);
-      });
+    extensions.all.forEach(extension => {
+      const extensionActions = get(extension, "packageJSON.BASContributes.actions", []);
+      extensionActions.forEach((action: IAction) => ActionsController.actions.push(action));
     });
   }
 
@@ -22,7 +21,7 @@ export class ActionsController {
   }
 
   public static async performActionsFromParams() {
-    const logger = getLogger().getChildLogger({label: "actionController"});
+    const logger = getLogger().getChildLogger({ label: "performActionsFromParams" });
     const actionsParam = await getParameter("actions");
     logger.trace(`configuration - actions= ${actionsParam}`);
     const actionsIds = uniq(compact(split(actionsParam, ",")));
@@ -37,10 +36,16 @@ export class ActionsController {
   }
 
   public static performScheduledActions() {
-    const actionsSettings = vscode.workspace.getConfiguration();
+    const logger = getLogger().getChildLogger({ label: "performScheduledActions" });
+    const actionsSettings = workspace.getConfiguration();
     const actionsList: any[] = actionsSettings.get("actions", []);
-    forEach(actionsList, action => {
-      void _performAction(action);
+    forEach(actionsList, (actionAsJson: string) => {
+      try {
+        const action: IAction = ActionsFactory.createAction(actionAsJson, true);
+        void _performAction(action);
+      } catch (error) {
+        logger.error(`Faild to execute scheduled action ${actionAsJson}: ${error}`);
+      }
     });
     void actionsSettings.update("actions", []);
   }

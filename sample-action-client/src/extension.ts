@@ -1,5 +1,5 @@
 import { extensions, commands, window, ExtensionContext, Uri } from 'vscode';
-import { bas, ICommandAction, IFileAction } from '@sap-devx/app-studio-toolkit-types';
+import { bas, ICommandAction, IExecuteAction, IFileAction } from '@sap-devx/app-studio-toolkit-types';
 import * as path from 'path';
 
 export async function activate(context: ExtensionContext) {
@@ -18,13 +18,30 @@ export async function activate(context: ExtensionContext) {
         void basAPI.actions.performAction(action);
     }));
 
-    context.subscriptions.push(commands.registerCommand("schedule.action", () => {
-        const action: ICommandAction = new basAPI.actions.CommandAction();
-        action.id = "schedule.action";
-        action.name = "workbench.action.openSettings";
+    context.subscriptions.push(commands.registerCommand("executeaction.display.warning.scheduled", () => {
+        const action: IExecuteAction = new basAPI.actions.ExecuteAction();
+        action.id = "display.warning.scheduled";
+        action.executeAction = () => window.showWarningMessage(`Hello from scheduled ExecuteAction`);
 
-        void window.showInformationMessage(`Action ${action.name} was scheduled to run`);
+        void window.showInformationMessage(
+            `Action ${action.id} was scheduled \n
+            to run on loading. \n
+            Reloading in 2 seconds`);
         void basAPI.actions.performAction(action, { schedule: true });
+
+        setTimeout(() => {
+            const reloadAction: ICommandAction = new basAPI.actions.CommandAction();
+            reloadAction.id = "reload";
+            reloadAction.name = "workbench.action.reloadWindow";
+            void basAPI.actions.performAction(reloadAction);
+        }, 2000);
+    }));
+
+    context.subscriptions.push(commands.registerCommand("executeaction.display.error", () => {
+        const action: IExecuteAction = new basAPI.actions.ExecuteAction();
+        action.id = "display.error";
+        action.executeAction = () => window.showErrorMessage(`Hello from ExecuteAction`);
+        void basAPI.actions.performAction(action);
     }));
 
     context.subscriptions.push(commands.registerCommand("get.parameter", async () => {

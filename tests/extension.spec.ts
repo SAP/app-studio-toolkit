@@ -35,6 +35,7 @@ import * as performer from '../src/actions/performer';
 import * as basctlServer from '../src/basctlServer/basctlServer';
 import * as logger from "../src/logger/logger";
 import { fail } from "assert";
+import { ActionsFactory } from "../src/actions/actionsFactory";
 
 describe("extension unit test", () => {
     let sandbox: SinonSandbox;
@@ -77,10 +78,11 @@ describe("extension unit test", () => {
             workspaceMock.expects("getConfiguration").returns(wsConfig);
             const scheduledAction = {
                 name: "actName",
-                constructor: { name: "actConstName" }
+                actionType: "COMMAND"
             };
             wsConfigMock.expects("get").withExactArgs("actions", []).returns([scheduledAction]);
-            performerMock.expects("_performAction").withExactArgs(scheduledAction).resolves();
+            const action = ActionsFactory.createAction(scheduledAction, true);
+            performerMock.expects("_performAction").withExactArgs(action).resolves();
             wsConfigMock.expects("update").withExactArgs("actions", []);
 
             extension.activate(context);
