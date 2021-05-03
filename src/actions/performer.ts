@@ -35,7 +35,7 @@ export async function _performAction(action: IAction): Promise<any> {
       }
       case ActionType.File: {
         const fileAction = (action as IFileAction);
-        return commands.executeCommand('vscode.open', fileAction.uri);
+        return commands.executeCommand('vscode.open', fileAction.uri, {viewColumn: ViewColumn.Two});
       }
       default:
         throw new Error(`${ActionJsonKey.ActionType}=${action.actionType} is not supported`);

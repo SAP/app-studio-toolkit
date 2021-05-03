@@ -95,7 +95,7 @@ describe("performer test", () => {
                 actionType: ActionType.File,
                 uri: 'file:///home/user/projects/myproj/sourcefile.js'
             };
-            commandsMock.expects("executeCommand").withExactArgs('vscode.open', fileAction.uri);
+            commandsMock.expects("executeCommand").withExactArgs('vscode.open', fileAction.uri, {viewColumn: 2});
             // check that no error is thrown
             await _performAction(fileAction);
         });
@@ -105,7 +105,7 @@ describe("performer test", () => {
                 actionType: ActionType.File,
                 uri: 'file:///home/user/projects/myproj/sourcefile.js'
             };
-            commandsMock.expects("executeCommand").withExactArgs('vscode.open', fileAction.uri).rejects(new Error("Something bad happened"));
+            commandsMock.expects("executeCommand").withExactArgs('vscode.open', fileAction.uri, {viewColumn: 2}).rejects(new Error("Something bad happened"));
             await expect(_performAction(fileAction)).to.be.rejectedWith("Something bad happened");
         });
     });

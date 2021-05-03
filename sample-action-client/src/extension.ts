@@ -18,13 +18,12 @@ export async function activate(context: ExtensionContext) {
         void basAPI.actions.performAction(action);
     }));
 
-    context.subscriptions.push(commands.registerCommand("executeaction.display.warning.scheduled", () => {
-        const action: IExecuteAction = new basAPI.actions.ExecuteAction();
-        action.id = "display.warning.scheduled";
-        action.executeAction = () => window.showWarningMessage(`Hello from scheduled ExecuteAction`);
+    context.subscriptions.push(commands.registerCommand("fileaction.scheduled", () => {
+        const action: IFileAction = new basAPI.actions.FileAction();
+        action.id = "scheduled.file.action.id";
+        action.uri = Uri.file(path.join(context.extensionPath, "./resources/demo.txt"));
 
-        void window.showInformationMessage(
-            `Action ${action.id} was scheduled to run on loading. Reloading in 2 seconds`);
+        void window.showInformationMessage(`File will be opened on reloading in 2 seconds`);
         void basAPI.actions.performAction(action, { schedule: true });
 
         setTimeout(() => {

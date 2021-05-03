@@ -28,10 +28,6 @@
 				"command": "commandaction.display.settings"
 			},
 			{
-				"title": "Schedule Action",
-				"command": "schedule.action"
-			},
-			{
 				"title": "BAS Toolkit: Get Configuration Parameter (getParameter)",
 				"command": "get.parameter"
 			},
@@ -52,19 +48,18 @@
 				"command": "executeaction.display.error"
 			},
 			{
-				"title": "BAS Toolkit: Display Warning Message After Loading (ExecuteAction - scheduled)",
-				"command": "executeaction.display.warning.scheduled"
+				"title": "BAS Toolkit: Open File After Loading (FileAction - scheduled)",
+				"command": "fileaction.scheduled"
 			}
 		]
 	},
 	"activationEvents": [
 		"onCommand:commandaction.display.settings",
-		"onCommand:schedule.action",
 		"onCommand:fileaction.open.file",
 		"onCommand:fileaction.go.to.site",
 		"onCommand:get.extension.api",
 		"onCommand:get.parameter",
-		"onCommand:executeaction.display.warning.scheduled",
+		"onCommand:fileaction.scheduled",
 		"onCommand:executeaction.display.error"
 	],
 	"dependencies": {
@@ -80,16 +75,5 @@
 	],
 	"engines": {
 		"vscode": "^1.44.2"
-	},
-	"BASContributes": {
-		"actions": [
-			{
-				"id": "slavik8",
-				"actionType": "COMMAND",
-				"name": "vscode.openFolder",
-				
-				"params": ["/path1"]
-			}
-		]
 	}
 }
