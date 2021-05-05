@@ -117,14 +117,15 @@ describe("performer test", () => {
                 actionType: ActionType.Snippet,
                 contributorId: "contributor1",
                 snippetName: "mySnippet",
-                context: "myContext"
+                context: "myContext",
+                isNonInteractive: true
             };
             commandsMock.expects("executeCommand").withExactArgs("loadCodeSnippet", { 
                 viewColumn: 2, 
                 contributorId: snippetAction.contributorId, 
                 snippetName: snippetAction.snippetName, 
                 context: snippetAction.context,
-                isNonInteractive: false });
+                isNonInteractive: true });
             // check that no error is thrown
             await _performAction(snippetAction);
         });
