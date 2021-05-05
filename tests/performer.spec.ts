@@ -125,7 +125,7 @@ describe("performer test", () => {
                 contributorId: snippetAction.contributorId, 
                 snippetName: snippetAction.snippetName, 
                 context: snippetAction.context,
-                isNonInteractive: true });
+                isNonInteractive: snippetAction.isNonInteractive });
             // check that no error is thrown
             await _performAction(snippetAction);
         });

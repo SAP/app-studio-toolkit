@@ -37,7 +37,7 @@ export async function _performAction(action: IAction): Promise<any> {
           contributorId: snippetAction.contributorId, 
           snippetName: snippetAction.snippetName, 
           context: snippetAction.context,
-          isNonInteractive: snippetAction.isNonInteractive ? snippetAction.isNonInteractive : false
+          isNonInteractive: snippetAction.isNonInteractive ?? false
         });
       }
       case ActionType.File: {
