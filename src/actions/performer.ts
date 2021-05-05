@@ -36,7 +36,8 @@ export async function _performAction(action: IAction): Promise<any> {
           viewColumn: ViewColumn.Two, 
           contributorId: snippetAction.contributorId, 
           snippetName: snippetAction.snippetName, 
-          context: snippetAction.context 
+          context: snippetAction.context,
+          isNonInteractive: snippetAction.isNonInteractive ? snippetAction.isNonInteractive : false
         });
       }
       case ActionType.File: {
@@ -47,6 +48,5 @@ export async function _performAction(action: IAction): Promise<any> {
         throw new Error(`${ActionJsonKey.ActionType}=${action.actionType} is not supported`);
     }
   } 
-
   throw new Error(`Action is not provided`);
 }

@@ -123,7 +123,8 @@ describe("performer test", () => {
                 viewColumn: 2, 
                 contributorId: snippetAction.contributorId, 
                 snippetName: snippetAction.snippetName, 
-                context: snippetAction.context });
+                context: snippetAction.context,
+                isNonInteractive: false });
             // check that no error is thrown
             await _performAction(snippetAction);
         });
@@ -139,7 +140,8 @@ describe("performer test", () => {
                 viewColumn: 2, 
                 contributorId: snippetAction.contributorId, 
                 snippetName: snippetAction.snippetName, 
-                context: snippetAction.context }).rejects(new Error("Something bad happened"));
+                context: snippetAction.context,
+                isNonInteractive: false }).rejects(new Error("Something bad happened"));
             await expect(_performAction(snippetAction)).to.be.rejectedWith("Something bad happened");
         });
     });
