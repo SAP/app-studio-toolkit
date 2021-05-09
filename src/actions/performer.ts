@@ -26,11 +26,12 @@ export async function _performAction(action: IAction): Promise<any> {
       }
       case ActionType.Snippet: {
         const snippetAction = (action as ISnippetAction);
-        return commands.executeCommand("loadCodeSnippet", {
-          viewColumn: ViewColumn.Two,
-          contributorId: snippetAction.contributorId,
-          snippetName: snippetAction.snippetName,
-          context: snippetAction.context
+        return commands.executeCommand("loadCodeSnippet", { 
+          viewColumn: ViewColumn.Two, 
+          contributorId: snippetAction.contributorId, 
+          snippetName: snippetAction.snippetName, 
+          context: snippetAction.context,
+          isNonInteractive: snippetAction.isNonInteractive ?? false
         });
       }
       case ActionType.File: {
@@ -40,7 +41,6 @@ export async function _performAction(action: IAction): Promise<any> {
       default:
         throw new Error(`${ActionJsonKey.ActionType}=${action.actionType} is not supported`);
     }
-  }
-
+  } 
   throw new Error(`Action is not provided`);
 }
