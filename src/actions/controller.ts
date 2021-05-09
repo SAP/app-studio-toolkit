@@ -1,22 +1,24 @@
-import { workspace, extensions } from "vscode";
+import { extensions } from "vscode";
 import { getLogger } from "../logger/logger";
 import { IAction } from "./interfaces";
 import { _performAction } from "./performer";
 import { getParameter } from '../apis/parameters';
 import { ActionsFactory } from './actionsFactory';
-import { forEach, uniq, get, split, compact } from "lodash";
+import * as _ from "lodash";
+import * as actionsConfig from './actionsConfig';
+
 
 export class ActionsController {
   private static readonly actions: IAction[] = [];
 
-  public static loadActions() {
+  public static loadContributedActions() {
     extensions.all.forEach(extension => {
-      const extensionActions = get(extension, "packageJSON.BASContributes.actions", []);
+      const extensionActions = _.get(extension, "packageJSON.BASContributes.actions", []);
       extensionActions.forEach((action: IAction) => ActionsController.actions.push(action));
     });
   }
 
-  public static getAction(id: string) {
+  public static getAction(id: string): IAction | undefined {
     return ActionsController.actions.find(action => action.id === id);
   }
 
@@ -24,7 +26,7 @@ export class ActionsController {
     const logger = getLogger().getChildLogger({ label: "performActionsFromParams" });
     const actionsParam = await getParameter("actions");
     logger.trace(`configuration - actions= ${actionsParam}`);
-    const actionsIds = uniq(compact(split(actionsParam, ",")));
+    const actionsIds = _.uniq(_.compact(_.split(actionsParam, ",")));
     actionsIds.forEach(actionId => {
       const action = ActionsController.getAction(actionId);
       if (action) {
@@ -37,9 +39,8 @@ export class ActionsController {
 
   public static performScheduledActions() {
     const logger = getLogger().getChildLogger({ label: "performScheduledActions" });
-    const actionsSettings = workspace.getConfiguration();
-    const actionsList: any[] = actionsSettings.get("actions", []);
-    forEach(actionsList, (actionAsJson: string) => {
+    const actionsList: string[] = actionsConfig.get();
+    _.forEach(actionsList, actionAsJson => {
       try {
         const action: IAction = ActionsFactory.createAction(actionAsJson, true);
         void _performAction(action);
@@ -47,6 +48,6 @@ export class ActionsController {
         logger.error(`Failed to execute scheduled action ${JSON.stringify(actionAsJson)}: ${error}`);
       }
     });
-    void actionsSettings.update("actions", []);
+    void actionsConfig.clear();
   }
 }

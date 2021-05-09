@@ -1,8 +1,9 @@
-import * as vscode from 'vscode';
+import { Uri } from 'vscode';
 
 export enum ActionType {
     Execute = "EXECUTE",
     Command = "COMMAND",
+    Task = "TASK",
     File = "FILE",
     Snippet = "SNIPPET"
 }
@@ -17,7 +18,7 @@ export enum ActionJsonKey {
 export type CommandActionParams = any [];
 export type ExecuteActionParams = any [];
 export type SnippetActionParams = any | {data: any, service: any} | {data: any};
-export type FileActionParams = vscode.Uri;
+export type FileActionParams = Uri;
 
 export interface IAction {
     id?: string;

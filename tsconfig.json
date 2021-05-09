@@ -12,5 +12,5 @@
 		"rootDirs" : ["./src", "./tests"],
 		"strict": true
 	},
-	"include": ["src/**/*.ts", "tests/**/*.ts", "api.d.ts"]
+	"include": ["src/**/*.ts", "tests/**/*.ts", "api.d.ts", "src/utils"]
 }

@@ -10,11 +10,10 @@
     "url": "https://github.com/SAP/app-studio-toolkit",
     "directory": "types"
   },
-  "main": "./out/src/actions",
-  "types": "./out/src/api",
+  "types": "./out/api",
   "scripts": {
     "prep": "npm i && cd .. && npm i && npm run compile",
-    "copy": "ncp ../out out",
+    "copy": "ncp ../out/src/api.d.ts out",
     "prepublishOnly": "npm run prep && npm run copy"
   },
   "dependencies": {

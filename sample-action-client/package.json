@@ -50,6 +50,14 @@
 			{
 				"title": "BAS Toolkit: Open File After Loading (FileAction - scheduled)",
 				"command": "fileaction.scheduled"
+			},
+			{
+				"title": "BAS Toolkit: Open Settings - Contributed Command Action",
+				"command": "contrib.action.open.settings"
+			},
+			{
+				"title": "BAS Toolkit: Open File - Contributed File Action",
+				"command": "contrib.action.open.file"
 			}
 		]
 	},
@@ -60,7 +68,9 @@
 		"onCommand:get.extension.api",
 		"onCommand:get.parameter",
 		"onCommand:fileaction.scheduled",
-		"onCommand:executeaction.display.error"
+		"onCommand:executeaction.display.error",
+		"onCommand:contrib.action.open.settings",
+		"onCommand:contrib.action.open.file"
 	],
 	"dependencies": {
 		"@sap-devx/app-studio-toolkit-types": "0.0.5"
@@ -75,5 +85,29 @@
 	],
 	"engines": {
 		"vscode": "^1.44.2"
+	},
+	"BASContributes": {
+		"actions": [
+			{
+				"id": "contribSearchInFiles",
+				"actionType": "COMMAND",
+				"name": "workbench.action.findInFiles",
+				"params": [{
+					"query": "dependencies"
+				}]
+			}, {
+				"id": "openMySnippet",
+				"actionType": "SNIPPET",
+				"contributorId": "id",
+				"snippetName": "name",
+				"context": {
+					"data": {}
+				}
+			}, {
+				"id": "openMyFile",
+				"actionType": "FILE",
+				"uri": "http://google.com"
+			}
+		]
 	}
 }

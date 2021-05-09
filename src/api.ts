@@ -2,7 +2,6 @@ import { extensions } from 'vscode';
 import { performAction } from './actions/client';
 import { ActionsController } from './actions/controller';
 import { ExecuteAction, SnippetAction, CommandAction, FileAction } from './actions/impl';
-import { IAction } from './actions/interfaces';
 import { getParameter } from './apis/parameters';
 import { getLogger } from './logger/logger';
 
@@ -34,11 +33,9 @@ export const bas = {
         });
     },
 
-    getAction(actionId: string): IAction | undefined {
-        return ActionsController.getAction(actionId);
-    },
+    getAction: (actionId: string) => ActionsController.getAction(actionId),
 
-    getParameter: getParameter,
+    getParameter,
 
     actions: {
         performAction,

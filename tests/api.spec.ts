@@ -88,7 +88,7 @@ describe("api unit test", () => {
         }];
         _.set(vscode, "extensions.all", allExtensioms);
 
-        ActionsController.loadActions();
+        ActionsController.loadContributedActions();
         const result = bas.getAction("abc123");
         expect(result).to.be.not.undefined;
         expect(result?.id).to.be.equal(action.id);

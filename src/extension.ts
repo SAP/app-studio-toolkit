@@ -9,7 +9,7 @@ export function activate(context: ExtensionContext) {
     
     startBasctlServer();
 
-    ActionsController.loadActions();
+    ActionsController.loadContributedActions();
 
     ActionsController.performScheduledActions();
 

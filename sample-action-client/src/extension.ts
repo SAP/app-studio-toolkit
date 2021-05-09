@@ -1,13 +1,29 @@
 import { extensions, commands, window, ExtensionContext, Uri } from 'vscode';
-import { bas, ICommandAction, IExecuteAction, IFileAction } from '@sap-devx/app-studio-toolkit-types';
+import { bas, IAction, ICommandAction, IExecuteAction, IFileAction } from '@sap-devx/app-studio-toolkit-types';
 import * as path from 'path';
 
 export async function activate(context: ExtensionContext) {
-    const basAPI: typeof bas = await extensions.getExtension("SAPOSS.app-studio-toolkit")?.exports;
+    const res = await extensions.getExtension("SAPOSS.app-studio-toolkit");
+    const basAPI: typeof bas = res?.exports;
 
     context.subscriptions.push(commands.registerCommand("get.extension.api", async () => {
         const greeting: string = await basAPI.getExtensionAPI("SAPOSS.sample-action-client");
         void window.showInformationMessage(`${greeting} Extension`);
+    }));
+
+    context.subscriptions.push(commands.registerCommand("contrib.action.open.settings", () => {
+        //const action: IAction | undefined = basAPI.getAction("contribOpenSettings");
+        const action: IAction | undefined = basAPI.getAction("contribSearchInFiles");
+        if (action) {
+            void basAPI.actions.performAction(action);
+        }
+    }));
+
+    context.subscriptions.push(commands.registerCommand("contrib.action.open.file", () => {
+        const action: IAction | undefined = basAPI.getAction("contribOpenFile");
+        if (action) {
+            void basAPI.actions.performAction(action);
+        }
     }));
 
     context.subscriptions.push(commands.registerCommand("commandaction.display.settings", () => {
