@@ -36,6 +36,7 @@ export interface ICommandAction extends IAction {
 }
 
 export interface ISnippetAction extends IAction {
+    isNonInteractive?: boolean;
     contributorId: string;
     snippetName: string;
     context: SnippetActionParams;
