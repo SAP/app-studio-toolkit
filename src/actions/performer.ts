@@ -1,4 +1,5 @@
 import { commands, ViewColumn } from 'vscode';
+import { get } from 'lodash';
 import { getLogger } from '../logger/logger';
 import {
   ActionJsonKey, ActionType,
@@ -6,10 +7,9 @@ import {
   IExecuteAction, IFileAction,
   ISnippetAction
 } from './interfaces';
-import { get } from 'lodash';
 
 export async function _performAction(action: IAction): Promise<any> {
-  const logger = getLogger().getChildLogger({ label: "_performAction" });
+  const logger = getLogger();
   if (action) {
     logger.trace(
       `performing action ${action.id} of type ${action.actionType}`,

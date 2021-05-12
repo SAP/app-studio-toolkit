@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { mockVscode } from "./mockUtil";
 import { SinonSandbox, SinonMock, createSandbox } from "sinon";
-import * as _ from "lodash";
+import { set } from "lodash";
 import { IChildLogger } from "@vscode-logging/logger";
 
 const wsConfig = {
@@ -123,7 +123,7 @@ describe("controller unit test", () => {
                     }
                 }
             };
-            _.set(testVscode, "extensions.all", [api]);
+            set(testVscode, "extensions.all", [api]);
             const testError = new Error(`Failed to create action ${JSON.stringify(api.packageJSON.BASContributes.actions[0])}`);
             try {
                 ActionsController.loadContributedActions();

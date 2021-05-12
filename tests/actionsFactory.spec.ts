@@ -35,7 +35,7 @@ describe("actionsFactory test", () => {
             const action = ActionsFactory.createAction(actionJson);
             expect(action instanceof CommandAction).to.be.true;
             expect((action as CommandAction).name).to.be.equal("myCommand");
-            expect((action as CommandAction).params).to.be.deep.equal(["param1", "param2"]);
+            expect((action as CommandAction).params).to.deep.equal(["param1", "param2"]);
         });
 
         it("suceeds without params", () => {
@@ -47,7 +47,7 @@ describe("actionsFactory test", () => {
             const action = ActionsFactory.createAction(actionJson);
             expect(action instanceof CommandAction).to.be.true;
             expect((action as CommandAction).name).to.be.equal("myCommand");
-            expect((action as CommandAction).params).to.be.deep.equal([]);
+            expect((action as CommandAction).params).to.deep.equal([]);
         });
 
         it("fails without name", () => {
@@ -71,7 +71,7 @@ describe("actionsFactory test", () => {
             const action = ActionsFactory.createAction(actionJson);
             expect(action instanceof SnippetAction).to.be.true;
             expect((action as SnippetAction).snippetName).to.be.equal("name");
-            expect((action as SnippetAction).contributorId).to.be.deep.equal("contributorId");
+            expect((action as SnippetAction).contributorId).to.deep.equal("contributorId");
         });
 
         it("suceeds with just the mandatory params", () => {
@@ -83,7 +83,7 @@ describe("actionsFactory test", () => {
             const action = ActionsFactory.createAction(actionJson);
             expect(action instanceof SnippetAction).to.be.true;
             expect((action as SnippetAction).snippetName).to.be.equal("name");
-            expect((action as SnippetAction).contributorId).to.be.deep.equal("contributorId");
+            expect((action as SnippetAction).contributorId).to.deep.equal("contributorId");
         });
 
         it("fails without snippetName", () => {

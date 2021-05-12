@@ -1,7 +1,6 @@
 import { Uri } from "vscode";
 import { IAction, ICommandAction, ActionType, IFileAction, ActionJsonKey, ISnippetAction } from './interfaces';
 import { CommandAction, FileAction, SnippetAction } from './impl';
-import _ = require("lodash");
 
 const getNameProp = (fromSettings: boolean): string => {
     return fromSettings ? "name" : ActionJsonKey.CommandName;
