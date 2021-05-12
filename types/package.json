@@ -1,7 +1,7 @@
 {
   "name": "@sap-devx/app-studio-toolkit-types",
   "publisher": "SAPOSS",
-  "version": "0.0.6",
+  "version": "0.0.9",
   "author": "SAP SE",
   "license": "Apache-2.0",
   "description": "An npm package that includes Business Application Studio declarations",

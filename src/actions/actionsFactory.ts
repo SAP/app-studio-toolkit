@@ -1,12 +1,11 @@
 import { Uri } from "vscode";
-import { IAction, ICommandAction, ActionType, IFileAction, ActionJsonKey } from './interfaces';
-import { CommandAction, FileAction } from './impl';
-
+import { IAction, ICommandAction, ActionType, IFileAction, ActionJsonKey, ISnippetAction } from './interfaces';
+import { CommandAction, FileAction, SnippetAction } from './impl';
+import _ = require("lodash");
 
 const getNameProp = (fromSettings: boolean): string => {
     return fromSettings ? "name" : ActionJsonKey.CommandName;
 };
-
 const getParamsProp = (fromSettings: boolean): string => {
     return fromSettings ? "params" : ActionJsonKey.CommandParams;
 };
@@ -20,6 +19,10 @@ export class ActionsFactory {
         switch (actionType) {
             case ActionType.Command: {
                 const commandAction: ICommandAction = new CommandAction();
+                const commandId = jsonAction["id"];
+                if (commandId) {
+                    commandAction.id = commandId;
+                }
                 const nameProp = getNameProp(fromSettings);
                 const commandName = jsonAction[nameProp];
                 if (commandName) {
@@ -34,8 +37,41 @@ export class ActionsFactory {
                 }
                 return commandAction;
             }
+            case ActionType.Snippet: {
+                const snippetAction: ISnippetAction = new SnippetAction();
+                const snippetId = jsonAction["id"];
+                if (snippetId) {
+                    snippetAction.id = snippetId;
+                }
+                const snippetName = jsonAction["snippetName"];
+                if (snippetName) {
+                    snippetAction.snippetName = snippetName;
+                }
+                else {
+                    throw new Error(`snippetName is missing for actionType=${actionType}`);
+                }
+                const contributorId = jsonAction["contributorId"];
+                if (contributorId) {
+                    snippetAction.contributorId = contributorId;
+                } else {
+                    throw new Error(`contributorId is missing for actionType=${actionType}`);
+                }
+                const context = jsonAction["context"];
+                if (context) {
+                    snippetAction.context = context;
+                }
+                const isNonInteractive = jsonAction["isNonInteractive"];
+                if (isNonInteractive) {
+                    snippetAction.isNonInteractive = isNonInteractive;
+                }
+                return snippetAction;
+            }
             case ActionType.File: {
                 const fileAction: IFileAction = new FileAction();
+                const fileId = jsonAction["id"];
+                if (fileId) {
+                    fileAction.id = fileId;
+                }
                 const uri = jsonAction[ActionJsonKey.Uri];
                 try {
                     fileAction.uri = Uri.parse(uri, true);

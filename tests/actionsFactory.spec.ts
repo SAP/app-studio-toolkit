@@ -58,6 +58,51 @@ describe("actionsFactory test", () => {
         }); 
     });
 
+    describe("create Snippet action", () => {
+        it("suceeds with all the mandatory params", () => {
+            const actionJson = {
+                [ActionJsonKey.ActionType]: ActionType.Snippet,
+                id: "id",
+                snippetName: "name",
+                contributorId: "contributorId",
+                context: {},
+                isNonInteractive: true
+            };
+            const action = ActionsFactory.createAction(actionJson);
+            expect(action instanceof SnippetAction).to.be.true;
+            expect((action as SnippetAction).snippetName).to.be.equal("name");
+            expect((action as SnippetAction).contributorId).to.be.deep.equal("contributorId");
+        });
+
+        it("suceeds with just the mandatory params", () => {
+            const actionJson = {
+                [ActionJsonKey.ActionType]: ActionType.Snippet,
+                snippetName: "name",
+                contributorId: "contributorId"
+            };
+            const action = ActionsFactory.createAction(actionJson);
+            expect(action instanceof SnippetAction).to.be.true;
+            expect((action as SnippetAction).snippetName).to.be.equal("name");
+            expect((action as SnippetAction).contributorId).to.be.deep.equal("contributorId");
+        });
+
+        it("fails without snippetName", () => {
+            const actionJson = {
+                [ActionJsonKey.ActionType]: ActionType.Snippet,
+                contributorId: "contributorId"
+            };
+            expect(() => ActionsFactory.createAction(actionJson)).to.throw(`snippetName is missing for actionType=${ActionType.Snippet}`);    
+        });
+
+        it("fails without contributorId", () => {
+            const actionJson = {
+                [ActionJsonKey.ActionType]: ActionType.Snippet,
+                snippetName: "name"
+            };
+            expect(() => ActionsFactory.createAction(actionJson)).to.throw(`contributorId is missing for actionType=${ActionType.Snippet}`);    
+        });
+    });
+
     describe("create File action", () => {
         let uriMock: any;
 
@@ -73,8 +118,8 @@ describe("actionsFactory test", () => {
             const myFileUri = "file:///usr/myFile";
             const actionJson = {
                 [ActionJsonKey.ActionType]: ActionType.File,
-                [ActionJsonKey.Uri]: myFileUri
-
+                [ActionJsonKey.Uri]: myFileUri,
+                id: "id"
             };
             uriMock.expects("parse").withExactArgs('');
             uriMock.expects("parse").withExactArgs(myFileUri, true);
@@ -112,13 +157,5 @@ describe("actionsFactory test", () => {
         const action = new ExecuteAction();
         expect(action.actionType).to.equal(ActionType.Execute);
         expect(action.params).to.deep.equal([]);
-    });
-
-    it("create snippetAction", () => {
-        const action = new SnippetAction();
-        expect(action.actionType).to.equal(ActionType.Snippet);
-        expect(action.contributorId).to.equal("");
-        expect(action.snippetName).to.equal("");
-        expect(action.context).to.equal("");
     });
 });

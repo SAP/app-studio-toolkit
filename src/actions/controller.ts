@@ -12,9 +12,17 @@ export class ActionsController {
   private static readonly actions: IAction[] = [];
 
   public static loadContributedActions() {
+    const logger = getLogger().getChildLogger({ label: "loadContributedActions" });
     extensions.all.forEach(extension => {
       const extensionActions = _.get(extension, "packageJSON.BASContributes.actions", []);
-      extensionActions.forEach((action: IAction) => ActionsController.actions.push(action));
+      _.forEach(extensionActions, actionAsJson => {
+        try {
+          const action: IAction = ActionsFactory.createAction(actionAsJson, true);
+          ActionsController.actions.push(action);
+        } catch (error) {
+          logger.error(`Failed to create action ${JSON.stringify(actionAsJson)}: ${error}`);
+        }
+      });
     });
   }
 
@@ -25,12 +33,12 @@ export class ActionsController {
   public static async performActionsFromParams() {
     const logger = getLogger().getChildLogger({ label: "performActionsFromParams" });
     const actionsParam = await getParameter("actions");
-    logger.trace(`configuration - actions= ${actionsParam}`);
     const actionsIds = _.uniq(_.compact(_.split(actionsParam, ",")));
-    actionsIds.forEach(actionId => {
+    logger.trace(`configuration - actionsIds= ${actionsIds}`);
+      _.forEach(actionsIds, async actionId => {
       const action = ActionsController.getAction(actionId);
       if (action) {
-        void _performAction(action);
+        await _performAction(action);
       } else {
         logger.trace(`action ${actionId} not found`);
       }
@@ -40,10 +48,10 @@ export class ActionsController {
   public static performScheduledActions() {
     const logger = getLogger().getChildLogger({ label: "performScheduledActions" });
     const actionsList: string[] = actionsConfig.get();
-    _.forEach(actionsList, actionAsJson => {
+    _.forEach(actionsList, async actionAsJson => {
       try {
         const action: IAction = ActionsFactory.createAction(actionAsJson, true);
-        void _performAction(action);
+        await _performAction(action);
       } catch (error) {
         logger.error(`Failed to execute scheduled action ${JSON.stringify(actionAsJson)}: ${error}`);
       }

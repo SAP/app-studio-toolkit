@@ -3,7 +3,7 @@ import { expect, use } from "chai";
 import * as chaiAsPromised from "chai-as-promised";
 import * as _ from "lodash";
 import { SinonSandbox, SinonMock, createSandbox } from "sinon";
-import { IAction, ActionType } from "../src/actions/interfaces";
+import { IAction, ActionType, ICommandAction } from "../src/actions/interfaces";
 import { ActionsController } from '../src/actions/controller';
 import * as vscode from "vscode";
 
@@ -75,9 +75,10 @@ describe("api unit test", () => {
     });
 
     it("loadActions", () => {
-        const action: IAction = {
+        const action: ICommandAction = {
 			"id" : "abc123",
 			"actionType" : ActionType.Command,
+            "name": "name"
 		};
         const allExtensioms = [{
             packageJSON: {
