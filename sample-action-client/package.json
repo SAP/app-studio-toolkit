@@ -1,7 +1,7 @@
 {
 	"name": "sample-action-client",
 	"displayName": "Sample Action Client",
-	"version": "0.0.6",
+	"version": "0.0.5",
 	"description": "Sample Action Client",
 	"categories": [
 		"Other"
@@ -73,7 +73,7 @@
 		"onCommand:contrib.action.open.file"
 	],
 	"dependencies": {
-		"@sap-devx/app-studio-toolkit-types": "0.0.5"
+		"@sap-devx/app-studio-toolkit-types": "0.0.7"
 	},
 	"devDependencies": {
 		"@types/vscode": "^1.40.0",
