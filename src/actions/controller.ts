@@ -1,47 +1,58 @@
-import * as vscode from "vscode";
+import { extensions } from "vscode";
 import { getLogger } from "../logger/logger";
 import { IAction } from "./interfaces";
 import { _performAction } from "./performer";
 import { getParameter } from '../apis/parameters';
-import { forEach, uniq, get, split, compact } from "lodash";
+import { ActionsFactory } from './actionsFactory';
+import { forEach, get, uniq, compact, split } from "lodash";
+import * as actionsConfig from './actionsConfig';
+
 
 export class ActionsController {
   private static readonly actions: IAction[] = [];
 
-  public static loadActions() {
-    vscode.extensions.all.forEach(extension => {
-      const extActions = get(extension, "packageJSON.BASContributes.actions", []);
-      extActions.forEach((action: IAction) => {
-        ActionsController.actions.push(action);
+  public static loadContributedActions() {
+    forEach(extensions.all, extension => {
+      const extensionActions = get(extension, "packageJSON.BASContributes.actions", []);
+      forEach(extensionActions, actionAsJson => {
+        try {
+          const action: IAction = ActionsFactory.createAction(actionAsJson, true);
+          ActionsController.actions.push(action);
+        } catch (error) {
+          getLogger().error(`Failed to create action ${JSON.stringify(actionAsJson)}: ${error}`, { method: "loadContributedActions" });
+        }
       });
     });
   }
 
-  public static getAction(id: string) {
+  public static getAction(id: string): IAction | undefined {
     return ActionsController.actions.find(action => action.id === id);
   }
 
   public static async performActionsFromParams() {
-    const logger = getLogger().getChildLogger({label: "actionController"});
     const actionsParam = await getParameter("actions");
-    logger.trace(`configuration - actions= ${actionsParam}`);
     const actionsIds = uniq(compact(split(actionsParam, ",")));
-    actionsIds.forEach(actionId => {
+    getLogger().trace(`configuration - actionsIds= ${actionsIds}`, { method: "performActionsFromParams" });
+      forEach(actionsIds, async actionId => {
       const action = ActionsController.getAction(actionId);
       if (action) {
-        void _performAction(action);
+        await _performAction(action);
       } else {
-        logger.trace(`action ${actionId} not found`);
+        getLogger().trace(`action ${actionId} not found`, { method: "performActionsFromParams" });
       }
     });
   }
 
   public static performScheduledActions() {
-    const actionsSettings = vscode.workspace.getConfiguration();
-    const actionsList: any[] = actionsSettings.get("actions", []);
-    forEach(actionsList, action => {
-      void _performAction(action);
+    const actionsList: string[] = actionsConfig.get();
+    forEach(actionsList, async actionAsJson => {
+      try {
+        const action: IAction = ActionsFactory.createAction(actionAsJson, true);
+        await _performAction(action);
+      } catch (error) {
+        getLogger().error(`Failed to execute scheduled action ${JSON.stringify(actionAsJson)}: ${error}`, { method: "performScheduledActions" });
+      }
     });
-    void actionsSettings.update("actions", []);
+    void actionsConfig.clear();
   }
 }

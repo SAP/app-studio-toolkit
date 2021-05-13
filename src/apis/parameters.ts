@@ -9,13 +9,12 @@ export async function getParameter(parameterName: string) : Promise<string | und
   
     if (sapPlugin === noSapPlugin) {
         logger.trace("Failed to load @sap/plugin, so returning undefined.");
-        return undefined;
+        return;
     } 
     logger.trace("@sap/plugin successfully loaded.");
 
     const configuration = await sapPlugin.window.configuration();
     logger.trace("Configuration successfully received.", {configuration});
 
-    const parameterValue = configuration?.[parameterName];
-    return parameterValue;
+    return configuration?.[parameterName];
 }

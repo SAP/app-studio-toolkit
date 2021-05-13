@@ -50,7 +50,7 @@ describe("performer test", () => {
                 actionType: ActionType.Command,
                 name: "commandName"
             };
-            commandsMock.expects("executeCommand").withExactArgs(commAction.name).resolves("success");
+            commandsMock.expects("executeCommand").withExactArgs(commAction.name, []).resolves("success");
             expect(await _performAction(commAction)).to.be.equal("success");
         });
 
@@ -81,12 +81,11 @@ describe("performer test", () => {
         it("is successful without params", async () => {
             const execAction = {
                 actionType: ActionType.Execute,
-                executeAction: () => ""
+                executeAction: () => "success"
             };
-            const executeActionMock = sandbox.mock(execAction);
-            executeActionMock.expects("executeAction").withExactArgs().returns("success");
+            
             expect(await _performAction(execAction)).to.be.equal("success");
-            executeActionMock.verify();
+
         });
     });
 
@@ -96,7 +95,7 @@ describe("performer test", () => {
                 actionType: ActionType.File,
                 uri: 'file:///home/user/projects/myproj/sourcefile.js'
             };
-            commandsMock.expects("executeCommand").withExactArgs('vscode.open', fileAction.uri);
+            commandsMock.expects("executeCommand").withExactArgs('vscode.open', fileAction.uri, {viewColumn: 2});
             // check that no error is thrown
             await _performAction(fileAction);
         });
@@ -106,7 +105,7 @@ describe("performer test", () => {
                 actionType: ActionType.File,
                 uri: 'file:///home/user/projects/myproj/sourcefile.js'
             };
-            commandsMock.expects("executeCommand").withExactArgs('vscode.open', fileAction.uri).rejects(new Error("Something bad happened"));
+            commandsMock.expects("executeCommand").withExactArgs('vscode.open', fileAction.uri, {viewColumn: 2}).rejects(new Error("Something bad happened"));
             await expect(_performAction(fileAction)).to.be.rejectedWith("Something bad happened");
         });
     });
