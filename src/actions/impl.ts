@@ -1,6 +1,7 @@
 import { Uri } from "vscode";
-import { ActionType, IAction, ICommandAction, IExecuteAction, IFileAction, ISnippetAction,
-    CommandActionParams, ExecuteActionParams, SnippetActionParams, FileActionParams } from "./interfaces";
+import { ActionType } from "./interfaces";
+import { IAction, ICommandAction, IExecuteAction, IFileAction, ISnippetAction,
+    CommandActionParams, ExecuteActionParams, SnippetActionParams } from "@sap-devx/app-studio-toolkit-types";
 
 abstract class Action implements IAction {
     id?: string;
@@ -47,7 +48,7 @@ export class SnippetAction extends Action implements ISnippetAction {
 }
 
 export class FileAction extends Action implements IFileAction {
-    uri: FileActionParams;
+    uri: IFileAction["uri"];
 
     constructor() {
         super();

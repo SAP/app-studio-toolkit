@@ -1,6 +1,8 @@
 import { expect } from "chai";
 import { SinonSandbox, SinonMock, createSandbox } from "sinon";
-import { ActionJsonKey, ActionType, IAction } from "../src/api";
+import { ActionJsonKey, ActionType } from "../src/api";
+import { IAction } from "@sap-devx/app-studio-toolkit-types";
+
 import { mockVscode } from "./mockUtil";
 
 const testVscode = {
@@ -83,7 +85,7 @@ describe("performer test", () => {
                 actionType: ActionType.Execute,
                 executeAction: () => "success"
             };
-            
+
             expect(await _performAction(execAction)).to.be.equal("success");
 
         });
@@ -119,10 +121,10 @@ describe("performer test", () => {
                 context: "myContext",
                 isNonInteractive: true
             };
-            commandsMock.expects("executeCommand").withExactArgs("loadCodeSnippet", { 
-                viewColumn: 2, 
-                contributorId: snippetAction.contributorId, 
-                snippetName: snippetAction.snippetName, 
+            commandsMock.expects("executeCommand").withExactArgs("loadCodeSnippet", {
+                viewColumn: 2,
+                contributorId: snippetAction.contributorId,
+                snippetName: snippetAction.snippetName,
                 context: snippetAction.context,
                 isNonInteractive: snippetAction.isNonInteractive });
             // check that no error is thrown
@@ -136,10 +138,10 @@ describe("performer test", () => {
                 snippetName: "mySnippet",
                 context: "myContext"
             };
-            commandsMock.expects("executeCommand").withExactArgs("loadCodeSnippet", { 
-                viewColumn: 2, 
-                contributorId: snippetAction.contributorId, 
-                snippetName: snippetAction.snippetName, 
+            commandsMock.expects("executeCommand").withExactArgs("loadCodeSnippet", {
+                viewColumn: 2,
+                contributorId: snippetAction.contributorId,
+                snippetName: snippetAction.snippetName,
                 context: snippetAction.context,
                 isNonInteractive: false }).rejects(new Error("Something bad happened"));
             await expect(_performAction(snippetAction)).to.be.rejectedWith("Something bad happened");

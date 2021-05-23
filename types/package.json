@@ -1,25 +1,23 @@
 {
   "name": "@sap-devx/app-studio-toolkit-types",
-  "publisher": "SAPOSS",
-  "version": "0.0.11",
+  "version": "0.1.0",
   "author": "SAP SE",
   "license": "Apache-2.0",
-  "description": "An npm package that includes Business Application Studio declarations",
+  "description": "The SAP Business Application Studio VSCode Ext type signatures",
   "repository": {
     "type": "git",
     "url": "https://github.com/SAP/app-studio-toolkit",
     "directory": "types"
   },
-  "types": "./out/src/api",
+  "types": "./api.d.ts",
+  "files": ["api.d.ts"],
   "scripts": {
-    "prep": "npm i && cd .. && npm i && npm run compile",
-    "copy": "ncp ../out out",
-    "prepublishOnly": "npm run prep && npm run copy"
+    "compile": "tsc -p ."
   },
   "dependencies": {
     "@types/vscode": "^1.49.0"
   },
   "devDependencies": {
-    "ncp": "^2.0.0"
+    "typescript": "4.2.4"
   }
 }

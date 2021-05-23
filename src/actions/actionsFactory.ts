@@ -1,5 +1,6 @@
 import { Uri } from "vscode";
-import { IAction, ICommandAction, ActionType, IFileAction, ActionJsonKey, ISnippetAction } from './interfaces';
+import { IAction, ICommandAction, IFileAction, ISnippetAction } from '@sap-devx/app-studio-toolkit-types';
+import { ActionJsonKey, ActionType } from './interfaces';
 import { CommandAction, FileAction, SnippetAction } from './impl';
 
 const getNameProp = (fromSettings: boolean): string => {

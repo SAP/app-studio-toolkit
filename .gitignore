@@ -2,6 +2,7 @@ out
 reports
 node_modules
 dist
+.idea
 
 # Output of 'npm pack'
 *.vsix
