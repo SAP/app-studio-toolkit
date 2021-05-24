@@ -166,4 +166,44 @@ describe("controller unit test", () => {
             }
         });
     });
+
+    describe('perfomFullActions', () => {
+        let requireMock: any;
+        before(() => {
+            requireMock = require('mock-require');
+            const configuration = { "actions": `[{"actionType":"COMMAND","name":"workbench.action.openSettings"}]`};
+            const sapPlugin = {
+                window: {
+                    configuration: () => configuration
+                }
+            };
+            requireMock('@sap/plugin', sapPlugin);
+        });
+        after(() => {
+            requireMock.stop('@sap/plugin');
+        });
+
+        it("performActionsFromParams call to perfomFullActions", async () => {
+            const action = ActionsFactory.createAction({'actionType':'COMMAND','name':'workbench.action.openSettings'}, true);
+
+            performerMock.expects("_performAction").withExactArgs(action).resolves();
+            await ActionsController.performActionsFromParams();
+        });
+
+        it("_performAction should be called", () => {
+            const action = ActionsFactory.createAction({'actionType':'FILE','uri':'https://www.google.com/'}, true);
+
+            performerMock.expects("_performAction").withExactArgs(action).resolves();
+            ActionsController.perfomFullActions("[{\"actionType\":\"FILE\",\"uri\":\"https://www.google.com/\"}]");
+        });
+
+        it("error should be thrown", () => {
+            const testError = new Error(`Failed to create action`);
+            try {
+                ActionsController.perfomFullActions("[{\"actionType\":\"STAM\",\"uri\":\"https://www.google.com/\"}]");
+            } catch (error){
+                expect(error).to.be.equal(testError);
+            }
+        });
+    });
 });
