@@ -31,14 +31,37 @@ export class ActionsController {
 
   public static async performActionsFromParams() {
     const actionsParam = await getParameter("actions");
-    const actionsIds = uniq(compact(split(actionsParam, ",")));
-    getLogger().trace(`configuration - actionsIds= ${actionsIds}`, { method: "performActionsFromParams" });
+    getLogger().trace(`actionsParam= ${actionsParam}`, { method: "performActionsFromParams" });
+    if (actionsParam?.startsWith("%5B") || actionsParam?.startsWith("[")) {
+      ActionsController.perfomFullActions(actionsParam);
+    } else if (actionsParam) {
+      ActionsController.performActionsIds(actionsParam);
+    }
+    
+  }
+
+  public static performActionsIds(actions: string) {
+    const actionsIds = uniq(compact(split(actions, ",")));
+    getLogger().trace(`actionsIds= ${actionsIds}`, { method: "performActionsIds" });
       forEach(actionsIds, async actionId => {
       const action = ActionsController.getAction(actionId);
       if (action) {
         await _performAction(action);
       } else {
-        getLogger().trace(`action ${actionId} not found`, { method: "performActionsFromParams" });
+        getLogger().error(`action ${actionId} not found`, { method: "performActionsIds" });
+      }
+    });
+  }
+
+  public static perfomFullActions(actions: string) {
+    const actionsArr = JSON.parse(decodeURI(actions));
+    getLogger().trace(`actions= ${JSON.stringify(actionsArr)}`, { method: "perfomFullActions" });
+    forEach(actionsArr, async actionAsJson => {
+      try {
+        const action: IAction = ActionsFactory.createAction(actionAsJson, true);
+        await _performAction(action);
+      } catch (error) {
+        getLogger().error(`Failed to create action ${JSON.stringify(actionAsJson)}: ${error}`, { method: "perfomFullActions" });
       }
     });
   }
