@@ -29,18 +29,17 @@ export class ActionsController {
     return ActionsController.actions.find(action => action.id === id);
   }
 
-  public static async performActionsFromParams() {
+  public static async performActionsFromURL() {
     const actionsParam = await getParameter("actions");
-    getLogger().trace(`actionsParam= ${actionsParam}`, { method: "performActionsFromParams" });
+    getLogger().trace(`actionsParam= ${actionsParam}`, { method: "performActionsFromURL" });
     if (actionsParam?.startsWith("%5B") || actionsParam?.startsWith("[")) {
       ActionsController.perfomFullActions(actionsParam);
     } else if (actionsParam) {
       ActionsController.performActionsIds(actionsParam);
     }
-    
   }
 
-  public static performActionsIds(actions: string) {
+  private static performActionsIds(actions: string) {
     const actionsIds = uniq(compact(split(actions, ",")));
     getLogger().trace(`actionsIds= ${actionsIds}`, { method: "performActionsIds" });
       forEach(actionsIds, async actionId => {
@@ -53,7 +52,7 @@ export class ActionsController {
     });
   }
 
-  public static perfomFullActions(actions: string) {
+  private static perfomFullActions(actions: string) {
     const actionsArr = JSON.parse(decodeURI(actions));
     getLogger().trace(`actions= ${JSON.stringify(actionsArr)}`, { method: "perfomFullActions" });
     forEach(actionsArr, async actionAsJson => {

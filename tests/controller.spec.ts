@@ -133,7 +133,7 @@ describe("controller unit test", () => {
         });
     });
 
-    describe('performActionsFromParams', () => {
+    describe('performActionsFromURL', () => {
         const scheduledAction = {
             name: "workbench.action.openGlobalSettings",
             actionType: "COMMAND",
@@ -143,7 +143,7 @@ describe("controller unit test", () => {
 
         it("_performAction should be called", async () => {
             performerMock.expects("_performAction").withExactArgs(action).resolves();
-            await ActionsController.performActionsFromParams();
+            await ActionsController.performActionsFromURL();
         });
 
         it("throw error", () => {
@@ -183,24 +183,24 @@ describe("controller unit test", () => {
             requireMock.stop('@sap/plugin');
         });
 
-        it("performActionsFromParams call to perfomFullActions", async () => {
+        it("performActionsFromURL call to perfomFullActions", async () => {
             const action = ActionsFactory.createAction({'actionType':'COMMAND','name':'workbench.action.openSettings'}, true);
 
             performerMock.expects("_performAction").withExactArgs(action).resolves();
-            await ActionsController.performActionsFromParams();
+            await ActionsController.performActionsFromURL();
         });
 
         it("_performAction should be called", () => {
             const action = ActionsFactory.createAction({'actionType':'FILE','uri':'https://www.google.com/'}, true);
 
             performerMock.expects("_performAction").withExactArgs(action).resolves();
-            ActionsController.perfomFullActions("[{\"actionType\":\"FILE\",\"uri\":\"https://www.google.com/\"}]");
+            ActionsController["perfomFullActions"]("[{\"actionType\":\"FILE\",\"uri\":\"https://www.google.com/\"}]");
         });
 
         it("error should be thrown", () => {
             const testError = new Error(`Failed to create action`);
             try {
-                ActionsController.perfomFullActions("[{\"actionType\":\"STAM\",\"uri\":\"https://www.google.com/\"}]");
+                ActionsController["perfomFullActions"]("[{\"actionType\":\"STAM\",\"uri\":\"https://www.google.com/\"}]");
             } catch (error){
                 expect(error).to.be.equal(testError);
             }
