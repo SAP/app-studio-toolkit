@@ -133,7 +133,7 @@ describe("controller unit test", () => {
         });
     });
 
-    describe('performActionsFromParams', () => {
+    describe('performActionsFromURL', () => {
         const scheduledAction = {
             name: "workbench.action.openGlobalSettings",
             actionType: "COMMAND",
@@ -143,7 +143,7 @@ describe("controller unit test", () => {
 
         it("_performAction should be called", async () => {
             performerMock.expects("_performAction").withExactArgs(action).resolves();
-            await ActionsController.performActionsFromParams();
+            await ActionsController.performActionsFromURL();
         });
 
         it("throw error", () => {
@@ -161,6 +161,49 @@ describe("controller unit test", () => {
             const testError = new Error(`Failed to execute scheduled action ${JSON.stringify(api.packageJSON.BASContributes.actions[0])}`);
             try {
                 ActionsController.performScheduledActions();
+            } catch (error){
+                expect(error).to.be.equal(testError);
+            }
+        });
+    });
+
+    describe('perfomInlinedActions', () => {
+
+        context('call to performActionsFromURL', () => {
+            let requireMock: any;
+            before(() => {
+                requireMock = require('mock-require');
+                const configuration = { "actions": `[{"actionType":"COMMAND","name":"workbench.action.openSettings"}]`};
+                const sapPlugin = {
+                    window: {
+                        configuration: () => configuration
+                    }
+                };
+                requireMock('@sap/plugin', sapPlugin);
+            });
+            after(() => {
+                requireMock.stop('@sap/plugin');
+            });
+
+            it("performActionsFromURL call to perfomFullActions", async () => {
+                const action = ActionsFactory.createAction({'actionType':'COMMAND','name':'workbench.action.openSettings'}, true);
+
+                performerMock.expects("_performAction").withExactArgs(action).resolves();
+                await ActionsController.performActionsFromURL();
+            });
+        });
+
+        it("_performAction should be called", () => {
+            const action = ActionsFactory.createAction({'actionType':'FILE','uri':'https://www.google.com/'}, true);
+
+            performerMock.expects("_performAction").withExactArgs(action).resolves();
+            ActionsController["perfomInlinedActions"]("[{\"actionType\":\"FILE\",\"uri\":\"https://www.google.com/\"}]");
+        });
+
+        it("error should be thrown", () => {
+            const testError = new Error(`Failed to create action`);
+            try {
+                ActionsController["perfomInlinedActions"]("[{\"actionType\":\"STAM\",\"uri\":\"https://www.google.com/\"}]");
             } catch (error){
                 expect(error).to.be.equal(testError);
             }
