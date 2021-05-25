@@ -167,7 +167,7 @@ describe("controller unit test", () => {
         });
     });
 
-    describe('perfomFullActions', () => {
+    describe('perfomInlinedActions', () => {
         let requireMock: any;
         before(() => {
             requireMock = require('mock-require');
@@ -194,13 +194,13 @@ describe("controller unit test", () => {
             const action = ActionsFactory.createAction({'actionType':'FILE','uri':'https://www.google.com/'}, true);
 
             performerMock.expects("_performAction").withExactArgs(action).resolves();
-            ActionsController["perfomFullActions"]("[{\"actionType\":\"FILE\",\"uri\":\"https://www.google.com/\"}]");
+            ActionsController["perfomInlinedActions"]("[{\"actionType\":\"FILE\",\"uri\":\"https://www.google.com/\"}]");
         });
 
         it("error should be thrown", () => {
             const testError = new Error(`Failed to create action`);
             try {
-                ActionsController["perfomFullActions"]("[{\"actionType\":\"STAM\",\"uri\":\"https://www.google.com/\"}]");
+                ActionsController["perfomInlinedActions"]("[{\"actionType\":\"STAM\",\"uri\":\"https://www.google.com/\"}]");
             } catch (error){
                 expect(error).to.be.equal(testError);
             }

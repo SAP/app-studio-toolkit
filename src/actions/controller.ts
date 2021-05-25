@@ -7,7 +7,6 @@ import { ActionsFactory } from './actionsFactory';
 import { forEach, get, uniq, compact, split } from "lodash";
 import * as actionsConfig from './actionsConfig';
 
-
 export class ActionsController {
   private static readonly actions: IAction[] = [];
 
@@ -31,19 +30,44 @@ export class ActionsController {
 
   public static async performActionsFromURL() {
     const actionsParam = await getParameter("actions");
-    getLogger().trace(`actionsParam= ${actionsParam}`, { method: "performActionsFromURL" });
-    if (actionsParam?.startsWith("%5B") || actionsParam?.startsWith("[")) {
-      ActionsController.perfomFullActions(actionsParam);
-    } else if (actionsParam) {
-      ActionsController.performActionsIds(actionsParam);
+    if (actionsParam === undefined) {
+      return;
+    }
+    const decodedActionsParam = decodeURI(actionsParam);
+    getLogger().trace(`decodedActionsParam= ${decodedActionsParam}`, { method: "performActionsFromURL" });
+    const mode = ActionsController.detectActionMode(decodedActionsParam);
+    switch (mode) {
+      case "IDs": {
+        const actionsIds = uniq(compact(split(decodedActionsParam, ",")));
+        ActionsController.performActionsIds(actionsIds);
+        break;
+      }
+      case "Inlined": {
+        ActionsController.perfomInlinedActions(decodedActionsParam.trim());
+        break;
+      }
     }
   }
 
-  private static performActionsIds(actions: string) {
-    const actionsIds = uniq(compact(split(actions, ",")));
+  private static detectActionMode(decodedActionsParam:string): "IDs" | "Inlined" {
+    try {
+      if (Array.isArray(JSON.parse(decodedActionsParam))) {
+        // actionsInlinedMode
+        // actions=[{"id":"openSettings","actionType":"COMMAND","name":"workbench.action.openSettings"},{"actionType":"FILE","uri":"https://www.google.com/"}]
+        return "Inlined";
+      }
+    }
+    catch (e) {
+      // actionsIDsMode
+      //actions=openSettings,openGoogle
+    }
+    return "IDs";
+  }
+
+  private static performActionsIds(actionsIds: string[]) {
     getLogger().trace(`actionsIds= ${actionsIds}`, { method: "performActionsIds" });
       forEach(actionsIds, async actionId => {
-      const action = ActionsController.getAction(actionId);
+      const action = ActionsController.getAction(actionId.trim());
       if (action) {
         await _performAction(action);
       } else {
@@ -52,9 +76,9 @@ export class ActionsController {
     });
   }
 
-  private static perfomFullActions(actions: string) {
+  private static perfomInlinedActions(actions: string) {
     const actionsArr = JSON.parse(decodeURI(actions));
-    getLogger().trace(`actions= ${JSON.stringify(actionsArr)}`, { method: "perfomFullActions" });
+    getLogger().trace(`inlinedActions= ${JSON.stringify(actionsArr)}`, { method: "perfomInlinedActions" });
     forEach(actionsArr, async actionAsJson => {
       try {
         const action: IAction = ActionsFactory.createAction(actionAsJson, true);
