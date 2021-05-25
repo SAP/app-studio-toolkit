@@ -4,7 +4,7 @@ import { IAction } from "./interfaces";
 import { _performAction } from "./performer";
 import { getParameter } from '../apis/parameters';
 import { ActionsFactory } from './actionsFactory';
-import { forEach, get, uniq, compact, split } from "lodash";
+import { isArray, forEach, get, uniq, compact, split } from "lodash";
 import * as actionsConfig from './actionsConfig';
 
 export class ActionsController {
@@ -37,9 +37,9 @@ export class ActionsController {
     getLogger().trace(`decodedActionsParam= ${decodedActionsParam}`, { method: "performActionsFromURL" });
     const mode = ActionsController.detectActionMode(decodedActionsParam);
     switch (mode) {
-      case "IDs": {
+      case "ByIDs": {
         const actionsIds = uniq(compact(split(decodedActionsParam, ",")));
-        ActionsController.performActionsIds(actionsIds);
+        ActionsController.performActionsByIds(actionsIds);
         break;
       }
       case "Inlined": {
@@ -49,29 +49,29 @@ export class ActionsController {
     }
   }
 
-  private static detectActionMode(decodedActionsParam:string): "IDs" | "Inlined" {
+  private static detectActionMode(decodedActionsParam:string): "ByIDs" | "Inlined" {
     try {
-      if (Array.isArray(JSON.parse(decodedActionsParam))) {
+      if (isArray(JSON.parse(decodedActionsParam))) {
         // actionsInlinedMode
         // actions=[{"id":"openSettings","actionType":"COMMAND","name":"workbench.action.openSettings"},{"actionType":"FILE","uri":"https://www.google.com/"}]
         return "Inlined";
       }
     }
     catch (e) {
-      // actionsIDsMode
+      // actionsByIDsMode
       //actions=openSettings,openGoogle
     }
-    return "IDs";
+    return "ByIDs";
   }
 
-  private static performActionsIds(actionsIds: string[]) {
-    getLogger().trace(`actionsIds= ${actionsIds}`, { method: "performActionsIds" });
+  private static performActionsByIds(actionsIds: string[]) {
+    getLogger().trace(`actionsIds= ${actionsIds}`, { method: "performActionsByIds" });
       forEach(actionsIds, async actionId => {
       const action = ActionsController.getAction(actionId.trim());
       if (action) {
         await _performAction(action);
       } else {
-        getLogger().error(`action ${actionId} not found`, { method: "performActionsIds" });
+        getLogger().error(`action ${actionId} not found`, { method: "performActionsByIds" });
       }
     });
   }

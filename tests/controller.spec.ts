@@ -168,26 +168,29 @@ describe("controller unit test", () => {
     });
 
     describe('perfomInlinedActions', () => {
-        let requireMock: any;
-        before(() => {
-            requireMock = require('mock-require');
-            const configuration = { "actions": `[{"actionType":"COMMAND","name":"workbench.action.openSettings"}]`};
-            const sapPlugin = {
-                window: {
-                    configuration: () => configuration
-                }
-            };
-            requireMock('@sap/plugin', sapPlugin);
-        });
-        after(() => {
-            requireMock.stop('@sap/plugin');
-        });
 
-        it("performActionsFromURL call to perfomFullActions", async () => {
-            const action = ActionsFactory.createAction({'actionType':'COMMAND','name':'workbench.action.openSettings'}, true);
+        context('call to performActionsFromURL', () => {
+            let requireMock: any;
+            before(() => {
+                requireMock = require('mock-require');
+                const configuration = { "actions": `[{"actionType":"COMMAND","name":"workbench.action.openSettings"}]`};
+                const sapPlugin = {
+                    window: {
+                        configuration: () => configuration
+                    }
+                };
+                requireMock('@sap/plugin', sapPlugin);
+            });
+            after(() => {
+                requireMock.stop('@sap/plugin');
+            });
 
-            performerMock.expects("_performAction").withExactArgs(action).resolves();
-            await ActionsController.performActionsFromURL();
+            it("performActionsFromURL call to perfomFullActions", async () => {
+                const action = ActionsFactory.createAction({'actionType':'COMMAND','name':'workbench.action.openSettings'}, true);
+
+                performerMock.expects("_performAction").withExactArgs(action).resolves();
+                await ActionsController.performActionsFromURL();
+            });
         });
 
         it("_performAction should be called", () => {
