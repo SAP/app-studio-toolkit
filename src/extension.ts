@@ -3,10 +3,11 @@ import { startBasctlServer, closeBasctlServer } from './basctlServer/basctlServe
 import { ActionsController } from './actions/controller';
 import { initLogger, getLogger } from './logger/logger';
 import { ExtensionContext } from 'vscode';
+import { initWorkspaceProjectTypeContexts } from "./project-type/workspace-manager";
 
 export function activate(context: ExtensionContext) {
     initLogger(context);
-    
+
     startBasctlServer();
 
     ActionsController.loadContributedActions();
@@ -17,6 +18,8 @@ export function activate(context: ExtensionContext) {
 
     const logger = getLogger().getChildLogger({ label: 'activate' });
     logger.info('The App-Studio-Toolkit Extension is active.');
+
+    await initWorkspaceProjectTypeContexts();
 
     return bas;
 }
