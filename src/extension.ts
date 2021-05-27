@@ -13,7 +13,7 @@ export function activate(context: ExtensionContext) {
 
     ActionsController.performScheduledActions();
 
-    void ActionsController.performActionsFromParams();
+    void ActionsController.performActionsFromURL();
 
     const logger = getLogger().getChildLogger({ label: 'activate' });
     logger.info('The App-Studio-Toolkit Extension is active.');

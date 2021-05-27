@@ -4,9 +4,8 @@ import { IAction } from "@sap-devx/app-studio-toolkit-types";
 import { _performAction } from "./performer";
 import { getParameter } from '../apis/parameters';
 import { ActionsFactory } from './actionsFactory';
-import { forEach, get, uniq, compact, split } from "lodash";
+import { isArray, forEach, get, uniq, compact, split } from "lodash";
 import * as actionsConfig from './actionsConfig';
-
 
 export class ActionsController {
   private static readonly actions: IAction[] = [];
@@ -29,16 +28,63 @@ export class ActionsController {
     return ActionsController.actions.find(action => action.id === id);
   }
 
-  public static async performActionsFromParams() {
+  public static async performActionsFromURL() {
     const actionsParam = await getParameter("actions");
-    const actionsIds = uniq(compact(split(actionsParam, ",")));
-    getLogger().trace(`configuration - actionsIds= ${actionsIds}`, { method: "performActionsFromParams" });
+    if (actionsParam === undefined) {
+      return;
+    }
+    const decodedActionsParam = decodeURI(actionsParam);
+    getLogger().trace(`decodedActionsParam= ${decodedActionsParam}`, { method: "performActionsFromURL" });
+    const mode = ActionsController.detectActionMode(decodedActionsParam);
+    switch (mode) {
+      case "ByIDs": {
+        const actionsIds = uniq(compact(split(decodedActionsParam, ",")));
+        ActionsController.performActionsByIds(actionsIds);
+        break;
+      }
+      case "Inlined": {
+        ActionsController.perfomInlinedActions(decodedActionsParam.trim());
+        break;
+      }
+    }
+  }
+
+  private static detectActionMode(decodedActionsParam:string): "ByIDs" | "Inlined" {
+    try {
+      if (isArray(JSON.parse(decodedActionsParam))) {
+        // actionsInlinedMode
+        // actions=[{"id":"openSettings","actionType":"COMMAND","name":"workbench.action.openSettings"},{"actionType":"FILE","uri":"https://www.google.com/"}]
+        return "Inlined";
+      }
+    }
+    catch (e) {
+      // actionsByIDsMode
+      //actions=openSettings,openGoogle
+    }
+    return "ByIDs";
+  }
+
+  private static performActionsByIds(actionsIds: string[]) {
+    getLogger().trace(`actionsIds= ${actionsIds}`, { method: "performActionsByIds" });
       forEach(actionsIds, async actionId => {
-      const action = ActionsController.getAction(actionId);
+      const action = ActionsController.getAction(actionId.trim());
       if (action) {
         await _performAction(action);
       } else {
-        getLogger().trace(`action ${actionId} not found`, { method: "performActionsFromParams" });
+        getLogger().error(`action ${actionId} not found`, { method: "performActionsByIds" });
+      }
+    });
+  }
+
+  private static perfomInlinedActions(actions: string) {
+    const actionsArr = JSON.parse(decodeURI(actions));
+    getLogger().trace(`inlinedActions= ${JSON.stringify(actionsArr)}`, { method: "perfomInlinedActions" });
+    forEach(actionsArr, async actionAsJson => {
+      try {
+        const action: IAction = ActionsFactory.createAction(actionAsJson, true);
+        await _performAction(action);
+      } catch (error) {
+        getLogger().error(`Failed to create action ${JSON.stringify(actionAsJson)}: ${error}`, { method: "perfomFullActions" });
       }
     });
   }
