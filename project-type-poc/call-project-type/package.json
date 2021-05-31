@@ -7,7 +7,6 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@sap/cds-dk" : "^4.1.4",
     "@ext-lcapvsc-npm-dev/lcap-project-api": "file:../../../lcap/project/build/ext-lcapvsc-npm-dev-lcap-project-api-0.0.1.tgz"
   }
 }

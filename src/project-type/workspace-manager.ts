@@ -13,7 +13,7 @@ export async function initWorkspaceProjectTypeContexts(): Promise<void> {
     const wsSubDirs = await getSubDirs(wsRoot);
     forEach(wsSubDirs, async (dirName) => {
         const absDirName = resolve(wsRoot, dirName);
-        const projTypesForDir = await readProjectTypesForDir(absDirName);
+        const projTypesForDir = await readProjectTypesForDir(wsRoot);
         forEach(projTypesForDir, (projType) => {
             insertToProjectTypeMaps(absDirName, projType);
         });
@@ -33,10 +33,14 @@ async function readProjectTypesForDir(dirPath:string): Promise<ProjectType[]> {
     try {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
         const api = await projectApi.read(undefined);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return,@typescript-eslint/no-unsafe-member-access
         return api.tags;
     }
     catch (e) {
         console.error(e);
     }
+    projectApi.tagAddedHandler((newTags) => { /*  ... */})
+    projectApi.tagRemovedHandled((removedTags) => { /* ... */})
+
     return [];
 }
