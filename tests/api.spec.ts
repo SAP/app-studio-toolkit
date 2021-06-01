@@ -3,8 +3,7 @@ import { expect, use } from "chai";
 import * as chaiAsPromised from "chai-as-promised";
 import * as _ from "lodash";
 import { SinonSandbox, SinonMock, createSandbox } from "sinon";
-import { ActionType } from "../src/actions/interfaces";
-import { IAction, ICommandAction } from "@sap-devx/app-studio-toolkit-types";
+import { IAction, ICommandAction } from "../types/api";
 import { ActionsController } from '../src/actions/controller';
 import * as vscode from "vscode";
 
@@ -58,11 +57,11 @@ describe("api unit test", () => {
     it("get actions - with two actions", () => {
         const action1: IAction = {
 			"id" : "action_1",
-			"actionType" : ActionType.Command
+			"actionType" : "COMMAND"
 		};
         const action2: IAction = {
 			"id" : "action_2",
-			"actionType" : ActionType.Snippet
+			"actionType" : "SNIPPET"
 		};
         ActionsController["actions"].push(action1);
         ActionsController["actions"].push(action2);
@@ -78,7 +77,7 @@ describe("api unit test", () => {
     it("loadActions", () => {
         const action: ICommandAction = {
 			"id" : "abc123",
-			"actionType" : ActionType.Command,
+			"actionType" : "COMMAND",
             "name": "name"
 		};
         const allExtensioms = [{

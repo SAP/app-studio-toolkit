@@ -1,33 +1,32 @@
 import { Uri } from "vscode";
-import { IAction, ICommandAction, IFileAction, ISnippetAction } from '@sap-devx/app-studio-toolkit-types';
-import { ActionJsonKey, ActionType } from './interfaces';
+import { IAction, ICommandAction, IFileAction, ISnippetAction, ActionType } from "../../types/api";
 import { CommandAction, FileAction, SnippetAction } from './impl';
 
 const getNameProp = (fromSettings: boolean): string => {
-    return fromSettings ? "name" : ActionJsonKey.CommandName;
+    return fromSettings ? "name" : "commandName";
 };
 const getParamsProp = (fromSettings: boolean): string => {
-    return fromSettings ? "params" : ActionJsonKey.CommandParams;
+    return fromSettings ? "params" : "commandParams";
 };
 
 export class ActionsFactory {
     public static createAction(jsonAction: any, fromSettings = false): IAction {
-        const actionType = jsonAction[ActionJsonKey.ActionType];
+        const actionType: ActionType = jsonAction["actionType"];
         if (!actionType) {
-            throw new Error(`${ActionJsonKey.ActionType} is missing`);
+            throw new Error(`actionType is missing`);
         }
         switch (actionType) {
-            case ActionType.Command: {
+            case "COMMAND": {
                 return ActionsFactory.handleCommandAction(jsonAction, fromSettings);
             }
-            case ActionType.Snippet: {
+            case "SNIPPET": {
                 return ActionsFactory.handleSnippetAction(jsonAction);
             }
-            case ActionType.File: {
+            case "FILE": {
                 return ActionsFactory.handleFileAction(jsonAction);
             }
             default:
-                throw new Error(`Action with ${ActionJsonKey.ActionType}=${actionType} could not be created from json file`);
+                throw new Error(`Action with actionType = ${actionType} could not be created from json file`);
         }
     }
 
@@ -42,7 +41,7 @@ export class ActionsFactory {
         if (commandName) {
             commandAction.name = commandName;
         } else {
-            throw new Error(`${nameProp} is missing for actionType=${ActionType.Command}`);
+            throw new Error(`${nameProp} is missing for actionType = COMMAND`);
         }
         const paramsProp = getParamsProp(fromSettings);
         const commandParams = jsonAction[paramsProp];
@@ -63,17 +62,19 @@ export class ActionsFactory {
             snippetAction.snippetName = snippetName;
         }
         else {
-            throw new Error(`snippetName is missing for actionType=${ActionType.Snippet}`);
+            throw new Error(`snippetName is missing for actionType = SNIPPET`);
         }
         const contributorId = jsonAction["contributorId"];
         if (contributorId) {
             snippetAction.contributorId = contributorId;
         } else {
-            throw new Error(`contributorId is missing for actionType=${ActionType.Snippet}`);
+            throw new Error(`contributorId is missing for actionType = SNIPPET`);
         }
         const context = jsonAction["context"];
         if (context) {
             snippetAction.context = context;
+        } else {
+            throw new Error(`context is missing for actionType = SNIPPET`);
         }
         const isNonInteractive = jsonAction["isNonInteractive"];
         if (isNonInteractive) {
@@ -88,12 +89,12 @@ export class ActionsFactory {
         if (fileId) {
             fileAction.id = fileId;
         }
-        const uri = jsonAction[ActionJsonKey.Uri];
+        const uri = jsonAction["uri"];
         try {
             fileAction.uri = Uri.parse(uri, true);
         } catch (error) {
             throw new Error(
-                `Failed to parse field ${ActionJsonKey.Uri}: ${uri} for actionType=${ActionType.File}: ${error.message}`
+                `Failed to parse field uri: ${uri} for actionType = FILE: ${error.message}`
             );
         }
         return fileAction;

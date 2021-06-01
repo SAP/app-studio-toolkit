@@ -2,7 +2,6 @@ import { expect } from "chai";
 import { SinonSandbox, SinonMock, createSandbox, match } from "sinon";
 import * as net from 'net';
 import * as fs from 'fs';
-import { ActionJsonKey, ActionType } from "../src/actions/interfaces";
 import { mockVscode } from "./mockUtil";
 
 const testVscode = {
@@ -160,8 +159,8 @@ describe("basctlServer", () => {
         }
         let dataObject: any;
         dataObject = {
-            [ActionJsonKey.ActionType]: ActionType.Command,
-            [ActionJsonKey.CommandName]: 'dummy-command'
+            actionType: "COMMAND",
+            commandName: 'dummy-command'
         };
 
         const actionObject = {

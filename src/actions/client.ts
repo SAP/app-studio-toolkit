@@ -1,5 +1,5 @@
 import { workspace, ConfigurationTarget } from 'vscode';
-import { IAction } from '@sap-devx/app-studio-toolkit-types';
+import { IAction } from "../../types/api";
 import { _performAction } from './performer';
 import { getLogger } from '../logger/logger';
 

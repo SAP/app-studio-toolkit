@@ -1,7 +1,6 @@
 import { Uri } from "vscode";
-import { ActionType } from "./interfaces";
 import { IAction, ICommandAction, IExecuteAction, IFileAction, ISnippetAction,
-    CommandActionParams, ExecuteActionParams, SnippetActionParams } from "@sap-devx/app-studio-toolkit-types";
+    CommandActionParams, ExecuteActionParams, SnippetActionParams, ActionType } from "../../types/api";
 
 abstract class Action implements IAction {
     id?: string;
@@ -15,7 +14,7 @@ export class ExecuteAction extends Action implements IExecuteAction {
 
     constructor() {
         super();
-        this.actionType = ActionType.Execute;
+        this.actionType = "EXECUTE";
         this.executeAction = () => Promise.resolve();
         this.params = [];
     }
@@ -27,7 +26,7 @@ export class CommandAction extends Action implements ICommandAction {
 
     constructor() {
         super();
-        this.actionType = ActionType.Command;
+        this.actionType = "COMMAND";
         this.name = "";
         this.params = [];
     }
@@ -37,13 +36,15 @@ export class SnippetAction extends Action implements ISnippetAction {
     contributorId: string;
     snippetName: string;
     context: SnippetActionParams;
+    isNonInteractive?: boolean;
 
     constructor() {
         super();
-        this.actionType = ActionType.Snippet;
+        this.actionType = "SNIPPET";
         this.contributorId = "";
         this.snippetName = "";
-        this.context = "";
+        this.context = {};
+        this.isNonInteractive = false;
     }
 }
 
@@ -52,7 +53,7 @@ export class FileAction extends Action implements IFileAction {
 
     constructor() {
         super();
-        this.actionType = ActionType.File;
+        this.actionType = "FILE";
         this.uri = Uri.parse("");
     }
 }

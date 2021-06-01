@@ -7,54 +7,27 @@ declare interface BasToolkit {
 
     actions: {
         performAction: (action: IAction, options?: any) => Thenable<void>;
-        // TODO: why do we expose these classes?
-        //       - they all have empty constructors
-        // or should they be exposed at the root level for easier imports?
         ExecuteAction: { new(): IExecuteAction };
-        SnippetAction: { new(): ISnippetAction }
+        SnippetAction: { new(): ISnippetAction };
         CommandAction: { new(): ICommandAction };
-        FileAction: { new(): IFileAction }
+        FileAction: { new(): IFileAction };
     };
 }
 
-declare const bas: BasToolkit
+declare const bas: BasToolkit;
 
-// TODO: enums have a runtime component as well
-//       however, this runtime component is not exported from the extension's `activate()` method...
-//       should probably expose some string type consts instead.
-declare enum ActionType {
-    Execute = "EXECUTE",
-    Command = "COMMAND",
-    Task = "TASK",
-    File = "FILE",
-    Snippet = "SNIPPET"
-}
+declare type ActionType = "EXECUTE" | "COMMAND" | "TASK" | "FILE" | "SNIPPET"
 
-declare enum ActionJsonKey {
-    ActionType = "actionType",
-    CommandName = "commandName",
-    CommandParams = "commandParams",
-    Uri = "uri"
-}
-
-// TODO: should params be typed as `unknown`?
 declare type CommandActionParams = any[];
 declare type ExecuteActionParams = any[];
-declare type SnippetActionParams = any | {
-    data: any;
-    service: any;
-} | {
-    data: any;
-};
+declare type SnippetActionParams = Record<string,any>
 
 interface IAction {
     id?: string;
-    // TODO: why should `ActionType` be allowed to be `undefined`?
     actionType: ActionType | undefined;
 }
 
 interface IExecuteAction extends IAction {
-    // TODO: should we use `unknown` instead of `any`
     executeAction: (params?: ExecuteActionParams) => Thenable<any>;
     params?: ExecuteActionParams;
 }

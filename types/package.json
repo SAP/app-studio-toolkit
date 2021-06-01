@@ -1,6 +1,6 @@
 {
   "name": "@sap-devx/app-studio-toolkit-types",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "author": "SAP SE",
   "license": "Apache-2.0",
   "description": "The SAP Business Application Studio VSCode Ext type signatures",
@@ -10,7 +10,9 @@
     "directory": "types"
   },
   "types": "./api.d.ts",
-  "files": ["api.d.ts"],
+  "files": [
+    "api.d.ts"
+  ],
   "scripts": {
     "compile": "tsc -p ."
   },

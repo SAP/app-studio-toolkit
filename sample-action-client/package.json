@@ -1,7 +1,7 @@
 {
 	"name": "sample-action-client",
 	"displayName": "Sample Action Client",
-	"version": "0.0.5",
+	"version": "0.0.6",
 	"description": "Sample Action Client",
 	"categories": [
 		"Other"
@@ -72,10 +72,8 @@
 		"onCommand:contrib.action.open.settings",
 		"onCommand:contrib.action.open.file"
 	],
-	"dependencies": {
-		"@sap-devx/app-studio-toolkit-types": "0.0.7"
-	},
 	"devDependencies": {
+		"@sap-devx/app-studio-toolkit-types": "0.0.11",
 		"@types/vscode": "^1.40.0",
 		"typescript": "^4.2.4",
 		"vsce": "^1.88.0"
@@ -92,7 +90,8 @@
 				"id": "openSettingsAction",
 				"actionType": "COMMAND",
 				"name": "workbench.action.openSettings"
-			}, {
+			},
+			{
 				"id": "openMySnippet",
 				"actionType": "SNIPPET",
 				"contributorId": "id",
@@ -100,15 +99,18 @@
 				"context": {
 					"data": {}
 				}
-			}, {
+			},
+			{
 				"id": "openReadmeFile",
 				"actionType": "FILE",
 				"uri": "file:///home/user/projects/test/README.md"
-			}, {
+			},
+			{
 				"id": "openFile",
 				"actionType": "FILE",
 				"uri": "file://<full path to your file>"
-			}, {
+			},
+			{
 				"id": "openGoogleFile",
 				"actionType": "FILE",
 				"uri": "https://www.google.com/"

@@ -1,12 +1,10 @@
 import { extensions } from 'vscode';
-import { BasToolkit } from '@sap-devx/app-studio-toolkit-types';
+import { BasToolkit } from "../types/api";
 import { performAction } from './actions/client';
 import { ActionsController } from './actions/controller';
 import { ExecuteAction, SnippetAction, CommandAction, FileAction } from './actions/impl';
 import { getParameter } from './apis/parameters';
 import { getLogger } from './logger/logger';
-
-export * from './actions/interfaces';
 
 export const bas:BasToolkit = {
     getExtensionAPI: <T>(extensionId: string): Promise<T> => {
