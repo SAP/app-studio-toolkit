@@ -1,16 +1,21 @@
 version: 2.1 # use CircleCI 2.1
 
 default-build: &default-build
-  working_directory: ~/repo
+  working_directory: ~/repo    
   steps:
-    - checkout
-    - run: npm install
+    - checkout      
+    - run: npm install            
     # - run: npm run test
 
 jobs: # a collection of steps
+  build-and-test-node10:
+    docker:
+      - image: circleci/node:10.23 # Current BAS node version
+    <<: *default-build
+
   build-and-test-node12:
     docker:
-      - image: circleci/node:12
+      - image: circleci/node:12 # Future BAS node version
     <<: *default-build
 
   compliance:
@@ -51,7 +56,7 @@ jobs: # a collection of steps
             source $BASH_ENV
       - run:
           name: Lint commit message
-          command: echo "$COMMIT_MESSAGE" | npx commitlint
+          command: echo "$COMMIT_MESSAGE" | npx commitlint      
       - run:
           name: package
           command: npm run package
@@ -61,10 +66,10 @@ jobs: # a collection of steps
           key: dependency-cache-{{ checksum "package.json" }}
       - persist_to_workspace:
           root: .
-          paths:
+          paths: 
            # https://golang.org/pkg/path/filepath/#Match
             - app-studio-toolkit-*
-
+  
   deploy:
     docker:
       - image: circleci/golang:1.13
@@ -75,12 +80,13 @@ jobs: # a collection of steps
           name: "Publish Release on GitHub"
           command: |
             go get github.com/tcnksm/ghr
-            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} ${CIRCLE_TAG} ./dest/
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} ${CIRCLE_TAG} ./dest/ 
 
 workflows:
   version: 2
   test-deploy:
     jobs:
+      - build-and-test-node10
       - build-and-test-node12
       - compliance
       - build-and-test:

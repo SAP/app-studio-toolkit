@@ -1,46 +1,45 @@
 import { Uri } from "vscode";
-import { IAction, ICommandAction, IExecuteAction, IFileAction, ISnippetAction,
-    CommandActionParams, ExecuteActionParams, SnippetActionParams, ActionType } from "../../types/api";
-
-abstract class Action implements IAction {
-    id?: string;
-    actionType: ActionType | undefined;
-}
+import { bas, ICommandAction, IExecuteAction, IFileAction, ISnippetAction,
+    CommandActionParams, ExecuteActionParams, SnippetActionParams } from '@sap-devx/app-studio-toolkit-types';
+import { COMMAND, SNIPPET, FILE, EXECUTE } from '../constants';
 
 /** Specific action classes */
-export class ExecuteAction extends Action implements IExecuteAction {
+export class ExecuteAction implements IExecuteAction {
+    id?: string;
+    actionType: "EXECUTE";
     executeAction: (params?: ExecuteActionParams) => Thenable<any>;
     params?: ExecuteActionParams;
 
     constructor() {
-        super();
-        this.actionType = "EXECUTE";
+        this.actionType = EXECUTE;
         this.executeAction = () => Promise.resolve();
         this.params = [];
     }
 }
 
-export class CommandAction extends Action implements ICommandAction {
+export class CommandAction implements ICommandAction {
+    id?: string;
+    actionType: "COMMAND";
     name: string;
     params?: CommandActionParams;
 
     constructor() {
-        super();
-        this.actionType = "COMMAND";
+        this.actionType = COMMAND;
         this.name = "";
         this.params = [];
     }
 }
 
-export class SnippetAction extends Action implements ISnippetAction {
+export class SnippetAction implements ISnippetAction {
+    id?: string;
+    actionType: "SNIPPET";
     contributorId: string;
     snippetName: string;
     context: SnippetActionParams;
     isNonInteractive?: boolean;
 
     constructor() {
-        super();
-        this.actionType = "SNIPPET";
+        this.actionType = SNIPPET;
         this.contributorId = "";
         this.snippetName = "";
         this.context = {};
@@ -48,12 +47,13 @@ export class SnippetAction extends Action implements ISnippetAction {
     }
 }
 
-export class FileAction extends Action implements IFileAction {
+export class FileAction implements IFileAction {
+    id?: string;
+    actionType: "FILE";
     uri: IFileAction["uri"];
 
     constructor() {
-        super();
-        this.actionType = "FILE";
+        this.actionType = FILE;
         this.uri = Uri.parse("");
     }
 }

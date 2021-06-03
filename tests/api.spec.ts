@@ -3,9 +3,10 @@ import { expect, use } from "chai";
 import * as chaiAsPromised from "chai-as-promised";
 import * as _ from "lodash";
 import { SinonSandbox, SinonMock, createSandbox } from "sinon";
-import { IAction, ICommandAction } from "../types/api";
+import { basAction, ICommandAction } from '@sap-devx/app-studio-toolkit-types';
 import { ActionsController } from '../src/actions/controller';
 import * as vscode from "vscode";
+import { COMMAND, SNIPPET } from '../src/constants';
 
 use(chaiAsPromised);
 const extensions = { getExtension: () => "" };
@@ -55,13 +56,17 @@ describe("api unit test", () => {
     });
 
     it("get actions - with two actions", () => {
-        const action1: IAction = {
-			"id" : "action_1",
-			"actionType" : "COMMAND"
+        const action1: basAction = {
+			id: "action_1",
+			actionType: COMMAND,
+            name: "name"
 		};
-        const action2: IAction = {
-			"id" : "action_2",
-			"actionType" : "SNIPPET"
+        const action2: basAction = {
+			id: "action_2",
+			actionType: SNIPPET,
+            context: {},
+            contributorId: "contrib1",
+            snippetName: "name"
 		};
         ActionsController["actions"].push(action1);
         ActionsController["actions"].push(action2);
@@ -77,7 +82,7 @@ describe("api unit test", () => {
     it("loadActions", () => {
         const action: ICommandAction = {
 			"id" : "abc123",
-			"actionType" : "COMMAND",
+			"actionType" : COMMAND,
             "name": "name"
 		};
         const allExtensioms = [{

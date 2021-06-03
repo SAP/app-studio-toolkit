@@ -14,7 +14,8 @@ mockVscode(testVscode, "src/actions/client.ts");
 mockVscode(testVscode, "src/actions/performer.ts");
 import { performAction } from "../src/actions/client";
 import * as performer from '../src/actions/performer';
-import { ICommandAction } from "../types/api";
+import { ICommandAction } from '@sap-devx/app-studio-toolkit-types';
+import { COMMAND } from '../src/constants';
 
 describe("client test", () => {
     let sandbox: SinonSandbox;
@@ -27,8 +28,8 @@ describe("client test", () => {
         update: () => ""
     };
 
-    const myAction = {
-        actionType: "COMMAND",
+    const myAction: ICommandAction = {
+        actionType: COMMAND,
         name: "myAction"
     };
 
@@ -55,7 +56,7 @@ describe("client test", () => {
     describe("perform action", () => {
         it("performs the action without schedule", async () => {
             performerMock.expects("_performAction").withExactArgs(myAction);
-            await performAction(myAction as ICommandAction);
+            await performAction(myAction);
         });
 
         it("schedules the action with schedule (existing action list, update successful)", async () => {
@@ -63,14 +64,14 @@ describe("client test", () => {
             workspaceMock.expects("getConfiguration").returns(config);
             configMock.expects("get").withExactArgs("actions", []).returns(actions);
             configMock.expects("update").withExactArgs("actions", [myAction, myAction, myAction], 2).resolves();
-            await performAction(myAction as ICommandAction, { schedule: true}); 
+            await performAction(myAction, { schedule: true}); 
         });
 
         it("schedules the action with schedule (empy action list, update successful)", async () => {
             workspaceMock.expects("getConfiguration").returns(config);
             configMock.expects("get").withExactArgs("actions", []).returns([]);
             configMock.expects("update").withExactArgs("actions", [myAction], 2).resolves();
-            await performAction(myAction as ICommandAction, { schedule: true});
+            await performAction(myAction, { schedule: true});
         });
 
         it("schedules the action with schedule (existing action list, update rejected)", async () => {
@@ -78,7 +79,7 @@ describe("client test", () => {
             workspaceMock.expects("getConfiguration").returns(config);
             configMock.expects("get").withExactArgs("actions", []).returns(actions);
             configMock.expects("update").withExactArgs("actions", [myAction, myAction, myAction], 2).rejects("Reasons!");
-            await performAction(myAction as ICommandAction, { schedule: true});
+            await performAction(myAction, { schedule: true});
         });
     });
 });

@@ -1,9 +1,10 @@
 import { commands, ViewColumn } from 'vscode';
 import { get } from 'lodash';
 import { getLogger } from '../logger/logger';
-import {  IAction, ICommandAction, IExecuteAction, IFileAction, ISnippetAction, } from "../../types/api";
+import { basAction } from '@sap-devx/app-studio-toolkit-types';
+import { COMMAND, SNIPPET, FILE, EXECUTE } from '../constants';
 
-export async function _performAction(action: IAction): Promise<any> {
+export async function _performAction(action: basAction): Promise<any> {
   const logger = getLogger();
   if (action) {
     logger.trace(
@@ -11,30 +12,26 @@ export async function _performAction(action: IAction): Promise<any> {
       { action }
     );
     switch (action.actionType) {
-      case "COMMAND": {
-        const commandAction = (action as ICommandAction);
-        return commands.executeCommand(commandAction.name, get(commandAction, "params", []));
+      case COMMAND: {
+        return commands.executeCommand(action.name, get(action, "params", []));
       }
-      case "EXECUTE": {
-        const executeAction = (action as IExecuteAction);
-        return executeAction.executeAction(get(executeAction, "params", []));
+      case EXECUTE: {
+        return action.executeAction(get(action, "params", []));
       }
-      case "SNIPPET": {
-        const snippetAction = (action as ISnippetAction);
+      case SNIPPET: {
         return commands.executeCommand("loadCodeSnippet", {
           viewColumn: ViewColumn.Two,
-          contributorId: snippetAction.contributorId,
-          snippetName: snippetAction.snippetName,
-          context: snippetAction.context,
-          isNonInteractive: snippetAction.isNonInteractive ?? false
+          contributorId: action.contributorId,
+          snippetName: action.snippetName,
+          context: action.context,
+          isNonInteractive: action.isNonInteractive ?? false
         });
       }
-      case "FILE": {
-        const fileAction = (action as IFileAction);
-        return commands.executeCommand('vscode.open', fileAction.uri, {viewColumn: ViewColumn.Two});
+      case FILE: {
+        return commands.executeCommand('vscode.open', action.uri, {viewColumn: ViewColumn.Two});
       }
       default:
-        throw new Error(`actionType = ${action.actionType} is not supported`);
+        throw new Error(`actionType is not supported`);
     }
   }
   throw new Error(`Action is not provided`);

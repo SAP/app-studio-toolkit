@@ -1,5 +1,5 @@
 import { extensions } from 'vscode';
-import { BasToolkit } from "../types/api";
+import { BasToolkit } from '@sap-devx/app-studio-toolkit-types';
 import { performAction } from './actions/client';
 import { ActionsController } from './actions/controller';
 import { ExecuteAction, SnippetAction, CommandAction, FileAction } from './actions/impl';

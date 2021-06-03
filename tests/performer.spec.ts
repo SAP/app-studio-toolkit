@@ -1,6 +1,7 @@
 import { expect } from "chai";
 import { SinonSandbox, SinonMock, createSandbox } from "sinon";
-import { IAction, ICommandAction, IExecuteAction, IFileAction, ISnippetAction } from "../types/api";
+import { basAction, ICommandAction, IExecuteAction, IFileAction, ISnippetAction } from '@sap-devx/app-studio-toolkit-types';
+import { COMMAND, SNIPPET, EXECUTE } from '../src/constants';
 
 import { mockVscode } from "./mockUtil";
 
@@ -39,7 +40,7 @@ describe("performer test", () => {
     describe("commandAction", () => {
         it("is successful with params when executeCommand is fulfilled", async () => {
             const commAction: ICommandAction = {
-                actionType: "COMMAND",
+                actionType: COMMAND,
                 name: "commandName",
                 params: ["param1", "param2"]
             };
@@ -49,7 +50,7 @@ describe("performer test", () => {
 
         it("is successful without params when executeCommand is fulfilled", async () => {
             const commAction: ICommandAction = {
-                actionType: "COMMAND",
+                actionType: COMMAND,
                 name: "commandName"
             };
             commandsMock.expects("executeCommand").withExactArgs(commAction.name, []).resolves("success");
@@ -58,7 +59,7 @@ describe("performer test", () => {
 
         it("is successful without params when executeCommand is rejected", async () => {
             const commAction: ICommandAction = {
-                actionType: "COMMAND",
+                actionType: COMMAND,
                 name: "commandName",
                 params: ["param1", "param2"]
             };
@@ -70,7 +71,7 @@ describe("performer test", () => {
     describe("executeAction", () => {
         it("is successful with params", async () => {
             const execAction: IExecuteAction = {
-                actionType: "EXECUTE",
+                actionType: EXECUTE,
                 executeAction: () => window.showErrorMessage(`Hello from ExecuteAction`),
                 params: ["param1", "param2"]
             };
@@ -84,8 +85,8 @@ describe("performer test", () => {
     describe("fileAction", () => {
         it("is fulfilled if executeCommand is fulfilled", async () => {
             const fileJson = {
-                "actionType": "FILE",
-                "uri": 'file:///home/user/projects/myproj/sourcefile.js'
+                actionType: "FILE",
+                uri: 'file:///home/user/projects/myproj/sourcefile.js'
             };
             const fileAction = ActionsFactory.createAction(fileJson) as IFileAction;
             commandsMock.expects("executeCommand").withExactArgs('vscode.open', fileAction.uri, {viewColumn: 2});
@@ -95,8 +96,8 @@ describe("performer test", () => {
 
         it("is rejected if executeCommand rejects", async () => {
             const fileJson = {
-                "actionType": "FILE",
-                "uri": 'file:///home/user/projects/myproj/sourcefile.js'
+                actionType: "FILE",
+                uri: 'file:///home/user/projects/myproj/sourcefile.js'
             };
             const fileAction = ActionsFactory.createAction(fileJson) as IFileAction;
             commandsMock.expects("executeCommand").withExactArgs('vscode.open', fileAction.uri, {viewColumn: 2}).rejects(new Error("Something bad happened"));
@@ -107,7 +108,7 @@ describe("performer test", () => {
     describe("snippetAction", () => {
         it("is fulfilled if executeCommand is fulfilled", async () => {
             const snippetAction: ISnippetAction = {
-                actionType: "SNIPPET",
+                actionType: SNIPPET,
                 contributorId: "contributor1",
                 snippetName: "mySnippet",
                 context: {data: "myContext"},
@@ -125,7 +126,7 @@ describe("performer test", () => {
 
         it("is rejected if executeCommand rejects", async () => {
             const snippetAction: ISnippetAction = {
-                actionType: "SNIPPET",
+                actionType: SNIPPET,
                 contributorId: "contributor1",
                 snippetName: "mySnippet",
                 context: {data: "myContext"}
@@ -144,11 +145,11 @@ describe("performer test", () => {
         const action = {
             actionType: "unsupported"
         };
-        const result = _performAction(action as IAction);
-        await expect(result).to.be.rejectedWith(`actionType = ${action.actionType} is not supported`);
+        const result = _performAction(action as basAction);
+        await expect(result).to.be.rejectedWith(`actionType is not supported`);
     });
 
     it("undefined action is rejected", async () => {
-        await expect(_performAction(undefined as unknown as IAction)).to.be.rejectedWith(`Action is not provided`);
+        await expect(_performAction(undefined as unknown as basAction)).to.be.rejectedWith(`Action is not provided`);
     });
 });
