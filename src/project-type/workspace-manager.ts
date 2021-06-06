@@ -1,46 +1,47 @@
-import * as fs from "fs";
-const { readdir } = fs.promises;
 import { resolve } from "path";
 import { workspace } from "vscode";
-import { filter, map, forEach } from "lodash";
-import {insertToProjectTypeMaps, ProjectType} from "./contexts";
+import { forEach } from "lodash";
+import {insertToProjectTypeMaps} from "./contexts";
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-var-requires
 const ProjectImpl = require("@ext-lcapvsc-npm-dev/lcap-project-api/dist/src/project-api/ProjectImpl");
 
 
 export async function initWorkspaceProjectTypeContexts(): Promise<void> {
     const wsRoot = workspace.rootPath as string;
-    const wsSubDirs = await getSubDirs(wsRoot);
-    forEach(wsSubDirs, async (dirName) => {
-        const absDirName = resolve(wsRoot, dirName);
-        const projTypesForDir = await readProjectTypesForDir(wsRoot);
-        forEach(projTypesForDir, (projType) => {
-            insertToProjectTypeMaps(absDirName, projType);
-        });
-    });
+    // TODO: we need an API that would support multiple projects directly nested under the WS root.
+    //      - See: https://github.tools.sap/LCAP/project/issues/81
+    const projectDS = await readWorkspaceProjectDS(wsRoot);
+
+    if (projectDS !== undefined) {
+        const projectAbsRoot = projectDS.path
+        insertToProjectTypeMaps(projectAbsRoot, projectDS.tags)
+        forEach(projectDS.modules, (currModule) => {
+            // `Module["path"]` is relative to the project's root
+            const moduleAbsPath = resolve(projectAbsRoot, currModule.path);
+            insertToProjectTypeMaps(moduleAbsPath, currModule.tags)
+            forEach(currModule.items, (currItem) => {
+                // `Item["path"]` is also relative to the project's root
+                const itemAbsPath = resolve(projectAbsRoot, currItem.path);
+                insertToProjectTypeMaps(itemAbsPath, currItem.tags)
+            })
+        })
+    }
 }
 
-async function getSubDirs(dir:string): Promise<string[]> {
-    const dirents = await readdir(dir, {withFileTypes: true});
-    const subDirs = filter(dirents, _ => _.isDirectory());
-    const subDirNames = map(subDirs, _ => _.name);
-    return subDirNames;
-}
+// TODO: use proper types from project library (once properly exported)
+type WorkspaceProjectType = any;
 
-async function readProjectTypesForDir(dirPath:string): Promise<ProjectType[]> {
+async function readWorkspaceProjectDS(wsRoot:string): Promise<WorkspaceProjectType | undefined> {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-call
-    const projectApi = new ProjectImpl.default(dirPath, true);
+    const projectApi = new ProjectImpl.default(wsRoot, true);
     try {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
-        const api = await projectApi.read(undefined);
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return,@typescript-eslint/no-unsafe-member-access
-        return api.tags;
+        const projectDS = await projectApi.read(undefined);
+        return projectDS;
     }
     catch (e) {
+        // TODO: proper logging
         console.error(e);
     }
-    projectApi.tagAddedHandler((newTags) => { /*  ... */})
-    projectApi.tagRemovedHandled((removedTags) => { /* ... */})
-
-    return [];
+    // oops
+    return  undefined
 }

@@ -7,6 +7,6 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@ext-lcapvsc-npm-dev/lcap-project-api": "file:../../../lcap/project/build/ext-lcapvsc-npm-dev-lcap-project-api-0.0.1.tgz"
+    "@ext-lcapvsc-npm-dev/lcap-project-api": "file:../../../lcap/project/build/ext-lcapvsc-npm-dev-lcap-project-api-0.0.37.tgz"
   }
 }

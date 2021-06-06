@@ -6,7 +6,8 @@ async function main() {
     const sampleProjectPath = resolve(__dirname, "../../../lcap/sample-workspace/risk-management-example");
     const projectApi = new ProjectImpl.default(sampleProjectPath, true);
     try {
-        const api = await projectApi.read(undefined);
+        const items = await projectApi.readItems(undefined);
+        const project = await projectApi.read(undefined);
         const x = 5;
     }
     catch (e) {
@@ -15,31 +16,6 @@ async function main() {
     }
 }
 
-// main();
-
-const { spawn } = require("child_process")
-async function spawnCDS() {
-    return new Promise((resolve, reject) => {
-        const childProcess = spawn("cds", ["-v"]);
-        let out = '';
-        childProcess.stdout.on('data', data => {
-            out += data;
-        });
-        childProcess.on('exit', () => resolve(out));
-        childProcess.on('error', err => reject(err));
-    });
-}
-
-async function main2() {
-    try {
-        const output = await spawnCDS();
-        console.log(output);
-    }
-    catch (e) {
-        console.log(e.message);
-    }
-}
-
-main2();
+main();
 
 
