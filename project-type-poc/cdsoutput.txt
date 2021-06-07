@@ -1,7 +1,0 @@
-[32m@sap/cds[0m: 5.1.4
-[32m@sap/cds-compiler[0m: 2.2.6
-[32m@sap/cds-dk[0m: 4.1.4
-[32m@sap/cds-foss[0m: 2.3.1
-[32m@sap/cds-runtime[0m: 3.1.0
-[32mNode.js[0m: v12.22.1
-[32mhome[0m: C:\Users\shachar.soel@sap.com\AppData\Local\Volta\tools\image\packages\@sap\cds-dk\node_modules\@sap\cds-dk\node_modules\@sap\cds

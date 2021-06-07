@@ -78,6 +78,20 @@
 			  "${workspaceFolder/sample-action-client/out/**/*.js",
 			],
 			// "preLaunchTask": "watch app-studio-toolkit"
-		  }
+		  },
+		  {
+			"name": "project-api-context-based-menu-items",
+			"type": "extensionHost",
+			"request": "launch",
+			"runtimeExecutable": "${execPath}",
+			"args": [
+				"--extensionDevelopmentPath=${workspaceFolder}",
+				"--extensionDevelopmentPath=${workspaceFolder}/project-type-poc/vscode-project-context-based-menu-items"
+			],
+			"outFiles": [
+				"${workspaceFolder}/out/**/*.js"
+			],
+			"preLaunchTask": "${defaultBuildTask}"
+		},
 	]
 }
