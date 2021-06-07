@@ -1,14 +1,13 @@
 import { Uri } from "vscode";
-import { bas, ICommandAction, IExecuteAction, IFileAction, ISnippetAction,
-    CommandActionParams, ExecuteActionParams, SnippetActionParams } from '@sap-devx/app-studio-toolkit-types';
+import { ICommandAction, IExecuteAction, IFileAction, ISnippetAction } from '@sap-devx/app-studio-toolkit-types';
 import { COMMAND, SNIPPET, FILE, EXECUTE } from '../constants';
 
 /** Specific action classes */
 export class ExecuteAction implements IExecuteAction {
     id?: string;
     actionType: "EXECUTE";
-    executeAction: (params?: ExecuteActionParams) => Thenable<any>;
-    params?: ExecuteActionParams;
+    executeAction: (params?: any[]) => Thenable<any>;
+    params?: any[];
 
     constructor() {
         this.actionType = EXECUTE;
@@ -21,7 +20,7 @@ export class CommandAction implements ICommandAction {
     id?: string;
     actionType: "COMMAND";
     name: string;
-    params?: CommandActionParams;
+    params?: any[];
 
     constructor() {
         this.actionType = COMMAND;
@@ -35,7 +34,7 @@ export class SnippetAction implements ISnippetAction {
     actionType: "SNIPPET";
     contributorId: string;
     snippetName: string;
-    context: SnippetActionParams;
+    context: any;
     isNonInteractive?: boolean;
 
     constructor() {

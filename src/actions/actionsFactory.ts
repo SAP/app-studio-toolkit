@@ -1,7 +1,7 @@
 import { Uri } from "vscode";
-import { IAction, ICommandAction, IFileAction, ISnippetAction, ActionType, basAction } from '@sap-devx/app-studio-toolkit-types';
+import { ICommandAction, IFileAction, ISnippetAction, ActionType, BasAction } from '@sap-devx/app-studio-toolkit-types';
 import { CommandAction, FileAction, SnippetAction } from './impl';
-import { COMMAND, SNIPPET, FILE } from '../constants';
+import { COMMAND, SNIPPET, FILE, URI } from '../constants';
 
 const getNameProp = (fromSettings: boolean): string => {
     return fromSettings ? "name" : "commandName";
@@ -11,7 +11,7 @@ const getParamsProp = (fromSettings: boolean): string => {
 };
 
 export class ActionsFactory {
-    public static createAction(jsonAction: any, fromSettings = false): basAction {
+    public static createAction(jsonAction: any, fromSettings = false): BasAction {
         const actionType: ActionType = jsonAction["actionType"];
         if (!actionType) {
             throw new Error(`actionType is missing`);
@@ -23,15 +23,16 @@ export class ActionsFactory {
             case SNIPPET: {
                 return ActionsFactory.handleSnippetAction(jsonAction);
             }
+            case URI:
             case FILE: {
-                return ActionsFactory.handleFileAction(jsonAction);
+                return ActionsFactory.handleUriAction(jsonAction);
             }
             default:
                 throw new Error(`Action with type "${actionType}" could not be created from json file`);
         }
     }
 
-    private static handleCommandAction(jsonAction: any, fromSettings = false): basAction {
+    private static handleCommandAction(jsonAction: any, fromSettings = false): BasAction {
         const commandAction: ICommandAction = new CommandAction();
         const commandId = jsonAction["id"];
         if (commandId) {
@@ -52,7 +53,7 @@ export class ActionsFactory {
         return commandAction;
     }
 
-    private static handleSnippetAction(jsonAction: any): basAction {
+    private static handleSnippetAction(jsonAction: any): BasAction {
         const snippetAction: ISnippetAction = new SnippetAction();
         const snippetId = jsonAction["id"];
         if (snippetId) {
@@ -84,7 +85,7 @@ export class ActionsFactory {
         return snippetAction;
     }
 
-    private static handleFileAction(jsonAction: any): basAction {
+    private static handleUriAction(jsonAction: any): BasAction {
         const fileAction: IFileAction = new FileAction();
         const fileId = jsonAction["id"];
         if (fileId) {
@@ -95,7 +96,7 @@ export class ActionsFactory {
             fileAction.uri = Uri.parse(uri, true);
         } catch (error) {
             throw new Error(
-                `Failed to parse field uri: ${uri} for "FILE" actionType: ${error.message}`
+                `Failed to parse field uri: ${uri} for "URI" actionType: ${error.message}`
             );
         }
         return fileAction;

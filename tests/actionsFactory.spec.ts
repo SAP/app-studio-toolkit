@@ -121,7 +121,7 @@ describe("actionsFactory test", () => {
             uriMock.verify();
         });
 
-        it("suceeds with uri", () => {
+        it("suceeds with uri, still with FILE actionType", () => {
             const myFileUri = "file:///usr/myFile";
             const actionJson = {
                 actionType: "FILE",
@@ -133,14 +133,26 @@ describe("actionsFactory test", () => {
             ActionsFactory.createAction(actionJson);
         });
 
+        it("suceeds with uri", () => {
+            const myFileUri = "file:///usr/myFile";
+            const actionJson = {
+                actionType: "URI",
+                uri: myFileUri,
+                id: "id"
+            };
+            uriMock.expects("parse").withExactArgs('');
+            uriMock.expects("parse").withExactArgs(myFileUri, true);
+            ActionsFactory.createAction(actionJson);
+        });
+
         it("fails without uri", () => {
             const actionJson = {
-                actionType: "FILE"
+                actionType: "URI"
             };
             uriMock.expects("parse").withExactArgs('');
             uriMock.expects("parse").withExactArgs(undefined, true).throws(new Error('Failed!'));
             expect(() => ActionsFactory.createAction(actionJson)).
-                to.throw(`Failed to parse field uri: undefined for "FILE" actionType: Failed!`);
+                to.throw(`Failed to parse field uri: undefined for "URI" actionType: Failed!`);
         });
     });
 

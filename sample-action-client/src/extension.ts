@@ -1,5 +1,5 @@
 import { extensions, commands, window, ExtensionContext, Uri } from 'vscode';
-import { bas, IAction, ICommandAction, IExecuteAction, IFileAction } from '@sap-devx/app-studio-toolkit-types';
+import { bas, BasAction, ICommandAction, IExecuteAction, IUriAction } from '../../types/api';
 import * as path from 'path';
 
 export async function activate(context: ExtensionContext) {
@@ -12,48 +12,55 @@ export async function activate(context: ExtensionContext) {
     }));
 
     context.subscriptions.push(commands.registerCommand("contrib.action.open.settings", () => {
-        //const action: IAction | undefined = basAPI.getAction("contribOpenSettings");
-        const action: IAction | undefined = basAPI.getAction("contribSearchInFiles");
+        const action: BasAction | undefined = basAPI.getAction("contribSearchInFiles");
         if (action) {
             void basAPI.actions.performAction(action);
         }
     }));
 
     context.subscriptions.push(commands.registerCommand("contrib.action.open.file", () => {
-        const action: IAction | undefined = basAPI.getAction("contribOpenFile");
+        const action: BasAction | undefined = basAPI.getAction("contribOpenFile");
         if (action) {
             void basAPI.actions.performAction(action);
         }
     }));
 
     context.subscriptions.push(commands.registerCommand("commandaction.display.settings", () => {
-        const action: ICommandAction = new basAPI.actions.CommandAction();
-        action.id = "command.action.id";
-        action.name = "workbench.action.openSettings";
-
+        const action: ICommandAction = {
+            actionType: "COMMAND",
+            id: "command.action.id",
+            name: "workbench.action.openSettings"
+        }
         void basAPI.actions.performAction(action);
     }));
 
     context.subscriptions.push(commands.registerCommand("fileaction.scheduled", () => {
-        const action: IFileAction = new basAPI.actions.FileAction();
-        action.id = "scheduled.file.action.id";
-        action.uri = Uri.file(path.join(context.extensionPath, "./resources/demo.txt"));
-
+        const uri = Uri.file(path.join(context.extensionPath, "./resources/demo.txt"));
+        const action: IUriAction = {
+            actionType: "URI",
+            id: "scheduled.file.action.id",
+            uri: uri
+        }
         void window.showInformationMessage(`File will be opened on reloading in 2 seconds`);
         void basAPI.actions.performAction(action, { schedule: true });
 
         setTimeout(() => {
-            const reloadAction: ICommandAction = new basAPI.actions.CommandAction();
-            reloadAction.id = "reload";
-            reloadAction.name = "workbench.action.reloadWindow";
+            const reloadAction: ICommandAction = {
+                actionType: "COMMAND",
+                id: "reload",
+                name: "workbench.action.reloadWindow"
+            }
             void basAPI.actions.performAction(reloadAction);
         }, 2000);
     }));
 
     context.subscriptions.push(commands.registerCommand("executeaction.display.error", () => {
-        const action: IExecuteAction = new basAPI.actions.ExecuteAction();
-        action.id = "display.error";
-        action.executeAction = () => window.showErrorMessage(`Hello from ExecuteAction`);
+        const executeAction = () => window.showErrorMessage(`Hello from ExecuteAction`);
+        const action: IExecuteAction = {
+            actionType: "EXECUTE",
+            id: "display.error",
+            executeAction: executeAction
+        }
         void basAPI.actions.performAction(action);
     }));
 
@@ -68,18 +75,21 @@ export async function activate(context: ExtensionContext) {
     }));
 
     context.subscriptions.push(commands.registerCommand("fileaction.open.file", () => {
-        const action: IFileAction = new basAPI.actions.FileAction();
-        action.id = "file.action.id";
-        action.uri = Uri.file(path.join(context.extensionPath, "./resources/demo.txt"));
-
+        const uri = Uri.file(path.join(context.extensionPath, "./resources/demo.txt"));
+        const action: IUriAction = {
+            actionType: "URI",
+            id: "file.action.id",
+            uri: uri
+        }
         void basAPI.actions.performAction(action);
     }));
 
     context.subscriptions.push(commands.registerCommand("fileaction.go.to.site", () => {
-        const action: IFileAction = new basAPI.actions.FileAction();
-        action.id = "site.action.id";
-        action.uri = Uri.parse("http://google.com");
-
+        const action: IUriAction = {
+            actionType: "URI",
+            id: "site.action.id",
+            uri: Uri.parse("http://google.com")
+        }
         void basAPI.actions.performAction(action);
     }));
 

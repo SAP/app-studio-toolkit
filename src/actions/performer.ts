@@ -1,10 +1,10 @@
 import { commands, ViewColumn } from 'vscode';
 import { get } from 'lodash';
 import { getLogger } from '../logger/logger';
-import { basAction } from '@sap-devx/app-studio-toolkit-types';
+import { BasAction } from '@sap-devx/app-studio-toolkit-types';
 import { COMMAND, SNIPPET, FILE, EXECUTE } from '../constants';
 
-export async function _performAction(action: basAction): Promise<any> {
+export async function _performAction(action: BasAction): Promise<any> {
   const logger = getLogger();
   if (action) {
     logger.trace(

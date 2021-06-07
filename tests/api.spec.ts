@@ -3,7 +3,7 @@ import { expect, use } from "chai";
 import * as chaiAsPromised from "chai-as-promised";
 import * as _ from "lodash";
 import { SinonSandbox, SinonMock, createSandbox } from "sinon";
-import { basAction, ICommandAction } from '@sap-devx/app-studio-toolkit-types';
+import { BasAction, ICommandAction } from '@sap-devx/app-studio-toolkit-types';
 import { ActionsController } from '../src/actions/controller';
 import * as vscode from "vscode";
 import { COMMAND, SNIPPET } from '../src/constants';
@@ -56,12 +56,12 @@ describe("api unit test", () => {
     });
 
     it("get actions - with two actions", () => {
-        const action1: basAction = {
+        const action1: BasAction = {
 			id: "action_1",
 			actionType: COMMAND,
             name: "name"
 		};
-        const action2: basAction = {
+        const action2: BasAction = {
 			id: "action_2",
 			actionType: SNIPPET,
             context: {},

@@ -6,3 +6,4 @@ export const FILE = "FILE";
 
 export const EXECUTE = "EXECUTE";
 
+export const URI = "URI";

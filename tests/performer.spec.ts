@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { SinonSandbox, SinonMock, createSandbox } from "sinon";
-import { basAction, ICommandAction, IExecuteAction, IFileAction, ISnippetAction } from '@sap-devx/app-studio-toolkit-types';
+import { BasAction, ICommandAction, IExecuteAction, IFileAction, ISnippetAction } from '@sap-devx/app-studio-toolkit-types';
 import { COMMAND, SNIPPET, EXECUTE } from '../src/constants';
 
 import { mockVscode } from "./mockUtil";
@@ -145,11 +145,11 @@ describe("performer test", () => {
         const action = {
             actionType: "unsupported"
         };
-        const result = _performAction(action as basAction);
+        const result = _performAction(action as BasAction);
         await expect(result).to.be.rejectedWith(`actionType is not supported`);
     });
 
     it("undefined action is rejected", async () => {
-        await expect(_performAction(undefined as unknown as basAction)).to.be.rejectedWith(`Action is not provided`);
+        await expect(_performAction(undefined as unknown as BasAction)).to.be.rejectedWith(`Action is not provided`);
     });
 });
