@@ -26,23 +26,16 @@ declare interface BasToolkit {
   getAction: (id: string) => BasAction | undefined;
 
   /**
-   * @deprecated - **DON'T USE**, this function will be removed in the near future.
-   *               use {@link getURLParamValue} instead.
+   * Note that in BAS these parameters are usually URL parameters.
+   * But the API is more general and is not limited to only URL parameters.
    *
-   * @param key - URL parameter **key** name.
+   * @param key - parameter **key** name.
    *
-   * @returns The **value** of the specified `key` IFF such a key exists in the BAS URL,
+   * @returns The **value** of the specified `key` parameter IFF such a key exists in BAS,
    *          `undefined` otherwise.
    */
   getParameter: (key: string) => Promise<string | undefined>;
 
-  /**
-   * @param key - URL parameter **key** name.
-   *
-   * @returns The **value** of the specified URL `key` IFF such a key exists in the BAS URL,
-   *          `undefined` otherwise.
-   */
-  getURLParamValue: (key: string) => Promise<string | undefined>;
 
   /**
    * @param action - The action to invoke/call/execute.
@@ -59,7 +52,7 @@ declare interface BasToolkit {
   actions: {
     /**
      * @deprecated - **DON'T USE**, this function will be removed in the near future.
-     *               use {@link BasToolkit.performAction} instead.
+     *               use {@link BasToolkit.performAction} instead (without the `actions` namespace.
      *
      * @param action - The action to invoke/call/execute.
      * @param [options.schedule] - Schedule performing the action **after** a restart.

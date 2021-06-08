@@ -33,7 +33,6 @@ export const bas:BasToolkit = {
     },
 
     getAction: (actionId: string) => ActionsController.getAction(actionId),
-    getURLParamValue:getParameter,
     getParameter,
     performAction,
 
