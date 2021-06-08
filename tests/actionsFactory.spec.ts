@@ -10,7 +10,7 @@ mockVscode(testVscode, "src/actions/actionsFactory.ts");
 mockVscode(testVscode, "src/actions/impl.ts");
 import { ActionsFactory } from "../src/actions/actionsFactory";
 import { ICommandAction, ISnippetAction } from '@sap-devx/app-studio-toolkit-types';
-import { ExecuteAction, } from "../src/actions/impl";
+import { ExecuteAction } from "../src/actions/impl";
 import { window } from "vscode";
 
 describe("actionsFactory test", () => {

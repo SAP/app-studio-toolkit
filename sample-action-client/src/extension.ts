@@ -1,5 +1,5 @@
 import { extensions, commands, window, ExtensionContext, Uri } from 'vscode';
-import { bas, BasAction, ICommandAction, IExecuteAction, IUriAction } from '../../types/api';
+import { bas, BasAction, ICommandAction, IExecuteAction, IUriAction } from '@sap-devx/app-studio-toolkit-types';
 import * as path from 'path';
 
 export async function activate(context: ExtensionContext) {

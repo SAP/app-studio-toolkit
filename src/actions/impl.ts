@@ -42,7 +42,6 @@ export class SnippetAction implements ISnippetAction {
         this.contributorId = "";
         this.snippetName = "";
         this.context = {};
-        this.isNonInteractive = false;
     }
 }
 
