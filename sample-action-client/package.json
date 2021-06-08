@@ -73,7 +73,7 @@
 		"onCommand:contrib.action.open.file"
 	],
 	"devDependencies": {
-		"@sap-devx/app-studio-toolkit-types": "0.0.11",
+		"@sap-devx/app-studio-toolkit-types": "../types",
 		"@types/vscode": "^1.40.0",
 		"typescript": "^4.2.4",
 		"vsce": "^1.88.0"

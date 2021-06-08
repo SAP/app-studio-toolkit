@@ -39,7 +39,7 @@ declare interface BasToolkit {
 
   /**
    * @param action - The action to invoke/call/execute.
-   * @param [aptions.schedule] - Schedule performing the action **after** a restart.
+   * @param [options.schedule] - Schedule performing the action **after** a restart.
    *
    * @returns - The return type depends on the type of of BasAction "performed".
    *            Note that is the `schedule` option is used, the return type would be Thenable<Void>.
