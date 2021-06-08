@@ -1,6 +1,6 @@
 import { extensions } from "vscode";
 import { getLogger } from "../logger/logger";
-import { BasAction, IAction } from '@sap-devx/app-studio-toolkit-types';
+import { BasAction } from '@sap-devx/app-studio-toolkit-types';
 import { _performAction } from "./performer";
 import { getParameter } from '../apis/parameters';
 import { ActionsFactory } from './actionsFactory';
