@@ -3,9 +3,10 @@ import { expect, use } from "chai";
 import * as chaiAsPromised from "chai-as-promised";
 import * as _ from "lodash";
 import { SinonSandbox, SinonMock, createSandbox } from "sinon";
-import { IAction, ActionType, ICommandAction } from "../src/actions/interfaces";
+import { BasAction, ICommandAction } from '@sap-devx/app-studio-toolkit-types';
 import { ActionsController } from '../src/actions/controller';
 import * as vscode from "vscode";
+import { COMMAND, SNIPPET } from '../src/constants';
 
 use(chaiAsPromised);
 const extensions = { getExtension: () => "" };
@@ -25,7 +26,7 @@ describe("api unit test", () => {
     before(() => {
         sandbox = createSandbox();
     });
-    
+
     after(() => {
         sandbox.restore();
     });
@@ -39,7 +40,7 @@ describe("api unit test", () => {
     });
 
     it("active extension exports are resolved", async () => {
-        const extension = { 
+        const extension = {
             isActive: true,
             exports: "api"
         };
@@ -48,20 +49,24 @@ describe("api unit test", () => {
         const result = await bas.getExtensionAPI("myExt");
         expect(result).to.be.equal("api");
     });
-    
+
     it("get actions - without defined actions", () => {
         const result = bas.getAction("myExt");
-        expect(result).to.be.undefined;        
+        expect(result).to.be.undefined;
     });
 
     it("get actions - with two actions", () => {
-        const action1: IAction = {
-			"id" : "action_1",
-			"actionType" : ActionType.Command
+        const action1: BasAction = {
+			id: "action_1",
+			actionType: COMMAND,
+            name: "name"
 		};
-        const action2: IAction = {
-			"id" : "action_2",
-			"actionType" : ActionType.Snippet
+        const action2: BasAction = {
+			id: "action_2",
+			actionType: SNIPPET,
+            context: {},
+            contributorId: "contrib1",
+            snippetName: "name"
 		};
         ActionsController["actions"].push(action1);
         ActionsController["actions"].push(action2);
@@ -71,13 +76,13 @@ describe("api unit test", () => {
 
         const result2 = bas.getAction("action_2");
         expect(result2).to.includes(action2);
-        
+
     });
 
     it("loadActions", () => {
         const action: ICommandAction = {
 			"id" : "abc123",
-			"actionType" : ActionType.Command,
+			"actionType" : COMMAND,
             "name": "name"
 		};
         const allExtensioms = [{
@@ -97,16 +102,16 @@ describe("api unit test", () => {
     });
 
     it("inactive extension is waited for", async () => {
-        const extension = { 
+        const extension = {
             isActive: false,
             exports: "api"
         };
 
         extensionsMock.expects("getExtension").withExactArgs("myExt").returns(extension);
         await expect(promiseWithTimeout(bas.getExtensionAPI("myExt"), 1000)).to.be.rejectedWith("Timed out");
-        extension.isActive = true;  
+        extension.isActive = true;
     });
-    
+
     it("non existing extension is rejected", async () => {
         extensionsMock.expects("getExtension").withExactArgs("myExt").returns(undefined);
         await expect(bas.getExtensionAPI("myExt")).to.be.rejectedWith(`Extension myExt is not loaded`);
@@ -117,8 +122,8 @@ function promiseWithTimeout(promise: any, timeout: number){
     return Promise.race([
     promise,
     new Promise(function(resolve, reject){
-      setTimeout(function() { 
-          reject(new Error("Timed out")); 
+      setTimeout(function() {
+          reject(new Error("Timed out"));
         }, timeout);
     })
   ]);

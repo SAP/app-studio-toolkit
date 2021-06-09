@@ -8,11 +8,10 @@ const testVscode = {
 
 mockVscode(testVscode, "src/actions/actionsFactory.ts");
 mockVscode(testVscode, "src/actions/impl.ts");
-mockVscode(testVscode, "src/actions/interfaces.ts");
 import { ActionsFactory } from "../src/actions/actionsFactory";
-import { CommandAction, ExecuteAction, FileAction, SnippetAction } from "../src/actions/impl";
-import { ActionType, ActionJsonKey } from '../src/actions/interfaces';
-
+import { ICommandAction, ISnippetAction } from '@sap-devx/app-studio-toolkit-types';
+import { ExecuteAction } from "../src/actions/impl";
+import { window } from "vscode";
 
 describe("actionsFactory test", () => {
     let sandbox: any;
@@ -28,40 +27,38 @@ describe("actionsFactory test", () => {
     describe("create command action", () => {
         it("suceeds with params", () => {
             const actionJson = {
-                [ActionJsonKey.ActionType]: ActionType.Command,
-                [ActionJsonKey.CommandName]: "myCommand",
-                [ActionJsonKey.CommandParams]: ["param1", "param2"]
+                actionType: "COMMAND",
+                commandName: "myCommand",
+                commandParams: ["param1", "param2"]
             };
             const action = ActionsFactory.createAction(actionJson);
-            expect(action instanceof CommandAction).to.be.true;
-            expect((action as CommandAction).name).to.be.equal("myCommand");
-            expect((action as CommandAction).params).to.deep.equal(["param1", "param2"]);
+            expect((action as ICommandAction).name).to.be.equal("myCommand");
+            expect((action as ICommandAction).params).to.deep.equal(["param1", "param2"]);
         });
 
         it("suceeds without params", () => {
             const actionJson = {
-                [ActionJsonKey.ActionType]: ActionType.Command,
-                [ActionJsonKey.CommandName]: "myCommand"
+                actionType: "COMMAND",
+                commandName: "myCommand"
 
             };
             const action = ActionsFactory.createAction(actionJson);
-            expect(action instanceof CommandAction).to.be.true;
-            expect((action as CommandAction).name).to.be.equal("myCommand");
-            expect((action as CommandAction).params).to.deep.equal([]);
+            expect((action as ICommandAction).name).to.be.equal("myCommand");
+            expect((action as ICommandAction).params).to.deep.equal([]);
         });
 
         it("fails without name", () => {
             const actionJson = {
-                [ActionJsonKey.ActionType]: ActionType.Command
+                actionType: "COMMAND"
             };
-            expect(() => ActionsFactory.createAction(actionJson)).to.throw(`${ActionJsonKey.CommandName} is missing for actionType=${ActionType.Command}`);
+            expect(() => ActionsFactory.createAction(actionJson)).to.throw(`commandName is missing for "COMMAND" actionType`);
         }); 
     });
 
     describe("create Snippet action", () => {
-        it("suceeds with all the mandatory params", () => {
+        it("suceeds with all the params", () => {
             const actionJson = {
-                [ActionJsonKey.ActionType]: ActionType.Snippet,
+                actionType: "SNIPPET",
                 id: "id",
                 snippetName: "name",
                 contributorId: "contributorId",
@@ -69,37 +66,47 @@ describe("actionsFactory test", () => {
                 isNonInteractive: true
             };
             const action = ActionsFactory.createAction(actionJson);
-            expect(action instanceof SnippetAction).to.be.true;
-            expect((action as SnippetAction).snippetName).to.be.equal("name");
-            expect((action as SnippetAction).contributorId).to.deep.equal("contributorId");
+            expect((action as ISnippetAction).snippetName).to.be.equal("name");
+            expect((action as ISnippetAction).contributorId).to.deep.equal("contributorId");
         });
 
         it("suceeds with just the mandatory params", () => {
             const actionJson = {
-                [ActionJsonKey.ActionType]: ActionType.Snippet,
+                actionType: "SNIPPET",
                 snippetName: "name",
+                context: {},
                 contributorId: "contributorId"
             };
             const action = ActionsFactory.createAction(actionJson);
-            expect(action instanceof SnippetAction).to.be.true;
-            expect((action as SnippetAction).snippetName).to.be.equal("name");
-            expect((action as SnippetAction).contributorId).to.deep.equal("contributorId");
+            expect((action as ISnippetAction).snippetName).to.be.equal("name");
+            expect((action as ISnippetAction).contributorId).to.deep.equal("contributorId");
         });
 
         it("fails without snippetName", () => {
             const actionJson = {
-                [ActionJsonKey.ActionType]: ActionType.Snippet,
-                contributorId: "contributorId"
+                actionType: "SNIPPET",
+                contributorId: "contributorId",
+                context: {}
             };
-            expect(() => ActionsFactory.createAction(actionJson)).to.throw(`snippetName is missing for actionType=${ActionType.Snippet}`);    
+            expect(() => ActionsFactory.createAction(actionJson)).to.throw(`snippetName is missing for "SNIPPET" actionType`);    
         });
 
         it("fails without contributorId", () => {
             const actionJson = {
-                [ActionJsonKey.ActionType]: ActionType.Snippet,
+                actionType: "SNIPPET",
+                snippetName: "name",
+                context: {},
+            };
+            expect(() => ActionsFactory.createAction(actionJson)).to.throw(`contributorId is missing for "SNIPPET" actionType`);    
+        });
+
+        it("fails without context", () => {
+            const actionJson = {
+                actionType: "SNIPPET",
+                contributorId: "contributorId",
                 snippetName: "name"
             };
-            expect(() => ActionsFactory.createAction(actionJson)).to.throw(`contributorId is missing for actionType=${ActionType.Snippet}`);    
+            expect(() => ActionsFactory.createAction(actionJson)).to.throw(`context is missing for "SNIPPET" actionType`);    
         });
     });
 
@@ -114,48 +121,59 @@ describe("actionsFactory test", () => {
             uriMock.verify();
         });
 
-        it("suceeds with uri", () => {
+        it("suceeds with uri, still with FILE actionType", () => {
             const myFileUri = "file:///usr/myFile";
             const actionJson = {
-                [ActionJsonKey.ActionType]: ActionType.File,
-                [ActionJsonKey.Uri]: myFileUri,
+                actionType: "FILE",
+                uri: myFileUri,
                 id: "id"
             };
             uriMock.expects("parse").withExactArgs('');
             uriMock.expects("parse").withExactArgs(myFileUri, true);
-            const action = ActionsFactory.createAction(actionJson);
-            expect(action instanceof FileAction).to.be.true;
+            ActionsFactory.createAction(actionJson);
+        });
+
+        it("suceeds with uri", () => {
+            const myFileUri = "file:///usr/myFile";
+            const actionJson = {
+                actionType: "URI",
+                uri: myFileUri,
+                id: "id"
+            };
+            uriMock.expects("parse").withExactArgs('');
+            uriMock.expects("parse").withExactArgs(myFileUri, true);
+            ActionsFactory.createAction(actionJson);
         });
 
         it("fails without uri", () => {
             const actionJson = {
-                [ActionJsonKey.ActionType]: ActionType.File
+                actionType: "URI"
             };
             uriMock.expects("parse").withExactArgs('');
             uriMock.expects("parse").withExactArgs(undefined, true).throws(new Error('Failed!'));
             expect(() => ActionsFactory.createAction(actionJson)).
-                to.throw(`Failed to parse field ${ActionJsonKey.Uri}: undefined for actionType=${ActionType.File}: Failed!`);
+                to.throw(`Failed to parse field uri: undefined for "URI" actionType: Failed!`);
         });
     });
 
     describe("create action fails", () => {
         it("when no action type defined", () => {
             const actionJson = {};
-            expect(() => ActionsFactory.createAction(actionJson)).to.throw(`${ActionJsonKey.ActionType} is missing`);
+            expect(() => ActionsFactory.createAction(actionJson)).to.throw(`actionType is missing`);
         });
 
         it("when no unsupported action type used", () => {
             const actionJson = {
-                [ActionJsonKey.ActionType]: "Unsupported"
+                actionType: "Unsupported"
             };
-            expect(() => ActionsFactory.createAction(actionJson)).to.throw(`Action with ${ActionJsonKey.ActionType}=Unsupported could not be created from json file`);
+            expect(() => ActionsFactory.createAction(actionJson)).to.throw(`Action with type "Unsupported" could not be created from json file`);
         });
     });
     
-    // TODO remove those when ExecuteAction and SnippetAction are supported in actionsFactory
     it("create executeAction", () => {
         const action = new ExecuteAction();
-        expect(action.actionType).to.equal(ActionType.Execute);
+        action.executeAction = () => window.showErrorMessage(`Hello from ExecuteAction`);
+        expect(action.actionType).to.equal("EXECUTE");
         expect(action.params).to.deep.equal([]);
     });
 });

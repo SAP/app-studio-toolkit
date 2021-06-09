@@ -14,7 +14,8 @@ mockVscode(testVscode, "src/actions/client.ts");
 mockVscode(testVscode, "src/actions/performer.ts");
 import { performAction } from "../src/actions/client";
 import * as performer from '../src/actions/performer';
-import { ActionType } from "../src/api";
+import { ICommandAction } from '@sap-devx/app-studio-toolkit-types';
+import { COMMAND } from '../src/constants';
 
 describe("client test", () => {
     let sandbox: SinonSandbox;
@@ -27,8 +28,8 @@ describe("client test", () => {
         update: () => ""
     };
 
-    const myAction = {
-        actionType: ActionType.Command,
+    const myAction: ICommandAction = {
+        actionType: COMMAND,
         name: "myAction"
     };
 

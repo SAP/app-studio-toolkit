@@ -1,6 +1,6 @@
 import { extensions } from "vscode";
 import { getLogger } from "../logger/logger";
-import { IAction } from "./interfaces";
+import { BasAction } from '@sap-devx/app-studio-toolkit-types';
 import { _performAction } from "./performer";
 import { getParameter } from '../apis/parameters';
 import { ActionsFactory } from './actionsFactory';
@@ -8,14 +8,14 @@ import { isArray, forEach, get, uniq, compact, split } from "lodash";
 import * as actionsConfig from './actionsConfig';
 
 export class ActionsController {
-  private static readonly actions: IAction[] = [];
+  private static readonly actions: BasAction[] = [];
 
   public static loadContributedActions() {
     forEach(extensions.all, extension => {
       const extensionActions = get(extension, "packageJSON.BASContributes.actions", []);
       forEach(extensionActions, actionAsJson => {
         try {
-          const action: IAction = ActionsFactory.createAction(actionAsJson, true);
+          const action: BasAction = ActionsFactory.createAction(actionAsJson, true);
           ActionsController.actions.push(action);
         } catch (error) {
           getLogger().error(`Failed to create action ${JSON.stringify(actionAsJson)}: ${error}`, { method: "loadContributedActions" });
@@ -24,7 +24,7 @@ export class ActionsController {
     });
   }
 
-  public static getAction(id: string): IAction | undefined {
+  public static getAction(id: string): BasAction | undefined {
     return ActionsController.actions.find(action => action.id === id);
   }
 
@@ -81,7 +81,7 @@ export class ActionsController {
     getLogger().trace(`inlinedActions= ${JSON.stringify(actionsArr)}`, { method: "perfomInlinedActions" });
     forEach(actionsArr, async actionAsJson => {
       try {
-        const action: IAction = ActionsFactory.createAction(actionAsJson, true);
+        const action: BasAction = ActionsFactory.createAction(actionAsJson, true);
         await _performAction(action);
       } catch (error) {
         getLogger().error(`Failed to create action ${JSON.stringify(actionAsJson)}: ${error}`, { method: "perfomFullActions" });
@@ -93,7 +93,7 @@ export class ActionsController {
     const actionsList: string[] = actionsConfig.get();
     forEach(actionsList, async actionAsJson => {
       try {
-        const action: IAction = ActionsFactory.createAction(actionAsJson, true);
+        const action: BasAction = ActionsFactory.createAction(actionAsJson, true);
         await _performAction(action);
       } catch (error) {
         getLogger().error(`Failed to execute scheduled action ${JSON.stringify(actionAsJson)}: ${error}`, { method: "performScheduledActions" });
