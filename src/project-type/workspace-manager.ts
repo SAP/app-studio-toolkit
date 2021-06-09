@@ -3,16 +3,29 @@ import { workspace } from "vscode";
 import { forEach } from "lodash";
 import { insertToProjectTypeMaps } from "./contexts";
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-var-requires
-const ProjectImpl = require("@ext-lcapvsc-npm-dev/lcap-project-api/dist/src/project-api/ProjectImpl");
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-var-requires
 const WorkspaceProjectImpl = require("@ext-lcapvsc-npm-dev/lcap-project-api/dist/src/project-api/WorkspaceImpl")
   .default;
 
-export async function initWorkspaceProjectTypeContexts(): Promise<void> {
+// TODO: use proper types from project library (once properly exported)
+type ProjectAPI = any;
+type WorkspaceAPI = any;
+let workspaceAPI: WorkspaceAPI;
+
+export function initWorkspaceAPI() {
+  workspaceAPI = new WorkspaceProjectImpl();
+}
+
+export function getWorkspaceAPI():WorkspaceAPI {
+  return workspaceAPI;
+}
+
+export async function initWorkspaceProjectTypeContexts(
+  workspaceAPI: WorkspaceAPI
+): Promise<void> {
   let allProjectsAPI: ProjectAPI[] = [];
   try {
-    const workspaceAPI = new WorkspaceProjectImpl();
     allProjectsAPI = await workspaceAPI.getProjects();
   } catch (e) {
     console.error(e);
@@ -21,29 +34,25 @@ export async function initWorkspaceProjectTypeContexts(): Promise<void> {
   forEach(allProjectsAPI, async (currProjectAPI) => {
     const projectAbsRoot = currProjectAPI.path;
     try {
-    const currProjectDS = await currProjectAPI.read();
-    insertToProjectTypeMaps(projectAbsRoot, currProjectDS.tags);
-    forEach(currProjectDS.modules, (currModule) => {
-      // `Module["path"]` is relative to the project's root
-      const moduleAbsPath = resolve(projectAbsRoot, currModule.path);
-      insertToProjectTypeMaps(moduleAbsPath, currModule.tags);
-      forEach(currModule.items, (currItem) => {
-        // `Item["path"]` is also relative to the project's root
-        const itemAbsPath = resolve(projectAbsRoot, currItem.path);
-        insertToProjectTypeMaps(itemAbsPath, currItem.tags);
+      const currProjectDS = await currProjectAPI.read();
+      insertToProjectTypeMaps(projectAbsRoot, currProjectDS.tags);
+      forEach(currProjectDS.modules, (currModule) => {
+        // `Module["path"]` is relative to the project's root
+        const moduleAbsPath = resolve(projectAbsRoot, currModule.path);
+        insertToProjectTypeMaps(moduleAbsPath, currModule.tags);
+        forEach(currModule.items, (currItem) => {
+          // `Item["path"]` is also relative to the project's root
+          const itemAbsPath = resolve(projectAbsRoot, currItem.path);
+          insertToProjectTypeMaps(itemAbsPath, currItem.tags);
+        });
       });
-    });
-    }
-    catch (e) {
-      console.error(e); 
+    } catch (e) {
+      console.error(e);
     }
   });
 }
 
-// TODO: use proper types from project library (once properly exported)
-type ProjectAPI = any;
-type WorkspaceAPI = any;
-
+// const ProjectImpl = require("@ext-lcapvsc-npm-dev/lcap-project-api/dist/src/project-api/ProjectImpl");
 
 // async function readWorkspaceProjectDS(
 //   wsRoot: string

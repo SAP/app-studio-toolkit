@@ -17,7 +17,9 @@ const testVscode = {
 mockVscode(testVscode, "src/api.ts");
 mockVscode(testVscode, "src/logger/logger.ts");
 
-import { bas } from "../src/api";
+import { createBasToolkitAPI } from "../src/api";
+
+const bas = createBasToolkitAPI("NOT_IMPLEMENTED_YET" as any);
 
 describe("api unit test", () => {
     let sandbox: SinonSandbox;

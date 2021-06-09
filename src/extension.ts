@@ -1,9 +1,9 @@
-import { bas } from './api';
+import {createBasToolkitAPI} from './api';
 import { startBasctlServer, closeBasctlServer } from './basctlServer/basctlServer';
 import { ActionsController } from './actions/controller';
 import { initLogger, getLogger } from './logger/logger';
 import { ExtensionContext } from 'vscode';
-import { initWorkspaceProjectTypeContexts } from "./project-type/workspace-manager";
+import {getWorkspaceAPI, initWorkspaceAPI, initWorkspaceProjectTypeContexts} from "./project-type/workspace-manager";
 
 export function activate(context: ExtensionContext) {
     initLogger(context);
@@ -19,9 +19,12 @@ export function activate(context: ExtensionContext) {
     const logger = getLogger().getChildLogger({ label: 'activate' });
     logger.info('The App-Studio-Toolkit Extension is active.');
 
-    await initWorkspaceProjectTypeContexts();
+    initWorkspaceAPI();
+    const workspaceAPI = getWorkspaceAPI();
+    void initWorkspaceProjectTypeContexts(workspaceAPI);
+    const basToolkitAPI = createBasToolkitAPI(workspaceAPI);
 
-    return bas;
+    return basToolkitAPI;
 }
 
 export function deactivate() {

@@ -89,6 +89,10 @@ declare interface BasToolkit {
      */
     FileAction: { new (): IFileAction };
   };
+
+  // TODO: `any` to some type definition provided by the the `project-api` library
+  // TODO: this type definition need to be de-coupled from the `project-api` library itself.
+  workspaceAPI:any
 }
 
 declare const bas: BasToolkit;
