@@ -1,0 +1,59 @@
+{
+  "name": "project_exposing_workspace_api_instance",
+  "version": "6.6.6",
+  "publisher": "SAP OSS",
+  "engines": {
+    "vscode": "^1.32.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "*"
+  ],
+  "extensionDependencies": [
+    "SAPOSS.app-studio-toolkit"
+  ],
+  "main": "./lib/extension",
+  "contributes": {
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "extension.capPreview",
+          "when": "resourcePath in bas_project_types:cap"
+        },
+        {
+          "command": "extension.ui5Deploy",
+          "when": "resourcePath in bas_project_types:ui5"
+        },
+        {
+          "command": "extension.ui5EditManifest",
+          "when": "resourcePath in bas_project_types:ui5 && resourceFilename == manifest.json"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "extension.capPreview",
+        "title": "Preview LCAP Application"
+      },
+      {
+        "command": "extension.ui5Deploy",
+        "title": "Deploy UI5 Application"
+      },
+      {
+        "command": "extension.ui5EditManifest",
+        "title": "Edit UI5 Manifest"
+      }
+    ]
+  },
+  "scripts": {
+  },
+  "dependencies": {
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.32.0",
+    "@types/lodash": "^4.14.168"
+  }
+}

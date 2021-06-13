@@ -93,5 +93,19 @@
 			],
 			"preLaunchTask": "${defaultBuildTask}"
 		},
+		{
+			"name": "project-api-exposing-workspace-api-instance",
+			"type": "extensionHost",
+			"request": "launch",
+			"runtimeExecutable": "${execPath}",
+			"args": [
+				"--extensionDevelopmentPath=${workspaceFolder}",
+				"--extensionDevelopmentPath=${workspaceFolder}/project-type-poc/vscode-exposing-workspace-instance"
+			],
+			"outFiles": [
+				"${workspaceFolder}/out/**/*.js"
+			],
+			"preLaunchTask": "${defaultBuildTask}"
+		}
 	]
 }
