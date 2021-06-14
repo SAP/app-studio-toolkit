@@ -1,32 +1,39 @@
-import {createBasToolkitAPI} from './api';
-import { startBasctlServer, closeBasctlServer } from './basctlServer/basctlServer';
-import { ActionsController } from './actions/controller';
-import { initLogger, getLogger } from './logger/logger';
-import { ExtensionContext } from 'vscode';
-import {getWorkspaceAPI, initWorkspaceAPI, initWorkspaceProjectTypeContexts} from "./project-type/workspace-manager";
+import { createBasToolkitAPI } from "./api";
+import {
+  startBasctlServer,
+  closeBasctlServer,
+} from "./basctlServer/basctlServer";
+import { ActionsController } from "./actions/controller";
+import { initLogger, getLogger } from "./logger/logger";
+import { ExtensionContext } from "vscode";
+import {
+  getWorkspaceAPI,
+  initWorkspaceAPI,
+} from "./project-type/workspace-instance";
+import { initTagsContexts } from "./project-type/context-state";
 
 export function activate(context: ExtensionContext) {
-    initLogger(context);
+  initLogger(context);
 
-    startBasctlServer();
+  startBasctlServer();
 
-    ActionsController.loadContributedActions();
+  ActionsController.loadContributedActions();
 
-    ActionsController.performScheduledActions();
+  ActionsController.performScheduledActions();
 
-    void ActionsController.performActionsFromURL();
+  void ActionsController.performActionsFromURL();
 
-    const logger = getLogger().getChildLogger({ label: 'activate' });
-    logger.info('The App-Studio-Toolkit Extension is active.');
+  const logger = getLogger().getChildLogger({ label: "activate" });
+  logger.info("The App-Studio-Toolkit Extension is active.");
 
-    initWorkspaceAPI();
-    const workspaceAPI = getWorkspaceAPI();
-    void initWorkspaceProjectTypeContexts(workspaceAPI);
-    const basToolkitAPI = createBasToolkitAPI(workspaceAPI);
+  initWorkspaceAPI();
+  const workspaceAPI = getWorkspaceAPI();
+  void initTagsContexts(workspaceAPI);
+  const basToolkitAPI = createBasToolkitAPI(workspaceAPI);
 
-    return basToolkitAPI;
+  return basToolkitAPI;
 }
 
 export function deactivate() {
-    closeBasctlServer();
+  closeBasctlServer();
 }
