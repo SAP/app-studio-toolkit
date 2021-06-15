@@ -1,14 +1,14 @@
 import { WorkspaceAPI } from "./types";
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-var-requires
+// This import does not work (in 0.0.42) due to cyclic dep issue in project-type.
+// import { WorkspaceImpl } from "@ext-lcapvsc-npm-dev/lcap-project-api";
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-var-requires
-const WorkspaceProjectImpl = require("@ext-lcapvsc-npm-dev/lcap-project-api/dist/src/project-api/WorkspaceImpl")
-  .default;
+import WorkspaceImpl from "@ext-lcapvsc-npm-dev/lcap-project-api/dist/src/project-api/WorkspaceImpl";
+
 
 let workspaceAPI: WorkspaceAPI;
 
 export function initWorkspaceAPI() {
-  workspaceAPI = new WorkspaceProjectImpl();
+  workspaceAPI = new WorkspaceImpl();
 }
 
 export function getWorkspaceAPI(): WorkspaceAPI {

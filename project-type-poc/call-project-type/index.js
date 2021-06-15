@@ -1,5 +1,9 @@
 const { resolve } = require("path");
-const ProjectImpl = require("@ext-lcapvsc-npm-dev/lcap-project-api/dist/src/project-api/ProjectImpl")
+
+// in 0.0.42 this does not work due to cyclic deps issue in project-type.
+// const { WorkspaceImpl } = require("@ext-lcapvsc-npm-dev/lcap-project-api")
+
+const ProjectImpl = require("@ext-lcapvsc-npm-dev/lcap-project-api/dist/src/project-api/ProjectImpl");
 
 async function main() {
     // const sampleProjectPath = resolve(__dirname, "../../../lcap/sample-workspace/openui5-sample-app");

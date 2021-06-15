@@ -10,7 +10,7 @@ import {
 } from "./actions/impl";
 import { getParameter } from "./apis/parameters";
 import { getLogger } from "./logger/logger";
-import WorkspaceApi from "@ext-lcapvsc-npm-dev/lcap-project-api/dist/src/project-api/WorkspaceAPI";
+import { WorkspaceAPI } from "./project-type/types";
 
 const basToolkitAPI: Omit<BasToolkit, "workspaceAPI"> = {
   getExtensionAPI: <T>(extensionId: string): Promise<T> => {
@@ -51,9 +51,9 @@ const basToolkitAPI: Omit<BasToolkit, "workspaceAPI"> = {
   },
 };
 
-export function createBasToolkitAPI(workspaceAPI: WorkspaceApi): BasToolkit {
+export function createBasToolkitAPI(workspaceAPI: WorkspaceAPI): BasToolkit {
   const exportedBasToolkitAPI = {
-      // "shallow" clone
+    // "shallow" clone
     ...basToolkitAPI,
     ...{ workspaceAPI: workspaceAPI },
   };
