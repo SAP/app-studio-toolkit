@@ -75,7 +75,7 @@
 		"@vscode-logging/wrapper": "1.0.1",
 		"lodash": "4.17.21",
 		"optional-require": "1.0.3",
-		"@ext-lcapvsc-npm-dev/lcap-project-api": "file:../lcap/project/build/ext-lcapvsc-npm-dev-lcap-project-api-0.0.42.tgz"
+		"@sap/project-api": "file:../lcap/project/build/sap-project-api-0.0.43.tgz"
 	},
 	"devDependencies": {
 		"@sap-devx/app-studio-toolkit-types": "file:./types",

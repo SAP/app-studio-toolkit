@@ -1,4 +1,5 @@
 import { extensions } from "vscode";
+import { WorkspaceApi } from "@sap/project-api";
 import { BasToolkit } from "@sap-devx/app-studio-toolkit-types";
 import { performAction } from "./actions/client";
 import { ActionsController } from "./actions/controller";
@@ -10,7 +11,6 @@ import {
 } from "./actions/impl";
 import { getParameter } from "./apis/parameters";
 import { getLogger } from "./logger/logger";
-import { WorkspaceAPI } from "./project-type/types";
 
 const basToolkitAPI: Omit<BasToolkit, "workspaceAPI"> = {
   getExtensionAPI: <T>(extensionId: string): Promise<T> => {
@@ -51,7 +51,7 @@ const basToolkitAPI: Omit<BasToolkit, "workspaceAPI"> = {
   },
 };
 
-export function createBasToolkitAPI(workspaceAPI: WorkspaceAPI): BasToolkit {
+export function createBasToolkitAPI(workspaceAPI: WorkspaceApi): BasToolkit {
   const exportedBasToolkitAPI = {
     // "shallow" clone
     ...basToolkitAPI,

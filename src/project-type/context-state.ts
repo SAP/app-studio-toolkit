@@ -1,11 +1,5 @@
-import {
-  AbsolutePath,
-  ProjectAPI,
-  ProjectApiDS,
-  ProjectTypeTag,
-  TagToAbsPaths,
-  WorkspaceAPI,
-} from "./types";
+import { ProjectApi, WorkspaceApi } from "@sap/project-api";
+import { AbsolutePath, ProjectTypeTag, TagToAbsPaths } from "./types";
 import { commands } from "vscode";
 import { forEach } from "lodash";
 import { resolve } from "path";
@@ -57,9 +51,9 @@ export function refreshAllVSCodeContext(): void {
 }
 
 export async function initTagsContexts(
-  workspaceAPI: WorkspaceAPI
+  workspaceAPI: WorkspaceApi
 ): Promise<void> {
-  let allProjectsAPI: ProjectAPI[] = [];
+  let allProjectsAPI: ProjectApi[] = [];
   try {
     allProjectsAPI = await workspaceAPI.getProjects();
   } catch (e) {
@@ -96,25 +90,36 @@ export function insertPathForSingleTag(
 }
 
 export async function transformProjectApiToTagsMaps(
-  projAPI: ProjectApiDS
+  projAPI: ProjectApi
 ): Promise<TagToAbsPaths> {
   const tagToAbsPaths: TagToAbsPaths = new Map();
   try {
-    const projectAbsRoot = projAPI.path;
     const currProjectDS = await projAPI.read();
+    if (currProjectDS === undefined) {
+      return tagToAbsPaths;
+    }
+    const projectAbsRoot = currProjectDS.path;
     insertPathForMultipleTags(
       tagToAbsPaths,
       projectAbsRoot,
-      currProjectDS.tags
+      currProjectDS.tags ?? []
     );
     forEach(currProjectDS.modules, (currModule) => {
       // `Module["path"]` is relative to the project's root
       const moduleAbsPath = resolve(projectAbsRoot, currModule.path);
-      insertPathForMultipleTags(tagToAbsPaths, moduleAbsPath, currModule.tags);
+      insertPathForMultipleTags(
+        tagToAbsPaths,
+        moduleAbsPath,
+        currModule.tags ?? []
+      );
       forEach(currModule.items, (currItem) => {
         // `Item["path"]` is also relative to the project's root
         const itemAbsPath = resolve(projectAbsRoot, currItem.path);
-        insertPathForMultipleTags(tagToAbsPaths, itemAbsPath, currItem.tags);
+        insertPathForMultipleTags(
+          tagToAbsPaths,
+          itemAbsPath,
+          currItem.tags ?? []
+        );
       });
     });
   } catch (e) {

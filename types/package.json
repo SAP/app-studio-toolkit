@@ -17,6 +17,7 @@
     "compile": "tsc -p ."
   },
   "dependencies": {
+    "@sap/project-api": "file:../../lcap/project/build/sap-project-api-0.0.43.tgz",
     "@types/vscode": "^1.49.0"
   },
   "devDependencies": {

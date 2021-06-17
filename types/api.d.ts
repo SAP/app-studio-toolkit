@@ -1,4 +1,5 @@
 import { Uri } from "vscode";
+import { WorkspaceApi } from "@sap/project-api";
 
 declare interface BasToolkit {
   /**
@@ -35,7 +36,6 @@ declare interface BasToolkit {
    *          `undefined` otherwise.
    */
   getParameter: (key: string) => Promise<string | undefined>;
-
 
   /**
    * @param action - The action to invoke/call/execute.
@@ -90,9 +90,7 @@ declare interface BasToolkit {
     FileAction: { new (): IFileAction };
   };
 
-  // TODO: `any` to some type definition provided by the the `project-api` library
-  // TODO: this type definition need to be de-coupled from the `project-api` library itself.
-  workspaceAPI:any
+  workspaceAPI: WorkspaceApi;
 }
 
 declare const bas: BasToolkit;
