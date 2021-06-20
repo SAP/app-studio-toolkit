@@ -90,6 +90,7 @@ declare interface BasToolkit {
     FileAction: { new (): IFileAction };
   };
 
+  // TODO: define the "read-only" subset of WorkspaceApi we are exposing
   workspaceAPI: WorkspaceApi;
 }
 

@@ -1,3 +1,4 @@
+import { WorkspaceImpl } from "@sap/project-api";
 import { createBasToolkitAPI } from "./api";
 import {
   startBasctlServer,
@@ -26,7 +27,7 @@ export function activate(context: ExtensionContext) {
   const logger = getLogger().getChildLogger({ label: "activate" });
   logger.info("The App-Studio-Toolkit Extension is active.");
 
-  initWorkspaceAPI();
+  initWorkspaceAPI(WorkspaceImpl);
   const workspaceAPI = getWorkspaceAPI();
   void initTagsContexts(workspaceAPI);
   const basToolkitAPI = createBasToolkitAPI(workspaceAPI);
