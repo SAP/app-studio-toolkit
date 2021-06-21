@@ -12,6 +12,7 @@ import {
   initWorkspaceAPI,
 } from "./project-type/workspace-instance";
 import { initTagsContexts } from "./project-type/context-state";
+import { initProjectTypeWatchers } from "./project-type/watcher";
 
 export function activate(context: ExtensionContext) {
   initLogger(context);
@@ -30,6 +31,7 @@ export function activate(context: ExtensionContext) {
   initWorkspaceAPI(WorkspaceImpl);
   const workspaceAPI = getWorkspaceAPI();
   void initTagsContexts(workspaceAPI);
+  void initProjectTypeWatchers(workspaceAPI);
   const basToolkitAPI = createBasToolkitAPI(workspaceAPI);
 
   return basToolkitAPI;

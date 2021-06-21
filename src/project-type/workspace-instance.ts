@@ -7,7 +7,7 @@ let workspaceAPIProxy: WorkspaceApi;
  * @param WorkspaceImpl - constructor for the `WorkspaceApi`
  *                        dependency injection is used to enable easier testing
  */
-export function initWorkspaceAPI(WorkspaceImpl: { new (): WorkspaceApi }) {
+export function initWorkspaceAPI(WorkspaceImpl: { new():WorkspaceApi}) {
   workspaceAPIProxy = new WorkspaceImpl();
   // TODO: implement "READ-ONLY" proxy
 }
