@@ -1,6 +1,8 @@
 import { Uri } from "vscode";
 import { WorkspaceApi } from "@sap/project-api";
 
+declare type BasWorkspaceApi = Pick<WorkspaceApi, "getProjects" | "getProjectUris" | "onWorkspaceChanged">;
+
 declare interface BasToolkit {
   /**
    * An **async** wrapper for `vscode.extensions.getExtension()`
@@ -90,8 +92,7 @@ declare interface BasToolkit {
     FileAction: { new (): IFileAction };
   };
 
-  // TODO: define the "read-only" subset of WorkspaceApi we are exposing
-  workspaceAPI: WorkspaceApi;
+  workspaceAPI: BasWorkspaceApi;
 }
 
 declare const bas: BasToolkit;

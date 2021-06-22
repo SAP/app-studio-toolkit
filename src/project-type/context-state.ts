@@ -1,8 +1,9 @@
-import { ProjectApi, WorkspaceApi } from "@sap/project-api";
+import { ProjectApi } from "@sap/project-api";
 import { AbsolutePath, ProjectTypeTag, TagToAbsPaths } from "./types";
 import { commands } from "vscode";
 import { forEach } from "lodash";
 import { resolve } from "path";
+import { BasWorkspaceApi } from "../../types/api";
 
 /**
  * The in-memory representation of the our custom VSCode contexts
@@ -50,9 +51,7 @@ export function refreshAllVSCodeContext(): void {
   });
 }
 
-export async function initTagsContexts(
-  workspaceAPI: WorkspaceApi
-): Promise<void> {
+export async function initTagsContexts(workspaceAPI: BasWorkspaceApi): Promise<void> {
   let allProjectsAPI: ProjectApi[] = [];
   try {
     allProjectsAPI = await workspaceAPI.getProjects();

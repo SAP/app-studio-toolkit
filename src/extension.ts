@@ -8,10 +8,10 @@ import { ActionsController } from "./actions/controller";
 import { initLogger, getLogger } from "./logger/logger";
 import { ExtensionContext } from "vscode";
 import {
-  getWorkspaceAPI,
-  initWorkspaceAPI,
+  getBasWorkspaceAPI
 } from "./project-type/workspace-instance";
 import { initTagsContexts } from "./project-type/context-state";
+import { BasToolkit, BasWorkspaceApi } from "../types/api";
 
 export function activate(context: ExtensionContext) {
   initLogger(context);
@@ -27,10 +27,9 @@ export function activate(context: ExtensionContext) {
   const logger = getLogger().getChildLogger({ label: "activate" });
   logger.info("The App-Studio-Toolkit Extension is active.");
 
-  initWorkspaceAPI(WorkspaceImpl);
-  const workspaceAPI = getWorkspaceAPI();
+  const workspaceAPI: BasWorkspaceApi = getBasWorkspaceAPI(WorkspaceImpl);
   void initTagsContexts(workspaceAPI);
-  const basToolkitAPI = createBasToolkitAPI(workspaceAPI);
+  const basToolkitAPI: BasToolkit = createBasToolkitAPI(workspaceAPI);
 
   return basToolkitAPI;
 }

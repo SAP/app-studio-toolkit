@@ -1,6 +1,5 @@
 import { extensions } from "vscode";
-import { WorkspaceApi } from "@sap/project-api";
-import { BasToolkit } from "@sap-devx/app-studio-toolkit-types";
+import { BasToolkit, BasWorkspaceApi } from "@sap-devx/app-studio-toolkit-types";
 import { performAction } from "./actions/client";
 import { ActionsController } from "./actions/controller";
 import {
@@ -12,7 +11,7 @@ import {
 import { getParameter } from "./apis/parameters";
 import { getLogger } from "./logger/logger";
 
-const basToolkitAPI: Omit<BasToolkit, "workspaceAPI"> = {
+const basToolkitAPI = {
   getExtensionAPI: <T>(extensionId: string): Promise<T> => {
     const extension = extensions.getExtension(extensionId);
     const logger = getLogger().getChildLogger({ label: "getExtensionAPI" });
@@ -48,14 +47,14 @@ const basToolkitAPI: Omit<BasToolkit, "workspaceAPI"> = {
     SnippetAction,
     CommandAction,
     FileAction,
-  },
+  }
 };
 
-export function createBasToolkitAPI(workspaceAPI: WorkspaceApi): BasToolkit {
+export function createBasToolkitAPI(workspaceAPI: BasWorkspaceApi): BasToolkit {
   const exportedBasToolkitAPI = {
     // "shallow" clone
     ...basToolkitAPI,
-    ...{ workspaceAPI: workspaceAPI },
+    ...{workspaceAPI},
   };
 
   // "Immutability Changes Everything"
