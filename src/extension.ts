@@ -11,7 +11,8 @@ import {
   getBasWorkspaceAPI
 } from "./project-type/workspace-instance";
 import { initTagsContexts } from "./project-type/context-state";
-import { BasToolkit, BasWorkspaceApi } from "../types/api";
+import { initProjectTypeWatchers } from "./project-type/watcher";
+import { BasWorkspaceApi } from "../types/api";
 
 export function activate(context: ExtensionContext) {
   initLogger(context);
@@ -29,7 +30,8 @@ export function activate(context: ExtensionContext) {
 
   const workspaceAPI: BasWorkspaceApi = getBasWorkspaceAPI(WorkspaceImpl);
   void initTagsContexts(workspaceAPI);
-  const basToolkitAPI: BasToolkit = createBasToolkitAPI(workspaceAPI);
+  void initProjectTypeWatchers(workspaceAPI);
+  const basToolkitAPI = createBasToolkitAPI(workspaceAPI);
 
   return basToolkitAPI;
 }
