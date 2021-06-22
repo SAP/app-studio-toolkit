@@ -22,7 +22,9 @@ const testVscode = {
         }]
     },
     workspace: {
-        getConfiguration: () => wsConfig
+        getConfiguration: () => wsConfig,
+        workspaceFolders: () => [],
+        onDidChangeWorkspaceFolders: () => ""
     }
 };
 

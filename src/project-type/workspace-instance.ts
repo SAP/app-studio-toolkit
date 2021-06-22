@@ -1,13 +1,9 @@
-import { ProjectApi, Tag, WorkspaceApi } from "@sap/project-api";
-import { Uri, WorkspaceFolder } from "vscode";
+import { WorkspaceApi, WorkspaceImpl } from "@sap/project-api";
 import { BasWorkspaceApi } from "../../types/api";
 
 let basWSAPI: BasWorkspaceApi;
-/**
- * @param WorkspaceImpl - constructor for the `WorkspaceApi`
- *                        dependency injection is used to enable easier testing
- */
-export function getBasWorkspaceAPI(WorkspaceImpl: { new(): WorkspaceApi }): BasWorkspaceApi {
+
+export function getBasWorkspaceAPI(): BasWorkspaceApi {
   if (!basWSAPI) {
     const workspaceImpl = new WorkspaceImpl();
 
@@ -26,12 +22,12 @@ function initWorkspaceImpl(workspaceImpl: WorkspaceApi): void {
 
 function createWorkspaceReadOnlyProxy(workspaceImpl: WorkspaceApi): BasWorkspaceApi {
   const basWSAPI: BasWorkspaceApi = {
-    getProjects: (tag?: Tag): Promise<ProjectApi[]> => workspaceImpl.getProjects(tag),
-    
-    getProjectUris: (): Promise<Uri[]> => workspaceImpl.getProjectUris(),
-
-    onWorkspaceChanged: (handler: (event: string, folders: WorkspaceFolder[]) => void): void => 
-      workspaceImpl.onWorkspaceChanged(handler)
+    // eslint-disable-next-line @typescript-eslint/unbound-method
+    getProjects: workspaceImpl.getProjects, 
+    // eslint-disable-next-line @typescript-eslint/unbound-method
+    getProjectUris: workspaceImpl.getProjectUris, 
+    // eslint-disable-next-line @typescript-eslint/unbound-method
+    onWorkspaceChanged: workspaceImpl.onWorkspaceChanged
   };
 
   return basWSAPI;

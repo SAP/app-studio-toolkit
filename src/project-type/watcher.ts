@@ -1,4 +1,4 @@
-import { ItemWatcherApi, ProjectApi, WorkspaceImpl } from "@sap/project-api";
+import { ItemWatcherApi, ProjectApi, WorkspaceApi } from "@sap/project-api";
 import { debounce, forEach } from "lodash";
 import { BasWorkspaceApi } from "../../types/api";
 import { initTagsContexts } from "./context-state";
@@ -7,11 +7,11 @@ import { getBasWorkspaceAPI } from "./workspace-instance";
 const projectWatchers: Map<ProjectApi, ItemWatcherApi> = new Map();
 
 const rebuildVSCodeCustomContext = debounce(() => {
-  void initTagsContexts(getBasWorkspaceAPI(WorkspaceImpl));
+  void initTagsContexts(getBasWorkspaceAPI() as WorkspaceApi);
 }, 1000);
 
 export async function initProjectTypeWatchers(
-  workspaceApi: BasWorkspaceApi
+  workspaceApi: WorkspaceApi
 ): Promise<void> {
   await registerAllProjectsListeners(workspaceApi);
     workspaceApi.onWorkspaceChanged(() => {

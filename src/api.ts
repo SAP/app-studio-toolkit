@@ -11,7 +11,7 @@ import {
 import { getParameter } from "./apis/parameters";
 import { getLogger } from "./logger/logger";
 
-const basToolkitAPI = {
+const basToolkitAPI: Omit<BasToolkit, "workspaceAPI"> = {
   getExtensionAPI: <T>(extensionId: string): Promise<T> => {
     const extension = extensions.getExtension(extensionId);
     const logger = getLogger().getChildLogger({ label: "getExtensionAPI" });
