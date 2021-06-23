@@ -1,34 +1,22 @@
-import { WorkspaceApi, WorkspaceImpl } from "@sap/project-api";
-import { BasWorkspaceApi } from "../../types/api";
+import { WorkspaceApi } from "@sap/project-api";
 
-let basWSAPI: BasWorkspaceApi;
 
-export function getBasWorkspaceAPI(): BasWorkspaceApi {
-  if (!basWSAPI) {
-    const workspaceImpl = new WorkspaceImpl();
+let workspaceAPI: WorkspaceApi;
 
-    initWorkspaceImpl(workspaceImpl);
-
-    basWSAPI = createWorkspaceReadOnlyProxy(workspaceImpl);
-  }
-
-  return basWSAPI;
+/**
+ * @param WorkspaceImpl - constructor for the `WorkspaceApi`
+ *                        dependency injection is used to enable easier testing
+ */
+export function initWorkspaceAPI(WorkspaceImpl: { new():WorkspaceApi}) {
+  workspaceAPI = new WorkspaceImpl();
+  
+  initWorkspaceImpl(workspaceAPI);
 }
 
+export function getWorkspaceAPI(): WorkspaceApi {
+  return workspaceAPI;
+}
 
 function initWorkspaceImpl(workspaceImpl: WorkspaceApi): void {
   workspaceImpl.startWatch();
-}
-
-function createWorkspaceReadOnlyProxy(workspaceImpl: WorkspaceApi): BasWorkspaceApi {
-  const basWSAPI: BasWorkspaceApi = {
-    // eslint-disable-next-line @typescript-eslint/unbound-method
-    getProjects: workspaceImpl.getProjects, 
-    // eslint-disable-next-line @typescript-eslint/unbound-method
-    getProjectUris: workspaceImpl.getProjectUris, 
-    // eslint-disable-next-line @typescript-eslint/unbound-method
-    onWorkspaceChanged: workspaceImpl.onWorkspaceChanged
-  };
-
-  return basWSAPI;
 }

@@ -10,6 +10,7 @@ import {
 } from "./actions/impl";
 import { getParameter } from "./apis/parameters";
 import { getLogger } from "./logger/logger";
+import { WorkspaceApi } from "@sap/project-api";
 
 const basToolkitAPI: Omit<BasToolkit, "workspaceAPI"> = {
   getExtensionAPI: <T>(extensionId: string): Promise<T> => {
@@ -50,7 +51,20 @@ const basToolkitAPI: Omit<BasToolkit, "workspaceAPI"> = {
   }
 };
 
-export function createBasToolkitAPI(workspaceAPI: BasWorkspaceApi): BasToolkit {
+function createWorkspaceProxy(workspaceImpl: WorkspaceApi): BasWorkspaceApi {
+  const basWSAPI: BasWorkspaceApi = {
+    /* eslint-disable @typescript-eslint/unbound-method */
+    getProjects: workspaceImpl.getProjects, 
+    getProjectUris: workspaceImpl.getProjectUris, 
+    onWorkspaceChanged: workspaceImpl.onWorkspaceChanged
+    /* eslint-enable @typescript-eslint/unbound-method */
+  };
+
+  return basWSAPI;
+}
+
+export function createBasToolkitAPI(workspaceImpl: WorkspaceApi): BasToolkit {
+  const workspaceAPI: BasWorkspaceApi = createWorkspaceProxy(workspaceImpl);
   const exportedBasToolkitAPI = {
     // "shallow" clone
     ...basToolkitAPI,

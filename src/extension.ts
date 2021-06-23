@@ -1,4 +1,4 @@
-import { WorkspaceApi } from "@sap/project-api";
+import { WorkspaceImpl } from "@sap/project-api";
 import { createBasToolkitAPI } from "./api";
 import {
   startBasctlServer,
@@ -7,12 +7,10 @@ import {
 import { ActionsController } from "./actions/controller";
 import { initLogger, getLogger } from "./logger/logger";
 import { ExtensionContext } from "vscode";
-import {
-  getBasWorkspaceAPI
-} from "./project-type/workspace-instance";
 import { initTagsContexts } from "./project-type/context-state";
 import { initProjectTypeWatchers } from "./project-type/watcher";
-import { BasWorkspaceApi } from "../types/api";
+import { getWorkspaceAPI, initWorkspaceAPI } from "./project-type/workspace-instance";
+
 
 export function activate(context: ExtensionContext) {
   initLogger(context);
@@ -28,9 +26,11 @@ export function activate(context: ExtensionContext) {
   const logger = getLogger().getChildLogger({ label: "activate" });
   logger.info("The App-Studio-Toolkit Extension is active.");
 
-  const workspaceAPI: BasWorkspaceApi = getBasWorkspaceAPI();
-  void initTagsContexts(workspaceAPI as WorkspaceApi);
-  void initProjectTypeWatchers(workspaceAPI as WorkspaceApi);
+  initWorkspaceAPI(WorkspaceImpl);
+  const workspaceAPI = getWorkspaceAPI();
+
+  void initTagsContexts(workspaceAPI);
+  void initProjectTypeWatchers(workspaceAPI);
   const basToolkitAPI = createBasToolkitAPI(workspaceAPI);
 
   return basToolkitAPI;
