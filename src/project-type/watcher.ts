@@ -1,8 +1,7 @@
 import { ItemWatcherApi, ProjectApi, WorkspaceApi } from "@sap/project-api";
-import { debounce, forEach } from "lodash";
+import { debounce, map } from "lodash";
 import { initTagsContexts } from "./context-state";
 import { getWorkspaceAPI } from "./workspace-instance";
-
 
 const projectWatchers: Map<ProjectApi, ItemWatcherApi> = new Map();
 
@@ -14,18 +13,25 @@ export async function initProjectTypeWatchers(
   workspaceImpl: WorkspaceApi
 ): Promise<void> {
   await registerAllProjectsListeners(workspaceImpl);
-  workspaceImpl.onWorkspaceChanged(() => {
-    removeAllProjectListeners();
+  workspaceImpl.onWorkspaceChanged(async () => {
+    await removeAllProjectListeners();
+    await registerAllProjectsListeners(workspaceImpl);
   });
 }
 
 async function registerAllProjectsListeners(workspaceImpl: WorkspaceApi) {
   const projects = await workspaceImpl.getProjects();
-  forEach(projects, onProjectAdded);
+  await Promise.all(map(projects, onProjectAdded));
 }
 
-function removeAllProjectListeners() {
-  projectWatchers.forEach(onProjectRemoved);
+async function removeAllProjectListeners() {
+  const projWatcherEntries = Array.from(projectWatchers.entries());
+  // parallel handling
+  await Promise.all(
+    map(projWatcherEntries, async (entry) =>
+      onProjectRemoved(entry[1], entry[0])
+    )
+  );
 }
 
 async function onProjectAdded(projectApi: ProjectApi): Promise<void> {
@@ -38,7 +44,10 @@ async function onProjectAdded(projectApi: ProjectApi): Promise<void> {
   projectWatchers.set(projectApi, currItemWatcher);
 }
 
-function onProjectRemoved(itemWatcher: ItemWatcherApi ,projectApi: ProjectApi): void {
-  void itemWatcher.destroy();
+async function onProjectRemoved(
+  itemWatcher: ItemWatcherApi,
+  projectApi: ProjectApi
+): Promise<void> {
+  await itemWatcher.destroy();
   projectWatchers.delete(projectApi);
 }

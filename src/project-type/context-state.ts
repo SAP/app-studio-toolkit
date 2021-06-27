@@ -50,7 +50,9 @@ export function refreshAllVSCodeContext(): void {
   });
 }
 
-export async function initTagsContexts(workspaceAPI: WorkspaceApi): Promise<void> {
+export async function initTagsContexts(
+  workspaceAPI: WorkspaceApi
+): Promise<void> {
   let allProjectsAPI: ProjectApi[] = [];
   try {
     allProjectsAPI = await workspaceAPI.getProjects();
