@@ -1,4 +1,7 @@
 import { Uri } from "vscode";
+import { WorkspaceApi } from "@sap/project-api";
+
+declare type BasWorkspaceApi = Pick<WorkspaceApi, "getProjects" | "getProjectUris" | "onWorkspaceChanged">;
 
 declare interface BasToolkit {
   /**
@@ -35,7 +38,6 @@ declare interface BasToolkit {
    *          `undefined` otherwise.
    */
   getParameter: (key: string) => Promise<string | undefined>;
-
 
   /**
    * @param action - The action to invoke/call/execute.
@@ -89,6 +91,8 @@ declare interface BasToolkit {
      */
     FileAction: { new (): IFileAction };
   };
+
+  workspaceAPI: BasWorkspaceApi;
 }
 
 declare const bas: BasToolkit;

@@ -1,26 +1,41 @@
-import { bas } from './api';
-import { startBasctlServer, closeBasctlServer } from './basctlServer/basctlServer';
-import { ActionsController } from './actions/controller';
-import { initLogger, getLogger } from './logger/logger';
-import { ExtensionContext } from 'vscode';
+import { WorkspaceImpl } from "@sap/project-api";
+import { createBasToolkitAPI } from "./api";
+import {
+  startBasctlServer,
+  closeBasctlServer,
+} from "./basctlServer/basctlServer";
+import { ActionsController } from "./actions/controller";
+import { initLogger, getLogger } from "./logger/logger";
+import { ExtensionContext } from "vscode";
+import { initTagsContexts } from "./project-type/context-state";
+import { initProjectTypeWatchers } from "./project-type/watcher";
+import { getWorkspaceAPI, initWorkspaceAPI } from "./project-type/workspace-instance";
+
 
 export function activate(context: ExtensionContext) {
-    initLogger(context);
-    
-    startBasctlServer();
+  initLogger(context);
 
-    ActionsController.loadContributedActions();
+  startBasctlServer();
 
-    ActionsController.performScheduledActions();
+  ActionsController.loadContributedActions();
 
-    void ActionsController.performActionsFromURL();
+  ActionsController.performScheduledActions();
 
-    const logger = getLogger().getChildLogger({ label: 'activate' });
-    logger.info('The App-Studio-Toolkit Extension is active.');
+  void ActionsController.performActionsFromURL();
 
-    return bas;
+  const logger = getLogger().getChildLogger({ label: "activate" });
+  logger.info("The App-Studio-Toolkit Extension is active.");
+
+  initWorkspaceAPI(WorkspaceImpl);
+  const workspaceAPI = getWorkspaceAPI();
+
+  void initTagsContexts(workspaceAPI);
+  void initProjectTypeWatchers(workspaceAPI);
+  const basToolkitAPI = createBasToolkitAPI(workspaceAPI);
+
+  return basToolkitAPI;
 }
 
 export function deactivate() {
-    closeBasctlServer();
+  closeBasctlServer();
 }
