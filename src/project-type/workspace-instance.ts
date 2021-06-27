@@ -9,14 +9,9 @@ let workspaceAPI: WorkspaceApi;
  */
 export function initWorkspaceAPI(WorkspaceImpl: { new():WorkspaceApi}) {
   workspaceAPI = new WorkspaceImpl();
-  
-  initWorkspaceImpl(workspaceAPI);
+  workspaceAPI.startWatch();
 }
 
 export function getWorkspaceAPI(): WorkspaceApi {
   return workspaceAPI;
-}
-
-function initWorkspaceImpl(workspaceImpl: WorkspaceApi): void {
-  workspaceImpl.startWatch();
 }

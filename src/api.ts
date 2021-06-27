@@ -1,5 +1,8 @@
 import { extensions } from "vscode";
-import { BasToolkit, BasWorkspaceApi } from "@sap-devx/app-studio-toolkit-types";
+import {
+  BasToolkit,
+  BasWorkspaceApi,
+} from "@sap-devx/app-studio-toolkit-types";
 import { performAction } from "./actions/client";
 import { ActionsController } from "./actions/controller";
 import {
@@ -48,19 +51,21 @@ const basToolkitAPI: Omit<BasToolkit, "workspaceAPI"> = {
     SnippetAction,
     CommandAction,
     FileAction,
-  }
+  },
 };
 
 function createWorkspaceProxy(workspaceImpl: WorkspaceApi): BasWorkspaceApi {
-  const basWSAPI: BasWorkspaceApi = {
-    /* eslint-disable @typescript-eslint/unbound-method */
-    getProjects: workspaceImpl.getProjects, 
-    getProjectUris: workspaceImpl.getProjectUris, 
-    onWorkspaceChanged: workspaceImpl.onWorkspaceChanged
-    /* eslint-enable @typescript-eslint/unbound-method */
+  const basWsAPI = {
+    getProjects: (...args: Parameters<WorkspaceApi["getProjects"]>) =>
+      workspaceImpl.getProjects.apply(workspaceImpl, args),
+    getProjectUris: (...args: Parameters<WorkspaceApi["getProjectUris"]>) =>
+      workspaceImpl.getProjectUris.apply(workspaceImpl, args),
+    onWorkspaceChanged: (
+      ...args: Parameters<WorkspaceApi["onWorkspaceChanged"]>
+    ) => workspaceImpl.onWorkspaceChanged.apply(workspaceImpl, args),
   };
 
-  return basWSAPI;
+  return basWsAPI;
 }
 
 export function createBasToolkitAPI(workspaceImpl: WorkspaceApi): BasToolkit {
@@ -68,7 +73,7 @@ export function createBasToolkitAPI(workspaceImpl: WorkspaceApi): BasToolkit {
   const exportedBasToolkitAPI = {
     // "shallow" clone
     ...basToolkitAPI,
-    ...{workspaceAPI},
+    ...{ workspaceAPI },
   };
 
   // "Immutability Changes Everything"
