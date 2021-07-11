@@ -1,8 +1,8 @@
 {
 	"name": "app-studio-toolkit",
-	"displayName": "App-Studio-Toolkit Extension",
-	"version": "0.0.12",
-	"description": "SAP Business Application Studio Toolkit extension",
+	"displayName": "SAP Business Application Studio toolkit",
+	"version": "0.0.13",
+	"description": "Provides rich tools for executing common platform tasks.",
 	"categories": [
 		"Other"
 	],
