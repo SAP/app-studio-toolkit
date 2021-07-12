@@ -1,4 +1,5 @@
 import { Uri } from "vscode";
+import {isLCAPEnabled} from "../src/apis/validateLCAP";
 
 declare interface BasToolkit {
   /**
@@ -36,6 +37,13 @@ declare interface BasToolkit {
    */
   getParameter: (key: string) => Promise<string | undefined>;
 
+  /**
+   * Is environment LCAP or not
+   *
+   * @returns true is environment is LCAP in BAS,
+   *          `undefined` otherwise.
+   */
+  isLCAPEnabled: () => Promise<boolean | undefined>;
 
   /**
    * @param action - The action to invoke/call/execute.
