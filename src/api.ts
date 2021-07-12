@@ -5,6 +5,7 @@ import { ActionsController } from './actions/controller';
 import { ExecuteAction, SnippetAction, CommandAction, FileAction } from './actions/impl';
 import { getParameter } from './apis/parameters';
 import { getLogger } from './logger/logger';
+import {isLCAPEnabled} from "./apis/validateLCAP";
 
 export const bas:BasToolkit = {
     getExtensionAPI: <T>(extensionId: string): Promise<T> => {
@@ -35,6 +36,7 @@ export const bas:BasToolkit = {
     getAction: (actionId: string) => ActionsController.getAction(actionId),
     getParameter,
     performAction,
+    isLCAPEnabled,
 
     actions: {
         performAction,
