@@ -1,5 +1,4 @@
 import { Uri } from "vscode";
-import {isLCAPEnabled} from "../src/apis/validateLCAP";
 
 declare interface BasToolkit {
   /**

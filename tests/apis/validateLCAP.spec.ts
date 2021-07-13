@@ -9,7 +9,6 @@ const testVscode = {
 };
 
 mockVscode(testVscode, "src/logger/logger.ts");
-import { getParameter } from '../../src/apis/parameters';
 import {isLCAPEnabled} from "../../src/apis/validateLCAP";
 
 describe("validate LCAP  API", () => {
