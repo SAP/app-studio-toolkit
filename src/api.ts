@@ -33,16 +33,16 @@ export const bas:BasToolkit = {
         });
     },
 
-    getAction: (actionId: string) => ActionsController.getAction(actionId),
-    getParameter,
-    performAction,
+    //getAction: (actionId: string) => ActionsController.getAction(actionId),
+    //getParameter,
+    //performAction,
     isLCAPEnabled,
 
-    actions: {
+    /*actions: {
         performAction,
         ExecuteAction,
         SnippetAction,
         CommandAction,
         FileAction
-    }
+    }*/
 };
