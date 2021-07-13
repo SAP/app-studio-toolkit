@@ -1,5 +1,5 @@
 import { extensions, commands, window, ExtensionContext, Uri } from 'vscode';
-import { bas/*, BasAction, ICommandAction, IExecuteAction, IUriAction*/ } from '@sap-devx/app-studio-toolkit-types';
+import { bas, BasAction, ICommandAction, IExecuteAction, IUriAction } from '@sap-devx/app-studio-toolkit-types';
 import * as path from 'path';
 
 export async function activate(context: ExtensionContext) {
@@ -11,7 +11,7 @@ export async function activate(context: ExtensionContext) {
         void window.showInformationMessage(`${greeting} Extension`);
     }));
 
-    /*context.subscriptions.push(commands.registerCommand("contrib.action.open.settings", () => {
+    context.subscriptions.push(commands.registerCommand("contrib.action.open.settings", () => {
         const action: BasAction | undefined = basAPI.getAction("contribSearchInFiles");
         if (action) {
             void basAPI.actions.performAction(action);
@@ -92,8 +92,8 @@ export async function activate(context: ExtensionContext) {
         }
         void basAPI.actions.performAction(action);
     }));
-*/
-    context.subscriptions.push(commands.registerCommand("get.parameter", async () => {
+
+    context.subscriptions.push(commands.registerCommand("lcap.enabled", async () => {
         const enabledValue = await basAPI.isLCAPEnabled();
         void window.showInformationMessage(`lcap enabled value is ${enabledValue}`);
     }));

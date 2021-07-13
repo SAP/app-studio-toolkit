@@ -24,7 +24,7 @@ declare interface BasToolkit {
    * Note that BasActions are often registered using the `basContributes`
    * section of a VSCode extension's package.json.
    */
-  //getAction: (id: string) => BasAction | undefined;
+  getAction: (id: string) => BasAction | undefined;
 
   /**
    * Note that in BAS these parameters are usually URL parameters.
@@ -35,7 +35,7 @@ declare interface BasToolkit {
    * @returns The **value** of the specified `key` parameter IFF such a key exists in BAS,
    *          `undefined` otherwise.
    */
-  //getParameter: (key: string) => Promise<string | undefined>;
+  getParameter: (key: string) => Promise<string | undefined>;
 
   /**
    * Is environment LCAP or not
@@ -52,12 +52,12 @@ declare interface BasToolkit {
    * @returns - The return type depends on the type of of BasAction "performed".
    *            Note that is the `schedule` option is used, the return type would be Thenable<Void>.
    */
- /* performAction: <T = void>(
+  performAction: <T = void>(
     action: BasAction,
     options?: { schedule?: boolean }
   ) => Thenable<T>;
 
-  //actions: {
+  actions: {
     /**
      * @deprecated - **DON'T USE**, this function will be removed in the near future.
      *               use {@link BasToolkit.performAction} instead (without the `actions` namespace.
@@ -68,7 +68,7 @@ declare interface BasToolkit {
      * @returns - The return type depends on the type of of BasAction "performed".
      *            Note that is the `schedule` option is used, the return type would be Thenable<Void>.
      */
-   /* performAction: <T = void>(
+    performAction: <T = void>(
       action: BasAction,
       options?: { schedule?: boolean }
     ) => Thenable<T>;
@@ -77,26 +77,26 @@ declare interface BasToolkit {
      * @deprecated - **DON'T USE**, this class will be removed in the near future.
      *               Manually construct an **object literal** which matches the {@link IExecuteAction} interface instead.
      */
-   // ExecuteAction: { new (): IExecuteAction };
+    ExecuteAction: { new (): IExecuteAction };
 
     /**
      * @deprecated - **DON'T USE**, this class will be removed in the near future.
      *               Manually construct an **object literal** which matches the {@link ISnippetAction} interface instead.
      */
-   // SnippetAction: { new (): ISnippetAction };
+    SnippetAction: { new (): ISnippetAction };
 
     /**
      * @deprecated - **DON'T USE**, this class will be removed in the near future.
      *               Manually construct an **object literal** which matches the {@link ICommandAction} interface instead.
      */
-    //CommandAction: { new (): ICommandAction };
+    CommandAction: { new (): ICommandAction };
 
     /**
      * @deprecated - **DON'T USE**, this class will be removed in the near future.
      *               Manually construct an **object literal** which matches the {@link IUriAction} interface instead.
      */
-    //FileAction: { new (): IFileAction };
-  //};
+    FileAction: { new (): IFileAction };
+  };
 }
 
 declare const bas: BasToolkit;
