@@ -87,7 +87,7 @@ describe("extension unit test", () => {
 
             extension.activate(context);
         });
-
+/*
         it("does nothing with no actions", () => {
             const context: any = {};
 
@@ -102,7 +102,7 @@ describe("extension unit test", () => {
             expect(result).to.haveOwnProperty("getExtensionAPI");
             expect(result).to.haveOwnProperty("actions");
         });
-
+*/
         it("fails when startBasctlServer throws an error", () => {
             const context: any = {};
             const testError = new Error('Socket failure');

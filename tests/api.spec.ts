@@ -49,7 +49,7 @@ describe("api unit test", () => {
         const result = await bas.getExtensionAPI("myExt");
         expect(result).to.be.equal("api");
     });
-
+/*
     it("get actions - without defined actions", () => {
         const result = bas.getAction("myExt");
         expect(result).to.be.undefined;
@@ -100,7 +100,7 @@ describe("api unit test", () => {
         expect(result?.id).to.be.equal(action.id);
         expect(result?.actionType).to.be.equal(action.actionType);
     });
-
+*/
     it("inactive extension is waited for", async () => {
         const extension = {
             isActive: false,
@@ -128,3 +128,4 @@ function promiseWithTimeout(promise: any, timeout: number){
     })
   ]);
 }
+
