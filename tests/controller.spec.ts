@@ -27,7 +27,9 @@ const testVscode = {
         }]
     },
     workspace: {
-        getConfiguration: () => wsConfig
+        getConfiguration: () => wsConfig,
+        workspaceFolders: () => [],
+        onDidChangeWorkspaceFolders: () => ""
     }
 };
 mockVscode(testVscode, "src/actions/controller.ts");
