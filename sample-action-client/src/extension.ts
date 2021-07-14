@@ -93,5 +93,9 @@ export async function activate(context: ExtensionContext) {
         void basAPI.actions.performAction(action);
     }));
 
+    context.subscriptions.push(commands.registerCommand("lcap.enabled", async () => {
+        const enabledValue = await basAPI.isLCAPEnabled();
+        void window.showInformationMessage(`lcap enabled value is ${enabledValue}`);
+    }));
     return "Hello from BAS Toolkit Sample";
 }

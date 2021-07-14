@@ -1,7 +1,7 @@
 {
 	"name": "app-studio-toolkit",
 	"displayName": "SAP Business Application Studio toolkit",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"description": "Provides rich tools for executing common platform tasks.",
 	"categories": [
 		"Other"

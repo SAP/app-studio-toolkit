@@ -32,6 +32,10 @@
 				"command": "get.parameter"
 			},
 			{
+				"title": "BAS Toolkit: Is LCAP enabled (isLCAPEnabled)",
+				"command": "lcap.enabled"
+			},
+			{
 				"title": "BAS Toolkit: Get Extension API (getExtensionAPI)",
 				"command": "get.extension.api"
 			},
@@ -67,6 +71,7 @@
 		"onCommand:fileaction.go.to.site",
 		"onCommand:get.extension.api",
 		"onCommand:get.parameter",
+		"onCommand:lcap.enabled",
 		"onCommand:fileaction.scheduled",
 		"onCommand:executeaction.display.error",
 		"onCommand:contrib.action.open.settings",
