@@ -34,7 +34,7 @@ declare interface BasToolkit {
    * @returns The **value** of the specified `key` parameter IFF such a key exists in BAS,
    *          `undefined` otherwise.
    */
-  getParameter: (key: string) => Promise<string | undefined>;
+  //getParameter: (key: string) => Promise<string | undefined>;
 
   /**
    * Is environment LCAP or not
