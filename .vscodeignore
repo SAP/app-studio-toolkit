@@ -3,5 +3,7 @@
 !README.md
 !package.json
 !icon.png
-!out/src/**/*.js
-!node_modules
+# bundled sources
+!dist/
+# the source maps point to src/ dir
+!src/
