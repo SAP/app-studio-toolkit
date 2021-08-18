@@ -1,8 +1,8 @@
-import { commands, ViewColumn } from 'vscode';
-import { get } from 'lodash';
-import { getLogger } from '../logger/logger';
-import { BasAction } from '@sap-devx/app-studio-toolkit-types';
-import { COMMAND, SNIPPET, FILE, EXECUTE } from '../constants';
+import { commands, ViewColumn } from "vscode";
+import { get } from "lodash";
+import { getLogger } from "../logger/logger";
+import { BasAction } from "@sap-devx/app-studio-toolkit-types";
+import { COMMAND, SNIPPET, FILE, EXECUTE } from "../constants";
 
 export async function _performAction(action: BasAction): Promise<any> {
   const logger = getLogger();
@@ -24,11 +24,13 @@ export async function _performAction(action: BasAction): Promise<any> {
           contributorId: action.contributorId,
           snippetName: action.snippetName,
           context: action.context,
-          isNonInteractive: action.isNonInteractive ?? false
+          isNonInteractive: action.isNonInteractive ?? false,
         });
       }
       case FILE: {
-        return commands.executeCommand('vscode.open', action.uri, {viewColumn: ViewColumn.Two});
+        return commands.executeCommand("vscode.open", action.uri, {
+          viewColumn: ViewColumn.Two,
+        });
       }
       default:
         throw new Error(`actionType is not supported`);

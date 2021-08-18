@@ -2,8 +2,7 @@ import { ExtensionContext, window } from "vscode";
 import { IVSCodeExtLogger } from "@vscode-logging/types";
 import { configureLogger, NOOP_LOGGER } from "@vscode-logging/wrapper";
 
-export const LOGGING_LEVEL_CONFIG_PROP =
-  "app-studio-toolkit.logging.level";
+export const LOGGING_LEVEL_CONFIG_PROP = "app-studio-toolkit.logging.level";
 export const SOURCE_TRACKING_CONFIG_PROP =
   "app-studio-toolkit.logging.sourceLocationTracking";
 

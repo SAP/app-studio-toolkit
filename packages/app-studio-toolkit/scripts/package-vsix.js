@@ -20,19 +20,19 @@ writeJsonSync(pkgJsonPath, pkgJson, { spaces: 2, EOF: "\n" });
 const { packageCommand } = require("vsce/out/package");
 // Time to create the VSIX.
 packageCommand({
-    cwd: rootExtDir,
-    packagePath: undefined,
-    baseContentUrl: undefined,
-    baseImagesUrl: undefined,
-    useYarn: true,
-    ignoreFile: undefined,
-    expandGitHubIssueLinks: undefined,
+  cwd: rootExtDir,
+  packagePath: undefined,
+  baseContentUrl: undefined,
+  baseImagesUrl: undefined,
+  useYarn: true,
+  ignoreFile: undefined,
+  expandGitHubIssueLinks: undefined,
 })
-    .catch((e) => {
-        console.error(e.message);
-        process.exitCode = 1000;
-    })
-    .finally(() => {
-        // revert changes to the pkg.json, ensure clean git working directory
-        writeFileSync(pkgJsonPath, pkgJsonOrgStr);
-    });
+  .catch((e) => {
+    console.error(e.message);
+    process.exitCode = 1000;
+  })
+  .finally(() => {
+    // revert changes to the pkg.json, ensure clean git working directory
+    writeFileSync(pkgJsonPath, pkgJsonOrgStr);
+  });

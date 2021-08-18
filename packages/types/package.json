@@ -14,7 +14,7 @@
     "api.d.ts"
   ],
   "scripts": {
-    "ci" : "npm-run-all compile",
+    "ci": "npm-run-all compile",
     "compile": "tsc -p ."
   },
   "dependencies": {

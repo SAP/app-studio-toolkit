@@ -1,125 +1,125 @@
 {
-	"name": "sample-action-client",
-	"displayName": "Sample Action Client",
-	"version": "1.1.0",
-	"description": "Sample Action Client",
-	"categories": [
-		"Other"
-	],
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/SAP/app-studio-toolkit"
-	},
-	"publisher": "SAPOSS",
-	"main": "./out/extension.js",
-	"scripts": {
-		"ci" : "npm-run-all compile",
-		"vscode:prepublish": "npm run compile",
-		"compile": "tsc -p ./",
-		"watch": "tsc -watch -p ./",
-		"pretest": "npm run compile",
-		"test": "node ./out/test/runTest.js",
-		"package": "vsce package ."
-	},
-	"contributes": {
-		"commands": [
-			{
-				"title": "BAS Toolkit: Display Setting (CommandAction)",
-				"command": "commandaction.display.settings"
-			},
-			{
-				"title": "BAS Toolkit: Get Configuration Parameter (getParameter)",
-				"command": "get.parameter"
-			},
-			{
-				"title": "BAS Toolkit: Is LCAP enabled (isLCAPEnabled)",
-				"command": "lcap.enabled"
-			},
-			{
-				"title": "BAS Toolkit: Get Extension API (getExtensionAPI)",
-				"command": "get.extension.api"
-			},
-			{
-				"title": "BAS Toolkit: Open File (FileAction)",
-				"command": "fileaction.open.file"
-			},
-			{
-				"title": "BAS Toolkit: Go To Site (FileAction)",
-				"command": "fileaction.go.to.site"
-			},
-			{
-				"title": "BAS Toolkit: Display Error Messsage (ExecuteAction)",
-				"command": "executeaction.display.error"
-			},
-			{
-				"title": "BAS Toolkit: Open File After Loading (FileAction - scheduled)",
-				"command": "fileaction.scheduled"
-			},
-			{
-				"title": "BAS Toolkit: Open Settings - Contributed Command Action",
-				"command": "contrib.action.open.settings"
-			},
-			{
-				"title": "BAS Toolkit: Open File - Contributed File Action",
-				"command": "contrib.action.open.file"
-			}
-		]
-	},
-	"activationEvents": [
-		"onCommand:commandaction.display.settings",
-		"onCommand:fileaction.open.file",
-		"onCommand:fileaction.go.to.site",
-		"onCommand:get.extension.api",
-		"onCommand:get.parameter",
-		"onCommand:lcap.enabled",
-		"onCommand:fileaction.scheduled",
-		"onCommand:executeaction.display.error",
-		"onCommand:contrib.action.open.settings",
-		"onCommand:contrib.action.open.file"
-	],
-	"devDependencies": {
-		"@sap-devx/app-studio-toolkit-types": "1.1.0",
-		"@types/vscode": "^1.40.0",
-		"typescript": "^4.2.4",
-		"vsce": "^1.88.0"
-	},
-	"extensionDependencies": [
-		"SAPOSS.app-studio-toolkit"
-	],
-	"engines": {
-		"vscode": "^1.44.2"
-	},
-	"BASContributes": {
-		"actions": [
-			{
-				"id": "openSettingsAction",
-				"actionType": "COMMAND",
-				"name": "workbench.action.openSettings"
-			},
-			{
-				"id": "openMySnippet",
-				"actionType": "SNIPPET",
-				"contributorId": "id",
-				"snippetName": "name",
-				"context": {
-					"data": {}
-				}
-			},
-			{
-				"id": "openReadmeFile",
-				"actionType": "FILE",
-				"uri": "file:///home/user/projects/test/README.md"
-			},
-			{
-				"id": "openFile",
-				"actionType": "FILE",
-				"uri": "file://<full path to your file>"
-			},
-			{
-				"id": "openGoogleFile",
-				"actionType": "FILE",
-				"uri": "https://www.google.com/"
-			}
-		]
-	}
+  "name": "sample-action-client",
+  "displayName": "Sample Action Client",
+  "version": "1.1.0",
+  "description": "Sample Action Client",
+  "categories": [
+    "Other"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/app-studio-toolkit"
+  },
+  "publisher": "SAPOSS",
+  "main": "./out/extension.js",
+  "scripts": {
+    "ci": "npm-run-all compile",
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile",
+    "test": "node ./out/test/runTest.js",
+    "package": "vsce package ."
+  },
+  "contributes": {
+    "commands": [
+      {
+        "title": "BAS Toolkit: Display Setting (CommandAction)",
+        "command": "commandaction.display.settings"
+      },
+      {
+        "title": "BAS Toolkit: Get Configuration Parameter (getParameter)",
+        "command": "get.parameter"
+      },
+      {
+        "title": "BAS Toolkit: Is LCAP enabled (isLCAPEnabled)",
+        "command": "lcap.enabled"
+      },
+      {
+        "title": "BAS Toolkit: Get Extension API (getExtensionAPI)",
+        "command": "get.extension.api"
+      },
+      {
+        "title": "BAS Toolkit: Open File (FileAction)",
+        "command": "fileaction.open.file"
+      },
+      {
+        "title": "BAS Toolkit: Go To Site (FileAction)",
+        "command": "fileaction.go.to.site"
+      },
+      {
+        "title": "BAS Toolkit: Display Error Messsage (ExecuteAction)",
+        "command": "executeaction.display.error"
+      },
+      {
+        "title": "BAS Toolkit: Open File After Loading (FileAction - scheduled)",
+        "command": "fileaction.scheduled"
+      },
+      {
+        "title": "BAS Toolkit: Open Settings - Contributed Command Action",
+        "command": "contrib.action.open.settings"
+      },
+      {
+        "title": "BAS Toolkit: Open File - Contributed File Action",
+        "command": "contrib.action.open.file"
+      }
+    ]
+  },
+  "activationEvents": [
+    "onCommand:commandaction.display.settings",
+    "onCommand:fileaction.open.file",
+    "onCommand:fileaction.go.to.site",
+    "onCommand:get.extension.api",
+    "onCommand:get.parameter",
+    "onCommand:lcap.enabled",
+    "onCommand:fileaction.scheduled",
+    "onCommand:executeaction.display.error",
+    "onCommand:contrib.action.open.settings",
+    "onCommand:contrib.action.open.file"
+  ],
+  "devDependencies": {
+    "@sap-devx/app-studio-toolkit-types": "1.1.0",
+    "@types/vscode": "^1.40.0",
+    "typescript": "^4.2.4",
+    "vsce": "^1.88.0"
+  },
+  "extensionDependencies": [
+    "SAPOSS.app-studio-toolkit"
+  ],
+  "engines": {
+    "vscode": "^1.44.2"
+  },
+  "BASContributes": {
+    "actions": [
+      {
+        "id": "openSettingsAction",
+        "actionType": "COMMAND",
+        "name": "workbench.action.openSettings"
+      },
+      {
+        "id": "openMySnippet",
+        "actionType": "SNIPPET",
+        "contributorId": "id",
+        "snippetName": "name",
+        "context": {
+          "data": {}
+        }
+      },
+      {
+        "id": "openReadmeFile",
+        "actionType": "FILE",
+        "uri": "file:///home/user/projects/test/README.md"
+      },
+      {
+        "id": "openFile",
+        "actionType": "FILE",
+        "uri": "file://<full path to your file>"
+      },
+      {
+        "id": "openGoogleFile",
+        "actionType": "FILE",
+        "uri": "https://www.google.com/"
+      }
+    ]
+  }
 }

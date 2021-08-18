@@ -1,20 +1,20 @@
-import { getLogger } from '../logger/logger';
+import { getLogger } from "../logger/logger";
 
-export async function isLCAPEnabled() : Promise<boolean | undefined> {
-    const logger = getLogger().getChildLogger({label: "isLCAPEnabled"});
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const optionalRequire = require("optional-require")(require);
-    const noSapPlugin = "NO_SAP_PLUGIN_FOUND";
-    const sapPlugin = optionalRequire('@sap/plugin') ?? noSapPlugin;
-  
-    if (sapPlugin === noSapPlugin) {
-        logger.trace("Failed to load @sap/plugin, so returning undefined.");
-        return;
-    } 
-    logger.trace("@sap/plugin successfully loaded.");
+export async function isLCAPEnabled(): Promise<boolean | undefined> {
+  const logger = getLogger().getChildLogger({ label: "isLCAPEnabled" });
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const optionalRequire = require("optional-require")(require);
+  const noSapPlugin = "NO_SAP_PLUGIN_FOUND";
+  const sapPlugin = optionalRequire("@sap/plugin") ?? noSapPlugin;
 
-    const isLCAPEnabled = await sapPlugin.window.isLCAPEnabled();
-    logger.trace("LCAP enabled successfully received.", {isLCAPEnabled});
+  if (sapPlugin === noSapPlugin) {
+    logger.trace("Failed to load @sap/plugin, so returning undefined.");
+    return;
+  }
+  logger.trace("@sap/plugin successfully loaded.");
 
-    return isLCAPEnabled;
+  const isLCAPEnabled = await sapPlugin.window.isLCAPEnabled();
+  logger.trace("LCAP enabled successfully received.", { isLCAPEnabled });
+
+  return isLCAPEnabled;
 }
