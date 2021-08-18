@@ -7,13 +7,14 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/SAP/app-studio-toolkit",
-    "directory": "types"
+    "directory": "packages/types"
   },
   "types": "./api.d.ts",
   "files": [
     "api.d.ts"
   ],
   "scripts": {
+    "ci" : "npm-run-all compile",
     "compile": "tsc -p ."
   },
   "dependencies": {

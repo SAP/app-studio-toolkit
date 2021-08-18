@@ -18,8 +18,8 @@ jobs:
       - image: circleci/node:12
     steps:
       - checkout
-      - run: npm install
-      - run: npm run ci
+      - run: yarn
+      - run: yarn ci
 
   ci-node14:
     docker:
@@ -27,11 +27,11 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
-      - run: npm install
-      - run: npm run ci
+      - run: yarn
+      - run: yarn ci
       - run:
           name: report_coverage
-          command: cat ./reports/coverage/lcov.info | ./node_modules/.bin/coveralls
+          command: cat ./packages/app-studio-toolkit/reports/coverage/lcov.info | ./node_modules/.bin/coveralls
           environment:
             COVERALLS_SERVICE_NAME: circle-ci
             COVERALLS_GIT_BRANCH: ${CIRCLE_BRANCH}
@@ -55,8 +55,8 @@ jobs:
       - image: circleci/node:16
     steps:
       - checkout
-      - run: npm install
-      - run: npm run ci
+      - run: yarn
+      - run: yarn ci
 
   deploy:
     docker:
