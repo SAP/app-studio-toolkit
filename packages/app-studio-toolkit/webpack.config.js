@@ -1,5 +1,5 @@
 const path = require("path");
-const baseConfig = require("./webpack.config.vscode.base");
+const baseConfig = require("../../webpack.config.vscode.base");
 
 const config = Object.assign(baseConfig, {
     entry: "./dist/src/extension.js",
