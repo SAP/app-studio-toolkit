@@ -70,8 +70,8 @@ export async function activate(context: ExtensionContext) {
             return;
         }
 
-        const parameterValue = await basAPI.getParameter(parameterName);
-        void window.showInformationMessage(`${parameterValue} returned for ${parameterName}`);
+        // const parameterValue = await basAPI.getParameter(parameterName);
+        // void window.showInformationMessage(`${parameterValue} returned for ${parameterName}`);
     }));
 
     context.subscriptions.push(commands.registerCommand("fileaction.open.file", () => {
