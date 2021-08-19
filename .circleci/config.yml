@@ -30,6 +30,7 @@ jobs:
       - run: yarn
       - run: yarn ci
       - run: mkdir -p artifacts && cp packages/*/*.vsix ./artifacts
+      # special steps that only need to occur in one of the CI jobs
       - run:
           name: report_coverage
           command: cat ./coverage/lcov.info | ./node_modules/.bin/coveralls
@@ -44,6 +45,7 @@ jobs:
       - run:
           name: Lint commit message
           command: echo "$COMMIT_MESSAGE" | npx commitlint
+      # persistence steps needed for deployment jobs
       - run:
           name: "Inspect Artifacts Folder"
           working_directory: ./artifacts
@@ -63,7 +65,7 @@ jobs:
       - run: yarn
       - run: yarn ci
 
-  deploy:
+  deploy-gh-releases:
     docker:
       - image: circleci/golang:1.13
     steps:
@@ -73,20 +75,42 @@ jobs:
           name: "Publish Release on GitHub"
           command: |
             go get github.com/tcnksm/ghr
-            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} ${CIRCLE_TAG} ./dest/ 
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} ${CIRCLE_TAG} ./dest/
+
+  deploy-npm:
+    docker:
+      - image: circleci/node:14
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run: yarn --pure-lockfile
+      - run: yarn run ci
+      - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+      # To help debug when lerna detects changes to the working tree and fails the publish
+      - run: git status
+      - run: yarn run release:publish
 
 workflows:
   version: 2
   test-deploy:
     jobs:
+      # CI Jobs
       - compliance
       - ci-node12
       - ci-node14:
           filters:
             tags:
-              only: /.*/
+              only: /^v[0-9]+(\.[0-9]+)*/
       - ci-node16
-      - deploy:
+      
+      # deploy jobs
+      - deploy-npm:
+          filters:
+            tags:
+              only: /^v[0-9]+(\.[0-9]+)*/
+            branches:
+              ignore: /.*/
+      - deploy-gh-releases:
           requires:
             - ci-node14
           filters:
