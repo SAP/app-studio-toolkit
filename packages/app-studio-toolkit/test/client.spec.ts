@@ -10,8 +10,8 @@ const testVscode = {
   },
 };
 
-mockVscode(testVscode, "src/actions/client.ts");
-mockVscode(testVscode, "src/actions/performer.ts");
+mockVscode(testVscode, "dist/src/actions/client.js");
+mockVscode(testVscode, "dist/src/actions/performer.js");
 import { performAction } from "../src/actions/client";
 import * as performer from "../src/actions/performer";
 import { ICommandAction } from "@sap-devx/app-studio-toolkit-types";

@@ -14,8 +14,8 @@ const testVscode = {
   extensions: extensions,
 };
 
-mockVscode(testVscode, "src/api.ts");
-mockVscode(testVscode, "src/logger/logger.ts");
+mockVscode(testVscode, "dist/src/api.js");
+mockVscode(testVscode, "dist/src/logger/logger.js");
 
 import { bas } from "../src/api";
 

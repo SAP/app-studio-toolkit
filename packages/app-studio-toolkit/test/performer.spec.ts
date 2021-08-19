@@ -18,7 +18,7 @@ const testVscode = {
   },
 };
 
-mockVscode(testVscode, "src/actions/performer.ts");
+mockVscode(testVscode, "dist/src/actions/performer.js");
 import { _performAction } from "../src/actions/performer";
 import { window } from "vscode";
 import { ActionsFactory } from "../src/actions/actionsFactory";

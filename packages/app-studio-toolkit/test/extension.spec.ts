@@ -30,11 +30,11 @@ const testVscode = {
   },
 };
 
-mockVscode(testVscode, "src/extension.ts");
-mockVscode(testVscode, "src/actions/controller.ts");
-mockVscode(testVscode, "src/actions/performer.ts");
-mockVscode(testVscode, "src/actions/actionsConfig.ts");
-mockVscode(testVscode, "src/basctlServer/basctlServer.ts");
+mockVscode(testVscode, "dist/src/extension.js");
+mockVscode(testVscode, "dist/src/actions/controller.js");
+mockVscode(testVscode, "dist/src/actions/performer.js");
+mockVscode(testVscode, "dist/src/actions/actionsConfig.js");
+mockVscode(testVscode, "dist/src/basctlServer/basctlServer.js");
 import * as extension from "../src/extension";
 import * as performer from "../src/actions/performer";
 import * as basctlServer from "../src/basctlServer/basctlServer";

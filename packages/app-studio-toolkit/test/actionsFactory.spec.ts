@@ -6,8 +6,8 @@ const testVscode = {
   Uri: { parse: () => "" },
 };
 
-mockVscode(testVscode, "src/actions/actionsFactory.ts");
-mockVscode(testVscode, "src/actions/impl.ts");
+mockVscode(testVscode, "dist/src/actions/actionsFactory.js");
+mockVscode(testVscode, "dist/src/actions/impl.js");
 import { ActionsFactory } from "../src/actions/actionsFactory";
 import {
   ICommandAction,

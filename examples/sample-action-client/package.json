@@ -11,10 +11,11 @@
     "url": "https://github.com/SAP/app-studio-toolkit"
   },
   "publisher": "SAPOSS",
-  "main": "./out/extension.js",
+  "main": "./dist/src/extension.js",
   "scripts": {
-    "ci": "npm-run-all compile",
+    "ci": "npm-run-all clean compile",
     "vscode:prepublish": "npm run compile",
+    "clean": "rimraf dist",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile",
@@ -80,7 +81,6 @@
   "devDependencies": {
     "@sap-devx/app-studio-toolkit-types": "1.1.0",
     "@types/vscode": "^1.40.0",
-    "typescript": "^4.2.4",
     "vsce": "^1.88.0"
   },
   "extensionDependencies": [

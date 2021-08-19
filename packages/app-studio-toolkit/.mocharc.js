@@ -3,5 +3,6 @@ const chaiAsPromised = require("chai-as-promised");
 
 chai.use(chaiAsPromised);
 module.exports = {
-  spec: "./tests/**/*.spec.ts",
+  require: ["source-map-support/register"],
+  spec: "./dist/test/**/*spec.js",
 };

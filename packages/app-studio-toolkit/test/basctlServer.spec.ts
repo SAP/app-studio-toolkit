@@ -26,8 +26,8 @@ const testServer = {
   close: () => "",
 };
 
-mockVscode(testVscode, "src/actions/performer.ts");
-mockVscode(testVscode, "src/actions/actionsFactory.ts");
+mockVscode(testVscode, "dist/src/actions/performer.js");
+mockVscode(testVscode, "dist/src/actions/actionsFactory.js");
 import * as performer from "../src/actions/performer";
 import * as actionsFactory from "../src/actions/actionsFactory";
 import {

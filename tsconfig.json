@@ -1,0 +1,16 @@
+{
+  "references": [
+    {
+      "path": "./packages/app-studio-toolkit"
+    },
+    {
+      "path": "./packages/types"
+    },
+    {
+      "path": "./examples/sample-action-client"
+    }
+  ],
+  "files": [],
+  "include": [],
+  "exclude": []
+}

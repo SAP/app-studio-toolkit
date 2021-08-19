@@ -1,6 +1,9 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "noEmit": true
+    "noEmit": true,
+    "rootDir": ".",
+    "baseUrl": "."
   },
-  "include": ["./api.d.ts"]
+  "include": ["api.d.ts"]
 }

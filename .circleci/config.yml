@@ -32,7 +32,7 @@ jobs:
       - run: mkdir -p artifacts && cp packages/*/*.vsix ./artifacts
       - run:
           name: report_coverage
-          command: cat ./packages/app-studio-toolkit/reports/coverage/lcov.info | ./node_modules/.bin/coveralls
+          command: cat ./coverage/lcov.info | ./node_modules/.bin/coveralls
           environment:
             COVERALLS_SERVICE_NAME: circle-ci
             COVERALLS_GIT_BRANCH: ${CIRCLE_BRANCH}

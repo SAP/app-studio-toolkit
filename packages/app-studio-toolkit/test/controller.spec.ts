@@ -36,9 +36,9 @@ const testVscode = {
     getConfiguration: () => wsConfig,
   },
 };
-mockVscode(testVscode, "src/actions/controller.ts");
-mockVscode(testVscode, "src/actions/performer.ts");
-mockVscode(testVscode, "src/actions/actionsConfig.ts");
+mockVscode(testVscode, "dist/src/actions/controller.js");
+mockVscode(testVscode, "dist/src/actions/performer.js");
+mockVscode(testVscode, "dist/src/actions/actionsConfig.js");
 import { ActionsController } from "../src/actions/controller";
 import { ActionsFactory } from "../src/actions/actionsFactory";
 import * as performer from "../src/actions/performer";

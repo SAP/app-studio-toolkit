@@ -8,7 +8,7 @@ const testVscode = {
   ExtensionContext: {},
 };
 
-mockVscode(testVscode, "src/logger/logger.ts");
+mockVscode(testVscode, "dist/src/logger/logger.js");
 import { isLCAPEnabled } from "../../src/apis/validateLCAP";
 
 describe("validate LCAP  API", () => {

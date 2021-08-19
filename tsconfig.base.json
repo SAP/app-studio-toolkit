@@ -1,0 +1,13 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "composite": true,
+    "module": "commonjs",
+    "lib": ["es7"],
+    "target": "es2017",
+    "declaration": true,
+    "sourceMap": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true
+  }
+}
