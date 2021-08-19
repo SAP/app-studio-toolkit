@@ -29,6 +29,7 @@ jobs:
       - checkout
       - run: yarn
       - run: yarn ci
+      - run: mkdir -p artifacts && cp packages/*/*.vsix ./artifacts
       - run:
           name: report_coverage
           command: cat ./packages/app-studio-toolkit/reports/coverage/lcov.info | ./node_modules/.bin/coveralls
@@ -43,9 +44,13 @@ jobs:
       - run:
           name: Lint commit message
           command: echo "$COMMIT_MESSAGE" | npx commitlint
+      - run:
+          name: "Inspect Artifacts Folder"
+          working_directory: ./artifacts
+          command: ls -la
       # persist .vsix for publishing in the `deploy` step
       - persist_to_workspace:
-          root: .
+          root: ./artifacts
           paths:
             # https://golang.org/pkg/path/filepath/#Match
             - app-studio-toolkit-*
