@@ -13,7 +13,7 @@ export const performAction = <T = void>(
 const logger = getLogger().getChildLogger({ label: "client" });
 
 /** Schedule an action for execution after restart */
-const _scheduleAction = async (action: BasAction): Promise<void> => {
+async function _scheduleAction(action: BasAction): Promise<void> {
   const actionsSettings = workspace.getConfiguration();
   const actionsList: any[] = actionsSettings.get("actions", []);
   actionsList.push(action);
@@ -31,4 +31,4 @@ const _scheduleAction = async (action: BasAction): Promise<void> => {
       `Couldn't add '${action.id}' action to scheduled actions: ${error}`
     );
   }
-};
+}

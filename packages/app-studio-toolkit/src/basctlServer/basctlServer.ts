@@ -29,7 +29,7 @@ function handleRequest(socket: net.Socket) {
   });
 }
 
-function getRequestData(dataBuffer: any) {
+function getRequestData(dataBuffer: any): any {
   try {
     return JSON.parse(_.toString(dataBuffer));
   } catch (error) {

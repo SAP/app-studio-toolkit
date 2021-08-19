@@ -1,6 +1,6 @@
 import { extensions, commands, window, ExtensionContext, Uri } from "vscode";
 import {
-  bas,
+  BasToolkit,
   BasAction,
   ICommandAction,
   IExecuteAction,
@@ -8,9 +8,9 @@ import {
 } from "@sap-devx/app-studio-toolkit-types";
 import * as path from "path";
 
-export async function activate(context: ExtensionContext) {
-  const res = await extensions.getExtension("SAPOSS.app-studio-toolkit");
-  const basAPI: typeof bas = res?.exports;
+export function activate(context: ExtensionContext) {
+  const res = extensions.getExtension("SAPOSS.app-studio-toolkit");
+  const basAPI: BasToolkit = res?.exports as BasToolkit;
 
   context.subscriptions.push(
     commands.registerCommand("get.extension.api", async () => {
@@ -91,20 +91,25 @@ export async function activate(context: ExtensionContext) {
     })
   );
 
-  context.subscriptions.push(
-    commands.registerCommand("get.parameter", async () => {
-      const parameterName = await window.showInputBox({
-        prompt: "Enter Parameter Name",
-        ignoreFocusOut: true,
-      });
-      if (parameterName === undefined || parameterName === "") {
-        return;
-      }
-
-      // const parameterValue = await basAPI.getParameter(parameterName);
-      // void window.showInformationMessage(`${parameterValue} returned for ${parameterName}`);
-    })
-  );
+  // TODO: seems like `getParameter` was removed in a recent PR
+  //   - need to verify if that was indeed the intent and remove it
+  //   - reminder to inspect the package.json for any reference to this command as well...
+  // context.subscriptions.push(
+  //   commands.registerCommand("get.parameter", async () => {
+  //     const parameterName = await window.showInputBox({
+  //       prompt: "Enter Parameter Name",
+  //       ignoreFocusOut: true,
+  //     });
+  //     if (parameterName === undefined || parameterName === "") {
+  //       return;
+  //     }
+  //
+  //     const parameterValue = await basAPI.getParameter(parameterName);
+  //     void window.showInformationMessage(
+  //       `${parameterValue} returned for ${parameterName}`
+  //     );
+  //   })
+  // );
 
   context.subscriptions.push(
     commands.registerCommand("fileaction.open.file", () => {
