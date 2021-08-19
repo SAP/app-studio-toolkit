@@ -1,27 +1,31 @@
 {
   "name": "sample-action-client",
-  "displayName": "Sample Action Client",
   "version": "1.1.0",
+  "displayName": "Sample Action Client",
+  "publisher": "SAPOSS",
   "description": "Sample Action Client",
   "categories": [
     "Other"
   ],
+  "engines": {
+    "vscode": "^1.44.2"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/SAP/app-studio-toolkit"
   },
-  "publisher": "SAPOSS",
   "main": "./dist/src/extension.js",
   "scripts": {
     "ci": "npm-run-all clean compile",
-    "vscode:prepublish": "npm run compile",
     "clean": "rimraf dist",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "pretest": "npm run compile",
-    "test": "node ./out/test/runTest.js",
-    "package": "vsce package ."
+    "compile": "tsc -p ./"
   },
+  "devDependencies": {
+    "@sap-devx/app-studio-toolkit-types": "1.1.0"
+  },
+  "extensionDependencies": [
+    "SAPOSS.app-studio-toolkit"
+  ],
   "contributes": {
     "commands": [
       {
@@ -78,17 +82,6 @@
     "onCommand:contrib.action.open.settings",
     "onCommand:contrib.action.open.file"
   ],
-  "devDependencies": {
-    "@sap-devx/app-studio-toolkit-types": "1.1.0",
-    "@types/vscode": "^1.40.0",
-    "vsce": "^1.88.0"
-  },
-  "extensionDependencies": [
-    "SAPOSS.app-studio-toolkit"
-  ],
-  "engines": {
-    "vscode": "^1.44.2"
-  },
   "BASContributes": {
     "actions": [
       {
