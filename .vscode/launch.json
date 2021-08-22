@@ -6,72 +6,30 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Run Extension with sample",
+      "name": "Run Toolkit with sample",
       "type": "extensionHost",
       "request": "launch",
       "runtimeExecutable": "${execPath}",
       "args": [
-        "--extensionDevelopmentPath=${workspaceFolder}",
-        "--extensionDevelopmentPath=${workspaceFolder}/sample-action-client"
+        "--extensionDevelopmentPath=${workspaceFolder}/packages/app-studio-toolkit",
+        "--extensionDevelopmentPath=${workspaceFolder}/examples/sample-action-client"
       ],
       "outFiles": [
-        "${workspaceFolder}/out/**/*.js",
-        "${workspaceFolder}/sample-action-client/out/**/*.js"
-      ],
-      "preLaunchTask": "${defaultBuildTask}"
-    },
-    {
-      "name": "Run Extension",
-      "type": "extensionHost",
-      "request": "launch",
-      "runtimeExecutable": "${execPath}",
-      "args": ["--extensionDevelopmentPath=${workspaceFolder}"],
-      "outFiles": ["${workspaceFolder}/out/**/*.js"],
-      "preLaunchTask": "${defaultBuildTask}"
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "backend unit tests",
-      "program": "${workspaceFolder}/node_modules/mocha/bin/mocha",
-      "args": [
-        "-r",
-        "ts-node/register",
-        "--timeout",
-        "999999",
-        "--colors",
-        "${workspaceFolder}/tests/**/*.spec.ts"
-      ],
-      "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen",
-      "protocol": "inspector"
-    },
-    {
-      "name": "Extension Tests",
-      "type": "extensionHost",
-      "request": "launch",
-      "runtimeExecutable": "${execPath}",
-      "args": [
-        "--extensionDevelopmentPath=${workspaceFolder}",
-        "--extensionTestsPath=${workspaceFolder}/out/test/suite/index"
-      ],
-      "outFiles": ["${workspaceFolder}/out/test/**/*.js"],
-      "preLaunchTask": "${defaultBuildTask}"
-    },
-    {
-      "name": "Sample action client",
-      "type": "extensionHost",
-      "request": "launch",
-      "runtimeExecutable": "${execPath}",
-      "args": [
-        "--extensionDevelopmentPath=${workspaceFolder}",
-        "--extensionDevelopmentPath=${workspaceFolder}/sample-action-client"
-      ],
-      "outFiles": [
-        "${workspaceFolder}/out/**/*.js",
-        "${workspaceFolder/sample-action-client/out/**/*.js"
+        "${workspaceFolder}/packages/app-studio-toolkit/dist/**/*.js",
+        "${workspaceFolder}/examples/sample-action-client/dist/**/*.js"
       ]
-      // "preLaunchTask": "watch app-studio-toolkit"
+    },
+    {
+      "name": "Run Toolkit",
+      "type": "extensionHost",
+      "request": "launch",
+      "runtimeExecutable": "${execPath}",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}/packages/app-studio-toolkit"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/packages/app-studio-toolkit/dist/**/*.js"
+      ]
     }
   ]
 }
