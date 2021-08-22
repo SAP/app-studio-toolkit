@@ -5,13 +5,13 @@ Can perform action immediately or schedule an action to run.
 ## Project setup
 
 ```
-npm install
+yarn
 ```
 
-### Compile
+### Build
 
 ```
-npm run compile
+yarn ci
 ```
 
 ## Performing Actions
