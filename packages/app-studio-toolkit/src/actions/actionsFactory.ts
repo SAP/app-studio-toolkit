@@ -42,6 +42,9 @@ export class ActionsFactory {
 
   private static handleCommandAction(
     jsonAction: any,
+    // TODO: Coverage refactor code so coverage directive is not needed, as the default value
+    //       can never actually be used...
+    /* istanbul ignore next - ignoring "legacy" missing coverage to enforce all new code to be 100% */
     fromSettings = false
   ): BasAction {
     const commandAction: ICommandAction = new CommandAction();

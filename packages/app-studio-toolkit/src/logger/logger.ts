@@ -16,6 +16,7 @@ export function getLogger(): IVSCodeExtLogger {
   return logger;
 }
 
+/* istanbul ignore next - ignoring "legacy" missing coverage to enforce all new code to be 100% */
 export function initLogger(context: ExtensionContext): void {
   const extensionName = "app-studio-toolkit"; // If the extension name changes, change this too
   try {

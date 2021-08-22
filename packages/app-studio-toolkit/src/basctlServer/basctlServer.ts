@@ -34,6 +34,7 @@ function getRequestData(dataBuffer: any): any {
     return JSON.parse(_.toString(dataBuffer));
   } catch (error) {
     showErrorMessage(error, "failed to parse basctl request data");
+    /* istanbul ignore next - ignoring "legacy" missing coverage to enforce all new code to be 100% */
     return {};
   }
 }
@@ -45,6 +46,7 @@ function showErrorMessage(error: any, defaultError: string) {
 }
 
 export function closeBasctlServer() {
+  /* istanbul ignore if - ignoring "legacy" missing coverage to enforce all new code to be 100% */
   if (basctlServer) {
     basctlServer.close();
   }

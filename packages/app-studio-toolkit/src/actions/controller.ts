@@ -65,6 +65,7 @@ export class ActionsController {
     decodedActionsParam: string
   ): "ByIDs" | "Inlined" {
     try {
+      /* istanbul ignore else - ignoring "legacy" missing coverage to enforce all new code to be 100% */
       if (isArray(JSON.parse(decodedActionsParam))) {
         // actionsInlinedMode
         // actions=[{"id":"openSettings","actionType":"COMMAND","name":"workbench.action.openSettings"},{"actionType":"FILE","uri":"https://www.google.com/"}]

@@ -16,6 +16,7 @@ export class ExecuteAction implements IExecuteAction {
 
   constructor() {
     this.actionType = EXECUTE;
+    /* istanbul ignore next - ignoring "legacy" missing coverage to enforce all new code to be 100% */
     this.executeAction = () => Promise.resolve();
     this.params = [];
   }
