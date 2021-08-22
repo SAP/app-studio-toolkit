@@ -1,0 +1,77 @@
+{
+  "name": "app-studio-toolkit",
+  "displayName": "SAP Business Application Studio toolkit",
+  "version": "1.1.0",
+  "description": "Provides rich tools for executing common platform tasks.",
+  "categories": [
+    "Other"
+  ],
+  "engines": {
+    "vscode": "^1.44.2"
+  },
+  "license": "Apache-2.0",
+  "publisher": "SAPOSS",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/app-studio-toolkit"
+  },
+  "main": "./dist/src/extension",
+  "scripts": {
+    "ci": "npm-run-all clean compile coverage bundle package",
+    "clean": "rimraf ./dist *.vsix",
+    "compile": "tsc -p ./",
+    "test": "mocha",
+    "coverage": "nyc mocha",
+    "bundle": "webpack --mode production",
+    "package": "node ./scripts/package-vsix.js"
+  },
+  "dependencies": {
+    "@vscode-logging/wrapper": "1.0.1",
+    "lodash": "4.17.21",
+    "optional-require": "1.0.3"
+  },
+  "devDependencies": {
+    "@sap-devx/app-studio-toolkit-types": "1.1.0",
+    "@types/lodash": "^4.14.168",
+    "@vscode-logging/types": "0.1.4",
+    "fs-extra": "^10.0.0",
+    "mock-require": "^3.0.3",
+    "vsce": "1.88.0",
+    "webpack": "^5.3.0",
+    "webpack-cli": "^4.1.0"
+  },
+  "activationEvents": [
+    "*"
+  ],
+  "contributes": {
+    "configuration": {
+      "properties": {
+        "actions": {
+          "type": "array"
+        },
+        "app-studio-toolkit.logging.level": {
+          "type": "string",
+          "enum": [
+            "off",
+            "fatal",
+            "error",
+            "warn",
+            "info",
+            "debug",
+            "trace"
+          ],
+          "default": "error",
+          "description": "The verbosity of logging. The Order is off < fatal < error < warn < info < debug < trace.",
+          "scope": "window"
+        },
+        "app-studio-toolkit.logging.sourceLocationTracking": {
+          "type": "boolean",
+          "default": false,
+          "description": "Should Source Code Location Info be added to log entries, DANGER - May be very slow, only use in debugging scenarios",
+          "scope": "window"
+        }
+      }
+    }
+  },
+  "icon": "icon.png"
+}

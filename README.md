@@ -9,22 +9,13 @@
 # app-studio-toolkit
 
 ## Description
+
 With the app-studio-toolkit extension, you can benefit from a rich tools for executing common platform tasks. This extension allows developers to execute common actions as "Launch Code-Snippet", "Run VS Code command", "Open File", "Execute handler".
 
-## Requirements
-* [node.js](https://www.npmjs.com/package/node) version 10 or higher.
-* [VSCode](https://code.visualstudio.com/) 1.39.2 or higher or [Theia](https://www.theia-ide.org/) 0.12 or higher.
-
-## installation
-* Clone this repository
-* In it's root folder
-    ```bash
-    npm install
-    npm run compile
-    ```
-
 ## How to obtain support
+
 To get more help, support, and information please open a github [issue](https://github.com/SAP/app-studio-toolkit/issues).
 
 ## Contributing
+
 Contributing information can be found in the [CONTRIBUTING.md](CONTRIBUTING.md) file.
