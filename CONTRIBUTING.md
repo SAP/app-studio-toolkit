@@ -7,7 +7,7 @@ A sub-package **may** have an additional CONTRIBUTING.md file if needed.
 
 All contributors must sign the DCO
 
-- https://cla-assistant.io/SAP-samples/ecmascript-monorepo-template
+- https://cla-assistant.io/SAP/app-studio-toolkit
 
 This is managed automatically via https://cla-assistant.io/ pull request voter.
 
