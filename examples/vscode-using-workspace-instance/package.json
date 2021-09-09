@@ -1,0 +1,28 @@
+{
+  "name": "project_exposing_workspace_api_instance",
+  "version": "1.1.0",
+  "publisher": "SAP OSS",
+  "engines": {
+    "vscode": "^1.32.0"
+  },
+  "main": "./dist/src/extension.js",
+  "scripts": {
+    "ci": "npm-run-all clean compile",
+    "clean": "rimraf dist",
+    "compile": "tsc -p ./"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@sap-devx/app-studio-toolkit-types": "1.1.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "*"
+  ],
+  "extensionDependencies": [
+    "SAPOSS.app-studio-toolkit"
+  ],
+  "contributes": {}
+}

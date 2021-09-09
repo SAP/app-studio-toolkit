@@ -18,6 +18,7 @@
     "compile": "tsc -p ."
   },
   "dependencies": {
+    "@sap/artifact-management": "1.0.1",
     "@types/vscode": "^1.49.0"
   },
   "devDependencies": {}

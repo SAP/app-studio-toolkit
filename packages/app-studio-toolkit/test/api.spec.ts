@@ -17,7 +17,7 @@ const testVscode = {
 mockVscode(testVscode, "dist/src/api.js");
 mockVscode(testVscode, "dist/src/logger/logger.js");
 
-import { bas } from "../src/api";
+import { InternalBasToolkitAPI as bas } from "../src/api";
 
 describe("api unit test", () => {
   let sandbox: SinonSandbox;

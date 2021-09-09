@@ -1,5 +1,9 @@
 import { extensions } from "vscode";
-import { BasToolkit } from "@sap-devx/app-studio-toolkit-types";
+import { WorkspaceApi } from "@sap/artifact-management";
+import {
+  BasToolkit,
+  BasWorkspaceApi,
+} from "@sap-devx/app-studio-toolkit-types";
 import { performAction } from "./actions/client";
 import { ActionsController } from "./actions/controller";
 import {
@@ -12,7 +16,11 @@ import { getParameter } from "./apis/parameters";
 import { getLogger } from "./logger/logger";
 import { isLCAPEnabled } from "./apis/validateLCAP";
 
-export const bas: BasToolkit = {
+/**
+ * The BasToolkit API without the **dynamically** initialized
+ * `workspaceAPI` part.
+ */
+export const InternalBasToolkitAPI: Omit<BasToolkit, "workspaceAPI"> = {
   getExtensionAPI: <T>(extensionId: string): Promise<T> => {
     const extension = extensions.getExtension(extensionId);
     const logger = getLogger().getChildLogger({ label: "getExtensionAPI" });
@@ -51,3 +59,32 @@ export const bas: BasToolkit = {
     FileAction,
   },
 };
+
+function createWorkspaceProxy(workspaceImpl: WorkspaceApi): BasWorkspaceApi {
+  const basWsAPI = {
+    getProjects: (...args: Parameters<WorkspaceApi["getProjects"]>) =>
+      workspaceImpl.getProjects(...args),
+    getProjectUris: (...args: Parameters<WorkspaceApi["getProjectUris"]>) =>
+      workspaceImpl.getProjectUris(...args),
+    onWorkspaceChanged: (
+      ...args: Parameters<WorkspaceApi["onWorkspaceChanged"]>
+    ) => workspaceImpl.onWorkspaceChanged(...args),
+  };
+
+  return basWsAPI;
+}
+
+export function createBasToolkitAPI(workspaceImpl: WorkspaceApi): BasToolkit {
+  const workspaceAPI: BasWorkspaceApi = createWorkspaceProxy(workspaceImpl);
+  const exportedBasToolkitAPI = {
+    // "shallow" clone
+    ...InternalBasToolkitAPI,
+    ...{ workspaceAPI },
+  };
+
+  // "Immutability Changes Everything"
+  // note we are not "deep" freezing because the usage of namespaces on the API
+  // is expected to be removed.
+  Object.freeze(exportedBasToolkitAPI);
+  return exportedBasToolkitAPI;
+}
