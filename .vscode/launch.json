@@ -20,13 +20,13 @@
       ]
     },
     {
-      "name": "Run Toolkit exposing workspace api instance",
+      "name": "Run Toolkit using workspace api instance",
       "type": "extensionHost",
       "request": "launch",
       "runtimeExecutable": "${execPath}",
       "args": [
         "--extensionDevelopmentPath=${workspaceFolder}/packages/app-studio-toolkit",
-        "--extensionDevelopmentPath=${workspaceFolder}/examples/vscode-exposing-workspace-instance"
+        "--extensionDevelopmentPath=${workspaceFolder}/examples/vscode-using-workspace-instance"
       ],
       "outFiles": ["${workspaceFolder}/dist/**/*.js"],
       "preLaunchTask": "${defaultBuildTask}"
