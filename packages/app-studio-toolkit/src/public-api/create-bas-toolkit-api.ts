@@ -3,15 +3,17 @@ import {
   BasToolkit,
   BasWorkspaceApi,
 } from "@sap-devx/app-studio-toolkit-types";
-import { baseBasToolkitAPI } from "./base-bas-api";
 import { createWorkspaceProxy } from "./create-workspace-proxy";
 
-export function createBasToolkitAPI(workspaceImpl: WorkspaceApi): BasToolkit {
+export function createBasToolkitAPI(
+  workspaceImpl: WorkspaceApi,
+  baseBasToolkitAPI: Omit<BasToolkit, "workspaceAPI">
+): BasToolkit {
   const workspaceAPI: BasWorkspaceApi = createWorkspaceProxy(workspaceImpl);
   const exportedBasToolkitAPI = {
-    // "shallow" clone
+    // note `...` here effectively does a "shallow" clone
     ...baseBasToolkitAPI,
-    ...{ workspaceAPI },
+    workspaceAPI,
   };
 
   // "Immutability Changes Everything"
