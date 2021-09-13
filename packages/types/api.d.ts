@@ -63,7 +63,7 @@ declare interface BasToolkit {
   ) => Thenable<T>;
 
   /**
-   * Singles instance of the `@sap/artifact-management[workspace]` API
+   * Singleton instance of the `@sap/artifact-management[workspace]` API
    * shared among BAS extensions to optimize performance.
    */
   workspaceAPI: BasWorkspaceApi;

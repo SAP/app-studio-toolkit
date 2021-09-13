@@ -1,14 +1,15 @@
-import { createBasToolkitAPI } from "./api";
+import { ExtensionContext } from "vscode";
+import { BasToolkit } from "@sap-devx/app-studio-toolkit-types";
+import { createBasToolkitAPI } from "./public-api/create-bas-toolkit-api";
 import {
   startBasctlServer,
   closeBasctlServer,
 } from "./basctlServer/basctlServer";
 import { ActionsController } from "./actions/controller";
 import { initLogger, getLogger } from "./logger/logger";
-import { ExtensionContext } from "vscode";
 import { initWorkspaceAPI } from "./project-type/workspace-instance";
 
-export function activate(context: ExtensionContext) {
+export function activate(context: ExtensionContext): BasToolkit {
   initLogger(context);
 
   startBasctlServer();
