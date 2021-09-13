@@ -28,8 +28,7 @@
         "--extensionDevelopmentPath=${workspaceFolder}/packages/app-studio-toolkit",
         "--extensionDevelopmentPath=${workspaceFolder}/examples/vscode-using-workspace-instance"
       ],
-      "outFiles": ["${workspaceFolder}/dist/**/*.js"],
-      "preLaunchTask": "${defaultBuildTask}"
+      "outFiles": ["${workspaceFolder}/dist/**/*.js"]
     },
     {
       "name": "Run Toolkit",
