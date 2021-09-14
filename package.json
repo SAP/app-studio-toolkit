@@ -5,6 +5,10 @@
     "packages": [
       "packages/*",
       "examples/*"
+    ],
+    "nohoist": [
+      "app-studio-toolkit/@sap/artifact-management",
+      "app-studio-toolkit/@sap/artifact-management/**"
     ]
   },
   "scripts": {

@@ -34,6 +34,7 @@
   },
   "devDependencies": {
     "@types/lodash": "^4.14.168",
+    "string-replace-loader": "3.0.3",
     "@vscode-logging/types": "0.1.4",
     "@sap-devx/app-studio-toolkit-types": "1.1.0",
     "fs-extra": "^10.0.0",

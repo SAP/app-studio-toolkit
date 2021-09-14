@@ -17,6 +17,9 @@ expect(pkgJson.main).to.equal("./dist/src/extension");
 pkgJson.main = "./dist/extension";
 writeJsonSync(pkgJsonPath, pkgJson, { spaces: 2, EOF: "\n" });
 
+// TODO: wrap this `proxyquire` to inject custom logic to select
+//  the contents of the node_module directory as well.
+//  can we brute force this and select everything from node_modules easily?
 const { packageCommand } = require("vsce/out/package");
 // Time to create the VSIX.
 packageCommand({
