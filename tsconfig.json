@@ -10,7 +10,7 @@
       "path": "./examples/sample-action-client"
     },
     {
-      "path": "./examples/vscode-using-workspace-instance"
+      "path": "./examples/vscode-using-workspace-api"
     }
   ],
   "files": [],

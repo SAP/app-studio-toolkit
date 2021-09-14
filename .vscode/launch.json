@@ -26,7 +26,7 @@
       "runtimeExecutable": "${execPath}",
       "args": [
         "--extensionDevelopmentPath=${workspaceFolder}/packages/app-studio-toolkit",
-        "--extensionDevelopmentPath=${workspaceFolder}/examples/vscode-using-workspace-instance"
+        "--extensionDevelopmentPath=${workspaceFolder}/examples/vscode-using-workspace-api"
       ],
       "outFiles": ["${workspaceFolder}/dist/**/*.js"]
     },
