@@ -12,7 +12,6 @@
     ]
   },
   "scripts": {
-    "postinstall": "patch-package",
     "release:version": "lerna version",
     "release:publish": "lerna publish from-git --yes",
     "ci": "npm-run-all legal:* format:validate lint:validate ci:subpackages coverage:merge",
