@@ -16,4 +16,4 @@
 # and its transitive dependencies.
 # However, some extras may "sneak in", depending on yarn's hosting algorithm.
 # See `nohoist` option in the root package.json
-!node_modules
+!node_modules/
