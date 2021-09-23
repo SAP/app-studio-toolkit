@@ -1,16 +1,21 @@
 {
-  "name": "vscode_extension_using_workspace_api",
+  "name": "vscode-using-workspace-api",
   "private": "true",
   "version": "1.2.0",
-  "publisher": "SAP OSS",
+  "publisher": "SAPOSS",
   "engines": {
     "vscode": "^1.32.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/app-studio-toolkit"
+  },
   "main": "./dist/src/extension.js",
   "scripts": {
-    "ci": "npm-run-all clean compile",
-    "clean": "rimraf dist",
-    "compile": "tsc -p ./"
+    "ci": "npm-run-all clean compile package",
+    "clean": "rimraf dist *.vsix",
+    "compile": "tsc -p ./",
+    "package": "vsce package"
   },
   "devDependencies": {
     "@sap-devx/app-studio-toolkit-types": "^1.2.0"

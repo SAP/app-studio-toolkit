@@ -1,14 +1,17 @@
-import { ExtensionContext, extensions, window } from "vscode";
+import { extensions, window } from "vscode";
 import { BasToolkit } from "@sap-devx/app-studio-toolkit-types";
 
-async function activate(context: ExtensionContext): Promise<void> {
+async function activate(): Promise<void> {
   // Access the BAS Toolkit apis via vscode's `getExtension`
   const basToolkitAPI: BasToolkit = extensions.getExtension(
     "SAPOSS.app-studio-toolkit"
   )?.exports;
 
   const workspaceAPI = basToolkitAPI.workspaceAPI;
-  const outputChannel = window.createOutputChannel(context.extension.id);
+  // `context.extension.id` does not seem to work on Theia
+  const outputChannel = window.createOutputChannel(
+    "vscode-using-workspace-api"
+  );
   const projects = await workspaceAPI.getProjects();
   if (projects.length > 0) {
     // naively only print the **first** project found...
