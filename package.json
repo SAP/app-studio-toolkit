@@ -55,7 +55,8 @@
     "typescript": "^4.2.4",
     "shx": "^0.3.3",
     "rimraf": "^3.0.2",
-    "patch-package": "6.4.7"
+    "patch-package": "6.4.7",
+    "vsce": "1.88.0"
   },
   "husky": {
     "hooks": {
