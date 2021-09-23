@@ -1,18 +1,22 @@
 import { extensions } from "vscode";
 import { BasToolkit } from "@sap-devx/app-studio-toolkit-types";
-import { performAction } from "./actions/client";
-import { ActionsController } from "./actions/controller";
+import { performAction } from "../actions/client";
+import { ActionsController } from "../actions/controller";
 import {
   ExecuteAction,
   SnippetAction,
   CommandAction,
   FileAction,
-} from "./actions/impl";
-import { getParameter } from "./apis/parameters";
-import { getLogger } from "./logger/logger";
-import { isLCAPEnabled } from "./apis/validateLCAP";
+} from "../actions/impl";
+import { getParameter } from "../apis/parameters";
+import { getLogger } from "../logger/logger";
+import { isLCAPEnabled } from "../apis/validateLCAP";
 
-export const bas: BasToolkit = {
+/**
+ * The BasToolkit API without the **dynamically** initialized
+ * `workspaceAPI` part.
+ */
+export const baseBasToolkitAPI: Omit<BasToolkit, "workspaceAPI"> = {
   getExtensionAPI: <T>(extensionId: string): Promise<T> => {
     const extension = extensions.getExtension(extensionId);
     const logger = getLogger().getChildLogger({ label: "getExtensionAPI" });

@@ -1,4 +1,7 @@
+# ignore everything
 **
+
+# except
 !LICENSES
 !README.md
 !package.json
@@ -7,3 +10,10 @@
 !dist/
 # the source maps point to src/ dir
 !src/
+
+# `@sap/artifact-management` package is not part of the webpack bundle
+# the `node_modules` dir should contain (mainly) the ``@sap/artifact-management` package contents
+# and its transitive dependencies.
+# However, some extras may "sneak in", depending on yarn's hosting algorithm.
+# See `nohoist` option in the root package.json
+!node_modules/

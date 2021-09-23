@@ -7,6 +7,7 @@ const testVscode = {
   },
   workspace: {
     getConfiguration: () => "",
+    onDidChangeWorkspaceFolders: () => {},
   },
 };
 

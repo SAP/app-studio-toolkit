@@ -27,6 +27,7 @@ const testVscode = {
   },
   workspace: {
     getConfiguration: () => wsConfig,
+    onDidChangeWorkspaceFolders: () => {},
   },
 };
 

@@ -8,6 +8,9 @@
     },
     {
       "path": "./examples/sample-action-client"
+    },
+    {
+      "path": "./examples/vscode-using-workspace-api"
     }
   ],
   "files": [],

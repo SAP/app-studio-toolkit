@@ -10,10 +10,26 @@ const config = Object.assign(baseConfig, {
     libraryTarget: "commonjs2",
     devtoolModuleFilenameTemplate: "../[resource-path]",
   },
+  module: {
+    rules: [
+      {
+        test: /.*.js$/,
+        loader: "string-replace-loader",
+        options: {
+          // When bundling the `optional-require` flow must not be modified by webpack.
+          search: 'require("optional-require")(require)',
+          replace:
+            "__non_webpack_require__('optional-require')(__non_webpack_require__)",
+        },
+      },
+    ],
+  },
   // 📖 -> https://webpack.js.org/configuration/externals/
   externals: {
     // the vscode-module is created on-the-fly and must be excluded. Add other modules that cannot be webpack'ed.
     vscode: "commonjs vscode",
+    // @sap/artifact-management uses relative (`__dirname`) logic to dynamically load its plugins
+    "@sap/artifact-management": "commonjs @sap/artifact-management",
   },
 });
 

@@ -1,4 +1,10 @@
 import { Uri } from "vscode";
+import { WorkspaceApi } from "@sap/artifact-management";
+
+declare type BasWorkspaceApi = Pick<
+  WorkspaceApi,
+  "getProjects" | "getProjectUris" | "onWorkspaceChanged"
+>;
 
 declare interface BasToolkit {
   /**
@@ -55,6 +61,12 @@ declare interface BasToolkit {
     action: BasAction,
     options?: { schedule?: boolean }
   ) => Thenable<T>;
+
+  /**
+   * Singleton instance of the `@sap/artifact-management[workspace]` API
+   * shared among BAS extensions to optimize performance.
+   */
+  workspaceAPI: BasWorkspaceApi;
 
   actions: {
     /**
