@@ -1,5 +1,6 @@
 {
-  "name": "project_using_workspace_api_instance",
+  "name": "vscode_extension_using_workspace_api",
+  "private": "true",
   "version": "1.1.0",
   "publisher": "SAP OSS",
   "engines": {
