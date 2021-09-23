@@ -13,7 +13,7 @@
   },
   "scripts": {
     "release:version": "lerna version",
-    "release:publish": "lerna publish from-git --yes",
+    "release:publish": "lerna publish from-git --yes --no-verify-access",
     "ci": "npm-run-all legal:* format:validate lint:validate ci:subpackages coverage:merge",
     "ci:subpackages": "lerna run ci",
     "compile": "lerna run clean && tsc --build",
