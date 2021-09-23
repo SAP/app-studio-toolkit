@@ -1,7 +1,7 @@
 {
   "name": "vscode_extension_using_workspace_api",
   "private": "true",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "publisher": "SAP OSS",
   "engines": {
     "vscode": "^1.32.0"
@@ -12,9 +12,8 @@
     "clean": "rimraf dist",
     "compile": "tsc -p ./"
   },
-  "dependencies": {},
   "devDependencies": {
-    "@sap-devx/app-studio-toolkit-types": "1.1.0"
+    "@sap-devx/app-studio-toolkit-types": "^1.2.0"
   },
   "categories": [
     "Other"
