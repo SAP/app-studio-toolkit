@@ -2,7 +2,7 @@ import { WorkspaceApi, Tag } from "@sap/artifact-management";
 import { WorkspaceFolder } from "vscode";
 import { expect } from "chai";
 import { createWorkspaceProxy } from "../../src/public-api/create-workspace-proxy";
-import { BasWorkspaceApi } from "../../../types/api";
+import { BasWorkspaceApi } from "@sap-devx/app-studio-toolkit-types";
 
 describe("the `createWorkspaceProxy` utility", () => {
   let workspaceProxy: BasWorkspaceApi;
