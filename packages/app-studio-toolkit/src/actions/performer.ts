@@ -13,7 +13,10 @@ export async function _performAction(action: BasAction): Promise<any> {
     );
     switch (action.actionType) {
       case COMMAND: {
-        return commands.executeCommand(action.name, get(action, "params", []));
+        return commands.executeCommand(
+          action.name,
+          ...get(action, "params", [])
+        );
       }
       case EXECUTE: {
         return action.executeAction(get(action, "params", []));
