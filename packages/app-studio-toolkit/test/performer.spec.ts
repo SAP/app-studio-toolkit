@@ -52,7 +52,7 @@ describe("performer test", () => {
       };
       commandsMock
         .expects("executeCommand")
-        .withExactArgs(commAction.name, commAction.params)
+        .withArgs(commAction.name, "param1", "param2")
         .resolves("success");
       expect(await _performAction(commAction)).to.be.equal("success");
     });
@@ -64,7 +64,7 @@ describe("performer test", () => {
       };
       commandsMock
         .expects("executeCommand")
-        .withExactArgs(commAction.name, [])
+        .withExactArgs(commAction.name)
         .resolves("success");
       expect(await _performAction(commAction)).to.be.equal("success");
     });
@@ -77,7 +77,7 @@ describe("performer test", () => {
       };
       commandsMock
         .expects("executeCommand")
-        .withExactArgs(commAction.name, commAction.params)
+        .withArgs(commAction.name, "param1", "param2")
         .rejects(new Error("Failure"));
       await expect(_performAction(commAction)).to.be.rejectedWith("Failure");
     });
