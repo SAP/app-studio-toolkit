@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@sap/artifact-management": "1.0.1",
-    "@types/vscode": "^1.49.0"
+    "@types/vscode": "^1.49.0",
+    "@vscode-logging/types": "0.1.4"
   }
 }
