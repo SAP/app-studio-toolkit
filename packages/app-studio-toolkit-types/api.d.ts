@@ -32,17 +32,6 @@ declare interface BasToolkit {
   getAction: (id: string) => BasAction | undefined;
 
   /**
-   * Note that in BAS these parameters are usually URL parameters.
-   * But the API is more general and is not limited to only URL parameters.
-   *
-   * @param key - parameter **key** name.
-   *
-   * @returns The **value** of the specified `key` parameter IFF such a key exists in BAS,
-   *          `undefined` otherwise.
-   */
-  //getParameter: (key: string) => Promise<string | undefined>;
-
-  /**
    * Is environment LCAP or not
    *
    * @returns true is environment is LCAP in BAS,

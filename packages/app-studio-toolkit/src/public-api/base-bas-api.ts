@@ -8,7 +8,6 @@ import {
   CommandAction,
   FileAction,
 } from "../actions/impl";
-import { getParameter } from "../apis/parameters";
 import { getLogger } from "../logger/logger";
 import { isLCAPEnabled } from "../apis/validateLCAP";
 
@@ -43,7 +42,6 @@ export const baseBasToolkitAPI: Omit<BasToolkit, "workspaceAPI"> = {
   },
 
   getAction: (actionId: string) => ActionsController.getAction(actionId),
-  //getParameter,
   performAction,
   isLCAPEnabled,
 
