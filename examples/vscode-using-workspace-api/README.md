@@ -7,6 +7,7 @@ exposed via the `App Studio Toolkit` VSCode Ext.
 
 - **Nodejs**: An `active` or `maintenance` version.
 - **Yarn**: version 1.x
+- CAP Development Kit `npm install -g @sap/cds-dk` (must be **globally** installed).
 
 ## Initial setup
 
