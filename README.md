@@ -8,7 +8,7 @@
 
 ## Description
 
-With the app-studio-toolkit extension, you can benefit from a rich tools for executing common platform tasks. This extension allows developers to execute common actions as "Launch Code-Snippet", "Run VS Code command", "Open File", "Execute handler".
+With the app-studio-toolkit extension, you can benefit from a rich tools for executing common platform tasks. This extension allows developers to execute common actions as "Launch Code-Snippet", "Run VS Code command", "Open File", "Execute handler"...
 
 ## How to obtain support
 
