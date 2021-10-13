@@ -4,7 +4,7 @@ import { BasAction } from "@sap-devx/app-studio-toolkit-types";
 import { _performAction } from "./performer";
 import { getParameter } from "../apis/parameters";
 import { ActionsFactory } from "./actionsFactory";
-import { isArray, forEach, get, uniq, compact, split } from "lodash";
+import { isArray, forEach, get, uniq, compact, split, isString } from "lodash";
 import * as actionsConfig from "./actionsConfig";
 
 export class ActionsController {
@@ -117,17 +117,17 @@ export class ActionsController {
 
   public static performScheduledActions() {
     const actionsList: string[] = actionsConfig.get();
-    forEach(actionsList, async (actionAsJson) => {
+    forEach(actionsList, async (actionItem) => {
       try {
-        const action: BasAction = ActionsFactory.createAction(
-          actionAsJson,
-          true
-        );
-        await _performAction(action);
+        const action = isString(actionItem)
+          ? ActionsController.getAction(actionItem)
+          : ActionsFactory.createAction(actionItem, true);
+        if (action) {
+          await _performAction(action);
+        }
       } catch (error) {
         getLogger().error(
-          `Failed to execute scheduled action ${JSON.stringify(
-            actionAsJson
+          `Failed to execute scheduled action ${JSON.stringify(actionItem)}
           )}: ${error}`,
           { method: "performScheduledActions" }
         );
