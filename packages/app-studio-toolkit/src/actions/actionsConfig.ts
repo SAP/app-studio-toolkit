@@ -12,7 +12,7 @@ export const get = (): any[] => {
   const actions: any[] = [];
 
   workspace.workspaceFolders?.forEach((wsFolder) => {
-    addActions(actions, workspace.getConfiguration(undefined, wsFolder));
+    addActions(actions, workspace.getConfiguration(undefined, wsFolder.uri));
   });
 
   addActions(actions, workspace.getConfiguration());
@@ -22,7 +22,9 @@ export const get = (): any[] => {
 
 export const clear = (): void => {
   workspace.workspaceFolders?.forEach((wsFolder) => {
-    void workspace.getConfiguration(undefined, wsFolder).update(key, undefined);
+    void workspace
+      .getConfiguration(undefined, wsFolder.uri)
+      .update(key, undefined);
   });
 
   void workspace.getConfiguration().update(key, undefined);
