@@ -13,8 +13,7 @@ const wsConfig = {
     },
     "create",
   ],
-  update: () => "",
-  inspect: () => null,
+  update: () => ""
 };
 const testVscode = {
   extensions: {
