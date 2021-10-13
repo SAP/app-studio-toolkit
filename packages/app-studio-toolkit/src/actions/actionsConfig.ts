@@ -24,7 +24,7 @@ export const clear = (): void => {
   workspace.workspaceFolders?.forEach((wsFolder) => {
     void workspace
       .getConfiguration(undefined, wsFolder.uri)
-      .update(key, undefined);
+      .update(key, undefined); // removes actions key
   });
 
   void workspace.getConfiguration().update(key, undefined);
