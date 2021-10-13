@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.3](https://github.com/SAP/app-studio-toolkit/compare/v1.2.2...v1.2.3) (2021-10-13)
+
+### Bug Fixes
+
+- release script ([951a178](https://github.com/SAP/app-studio-toolkit/commit/951a17820a2baa9f65de0675d7ac2ca16a6d8e21))
+
 ## [1.2.2](https://github.com/SAP/app-studio-toolkit/compare/v1.2.1...v1.2.2) (2021-10-13)
 
 ### Bug Fixes
