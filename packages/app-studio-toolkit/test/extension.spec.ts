@@ -5,6 +5,7 @@ import { SinonSandbox, SinonMock, createSandbox } from "sinon";
 const wsConfig = {
   get: () => "",
   update: () => "",
+  inspect: () => {},
 };
 
 const testVscode = {
@@ -91,7 +92,6 @@ describe("extension unit test", () => {
         .returns([scheduledAction]);
       const action = ActionsFactory.createAction(scheduledAction, true);
       performerMock.expects("_performAction").withExactArgs(action).resolves();
-      wsConfigMock.expects("update").withExactArgs("actions", []);
 
       extension.activate(context);
     });
@@ -104,7 +104,6 @@ describe("extension unit test", () => {
       performerMock.expects("_performAction").never();
 
       wsConfigMock.expects("get").withExactArgs("actions", []).returns([]);
-      wsConfigMock.expects("update").withExactArgs("actions", []);
 
       const result = extension.activate(context);
       expect(result).to.haveOwnProperty("getExtensionAPI");

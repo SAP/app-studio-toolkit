@@ -11,8 +11,10 @@ const wsConfig = {
       actionType: "CREATE",
       name: "create",
     },
+    "create",
   ],
   update: () => "",
+  inspect: () => null,
 };
 const testVscode = {
   extensions: {
@@ -33,6 +35,7 @@ const testVscode = {
     ],
   },
   workspace: {
+    workspaceFolders: [{}, {}],
     getConfiguration: () => wsConfig,
     onDidChangeWorkspaceFolders: () => {},
   },
