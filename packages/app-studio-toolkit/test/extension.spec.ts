@@ -4,7 +4,7 @@ import { SinonSandbox, SinonMock, createSandbox } from "sinon";
 
 const wsConfig = {
   get: () => "",
-  update: () => ""
+  update: () => "",
 };
 
 const testVscode = {
