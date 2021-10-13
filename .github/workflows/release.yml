@@ -27,7 +27,7 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Publish to NPM
-        run: yarn run lerna:publish
+        run: yarn run release:publish
 
       - name: Create Github Release
         uses: softprops/action-gh-release@v1
