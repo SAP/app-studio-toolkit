@@ -1,11 +1,31 @@
-import { workspace } from "vscode";
+import { workspace, WorkspaceConfiguration } from "vscode";
+import { uniqWith, isEqual } from "lodash";
 
 const key = "actions";
 
-export const get = (): string[] => {
-  return workspace.getConfiguration().get(key, []);
+const addActions = (actions: any[], config: WorkspaceConfiguration): void => {
+  const configActions = config.get<any[]>(key, []);
+  actions.splice(actions.length, 0, ...configActions);
 };
 
-export const clear = (): Thenable<void> => {
-  return workspace.getConfiguration().update(key, []);
+export const get = (): any[] => {
+  const actions: any[] = [];
+
+  workspace.workspaceFolders?.forEach((wsFolder) => {
+    addActions(actions, workspace.getConfiguration(undefined, wsFolder.uri));
+  });
+
+  addActions(actions, workspace.getConfiguration());
+
+  return uniqWith(actions, isEqual);
+};
+
+export const clear = (): void => {
+  workspace.workspaceFolders?.forEach((wsFolder) => {
+    void workspace
+      .getConfiguration(undefined, wsFolder.uri)
+      .update(key, undefined);
+  });
+
+  void workspace.getConfiguration().update(key, undefined);
 };

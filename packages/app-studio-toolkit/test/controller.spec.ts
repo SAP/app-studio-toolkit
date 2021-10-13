@@ -11,6 +11,7 @@ const wsConfig = {
       actionType: "CREATE",
       name: "create",
     },
+    "create",
   ],
   update: () => "",
 };
@@ -33,6 +34,7 @@ const testVscode = {
     ],
   },
   workspace: {
+    workspaceFolders: [{}, {}],
     getConfiguration: () => wsConfig,
     onDidChangeWorkspaceFolders: () => {},
   },
