@@ -51,7 +51,8 @@
     "configuration": {
       "properties": {
         "actions": {
-          "type": "array"
+          "type": "array",
+          "scope": "resource"
         },
         "app-studio-toolkit.logging.level": {
           "type": "string",
