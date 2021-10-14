@@ -1,0 +1,10 @@
+{
+  "actions": [
+    {
+      "id": "youi",
+      "actionType": "COMMAND",
+      "name": "loadYeomanUI"
+    },
+    "extension-defined-action-id2"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "folders": [
+    {
+      "path": "vscode-settings-actions1"
+    },
+    {
+      "path": "vscode-settings-actions2"
+    }
+  ],
+  "settings": {
+    "actions": [
+      {
+        "id": "openSettingsAction",
+        "actionType": "COMMAND",
+        "name": "workbench.action.openSettings"
+      },
+      "extension-defined-action-id3"
+    ]
+  }
+}

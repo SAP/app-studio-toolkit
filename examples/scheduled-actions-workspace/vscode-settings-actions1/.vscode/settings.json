@@ -1,0 +1,10 @@
+{
+  "actions": [
+    {
+      "id": "guideddev",
+      "actionType": "COMMAND",
+      "name": "loadGuidedDevelopment"
+    },
+    "extension-defined-action-id1"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "name": "vscode-settings-actions1",
+  "private": "true",
+  "version": "1.2.3",
+  "publisher": "SAPOSS",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/app-studio-toolkit"
+  },
+  "main": "index.js"
+}
