@@ -1,7 +1,7 @@
 {
   "name": "app-studio-toolkit",
   "displayName": "SAP Business Application Studio toolkit",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "private": true,
   "description": "Provides rich tools for executing common platform tasks.",
   "categories": [
@@ -34,7 +34,7 @@
     "optional-require": "1.0.3"
   },
   "devDependencies": {
-    "@sap-devx/app-studio-toolkit-types": "^1.2.2",
+    "@sap-devx/app-studio-toolkit-types": "^1.2.4",
     "@types/lodash": "^4.14.168",
     "@vscode-logging/types": "0.1.4",
     "fs-extra": "^10.0.0",
