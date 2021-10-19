@@ -13,3 +13,7 @@ export function initWorkspaceAPI(): WorkspaceApi {
 
   return workspaceAPI;
 }
+
+export function getWorkspaceAPI(): WorkspaceApi {
+  return workspaceAPI;
+}

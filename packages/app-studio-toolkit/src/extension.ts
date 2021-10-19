@@ -9,6 +9,8 @@ import {
 import { ActionsController } from "./actions/controller";
 import { initLogger, getLogger } from "./logger/logger";
 import { initWorkspaceAPI } from "./project-type/workspace-instance";
+import { initTagsContexts } from "./project-type/context-state";
+import { initProjectTypeWatchers } from "./project-type/watcher";
 
 export function activate(context: ExtensionContext): BasToolkit {
   initLogger(context);
@@ -23,6 +25,8 @@ export function activate(context: ExtensionContext): BasToolkit {
 
   const workspaceAPI = initWorkspaceAPI();
   const basToolkitAPI = createBasToolkitAPI(workspaceAPI, baseBasToolkitAPI);
+  void initTagsContexts(workspaceAPI);
+  void initProjectTypeWatchers(workspaceAPI);
 
   const logger = getLogger().getChildLogger({ label: "activate" });
   logger.info("The App-Studio-Toolkit Extension is active.");
