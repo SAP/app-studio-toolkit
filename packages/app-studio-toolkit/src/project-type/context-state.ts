@@ -6,7 +6,7 @@ import {
   TagToAbsPaths,
 } from "./types";
 import { forEach } from "lodash";
-import { resolve } from "path";
+import { resolve, join } from "path";
 
 /**
  * The in-memory representation of the our custom VSCode contexts
@@ -44,6 +44,7 @@ export async function recomputeTagsContexts(
 export function transformProjectApiToTagsMaps(project: Project): TagToAbsPaths {
   const tagToAbsPaths: TagToAbsPaths = new Map();
   try {
+    // TODO: resolve to get abs root
     const projectAbsRoot = project.path;
     insertPathForMultipleTags(
       tagToAbsPaths,
@@ -52,7 +53,7 @@ export function transformProjectApiToTagsMaps(project: Project): TagToAbsPaths {
     );
     forEach(project.modules, (currModule) => {
       // `Module["path"]` is relative to the project's root
-      const moduleAbsPath = resolve(projectAbsRoot, currModule.path);
+      const moduleAbsPath = join(projectAbsRoot, currModule.path);
       insertPathForMultipleTags(
         tagToAbsPaths,
         moduleAbsPath,
@@ -60,7 +61,7 @@ export function transformProjectApiToTagsMaps(project: Project): TagToAbsPaths {
       );
       forEach(currModule.items, (currItem) => {
         // `Item["path"]` is also relative to the project's root
-        const itemAbsPath = resolve(projectAbsRoot, currItem.path);
+        const itemAbsPath = join(projectAbsRoot, currItem.path);
         insertPathForMultipleTags(
           tagToAbsPaths,
           itemAbsPath,
