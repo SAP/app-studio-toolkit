@@ -1,68 +1,101 @@
-import { ProjectApi, WorkspaceApi } from "@sap/artifact-management";
-import { AbsolutePath, ProjectTypeTag, TagToAbsPaths } from "./types";
-import { commands } from "vscode";
+import { Project, ProjectApi } from "@sap/artifact-management";
+import {
+  AbsolutePath,
+  ProjectTypeTag,
+  SetContext,
+  TagToAbsPaths,
+} from "./types";
 import { forEach } from "lodash";
 import { resolve } from "path";
 
 /**
  * The in-memory representation of the our custom VSCode contexts
- * for te project Types (tags).
+ * for the project Types (tags).
  */
-const GLOBAL_TAG_TO_ABS_PATHS: TagToAbsPaths = new Map();
+const TAG_TO_ABS_PATHS_STATE: TagToAbsPaths = new Map();
 
-export function insertTagsData(newData: TagToAbsPaths): void {
-  newData.forEach((currtTagMap, currTagName) => {
-    currtTagMap.forEach((_, currAbsPath) => {
-      insertPathForSingleTag(GLOBAL_TAG_TO_ABS_PATHS, currAbsPath, currTagName);
-    });
-  });
-
-  refreshAllVSCodeContext();
-}
+// TODO: choose prefix...
+const VSCODE_CONTEXT_PREFIX = "bas_project_types:";
 
 /**
- * note that the `purging` logic assumes there are no items
- * which belong to multiple projects. In other words a single `absPath` can
- * only be part of a **single** project.
+ * Resets and re-calculates the TagsContext data from scratch.
+ * This trades performance for correctness, however, this calculation
+ * is done purely in memory and is not very complex, therefore the
+ * performance impact is none existent.
+ *
  */
-export function purgeTagsData(deadData: TagToAbsPaths): void {
-  deadData.forEach((currtTagMap, currTagName) => {
-    if (GLOBAL_TAG_TO_ABS_PATHS.has(currTagName)) {
-      currtTagMap.forEach((_, currAbsPath) => {
-        GLOBAL_TAG_TO_ABS_PATHS.delete(currAbsPath);
-      });
-    }
-  });
-
-  refreshAllVSCodeContext();
-}
-
-// TODO: consider Dependency Injection to enable easier testing
-export function refreshAllVSCodeContext(): void {
-  GLOBAL_TAG_TO_ABS_PATHS.forEach((currtTagMap, currTagName) => {
-    const paths = Array.from(currtTagMap.keys());
-    void commands.executeCommand(
-      "setContext",
-      // TODO: do we want to use `bas_project_types` as the prefix or something else?
-      `bas_project_types:${currTagName}`,
-      paths
-    );
-  });
-}
-
-export async function initTagsContexts(
-  workspaceAPI: WorkspaceApi
+export async function recomputeTagsContexts(
+  projects: ProjectApi[],
+  setContext: SetContext
 ): Promise<void> {
-  let allProjectsAPI: ProjectApi[] = [];
+  TAG_TO_ABS_PATHS_STATE.clear();
+  // `for ... of` unlike `forEach` will resolve all the promises in this loop before
+  // continuing to `refreshAllVSCodeContext()`
+  for (const currProjectAPI of projects) {
+    const currProjectDS = await currProjectAPI.read();
+    if (currProjectDS !== undefined) {
+      const tagToAbsPath = transformProjectApiToTagsMaps(currProjectDS);
+      insertTagsData(TAG_TO_ABS_PATHS_STATE, tagToAbsPath);
+    }
+  }
+  refreshAllVSCodeContext(TAG_TO_ABS_PATHS_STATE, setContext);
+}
+
+export function transformProjectApiToTagsMaps(project: Project): TagToAbsPaths {
+  const tagToAbsPaths: TagToAbsPaths = new Map();
   try {
-    allProjectsAPI = await workspaceAPI.getProjects();
+    const projectAbsRoot = project.path;
+    insertPathForMultipleTags(
+      tagToAbsPaths,
+      projectAbsRoot,
+      project.tags ?? []
+    );
+    forEach(project.modules, (currModule) => {
+      // `Module["path"]` is relative to the project's root
+      const moduleAbsPath = resolve(projectAbsRoot, currModule.path);
+      insertPathForMultipleTags(
+        tagToAbsPaths,
+        moduleAbsPath,
+        currModule.tags ?? []
+      );
+      forEach(currModule.items, (currItem) => {
+        // `Item["path"]` is also relative to the project's root
+        const itemAbsPath = resolve(projectAbsRoot, currItem.path);
+        insertPathForMultipleTags(
+          tagToAbsPaths,
+          itemAbsPath,
+          currItem.tags ?? []
+        );
+      });
+    });
   } catch (e) {
+    // TODO: use logger
     console.error(e);
   }
+  return tagToAbsPaths;
+}
 
-  forEach(allProjectsAPI, async (currProjectAPI) => {
-    const tagToAbsPath = await transformProjectApiToTagsMaps(currProjectAPI);
-    insertTagsData(tagToAbsPath);
+export function insertTagsData(
+  target: TagToAbsPaths,
+  newData: TagToAbsPaths
+): void {
+  // cannot use lodash on ES6 Maps
+  newData.forEach((currtTagMap, currTagName) => {
+    currtTagMap.forEach((_, currAbsPath) => {
+      insertPathForSingleTag(target, currAbsPath, currTagName);
+    });
+  });
+}
+
+export function refreshAllVSCodeContext(
+  tagToPaths: TagToAbsPaths,
+  setContext: SetContext
+): void {
+  // cannot use lodash on ES6 Maps
+  tagToPaths.forEach((currTagMap, currTagName) => {
+    const paths = Array.from(currTagMap.keys());
+    const currContextName = `${VSCODE_CONTEXT_PREFIX}${currTagName}`;
+    setContext(currContextName, paths);
   });
 }
 
@@ -87,43 +120,4 @@ export function insertPathForSingleTag(
 
   const tagMap = tagToAbsPath.get(tag) as Map<AbsolutePath, boolean>;
   tagMap.set(absFsPath, true);
-}
-
-export async function transformProjectApiToTagsMaps(
-  projAPI: ProjectApi
-): Promise<TagToAbsPaths> {
-  const tagToAbsPaths: TagToAbsPaths = new Map();
-  try {
-    const currProjectDS = await projAPI.read();
-    if (currProjectDS === undefined) {
-      return tagToAbsPaths;
-    }
-    const projectAbsRoot = currProjectDS.path;
-    insertPathForMultipleTags(
-      tagToAbsPaths,
-      projectAbsRoot,
-      currProjectDS.tags ?? []
-    );
-    forEach(currProjectDS.modules, (currModule) => {
-      // `Module["path"]` is relative to the project's root
-      const moduleAbsPath = resolve(projectAbsRoot, currModule.path);
-      insertPathForMultipleTags(
-        tagToAbsPaths,
-        moduleAbsPath,
-        currModule.tags ?? []
-      );
-      forEach(currModule.items, (currItem) => {
-        // `Item["path"]` is also relative to the project's root
-        const itemAbsPath = resolve(projectAbsRoot, currItem.path);
-        insertPathForMultipleTags(
-          tagToAbsPaths,
-          itemAbsPath,
-          currItem.tags ?? []
-        );
-      });
-    });
-  } catch (e) {
-    console.error(e);
-  }
-  return tagToAbsPaths;
 }
