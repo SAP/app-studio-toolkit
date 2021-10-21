@@ -1,6 +1,7 @@
 module.exports = {
   // Common settings for JS Files.
   extends: ["plugin:eslint-comments/recommended", "prettier"],
+  ignorePatterns: ["samples/**/*.*"],
   env: {
     commonjs: true,
     mocha: true,

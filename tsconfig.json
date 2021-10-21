@@ -11,6 +11,9 @@
     },
     {
       "path": "./examples/vscode-using-workspace-api"
+    },
+    {
+      "path": "./examples/vscode-project-context-based-menu-items"
     }
   ],
   "files": [],

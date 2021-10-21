@@ -25,7 +25,7 @@ In "Main" VSCode window:
 
 In the newly opened VSCode "Extension Development Host" Window:
 
-1. `File` -> `Open Folder` -> select the `sample-cap-project` folder which is a **sibling** to this README.md
+1. `File` -> `Open Folder` -> select the `samples/cap-project` folder under the root of this repo.
 2. Open the output panel: `View` -> `Output`
 3. Select `SAP OSS.project_using_workspace_api_instance` in the dropdown menu.
 4. Inspect the printed `@sap/artifact-managment` project type hierarchy.
