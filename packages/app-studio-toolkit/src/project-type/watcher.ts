@@ -6,6 +6,7 @@ import {
 import { debounce, map } from "lodash";
 import { recomputeTagsContexts } from "./custom-context";
 import { getWorkspaceAPI } from "./workspace-instance";
+// TODO: pass this using DI from extension.ts?
 import { setContextVSCode } from "./vscode-impl";
 
 const projectWatchers: Map<ProjectApi, ItemWatcherApi> = new Map();

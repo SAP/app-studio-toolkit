@@ -1,5 +1,6 @@
 {
   "name": "vscode-project-context-based-menu-items",
+  "private": "true",
   "version": "1.2.4",
   "publisher": "SAP OSS",
   "engines": {
@@ -8,10 +9,20 @@
   "categories": [
     "Other"
   ],
+  "main": "./dist/src/extension",
+  "scripts": {
+    "ci": "npm-run-all clean compile package",
+    "clean": "rimraf dist *.vsix",
+    "compile": "tsc -p ./",
+    "package": "vsce package"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+  },
   "activationEvents": [
     "*"
   ],
-  "main": "./lib/extension",
   "contributes": {
     "menus": {
       "explorer/context": [
@@ -43,13 +54,5 @@
         "title": "Edit UI5 Manifest"
       }
     ]
-  },
-  "scripts": {},
-  "dependencies": {
-    "lodash": "^4.17.21"
-  },
-  "devDependencies": {
-    "@types/vscode": "^1.32.0",
-    "@types/lodash": "^4.14.168"
   }
 }
