@@ -9,7 +9,7 @@ import {
 import { ActionsController } from "./actions/controller";
 import { initLogger, getLogger } from "./logger/logger";
 import { initWorkspaceAPI } from "./project-type/workspace-instance";
-import { recomputeTagsContexts } from "./project-type/context-state";
+import { recomputeTagsContexts } from "./project-type/custom-context";
 import { initProjectTypeWatchers } from "./project-type/watcher";
 import { setContextVSCode } from "./project-type/vscode-impl";
 
@@ -33,13 +33,15 @@ export function activate(context: ExtensionContext): BasToolkit {
   workspaceAPI
     .getProjects()
     .then((allProjects) => recomputeTagsContexts(allProjects, setContextVSCode))
-    .catch((e) => {
-      // TODO: test how this prints when an error in thrown
-      logger.error(
-        "Problem during initialization of context menus based on project type tags",
-        e
-      );
-    });
+    .catch(
+      /* istanbul ignore next -- should never get here, not cost effective to reproduce in test */
+      (e) => {
+        logger.error(
+          "Problem during initialization of context menus based on project type tags",
+          e
+        );
+      }
+    );
 
   void initProjectTypeWatchers(workspaceAPI);
 
