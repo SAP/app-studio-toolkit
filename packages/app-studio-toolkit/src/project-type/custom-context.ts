@@ -1,78 +1,72 @@
+import { forEach } from "lodash";
+import { join, normalize } from "path";
 import { Project, ProjectApi } from "@sap/artifact-management";
 import {
   AbsolutePath,
+  ProjectApiRead,
   ProjectTypeTag,
   SetContext,
   TagToAbsPaths,
 } from "./types";
-import { forEach } from "lodash";
-import { resolve, join } from "path";
-
-/**
- * The in-memory representation of the our custom VSCode contexts
- * for the project Types (tags).
- */
-const TAG_TO_ABS_PATHS_STATE: TagToAbsPaths = new Map();
 
 // TODO: choose prefix...
 const VSCODE_CONTEXT_PREFIX = "bas_project_types:";
 
 /**
- * Resets and re-calculates the TagsContext data from scratch.
+ * Fully re-calculates the TagsContext data from scratch.
  * This trades performance for correctness, however, this calculation
  * is done purely in memory and is not very complex, therefore the
  * performance impact is none existent.
  *
  */
 export async function recomputeTagsContexts(
-  projects: ProjectApi[],
+  projects: ProjectApiRead[],
   setContext: SetContext
 ): Promise<void> {
-  TAG_TO_ABS_PATHS_STATE.clear();
+  const tagsToPaths: TagToAbsPaths = new Map();
   // `for ... of` unlike `forEach` will resolve all the promises in this loop before
   // continuing to `refreshAllVSCodeContext()`
   for (const currProjectAPI of projects) {
     const currProjectDS = await currProjectAPI.read();
+    /* istanbul ignore else -- uncertain in what situation `read()` would return `undefined` */
     if (currProjectDS !== undefined) {
       const tagToAbsPath = transformProjectApiToTagsMaps(currProjectDS);
-      insertTagsData(TAG_TO_ABS_PATHS_STATE, tagToAbsPath);
+      insertTagsData(tagsToPaths, tagToAbsPath);
     }
   }
-  refreshAllVSCodeContext(TAG_TO_ABS_PATHS_STATE, setContext);
+  refreshAllVSCodeContext(tagsToPaths, setContext);
 }
 
 export function transformProjectApiToTagsMaps(project: Project): TagToAbsPaths {
   const tagToAbsPaths: TagToAbsPaths = new Map();
-  try {
-    // TODO: resolve to get abs root
-    const projectAbsRoot = project.path;
+  // ensures `project.path` uses the correct OS dir separator
+  const projectAbsRoot = normalize(project.path);
+  insertPathForMultipleTags(
+    tagToAbsPaths,
+    projectAbsRoot,
+    /* istanbul ignore next -- tags is (strangely) marked as optional */
+    project.tags ?? []
+  );
+  forEach(project.modules, (currModule) => {
+    // `Module["path"]` is relative to the project's root
+    const moduleAbsPath = join(projectAbsRoot, currModule.path);
     insertPathForMultipleTags(
       tagToAbsPaths,
-      projectAbsRoot,
-      project.tags ?? []
+      moduleAbsPath,
+      /* istanbul ignore next -- tags is (strangely) marked as optional */
+      currModule.tags ?? []
     );
-    forEach(project.modules, (currModule) => {
-      // `Module["path"]` is relative to the project's root
-      const moduleAbsPath = join(projectAbsRoot, currModule.path);
+    forEach(currModule.items, (currItem) => {
+      // `Item["path"]` is also relative to the project's root
+      const itemAbsPath = join(projectAbsRoot, currItem.path);
       insertPathForMultipleTags(
         tagToAbsPaths,
-        moduleAbsPath,
-        currModule.tags ?? []
+        itemAbsPath,
+        /* istanbul ignore next -- tags is (strangely) marked as optional */
+        currItem.tags ?? []
       );
-      forEach(currModule.items, (currItem) => {
-        // `Item["path"]` is also relative to the project's root
-        const itemAbsPath = join(projectAbsRoot, currItem.path);
-        insertPathForMultipleTags(
-          tagToAbsPaths,
-          itemAbsPath,
-          currItem.tags ?? []
-        );
-      });
     });
-  } catch (e) {
-    // TODO: use logger
-    console.error(e);
-  }
+  });
   return tagToAbsPaths;
 }
 

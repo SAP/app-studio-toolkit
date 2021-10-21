@@ -4,7 +4,7 @@ import {
   WorkspaceApi,
 } from "@sap/artifact-management";
 import { debounce, map } from "lodash";
-import { recomputeTagsContexts } from "./context-state";
+import { recomputeTagsContexts } from "./custom-context";
 import { getWorkspaceAPI } from "./workspace-instance";
 import { setContextVSCode } from "./vscode-impl";
 
