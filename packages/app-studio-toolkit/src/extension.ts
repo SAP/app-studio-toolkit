@@ -8,7 +8,10 @@ import {
 } from "./basctlServer/basctlServer";
 import { ActionsController } from "./actions/controller";
 import { initLogger, getLogger } from "./logger/logger";
-import { initWorkspaceAPI } from "./project-type/workspace-instance";
+import {
+  getWorkspaceAPI,
+  initWorkspaceAPI,
+} from "./project-type/workspace-instance";
 import { recomputeTagsContexts } from "./project-type/custom-context";
 import { initProjectTypeWatchers } from "./project-type/watcher";
 import { setContextVSCode } from "./project-type/vscode-impl";
@@ -43,7 +46,10 @@ export function activate(context: ExtensionContext): BasToolkit {
       }
     );
 
-  void initProjectTypeWatchers(workspaceAPI);
+  void initProjectTypeWatchers({
+    getWorkspaceAPI,
+    setContext: setContextVSCode,
+  });
 
   logger.info("The App-Studio-Toolkit Extension is active.");
 
