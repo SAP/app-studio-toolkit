@@ -3,19 +3,14 @@ import {
   ProjectApi,
   WorkspaceApi,
 } from "@sap/artifact-management";
-import { debounce, map } from "lodash";
+import { debounce, map, now } from "lodash";
 import { recomputeTagsContexts } from "./custom-context";
 import { getWorkspaceAPI } from "./workspace-instance";
 // TODO: pass this using DI from extension.ts?
 import { setContextVSCode } from "./vscode-impl";
+// import { getLogger } from "../logger/logger";
 
 const projectWatchers: Map<ProjectApi, ItemWatcherApi> = new Map();
-
-// TODO: re-add debounce
-const rebuildVSCodeCustomContext = async () => {
-  const allProjects = await getWorkspaceAPI().getProjects();
-  await recomputeTagsContexts(allProjects, setContextVSCode);
-};
 
 export async function initProjectTypeWatchers(
   workspaceImpl: WorkspaceApi
@@ -42,15 +37,24 @@ async function removeAllProjectListeners() {
   );
 }
 
+const RECOMPUTE_DEBOUNCE_DELAY = 1000;
 async function onProjectAdded(projectApi: ProjectApi): Promise<void> {
   const currItemWatcher = await projectApi.watchItems();
-  // we are re-building **all** our VSCode custom contexts on every change.
-  // to avoid maintaining the complex logic of more granular modifications to
-  currItemWatcher.addListener("updated", async (events, files) => {
-    // TODO: wrap in debounce with `rebuildVSCodeCustomContext()` helper
+  // voodoo magic, otherwise `updated` event would never be triggered
+  await currItemWatcher.readItems();
+
+  // debouncing to avoid performance hit (re-calculating per user key press)
+  currItemWatcher.addListener("updated", debounce(async () => {
     const allProjects = await getWorkspaceAPI().getProjects();
+    const start = now();
+    // we are re-building **all** our VSCode custom contexts on every change.
+    // to avoid maintaining the complex logic of more granular modifications to
     await recomputeTagsContexts(allProjects, setContextVSCode);
-  });
+    const end = now();
+    const total = end - start;
+    console.log(end + "ms");
+    // getLogger().fatal(total + "ms")
+  }, RECOMPUTE_DEBOUNCE_DELAY));
   projectWatchers.set(projectApi, currItemWatcher);
 }
 
