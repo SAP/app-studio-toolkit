@@ -1,6 +1,6 @@
 import { forEach } from "lodash";
 import { join, normalize } from "path";
-import { Project, ProjectApi } from "@sap/artifact-management";
+import { Project } from "@sap/artifact-management";
 import {
   AbsolutePath,
   ProjectApiRead,
