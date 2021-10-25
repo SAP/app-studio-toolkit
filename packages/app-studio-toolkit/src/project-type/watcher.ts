@@ -7,18 +7,26 @@ import { debounce, map } from "lodash";
 import { recomputeTagsContexts } from "./custom-context";
 import { SetContext } from "./types";
 
-const projectWatchers: Map<ProjectApi, ItemWatcherApi> = new Map();
+export type ProjectApiForWatcher = Pick<ProjectApi, "watchItems">;
 
+const projectWatchers: Map<ProjectApiForWatcher, ItemWatcherApi> = new Map();
+
+export type WorkspaceAPIForWatcher = Pick<
+  WorkspaceApi,
+  "onWorkspaceChanged" | "getProjects"
+>;
 interface InitProjectTypeWatchersOpts {
   setContext: SetContext;
-  getWorkspaceAPI: () => WorkspaceApi;
+  getWorkspaceAPI: () => WorkspaceAPIForWatcher;
 }
 
 export async function initProjectTypeWatchers(
   opts: InitProjectTypeWatchersOpts
 ): Promise<void> {
+  // TODO: call recalculate here for initial state? or keep in extension.ts?
   await registerAllProjectsListeners(opts);
   opts.getWorkspaceAPI().onWorkspaceChanged(async () => {
+    // TODO: should we also re-calculate? -- probably yes, and `recomputeTagsContexts` remove from extension.ts?
     await removeAllProjectListeners();
     await registerAllProjectsListeners(opts);
   });
@@ -26,7 +34,7 @@ export async function initProjectTypeWatchers(
 
 interface RegisterAllProjectsListenersOpts {
   setContext: SetContext;
-  getWorkspaceAPI: () => WorkspaceApi;
+  getWorkspaceAPI: () => WorkspaceAPIForWatcher;
 }
 
 async function registerAllProjectsListeners(
@@ -51,9 +59,9 @@ async function removeAllProjectListeners() {
 const RECOMPUTE_DEBOUNCE_DELAY = 1000;
 
 interface OnProjectAddedOpts {
-  projectApi: ProjectApi;
+  projectApi: ProjectApiForWatcher;
   setContext: SetContext;
-  getWorkspaceAPI: () => WorkspaceApi;
+  getWorkspaceAPI: () => WorkspaceAPIForWatcher;
 }
 
 async function onProjectAdded(opts: OnProjectAddedOpts): Promise<void> {
@@ -76,7 +84,7 @@ async function onProjectAdded(opts: OnProjectAddedOpts): Promise<void> {
 
 async function onProjectRemoved(
   itemWatcher: ItemWatcherApi,
-  projectApi: ProjectApi
+  projectApi: ProjectApiForWatcher
 ): Promise<void> {
   await itemWatcher.destroy();
   projectWatchers.delete(projectApi);
