@@ -3,28 +3,39 @@ import {
   ProjectApi,
   WorkspaceApi,
 } from "@sap/artifact-management";
-import { debounce, map, now } from "lodash";
+import { debounce, map } from "lodash";
 import { recomputeTagsContexts } from "./custom-context";
-import { getWorkspaceAPI } from "./workspace-instance";
-// TODO: pass this using DI from extension.ts?
-import { setContextVSCode } from "./vscode-impl";
-// import { getLogger } from "../logger/logger";
+import { SetContext } from "./types";
 
 const projectWatchers: Map<ProjectApi, ItemWatcherApi> = new Map();
 
+interface InitProjectTypeWatchersOpts {
+  setContext: SetContext;
+  getWorkspaceAPI: () => WorkspaceApi;
+}
+
 export async function initProjectTypeWatchers(
-  workspaceImpl: WorkspaceApi
+  opts: InitProjectTypeWatchersOpts
 ): Promise<void> {
-  await registerAllProjectsListeners(workspaceImpl);
-  workspaceImpl.onWorkspaceChanged(async () => {
+  await registerAllProjectsListeners(opts);
+  opts.getWorkspaceAPI().onWorkspaceChanged(async () => {
     await removeAllProjectListeners();
-    await registerAllProjectsListeners(workspaceImpl);
+    await registerAllProjectsListeners(opts);
   });
 }
 
-async function registerAllProjectsListeners(workspaceImpl: WorkspaceApi) {
-  const projects = await workspaceImpl.getProjects();
-  await Promise.all(map(projects, onProjectAdded));
+interface RegisterAllProjectsListenersOpts {
+  setContext: SetContext;
+  getWorkspaceAPI: () => WorkspaceApi;
+}
+
+async function registerAllProjectsListeners(
+  opts: RegisterAllProjectsListenersOpts
+) {
+  const projects = await opts.getWorkspaceAPI().getProjects();
+  await Promise.all(
+    map(projects, (projectApi) => onProjectAdded({ projectApi, ...opts }))
+  );
 }
 
 async function removeAllProjectListeners() {
@@ -38,24 +49,29 @@ async function removeAllProjectListeners() {
 }
 
 const RECOMPUTE_DEBOUNCE_DELAY = 1000;
-async function onProjectAdded(projectApi: ProjectApi): Promise<void> {
-  const currItemWatcher = await projectApi.watchItems();
+
+interface OnProjectAddedOpts {
+  projectApi: ProjectApi;
+  setContext: SetContext;
+  getWorkspaceAPI: () => WorkspaceApi;
+}
+
+async function onProjectAdded(opts: OnProjectAddedOpts): Promise<void> {
+  const currItemWatcher = await opts.projectApi.watchItems();
   // voodoo magic, otherwise `updated` event would never be triggered
   await currItemWatcher.readItems();
 
   // debouncing to avoid performance hit (re-calculating per user key press)
-  currItemWatcher.addListener("updated", debounce(async () => {
-    const allProjects = await getWorkspaceAPI().getProjects();
-    const start = now();
-    // we are re-building **all** our VSCode custom contexts on every change.
-    // to avoid maintaining the complex logic of more granular modifications to
-    await recomputeTagsContexts(allProjects, setContextVSCode);
-    const end = now();
-    const total = end - start;
-    console.log(end + "ms");
-    // getLogger().fatal(total + "ms")
-  }, RECOMPUTE_DEBOUNCE_DELAY));
-  projectWatchers.set(projectApi, currItemWatcher);
+  currItemWatcher.addListener(
+    "updated",
+    debounce(async () => {
+      const allProjects = await opts.getWorkspaceAPI().getProjects();
+      // we are re-building **all** our VSCode custom contexts on every change.
+      // to avoid maintaining the complex logic of more granular modifications to
+      await recomputeTagsContexts(allProjects, opts.setContext);
+    }, RECOMPUTE_DEBOUNCE_DELAY)
+  );
+  projectWatchers.set(opts.projectApi, currItemWatcher);
 }
 
 async function onProjectRemoved(
