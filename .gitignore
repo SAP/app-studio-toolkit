@@ -37,6 +37,9 @@ node_modules/
 .npm
 package-lock.json
 
+# yarn lockfile (this project uses pnpm)
+yarn.lock
+
 # Optional eslint cache
 .eslintcache
 

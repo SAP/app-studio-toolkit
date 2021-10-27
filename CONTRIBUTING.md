@@ -15,7 +15,7 @@ This is managed automatically via https://cla-assistant.io/ pull request voter.
 
 ### pre-requisites
 
-- [Yarn](https://yarnpkg.com/lang/en/docs/install/) >= 1.4.2
+- [pnpm](https://pnpm.io/installation#using-npm) > 6.x
 - A [Long-Term Support version](https://nodejs.org/en/about/releases/) of node.js
 - (optional) [commitizen](https://github.com/commitizen/cz-cli#installing-the-command-line-tool) for managing commit messages.
 
@@ -24,7 +24,7 @@ This is managed automatically via https://cla-assistant.io/ pull request voter.
 The initial setup is trivial:
 
 - clone this repo
-- `yarn`
+- `pnpm install`
 
 ### Commit Messages format.
 
@@ -53,8 +53,8 @@ may result in voter failures due to formatting errors.
 
 Use the following npm scripts at the repo's **root** to compile **all** the TypeScript sub-packages.
 
-- `yarn compile`
-- `yarn compile:watch` (will watch files for changes and re-compile as needed)
+- `pnpm compile`
+- `pnpm compile:watch` (will watch files for changes and re-compile as needed)
 
 These scripts may also be available inside the sub-packages. However, it is recommended to
 use the top-level compilation scripts to avoid forgetting to (re-)compile a sub-package's dependency.
@@ -67,8 +67,8 @@ use the top-level compilation scripts to avoid forgetting to (re-)compile a sub-
 [chai]: https://www.chaijs.com
 [istanbul]: https://istanbul.js.org/
 
-- To run the tests execute `yarn test` in a specific sub-package.
-- To run the tests with **coverage** run `yarn coverage` in a specific sub-package.
+- To run the tests execute `pnpm test` in a specific sub-package.
+- To run the tests with **coverage** run `pnpm coverage` in a specific sub-package.
 
 ### Code Coverage
 
@@ -81,7 +81,7 @@ use the top-level compilation scripts to avoid forgetting to (re-)compile a sub-
 
 ### Full Build
 
-To run the full **C**ontinuous **I**ntegration build run `yarn ci` in either the top-level package or a specific subpackage.
+To run the full **C**ontinuous **I**ntegration build run `pnpm ci` in either the top-level package or a specific subpackage.
 
 ### Release Life-Cycle.
 
@@ -94,7 +94,7 @@ This monorepo uses Lerna's [Fixed/Locked][lerna-mode] which means all the sub-pa
 Performing a release requires push permissions to the repository.
 
 - Ensure you are on the default branch and synced with origin.
-- `yarn run release:version`
+- `pnpm run release:version`
 - Follow the lerna CLI instructions.
 - Track the newly pushed **tag** (`/^v[0-9]+(\.[0-9]+)*/`) build in the build system
   until successful completion.
