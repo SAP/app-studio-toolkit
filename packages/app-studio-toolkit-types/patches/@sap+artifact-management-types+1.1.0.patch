@@ -1,0 +1,443 @@
+diff --git a/node_modules/@sap/artifact-management-types/src/cp/CFProjectBuilder.d.ts b/node_modules/@sap/artifact-management-types/src/cp/CFProjectBuilder.d.ts
+index 9c6f74d..a7e3bb0 100644
+--- a/node_modules/@sap/artifact-management-types/src/cp/CFProjectBuilder.d.ts
++++ b/node_modules/@sap/artifact-management-types/src/cp/CFProjectBuilder.d.ts
+@@ -1,4 +1,4 @@
+-import { ProjectFileSystem, Project, NameFactory, ProjectManifestGenerator, ModuleManifestGenerator, Service, ModuleGeneratorContext, UI5ModuleManifestGenerator } from '@sap/artifact-management-base';
++import { ProjectFileSystem, Project, NameFactory, ProjectManifestGenerator, ModuleManifestGenerator, Service, ModuleGeneratorContext, UI5ModuleManifestGenerator } from '@sap/artifact-management-base-types';
+ import MtaGeneratorSettings from '../mta-generator/MtaGeneratorSettings';
+ import { ProjectBuilder } from '../project/ProjectBuilder';
+ export declare type ProjectGeneratorOptions = {
+diff --git a/node_modules/@sap/artifact-management-types/src/cp/LaunchpadPageGenerator.d.ts b/node_modules/@sap/artifact-management-types/src/cp/LaunchpadPageGenerator.d.ts
+index e95a7bd..1bcf302 100644
+--- a/node_modules/@sap/artifact-management-types/src/cp/LaunchpadPageGenerator.d.ts
++++ b/node_modules/@sap/artifact-management-types/src/cp/LaunchpadPageGenerator.d.ts
+@@ -1,4 +1,4 @@
+-import { Project, ProjectFileSystem, RunUIApplication } from '@sap/artifact-management-base';
++import { Project, ProjectFileSystem, RunUIApplication } from '@sap/artifact-management-base-types';
+ export default class LaunchpadPageGenerator {
+     private cloudService;
+     build(project: Project, fs: ProjectFileSystem, isCurrentApiDeploy: boolean): Promise<number>;
+diff --git a/node_modules/@sap/artifact-management-types/src/cp/OverviewPageGenerator.d.ts b/node_modules/@sap/artifact-management-types/src/cp/OverviewPageGenerator.d.ts
+index be1e3dd..07049b6 100644
+--- a/node_modules/@sap/artifact-management-types/src/cp/OverviewPageGenerator.d.ts
++++ b/node_modules/@sap/artifact-management-types/src/cp/OverviewPageGenerator.d.ts
+@@ -1,4 +1,4 @@
+-import { ModuleGeneratorContext } from '@sap/artifact-management-base';
++import { ModuleGeneratorContext } from '@sap/artifact-management-base-types';
+ export default class OverviewPageGenerator {
+     private overviewAppPath;
+     build(projectGeneratorContext: ModuleGeneratorContext, isCurrentApiDeploy?: boolean): Promise<void>;
+diff --git a/node_modules/@sap/artifact-management-types/src/definitions/BuildFactory.d.ts b/node_modules/@sap/artifact-management-types/src/definitions/BuildFactory.d.ts
+index 4656294..4d472b3 100644
+--- a/node_modules/@sap/artifact-management-types/src/definitions/BuildFactory.d.ts
++++ b/node_modules/@sap/artifact-management-types/src/definitions/BuildFactory.d.ts
+@@ -1,6 +1,6 @@
+ import { PlatformContext } from '../project/PlatformContext';
+ import CFProjectBuilder from '../cp/CFProjectBuilder';
+-import { ProjectFileSystem, Project } from '@sap/artifact-management-base';
++import { ProjectFileSystem, Project } from '@sap/artifact-management-base-types';
+ export default class BuildFactory {
+     static getBuilder(context: PlatformContext, project: Project, fs: ProjectFileSystem): CFProjectBuilder;
+ }
+diff --git a/node_modules/@sap/artifact-management-types/src/definitions/PluginFactory.d.ts b/node_modules/@sap/artifact-management-types/src/definitions/PluginFactory.d.ts
+index 3d61fc9..531c955 100644
+--- a/node_modules/@sap/artifact-management-types/src/definitions/PluginFactory.d.ts
++++ b/node_modules/@sap/artifact-management-types/src/definitions/PluginFactory.d.ts
+@@ -1,4 +1,4 @@
+-import { ProjectManifestGenerator, Plugin, ProjectType, ModuleType, ModuleManifestGenerator, ProjectReader, ModuleReader, ModuleAutoBuilder, ProjectRunner, ItemType, ItemReader, KeyIn, RunUI } from '@sap/artifact-management-base';
++import { ProjectManifestGenerator, Plugin, ProjectType, ModuleType, ModuleManifestGenerator, ProjectReader, ModuleReader, ModuleAutoBuilder, ProjectRunner, ItemType, ItemReader, KeyIn, RunUI } from '@sap/artifact-management-base-types';
+ /**
+  * Central entrypoint for project and module specific implementations ("plugins").
+  *
+diff --git a/node_modules/@sap/artifact-management-types/src/index.d.ts b/node_modules/@sap/artifact-management-types/src/index.d.ts
+index cbd2f6b..6338648 100644
+--- a/node_modules/@sap/artifact-management-types/src/index.d.ts
++++ b/node_modules/@sap/artifact-management-types/src/index.d.ts
+@@ -5,4 +5,4 @@ export { default as WorkspaceImpl } from './project-api/WorkspaceImpl';
+ export { default as ItemWatcherApi, ItemWatcherType } from './project-api/ItemWatcherApi';
+ export { default as AutoBuilder } from './project-api/AutoBuilder';
+ export * from './project-api/buildServiceInfo';
+-export * from '@sap/artifact-management-base';
++export * from '@sap/artifact-management-base-types';
+diff --git a/node_modules/@sap/artifact-management-types/src/mta-generator/MtaBuilder.d.ts b/node_modules/@sap/artifact-management-types/src/mta-generator/MtaBuilder.d.ts
+index f5c9855..aca3de6 100644
+--- a/node_modules/@sap/artifact-management-types/src/mta-generator/MtaBuilder.d.ts
++++ b/node_modules/@sap/artifact-management-types/src/mta-generator/MtaBuilder.d.ts
+@@ -1,4 +1,4 @@
+-import { ProjectFileSystem } from '@sap/artifact-management-base';
++import { ProjectFileSystem } from '@sap/artifact-management-base-types';
+ export declare type Mta = {
+     '_schema-version': string;
+     ID: string;
+diff --git a/node_modules/@sap/artifact-management-types/src/plugins/cap/CapRun.d.ts b/node_modules/@sap/artifact-management-types/src/plugins/cap/CapRun.d.ts
+index 63305b1..e31c260 100644
+--- a/node_modules/@sap/artifact-management-types/src/plugins/cap/CapRun.d.ts
++++ b/node_modules/@sap/artifact-management-types/src/plugins/cap/CapRun.d.ts
+@@ -1,4 +1,4 @@
+-import { KeyIn, ProjectType, ProjectRunner, RunOptions } from '@sap/artifact-management-base';
++import { KeyIn, ProjectType, ProjectRunner, RunOptions } from '@sap/artifact-management-base-types';
+ export default class CapRun extends ProjectRunner {
+     getType(): KeyIn<typeof ProjectType>;
+     run({ fs, project, options }: RunOptions): Promise<void>;
+diff --git a/node_modules/@sap/artifact-management-types/src/plugins/cap/generators/CapDbModuleGenerator.d.ts b/node_modules/@sap/artifact-management-types/src/plugins/cap/generators/CapDbModuleGenerator.d.ts
+index eb2ce3f..dc92bb4 100644
+--- a/node_modules/@sap/artifact-management-types/src/plugins/cap/generators/CapDbModuleGenerator.d.ts
++++ b/node_modules/@sap/artifact-management-types/src/plugins/cap/generators/CapDbModuleGenerator.d.ts
+@@ -1,4 +1,4 @@
+-import { KeyIn, ModuleType, ModuleGeneratorContext, ModuleManifestGenerator, MtaModule, MtaModuleRequires } from '@sap/artifact-management-base';
++import { KeyIn, ModuleType, ModuleGeneratorContext, ModuleManifestGenerator, MtaModule, MtaModuleRequires } from '@sap/artifact-management-base-types';
+ export default class CapDbModuleGenerator implements ModuleManifestGenerator {
+     getType(): KeyIn<typeof ModuleType>;
+     provideResources(): Promise<never[]>;
+diff --git a/node_modules/@sap/artifact-management-types/src/plugins/cap/generators/CapDestinationModuleGenerator.d.ts b/node_modules/@sap/artifact-management-types/src/plugins/cap/generators/CapDestinationModuleGenerator.d.ts
+index efaf025..097721a 100644
+--- a/node_modules/@sap/artifact-management-types/src/plugins/cap/generators/CapDestinationModuleGenerator.d.ts
++++ b/node_modules/@sap/artifact-management-types/src/plugins/cap/generators/CapDestinationModuleGenerator.d.ts
+@@ -1,4 +1,4 @@
+-import { KeyIn, ModuleType, ModuleGeneratorContext, ModuleManifestGenerator, ServiceType, MtaModule, MtaModuleRequires } from '@sap/artifact-management-base';
++import { KeyIn, ModuleType, ModuleGeneratorContext, ModuleManifestGenerator, ServiceType, MtaModule, MtaModuleRequires } from '@sap/artifact-management-base-types';
+ export declare class CapDestinationModuleGenerator implements ModuleManifestGenerator {
+     getType(): KeyIn<typeof ModuleType>;
+     provideResources(context: ModuleGeneratorContext): Promise<({
+diff --git a/node_modules/@sap/artifact-management-types/src/plugins/cap/generators/CapLaunchpadGenerator.d.ts b/node_modules/@sap/artifact-management-types/src/plugins/cap/generators/CapLaunchpadGenerator.d.ts
+index 9a1d719..54d67bb 100644
+--- a/node_modules/@sap/artifact-management-types/src/plugins/cap/generators/CapLaunchpadGenerator.d.ts
++++ b/node_modules/@sap/artifact-management-types/src/plugins/cap/generators/CapLaunchpadGenerator.d.ts
+@@ -1,4 +1,4 @@
+-import { KeyIn, ModuleType, ModuleGeneratorContext, ModuleManifestGenerator, MtaModule, MtaModuleRequires } from '@sap/artifact-management-base';
++import { KeyIn, ModuleType, ModuleGeneratorContext, ModuleManifestGenerator, MtaModule, MtaModuleRequires } from '@sap/artifact-management-base-types';
+ export default class CapLaunchpadGenerator implements ModuleManifestGenerator {
+     getType(): KeyIn<typeof ModuleType>;
+     provideResources(context: ModuleGeneratorContext): Promise<never[]>;
+diff --git a/node_modules/@sap/artifact-management-types/src/plugins/cap/generators/CapModuleGenerator.d.ts b/node_modules/@sap/artifact-management-types/src/plugins/cap/generators/CapModuleGenerator.d.ts
+index 9a9c61f..039ac00 100644
+--- a/node_modules/@sap/artifact-management-types/src/plugins/cap/generators/CapModuleGenerator.d.ts
++++ b/node_modules/@sap/artifact-management-types/src/plugins/cap/generators/CapModuleGenerator.d.ts
+@@ -1,4 +1,4 @@
+-import { ModuleManifestGenerator, MtaModule, MtaModuleRequires, ModuleType, ModuleGeneratorContext, KeyIn } from '@sap/artifact-management-base';
++import { ModuleManifestGenerator, MtaModule, MtaModuleRequires, ModuleType, ModuleGeneratorContext, KeyIn } from '@sap/artifact-management-base-types';
+ export default class CapModuleGenerator implements ModuleManifestGenerator {
+     getType(): KeyIn<typeof ModuleType>;
+     provideResources(): Promise<never[]>;
+diff --git a/node_modules/@sap/artifact-management-types/src/plugins/cap/generators/CapProjectGenerator.d.ts b/node_modules/@sap/artifact-management-types/src/plugins/cap/generators/CapProjectGenerator.d.ts
+index e64c8af..6a4f9e2 100644
+--- a/node_modules/@sap/artifact-management-types/src/plugins/cap/generators/CapProjectGenerator.d.ts
++++ b/node_modules/@sap/artifact-management-types/src/plugins/cap/generators/CapProjectGenerator.d.ts
+@@ -1,4 +1,4 @@
+-import { Service, Mta, MtaModuleRequires, ProjectManifestGenerator, ModuleManifestGenerator, ProjectType, ModuleGeneratorContext, KeyIn } from '@sap/artifact-management-base';
++import { Service, Mta, MtaModuleRequires, ProjectManifestGenerator, ModuleManifestGenerator, ProjectType, ModuleGeneratorContext, KeyIn } from '@sap/artifact-management-base-types';
+ export default class CapProjectGenerator implements ProjectManifestGenerator {
+     getType(): KeyIn<typeof ProjectType>;
+     provideResources(context: ModuleGeneratorContext): Service[];
+diff --git a/node_modules/@sap/artifact-management-types/src/plugins/cap/generators/CapServiceModuleGenerator.d.ts b/node_modules/@sap/artifact-management-types/src/plugins/cap/generators/CapServiceModuleGenerator.d.ts
+index 34cae63..eeafe2f 100644
+--- a/node_modules/@sap/artifact-management-types/src/plugins/cap/generators/CapServiceModuleGenerator.d.ts
++++ b/node_modules/@sap/artifact-management-types/src/plugins/cap/generators/CapServiceModuleGenerator.d.ts
+@@ -1,4 +1,4 @@
+-import { KeyIn, Service, ModuleType, ModuleGeneratorContext, ModuleManifestGenerator, MtaModule, MtaModuleRequires } from '@sap/artifact-management-base';
++import { KeyIn, Service, ModuleType, ModuleGeneratorContext, ModuleManifestGenerator, MtaModule, MtaModuleRequires } from '@sap/artifact-management-base-types';
+ export default class CapServiceModuleGenerator implements ModuleManifestGenerator {
+     getType(): KeyIn<typeof ModuleType>;
+     provideResources(context: ModuleGeneratorContext): Promise<Service[]>;
+diff --git a/node_modules/@sap/artifact-management-types/src/plugins/cap/generators/CapUIDeployerGenerator.d.ts b/node_modules/@sap/artifact-management-types/src/plugins/cap/generators/CapUIDeployerGenerator.d.ts
+index c992341..f3e73fb 100644
+--- a/node_modules/@sap/artifact-management-types/src/plugins/cap/generators/CapUIDeployerGenerator.d.ts
++++ b/node_modules/@sap/artifact-management-types/src/plugins/cap/generators/CapUIDeployerGenerator.d.ts
+@@ -1,4 +1,4 @@
+-import { KeyIn, ModuleType, ModuleGeneratorContext, ModuleManifestGenerator, MtaModuleRequires, MtaModule } from '@sap/artifact-management-base';
++import { KeyIn, ModuleType, ModuleGeneratorContext, ModuleManifestGenerator, MtaModuleRequires, MtaModule } from '@sap/artifact-management-base-types';
+ export default class CapUIDeployerGenerator implements ModuleManifestGenerator {
+     getType(): KeyIn<typeof ModuleType>;
+     provideResources(): Promise<never[]>;
+diff --git a/node_modules/@sap/artifact-management-types/src/plugins/cap/index.d.ts b/node_modules/@sap/artifact-management-types/src/plugins/cap/index.d.ts
+index 297f7ce..583a243 100644
+--- a/node_modules/@sap/artifact-management-types/src/plugins/cap/index.d.ts
++++ b/node_modules/@sap/artifact-management-types/src/plugins/cap/index.d.ts
+@@ -1,3 +1,3 @@
+-import { Plugin } from '@sap/artifact-management-base';
++import { Plugin } from '@sap/artifact-management-base-types';
+ declare const CapPlugin: Plugin;
+ export default CapPlugin;
+diff --git a/node_modules/@sap/artifact-management-types/src/plugins/cap/readers/CapModuleReader.d.ts b/node_modules/@sap/artifact-management-types/src/plugins/cap/readers/CapModuleReader.d.ts
+index 1993078..c40b1f8 100644
+--- a/node_modules/@sap/artifact-management-types/src/plugins/cap/readers/CapModuleReader.d.ts
++++ b/node_modules/@sap/artifact-management-types/src/plugins/cap/readers/CapModuleReader.d.ts
+@@ -1,4 +1,4 @@
+-import { ProjectFileSystem, Item, ModuleReader, ModuleType, ModuleData, ProjectEntityReaderReadOptions, DetectionMechanism, KeyIn } from '@sap/artifact-management-base';
++import { ProjectFileSystem, Item, ModuleReader, ModuleType, ModuleData, ProjectEntityReaderReadOptions, DetectionMechanism, KeyIn } from '@sap/artifact-management-base-types';
+ export default class CapModuleReader extends ModuleReader {
+     getType(): KeyIn<typeof ModuleType>;
+     getDetectionMechanism(): DetectionMechanism;
+diff --git a/node_modules/@sap/artifact-management-types/src/plugins/cap/readers/CapProjectReader.d.ts b/node_modules/@sap/artifact-management-types/src/plugins/cap/readers/CapProjectReader.d.ts
+index ef479e6..b3f3155 100644
+--- a/node_modules/@sap/artifact-management-types/src/plugins/cap/readers/CapProjectReader.d.ts
++++ b/node_modules/@sap/artifact-management-types/src/plugins/cap/readers/CapProjectReader.d.ts
+@@ -1,4 +1,4 @@
+-import { ProjectReader, ProjectReaderOptions, ProjectReaderHelper, ProjectData, ProjectType, DetectionMechanism, KeyIn } from '@sap/artifact-management-base';
++import { ProjectReader, ProjectReaderOptions, ProjectReaderHelper, ProjectData, ProjectType, DetectionMechanism, KeyIn } from '@sap/artifact-management-base-types';
+ import XsSecurityModuleReader from '../../xsuaa/readers/XsSecurityModuleReader';
+ export default class CapProjectReader extends ProjectReader {
+     constructor();
+diff --git a/node_modules/@sap/artifact-management-types/src/plugins/ui5/generators/UI5ModuleGenerator.d.ts b/node_modules/@sap/artifact-management-types/src/plugins/ui5/generators/UI5ModuleGenerator.d.ts
+index c4a693f..a8ddea8 100644
+--- a/node_modules/@sap/artifact-management-types/src/plugins/ui5/generators/UI5ModuleGenerator.d.ts
++++ b/node_modules/@sap/artifact-management-types/src/plugins/ui5/generators/UI5ModuleGenerator.d.ts
+@@ -1,4 +1,4 @@
+-import { KeyIn, ModuleType, ModuleGeneratorContext, XSAppJson, MtaModuleRequires, MtaModule, UI5ModuleManifestGenerator } from '@sap/artifact-management-base';
++import { KeyIn, ModuleType, ModuleGeneratorContext, XSAppJson, MtaModuleRequires, MtaModule, UI5ModuleManifestGenerator } from '@sap/artifact-management-base-types';
+ export default class UI5ModuleGenerator implements UI5ModuleManifestGenerator {
+     getXSAppJson(context: ModuleGeneratorContext): XSAppJson;
+     private modifyManifestJson;
+diff --git a/node_modules/@sap/artifact-management-types/src/plugins/ui5/index.d.ts b/node_modules/@sap/artifact-management-types/src/plugins/ui5/index.d.ts
+index 517cbc0..b97a4ce 100644
+--- a/node_modules/@sap/artifact-management-types/src/plugins/ui5/index.d.ts
++++ b/node_modules/@sap/artifact-management-types/src/plugins/ui5/index.d.ts
+@@ -1,3 +1,3 @@
+-import { Plugin } from '@sap/artifact-management-base';
++import { Plugin } from '@sap/artifact-management-base-types';
+ declare const UI5Plugin: Plugin;
+ export default UI5Plugin;
+diff --git a/node_modules/@sap/artifact-management-types/src/plugins/ui5/readers/UI5ModuleReader.d.ts b/node_modules/@sap/artifact-management-types/src/plugins/ui5/readers/UI5ModuleReader.d.ts
+index a9bd6c2..c4ecace 100644
+--- a/node_modules/@sap/artifact-management-types/src/plugins/ui5/readers/UI5ModuleReader.d.ts
++++ b/node_modules/@sap/artifact-management-types/src/plugins/ui5/readers/UI5ModuleReader.d.ts
+@@ -1,4 +1,4 @@
+-import { ProjectFileSystem, ProjectEntityReaderReadOptions, ModuleType, Item, ModuleData, ModuleReader, DetectionMechanism, KeyIn } from '@sap/artifact-management-base';
++import { ProjectFileSystem, ProjectEntityReaderReadOptions, ModuleType, Item, ModuleData, ModuleReader, DetectionMechanism, KeyIn } from '@sap/artifact-management-base-types';
+ export default class UI5ModuleReader extends ModuleReader {
+     private manifestJson;
+     getType(): KeyIn<typeof ModuleType>;
+diff --git a/node_modules/@sap/artifact-management-types/src/plugins/workflow/generators/WorkflowModuleGenerator.d.ts b/node_modules/@sap/artifact-management-types/src/plugins/workflow/generators/WorkflowModuleGenerator.d.ts
+index ebdd339..8e61a10 100644
+--- a/node_modules/@sap/artifact-management-types/src/plugins/workflow/generators/WorkflowModuleGenerator.d.ts
++++ b/node_modules/@sap/artifact-management-types/src/plugins/workflow/generators/WorkflowModuleGenerator.d.ts
+@@ -1,4 +1,4 @@
+-import { KeyIn, Service, ModuleType, ModuleGeneratorContext, ModuleManifestGenerator, MtaModuleRequires, MtaModule } from '@sap/artifact-management-base';
++import { KeyIn, Service, ModuleType, ModuleGeneratorContext, ModuleManifestGenerator, MtaModuleRequires, MtaModule } from '@sap/artifact-management-base-types';
+ export default class WorkflowModuleGenerator implements ModuleManifestGenerator {
+     getType(): KeyIn<typeof ModuleType>;
+     provideResources(context: ModuleGeneratorContext): Promise<Service[]>;
+diff --git a/node_modules/@sap/artifact-management-types/src/plugins/workflow/index.d.ts b/node_modules/@sap/artifact-management-types/src/plugins/workflow/index.d.ts
+index f1fddd8..9eb34fd 100644
+--- a/node_modules/@sap/artifact-management-types/src/plugins/workflow/index.d.ts
++++ b/node_modules/@sap/artifact-management-types/src/plugins/workflow/index.d.ts
+@@ -1,3 +1,3 @@
+-import { Plugin } from '@sap/artifact-management-base';
++import { Plugin } from '@sap/artifact-management-base-types';
+ declare const WorkflowPlugin: Plugin;
+ export default WorkflowPlugin;
+diff --git a/node_modules/@sap/artifact-management-types/src/plugins/workflow/readers/WorkflowModuleReader.d.ts b/node_modules/@sap/artifact-management-types/src/plugins/workflow/readers/WorkflowModuleReader.d.ts
+index 84815f8..17ac0f2 100644
+--- a/node_modules/@sap/artifact-management-types/src/plugins/workflow/readers/WorkflowModuleReader.d.ts
++++ b/node_modules/@sap/artifact-management-types/src/plugins/workflow/readers/WorkflowModuleReader.d.ts
+@@ -1,4 +1,4 @@
+-import { ProjectFileSystem, ModuleType, Item, ModuleReader, ModuleData, ProjectEntityReaderReadOptions, DetectionMechanism, KeyIn } from '@sap/artifact-management-base';
++import { ProjectFileSystem, ModuleType, Item, ModuleReader, ModuleData, ProjectEntityReaderReadOptions, DetectionMechanism, KeyIn } from '@sap/artifact-management-base-types';
+ export default class WorkflowModuleReader extends ModuleReader {
+     getType(): KeyIn<typeof ModuleType>;
+     getDetectionMechanism(): DetectionMechanism;
+diff --git a/node_modules/@sap/artifact-management-types/src/plugins/xsuaa/generators/XsSecurityModuleManifestGenerator.d.ts b/node_modules/@sap/artifact-management-types/src/plugins/xsuaa/generators/XsSecurityModuleManifestGenerator.d.ts
+index 29d4da3..b73ed71 100644
+--- a/node_modules/@sap/artifact-management-types/src/plugins/xsuaa/generators/XsSecurityModuleManifestGenerator.d.ts
++++ b/node_modules/@sap/artifact-management-types/src/plugins/xsuaa/generators/XsSecurityModuleManifestGenerator.d.ts
+@@ -1,4 +1,4 @@
+-import { ProjectFileSystem, KeyIn, Service, ModuleType, ModuleGeneratorContext, ModuleManifestGenerator, MtaModuleRequires, MtaModule } from '@sap/artifact-management-base';
++import { ProjectFileSystem, KeyIn, Service, ModuleType, ModuleGeneratorContext, ModuleManifestGenerator, MtaModuleRequires, MtaModule } from '@sap/artifact-management-base-types';
+ export default class XsSecurityModuleManifestGenerator implements ModuleManifestGenerator {
+     private sec;
+     getType(): KeyIn<typeof ModuleType>;
+diff --git a/node_modules/@sap/artifact-management-types/src/plugins/xsuaa/index.d.ts b/node_modules/@sap/artifact-management-types/src/plugins/xsuaa/index.d.ts
+index 486b916..e79e66a 100644
+--- a/node_modules/@sap/artifact-management-types/src/plugins/xsuaa/index.d.ts
++++ b/node_modules/@sap/artifact-management-types/src/plugins/xsuaa/index.d.ts
+@@ -1,3 +1,3 @@
+-import { Plugin } from '@sap/artifact-management-base';
++import { Plugin } from '@sap/artifact-management-base-types';
+ declare const XsSecurityPlugin: Plugin;
+ export default XsSecurityPlugin;
+diff --git a/node_modules/@sap/artifact-management-types/src/plugins/xsuaa/readers/XsSecurityModuleReader.d.ts b/node_modules/@sap/artifact-management-types/src/plugins/xsuaa/readers/XsSecurityModuleReader.d.ts
+index 25daa22..7aaba12 100644
+--- a/node_modules/@sap/artifact-management-types/src/plugins/xsuaa/readers/XsSecurityModuleReader.d.ts
++++ b/node_modules/@sap/artifact-management-types/src/plugins/xsuaa/readers/XsSecurityModuleReader.d.ts
+@@ -1,4 +1,4 @@
+-import { ProjectFileSystem, KeyIn, ProjectEntityReaderReadOptions, ModuleType, Item, ModuleData, ModuleReader, DetectionMechanism } from '@sap/artifact-management-base';
++import { ProjectFileSystem, KeyIn, ProjectEntityReaderReadOptions, ModuleType, Item, ModuleData, ModuleReader, DetectionMechanism } from '@sap/artifact-management-base-types';
+ interface XsSecurity {
+     xsappname: string;
+     'tenant-mode': string;
+diff --git a/node_modules/@sap/artifact-management-types/src/project-api/AutoBuilder.d.ts b/node_modules/@sap/artifact-management-types/src/project-api/AutoBuilder.d.ts
+index cf98263..a294aad 100644
+--- a/node_modules/@sap/artifact-management-types/src/project-api/AutoBuilder.d.ts
++++ b/node_modules/@sap/artifact-management-types/src/project-api/AutoBuilder.d.ts
+@@ -1,6 +1,6 @@
+ /// <reference types="node" />
+ import { EventEmitter } from 'events';
+-import { ProjectFileSystem, FileSystemWatchManager, IProjectInstance } from '@sap/artifact-management-base';
++import { ProjectFileSystem, FileSystemWatchManager, IProjectInstance } from '@sap/artifact-management-base-types';
+ declare class AutoBuilder extends EventEmitter {
+     private fs;
+     private fileSystemWatchManager;
+diff --git a/node_modules/@sap/artifact-management-types/src/project-api/ItemSetInstance.d.ts b/node_modules/@sap/artifact-management-types/src/project-api/ItemSetInstance.d.ts
+index a9e9062..b21130b 100644
+--- a/node_modules/@sap/artifact-management-types/src/project-api/ItemSetInstance.d.ts
++++ b/node_modules/@sap/artifact-management-types/src/project-api/ItemSetInstance.d.ts
+@@ -1,4 +1,4 @@
+-import { ItemReader, Item, ProjectFileSystem, FileSystemWatchManager } from '@sap/artifact-management-base';
++import { ItemReader, Item, ProjectFileSystem, FileSystemWatchManager } from '@sap/artifact-management-base-types';
+ import ProjectEntityInstance from './ProjectEntityInstance';
+ export default class ItemSetInstance extends ProjectEntityInstance<Item[]> {
+     private itemReader;
+diff --git a/node_modules/@sap/artifact-management-types/src/project-api/ItemWatcher.d.ts b/node_modules/@sap/artifact-management-types/src/project-api/ItemWatcher.d.ts
+index 6008a45..976bba3 100644
+--- a/node_modules/@sap/artifact-management-types/src/project-api/ItemWatcher.d.ts
++++ b/node_modules/@sap/artifact-management-types/src/project-api/ItemWatcher.d.ts
+@@ -1,5 +1,5 @@
+ /// <reference types="node" />
+-import { ItemFilter, Item, FileSystemWatchManager } from '@sap/artifact-management-base';
++import { ItemFilter, Item, FileSystemWatchManager } from '@sap/artifact-management-base-types';
+ import { ProjectInstance } from './ProjectInstance';
+ import { EventEmitter } from 'events';
+ import ItemWatcherApi from './ItemWatcherApi';
+diff --git a/node_modules/@sap/artifact-management-types/src/project-api/ItemWatcherApi.d.ts b/node_modules/@sap/artifact-management-types/src/project-api/ItemWatcherApi.d.ts
+index d5e9c23..096db7f 100644
+--- a/node_modules/@sap/artifact-management-types/src/project-api/ItemWatcherApi.d.ts
++++ b/node_modules/@sap/artifact-management-types/src/project-api/ItemWatcherApi.d.ts
+@@ -1,5 +1,5 @@
+ /// <reference types="node" />
+-import { Item } from '@sap/artifact-management-base';
++import { Item } from '@sap/artifact-management-base-types';
+ import { EventEmitter } from 'events';
+ declare interface ItemWatcherApi {
+     on(event: 'updated', listener: () => void): this;
+diff --git a/node_modules/@sap/artifact-management-types/src/project-api/LocalFileSystemWatchManager.d.ts b/node_modules/@sap/artifact-management-types/src/project-api/LocalFileSystemWatchManager.d.ts
+index 7396572..ba4376c 100644
+--- a/node_modules/@sap/artifact-management-types/src/project-api/LocalFileSystemWatchManager.d.ts
++++ b/node_modules/@sap/artifact-management-types/src/project-api/LocalFileSystemWatchManager.d.ts
+@@ -1,6 +1,6 @@
+ /// <reference types="node" />
+ import { EventEmitter } from 'events';
+-import { ProjectFileSystem, FileSystemWatchManager, ChangeListener, Observer } from '@sap/artifact-management-base';
++import { ProjectFileSystem, FileSystemWatchManager, ChangeListener, Observer } from '@sap/artifact-management-base-types';
+ /**
+  */
+ export default class LocalFileSystemWatchManager extends EventEmitter implements FileSystemWatchManager {
+diff --git a/node_modules/@sap/artifact-management-types/src/project-api/MessageUtil.d.ts b/node_modules/@sap/artifact-management-types/src/project-api/MessageUtil.d.ts
+index 95888f0..579034a 100644
+--- a/node_modules/@sap/artifact-management-types/src/project-api/MessageUtil.d.ts
++++ b/node_modules/@sap/artifact-management-types/src/project-api/MessageUtil.d.ts
+@@ -1,4 +1,4 @@
+-import { Message } from '@sap/artifact-management-base';
++import { Message } from '@sap/artifact-management-base-types';
+ export default class MessageUtil {
+     static addMessageTo(target: {
+         messages?: Message[];
+diff --git a/node_modules/@sap/artifact-management-types/src/project-api/ModuleInstance.d.ts b/node_modules/@sap/artifact-management-types/src/project-api/ModuleInstance.d.ts
+index 312ce4b..b8169b5 100644
+--- a/node_modules/@sap/artifact-management-types/src/project-api/ModuleInstance.d.ts
++++ b/node_modules/@sap/artifact-management-types/src/project-api/ModuleInstance.d.ts
+@@ -1,4 +1,4 @@
+-import { ModuleData, Item, ProjectFileSystem, FileSystemWatchManager, ModuleReader, StateMessage } from '@sap/artifact-management-base';
++import { ModuleData, Item, ProjectFileSystem, FileSystemWatchManager, ModuleReader, StateMessage } from '@sap/artifact-management-base-types';
+ import ItemSetInstance from './ItemSetInstance';
+ import ProjectEntityInstance from './ProjectEntityInstance';
+ declare class ModuleInstance extends ProjectEntityInstance<ModuleData | undefined> {
+diff --git a/node_modules/@sap/artifact-management-types/src/project-api/ProjectApi.d.ts b/node_modules/@sap/artifact-management-types/src/project-api/ProjectApi.d.ts
+index fd1a585..98a474d 100644
+--- a/node_modules/@sap/artifact-management-types/src/project-api/ProjectApi.d.ts
++++ b/node_modules/@sap/artifact-management-types/src/project-api/ProjectApi.d.ts
+@@ -1,4 +1,4 @@
+-import { Project, ItemFilter, Item, ProjectFileSystem, Tag, ItemType, ProjectData, ModuleData, KeyIn } from '@sap/artifact-management-base';
++import { Project, ItemFilter, Item, ProjectFileSystem, Tag, ItemType, ProjectData, ModuleData, KeyIn } from '@sap/artifact-management-base-types';
+ import ItemWatcherApi from './ItemWatcherApi';
+ import AutoBuilder from './AutoBuilder';
+ import { IChildLogger } from '@vscode-logging/types';
+diff --git a/node_modules/@sap/artifact-management-types/src/project-api/ProjectEntityInstance.d.ts b/node_modules/@sap/artifact-management-types/src/project-api/ProjectEntityInstance.d.ts
+index 47a70e8..22a1657 100644
+--- a/node_modules/@sap/artifact-management-types/src/project-api/ProjectEntityInstance.d.ts
++++ b/node_modules/@sap/artifact-management-types/src/project-api/ProjectEntityInstance.d.ts
+@@ -1,5 +1,5 @@
+ /// <reference types="node" />
+-import { ProjectFileSystem, FileSystemWatchManager, ProjectEntityReader } from '@sap/artifact-management-base';
++import { ProjectFileSystem, FileSystemWatchManager, ProjectEntityReader } from '@sap/artifact-management-base-types';
+ import { EventEmitter } from 'events';
+ declare type LoadResult<T> = {
+     data: T | undefined;
+diff --git a/node_modules/@sap/artifact-management-types/src/project-api/ProjectImpl.d.ts b/node_modules/@sap/artifact-management-types/src/project-api/ProjectImpl.d.ts
+index 87c71cb..24adbc6 100644
+--- a/node_modules/@sap/artifact-management-types/src/project-api/ProjectImpl.d.ts
++++ b/node_modules/@sap/artifact-management-types/src/project-api/ProjectImpl.d.ts
+@@ -1,4 +1,4 @@
+-import { Project, ItemFilter, Tag, ItemType, ModuleData, ProjectData, KeyIn } from '@sap/artifact-management-base';
++import { Project, ItemFilter, Tag, ItemType, ModuleData, ProjectData, KeyIn } from '@sap/artifact-management-base-types';
+ import { ProjectInstance } from './ProjectInstance';
+ import ProjectApi from './ProjectApi';
+ import ItemWatcher from './ItemWatcher';
+@@ -32,20 +32,20 @@ export default class ProjectImpl implements ProjectApi {
+      *
+      */
+     tryRead(): Promise<Project>;
+-    fs(): import("@sap/artifact-management-base").ProjectFileSystem;
++    fs(): import("@sap/artifact-management-base-types").ProjectFileSystem;
+     /**
+      * Read entities provided by the project
+      *
+      * @param filter
+      */
+-    readItems(filter?: ItemFilter, logger?: IChildLogger): Promise<import("@sap/artifact-management-base").Item[]>;
++    readItems(filter?: ItemFilter, logger?: IChildLogger): Promise<import("@sap/artifact-management-base-types").Item[]>;
+     /**
+      * Read detail information for the required type and ref provided by the project
+      *
+      * @param type
+      * @param ref
+      */
+-    getDetailInfo(type: KeyIn<typeof ItemType>, ref: string, entityPath?: string, logger?: IChildLogger): Promise<import("@sap/artifact-management-base").Item | undefined>;
++    getDetailInfo(type: KeyIn<typeof ItemType>, ref: string, entityPath?: string, logger?: IChildLogger): Promise<import("@sap/artifact-management-base-types").Item | undefined>;
+     run(options?: string[] | undefined, logger?: IChildLogger): Promise<any>;
+     buildManifest(context?: PlatformContext, logger?: IChildLogger): Promise<void>;
+     getManifest(logger?: IChildLogger): Promise<any>;
+diff --git a/node_modules/@sap/artifact-management-types/src/project-api/ProjectInstance.d.ts b/node_modules/@sap/artifact-management-types/src/project-api/ProjectInstance.d.ts
+index 82bcd7e..f2ece6c 100644
+--- a/node_modules/@sap/artifact-management-types/src/project-api/ProjectInstance.d.ts
++++ b/node_modules/@sap/artifact-management-types/src/project-api/ProjectInstance.d.ts
+@@ -1,4 +1,4 @@
+-import { ProjectData, Project, ItemFilter, Item, ModuleData, Tag, FileSystemWatchManager, ProjectFileSystem, ItemType, IProjectInstance, KeyIn } from '@sap/artifact-management-base';
++import { ProjectData, Project, ItemFilter, Item, ModuleData, Tag, FileSystemWatchManager, ProjectFileSystem, ItemType, IProjectInstance, KeyIn } from '@sap/artifact-management-base-types';
+ import ProjectModulesInstance from './ProjectModulesInstance';
+ import ProjectEntityInstance from './ProjectEntityInstance';
+ export declare class ProjectInstance extends ProjectEntityInstance<ProjectData> implements IProjectInstance {
+diff --git a/node_modules/@sap/artifact-management-types/src/project-api/ProjectModulesInstance.d.ts b/node_modules/@sap/artifact-management-types/src/project-api/ProjectModulesInstance.d.ts
+index 0e8ea63..75d62ed 100644
+--- a/node_modules/@sap/artifact-management-types/src/project-api/ProjectModulesInstance.d.ts
++++ b/node_modules/@sap/artifact-management-types/src/project-api/ProjectModulesInstance.d.ts
+@@ -1,4 +1,4 @@
+-import { ProjectFileSystem, ProjectData, Project, ItemFilter, Item, ModuleData, FileSystemWatchManager, ItemType, KeyIn } from '@sap/artifact-management-base';
++import { ProjectFileSystem, ProjectData, Project, ItemFilter, Item, ModuleData, FileSystemWatchManager, ItemType, KeyIn } from '@sap/artifact-management-base-types';
+ import ModuleInstance from './ModuleInstance';
+ import ProjectEntityInstance from './ProjectEntityInstance';
+ /**
+diff --git a/node_modules/@sap/artifact-management-types/src/project-api/WorkspaceApi.d.ts b/node_modules/@sap/artifact-management-types/src/project-api/WorkspaceApi.d.ts
+index 99dd1e2..6abc84d 100644
+--- a/node_modules/@sap/artifact-management-types/src/project-api/WorkspaceApi.d.ts
++++ b/node_modules/@sap/artifact-management-types/src/project-api/WorkspaceApi.d.ts
+@@ -1,5 +1,5 @@
+ import { Uri, WorkspaceFolder } from 'vscode';
+-import { KeyIn, Tag } from '@sap/artifact-management-base';
++import { KeyIn, Tag } from '@sap/artifact-management-base-types';
+ import ProjectApi from './ProjectApi';
+ export default interface WorkspaceApi {
+     getProjects(tag?: KeyIn<typeof Tag>): Promise<ProjectApi[]>;
+diff --git a/node_modules/@sap/artifact-management-types/src/project-api/WorkspaceImpl.d.ts b/node_modules/@sap/artifact-management-types/src/project-api/WorkspaceImpl.d.ts
+index df22cc4..b2468c8 100644
+--- a/node_modules/@sap/artifact-management-types/src/project-api/WorkspaceImpl.d.ts
++++ b/node_modules/@sap/artifact-management-types/src/project-api/WorkspaceImpl.d.ts
+@@ -1,7 +1,7 @@
+ /// <reference types="node" />
+ import { FSWatcher } from 'fs';
+ import { Uri, WorkspaceFolder } from 'vscode';
+-import { KeyIn, Tag } from '@sap/artifact-management-base';
++import { KeyIn, Tag } from '@sap/artifact-management-base-types';
+ import ProjectApi from './ProjectApi';
+ import WorkspaceApi from './WorkspaceApi';
+ export default class WorkspaceImpl implements WorkspaceApi {

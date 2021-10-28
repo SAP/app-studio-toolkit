@@ -28,7 +28,7 @@
     "package": "node ./scripts/package-vsix.js"
   },
   "dependencies": {
-    "@sap/artifact-management": "1.0.1",
+    "@sap/artifact-management": "1.1.0",
     "@vscode-logging/wrapper": "1.0.1",
     "lodash": "4.17.21",
     "optional-require": "1.0.3"

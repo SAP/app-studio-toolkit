@@ -22,6 +22,7 @@ jobs:
           - 16.x
     steps:
       - uses: actions/checkout@v2
+
       - uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node_version }}
@@ -29,6 +30,10 @@ jobs:
       - uses: pnpm/action-setup@v2.0.1
         with:
           version: 6.19.1
+
+      # See: https://github.com/actions/checkout/issues/246
+      - name: fix missing .npmrc
+        run: cp npmrc .npmrc
 
       - name: Install dependencies
         run: pnpm install

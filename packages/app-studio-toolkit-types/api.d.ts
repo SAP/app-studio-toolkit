@@ -1,5 +1,5 @@
 import { Uri } from "vscode";
-import { WorkspaceApi } from "@sap/artifact-management";
+import { WorkspaceApi } from "@sap/artifact-management-types";
 
 declare type BasWorkspaceApi = Pick<
   WorkspaceApi,
