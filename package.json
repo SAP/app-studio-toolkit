@@ -1,6 +1,12 @@
 {
   "name": "root",
   "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/*",
+      "examples/*"
+    ]
+  },
   "engines": {
     "node": ">=12",
     "pnpm": ">=6"
@@ -11,7 +17,7 @@
     "release:version": "lerna version",
     "release:publish": "lerna publish from-git --yes --no-verify-access",
     "ci": "npm-run-all legal:* format:validate lint:validate ci:subpackages coverage:merge",
-    "ci:subpackages": "pnpm -r --filter ./packages/* ./examples/* run ci",
+    "ci:subpackages": "pnpm -r run ci",
     "compile": "pnpm -r run clean && tsc --build",
     "compile:watch": "pnpm -r run clean  && tsc --build --watch",
     "format:fix": "prettier --write \"**/*.@(js|ts|json|md)\" --ignore-path=.gitignore",
@@ -19,9 +25,9 @@
     "lint:fix": "eslint . --ext=js,ts,vue --fix --max-warnings=0 --ignore-path=.gitignore",
     "lint:validate": "eslint . --ext=js,ts,vue --max-warnings=0 --ignore-path=.gitignore",
     "coverage:merge": "node ./scripts/merge-coverage",
-    "legal:delete": "pnpm -r --filter ./packages/* exec -- shx rm -rf .reuse LICENSES || true",
-    "legal:copy-reuse": "pnpm -r --filter ./packages/* exec -- shx cp -r ../../.reuse .reuse",
-    "legal:copy-license": "pnpm -r --filter ./packages/* exec -- shx cp -r ../../LICENSES LICENSES"
+    "legal:delete": "pnpm -r exec -- shx rm -rf .reuse LICENSES || true",
+    "legal:copy-reuse": "pnpm -r exec -- shx cp -r ../../.reuse .reuse",
+    "legal:copy-license": "pnpm -r exec -- shx cp -r ../../LICENSES LICENSES"
   },
   "devDependencies": {
     "@types/vscode": "^1.49.0",
@@ -67,5 +73,10 @@
     "extends": [
       "@commitlint/config-conventional"
     ]
+  },
+  "pnpm": {
+    "overrides": {
+      "@sap/artifact-management-mdkplugin": "npm:pre-bundled@^2.2.1"
+    }
   }
 }

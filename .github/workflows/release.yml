@@ -16,6 +16,10 @@ jobs:
         with:
           version: 6.19.1
 
+      # See: https://github.com/actions/checkout/issues/246
+      - name: fix missing .npmrc
+        run: cp npmrc .npmrc
+
       - name: Install dependencies
         run: pnpm install
 

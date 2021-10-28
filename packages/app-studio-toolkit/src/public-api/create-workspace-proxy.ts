@@ -15,5 +15,8 @@ export function createWorkspaceProxy(
   };
 
   Object.freeze(basWsAPI);
+  // TODO: discuss this with the @sap/artifact-management owners.
+  //       could it be caused by our patches (with npm-patch-package)?
+  // @ts-expect-error -- https://github.com/microsoft/TypeScript/issues/26559
   return basWsAPI;
 }
