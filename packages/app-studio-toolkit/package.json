@@ -31,7 +31,7 @@
     "@sap/artifact-management": "1.0.1",
     "@vscode-logging/wrapper": "1.0.1",
     "lodash": "4.17.21",
-    "optional-require": "1.0.3"
+    "optional-require": "1.1.8"
   },
   "devDependencies": {
     "@sap-devx/app-studio-toolkit-types": "^1.2.4",
