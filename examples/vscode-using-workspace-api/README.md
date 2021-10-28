@@ -6,15 +6,15 @@ exposed via the `App Studio Toolkit` VSCode Ext.
 ## pre-requisites
 
 - **Nodejs**: An `active` or `maintenance` version.
-- **Yarn**: version 1.x
+- **pnpm**: version >= 6.x
 - CAP Development Kit `npm install -g @sap/cds-dk` (must be **globally** installed).
 
 ## Initial setup
 
 In commandline/shell at the **root** of this monorepo:
 
-1. `yarn`.
-2. `yarn compile`.
+1. `pnpm install`.
+2. `pnpm compile`.
 
 In "Main" VSCode window:
 

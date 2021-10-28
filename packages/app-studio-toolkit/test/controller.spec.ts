@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { mockVscode } from "./mockUtil";
 import { SinonSandbox, SinonMock, createSandbox } from "sinon";
 import { set } from "lodash";
-import { IChildLogger } from "@vscode-logging/logger";
+import { IChildLogger } from "@vscode-logging/types";
 
 const wsConfig = {
   get: () => [

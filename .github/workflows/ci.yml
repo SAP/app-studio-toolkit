@@ -26,8 +26,12 @@ jobs:
         with:
           node-version: ${{ matrix.node_version }}
 
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.19.1
+
       - name: Install dependencies
-        run: yarn
+        run: pnpm install
 
       - name: Build
-        run: yarn run ci
+        run: pnpm run ci
