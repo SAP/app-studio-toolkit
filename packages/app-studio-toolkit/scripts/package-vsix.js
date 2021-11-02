@@ -1,9 +1,8 @@
+const { packageCommand } = require("vsce/out/package");
 const { expect } = require("chai");
 const { resolve } = require("path");
 const { readFileSync, writeFileSync } = require("fs");
 const { writeJsonSync } = require("fs-extra");
-const proxyquire = require("proxyquire");
-
 const rootExtDir = resolve(__dirname, "..");
 const pkgJsonPath = resolve(rootExtDir, "package.json");
 // Read & save the original literal representation of the pkg.json
@@ -18,16 +17,6 @@ expect(pkgJson.main).to.equal("./dist/src/extension");
 pkgJson.main = "./dist/extension";
 writeJsonSync(pkgJsonPath, pkgJson, { spaces: 2, EOF: "\n" });
 
-// **Hot-Patching** VSCE using proxyquire.
-// to include the whole `node_modules` directory due to issue with yarn + vsce.
-// note that the `node_modules` directory will only contain the non hoisted packages
-const nodeModulesDir = resolve(rootExtDir, "node_modules");
-const getDepsStub = {
-  getDependencies: async () => [rootExtDir, nodeModulesDir],
-};
-const { packageCommand } = proxyquire("vsce/out/package", {
-  "./npm": getDepsStub,
-});
 // Time to create the VSIX.
 packageCommand({
   cwd: rootExtDir,

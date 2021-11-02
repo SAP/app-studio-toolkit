@@ -19,6 +19,9 @@ const config = {
     ],
     extensions: [".js"],
   },
+  node: {
+    __dirname: false,
+  },
 };
 
 module.exports = config;
