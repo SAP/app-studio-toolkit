@@ -12,6 +12,7 @@
     "pnpm": ">=6"
   },
   "scripts": {
+    "version": "pnpm install && git add pnpm-lock.yaml",
     "preinstall": "npx only-allow pnpm",
     "prepare": "husky install",
     "release:version": "lerna version",
