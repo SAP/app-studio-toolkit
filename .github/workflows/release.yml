@@ -28,7 +28,7 @@ jobs:
 
       - name: npm auth setup
         run: |
-          pnpm logout
+          pnpm logout || true
           echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
           pnpm whoami
         env:
