@@ -1,5 +1,5 @@
 import { extensions, window } from "vscode";
-import { BasToolkit } from "@sap-devx/app-studio-toolkit-types";
+import { BasToolkit, sam } from "@sap-devx/app-studio-toolkit-types";
 
 async function activate(): Promise<void> {
   // Access the BAS Toolkit apis via vscode's `getExtension`
@@ -12,7 +12,10 @@ async function activate(): Promise<void> {
   const outputChannel = window.createOutputChannel(
     "vscode-using-workspace-api"
   );
-  const projects = await workspaceAPI.getProjects();
+
+  // note the usage of the `sam` "types namespace"
+  const projects: sam.ProjectApi[] = await workspaceAPI.getProjects();
+
   if (projects.length > 0) {
     // naively only print the **first** project found...
     const rootProjectDs = await projects[0].readItems();
