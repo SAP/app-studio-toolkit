@@ -1,12 +1,27 @@
 import { Uri } from "vscode";
 import { WorkspaceApi } from "@sap/artifact-management-types";
 
-declare type BasWorkspaceApi = Pick<
+/**
+ * re-export of the types from `@sap/artifact-management-types for convenience
+ * Example usage:
+ *
+ * ```typescript
+ *   import { sam } from "@sap-devx/app-studio-toolkit-types";
+ *
+ *   interface Foo {
+ *      x: sam.Item
+ *      y: sam.Module
+ *   }
+ * ```
+ */
+export * as sam from "@sap/artifact-management-types";
+
+export type BasWorkspaceApi = Pick<
   WorkspaceApi,
   "getProjects" | "getProjectUris" | "onWorkspaceChanged"
 >;
 
-declare interface BasToolkit {
+export interface BasToolkit {
   /**
    * An **async** wrapper for `vscode.extensions.getExtension()`
    * - See: https://code.visualstudio.com/api/references/vscode-api#extensions.getExtension
@@ -101,7 +116,7 @@ declare interface BasToolkit {
 
 declare const bas: BasToolkit;
 
-declare type ActionType =
+export type ActionType =
   | "EXECUTE"
   | "COMMAND"
   | "TASK"
@@ -109,31 +124,31 @@ declare type ActionType =
   | "SNIPPET"
   | "URI";
 
-type BasAction =
+export type BasAction =
   | IExecuteAction
   | ICommandAction
   | IFileAction
   | ISnippetAction
   | IUriAction;
 
-interface IAction {
+export interface IAction {
   id?: string;
   actionType: ActionType;
 }
 
-interface IExecuteAction<R = any, P = any[]> extends IAction {
+export interface IExecuteAction<R = any, P = any[]> extends IAction {
   actionType: "EXECUTE";
   executeAction: (params?: P) => Thenable<R>;
   params?: P;
 }
 
-interface ICommandAction<P = any[]> extends IAction {
+export interface ICommandAction<P = any[]> extends IAction {
   actionType: "COMMAND";
   name: string;
   params?: P;
 }
 
-interface ISnippetAction<C = Record<string, any>> extends IAction {
+export interface ISnippetAction<C = Record<string, any>> extends IAction {
   actionType: "SNIPPET";
   contributorId: string;
   snippetName: string;
@@ -145,12 +160,12 @@ interface ISnippetAction<C = Record<string, any>> extends IAction {
  * @deprecated - **DON'T USE**, this interface will be removed in the near future.
  *               use the {@link IUriAction} interface instead.
  */
-interface IFileAction extends IAction {
+export interface IFileAction extends IAction {
   actionType: "FILE";
   uri: Uri;
 }
 
-interface IUriAction extends IAction {
+export interface IUriAction extends IAction {
   actionType: "URI";
   uri: Uri;
 }
