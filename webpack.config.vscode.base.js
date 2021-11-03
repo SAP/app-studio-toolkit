@@ -12,15 +12,13 @@ const config = {
   devtool: "source-map",
   resolve: {
     // Solution for sibling package resolution inside a monorepo
+    // TODO: is this still needed after the transition to pnpm?
     modules: [
       path.resolve(__dirname, "node_modules"),
       path.resolve(__dirname, "../node_modules"),
       "node_modules",
     ],
     extensions: [".js"],
-  },
-  node: {
-    __dirname: false,
   },
 };
 

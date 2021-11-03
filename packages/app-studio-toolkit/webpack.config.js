@@ -33,6 +33,8 @@ const config = Object.assign({}, baseConfig, {
     fsevents: "commonjs fsevents",
   },
   plugins: [
+    // This is a workaround suggested by the artifact-management team to enable resolution
+    // of the templates from the bundled artifact's folder.
     new CopyPlugin({
       patterns: [
         {
@@ -53,6 +55,10 @@ const config = Object.assign({}, baseConfig, {
       },
     }),
   ],
+  node: {
+    // needed to bundle artifact-management successfully
+    __dirname: false,
+  },
 });
 
 module.exports = config;
