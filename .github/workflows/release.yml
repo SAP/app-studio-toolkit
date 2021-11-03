@@ -27,10 +27,13 @@ jobs:
         run: pnpm run ci
 
       - name: npm auth setup
+        # we are using `lerna` to publish which does not use `pnpm`
+        # so the auth setup is done with `npm` commands instead of `pnpm`
+        # particularly as running the same commands with `pnpm` fails...
         run: |
-          pnpm logout || true
+          npm logout || true
           echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
-          pnpm whoami
+          npm whoami
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
