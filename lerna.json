@@ -1,7 +1,7 @@
 {
   "packages": ["packages/*", "examples/*"],
   "useWorkspaces": true,
-  "npmClient": "pnpm",
+  "npmClient": "npm",
   "command": {
     "publish": {
       "conventionalCommits": true
