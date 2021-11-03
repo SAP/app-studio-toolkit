@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/SAP/app-studio-toolkit/compare/v1.2.4...v1.3.0) (2021-11-03)
+
+### Features
+
+- re-export @sap/artifact-management types from app-studio-toolkit-types ([#145](https://github.com/SAP/app-studio-toolkit/issues/145)) ([593d5b4](https://github.com/SAP/app-studio-toolkit/commit/593d5b4872d2cee483c4b7d37b835bdecb8cd404))
+
 ## [1.2.4](https://github.com/SAP/app-studio-toolkit/compare/v1.2.3...v1.2.4) (2021-10-16)
 
 ### Bug Fixes
