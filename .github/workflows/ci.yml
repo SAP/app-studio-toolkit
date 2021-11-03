@@ -34,6 +34,18 @@ jobs:
       # See: https://github.com/actions/checkout/issues/246
       - name: fix missing .npmrc
         run: cp npmrc .npmrc
+        
+      - name: npm auth setup
+        # we are using `lerna` to publish which does not use `pnpm`
+        # so the auth setup is done with `npm` commands instead of `pnpm`
+        run: |
+          yarn logout
+          cat .npmrc
+          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
+          cat .npmrc
+          npm whoami
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}   
 
       - name: Install dependencies
         run: pnpm install
