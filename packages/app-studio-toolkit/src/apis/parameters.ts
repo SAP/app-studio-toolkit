@@ -1,12 +1,12 @@
 import { getLogger } from "../logger/logger";
+import { optionalRequire } from "../utils/optional-require";
 
 export async function getParameter(
   parameterName: string
 ): Promise<string | undefined> {
   const logger = getLogger().getChildLogger({ label: "getParameter" });
-  const optionalRequire = require("optional-require")(require);
   const noSapPlugin = "NO_SAP_PLUGIN_FOUND";
-  const sapPlugin = optionalRequire("@sap/plugin") ?? noSapPlugin;
+  const sapPlugin = optionalRequire<any>("@sap/plugin") ?? noSapPlugin;
 
   if (sapPlugin === noSapPlugin) {
     logger.trace("Failed to load @sap/plugin, so returning undefined.");

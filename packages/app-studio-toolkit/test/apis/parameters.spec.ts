@@ -1,3 +1,4 @@
+import * as proxyquire from "proxyquire";
 import { expect } from "chai";
 import { mockVscode } from "../mockUtil";
 
@@ -69,23 +70,29 @@ describe("getParameter API", () => {
 
   // no test for value is undefined or null, because [] behaves the same on any value
   describe("when configuration contains the parameter name", () => {
-    let requireMock: any;
-    const expectedParameterValue = "param1value";
+    let getParameter: (parameterName: string) => Promise<string | undefined>;
 
     before(() => {
-      requireMock = require("mock-require");
-      const configuration = { param1: expectedParameterValue };
-      const sapPlugin = {
-        window: {
-          configuration: () => configuration,
+      const configuration = { param1: "bamba" };
+
+      const parametersModule = proxyquire("../../src/apis/parameters", {
+        "../utils/optional-require": {
+          optionalRequire() {
+            const sapPlugin = {
+              window: {
+                configuration: () => configuration,
+              },
+            };
+            return sapPlugin;
+          },
         },
-      };
-      requireMock("@sap/plugin", sapPlugin);
+      });
+      getParameter = parametersModule.getParameter;
     });
 
     it("should return parameter value", async () => {
       const parameterValue = await getParameter(parameterName);
-      expect(parameterValue).to.be.equal(expectedParameterValue);
+      expect(parameterValue).to.be.equal("bamba");
     });
 
     after(() => {
