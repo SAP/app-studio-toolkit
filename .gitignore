@@ -64,9 +64,6 @@ yarn.lock
 # vscode-test
 .vscode-test
 
-# npm registry configuraiton
-.npmrc
-
 # tsc incremental build artifacts
 tsconfig.tsbuildinfo
 
