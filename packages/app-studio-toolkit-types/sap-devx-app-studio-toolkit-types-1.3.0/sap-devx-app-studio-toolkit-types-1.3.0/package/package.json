@@ -16,16 +16,16 @@
     "patches",
     "api.d.ts"
   ],
-  "scripts": {
-    "postinstall": "patch-package",
-    "ci": "npm-run-all compile",
-    "compile": "tsc -p ."
-  },
   "dependencies": {
     "@sap/artifact-management-base-types": "1.1.0",
     "@sap/artifact-management-types": "1.1.0",
     "@types/vscode": "^1.49.0",
     "@vscode-logging/types": "0.1.4",
     "patch-package": "6.4.7"
+  },
+  "scripts": {
+    "postinstall": "patch-package",
+    "ci": "npm-run-all compile",
+    "compile": "tsc -p ."
   }
 }
