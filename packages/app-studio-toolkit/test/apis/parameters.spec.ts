@@ -1,102 +1,82 @@
-import * as proxyquire from "proxyquire";
 import { expect } from "chai";
-import { mockVscode } from "../mockUtil";
+import * as proxyquire from "proxyquire";
+import { NOOP_LOGGER } from "@vscode-logging/wrapper";
 
-const testVscode = {
-  window: {
-    createOutputChannel: () => "",
-  },
-  ExtensionContext: {},
-};
+type GetParamSignature = (parameterName: string) => Promise<string | undefined>;
 
-mockVscode(testVscode, "dist/src/logger/logger.js");
-import { getParameter } from "../../src/apis/parameters";
+describe("the getParameters utility", () => {
+  function buildGetParamProxy(optionalRequireMock: any): GetParamSignature {
+    const proxiedModule = proxyquire("../../src/apis/parameters", {
+      "../utils/optional-require": {
+        optionalRequire(): any {
+          return optionalRequireMock;
+        },
+      },
+      "../logger/logger": { getLogger: () => NOOP_LOGGER },
+    });
+    return proxiedModule.getParameter as GetParamSignature;
+  }
 
-describe("getParameter API", () => {
-  const parameterName = "param1";
-
-  it("should return undefined", async () => {
-    const parameterValue = await getParameter(parameterName);
-    expect(parameterValue).to.be.undefined;
-  });
-
-  // no test for configuration is undefined, because . behaves the same on null and undefined
-  describe("when configuration is null", () => {
-    let requireMock: any;
+  describe("when @sap/plugin is found", () => {
+    let getParameterProxy: GetParamSignature;
 
     before(() => {
-      requireMock = require("mock-require");
       const sapPlugin = {
         window: {
-          configuration: () => null,
+          configuration: () => ({ ima_aba: "bamba" }),
         },
       };
-      requireMock("@sap/plugin", sapPlugin);
+      getParameterProxy = buildGetParamProxy(sapPlugin);
     });
 
-    it("should return undefined", async () => {
-      const parameterValue = await getParameter(parameterName);
-      expect(parameterValue).to.be.undefined;
-    });
-
-    after(() => {
-      requireMock.stop("@sap/plugin");
+    it("returns its `window.configuration()` ", async () => {
+      await expect(getParameterProxy("ima_aba")).to.eventually.equal("bamba");
     });
   });
 
-  // no test for configuration containing other parameters, because [] --> to 'member access' behaves the same
-  describe("when configuration is empty", () => {
-    let requireMock: any;
+  describe("when @sap/plugin is not found", () => {
+    let getParameterProxy: GetParamSignature;
 
     before(() => {
-      requireMock = require("mock-require");
+      getParameterProxy = buildGetParamProxy(null);
+    });
+
+    it("returns undefined` ", async () => {
+      await expect(getParameterProxy("actions")).to.eventually.be.undefined;
+    });
+  });
+
+  describe("when @sap/plugin has an invalid configuration() value", () => {
+    let getParameterProxy: GetParamSignature;
+
+    before(() => {
       const sapPlugin = {
         window: {
-          configuration: () => "",
+          configuration: () => undefined,
         },
       };
-      requireMock("@sap/plugin", sapPlugin);
+      getParameterProxy = buildGetParamProxy(sapPlugin);
     });
 
-    it("should return undefined", async () => {
-      const parameterValue = await getParameter(parameterName);
-      expect(parameterValue).to.be.undefined;
-    });
-
-    after(() => {
-      requireMock.stop("@sap/plugin");
+    it("returns", async () => {
+      await expect(getParameterProxy("foo")).to.eventually.be.undefined;
     });
   });
 
-  // no test for value is undefined or null, because [] behaves the same on any value
-  describe("when configuration contains the parameter name", () => {
-    let getParameter: (parameterName: string) => Promise<string | undefined>;
+  describe("when @sap/plugin['configuration'] lacks the requested parameters", () => {
+    let getParameterProxy: GetParamSignature;
 
     before(() => {
-      const configuration = { param1: "bamba" };
-
-      const parametersModule = proxyquire("../../src/apis/parameters", {
-        "../utils/optional-require": {
-          optionalRequire() {
-            const sapPlugin = {
-              window: {
-                configuration: () => configuration,
-              },
-            };
-            return sapPlugin;
-          },
+      const sapPlugin = {
+        window: {
+          configuration: () => ({ foo: "666" }),
         },
-      });
-      getParameter = parametersModule.getParameter;
+      };
+      getParameterProxy = buildGetParamProxy(sapPlugin);
     });
 
-    it("should return parameter value", async () => {
-      const parameterValue = await getParameter(parameterName);
-      expect(parameterValue).to.be.equal("bamba");
-    });
-
-    after(() => {
-      requireMock.stop("@sap/plugin");
+    it("returns", async () => {
+      await expect(getParameterProxy("bar")).to.eventually.be.undefined;
     });
   });
 });

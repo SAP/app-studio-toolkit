@@ -84,6 +84,7 @@ export class ActionsController {
     });
     forEach(actionsIds, async (actionId) => {
       const action = ActionsController.getAction(actionId.trim());
+      /* istanbul ignore else - testing logger flows not worth the cost... */
       if (action) {
         await _performAction(action);
       } else {

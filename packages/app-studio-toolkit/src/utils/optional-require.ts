@@ -16,13 +16,12 @@ export function optionalRequire<M = unknown>(
   moduleName: string
 ): M | undefined {
   try {
-    const modulePath = require.resolve(moduleName);
-    if (modulePath) {
-      return require(moduleName) as M;
-    } else {
-      return undefined;
-    }
+    // will throw "MODULE_NOT_FOUND" if the module cannot be located
+    require.resolve(moduleName);
+    return require(moduleName) as M;
   } catch (e) {
+    // our incredibly naive implementation does not currently distinguish between
+    // "MODULE_NOT_FOUND" exceptions or exceptions thrown during the optional module loading
     return undefined;
   }
 }
