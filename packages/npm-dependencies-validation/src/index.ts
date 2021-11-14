@@ -1,7 +1,7 @@
 import { spawn } from "child_process";
 import { ProblematicDependency, ProblemType } from "./api";
 
-class ProjectValidator {
+export class ProjectValidator {
   private readonly NPM = /^win/.test(process.platform) ? "npm.cmd" : "npm";
   private readonly LS_DEPS = ["ls", "--depth=0", "--json"]; // dependencies and extraneous modules
   private readonly LS_DEV_DEPS = [...this.LS_DEPS, "--dev"]; // devDependencies
