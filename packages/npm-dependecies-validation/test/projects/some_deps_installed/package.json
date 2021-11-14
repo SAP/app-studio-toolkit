@@ -1,0 +1,14 @@
+{
+  "name": "some_deps_installed",
+  "version": "1.0.0",
+  "description": "npm install was not run",
+  "main": "index.js",
+  "author": {
+    "name": "SAP SE"
+  },
+  "publisher": "SAPOS",
+  "license": "Apache 2.0",
+  "dependencies": {
+    "json-fixer": "1.4.0"
+  }
+}
