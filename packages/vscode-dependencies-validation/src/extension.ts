@@ -1,5 +1,5 @@
-import { getDependencyIssues } from "@sap-devx/npm-dependecies-validation";
-import { DependencyIssue } from "@sap-devx/npm-dependecies-validation/dist/types";
+import { getDependencyIssues } from "@sap-devx/npm-dependencies-validation/src";
+import { DependencyIssue } from "@sap-devx/npm-dependencies-validation/dist/src/types";
 import { Uri, commands, ExtensionContext, workspace, window } from "vscode";
 
 const PACKAGE_JSON = "package.json";
@@ -7,7 +7,7 @@ const PACKAGE_JSON = "package.json";
 export function activate(context: ExtensionContext) {
   context.subscriptions.push(
     commands.registerCommand(
-      "vscode-dependencies-validation.findPackageJsons",
+      "vscode-dependencies-validation.displayIssues",
       async () => {
         const packageJsonUris: Uri[] = await workspace.findFiles(
           PACKAGE_JSON,
