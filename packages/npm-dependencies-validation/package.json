@@ -9,8 +9,8 @@
     "type": "git",
     "url": "https://github.com/SAP/app-studio-toolkit"
   },
-  "main": "index.js",
-  "types": "./api.d.ts",
+  "main": "./dist/index",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "test": "mocha ./test/*.spec.ts",
     "compile": "tsc -p ./",

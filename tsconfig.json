@@ -10,6 +10,9 @@
       "path": "./packages/npm-dependencies-validation"
     },
     {
+      "path": "./packages/vscode-dependencies-validation"
+    },
+    {
       "path": "./examples/sample-action-client"
     },
     {
