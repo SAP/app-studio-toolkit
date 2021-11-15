@@ -4,7 +4,7 @@ import { access, readFile } from "fs/promises";
 import { constants } from "fs";
 import { DependencyIssue, IssueType } from "./types";
 
-const LS_DEPS = ["ls", "--depth=0", "--json"]; // dependencies and extraneous modules
+const LS_DEPS = ["ls", "--depth=0"]; // dependencies and extraneous modules
 const LS_DEV_DEPS = [...LS_DEPS, "--dev"]; // devDependencies
 
 async function isValidJsonFile(packageJsonPath: string): Promise<boolean> {
@@ -13,11 +13,7 @@ async function isValidJsonFile(packageJsonPath: string): Promise<boolean> {
     JSON.parse(packageJsonContent);
     return true;
   } catch (error: any) {
-    console.debug(
-      `${packageJsonPath} file content is invalid. ${
-        error.stack || error.message
-      }`
-    );
+    console.debug(`${packageJsonPath} file content is invalid. ${error.stack}`);
     return false;
   }
 }
@@ -27,11 +23,7 @@ async function isPathExist(packageJsonPath: string): Promise<boolean> {
     await access(packageJsonPath, constants.R_OK | constants.W_OK);
     return true;
   } catch (error: any) {
-    console.debug(
-      `${packageJsonPath} file is not accessible. ${
-        error.stack || error.message
-      }`
-    );
+    console.debug(`${packageJsonPath} file is not accessible. ${error.stack}`);
     return false;
   }
 }

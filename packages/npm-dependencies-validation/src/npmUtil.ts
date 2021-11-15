@@ -1,16 +1,20 @@
 import { spawn } from "child_process";
 
-const NPM = /^win/.test(process.platform) ? "npm.cmd" : "npm";
+export function getNPM(): string {
+  return /^win/.test(process.platform) ? "npm.cmd" : "npm";
+}
 
 export function spawnCommand(
   commandArgs: string[],
   workingDir: string
 ): Promise<any> {
   return new Promise((resolve, reject) => {
-    const command = spawn(NPM, commandArgs, { cwd: workingDir });
+    const command = spawn(getNPM(), [...commandArgs, "--json"], {
+      cwd: workingDir,
+    });
 
     command.stdout.on("data", (data) => {
-      const jsonObjResult = JSON.parse(data ?? "{}");
+      const jsonObjResult = JSON.parse(data);
       resolve(jsonObjResult);
     });
 

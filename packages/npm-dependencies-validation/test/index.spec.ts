@@ -1,7 +1,7 @@
 import { getDependencyIssues } from "../src/index";
 import { expect, assert } from "chai";
 
-describe("ProjectValidator unit test", () => {
+describe("index unit test", () => {
   it("2 dependencies and 1 devDependency declared but are not installed", async () => {
     const result = await getDependencyIssues(
       "./test/projects/no_deps_installed"
