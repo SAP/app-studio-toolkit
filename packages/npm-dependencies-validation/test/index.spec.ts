@@ -82,4 +82,17 @@ describe("index unit test", () => {
     const result = await getDependencyIssues("./test/projects/no_package_json");
     expect(result).to.have.lengthOf(0);
   });
+
+  it("1 dependency is installed, but in package.json it's version is invalid", async () => {
+    const result = await getDependencyIssues(
+      "./test/projects/invalid_dependency"
+    );
+    expect(result).to.have.lengthOf(1);
+    // invalid json-fixer dependency
+    const jsonFixer = result.find((dep) => dep.name === "json-fixer");
+    assert.isDefined(jsonFixer);
+    expect(jsonFixer?.devDependency).to.be.false;
+    expect(jsonFixer?.type).to.be.equal("invalid");
+    expect(jsonFixer?.version).to.be.equal("1.6.12");
+  });
 });
