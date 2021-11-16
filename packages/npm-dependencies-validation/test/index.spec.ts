@@ -1,5 +1,7 @@
 import { getDependencyIssues } from "../src/index";
 import { expect, assert } from "chai";
+import * as fsPromises from "fs/promises";
+import { SinonMock, createSandbox } from "sinon";
 
 describe("index unit test", () => {
   it("2 dependencies and 1 devDependency declared but are not installed", async () => {
@@ -72,10 +74,13 @@ describe("index unit test", () => {
   });
 
   it("invalid package.json", async () => {
+    const fsMock: SinonMock = createSandbox().mock(fsPromises);
+    fsMock.expects("readFile").rejects(new Error("invalid json"));
     const result = await getDependencyIssues(
       "./test/projects/invalid_package_json"
     );
     expect(result).to.have.lengthOf(0);
+    fsMock.restore();
   });
 
   it("no package.json", async () => {
