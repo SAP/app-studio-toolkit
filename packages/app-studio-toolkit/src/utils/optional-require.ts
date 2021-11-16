@@ -1,3 +1,4 @@
+import { nativeRequire } from "./native-require";
 /**
  * Naive implementation of optional-require.
  * It does not deal with all edge cases, e.g differentiate between:
@@ -17,8 +18,8 @@ export function optionalRequire<M = unknown>(
 ): M | undefined {
   try {
     // will throw "MODULE_NOT_FOUND" if the module cannot be located
-    require.resolve(moduleName);
-    return require(moduleName) as M;
+    nativeRequire.resolve(moduleName);
+    return nativeRequire(moduleName) as M;
   } catch (e) {
     // our incredibly naive implementation does not currently distinguish between
     // "MODULE_NOT_FOUND" exceptions or exceptions thrown during the optional module loading
