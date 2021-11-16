@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.1](https://github.com/SAP/app-studio-toolkit/compare/v1.3.0...v1.3.1) (2021-11-16)
+
+### Bug Fixes
+
+- missing packaged folders in toolkit-types ([1dfb050](https://github.com/SAP/app-studio-toolkit/commit/1dfb05040c45368916d67dc41e318b7a4d988a31))
+
 # [1.3.0](https://github.com/SAP/app-studio-toolkit/compare/v1.2.4...v1.3.0) (2021-11-03)
 
 ### Features

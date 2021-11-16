@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.1](https://github.com/SAP/app-studio-toolkit/compare/v1.3.0...v1.3.1) (2021-11-16)
+
+### Bug Fixes
+
+- runtime exception on isLCAPEnabled ([#148](https://github.com/SAP/app-studio-toolkit/issues/148)) ([b2a3dfe](https://github.com/SAP/app-studio-toolkit/commit/b2a3dfef58b8f95e2651105c5dd8787e3264d294))
+
 # [1.3.0](https://github.com/SAP/app-studio-toolkit/compare/v1.2.4...v1.3.0) (2021-11-03)
 
 **Note:** Version bump only for package app-studio-toolkit
