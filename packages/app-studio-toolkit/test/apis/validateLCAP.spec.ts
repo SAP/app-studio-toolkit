@@ -1,3 +1,4 @@
+import * as proxyquire from "proxyquire";
 import { expect } from "chai";
 import { mockVscode } from "../mockUtil";
 
@@ -10,6 +11,7 @@ const testVscode = {
 
 mockVscode(testVscode, "dist/src/logger/logger.js");
 import { isLCAPEnabled } from "../../src/apis/validateLCAP";
+import { BasToolkit } from "@sap-devx/app-studio-toolkit-types";
 
 describe("validate LCAP  API", () => {
   it("should return undefined", async () => {
@@ -18,50 +20,53 @@ describe("validate LCAP  API", () => {
   });
 
   describe("when is lcap is not found", () => {
-    let requireMock: any;
+    let isLCAPEnabled: BasToolkit["isLCAPEnabled"];
 
     before(() => {
-      requireMock = require("mock-require");
-      const sapPlugin = {
-        window: {
-          isLCAPEnabled: () => undefined,
+      const validateLCAPModule = proxyquire("../../src/apis/validateLCAP", {
+        "../utils/optional-require": {
+          optionalRequire() {
+            const sapPlugin = {
+              window: {
+                isLCAPEnabled: () => undefined,
+              },
+            };
+            return sapPlugin;
+          },
         },
-      };
-      requireMock("@sap/plugin", sapPlugin);
+      });
+
+      isLCAPEnabled = validateLCAPModule.isLCAPEnabled;
     });
 
     it("should return undefined", async () => {
       const parameterValue = await isLCAPEnabled();
       expect(parameterValue).to.be.undefined;
     });
-
-    after(() => {
-      requireMock.stop("@sap/plugin");
-    });
   });
 
   describe("when is LCAP is true", () => {
-    let requireMock: any;
-    const expectedBool = true;
+    let isLCAPEnabled: BasToolkit["isLCAPEnabled"];
 
     before(() => {
-      requireMock = require("mock-require");
-      const isLCAP = true;
-      const sapPlugin = {
-        window: {
-          isLCAPEnabled: () => isLCAP,
+      const validateLCAPModule = proxyquire("../../src/apis/validateLCAP", {
+        "../utils/optional-require": {
+          optionalRequire() {
+            const sapPlugin = {
+              window: {
+                isLCAPEnabled: () => true,
+              },
+            };
+            return sapPlugin;
+          },
         },
-      };
-      requireMock("@sap/plugin", sapPlugin);
+      });
+      isLCAPEnabled = validateLCAPModule.isLCAPEnabled;
     });
 
-    it("should return parameter value", async () => {
-      const isLCAP = await isLCAPEnabled();
-      expect(isLCAP).to.be.equal(expectedBool);
-    });
-
-    after(() => {
-      requireMock.stop("@sap/plugin");
+    it("should return undefined", async () => {
+      const parameterValue = await isLCAPEnabled();
+      expect(parameterValue).to.be.true;
     });
   });
 });

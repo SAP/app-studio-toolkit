@@ -1,7 +1,10 @@
+import * as proxyquire from "proxyquire";
+import * as pDefer from "p-defer";
 import { expect } from "chai";
 import { mockVscode } from "./mockUtil";
 import { SinonSandbox, SinonMock, createSandbox } from "sinon";
 import { set } from "lodash";
+import { BasAction } from "@sap-devx/app-studio-toolkit-types";
 import { IChildLogger } from "@vscode-logging/types";
 
 const wsConfig = {
@@ -147,76 +150,140 @@ describe("controller unit test", () => {
     });
   });
 
-  describe("performActionsFromURL", () => {
-    const scheduledAction = {
-      name: "workbench.action.openGlobalSettings",
-      actionType: "COMMAND",
-      id: "openSettingsAction",
-    };
-    const action = ActionsFactory.createAction(scheduledAction, true);
+  describe("performAction", () => {
+    context("byIDs", () => {
+      context("performActionsFromURL()", () => {
+        let actionCtrlProxy: typeof ActionsController;
+        let performActionArgsPromise: Promise<BasAction>;
 
-    it("_performAction should be called", async () => {
-      performerMock.expects("_performAction").withExactArgs(action).resolves();
-      await ActionsController.performActionsFromURL();
-    });
+        before(() => {
+          const performActionDeferred = pDefer<BasAction>();
+          performActionArgsPromise = performActionDeferred.promise;
 
-    it("throw error", () => {
-      const api = {
-        packageJSON: {
-          BASContributes: {
-            actions: [
-              {
-                id: "create",
-                actionType: "CREATE",
-                name: "create",
+          const proxyControllerModule = proxyquire(
+            "../src/actions/controller",
+            {
+              "../apis/parameters": {
+                getParameter() {
+                  // by "ids" structure (no array)
+                  return "openSettingsAction";
+                },
               },
-            ],
+              "./performer": {
+                _performAction(action: BasAction) {
+                  performActionDeferred.resolve(action);
+                },
+              },
+              vscode: {
+                extensions: {
+                  all: [
+                    {
+                      packageJSON: {
+                        BASContributes: {
+                          actions: [
+                            {
+                              // `id` matches `getParameter()` result above
+                              id: "openSettingsAction",
+                              actionType: "COMMAND",
+                              name: "workbench.action.openGlobalSettings",
+                            },
+                          ],
+                        },
+                      },
+                    },
+                  ],
+                },
+                "@noCallThru": true,
+              },
+            }
+          );
+
+          actionCtrlProxy = proxyControllerModule.ActionsController;
+          actionCtrlProxy.loadContributedActions();
+        });
+
+        it("performActionsFromURL call to performFullActions bamba", async () => {
+          const expectedAction = ActionsFactory.createAction(
+            {
+              name: "workbench.action.openGlobalSettings",
+              actionType: "COMMAND",
+              id: "openSettingsAction",
+            },
+            true
+          );
+
+          await actionCtrlProxy.performActionsFromURL();
+          await expect(performActionArgsPromise).to.eventually.deep.equal(
+            expectedAction
+          );
+        });
+      });
+
+      it("throw error", () => {
+        const api = {
+          packageJSON: {
+            BASContributes: {
+              actions: [
+                {
+                  id: "create",
+                  actionType: "CREATE",
+                  name: "create",
+                },
+              ],
+            },
           },
-        },
-      };
-      const testError = new Error(
-        `Failed to execute scheduled action ${JSON.stringify(
-          api.packageJSON.BASContributes.actions[0]
-        )}`
-      );
-      try {
-        ActionsController.performScheduledActions();
-      } catch (error) {
-        expect(error).to.be.equal(testError);
-      }
+        };
+        const testError = new Error(
+          `Failed to execute scheduled action ${JSON.stringify(
+            api.packageJSON.BASContributes.actions[0]
+          )}`
+        );
+        try {
+          ActionsController.performScheduledActions();
+        } catch (error) {
+          expect(error).to.be.equal(testError);
+        }
+      });
     });
   });
 
-  describe("perfomInlinedActions", () => {
-    context("call to performActionsFromURL", () => {
-      let requireMock: any;
+  context("inlined", () => {
+    context("performActionsFromURL()", () => {
+      let actionCtrlProxy: typeof ActionsController;
+      let performActionArgsPromise: Promise<BasAction>;
+
       before(() => {
-        requireMock = require("mock-require");
-        const configuration = {
-          actions: `[{"actionType":"COMMAND","name":"workbench.action.openSettings"}]`,
-        };
-        const sapPlugin = {
-          window: {
-            configuration: () => configuration,
+        const performActionDeferred = pDefer<BasAction>();
+        performActionArgsPromise = performActionDeferred.promise;
+
+        const proxyControllerModule = proxyquire("../src/actions/controller", {
+          "../apis/parameters": {
+            getParameter() {
+              // **inlined** json structured
+              return '[{"actionType":"COMMAND","name":"workbench.action.openSettings"}]';
+            },
           },
-        };
-        requireMock("@sap/plugin", sapPlugin);
-      });
-      after(() => {
-        requireMock.stop("@sap/plugin");
+          "./performer": {
+            _performAction(action: BasAction) {
+              performActionDeferred.resolve(action);
+            },
+          },
+          vscode: { ...testVscode, "@noCallThru": true },
+        });
+
+        actionCtrlProxy = proxyControllerModule.ActionsController;
       });
 
       it("performActionsFromURL call to perfomFullActions", async () => {
-        const action = ActionsFactory.createAction(
+        const expectedAction = ActionsFactory.createAction(
           { actionType: "COMMAND", name: "workbench.action.openSettings" },
           true
         );
 
-        performerMock
-          .expects("_performAction")
-          .withExactArgs(action)
-          .resolves();
-        await ActionsController.performActionsFromURL();
+        await actionCtrlProxy.performActionsFromURL();
+        await expect(performActionArgsPromise).to.eventually.deep.equal(
+          expectedAction
+        );
       });
     });
 

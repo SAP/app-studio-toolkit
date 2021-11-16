@@ -11,18 +11,9 @@ const config = Object.assign({}, baseConfig, {
     devtoolModuleFilenameTemplate: "../[resource-path]",
   },
   module: {
-    rules: [
-      {
-        test: /.*.js$/,
-        loader: "string-replace-loader",
-        options: {
-          // When bundling the `optional-require` flow must not be modified by webpack.
-          search: 'require("optional-require")(require)',
-          replace:
-            "__non_webpack_require__('optional-require')(__non_webpack_require__)",
-        },
-      },
-    ],
+    // https://webpack.js.org/configuration/module/#modulenoparse
+    // used to avoid transforming native require usage in `optional-require` implementation
+    noParse: /native-require\.(js|ts)$/,
   },
   // 📖 -> https://webpack.js.org/configuration/externals/
   externals: {
