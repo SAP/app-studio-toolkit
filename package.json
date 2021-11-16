@@ -16,7 +16,7 @@
     "preinstall": "npx only-allow pnpm",
     "prepare": "husky install",
     "release:version": "lerna version",
-    "release:publish": "lerna publish from-git --yes --no-verify-access",
+    "release:publish": "lerna publish from-git --yes --no-verify-access --no-git-reset",
     "ci": "npm-run-all legal:* format:validate lint:validate ci:subpackages coverage:merge",
     "ci:subpackages": "pnpm -r run ci",
     "compile": "pnpm -r run clean && tsc --build",
