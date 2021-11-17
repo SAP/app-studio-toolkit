@@ -18,7 +18,6 @@ export function optionalRequire<M = unknown>(
 ): M | undefined {
   try {
     // will throw "MODULE_NOT_FOUND" if the module cannot be located
-    nativeRequire.resolve(moduleName);
     return nativeRequire(moduleName) as M;
   } catch (e) {
     // our incredibly naive implementation does not currently distinguish between

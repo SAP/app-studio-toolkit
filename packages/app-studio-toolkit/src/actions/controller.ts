@@ -40,7 +40,11 @@ export class ActionsController {
 
   public static async performActionsFromURL() {
     const actionsParam = await getParameter("actions");
+    /* istanbul ignore if - a test case for this single branch is not worth the cost > 50 LOC due to mocks */
     if (actionsParam === undefined) {
+      // TODO: also uncertain if this branch is even needed, the `detectActionMode` should likely be changed
+      //   to return "ByIDs" | "Inlined" | "N/A" and a branch could be added to the `switch(mode)` to explicitly
+      //   `return in that scenario.
       return;
     }
     const decodedActionsParam = decodeURI(actionsParam);
