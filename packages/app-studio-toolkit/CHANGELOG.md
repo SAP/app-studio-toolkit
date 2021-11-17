@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.2](https://github.com/SAP/app-studio-toolkit/compare/v1.3.1...v1.3.2) (2021-11-17)
+
+### Bug Fixes
+
+- require.resolve issues in Theia ([f5775d8](https://github.com/SAP/app-studio-toolkit/commit/f5775d89a2e5f97d1625d09a50c443de37eebc07))
+
 ## [1.3.1](https://github.com/SAP/app-studio-toolkit/compare/v1.3.0...v1.3.1) (2021-11-16)
 
 ### Bug Fixes
