@@ -1,46 +1,18 @@
-import { spawnCommand } from "./npmUtil";
-import { resolve, join } from "path";
-import { access, readFile } from "fs/promises";
-import { constants } from "fs";
-import { DependencyIssue, IssueType } from "./types";
+import { spawnCommand } from "./utils/npmUtil";
+import { resolve } from "path";
+import { isValidPackageJson } from "./utils/packageJsonUtil";
+import {
+  DependencyIssue,
+  IssueType,
+  VscodeFsUri,
+  VscodeWsFolder,
+} from "./types";
 
 const LS_DEPS = ["ls", "--depth=0"]; // dependencies and extraneous modules
 const LS_DEV_DEPS = [...LS_DEPS, "--dev"]; // devDependencies
 
-async function isValidJsonFile(packageJsonPath: string): Promise<boolean> {
-  try {
-    const packageJsonContent = await readFile(packageJsonPath, "utf-8");
-    JSON.parse(packageJsonContent);
-    return true;
-  } catch (error: any) {
-    console.debug(`${packageJsonPath} file content is invalid. ${error.stack}`);
-    return false;
-  }
-}
-
-async function isPathExist(packageJsonPath: string): Promise<boolean> {
-  try {
-    await access(packageJsonPath, constants.R_OK | constants.W_OK);
-    return true;
-  } catch (error: any) {
-    console.debug(`${packageJsonPath} file is not accessible. ${error.stack}`);
-    return false;
-  }
-}
-
 async function getDepsStatus(path: string, devDeps: boolean): Promise<any> {
-  const resolvedPath = resolve(path);
-  const packageJsonPath = join(resolve(path), "package.json");
-
-  // package.json must exist and be valid json
-  if (
-    !(await isPathExist(packageJsonPath)) ||
-    !(await isValidJsonFile(packageJsonPath))
-  ) {
-    return Promise.resolve({});
-  }
-
-  return spawnCommand(devDeps ? [...LS_DEV_DEPS] : [...LS_DEPS], resolvedPath);
+  return spawnCommand(devDeps ? [...LS_DEV_DEPS] : [...LS_DEPS], resolve(path));
 }
 
 function getProblemType(dependency: any): IssueType | undefined {
@@ -76,15 +48,18 @@ async function getIssues(
 }
 
 export async function getDependencyIssues(
-  path: string
+  wsFolders: Readonly<VscodeWsFolder[]> | undefined,
+  uri: VscodeFsUri
 ): Promise<DependencyIssue[]> {
-  const results = await Promise.all([getIssues(path), getIssues(path, true)]);
+  if (!(await isValidPackageJson(wsFolders, uri))) return [];
+
+  const results = await Promise.all([
+    getIssues(uri.fsPath),
+    getIssues(uri.fsPath, true),
+  ]);
   return [...results[0], ...results[1]];
 }
 
-// TODO: check in BAS on big project CAP or UI5 or Fiori
+export { DependencyIssue };
 
-// TODO: meeting with Ido about performance problems
-
-// create vscode extension in app-studio-toolkit and show errors only for first level package.json projects
 // probably use git repos that we talked about for json line search (see in Teams)
