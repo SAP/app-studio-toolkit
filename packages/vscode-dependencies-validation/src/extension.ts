@@ -1,7 +1,6 @@
-import {
-  getDependencyIssues,
-  DependencyIssue,
-} from "@sap-devx/npm-dependencies-validation";
+import { getDependencyIssues } from "@sap-devx/npm-dependencies-validation";
+
+import { DependencyIssue } from "@sap-devx/npm-dependencies-validation/dist/src/types";
 
 import { Uri, ExtensionContext, workspace, window } from "vscode";
 
@@ -32,6 +31,7 @@ function addFileWatcher(): void {
   });
 
   fileWatcher.onDidDelete((uri: Uri) => {
+    //TODO: check if we need it ??
     void displayProblematicDependencies(uri);
   });
 }
@@ -42,13 +42,10 @@ async function displayProblematicDependencies(
   const start = Date.now();
 
   const problemDeps: DependencyIssue[] = await getDependencyIssues(
-    workspace.workspaceFolders,
     packageJsonUri
   );
 
-  const finish = Date.now();
-
   void window.showInformationMessage(
-    `found ${problemDeps.length} problems in ${finish - start} millis`
+    `found ${problemDeps.length} problems in ${Date.now() - start} milliseconds`
   );
 }

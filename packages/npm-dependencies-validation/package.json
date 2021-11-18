@@ -9,12 +9,15 @@
     "type": "git",
     "url": "https://github.com/SAP/app-studio-toolkit"
   },
-  "main": "./dist/src/index",
+  "main": "./dist/src/api",
   "types": "./dist/src/index.d.ts",
   "scripts": {
     "test": "mocha",
     "compile:watch": "tsc -p ./ -watch",
     "compile": "tsc -p ./",
     "coverage": "nyc mocha"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.62.0"
   }
 }

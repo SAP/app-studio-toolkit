@@ -7,6 +7,12 @@ export type DependencyIssue = {
   devDependency?: boolean;
 };
 
+export type NpmLsDependency = {
+  // TODO: try to extend to DependencyType ??
+  [key in IssueType]?: boolean;
+};
+
+// Pick ???
 export type VscodeWsFolder = {
   uri: VscodeFsUri;
 };

@@ -5,9 +5,9 @@ import { SinonMock, createSandbox } from "sinon";
 
 describe("index unit test", () => {
   it("2 dependencies and 1 devDependency declared but are not installed", async () => {
-    const result = await getDependencyIssues(
-      "./test/projects/no_deps_installed"
-    );
+    const result = await getDependencyIssues({
+      fsPath: "./test/projects/no_deps_installed/package.json",
+    });
     expect(result).to.have.lengthOf(3);
     // missing json-fixer dependency
     const jsonFixer = result.find((dep) => dep.name === "json-fixer");
@@ -30,9 +30,9 @@ describe("index unit test", () => {
   });
 
   it("1 dependency and 1 devDependency declared but are not installed, 1 dependency is installed", async () => {
-    const result = await getDependencyIssues(
-      "./test/projects/some_deps_installed"
-    );
+    const result = await getDependencyIssues({
+      fsPath: "./test/projects/some_deps_installed/package.json",
+    });
     expect(result).to.have.lengthOf(2);
     // missing lodash dependency
     const lodash = result.find((dep) => dep.name === "lodash");
@@ -49,9 +49,9 @@ describe("index unit test", () => {
   });
 
   it("1 dependency and 1 devDependency declared but not installed, 1 dependency is installed but redundant", async () => {
-    const result = await getDependencyIssues(
-      "./test/projects/some_deps_redundant"
-    );
+    const result = await getDependencyIssues({
+      fsPath: "./test/projects/some_deps_redundant/package.json",
+    });
     expect(result).to.have.lengthOf(3);
     // missing lodash dependency
     const lodash = result.find((dep) => dep.name === "lodash");
@@ -76,22 +76,17 @@ describe("index unit test", () => {
   it("invalid package.json", async () => {
     const fsMock: SinonMock = createSandbox().mock(fsPromises);
     fsMock.expects("readFile").rejects(new Error("invalid json"));
-    const result = await getDependencyIssues(
-      "./test/projects/invalid_package_json"
-    );
+    const result = await getDependencyIssues({
+      fsPath: "./test/projects/invalid_package_json/package.json",
+    });
     expect(result).to.have.lengthOf(0);
     fsMock.restore();
   });
 
-  it("no package.json", async () => {
-    const result = await getDependencyIssues("./test/projects/no_package_json");
-    expect(result).to.have.lengthOf(0);
-  });
-
   it("1 dependency is installed, but in package.json it's version is invalid", async () => {
-    const result = await getDependencyIssues(
-      "./test/projects/invalid_dependency"
-    );
+    const result = await getDependencyIssues({
+      fsPath: "./test/projects/invalid_dependency/package.json",
+    });
     expect(result).to.have.lengthOf(1);
     // invalid json-fixer dependency
     const jsonFixer = result.find((dep) => dep.name === "json-fixer");

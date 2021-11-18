@@ -1,64 +1,32 @@
 import { expect } from "chai";
 import { VscodeFsUri, VscodeWsFolder } from "../../../src/types";
-import { isValidPackageJson } from "../../../src/utils/packageJsonUtil";
+import { isManagedByNpm6 } from "../../../src/utils/packageJsonUtil";
 
-describe.only("packageJsonUtil unit test", () => {
-  it("invalid parent with yarn.lock", async () => {
-    const wsFolders: VscodeWsFolder[] = [
-      {
-        uri: {
-          fsPath: "test/utils/packageJsonUtil/projects/yarn-lock/wsFolder2",
-        },
-      },
-      {
-        uri: {
-          fsPath: "test/utils/packageJsonUtil/projects/yarn-lock/wsFolder1",
-        },
-      },
-    ];
+describe("packageJsonUtil unit test", () => {
+  it("not manged by npm, has pnpm-workspace.yaml", async () => {
     const uri: VscodeFsUri = {
       fsPath:
-        "test/utils/packageJsonUtil/projects/yarn-lock/wsFolder1/child/package.json",
+        "test/utils/packageJsonUtil/projects/pnpm-workspace/wsFolder1/child/package.json",
     };
-    const res = await isValidPackageJson(wsFolders, uri);
+    const res = await isManagedByNpm6(uri);
     expect(res).to.be.false;
   });
 
-  it("invalid parent with .yarnrc.yml", async () => {
-    const wsFolders: VscodeWsFolder[] = [
-      {
-        uri: {
-          fsPath: "test/utils/packageJsonUtil/projects/yarnrc-yml/wsFolder2",
-        },
-      },
-      {
-        uri: {
-          fsPath: "test/utils/packageJsonUtil/projects/yarnrc-yml/wsFolder1",
-        },
-      },
-    ];
+  it("not manged by npm, has .yarnrc.yml", async () => {
     const uri: VscodeFsUri = {
       fsPath:
         "test/utils/packageJsonUtil/projects/yarnrc-yml/wsFolder1/child/package.json",
     };
-    const res = await isValidPackageJson(wsFolders, uri);
+    const res = await isManagedByNpm6(uri);
     expect(res).to.be.false;
   });
 
-  it("invalid parent with .yarn", async () => {
-    const wsFolders: VscodeWsFolder[] = [
-      {
-        uri: { fsPath: "test/utils/packageJsonUtil/projects/yarn/wsFolder2" },
-      },
-      {
-        uri: { fsPath: "test/utils/packageJsonUtil/projects/yarn/wsFolder1" },
-      },
-    ];
+  it("not manged by npm, has .yarn", async () => {
     const uri: VscodeFsUri = {
       fsPath:
         "test/utils/packageJsonUtil/projects/yarn/wsFolder1/child/package.json",
     };
-    const res = await isValidPackageJson(wsFolders, uri);
+    const res = await isManagedByNpm6(uri);
     expect(res).to.be.false;
   });
 });

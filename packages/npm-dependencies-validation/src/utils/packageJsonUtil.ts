@@ -3,29 +3,28 @@ import { constants } from "fs";
 import { join, dirname, sep, relative } from "path";
 import { VscodeFsUri, VscodeWsFolder } from "../types";
 
-const invalidProjectFiles = [
+const yarnManagerFiles = [
   "yarn.lock",
   ".yarnrc",
   ".yarnrc.yml",
-  ".yarn/",
+  ".yarn",
   "./node_modules/.yarn-integrity",
+];
+const pnpmManagerFiles = [
   "pnpm-workspace.yaml",
   "pnpm-lock.yaml",
   ".pnpmfile.cjs",
-  "./node_modules/.pnpm/",
+  "./node_modules/.pnpm",
 ];
+const npm7Properties = ["workspaces"];
 
-const invalidPackageJsonProperties = ["workspaces", "engines.pnpm", "pnpm"];
-
-async function readJsonFile(
-  packageJsonPath: string
-): Promise<{ name: string } | undefined> {
+async function readJsonFile(packageJsonUri: VscodeFsUri): Promise<any> {
   try {
-    const packageJsonContent = await readFile(packageJsonPath, "utf-8");
+    const packageJsonContent = await readFile(packageJsonUri.fsPath, "utf-8");
     const content: { name: string } = JSON.parse(packageJsonContent);
     return content;
   } catch (error: any) {
-    console.debug(`${packageJsonPath} file content is invalid. ${error.stack}`);
+    return {};
   }
 }
 
@@ -33,61 +32,85 @@ async function isPathExist(packageJsonPath: string): Promise<boolean> {
   try {
     await access(packageJsonPath, constants.R_OK | constants.W_OK);
     return true;
-  } catch (error: any) {
-    console.debug(`${packageJsonPath} file is not accessible. ${error.stack}`);
+  } catch (error) {
     return false;
   }
 }
 
-async function findParentPackageJsonPath(
-  wsFolders: Readonly<VscodeWsFolder[]> | undefined,
-  uri: VscodeFsUri
-): Promise<string | undefined> {
-  const { fsPath: packgeJsonPath } = uri;
+// async function findParentPackageJsonPath(
+//   wsFolders: Readonly<VscodeWsFolder[]> | undefined,
+//   uri: VscodeFsUri
+// ): Promise<string | undefined> {
+//   const { fsPath: packgeJsonPath } = uri;
 
-  const parentFolder = wsFolders?.find((wsFolder: VscodeWsFolder) => {
-    return packgeJsonPath.startsWith(wsFolder.uri.fsPath);
-  });
+//   const parentFolder = wsFolders?.find((wsFolder: VscodeWsFolder) => {
+//     return packgeJsonPath.startsWith(wsFolder.uri.fsPath);
+//   });
 
-  if (!parentFolder) return;
+//   if (!parentFolder) return;
 
-  const parentWsFolderPath = parentFolder.uri.fsPath;
-  const location = dirname(packgeJsonPath);
-  const relativePath = relative(parentFolder.uri.fsPath, location);
+//   const parentWsFolderPath = parentFolder.uri.fsPath;
+//   const location = dirname(packgeJsonPath);
+//   const relativePath = relative(parentFolder.uri.fsPath, location);
 
-  const relativeParts = ["", ...relativePath.split(sep)];
-  // what if it is invalid ??
-  let candidate = parentWsFolderPath;
+//   const relativeParts = ["", ...relativePath.split(sep)];
+//   let candidate = parentWsFolderPath;
 
-  for (const part of relativeParts) {
-    candidate = join(candidate, part);
-    const candidatePackageJson = join(candidate, "package.json");
-    if (
-      (await isPathExist(candidatePackageJson)) &&
-      (await readJsonFile(candidatePackageJson))
-    ) {
-      break;
+//   for (const part of relativeParts) {
+//     candidate = join(candidate, part);
+//     const candidatePackageJson = join(candidate, "package.json");
+//     if (
+//       (await isPathExist(candidatePackageJson)) &&
+//       (await readJsonFile(candidatePackageJson))
+//     ) {
+//       break;
+//     }
+//   }
+
+//   return candidate ?? location;
+// }
+
+async function hasNonNPMManagerFiles(
+  fileNames: string[],
+  packageJsonFileUri: VscodeFsUri
+): Promise<boolean> {
+  for (const fileName of fileNames) {
+    const packageJsonDirPath = join(dirname(packageJsonFileUri.fsPath));
+    if (await isPathExist(join(packageJsonDirPath, fileName))) {
+      return true;
     }
   }
 
-  return candidate ?? location;
+  return false;
 }
 
-export async function isValidPackageJson(
-  wsFolders: Readonly<VscodeWsFolder[]> | undefined,
-  uri: VscodeFsUri
+function isManagedByYarn(packageJsonFileUri: VscodeFsUri): Promise<boolean> {
+  return hasNonNPMManagerFiles(yarnManagerFiles, packageJsonFileUri);
+}
+
+function isManagedByPnpm(packageJsonFileUri: VscodeFsUri): Promise<boolean> {
+  return hasNonNPMManagerFiles(pnpmManagerFiles, packageJsonFileUri);
+}
+
+async function isMonoRepoRoot(
+  packageJsonFileUri: VscodeFsUri
 ): Promise<boolean> {
-  const parentPackageJsonPath = await findParentPackageJsonPath(wsFolders, uri);
+  const content = await readJsonFile(packageJsonFileUri);
+  return npm7Properties.some((property) => {
+    return property in content;
+  });
+}
 
-  if (!parentPackageJsonPath) return false;
+export async function isManagedByNpm6(
+  packageJsonUri: VscodeFsUri
+): Promise<boolean> {
+  // if (isSubPackageInMonoRepo()) return false; --- not for now
 
-  let validPath = true;
-  for (const file of invalidProjectFiles) {
-    validPath = await isPathExist(join(parentPackageJsonPath, file));
-    if (!validPath) {
-      break;
-    }
-  }
+  if (await isManagedByYarn(packageJsonUri)) return false;
 
-  return validPath;
+  if (await isManagedByPnpm(packageJsonUri)) return false;
+
+  if (await isMonoRepoRoot(packageJsonUri)) return false;
+
+  return true;
 }

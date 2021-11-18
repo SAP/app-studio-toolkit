@@ -1,4 +1,4 @@
-import { spawnCommand, getNPM } from "../../../src/utils/npmUtil";
+import { spawnCommand, getNPM } from "../../src/utils/npmUtil";
 import { expect } from "chai";
 
 describe("npmUtil unit test", () => {

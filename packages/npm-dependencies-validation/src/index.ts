@@ -1,21 +1,28 @@
 import { spawnCommand } from "./utils/npmUtil";
-import { resolve } from "path";
-import { isValidPackageJson } from "./utils/packageJsonUtil";
+import { resolve, dirname } from "path";
+import { isManagedByNpm6 } from "./utils/packageJsonUtil";
 import {
   DependencyIssue,
   IssueType,
+  NpmLsDependency,
   VscodeFsUri,
-  VscodeWsFolder,
 } from "./types";
 
 const LS_DEPS = ["ls", "--depth=0"]; // dependencies and extraneous modules
 const LS_DEV_DEPS = [...LS_DEPS, "--dev"]; // devDependencies
 
-async function getDepsStatus(path: string, devDeps: boolean): Promise<any> {
-  return spawnCommand(devDeps ? [...LS_DEV_DEPS] : [...LS_DEPS], resolve(path));
+async function getDepsStatus(
+  packageJsonPath: string,
+  devDeps: boolean
+): Promise<any> {
+  // try to use DependencyType ???
+  return spawnCommand(
+    devDeps ? [...LS_DEV_DEPS] : [...LS_DEPS],
+    resolve(dirname(packageJsonPath))
+  );
 }
 
-function getProblemType(dependency: any): IssueType | undefined {
+function getProblemType(dependency: NpmLsDependency): IssueType | undefined {
   if (dependency.missing) return "missing";
   if (dependency.invalid) return "invalid";
   if (dependency.extraneous) return "extraneous";
@@ -38,7 +45,7 @@ async function getIssues(
         version,
         type,
       };
-      if (type != "extraneous") {
+      if (type !== "extraneous") {
         problematicDep.devDependency = devDeps;
       }
       problematicDeps.push(problematicDep);
@@ -48,18 +55,14 @@ async function getIssues(
 }
 
 export async function getDependencyIssues(
-  wsFolders: Readonly<VscodeWsFolder[]> | undefined,
   uri: VscodeFsUri
 ): Promise<DependencyIssue[]> {
-  if (!(await isValidPackageJson(wsFolders, uri))) return [];
+  const managedByNpm6 = await isManagedByNpm6(uri);
+  if (!managedByNpm6) return [];
 
-  const results = await Promise.all([
+  const [depsAndRedundantIssues, devDepsIssues] = await Promise.all([
     getIssues(uri.fsPath),
-    getIssues(uri.fsPath, true),
+    getIssues(uri.fsPath, true), // config object ???
   ]);
-  return [...results[0], ...results[1]];
+  return [...depsAndRedundantIssues, ...devDepsIssues];
 }
-
-export { DependencyIssue };
-
-// probably use git repos that we talked about for json line search (see in Teams)

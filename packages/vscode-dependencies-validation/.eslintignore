@@ -1,7 +1,6 @@
 node_modules
-dist
+dist/**/*.js
 out
 coverage
 test/resources
-*.d.ts,
-sample-action-client
+*.d.ts
