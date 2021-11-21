@@ -1,8 +1,8 @@
-import { getDependencyIssues } from "@sap-devx/npm-dependencies-validation";
-
-import { DependencyIssue } from "@sap-devx/npm-dependencies-validation/dist/src/types";
-
 import { Uri, ExtensionContext, workspace, window } from "vscode";
+import {
+  NPMDependencyIssue,
+  findDependencyIssues,
+} from "@sap-devx/npm-dependencies-validation";
 
 export function activate(context: ExtensionContext) {
   void findIssues();
@@ -41,7 +41,7 @@ async function displayProblematicDependencies(
 ): Promise<void> {
   const start = Date.now();
 
-  const problemDeps: DependencyIssue[] = await getDependencyIssues(
+  const problemDeps: NPMDependencyIssue[] = await findDependencyIssues(
     packageJsonUri
   );
 

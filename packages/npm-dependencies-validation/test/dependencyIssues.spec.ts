@@ -1,7 +1,7 @@
-import { expect, assert } from "chai";
 import * as fsPromises from "fs/promises";
+import { expect, assert } from "chai";
 import { SinonMock, createSandbox } from "sinon";
-import { findDependencyIssues } from "../src/dependencyIssues";
+import { findDependencyIssues } from "../src/api";
 
 describe("dependencyIssues unit test", () => {
   it("2 dependencies and 1 devDependency declared but are not installed", async () => {
@@ -94,5 +94,12 @@ describe("dependencyIssues unit test", () => {
     expect(jsonFixer?.devDependency).to.be.false;
     expect(jsonFixer?.type).to.be.equal("invalid");
     expect(jsonFixer?.version).to.be.equal("1.6.12");
+  });
+
+  it("no dependency issue are found, package is not supported", async () => {
+    const result = await findDependencyIssues({
+      fsPath: "./test/projects/not_supported/package.json",
+    });
+    expect(result).to.have.lengthOf(0);
   });
 });

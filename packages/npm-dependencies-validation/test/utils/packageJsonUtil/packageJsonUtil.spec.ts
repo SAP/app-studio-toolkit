@@ -29,4 +29,12 @@ describe("packageJsonUtil unit test", () => {
     const res = await isCurrentlySupported(uri);
     expect(res).to.be.false;
   });
+
+  it("not manged by npm, mono repo", async () => {
+    const uri: VscodeUri = {
+      fsPath: "test/utils/packageJsonUtil/projects/monoRepo/package.json",
+    };
+    const res = await isCurrentlySupported(uri);
+    expect(res).to.be.false;
+  });
 });
