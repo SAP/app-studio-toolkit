@@ -4,22 +4,19 @@ export function getNPM(): string {
   return /^win/.test(process.platform) ? "npm.cmd" : "npm";
 }
 
-export function spawnCommand(
+export function invokeNPMCommand<T>(
   commandArgs: string[],
-  workingDir: string
-): Promise<any> {
+  cwd: string
+): Promise<T> {
   return new Promise((resolve, reject) => {
-    const command = spawn(getNPM(), [...commandArgs, "--json"], {
-      cwd: workingDir,
-    });
+    const command = spawn(getNPM(), [...commandArgs, "--json"], { cwd });
 
     command.stdout.on("data", (data) => {
-      const jsonObjResult = JSON.parse(data);
+      const jsonObjResult: T = JSON.parse(data);
       resolve(jsonObjResult);
     });
 
     command.on("error", (error) => {
-      console.error(error);
       reject(error);
     });
   });

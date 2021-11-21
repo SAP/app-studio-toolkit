@@ -1,6 +1,6 @@
 {
   "name": "@sap-devx/npm-dependencies-validation",
-  "version": "1.3.0",
+  "version": "1.3.2",
   "private": true,
   "description": "",
   "author": "SAP SE",
@@ -11,6 +11,13 @@
   },
   "main": "./dist/src/api",
   "types": "./dist/src/index.d.ts",
+  "files": [
+    ".reuse",
+    "LICENSES",
+    "dist/src/dependencyIssues.d.ts",
+    "dist/src/api.d.ts",
+    "dist/src/api.js"
+  ],
   "scripts": {
     "test": "mocha",
     "compile:watch": "tsc -p ./ -watch",

@@ -1,11 +1,11 @@
-import { getDependencyIssues } from "../src/index";
 import { expect, assert } from "chai";
 import * as fsPromises from "fs/promises";
 import { SinonMock, createSandbox } from "sinon";
+import { findDependencyIssues } from "../src/dependencyIssues";
 
-describe("index unit test", () => {
+describe("dependencyIssues unit test", () => {
   it("2 dependencies and 1 devDependency declared but are not installed", async () => {
-    const result = await getDependencyIssues({
+    const result = await findDependencyIssues({
       fsPath: "./test/projects/no_deps_installed/package.json",
     });
     expect(result).to.have.lengthOf(3);
@@ -30,7 +30,7 @@ describe("index unit test", () => {
   });
 
   it("1 dependency and 1 devDependency declared but are not installed, 1 dependency is installed", async () => {
-    const result = await getDependencyIssues({
+    const result = await findDependencyIssues({
       fsPath: "./test/projects/some_deps_installed/package.json",
     });
     expect(result).to.have.lengthOf(2);
@@ -49,7 +49,7 @@ describe("index unit test", () => {
   });
 
   it("1 dependency and 1 devDependency declared but not installed, 1 dependency is installed but redundant", async () => {
-    const result = await getDependencyIssues({
+    const result = await findDependencyIssues({
       fsPath: "./test/projects/some_deps_redundant/package.json",
     });
     expect(result).to.have.lengthOf(3);
@@ -68,7 +68,7 @@ describe("index unit test", () => {
     // redundant json-fixer devDependency
     const jsonFixer = result.find((dep) => dep.name === "json-fixer");
     assert.isDefined(jsonFixer);
-    expect(jsonFixer?.devDependency).to.be.undefined;
+    expect(jsonFixer?.devDependency).to.be.false;
     expect(jsonFixer?.type).to.be.equal("extraneous");
     expect(jsonFixer?.version).to.be.equal("1.6.12");
   });
@@ -76,7 +76,7 @@ describe("index unit test", () => {
   it("invalid package.json", async () => {
     const fsMock: SinonMock = createSandbox().mock(fsPromises);
     fsMock.expects("readFile").rejects(new Error("invalid json"));
-    const result = await getDependencyIssues({
+    const result = await findDependencyIssues({
       fsPath: "./test/projects/invalid_package_json/package.json",
     });
     expect(result).to.have.lengthOf(0);
@@ -84,7 +84,7 @@ describe("index unit test", () => {
   });
 
   it("1 dependency is installed, but in package.json it's version is invalid", async () => {
-    const result = await getDependencyIssues({
+    const result = await findDependencyIssues({
       fsPath: "./test/projects/invalid_dependency/package.json",
     });
     expect(result).to.have.lengthOf(1);

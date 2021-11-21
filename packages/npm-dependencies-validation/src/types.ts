@@ -1,22 +1,36 @@
-export type IssueType = "missing" | "invalid" | "extraneous";
+import { Uri, WorkspaceFolder } from "vscode";
 
-export type DependencyIssue = {
+export type NPMIssueType = "missing" | "invalid" | "extraneous";
+
+export type Version = "required" | "version";
+
+export type NPMDependencyIssue = {
   name: string;
   version: string;
-  type: IssueType;
+  type: NPMIssueType;
   devDependency?: boolean;
 };
 
-export type NpmLsDependency = {
-  // TODO: try to extend to DependencyType ??
-  [key in IssueType]?: boolean;
+export type VscodeWsFolder = Pick<WorkspaceFolder, "uri">;
+
+export type VscodeUri = Pick<Uri, "fsPath">;
+
+export type NpmLsRDependencies = {
+  name: string;
+  version: string;
+  dependencies: Dependencies;
 };
 
-// Pick ???
-export type VscodeWsFolder = {
-  uri: VscodeFsUri;
+export type Dependencies = {
+  [key: string]: Dependency;
 };
 
-export type VscodeFsUri = {
-  fsPath: string;
+export type Dependency = IssueTypeProperty & VersionProperty;
+
+export type VersionProperty = {
+  [key in Version]?: string;
+};
+
+export type IssueTypeProperty = {
+  [key in NPMIssueType]?: boolean;
 };

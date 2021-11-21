@@ -1,15 +1,15 @@
-import { spawnCommand, getNPM } from "../../src/utils/npmUtil";
+import { invokeNPMCommand, getNPM } from "../../src/utils/npmUtil";
 import { expect } from "chai";
 
 describe("npmUtil unit test", () => {
   it("spawnCommand failed", () => {
     return expect(
-      spawnCommand(["ls"], "./non_existing_path")
+      invokeNPMCommand(["ls"], "./non_existing_path")
     ).to.be.rejectedWith(`spawn ${getNPM()} ENOENT`);
   });
 
   it("spawnCommand succeeded with ls", () => {
-    return expect(spawnCommand(["ls", "--depth=0"], "./")).to.be.fulfilled;
+    return expect(invokeNPMCommand(["ls", "--depth=0"], "./")).to.be.fulfilled;
   });
 
   describe("npm command", () => {

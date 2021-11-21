@@ -43,7 +43,7 @@
       ]
     },
     {
-      "name": "Run Validation",
+      "name": "Run vscode-dependencies-validation",
       "type": "extensionHost",
       "request": "launch",
       "runtimeExecutable": "${execPath}",
