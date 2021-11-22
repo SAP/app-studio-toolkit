@@ -73,14 +73,24 @@ describe("dependencyIssues unit test", () => {
     expect(jsonFixer?.version).to.be.equal("1.6.12");
   });
 
-  it("invalid package.json", async () => {
-    const fsMock: SinonMock = createSandbox().mock(fsPromises);
-    fsMock.expects("readFile").rejects(new Error("invalid json"));
-    const result = await findDependencyIssues({
-      fsPath: "./test/projects/invalid_package_json/package.json",
+  describe("findDependencyIssues fails", () => {
+    let fsMock: SinonMock;
+
+    beforeEach(() => {
+      fsMock = createSandbox().mock(fsPromises);
     });
-    expect(result).to.have.lengthOf(0);
-    fsMock.restore();
+
+    afterEach(() => {
+      fsMock.restore();
+    });
+
+    it("invalid package.json", async () => {
+      fsMock.expects("readFile").rejects(new Error("invalid json"));
+      const result = await findDependencyIssues({
+        fsPath: "./test/projects/invalid_package_json/package.json",
+      });
+      expect(result).to.have.lengthOf(0);
+    });
   });
 
   it("1 dependency is installed, but in package.json it's version is invalid", async () => {
