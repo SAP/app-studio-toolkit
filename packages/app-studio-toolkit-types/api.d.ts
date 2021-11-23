@@ -55,6 +55,14 @@ export interface BasToolkit {
   isLCAPEnabled: () => Promise<boolean | undefined>;
 
   /**
+   * Is opened for action or not
+   *
+   * @returns true if opened for release action, deploy action or remove action in the url,
+   *          false otherwise.
+   */
+  isOpenedForAction: () => Promise<boolean | undefined>;
+
+  /**
    * @param action - The action to invoke/call/execute.
    * @param [options.schedule] - Schedule performing the action **after** a restart.
    *
