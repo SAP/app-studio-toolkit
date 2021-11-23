@@ -1,0 +1,1 @@
+# vscode-dependencies-validation README

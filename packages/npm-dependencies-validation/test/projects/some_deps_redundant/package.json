@@ -1,0 +1,10 @@
+{
+  "name": "some_deps_redundant",
+  "version": "1.0.0",
+  "dependencies": {
+    "lodash": "4.17.21"
+  },
+  "devDependencies": {
+    "typescript": "4.4.4"
+  }
+}

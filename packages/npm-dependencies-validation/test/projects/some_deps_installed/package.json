@@ -1,0 +1,11 @@
+{
+  "name": "no_deps_installed",
+  "version": "1.0.0",
+  "dependencies": {
+    "json-fixer": "1.6.12",
+    "lodash": "~4.17.21"
+  },
+  "devDependencies": {
+    "typescript": "^4.4.4"
+  }
+}
