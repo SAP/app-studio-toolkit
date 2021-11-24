@@ -1,8 +1,5 @@
-const chai = require("chai");
-const chaiAsPromised = require("chai-as-promised");
-chai.use(chaiAsPromised);
+const baseConfig = require("../../.mocharc.js");
 
-module.exports = {
-  require: ["source-map-support/register"],
-  spec: "./dist/test/**/*spec.js",
-};
+const subPkgConfig = {};
+
+module.exports = { ...baseConfig, ...subPkgConfig };

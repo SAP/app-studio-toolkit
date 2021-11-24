@@ -19,11 +19,11 @@
     "dist/src/api.js"
   ],
   "scripts": {
-    "compile": "tsc -p ./",
-    "coverage": "nyc mocha",
+    "ci": "npm-run-all clean compile coverage",
     "clean": "rimraf ./dist",
+    "compile": "tsc -p ./",
     "test": "mocha",
-    "ci": "npm-run-all clean compile coverage"
+    "coverage": "nyc mocha"
   },
   "devDependencies": {
     "@types/vscode": "^1.50.0"
