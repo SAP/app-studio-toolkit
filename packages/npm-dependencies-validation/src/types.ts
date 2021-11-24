@@ -6,7 +6,7 @@ export type Version = "required" | "version";
 
 export type NPMDependencyIssue = {
   name: string;
-  version: string;
+  version?: string;
   type: NPMIssueType;
   devDependency?: boolean;
 };

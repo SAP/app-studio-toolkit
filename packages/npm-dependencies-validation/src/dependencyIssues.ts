@@ -46,19 +46,20 @@ async function createDependencyIssues(
   config: DepIssuesConfig
 ): Promise<NPMDependencyIssue[]> {
   const { dependencies } = await listNodeModulesDeps(config);
+  const { devDependency } = config;
 
   const depWithIssues: NPMDependencyIssue[] = [];
   for (const depName in dependencies) {
     const dependency: Dependency = dependencies[depName];
 
     const type = getIssueType(dependency);
-    const version = getVersion(dependency);
-    if (type && version) {
+    const version = getVersion(dependency); // TODO: when version is invalid this value could be undefined
+    if (type) {
       depWithIssues.push({
         name: depName,
         version,
         type,
-        devDependency: config.devDependency,
+        devDependency,
       });
     }
   }
