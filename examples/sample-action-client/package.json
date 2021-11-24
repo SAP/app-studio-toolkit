@@ -43,7 +43,7 @@
         "command": "lcap.enabled"
       },
       {
-        "title": "BAS Toolkit: Is Open For Action (isOpenedForAction)",
+        "title": "BAS Toolkit: Is Opened For Action (isOpenedForAction)",
         "command": "is.opened.for.action"
       },
       {
@@ -83,6 +83,7 @@
     "onCommand:get.extension.api",
     "onCommand:get.parameter",
     "onCommand:lcap.enabled",
+    "onCommand:is.opened.for.action",
     "onCommand:fileaction.scheduled",
     "onCommand:executeaction.display.error",
     "onCommand:contrib.action.open.settings",
