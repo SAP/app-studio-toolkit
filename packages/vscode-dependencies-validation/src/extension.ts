@@ -1,18 +1,52 @@
-import { Uri, ExtensionContext, workspace, window } from "vscode";
+import {
+  Uri,
+  ExtensionContext,
+  workspace,
+  window,
+  languages,
+  DiagnosticCollection,
+  DocumentSelector,
+} from "vscode";
 import {
   NPMDependencyIssue,
   findDependencyIssues,
 } from "@sap-devx/npm-dependencies-validation";
+import { NPMIssuesActionProvider } from "./npmIssuesActionProvider";
+import { subscribeToDocumentChanges } from "./diagnostics";
+
+let dependencyIssuesDiagnosticCollection: DiagnosticCollection;
+
+const PACKAGE_JSON = "package.json";
+const PACKAGE_JSON_PATTERN = `**​/${PACKAGE_JSON}`;
 
 export function activate(context: ExtensionContext) {
   void findIssues();
 
   void addFileWatcher();
-}
 
+  dependencyIssuesDiagnosticCollection = languages.createDiagnosticCollection(
+    "npm-dependency-issues"
+  );
+  context.subscriptions.push(dependencyIssuesDiagnosticCollection);
+  // TODO: pattern does not work ???
+  // const packageJsonFileSelector: DocumentSelector = { language: "json", pattern: PACKAGE_JSON_PATTERN };
+  context.subscriptions.push(
+    languages.registerCodeActionsProvider(
+      PACKAGE_JSON,
+      new NPMIssuesActionProvider(),
+      {
+        providedCodeActionKinds:
+          NPMIssuesActionProvider.providedCodeActionKinds,
+      }
+    )
+  );
+
+  subscribeToDocumentChanges(context, dependencyIssuesDiagnosticCollection);
+}
+// TODO: need to add file watcher for unsupported package manager files and properties
 async function findIssues(): Promise<void> {
   const packageJsonUris: Uri[] = await workspace.findFiles(
-    "package.json",
+    PACKAGE_JSON,
     "**​/node_modules/**"
   );
   packageJsonUris.forEach((packageJsonUri) => {
@@ -20,8 +54,10 @@ async function findIssues(): Promise<void> {
   });
 }
 
+// TODO: somebody added yarl.lock in filesystem (not via vscode) ??
+// TODO: what should happen after git clone ??
 function addFileWatcher(): void {
-  const fileWatcher = workspace.createFileSystemWatcher("**/package.json");
+  const fileWatcher = workspace.createFileSystemWatcher(PACKAGE_JSON_PATTERN);
   fileWatcher.onDidChange((uri: Uri) => {
     void displayProblematicDependencies(uri);
   });
