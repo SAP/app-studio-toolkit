@@ -5,11 +5,10 @@ on:
   # See: https://github.community/t/duplicate-checks-on-push-and-pull-request-simultaneous-event/18012
   push:
     branches:
-      - main
+      - main*
   pull_request:
     branches:
-      - main
-
+      - main*
 jobs:
   build:
     name: Full Build (node ${{ matrix.node_version }})

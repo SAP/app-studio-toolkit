@@ -27,6 +27,7 @@ async function listNodeModulesDeps(
 
 function getIssueType(dependency: Dependency): NPMIssueType | undefined {
   if (dependency.missing === true) return "missing";
+  /* istanbul ignore if -- test currently skipped waiting for fix */
   if (dependency.invalid === true) return "invalid";
   if (dependency.extraneous === true) return "extraneous";
 

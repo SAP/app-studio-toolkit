@@ -15,7 +15,8 @@ describe("npmUtil unit test", () => {
   describe("npm command", () => {
     const originalPlatform = process.platform;
 
-    after(function () {
+    // reset global state changes after **every** test.
+    afterEach(function () {
       Object.defineProperty(process, "platform", { value: originalPlatform });
     });
 

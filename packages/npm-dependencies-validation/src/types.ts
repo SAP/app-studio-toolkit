@@ -1,3 +1,4 @@
+// TODO: I think we can get rid of dependency to VSCode
 import { Uri, WorkspaceFolder } from "vscode";
 
 export type NPMIssueType = "missing" | "invalid" | "extraneous";
