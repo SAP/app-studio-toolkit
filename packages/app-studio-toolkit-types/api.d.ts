@@ -55,7 +55,7 @@ export interface BasToolkit {
   isLCAPEnabled: () => Promise<boolean | undefined>;
 
   /**
-   * Is opened for action or not
+   * Is the actions in deep-link are opened with no visible project
    *
    * @returns true if opened for release action, deploy action or remove action in the url,
    *          false otherwise.

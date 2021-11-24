@@ -12,7 +12,7 @@ mockVscode(testVscode, "dist/src/logger/logger.js");
 import { isOpenedForAction } from "../../src/apis/isOpenedForAction";
 
 describe("validate isOpenedForAction API", () => {
-  it("should return undefined", async () => {
+  it("should return undefined when sapPlugin does not exist", async () => {
     const parameterValue = await isOpenedForAction();
     expect(parameterValue).to.be.undefined;
   });
@@ -77,7 +77,7 @@ describe("validate isOpenedForAction API", () => {
       requireMock.stop("@sap/plugin");
     });
 
-    it("should return true", async () => {
+    it("should return false", async () => {
       const parameterValue = await isOpenedForAction();
       expect(parameterValue).to.be.false;
     });
