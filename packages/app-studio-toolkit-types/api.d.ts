@@ -55,9 +55,10 @@ export interface BasToolkit {
   isLCAPEnabled: () => Promise<boolean | undefined>;
 
   /**
-   * Is the actions in deep-link are opened with no visible project
+   * A flag indicating the BAS workspace was opened in the context of executing a single automation 
+   *          or life-cycle action (release / deploy / remove) via a "deep-link" url.
    *
-   * @returns true if opened for release action, deploy action or remove action in the url,
+   * @returns true if is the actions in deep-link are opened with no visible project,
    *          false otherwise.
    */
   isOpenedForAction: () => Promise<boolean | undefined>;
