@@ -43,6 +43,10 @@
         "command": "lcap.enabled"
       },
       {
+        "title": "BAS Toolkit: Is Open For Action (isOpenedForAction)",
+        "command": "is.opened.for.action"
+      },
+      {
         "title": "BAS Toolkit: Get Extension API (getExtensionAPI)",
         "command": "get.extension.api"
       },

@@ -144,5 +144,14 @@ export function activate(context: ExtensionContext) {
       );
     })
   );
+
+  context.subscriptions.push(
+    commands.registerCommand("is.opened.for.action", async () => {
+      const isOpenedForActionValue = await basAPI.isOpenedForAction();
+      void window.showInformationMessage(
+        `is opened for action? ${isOpenedForActionValue}`
+      );
+    })
+  );
   return "Hello from BAS Toolkit Sample";
 }
