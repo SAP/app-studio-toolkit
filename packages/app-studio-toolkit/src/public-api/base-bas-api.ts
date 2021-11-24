@@ -10,6 +10,7 @@ import {
 } from "../actions/impl";
 import { getLogger } from "../logger/logger";
 import { isLCAPEnabled } from "../apis/validateLCAP";
+import { isOpenedForAction } from "../apis/isOpenedForAction";
 
 /**
  * The BasToolkit API without the **dynamically** initialized
@@ -44,6 +45,7 @@ export const baseBasToolkitAPI: Omit<BasToolkit, "workspaceAPI"> = {
   getAction: (actionId: string) => ActionsController.getAction(actionId),
   performAction,
   isLCAPEnabled,
+  isOpenedForAction,
 
   actions: {
     performAction,
