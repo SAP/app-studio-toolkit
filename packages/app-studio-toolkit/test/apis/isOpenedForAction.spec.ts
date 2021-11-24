@@ -30,9 +30,8 @@ describe("validate isOpenedForAction API", () => {
       requireMock("@sap/plugin", sapPlugin);
     });
     after(() => {
-        requireMock.stop("@sap/plugin");
-      });
-  
+      requireMock.stop("@sap/plugin");
+    });
 
     it("should return undefined", async () => {
       const parameterValue = await isOpenedForAction();
@@ -44,7 +43,7 @@ describe("validate isOpenedForAction API", () => {
     let requireMock = require("mock-require");
     before(() => {
       requireMock = require("mock-require");
-      const configuration = { 'pkg-action': 'release' };
+      const configuration = { "pkg-action": "release" };
       const sapPlugin = {
         window: {
           configuration: () => configuration,
@@ -53,7 +52,7 @@ describe("validate isOpenedForAction API", () => {
       requireMock("@sap/plugin", sapPlugin);
     });
     after(() => {
-        requireMock.stop("@sap/plugin");
+      requireMock.stop("@sap/plugin");
     });
 
     it("should return true", async () => {
@@ -66,7 +65,7 @@ describe("validate isOpenedForAction API", () => {
     let requireMock = require("mock-require");
     before(() => {
       requireMock = require("mock-require");
-      const configuration = { 'pkg-action': 'notAValidValue' };
+      const configuration = { "pkg-action": "notAValidValue" };
       const sapPlugin = {
         window: {
           configuration: () => configuration,
@@ -75,7 +74,7 @@ describe("validate isOpenedForAction API", () => {
       requireMock("@sap/plugin", sapPlugin);
     });
     after(() => {
-        requireMock.stop("@sap/plugin");
+      requireMock.stop("@sap/plugin");
     });
 
     it("should return true", async () => {
