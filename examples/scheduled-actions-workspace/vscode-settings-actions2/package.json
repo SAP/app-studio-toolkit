@@ -9,9 +9,11 @@
   },
   "main": "index.js",
   "dependencies": {
-    "json-fixer": "1.2.490"
+    "json-fixer": "1.2.490",
+    "chevron": "0.2.0"
   },
   "devDependencies": {
-    "lodash": "2.2.490"
+    "lodash": "2.2.490",
+    "@types/node": "16.11.10"
   }
 }
