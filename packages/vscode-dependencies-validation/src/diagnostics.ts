@@ -34,22 +34,30 @@ async function refreshDiagnostics(
 
   const issueLocations: DependencyIssueLocation[] = getDepIssueLocations(
     doc.getText(),
+    doc.uri.fsPath,
     npmDependencyIssues
   );
 
   issueLocations.forEach((issueLocation) => {
-    const { namePoint, versionPoint, actualVersion, npmDepIssue } =
-      issueLocation;
+    const {
+      namePoint,
+      versionPoint,
+      actualVersion,
+      npmDepIssue,
+      packageJsonPath,
+    } = issueLocation;
     const nameDiagnostic = constructDiagnostic(
       namePoint,
       npmDepIssue,
-      npmDepIssue.name
+      npmDepIssue.name,
+      packageJsonPath
     );
     diagnostics.push(nameDiagnostic);
     const versionDiagnostic = constructDiagnostic(
       versionPoint,
       npmDepIssue,
-      actualVersion
+      actualVersion,
+      packageJsonPath
     );
     diagnostics.push(versionDiagnostic);
   });
@@ -60,7 +68,8 @@ async function refreshDiagnostics(
 function constructDiagnostic(
   point: Point,
   depIssue: NPMDependencyIssue,
-  value: string
+  value: string,
+  packageJsonPath: string
 ): Diagnostic {
   const { line, column } = point;
 
@@ -69,6 +78,7 @@ function constructDiagnostic(
   const diagnostic = new Diagnostic(range, message, DiagnosticSeverity.Error);
   diagnostic.code = NPM_DEPENDENCY_ISSUE;
   set(diagnostic, "depIssue", depIssue);
+  set(diagnostic, "packageJsonPath", packageJsonPath);
 
   return diagnostic;
 }

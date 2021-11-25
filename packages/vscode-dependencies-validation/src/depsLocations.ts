@@ -14,11 +14,13 @@ export type DependencyIssueLocation = {
   versionPoint: Point;
   actualVersion: string;
   npmDepIssue: NPMDependencyIssue;
+  packageJsonPath: string;
 };
 
 // creates dependency issues name and version points
 export function getDepIssueLocations(
   packageJsonContent: string,
+  packageJsonPath: string,
   npmDependencyIssues: NPMDependencyIssue[]
 ): DependencyIssueLocation[] {
   // TODO: pass options (errors/no comments/other?)
@@ -38,7 +40,8 @@ export function getDepIssueLocations(
         tree,
         depsPropName,
         npmDependencyIssues,
-        virtualPkgJsonFile
+        virtualPkgJsonFile,
+        packageJsonPath
       );
     }
   );
@@ -50,7 +53,8 @@ function createDepIssueLocations(
   tree: Node,
   depsPropName: DependenciesPropertyName,
   npmDependencyIssues: NPMDependencyIssue[],
-  virtualPkgJsonFile: vfile.VFile
+  virtualPkgJsonFile: vfile.VFile,
+  packageJsonPath: string
 ): DependencyIssueLocation[] {
   // dependencies or devDependencies node
   const depIssues = filterDependencyIssues(npmDependencyIssues, depsPropName);
@@ -60,7 +64,8 @@ function createDepIssueLocations(
         tree,
         npmDepIssue,
         depsPropName,
-        virtualPkgJsonFile
+        virtualPkgJsonFile,
+        packageJsonPath
       );
     })
   );
@@ -70,7 +75,8 @@ function createIssueLocation(
   tree: Node,
   npmDepIssue: NPMDependencyIssue,
   depsPropName: DependenciesPropertyName,
-  vPackageJsonFile: vfile.VFile
+  vPackageJsonFile: vfile.VFile,
+  packageJsonPath: string
 ): DependencyIssueLocation | undefined {
   const { name } = npmDepIssue;
   const versionNode = findNodeAtLocation(tree, [depsPropName, name]);
@@ -86,6 +92,7 @@ function createIssueLocation(
       versionPoint,
       npmDepIssue,
       actualVersion: versionNode.value,
+      packageJsonPath,
     };
   }
 }

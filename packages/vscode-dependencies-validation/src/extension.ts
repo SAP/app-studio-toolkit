@@ -7,9 +7,11 @@ import {
   DiagnosticCollection,
   commands,
 } from "vscode";
+import { dirname } from "path";
 import {
   NPMDependencyIssue,
   findDependencyIssues,
+  invokeNPMCommand,
 } from "@sap-devx/npm-dependencies-validation";
 import { NPMIssuesActionProvider } from "./npmIssuesActionProvider";
 import { subscribeToDocumentChanges } from "./diagnostics";
@@ -45,11 +47,26 @@ export function activate(context: ExtensionContext) {
   subscribeToDocumentChanges(context, dependencyIssuesDiagnosticCollection);
 
   context.subscriptions.push(
-    commands.registerCommand("deps.install", (depIssue: NPMDependencyIssue) => {
-      void window.showInformationMessage(
-        `Installing... ${JSON.stringify(depIssue, null, 2)}`
-      );
-    })
+    commands.registerCommand(
+      "deps.install",
+      async (depIssue: NPMDependencyIssue, packageJsonPath: string) => {
+        const { name, version } = depIssue;
+        try {
+          await window.showInformationMessage(
+            `Installing... ${JSON.stringify(depIssue, null, 2)}`
+          );
+          await invokeNPMCommand(
+            ["install", `${name}@${version}`],
+            dirname(packageJsonPath)
+          );
+          await window.showInformationMessage(
+            `Finished Installing... ${JSON.stringify(depIssue, null, 2)}`
+          );
+        } catch (error) {
+          void window.showErrorMessage(`Installing Error ${error.stack}`);
+        }
+      }
+    )
   );
   context.subscriptions.push(
     commands.registerCommand("deps.prune", (depIssue: NPMDependencyIssue) => {

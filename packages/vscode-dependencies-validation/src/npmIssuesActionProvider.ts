@@ -36,7 +36,10 @@ export class NPMIssuesActionProvider implements CodeActionProvider {
       command: "deps.install",
       title: "installing title ...",
       tooltip: "installing tooltip ...",
-      arguments: [get(diagnostic, "depIssue")],
+      arguments: [
+        get(diagnostic, "depIssue"),
+        get(diagnostic, "packageJsonPath"),
+      ],
     };
     action.diagnostics = [diagnostic];
     action.isPreferred = true;
