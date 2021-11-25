@@ -1,105 +1,122 @@
 /* global QUnit */
 
-sap.ui.define([
-	"sap/ui/test/opaQunit",
-	"sap/ui/demo/todo/test/integration/pages/App"
-], function (opaTest) {
-	"use strict";
+sap.ui.define(
+	["sap/ui/test/opaQunit", "sap/ui/demo/todo/test/integration/pages/App"],
+	function (opaTest) {
+		"use strict";
 
-	QUnit.module("Search");
+		QUnit.module("Search");
 
-	opaTest("should show correct item count after search (1)", function (Given, When, Then) {
+		opaTest(
+			"should show correct item count after search (1)",
+			function (Given, When, Then) {
+				// Arrangements
+				Given.iStartMyApp();
 
-		// Arrangements
-		Given.iStartMyApp();
+				//Actions
+				When.onTheAppPage.iEnterTextForSearchAndPressEnter("earn");
 
-		//Actions
-		When.onTheAppPage.iEnterTextForSearchAndPressEnter("earn");
+				// Assertions
+				Then.onTheAppPage.iShouldSeeItemCount(1);
 
-		// Assertions
-		Then.onTheAppPage.iShouldSeeItemCount(1);
+				// Cleanup
+				Then.iTeardownMyApp();
+			}
+		);
 
-		// Cleanup
-		Then.iTeardownMyApp();
-	});
+		opaTest(
+			"should show correct item count after search (0)",
+			function (Given, When, Then) {
+				// Arrangements
+				Given.iStartMyApp();
 
-	opaTest("should show correct item count after search (0)", function (Given, When, Then) {
+				//Actions
+				When.onTheAppPage.iEnterTextForSearchAndPressEnter(
+					"there should not be an item for this search"
+				);
 
-		// Arrangements
-		Given.iStartMyApp();
+				// Assertions
+				Then.onTheAppPage.iShouldSeeItemCount(0);
 
-		//Actions
-		When.onTheAppPage.iEnterTextForSearchAndPressEnter("there should not be an item for this search");
+				// Cleanup
+				Then.iTeardownMyApp();
+			}
+		);
 
-		// Assertions
-		Then.onTheAppPage.iShouldSeeItemCount(0);
+		opaTest(
+			"should show correct item count after search and clearing the search",
+			function (Given, When, Then) {
+				// Arrangements
+				Given.iStartMyApp();
 
-		// Cleanup
-		Then.iTeardownMyApp();
-	});
+				//Actions
+				When.onTheAppPage
+					.iEnterTextForSearchAndPressEnter("earn")
+					.and.iEnterTextForSearchAndPressEnter("");
 
-	opaTest("should show correct item count after search and clearing the search", function (Given, When, Then) {
+				// Assertions
+				Then.onTheAppPage.iShouldSeeItemCount(2);
 
-		// Arrangements
-		Given.iStartMyApp();
+				// Cleanup
+				Then.iTeardownMyApp();
+			}
+		);
 
-		//Actions
-		When.onTheAppPage.iEnterTextForSearchAndPressEnter("earn")
-			.and.iEnterTextForSearchAndPressEnter("");
+		opaTest(
+			"should show correct item count after search and active items filter",
+			function (Given, When, Then) {
+				// Arrangements
+				Given.iStartMyApp();
 
-		// Assertions
-		Then.onTheAppPage.iShouldSeeItemCount(2);
+				//Actions
+				When.onTheAppPage
+					.iEnterTextForSearchAndPressEnter("earn")
+					.and.iFilterForItems("active");
 
-		// Cleanup
-		Then.iTeardownMyApp();
-	});
+				// Assertions
+				Then.onTheAppPage.iShouldSeeItemCount(1);
 
-	opaTest("should show correct item count after search and active items filter", function (Given, When, Then) {
+				// Cleanup
+				Then.iTeardownMyApp();
+			}
+		);
 
-		// Arrangements
-		Given.iStartMyApp();
+		opaTest(
+			"should show correct item count after search and completed items filter",
+			function (Given, When, Then) {
+				// Arrangements
+				Given.iStartMyApp();
 
-		//Actions
-		When.onTheAppPage.iEnterTextForSearchAndPressEnter("earn")
-			.and.iFilterForItems("active");
+				//Actions
+				When.onTheAppPage
+					.iEnterTextForSearchAndPressEnter("earn")
+					.and.iFilterForItems("completed");
 
-		// Assertions
-		Then.onTheAppPage.iShouldSeeItemCount(1);
+				// Assertions
+				Then.onTheAppPage.iShouldSeeItemCount(0);
 
-		// Cleanup
-		Then.iTeardownMyApp();
-	});
+				// Cleanup
+				Then.iTeardownMyApp();
+			}
+		);
 
-	opaTest("should show correct item count after search and completed items filter", function (Given, When, Then) {
+		opaTest(
+			"should show correct item count after search and all items filter",
+			function (Given, When, Then) {
+				// Arrangements
+				Given.iStartMyApp();
 
-		// Arrangements
-		Given.iStartMyApp();
+				//Actions
+				When.onTheAppPage
+					.iEnterTextForSearchAndPressEnter("earn")
+					.and.iFilterForItems("all");
 
-		//Actions
-		When.onTheAppPage.iEnterTextForSearchAndPressEnter("earn")
-			.and.iFilterForItems("completed");
+				// Assertions
+				Then.onTheAppPage.iShouldSeeItemCount(1);
 
-		// Assertions
-		Then.onTheAppPage.iShouldSeeItemCount(0);
-
-		// Cleanup
-		Then.iTeardownMyApp();
-	});
-
-	opaTest("should show correct item count after search and all items filter", function (Given, When, Then) {
-
-		// Arrangements
-		Given.iStartMyApp();
-
-		//Actions
-		When.onTheAppPage.iEnterTextForSearchAndPressEnter("earn")
-			.and.iFilterForItems("all");
-
-		// Assertions
-		Then.onTheAppPage.iShouldSeeItemCount(1);
-
-		// Cleanup
-		Then.iTeardownMyApp();
-	});
-
-});
+				// Cleanup
+				Then.iTeardownMyApp();
+			}
+		);
+	}
+);

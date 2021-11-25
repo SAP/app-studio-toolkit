@@ -1,30 +1,26 @@
-module.exports = function(config) {
+module.exports = function (config) {
 	"use strict";
 
-	var chromeFlags = [
-		"--window-size=1280,1024"
-	];
+	var chromeFlags = ["--window-size=1280,1024"];
 
 	config.set({
-
 		frameworks: ["ui5"],
 
 		browsers: ["CustomChrome"],
 
 		browserConsoleLogOptions: {
-			level: "error"
+			level: "error",
 		},
 
 		customLaunchers: {
 			CustomChrome: {
 				base: "Chrome",
-				flags: chromeFlags
+				flags: chromeFlags,
 			},
 			CustomChromeHeadless: {
 				base: "ChromeHeadless",
-				flags: chromeFlags
-			}
+				flags: chromeFlags,
+			},
 		},
-
 	});
 };
