@@ -1,3 +1,4 @@
+import { Point } from "unist";
 import {
   Diagnostic,
   DiagnosticSeverity,
@@ -8,8 +9,12 @@ import {
   ExtensionContext,
   workspace,
 } from "vscode";
-import { findDependencyIssues } from "@sap-devx/npm-dependencies-validation";
-import { getDepIssueLocations, DependencyIssueLocation } from "./jsonParser";
+import {
+  findDependencyIssues,
+  NPMDependencyIssue,
+} from "@sap-devx/npm-dependencies-validation";
+import { getDepIssueLocations, DependencyIssueLocation } from "./depsLocations";
+import { set, startCase } from "lodash";
 
 /** Code that is used to associate package.json diagnostic entries with code actions. */
 export const NPM_DEPENDENCY_ISSUE = "npm_dependency_issue";
@@ -25,7 +30,7 @@ async function refreshDiagnostics(
 ): Promise<void> {
   const npmDependencyIssues = await findDependencyIssues(doc.uri.fsPath);
 
-  let diagnostics: Diagnostic[] = [];
+  const diagnostics: Diagnostic[] = [];
 
   const issueLocations: DependencyIssueLocation[] = getDepIssueLocations(
     doc.getText(),
@@ -33,58 +38,44 @@ async function refreshDiagnostics(
   );
 
   issueLocations.forEach((issueLocation) => {
-    const issueDiagnostics = createDiagnostic(issueLocation);
-    diagnostics = [...diagnostics, ...issueDiagnostics];
+    const { namePoint, versionPoint, actualVersion, npmDepIssue } =
+      issueLocation;
+    const nameDiagnostic = constructDiagnostic(
+      namePoint,
+      npmDepIssue,
+      npmDepIssue.name
+    );
+    diagnostics.push(nameDiagnostic);
+    const versionDiagnostic = constructDiagnostic(
+      versionPoint,
+      npmDepIssue,
+      actualVersion
+    );
+    diagnostics.push(versionDiagnostic);
   });
 
   dependencyIssueDiagnostics.set(doc.uri, diagnostics);
 }
 
-function createDiagnostic(
-  issueLocations: DependencyIssueLocation
-): Diagnostic[] {
-  const issueDiagnostics: Diagnostic[] = [];
-  const { name, version } = issueLocations.npmDepIssue;
+function constructDiagnostic(
+  point: Point,
+  depIssue: NPMDependencyIssue,
+  value: string
+): Diagnostic {
+  const { line, column } = point;
 
-  const nameLine = issueLocations.namePoint.line;
-  const nameColumn = issueLocations.namePoint.column;
-  if (nameLine && nameColumn) {
-    const nameRange = new Range(
-      nameLine - 1,
-      nameColumn,
-      nameLine - 1,
-      nameColumn + name.length
-    );
-    const nameMessage = `${name}', do you want to fix name?`;
-    const nameDiagnostic = new Diagnostic(
-      nameRange,
-      nameMessage,
-      DiagnosticSeverity.Information
-    );
-    nameDiagnostic.code = NPM_DEPENDENCY_ISSUE;
-    issueDiagnostics.push(nameDiagnostic);
-  }
+  const range = new Range(line - 1, column, line - 1, column + value.length);
+  const message = createMessage(depIssue);
+  const diagnostic = new Diagnostic(range, message, DiagnosticSeverity.Error);
+  diagnostic.code = NPM_DEPENDENCY_ISSUE;
+  set(diagnostic, "depIssue", depIssue);
 
-  const versionLine = issueLocations.versionPoint.line;
-  const versionColumn = issueLocations.versionPoint.column;
-  if (versionLine && versionColumn) {
-    const versionRange = new Range(
-      versionLine - 1,
-      versionColumn,
-      versionLine - 1,
-      versionColumn + issueLocations.actualVersion.length
-    );
-    const versionMessage = `${name} ${version}', do you want to fix version?`;
-    const versionDiagnostic = new Diagnostic(
-      versionRange,
-      versionMessage,
-      DiagnosticSeverity.Error
-    );
-    versionDiagnostic.code = NPM_DEPENDENCY_ISSUE;
-    issueDiagnostics.push(versionDiagnostic);
-  }
+  return diagnostic;
+}
 
-  return issueDiagnostics;
+function createMessage(npmDepIssue: NPMDependencyIssue): string {
+  const { type, name, version } = npmDepIssue;
+  return `${startCase(type)} dependency ${name}@${version} is found.`;
 }
 
 export function subscribeToDocumentChanges(

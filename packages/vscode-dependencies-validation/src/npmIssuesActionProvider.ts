@@ -8,9 +8,9 @@ import {
   Range,
   Selection,
   TextDocument,
-  window,
 } from "vscode";
 import { NPM_DEPENDENCY_ISSUE } from "./diagnostics";
+import { get } from "lodash";
 
 export class NPMIssuesActionProvider implements CodeActionProvider {
   public static readonly providedCodeActionKinds = [CodeActionKind.QuickFix];
@@ -28,11 +28,15 @@ export class NPMIssuesActionProvider implements CodeActionProvider {
   }
 
   private createCommandCodeAction(diagnostic: Diagnostic): CodeAction {
-    const action = new CodeAction("Install", CodeActionKind.QuickFix);
+    const action = new CodeAction(
+      "Fix dependency issue",
+      CodeActionKind.QuickFix
+    );
     action.command = {
-      command: "npm-issues-fix-command",
-      title: "Learn more about json-fixer",
-      tooltip: "This will open the unicode json-fixer page.",
+      command: "deps.install",
+      title: "installing title ...",
+      tooltip: "installing tooltip ...",
+      arguments: [get(diagnostic, "depIssue")],
     };
     action.diagnostics = [diagnostic];
     action.isPreferred = true;

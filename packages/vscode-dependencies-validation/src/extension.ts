@@ -5,6 +5,7 @@ import {
   window,
   languages,
   DiagnosticCollection,
+  commands,
 } from "vscode";
 import {
   NPMDependencyIssue,
@@ -23,15 +24,11 @@ export function activate(context: ExtensionContext) {
 
   void addFileWatcher();
 
-  dependencyIssuesDiagnosticCollection = languages.createDiagnosticCollection(
-    "npm-dependency-issues"
-  );
-  context.subscriptions.push(dependencyIssuesDiagnosticCollection);
   // TODO: pattern does not work ???
   // const packageJsonFileSelector: DocumentSelector = { language: "json", pattern: PACKAGE_JSON_PATTERN };
   context.subscriptions.push(
     languages.registerCodeActionsProvider(
-      PACKAGE_JSON,
+      "json",
       new NPMIssuesActionProvider(),
       {
         providedCodeActionKinds:
@@ -40,7 +37,27 @@ export function activate(context: ExtensionContext) {
     )
   );
 
+  dependencyIssuesDiagnosticCollection = languages.createDiagnosticCollection(
+    "npm-dependency-issues"
+  );
+  context.subscriptions.push(dependencyIssuesDiagnosticCollection);
+
   subscribeToDocumentChanges(context, dependencyIssuesDiagnosticCollection);
+
+  context.subscriptions.push(
+    commands.registerCommand("deps.install", (depIssue: NPMDependencyIssue) => {
+      void window.showInformationMessage(
+        `Installing... ${JSON.stringify(depIssue, null, 2)}`
+      );
+    })
+  );
+  context.subscriptions.push(
+    commands.registerCommand("deps.prune", (depIssue: NPMDependencyIssue) => {
+      void window.showInformationMessage(
+        `Pruning... ${JSON.stringify(depIssue, null, 2)}`
+      );
+    })
+  );
 }
 // TODO: need to add file watcher for unsupported package manager files and properties
 async function findIssues(): Promise<void> {
