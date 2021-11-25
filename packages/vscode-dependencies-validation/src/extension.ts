@@ -42,7 +42,7 @@ async function displayProblematicDependencies(
   const start = Date.now();
 
   const problemDeps: NPMDependencyIssue[] = await findDependencyIssues(
-    packageJsonUri
+    packageJsonUri.fsPath
   );
 
   void window.showInformationMessage(

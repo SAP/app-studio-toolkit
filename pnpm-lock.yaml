@@ -131,10 +131,7 @@ importers:
       patch-package: 6.4.7
 
   packages/npm-dependencies-validation:
-    specifiers:
-      '@types/vscode': ^1.50.0
-    devDependencies:
-      '@types/vscode': 1.62.0
+    specifiers: {}
 
   packages/vscode-dependencies-validation:
     specifiers:
