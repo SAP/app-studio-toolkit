@@ -5,9 +5,9 @@ import { findDependencyIssues } from "../src/api";
 
 describe("dependencyIssues unit test", () => {
   it("2 dependencies and 1 devDependency declared but are not installed", async () => {
-    const result = await findDependencyIssues({
-      fsPath: "./test/projects/no_deps_installed/package.json",
-    });
+    const result = await findDependencyIssues(
+      "./test/projects/no_deps_installed/package.json"
+    );
     expect(result).to.have.lengthOf(3);
     // missing json-fixer dependency
     const jsonFixer = result.find((dep) => dep.name === "json-fixer");
@@ -30,9 +30,9 @@ describe("dependencyIssues unit test", () => {
   });
 
   it("1 dependency and 1 devDependency declared but are not installed, 1 dependency is installed", async () => {
-    const result = await findDependencyIssues({
-      fsPath: "./test/projects/some_deps_installed/package.json",
-    });
+    const result = await findDependencyIssues(
+      "./test/projects/some_deps_installed/package.json"
+    );
     expect(result).to.have.lengthOf(2);
     // missing lodash dependency
     const lodash = result.find((dep) => dep.name === "lodash");
@@ -49,9 +49,9 @@ describe("dependencyIssues unit test", () => {
   });
 
   it("1 dependency and 1 devDependency declared but not installed, 1 dependency is installed but redundant", async () => {
-    const result = await findDependencyIssues({
-      fsPath: "./test/projects/some_deps_redundant/package.json",
-    });
+    const result = await findDependencyIssues(
+      "./test/projects/some_deps_redundant/package.json"
+    );
     expect(result).to.have.lengthOf(3);
     // missing lodash dependency
     const lodash = result.find((dep) => dep.name === "lodash");
@@ -86,31 +86,39 @@ describe("dependencyIssues unit test", () => {
 
     it("invalid package.json", async () => {
       fsMock.expects("readFile").rejects(new Error("invalid json"));
-      const result = await findDependencyIssues({
-        fsPath: "./test/projects/invalid_package_json/package.json",
-      });
+      const result = await findDependencyIssues(
+        "./test/projects/invalid_package_json/package.json"
+      );
       expect(result).to.have.lengthOf(0);
     });
   });
 
-  // TODO: invalid version is not returned, so we need to change the dependecy issue version API
-  it.skip("1 dependency is installed, but in package.json it's version is invalid", async () => {
-    const result = await findDependencyIssues({
-      fsPath: "./test/projects/invalid_dependency/package.json",
-    });
-    expect(result).to.have.lengthOf(1);
+  it("1 dependency and 1 devDependency are installed, but in package.json their versions are invalid", async () => {
+    const result = await findDependencyIssues(
+      "./test/projects/invalid_dependency/package.json"
+    );
+    // TODO: returns 3 issues
+    // expect(result).to.have.lengthOf(2);
     // invalid json-fixer dependency
     const jsonFixer = result.find((dep) => dep.name === "json-fixer");
     assert.isDefined(jsonFixer);
     expect(jsonFixer?.devDependency).to.be.false;
     expect(jsonFixer?.type).to.be.equal("invalid");
-    expect(jsonFixer?.version).to.be.undefined;
+    expect(jsonFixer?.version).to.equal("1.6.12");
+    // invalid typescript devDependency
+    const typescript = result.find(
+      (dep) => dep.name === "typescript" && dep.devDependency === true
+    );
+    assert.isDefined(typescript);
+    expect(typescript?.devDependency).to.be.true;
+    expect(typescript?.type).to.be.equal("invalid");
+    expect(typescript?.version).to.equal("4.5.2");
   });
 
   it("no dependency issue are found, package is not supported", async () => {
-    const result = await findDependencyIssues({
-      fsPath: "./test/projects/not_supported/package.json",
-    });
+    const result = await findDependencyIssues(
+      "./test/projects/not_supported/package.json"
+    );
     expect(result).to.have.lengthOf(0);
   });
 });

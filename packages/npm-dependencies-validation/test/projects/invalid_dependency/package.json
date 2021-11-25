@@ -2,6 +2,9 @@
   "name": "no_deps_installed",
   "version": "1.0.0",
   "dependencies": {
-    "json-fixer": "0.0.1"
+    "json-fixer": "^0.0.1"
+  },
+  "devDependencies": {
+    "typescript": "^0.0.2"
   }
 }

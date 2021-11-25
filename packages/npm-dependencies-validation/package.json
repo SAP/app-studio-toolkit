@@ -24,8 +24,5 @@
     "clean": "rimraf ./dist",
     "test": "mocha",
     "ci": "npm-run-all clean compile coverage"
-  },
-  "devDependencies": {
-    "@types/vscode": "^1.50.0"
   }
 }
