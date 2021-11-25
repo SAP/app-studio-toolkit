@@ -3,6 +3,7 @@ import { isCurrentlySupported } from "./utils/packageJsonUtil";
 import { invokeNPMCommand } from "./utils/npmUtil";
 import {
   Dependency,
+  DependenciesPropertyName,
   NPMDependencyIssue,
   NPMIssueType,
   NpmLsRDependencies,
@@ -60,6 +61,16 @@ async function createDependencyIssues(
   }
 
   return depWithIssues;
+}
+
+export function filterDependencyIssues(
+  npmDependencyIssues: NPMDependencyIssue[],
+  depsPropName: DependenciesPropertyName
+): NPMDependencyIssue[] {
+  return npmDependencyIssues.filter(
+    (npmDepIssue) =>
+      npmDepIssue.devDependency === (depsPropName === "devDependencies")
+  );
 }
 
 export async function findDependencyIssues(

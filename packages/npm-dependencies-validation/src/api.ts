@@ -1,3 +1,6 @@
-export { findDependencyIssues } from "./dependencyIssues";
+export {
+  findDependencyIssues,
+  filterDependencyIssues,
+} from "./dependencyIssues";
 
-export { NPMDependencyIssue } from "./types";
+export { NPMDependencyIssue, DependenciesPropertyName } from "./types";

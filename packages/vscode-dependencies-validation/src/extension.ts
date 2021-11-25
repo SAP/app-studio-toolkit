@@ -5,7 +5,6 @@ import {
   window,
   languages,
   DiagnosticCollection,
-  DocumentSelector,
 } from "vscode";
 import {
   NPMDependencyIssue,

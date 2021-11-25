@@ -28,3 +28,5 @@ export type VersionProperty = {
 export type IssueTypeProperty = {
   [key in NPMIssueType]?: boolean;
 };
+
+export type DependenciesPropertyName = "dependencies" | "devDependencies";

@@ -1,119 +1,96 @@
 import { Point } from "unist";
-import { NPMDependencyIssue } from "@sap-devx/npm-dependencies-validation";
-import { filter, find, map, compact } from "lodash";
-import { parseTree, Node } from "jsonc-parser";
+import {
+  NPMDependencyIssue,
+  filterDependencyIssues,
+  DependenciesPropertyName,
+} from "@sap-devx/npm-dependencies-validation";
+import { map, compact } from "lodash";
+import { parseTree, Node, findNodeAtLocation } from "jsonc-parser";
 import * as vfile from "vfile";
 import * as vfileLocation from "vfile-location";
 
-const DEPENDENCIES = "dependencies";
-const DEV_DEPENDENCIES = "devDependencies";
-
 export type DependencyIssueLocation = {
-  keyPoint: Point | undefined;
-  valuePoint: Point | undefined;
+  namePoint: Point;
+  versionPoint: Point;
+  actualVersion: string;
   npmDepIssue: NPMDependencyIssue;
 };
 
+// creates dependency issues name and version points
 export function getDepIssueLocations(
-  pkgJsonText: string,
+  packageJsonContent: string,
   npmDependencyIssues: NPMDependencyIssue[]
 ): DependencyIssueLocation[] {
   // TODO: pass options (errors/no comments/other?)
-  const tree = parseTree(pkgJsonText);
+  const tree = parseTree(packageJsonContent);
 
   if (tree?.type !== "object") return []; // JSON top level is not an object
 
-  const virtualPkgJsonFile: vfile.VFile = vfile(pkgJsonText);
+  const virtualPkgJsonFile: vfile.VFile = vfile(packageJsonContent);
 
-  const depIssueLocations = createDepIssueLocations(
-    tree,
-    DEPENDENCIES,
-    npmDependencyIssues,
-    virtualPkgJsonFile
+  const depsPropNames: DependenciesPropertyName[] = [
+    "dependencies",
+    "devDependencies",
+  ];
+  const [depIssueLocations, devDepIssueLocations] = depsPropNames.map(
+    (depsPropName) => {
+      return createDepIssueLocations(
+        tree,
+        depsPropName,
+        npmDependencyIssues,
+        virtualPkgJsonFile
+      );
+    }
   );
 
-  const devDepIssueLocations = createDepIssueLocations(
-    tree,
-    DEV_DEPENDENCIES,
-    npmDependencyIssues,
-    virtualPkgJsonFile
-  );
-
-  return depIssueLocations.concat(devDepIssueLocations);
-}
-
-function getNodeByPropertyName(
-  tree: Node,
-  propertyName: string
-): Node | undefined {
-  return find(
-    tree.children,
-    (node) => node?.children?.[0].value === propertyName
-  );
-}
-
-function filterNPMDepsIssues(
-  npmDependencyIssues: NPMDependencyIssue[],
-  propName: string
-): NPMDependencyIssue[] {
-  const devDeps = propName === DEV_DEPENDENCIES ? true : false;
-  return filter(
-    npmDependencyIssues,
-    (npmDepIssue) => npmDepIssue.devDependency === devDeps
-  );
-}
-
-function getNodeValues(node: Node | undefined): Node[] {
-  return node?.children?.[1].children || [];
+  return [...depIssueLocations, ...devDepIssueLocations];
 }
 
 function createDepIssueLocations(
   tree: Node,
-  depIssuesPropName: string,
+  depsPropName: DependenciesPropertyName,
   npmDependencyIssues: NPMDependencyIssue[],
   virtualPkgJsonFile: vfile.VFile
 ): DependencyIssueLocation[] {
-  const depNode = getNodeByPropertyName(tree, depIssuesPropName);
-  const depPropNodes = getNodeValues(depNode);
-  const npmDepIssues = filterNPMDepsIssues(
-    npmDependencyIssues,
-    depIssuesPropName
-  );
-  return findIssuesLocations(npmDepIssues, depPropNodes, virtualPkgJsonFile);
-}
-
-function findIssuesLocations(
-  npmDepIssues: NPMDependencyIssue[],
-  depPropNodes: Node[] | undefined,
-  virtualPkgJsonFile: vfile.VFile
-): DependencyIssueLocation[] {
+  // dependencies or devDependencies node
+  const depIssues = filterDependencyIssues(npmDependencyIssues, depsPropName);
   return compact(
-    map(npmDepIssues, (npmDepIssue) => {
-      const { name } = npmDepIssue;
-      const depPropNodeWithIssue = find(
-        depPropNodes,
-        (depPropNode) => depPropNode?.children?.[0].value === name
+    map(depIssues, (npmDepIssue) => {
+      return createIssueLocation(
+        tree,
+        npmDepIssue,
+        depsPropName,
+        virtualPkgJsonFile
       );
-      if (depPropNodeWithIssue) {
-        const keyOffset: number | undefined =
-          depPropNodeWithIssue?.children?.[0].offset;
-        const keyPoint = keyOffset
-          ? getPoint(virtualPkgJsonFile, keyOffset)
-          : undefined;
-
-        const valueOffset: number | undefined =
-          depPropNodeWithIssue?.children?.[1].offset;
-        const valuePoint = valueOffset
-          ? getPoint(virtualPkgJsonFile, valueOffset)
-          : undefined;
-
-        return { keyPoint, valuePoint, npmDepIssue };
-      }
     })
   );
 }
 
-function getPoint(
+function createIssueLocation(
+  tree: Node,
+  npmDepIssue: NPMDependencyIssue,
+  depsPropName: DependenciesPropertyName,
+  vPackageJsonFile: vfile.VFile
+): DependencyIssueLocation | undefined {
+  const { name } = npmDepIssue;
+  const versionNode = findNodeAtLocation(tree, [depsPropName, name]);
+  const nameNode = versionNode?.parent?.children?.[0];
+  if (nameNode) {
+    const nameOffset = nameNode.offset;
+    const namePoint = createPoint(vPackageJsonFile, nameOffset);
+    const versionOffset = versionNode.offset;
+    const versionPoint = createPoint(vPackageJsonFile, versionOffset);
+
+    return {
+      namePoint,
+      versionPoint,
+      npmDepIssue,
+      actualVersion: versionNode.value,
+    };
+  }
+}
+
+function createPoint(
   virtualPkgJsonFile: vfile.VFile,
   nodeOffset: number
 ): Required<Point> {

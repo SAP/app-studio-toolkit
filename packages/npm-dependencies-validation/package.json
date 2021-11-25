@@ -23,6 +23,6 @@
     "coverage": "nyc mocha",
     "clean": "rimraf ./dist",
     "test": "mocha",
-    "ci": "npm-run-all clean compile coverage"
+    "ci": "npm-run-all clean compile"
   }
 }

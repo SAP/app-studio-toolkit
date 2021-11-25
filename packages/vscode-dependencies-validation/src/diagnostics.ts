@@ -1,4 +1,13 @@
-import * as vscode from "vscode";
+import {
+  Diagnostic,
+  DiagnosticSeverity,
+  DiagnosticCollection,
+  TextDocument,
+  Range,
+  window,
+  ExtensionContext,
+  workspace,
+} from "vscode";
 import { findDependencyIssues } from "@sap-devx/npm-dependencies-validation";
 import { getDepIssueLocations, DependencyIssueLocation } from "./jsonParser";
 
@@ -11,12 +20,12 @@ export const NPM_DEPENDENCY_ISSUE = "npm_dependency_issue";
  * @param dependencyIssueDiagnostics diagnostic collection
  */
 async function refreshDiagnostics(
-  doc: vscode.TextDocument,
-  dependencyIssueDiagnostics: vscode.DiagnosticCollection
+  doc: TextDocument,
+  dependencyIssueDiagnostics: DiagnosticCollection
 ): Promise<void> {
-  const npmDependencyIssues = await findDependencyIssues(doc.uri);
+  const npmDependencyIssues = await findDependencyIssues(doc.uri.fsPath);
 
-  let diagnostics: vscode.Diagnostic[] = [];
+  let diagnostics: Diagnostic[] = [];
 
   const issueLocations: DependencyIssueLocation[] = getDepIssueLocations(
     doc.getText(),
@@ -25,7 +34,7 @@ async function refreshDiagnostics(
 
   issueLocations.forEach((issueLocation) => {
     const issueDiagnostics = createDiagnostic(issueLocation);
-    diagnostics = diagnostics.concat(issueDiagnostics);
+    diagnostics = [...diagnostics, ...issueDiagnostics];
   });
 
   dependencyIssueDiagnostics.set(doc.uri, diagnostics);
@@ -33,43 +42,43 @@ async function refreshDiagnostics(
 
 function createDiagnostic(
   issueLocations: DependencyIssueLocation
-): vscode.Diagnostic[] {
-  const issueDiagnostics: vscode.Diagnostic[] = [];
+): Diagnostic[] {
+  const issueDiagnostics: Diagnostic[] = [];
   const { name, version } = issueLocations.npmDepIssue;
 
-  const nameLine = issueLocations.keyPoint?.line;
-  const nameColumn = issueLocations.keyPoint?.column;
+  const nameLine = issueLocations.namePoint.line;
+  const nameColumn = issueLocations.namePoint.column;
   if (nameLine && nameColumn) {
-    const nameRange = new vscode.Range(
+    const nameRange = new Range(
       nameLine - 1,
       nameColumn,
       nameLine - 1,
       nameColumn + name.length
     );
     const nameMessage = `${name}', do you want to fix name?`;
-    const nameDiagnostic = new vscode.Diagnostic(
+    const nameDiagnostic = new Diagnostic(
       nameRange,
       nameMessage,
-      vscode.DiagnosticSeverity.Information
+      DiagnosticSeverity.Information
     );
     nameDiagnostic.code = NPM_DEPENDENCY_ISSUE;
     issueDiagnostics.push(nameDiagnostic);
   }
 
-  const versionLine = issueLocations.valuePoint?.line;
-  const versionColumn = issueLocations.valuePoint?.column;
+  const versionLine = issueLocations.versionPoint.line;
+  const versionColumn = issueLocations.versionPoint.column;
   if (versionLine && versionColumn) {
-    const versionRange = new vscode.Range(
+    const versionRange = new Range(
       versionLine - 1,
       versionColumn,
       versionLine - 1,
-      versionColumn + version.length
+      versionColumn + issueLocations.actualVersion.length
     );
     const versionMessage = `${name} ${version}', do you want to fix version?`;
-    const versionDiagnostic = new vscode.Diagnostic(
+    const versionDiagnostic = new Diagnostic(
       versionRange,
       versionMessage,
-      vscode.DiagnosticSeverity.Error
+      DiagnosticSeverity.Error
     );
     versionDiagnostic.code = NPM_DEPENDENCY_ISSUE;
     issueDiagnostics.push(versionDiagnostic);
@@ -79,18 +88,18 @@ function createDiagnostic(
 }
 
 export function subscribeToDocumentChanges(
-  context: vscode.ExtensionContext,
-  dependencyIssueDiagnostics: vscode.DiagnosticCollection
+  context: ExtensionContext,
+  dependencyIssueDiagnostics: DiagnosticCollection
 ): void {
-  if (vscode.window.activeTextEditor) {
+  if (window.activeTextEditor) {
     void refreshDiagnostics(
-      vscode.window.activeTextEditor.document,
+      window.activeTextEditor.document,
       dependencyIssueDiagnostics
     );
   }
 
   context.subscriptions.push(
-    vscode.window.onDidChangeActiveTextEditor((editor) => {
+    window.onDidChangeActiveTextEditor((editor) => {
       if (editor) {
         void refreshDiagnostics(editor.document, dependencyIssueDiagnostics);
       }
@@ -98,13 +107,13 @@ export function subscribeToDocumentChanges(
   );
 
   context.subscriptions.push(
-    vscode.workspace.onDidChangeTextDocument(
+    workspace.onDidChangeTextDocument(
       (e) => void refreshDiagnostics(e.document, dependencyIssueDiagnostics)
     )
   );
 
   context.subscriptions.push(
-    vscode.workspace.onDidCloseTextDocument((doc) =>
+    workspace.onDidCloseTextDocument((doc) =>
       dependencyIssueDiagnostics.delete(doc.uri)
     )
   );
