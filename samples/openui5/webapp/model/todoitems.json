@@ -1,6 +1,7 @@
 {
 	"newTodo": "",
-	"todos": [{
+	"todos": [
+		{
 			"title": "Start this app",
 			"completed": true
 		},

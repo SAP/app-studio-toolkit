@@ -1,3 +1,1 @@
-sap.ui.define([
-	"./controller/App.controller"
-]);
+sap.ui.define(["./controller/App.controller"]);

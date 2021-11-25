@@ -5,7 +5,7 @@ import { ProjectApiRead } from "../../src/project-type/types";
 import { map } from "lodash";
 
 export function PROJECT(
-  opts: Omit<Project, "cloudService" | "prefix" | "type" | "name">
+  opts: Omit<Project, "cloudService" | "version" | "prefix" | "type" | "name">
 ): Project {
   return {
     name: basename(opts.path),
@@ -13,6 +13,7 @@ export function PROJECT(
     cloudService: "N/A",
     prefix: "N/A",
     type: "N/A",
+    version: "N/A",
   };
 }
 

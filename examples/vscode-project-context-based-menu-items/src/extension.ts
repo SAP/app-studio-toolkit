@@ -1,4 +1,4 @@
-import {ExtensionContext} from "vscode";
+import { ExtensionContext } from "vscode";
 import { registerCommands } from "./commands";
 
 function activate(context: ExtensionContext): void {
