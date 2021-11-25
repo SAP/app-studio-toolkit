@@ -6,21 +6,16 @@ import {
   NPMDependencyIssue,
   NPMIssueType,
   NpmLsRDependencies,
-  VscodeUri,
 } from "./types";
 
 // ls --depth=0 shows only top-level dependencies
-
-// dependencies and extraneous packages
-const LS_ARGS = ["ls", "--depth=0"];
-// devDependencies
-const LS_DEV_ARGS = [...LS_ARGS, "--dev"];
+const LS_ARGS: string[] = ["ls", "--depth=0"];
 
 async function listNodeModulesDeps(
   config: DepIssuesConfig
 ): Promise<NpmLsRDependencies> {
   return invokeNPMCommand<NpmLsRDependencies>(
-    config.devDependency ? [...LS_DEV_ARGS] : [...LS_ARGS],
+    config.lsArgs,
     resolve(dirname(config.packageJsonPath))
   );
 }
@@ -39,22 +34,22 @@ function getVersion(dependency: Dependency): string | undefined {
 
 type DepIssuesConfig = {
   packageJsonPath: string;
-  devDependency: boolean;
+  lsArgs: string[];
 };
 
 async function createDependencyIssues(
   config: DepIssuesConfig
 ): Promise<NPMDependencyIssue[]> {
   const { dependencies } = await listNodeModulesDeps(config);
-  const { devDependency } = config;
+  const devDependency = config.lsArgs.includes("--dev");
 
   const depWithIssues: NPMDependencyIssue[] = [];
   for (const depName in dependencies) {
     const dependency: Dependency = dependencies[depName];
 
     const type = getIssueType(dependency);
-    const version = getVersion(dependency); // TODO: when version is invalid this value could be undefined
     if (type) {
+      const version = getVersion(dependency);
       depWithIssues.push({
         name: depName,
         version,
@@ -68,24 +63,26 @@ async function createDependencyIssues(
 }
 
 export async function findDependencyIssues(
-  uri: VscodeUri
+  packageJsonPath: string
 ): Promise<NPMDependencyIssue[]> {
-  const currentlySupported = await isCurrentlySupported(uri);
+  const currentlySupported = await isCurrentlySupported(packageJsonPath);
   if (!currentlySupported) return [];
 
-  const packageJsonPath = uri.fsPath;
   const depIssuePromises = [
-    // in order to get all types of dependency issue ls --depth=0 command should be executed twice:
-    //    1. ls --depth=0 ---> returns extraneous packages and dependeny issues
-    //    2. ls --depth=0 ---> returns devDependencies issues
-    // both list are independent and describe different types of issues
-    // creates extraneous packages and dependeny issues
-    createDependencyIssues({ packageJsonPath, devDependency: false }),
+    // in order to get all types of dependency issue ls --depth=0 command should be executed thrice:
+    //    1. ls --depth=0 --extraneous ---> returns extraneous packages
+    //    2. ls --depth=0 --dev ---> returns devDependencies issues
+    //    3. ls --depth=0 --prod ---> returns dependencies issues
+    // all list are independent and describe different types of issues
+    // creates extraneous packages
+    //createDependencyIssues({ packageJsonPath, lsArgs: [...LS_ARGS, "--extraneous"] }),
     // creates devDependencies issues
-    createDependencyIssues({ packageJsonPath, devDependency: true }),
+    createDependencyIssues({ packageJsonPath, lsArgs: [...LS_ARGS] }),
+    // creates dependencies issues
+    createDependencyIssues({ packageJsonPath, lsArgs: [...LS_ARGS, "--dev"] }),
   ];
-  const [depsAndRedundantIssues, devDepsIssues] = await Promise.all(
+  const [/*extraneousIssues,*/ depsIssues, devDepsIssues] = await Promise.all(
     depIssuePromises
   );
-  return [...depsAndRedundantIssues, ...devDepsIssues];
+  return [...depsIssues, ...devDepsIssues];
 }

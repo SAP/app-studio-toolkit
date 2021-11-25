@@ -1,7 +1,6 @@
 import { access, readFile } from "fs/promises";
 import { constants } from "fs";
 import { join, dirname } from "path";
-import { VscodeUri } from "../types";
 
 const yarnManagerFiles = [
   "yarn.lock",
@@ -18,9 +17,9 @@ const pnpmManagerFiles = [
 ];
 const monorepoProps = ["workspaces"];
 
-async function readJsonFile(packageJsonUri: VscodeUri): Promise<any> {
+async function readJsonFile(jsonFilePath: string): Promise<any> {
   try {
-    const packageJsonContent = await readFile(packageJsonUri.fsPath, "utf-8");
+    const packageJsonContent = await readFile(jsonFilePath, "utf-8");
     const content: { name: string } = JSON.parse(packageJsonContent);
     return content;
   } catch (error) {
@@ -51,31 +50,31 @@ async function pathContainsAnyOfFiles(
   return false;
 }
 
-function isManagedByYarn(packageJsonFileUri: VscodeUri): Promise<boolean> {
-  return pathContainsAnyOfFiles(yarnManagerFiles, packageJsonFileUri.fsPath);
+function isManagedByYarn(packageJsonPath: string): Promise<boolean> {
+  return pathContainsAnyOfFiles(yarnManagerFiles, packageJsonPath);
 }
 
-function isManagedByPnpm(packageJsonFileUri: VscodeUri): Promise<boolean> {
-  return pathContainsAnyOfFiles(pnpmManagerFiles, packageJsonFileUri.fsPath);
+function isManagedByPnpm(packageJsonPath: string): Promise<boolean> {
+  return pathContainsAnyOfFiles(pnpmManagerFiles, packageJsonPath);
 }
 
-async function isMonoRepoRoot(packageJsonFileUri: VscodeUri): Promise<boolean> {
-  const content = await readJsonFile(packageJsonFileUri);
+async function isMonoRepoRoot(packageJsonPath: string): Promise<boolean> {
+  const content = await readJsonFile(packageJsonPath);
   return monorepoProps.some((property) => {
     return property in content;
   });
 }
 
 export async function isCurrentlySupported(
-  packageJsonUri: VscodeUri
+  packageJsonPath: string
 ): Promise<boolean> {
   // if (isSubPackageInMonoRepo()) return false; --- not for now
 
-  if (await isManagedByYarn(packageJsonUri)) return false;
+  if (await isManagedByYarn(packageJsonPath)) return false;
 
-  if (await isManagedByPnpm(packageJsonUri)) return false;
+  if (await isManagedByPnpm(packageJsonPath)) return false;
 
-  if (await isMonoRepoRoot(packageJsonUri)) return false;
+  if (await isMonoRepoRoot(packageJsonPath)) return false;
 
   return true;
 }
