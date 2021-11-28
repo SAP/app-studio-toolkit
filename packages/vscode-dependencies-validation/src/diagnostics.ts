@@ -24,7 +24,7 @@ export const NPM_DEPENDENCY_ISSUE = "npm_dependency_issue";
  * @param doc package.json text document to analyze
  * @param dependencyIssueDiagnostics diagnostic collection
  */
-async function refreshDiagnostics(
+export async function refreshDiagnostics(
   doc: TextDocument,
   dependencyIssueDiagnostics: DiagnosticCollection
 ): Promise<void> {

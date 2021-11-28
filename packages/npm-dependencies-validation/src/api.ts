@@ -1,4 +1,4 @@
-export { findDependencyIssues, filterDependencyIssues } from "./depIssues";
+export { findDependencyIssues } from "./depIssues";
 
 export { invokeNPMCommand } from "./utils/npmUtil";
 

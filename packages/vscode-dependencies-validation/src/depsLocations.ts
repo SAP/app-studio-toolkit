@@ -1,7 +1,6 @@
 import { Point } from "unist";
 import {
   NPMDependencyIssue,
-  filterDependencyIssues,
   DependenciesPropertyName,
 } from "@sap-devx/npm-dependencies-validation";
 import { map, compact } from "lodash";
@@ -47,6 +46,16 @@ export function getDepIssueLocations(
   );
 
   return [...depIssueLocations, ...devDepIssueLocations];
+}
+
+function filterDependencyIssues(
+  npmDependencyIssues: NPMDependencyIssue[],
+  depsPropName: DependenciesPropertyName
+): NPMDependencyIssue[] {
+  return npmDependencyIssues.filter(
+    (npmDepIssue) =>
+      npmDepIssue.devDependency === (depsPropName === "devDependencies")
+  );
 }
 
 function createDepIssueLocations(

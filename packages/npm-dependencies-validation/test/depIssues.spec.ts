@@ -8,7 +8,6 @@ describe("dependencyIssues unit test", () => {
     const result = await findDependencyIssues(
       "./test/projects/no_deps_installed/package.json"
     );
-    expect(result).to.have.lengthOf(3);
     // missing json-fixer dependency
     const jsonFixer = result.find((dep) => dep.name === "json-fixer");
     assert.isDefined(jsonFixer);
@@ -22,9 +21,10 @@ describe("dependencyIssues unit test", () => {
     expect(lodash?.type).to.be.equal("missing");
     expect(lodash?.version).to.be.equal("~4.17.21");
     // missing typescript devDependency
-    const typescript = result.find((dep) => dep.name === "typescript");
+    const typescript = result.find(
+      (dep) => dep.name === "typescript" && dep.devDependency === true
+    );
     assert.isDefined(typescript);
-    expect(typescript?.devDependency).to.be.true;
     expect(typescript?.type).to.be.equal("missing");
     expect(typescript?.version).to.be.equal("^4.4.4");
   });
@@ -33,7 +33,6 @@ describe("dependencyIssues unit test", () => {
     const result = await findDependencyIssues(
       "./test/projects/some_deps_installed/package.json"
     );
-    expect(result).to.have.lengthOf(2);
     // missing lodash dependency
     const lodash = result.find((dep) => dep.name === "lodash");
     assert.isDefined(lodash);
@@ -41,9 +40,10 @@ describe("dependencyIssues unit test", () => {
     expect(lodash?.type).to.be.equal("missing");
     expect(lodash?.version).to.be.equal("~4.17.21");
     // missing typescript devDependency
-    const typescript = result.find((dep) => dep.name === "typescript");
+    const typescript = result.find(
+      (dep) => dep.name === "typescript" && dep.devDependency === true
+    );
     assert.isDefined(typescript);
-    expect(typescript?.devDependency).to.be.true;
     expect(typescript?.type).to.be.equal("missing");
     expect(typescript?.version).to.be.equal("^4.4.4");
   });
@@ -52,7 +52,6 @@ describe("dependencyIssues unit test", () => {
     const result = await findDependencyIssues(
       "./test/projects/some_deps_redundant/package.json"
     );
-    expect(result).to.have.lengthOf(3);
     // missing lodash dependency
     const lodash = result.find((dep) => dep.name === "lodash");
     assert.isDefined(lodash);
@@ -60,9 +59,10 @@ describe("dependencyIssues unit test", () => {
     expect(lodash?.type).to.be.equal("missing");
     expect(lodash?.version).to.be.equal("4.17.21");
     // missing typescript devDependency
-    const typescript = result.find((dep) => dep.name === "typescript");
+    const typescript = result.find(
+      (dep) => dep.name === "typescript" && dep.devDependency === true
+    );
     assert.isDefined(typescript);
-    expect(typescript?.devDependency).to.be.true;
     expect(typescript?.type).to.be.equal("missing");
     expect(typescript?.version).to.be.equal("4.4.4");
     // redundant json-fixer devDependency
@@ -97,8 +97,6 @@ describe("dependencyIssues unit test", () => {
     const result = await findDependencyIssues(
       "./test/projects/invalid_dependency/package.json"
     );
-    // TODO: returns 3 issues
-    // expect(result).to.have.lengthOf(2);
     // invalid json-fixer dependency
     const jsonFixer = result.find((dep) => dep.name === "json-fixer");
     assert.isDefined(jsonFixer);

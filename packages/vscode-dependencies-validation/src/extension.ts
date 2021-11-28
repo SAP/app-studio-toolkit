@@ -6,6 +6,8 @@ import {
   languages,
   DiagnosticCollection,
   commands,
+  OutputChannel,
+  TextDocument,
 } from "vscode";
 import { dirname } from "path";
 import {
@@ -14,14 +16,19 @@ import {
   invokeNPMCommand,
 } from "@sap-devx/npm-dependencies-validation";
 import { NPMIssuesActionProvider } from "./npmIssuesActionProvider";
-import { subscribeToDocumentChanges } from "./diagnostics";
+import { refreshDiagnostics, subscribeToDocumentChanges } from "./diagnostics";
+import { install, prune } from "./commands";
 
 let dependencyIssuesDiagnosticCollection: DiagnosticCollection;
 
 const PACKAGE_JSON = "package.json";
 const PACKAGE_JSON_PATTERN = `**​/${PACKAGE_JSON}`;
 
+let outputChannel: OutputChannel;
+
 export function activate(context: ExtensionContext) {
+  outputChannel = window.createOutputChannel("vscode-deps-validations");
+
   void findIssues();
 
   void addFileWatcher();
@@ -49,31 +56,28 @@ export function activate(context: ExtensionContext) {
   context.subscriptions.push(
     commands.registerCommand(
       "deps.install",
-      async (depIssue: NPMDependencyIssue, packageJsonPath: string) => {
-        const { name, version } = depIssue;
-        try {
-          await window.showInformationMessage(
-            `Installing... ${JSON.stringify(depIssue, null, 2)}`
-          );
-          await invokeNPMCommand(
-            ["install", `${name}@${version}`],
-            dirname(packageJsonPath)
-          );
-          await window.showInformationMessage(
-            `Finished Installing... ${JSON.stringify(depIssue, null, 2)}`
-          );
-        } catch (error) {
-          void window.showErrorMessage(`Installing Error ${error.stack}`);
-        }
+      (depIssue: NPMDependencyIssue, packageJsonPath: string) => {
+        return install(
+          outputChannel,
+          depIssue,
+          packageJsonPath,
+          dependencyIssuesDiagnosticCollection
+        );
       }
     )
   );
   context.subscriptions.push(
-    commands.registerCommand("deps.prune", (depIssue: NPMDependencyIssue) => {
-      void window.showInformationMessage(
-        `Pruning... ${JSON.stringify(depIssue, null, 2)}`
-      );
-    })
+    commands.registerCommand(
+      "deps.prune",
+      (depIssue: NPMDependencyIssue, packageJsonPath: string) => {
+        return prune(
+          outputChannel,
+          depIssue,
+          packageJsonPath,
+          dependencyIssuesDiagnosticCollection
+        );
+      }
+    )
   );
 }
 // TODO: need to add file watcher for unsupported package manager files and properties

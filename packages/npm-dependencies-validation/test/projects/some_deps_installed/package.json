@@ -1,5 +1,5 @@
 {
-  "name": "no_deps_installed",
+  "name": "some_deps_installed",
   "version": "1.0.0",
   "dependencies": {
     "json-fixer": "1.6.12",

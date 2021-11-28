@@ -1,6 +1,7 @@
 import { access, readFile } from "fs/promises";
 import { constants } from "fs";
 import { join, dirname } from "path";
+import { PackageJson } from "../types";
 
 const yarnManagerFiles = [
   "yarn.lock",
@@ -17,13 +18,14 @@ const pnpmManagerFiles = [
 ];
 const monorepoProps = ["workspaces"];
 
-async function readJsonFile(jsonFilePath: string): Promise<any> {
+export async function readJsonFile(jsonFilePath: string): Promise<PackageJson> {
   try {
     const packageJsonContent = await readFile(jsonFilePath, "utf-8");
     const content: { name: string } = JSON.parse(packageJsonContent);
     return content;
   } catch (error) {
-    return {};
+    // TODO: ???
+    return {} as PackageJson;
   }
 }
 
