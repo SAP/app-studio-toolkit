@@ -5,13 +5,14 @@ export type NPMDependencyIssue = {
   version: string;
   type: NpmLsIssueType;
   devDependency: boolean;
-} & NpmLsProblemsProperty;
+  message: string;
+};
 
 export type NpmLsResult = {
   name: string;
   version: string;
   dependencies: NpmLsDependencies;
-} & NpmLsProblemsProperty;
+};
 
 export type NpmLsDependencies =
   | NpmLsDependenciesWithoutIssues
@@ -29,6 +30,7 @@ export type DependenciesPropertyName = "dependencies" | "devDependencies";
 
 export type PackageJson = {
   name: string;
+  version: string;
 } & DependenciesProperties;
 
 export type DependenciesProperties = {
@@ -49,12 +51,7 @@ export type NpmLsIssueProperty = {
   [key in NpmLsIssueType]: boolean | string;
 };
 
-export interface NpmLsProblemsProperty {
-  problems: string[];
-}
-
-export type NpmLsDependencyWithIssue = NpmLsProblemsProperty &
-  NpmLsIssueProperty &
+export type NpmLsDependencyWithIssue = NpmLsIssueProperty &
   NpmLsVersionProperty;
 
 export type NpmLsDependencyWithoutIssue = {

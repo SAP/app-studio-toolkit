@@ -90,20 +90,18 @@ function createIssueLocation(
   const { name } = npmDepIssue;
   const versionNode = findNodeAtLocation(tree, [depsPropName, name]);
   const nameNode = versionNode?.parent?.children?.[0];
-  if (nameNode) {
-    const nameOffset = nameNode.offset;
-    const namePoint = createPoint(vPackageJsonFile, nameOffset);
-    const versionOffset = versionNode.offset;
-    const versionPoint = createPoint(vPackageJsonFile, versionOffset);
+  const nameOffset = nameNode?.offset || 1;
+  const namePoint = createPoint(vPackageJsonFile, nameOffset);
+  const versionOffset = versionNode?.offset || 1;
+  const versionPoint = createPoint(vPackageJsonFile, versionOffset);
 
-    return {
-      namePoint,
-      versionPoint,
-      npmDepIssue,
-      actualVersion: versionNode.value,
-      packageJsonPath,
-    };
-  }
+  return {
+    namePoint,
+    versionPoint,
+    npmDepIssue,
+    actualVersion: versionNode?.value,
+    packageJsonPath,
+  };
 }
 
 function createPoint(

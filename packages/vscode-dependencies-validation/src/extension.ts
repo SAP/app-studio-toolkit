@@ -5,7 +5,6 @@ import {
   window,
   languages,
   DiagnosticCollection,
-  commands,
   OutputChannel,
 } from "vscode";
 import {
@@ -14,7 +13,7 @@ import {
 } from "@sap-devx/npm-dependencies-validation";
 import { NPMIssuesActionProvider } from "./npmIssuesActionProvider";
 import { subscribeToDocumentChanges } from "./diagnostics";
-import { install, prune } from "./commands";
+import { registerFixCommand } from "./commands";
 
 let dependencyIssuesDiagnosticCollection: DiagnosticCollection;
 
@@ -50,33 +49,10 @@ export function activate(context: ExtensionContext) {
 
   subscribeToDocumentChanges(context, dependencyIssuesDiagnosticCollection);
 
-  registerNpmCommands(context);
-}
-
-function registerNpmCommands(context: ExtensionContext) {
-  context.subscriptions.push(
-    commands.registerCommand(
-      "deps.install",
-      (depIssue: NPMDependencyIssue, packageJsonPath: string) =>
-        install(
-          outputChannel,
-          depIssue,
-          packageJsonPath,
-          dependencyIssuesDiagnosticCollection
-        )
-    )
-  );
-  context.subscriptions.push(
-    commands.registerCommand(
-      "deps.prune",
-      (depIssue: NPMDependencyIssue, packageJsonPath: string) =>
-        prune(
-          outputChannel,
-          depIssue,
-          packageJsonPath,
-          dependencyIssuesDiagnosticCollection
-        )
-    )
+  registerFixCommand(
+    context,
+    outputChannel,
+    dependencyIssuesDiagnosticCollection
   );
 }
 

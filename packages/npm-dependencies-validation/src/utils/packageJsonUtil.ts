@@ -21,7 +21,7 @@ const monorepoProps = ["workspaces"];
 export async function readJsonFile(jsonFilePath: string): Promise<PackageJson> {
   try {
     const packageJsonContent = await readFile(jsonFilePath, "utf-8");
-    const content: { name: string } = JSON.parse(packageJsonContent);
+    const content: PackageJson = JSON.parse(packageJsonContent);
     return content;
   } catch (error) {
     // TODO: ???

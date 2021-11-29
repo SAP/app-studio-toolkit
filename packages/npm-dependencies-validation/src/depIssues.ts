@@ -93,10 +93,16 @@ async function createDependencyIssues(
   packageJson: PackageJson
 ): Promise<NPMDependencyIssue[]> {
   const { dependencies } = await listNodeModulesDeps(config);
+
   const npmLsDepsWithIssues = getDependenciesWithIssues(dependencies);
   const devDependency = config.lsArgs.includes("--dev");
 
   return constructNPMDepIssues(npmLsDepsWithIssues, devDependency, packageJson);
+}
+
+function constructPackageInfo(packageJson: PackageJson): string {
+  const { name, version } = packageJson;
+  return `${name}@${version}`;
 }
 
 function constructNPMDepIssues(
@@ -105,6 +111,7 @@ function constructNPMDepIssues(
   packageJson: PackageJson
 ): NPMDependencyIssue[] {
   const npmDepsWithIssues: NPMDependencyIssue[] = [];
+  const packageInfo = constructPackageInfo(packageJson);
   for (const name in npmLsDepsWithIssues) {
     const depWithissue = npmLsDepsWithIssues[name];
 
@@ -113,16 +120,32 @@ function constructNPMDepIssues(
     const version = getVersion(depWithissue, devDependency, packageJson, name);
     if (!version) continue;
 
+    const message = createProblemMessage(type, version, name, packageInfo);
+
     npmDepsWithIssues.push({
       name,
       version,
       type,
       devDependency,
-      problems: depWithissue.problems,
+      message,
     });
   }
 
   return npmDepsWithIssues;
+}
+
+function createProblemMessage(
+  type: NpmLsIssueType,
+  version: string,
+  depName: string,
+  packageInfo: string
+): string {
+  if (type === "missing")
+    return `${type} ${depName}@${version}, required by ${packageInfo}`;
+  if (type === "invalid")
+    return `${type} ${depName}@${version}, required by ${packageInfo}`;
+  // extraneous
+  return `extraneous ${depName}@${version} in ${packageInfo} node_modules`;
 }
 
 export async function findDependencyIssues(

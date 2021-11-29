@@ -14,7 +14,7 @@ import {
   NPMDependencyIssue,
 } from "@sap-devx/npm-dependencies-validation";
 import { getDepIssueLocations, DependencyIssueLocation } from "./depsLocations";
-import { set, startCase } from "lodash";
+import { set } from "lodash";
 
 /** Code that is used to associate package.json diagnostic entries with code actions. */
 export const NPM_DEPENDENCY_ISSUE = "npm_dependency_issue";
@@ -59,7 +59,7 @@ export async function refreshDiagnostics(
       actualVersion,
       packageJsonPath
     );
-    diagnostics.push(versionDiagnostic);
+    diagnostics.push(versionDiagnostic); //TODO: do we both name and version diagnostics ?
   });
 
   dependencyIssueDiagnostics.set(doc.uri, diagnostics);
@@ -73,19 +73,21 @@ function constructDiagnostic(
 ): Diagnostic {
   const { line, column } = point;
 
-  const range = new Range(line - 1, column, line - 1, column + value.length);
-  const message = createMessage(depIssue);
-  const diagnostic = new Diagnostic(range, message, DiagnosticSeverity.Error);
+  const range = new Range(
+    line - 1,
+    column,
+    line - 1,
+    column + value?.length || 0
+  );
+  const diagnostic = new Diagnostic(
+    range,
+    depIssue.message,
+    DiagnosticSeverity.Error
+  );
   diagnostic.code = NPM_DEPENDENCY_ISSUE;
-  set(diagnostic, "depIssue", depIssue);
-  set(diagnostic, "packageJsonPath", packageJsonPath);
+  set(diagnostic, "packageJsonPath", packageJsonPath); // TODO: how to pass needed data to diagnostic ?
 
   return diagnostic;
-}
-
-function createMessage(npmDepIssue: NPMDependencyIssue): string {
-  const { type, name, version } = npmDepIssue;
-  return `${startCase(type)} dependency ${name}@${version} is found.`;
 }
 
 export function subscribeToDocumentChanges(

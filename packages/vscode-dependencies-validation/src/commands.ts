@@ -1,87 +1,61 @@
 import { dirname } from "path";
 import {
+  commands,
   DiagnosticCollection,
+  ExtensionContext,
   OutputChannel,
   TextDocument,
   Uri,
   workspace,
 } from "vscode";
-import {
-  invokeNPMCommand,
-  NPMDependencyIssue,
-} from "@sap-devx/npm-dependencies-validation";
+import { invokeNPMCommand } from "@sap-devx/npm-dependencies-validation";
 import { refreshDiagnostics } from "./diagnostics";
 
-export async function install(
+export const FIX_ALL_COMMAND = "fix.all.dependency.issues.command";
+
+export function registerFixCommand(
+  context: ExtensionContext,
   outputChannel: OutputChannel,
-  depIssue: NPMDependencyIssue,
-  packageJsonPath: string,
   dependencyIssuesDiagnosticCollection: DiagnosticCollection
-): Promise<void> {
-  const { name, version } = depIssue;
-  outputChannel.show(true);
-
-  try {
-    outputChannel.appendLine(
-      `Executing install of ${JSON.stringify(depIssue)}`
-    );
-    const start = Date.now();
-    await invokeNPMCommand(
-      ["install", `${name}@${version}`],
-      dirname(packageJsonPath),
-      outputChannel
-    );
-    const finish = Date.now();
-    outputChannel.appendLine(
-      `Finished install of ${JSON.stringify(depIssue)} in ${
-        finish - start
-      } millis`
-    );
-
-    void refreshPackageJsonDiagnostics(
-      packageJsonPath,
-      dependencyIssuesDiagnosticCollection
-    );
-  } catch (error) {
-    outputChannel.appendLine(
-      `Install of ${JSON.stringify(depIssue)} failed: ${error.stack}`
-    );
-  }
+) {
+  context.subscriptions.push(
+    commands.registerCommand(FIX_ALL_COMMAND, (packageJsonPath: string) =>
+      executeAllFixCommand(
+        outputChannel,
+        packageJsonPath,
+        dependencyIssuesDiagnosticCollection
+      )
+    )
+  );
 }
 
-export async function prune(
+async function executeAllFixCommand(
   outputChannel: OutputChannel,
-  depIssue: NPMDependencyIssue,
   packageJsonPath: string,
   dependencyIssuesDiagnosticCollection: DiagnosticCollection
 ): Promise<void> {
-  const { name } = depIssue;
   outputChannel.show(true);
 
+  const npmCommand = "install";
   try {
-    outputChannel.appendLine(`Executing prune of ${JSON.stringify(depIssue)}`);
+    outputChannel.appendLine(
+      `Executing npm ${npmCommand} on ${dirname(packageJsonPath)} ...`
+    );
     const start = Date.now();
     await invokeNPMCommand(
-      ["prune", `${name}`],
+      [npmCommand],
       dirname(packageJsonPath),
       outputChannel
     );
 
-    const finish = Date.now();
-    outputChannel.appendLine(
-      `Finished prune of ${JSON.stringify(depIssue)} in ${
-        finish - start
-      } millis`
-    );
+    outputChannel.append(`Succeeded in ${Date.now() - start} millis.`);
 
     void refreshPackageJsonDiagnostics(
       packageJsonPath,
       dependencyIssuesDiagnosticCollection
     );
   } catch (error) {
-    outputChannel.appendLine(
-      `Prune of ${JSON.stringify(depIssue)} failed: ${error.stack}`
-    );
+    outputChannel.appendLine(`Failed: ${error.stack}`);
   }
 }
 
