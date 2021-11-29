@@ -9,8 +9,7 @@
   },
   "main": "index.js",
   "dependencies": {
-    "chevron": "^0.2.0",
-    "json-fixer": "^1.6.12"
+    "chevron": "^0.2.0"
   },
   "devDependencies": {
     "lodash": "2.2.490",

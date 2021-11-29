@@ -4,69 +4,53 @@ import { invokeNPMCommand } from "./utils/npmUtil";
 import {
   DependenciesPropertyName,
   NPMDependencyIssue,
-  NPMDependencyWithIssue,
-  NPMIssueType,
   NpmLsDependencies,
   PackageJson,
-  InvalidDependency,
-  MissingDependency,
-  ExtraneousDependency,
+  NpmLsIssueType,
+  NpmLsDependencyWithIssue,
+  NpmLsResult,
+  NpmLsDependenciesWithIssues,
+  NpmLsDependency,
 } from "./types";
 
 // ls --depth=0 shows only top-level dependencies
-const LS_ARGS: string[] = ["ls", "--depth=0"];
+const LS_ARGS: string[] = ["ls", "--depth=0"]; //TODO: without --no-package-lock issues are not returned when there is package-lock.json
+// TODO: with --no-package-lock all missing dependencies are installed
 
 async function listNodeModulesDeps(
   config: DepIssuesConfig
-): Promise<NpmLsDependencies> {
-  return invokeNPMCommand<NpmLsDependencies>(
-    config.lsArgs,
-    resolve(dirname(config.packageJsonPath))
+): Promise<NpmLsResult> {
+  const { packageJsonPath, lsArgs } = config;
+  return invokeNPMCommand<NpmLsResult>(
+    lsArgs,
+    resolve(dirname(packageJsonPath))
   );
 }
 
-function isMissingDependency(
-  dependencyWithIssue: NPMDependencyWithIssue
-): dependencyWithIssue is MissingDependency {
-  return "missing" in dependencyWithIssue;
-}
-
-function isInvalidDependency(
-  dependencyWithIssue: NPMDependencyWithIssue
-): dependencyWithIssue is InvalidDependency {
-  return "invalid" in dependencyWithIssue;
-}
-
-function isExtraneousDependency(
-  dependencyWithIssue: NPMDependencyWithIssue
-): dependencyWithIssue is ExtraneousDependency {
-  return "extraneous" in dependencyWithIssue;
+function isDependencyWithIssue(npmLsDep: NpmLsDependency): boolean {
+  const npmLsDepWithIssue = npmLsDep as NpmLsDependencyWithIssue;
+  return (
+    !!npmLsDepWithIssue.extraneous ||
+    !!npmLsDepWithIssue.missing ||
+    !!npmLsDepWithIssue.invalid
+  );
 }
 
 function getIssueType(
-  dependencyWithIssue: NPMDependencyWithIssue
-): NPMIssueType | undefined {
-  if (isMissingDependency(dependencyWithIssue)) return "missing";
-  if (isInvalidDependency(dependencyWithIssue)) return "invalid";
-  if (isExtraneousDependency(dependencyWithIssue)) return "extraneous";
-
-  return undefined;
+  dependencyWithIssue: NpmLsDependencyWithIssue
+): NpmLsIssueType {
+  if (dependencyWithIssue.missing) return "missing";
+  if (dependencyWithIssue.invalid) return "invalid";
+  return "extraneous";
 }
 
 function getVersion(
-  dependencyWithIssue: NPMDependencyWithIssue,
+  dependencyWithIssue: NpmLsDependencyWithIssue,
   devDepenedncy: boolean,
   packageJson: PackageJson,
   depName: string
 ): string | undefined {
-  let version: string | undefined;
-  if (isMissingDependency(dependencyWithIssue)) {
-    version = dependencyWithIssue.required;
-  } else if (isInvalidDependency(dependencyWithIssue)) {
-    version = dependencyWithIssue.version;
-  } else if (isExtraneousDependency(dependencyWithIssue)) {
-    version = dependencyWithIssue.version;
-  }
+  const version = dependencyWithIssue.required || dependencyWithIssue.version;
 
   return (
     version ?? getVersionFromPackageJson(depName, devDepenedncy, packageJson)
@@ -89,35 +73,56 @@ type DepIssuesConfig = {
   lsArgs: string[];
 };
 
+function getDependenciesWithIssues(
+  npmLsDeps: NpmLsDependencies
+): NpmLsDependenciesWithIssues {
+  const npmLsDepsWithIssues: NpmLsDependenciesWithIssues = {};
+  for (const depName in npmLsDeps) {
+    const npmLsDep: NpmLsDependency = npmLsDeps[depName];
+
+    if (isDependencyWithIssue(npmLsDep)) {
+      npmLsDepsWithIssues[depName] = npmLsDep as NpmLsDependencyWithIssue;
+    }
+  }
+
+  return npmLsDepsWithIssues;
+}
+
 async function createDependencyIssues(
   config: DepIssuesConfig,
   packageJson: PackageJson
 ): Promise<NPMDependencyIssue[]> {
   const { dependencies } = await listNodeModulesDeps(config);
+  const npmLsDepsWithIssues = getDependenciesWithIssues(dependencies);
   const devDependency = config.lsArgs.includes("--dev");
 
-  const depWithIssues: NPMDependencyIssue[] = [];
-  for (const depName in dependencies) {
-    const dependencyWithIssue: NPMDependencyWithIssue = dependencies[depName];
+  return constructNPMDepIssues(npmLsDepsWithIssues, devDependency, packageJson);
+}
 
-    const type: NPMIssueType | undefined = getIssueType(dependencyWithIssue);
-    const version: string | undefined = getVersion(
-      dependencyWithIssue,
+function constructNPMDepIssues(
+  npmLsDepsWithIssues: NpmLsDependenciesWithIssues,
+  devDependency: boolean,
+  packageJson: PackageJson
+): NPMDependencyIssue[] {
+  const npmDepsWithIssues: NPMDependencyIssue[] = [];
+  for (const name in npmLsDepsWithIssues) {
+    const depWithissue = npmLsDepsWithIssues[name];
+
+    const type = getIssueType(depWithissue);
+
+    const version = getVersion(depWithissue, devDependency, packageJson, name);
+    if (!version) continue;
+
+    npmDepsWithIssues.push({
+      name,
+      version,
+      type,
       devDependency,
-      packageJson,
-      depName
-    );
-    if (type && version) {
-      depWithIssues.push({
-        name: depName,
-        version,
-        type,
-        devDependency,
-      });
-    }
+      problems: depWithissue.problems,
+    });
   }
 
-  return depWithIssues;
+  return npmDepsWithIssues;
 }
 
 export async function findDependencyIssues(

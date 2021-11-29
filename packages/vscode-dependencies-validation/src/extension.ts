@@ -7,27 +7,25 @@ import {
   DiagnosticCollection,
   commands,
   OutputChannel,
-  TextDocument,
 } from "vscode";
-import { dirname } from "path";
 import {
   NPMDependencyIssue,
   findDependencyIssues,
-  invokeNPMCommand,
 } from "@sap-devx/npm-dependencies-validation";
 import { NPMIssuesActionProvider } from "./npmIssuesActionProvider";
-import { refreshDiagnostics, subscribeToDocumentChanges } from "./diagnostics";
+import { subscribeToDocumentChanges } from "./diagnostics";
 import { install, prune } from "./commands";
 
 let dependencyIssuesDiagnosticCollection: DiagnosticCollection;
 
 const PACKAGE_JSON = "package.json";
 const PACKAGE_JSON_PATTERN = `**​/${PACKAGE_JSON}`;
+const extName = "vscode-dependency-validation";
 
 let outputChannel: OutputChannel;
 
 export function activate(context: ExtensionContext) {
-  outputChannel = window.createOutputChannel("vscode-deps-validations");
+  outputChannel = window.createOutputChannel(extName);
 
   void findIssues();
 
@@ -46,40 +44,42 @@ export function activate(context: ExtensionContext) {
     )
   );
 
-  dependencyIssuesDiagnosticCollection = languages.createDiagnosticCollection(
-    "npm-dependency-issues"
-  );
+  dependencyIssuesDiagnosticCollection =
+    languages.createDiagnosticCollection(extName);
   context.subscriptions.push(dependencyIssuesDiagnosticCollection);
 
   subscribeToDocumentChanges(context, dependencyIssuesDiagnosticCollection);
 
+  registerNpmCommands(context);
+}
+
+function registerNpmCommands(context: ExtensionContext) {
   context.subscriptions.push(
     commands.registerCommand(
       "deps.install",
-      (depIssue: NPMDependencyIssue, packageJsonPath: string) => {
-        return install(
+      (depIssue: NPMDependencyIssue, packageJsonPath: string) =>
+        install(
           outputChannel,
           depIssue,
           packageJsonPath,
           dependencyIssuesDiagnosticCollection
-        );
-      }
+        )
     )
   );
   context.subscriptions.push(
     commands.registerCommand(
       "deps.prune",
-      (depIssue: NPMDependencyIssue, packageJsonPath: string) => {
-        return prune(
+      (depIssue: NPMDependencyIssue, packageJsonPath: string) =>
+        prune(
           outputChannel,
           depIssue,
           packageJsonPath,
           dependencyIssuesDiagnosticCollection
-        );
-      }
+        )
     )
   );
 }
+
 // TODO: need to add file watcher for unsupported package manager files and properties
 async function findIssues(): Promise<void> {
   const packageJsonUris: Uri[] = await workspace.findFiles(

@@ -1,17 +1,29 @@
+import { OutputChannel } from "vscode";
+
 export type NPMDependencyIssue = {
   name: string;
   version: string;
-  type: NPMIssueType;
-  devDependency?: boolean;
-};
+  type: NpmLsIssueType;
+  devDependency: boolean;
+} & NpmLsProblemsProperty;
 
-export type NpmLsDependencies = {
+export type NpmLsResult = {
   name: string;
   version: string;
-  dependencies: {
-    [key: string]: NPMDependencyWithIssue;
-  };
-} & DependencyIssueProblems;
+  dependencies: NpmLsDependencies;
+} & NpmLsProblemsProperty;
+
+export type NpmLsDependencies =
+  | NpmLsDependenciesWithoutIssues
+  | NpmLsDependenciesWithIssues;
+
+export type NpmLsDependenciesWithoutIssues = {
+  [key: string]: NpmLsDependencyWithoutIssue;
+};
+
+export type NpmLsDependenciesWithIssues = {
+  [key: string]: NpmLsDependencyWithIssue;
+};
 
 export type DependenciesPropertyName = "dependencies" | "devDependencies";
 
@@ -25,28 +37,33 @@ export type DependenciesProperties = {
   };
 };
 
-export type InvalidDependency = {
-  version: string;
-  invalid: boolean | string;
-} & DependencyIssueProblems;
+export type NpmLsIssueType = "missing" | "invalid" | "extraneous";
 
-export type MissingDependency = {
-  required: string;
-  missing: boolean;
-} & DependencyIssueProblems;
+export type NpmLsVersionType = "version" | "required";
 
-export type ExtraneousDependency = {
-  version: string;
-  extraneous: boolean;
-} & DependencyIssueProblems;
-
-export type NPMIssueType = "missing" | "invalid" | "extraneous";
-
-export type DependencyIssueProblems = {
-  problems: string[];
+export type NpmLsVersionProperty = {
+  [key in NpmLsVersionType]: string;
 };
 
-export type NPMDependencyWithIssue =
-  | InvalidDependency
-  | MissingDependency
-  | ExtraneousDependency;
+export type NpmLsIssueProperty = {
+  [key in NpmLsIssueType]: boolean | string;
+};
+
+export interface NpmLsProblemsProperty {
+  problems: string[];
+}
+
+export type NpmLsDependencyWithIssue = NpmLsProblemsProperty &
+  NpmLsIssueProperty &
+  NpmLsVersionProperty;
+
+export type NpmLsDependencyWithoutIssue = {
+  version: string;
+  resolved: string;
+};
+
+export type NpmLsDependency =
+  | NpmLsDependencyWithIssue
+  | NpmLsDependencyWithoutIssue;
+
+export type VscodeOutputChannel = Pick<OutputChannel, "append">;

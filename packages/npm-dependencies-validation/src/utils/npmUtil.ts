@@ -1,5 +1,5 @@
 import { spawn } from "child_process";
-import { OutputChannel } from "vscode";
+import { VscodeOutputChannel } from "../types";
 
 export function getNPM(): string {
   return /^win/.test(process.platform) ? "npm.cmd" : "npm";
@@ -8,7 +8,7 @@ export function getNPM(): string {
 export function invokeNPMCommand<T>(
   commandArgs: string[],
   cwd: string,
-  outputChannel?: OutputChannel
+  outputChannel?: VscodeOutputChannel
 ): Promise<T> {
   return new Promise((resolve, reject) => {
     const command = spawn(getNPM(), [...commandArgs, "--json"], { cwd });
@@ -26,13 +26,13 @@ export function invokeNPMCommand<T>(
   });
 }
 
-function showError(error: Error, outputChannel?: OutputChannel): void {
+function showError(error: Error, outputChannel?: VscodeOutputChannel): void {
   const message = `${error.stack}`;
   console.error(message);
   outputChannel?.append(message);
 }
 
-function showData(data: string, outputChannel?: OutputChannel): void {
+function showData(data: string, outputChannel?: VscodeOutputChannel): void {
   const dataStr = `${data}`;
   console.log(dataStr);
   outputChannel?.append(dataStr);

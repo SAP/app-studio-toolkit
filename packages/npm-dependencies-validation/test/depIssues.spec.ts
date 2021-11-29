@@ -11,7 +11,6 @@ describe("dependencyIssues unit test", () => {
     // missing json-fixer dependency
     const jsonFixer = result.find((dep) => dep.name === "json-fixer");
     assert.isDefined(jsonFixer);
-    expect(jsonFixer?.devDependency).to.be.false;
     expect(jsonFixer?.type).to.be.equal("missing");
     expect(jsonFixer?.version).to.be.equal("1.6.12");
     // missing lodash dependency
