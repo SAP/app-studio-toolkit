@@ -3,7 +3,7 @@ import {
   ProjectApi,
   WorkspaceApi,
 } from "@sap/artifact-management";
-import { debounce, map } from "lodash";
+import { debounce, map, DebouncedFunc, partial } from "lodash";
 import { recomputeTagsContexts } from "./custom-context";
 import { SetContext } from "./types";
 
@@ -20,15 +20,30 @@ interface InitProjectTypeWatchersOpts {
   getWorkspaceAPI: () => WorkspaceAPIForWatcher;
 }
 
+const RECOMPUTE_DEBOUNCE_DELAY = 1000;
+
+interface DebouncedRecomputeOpts {
+  setContext: SetContext;
+  getWorkspaceAPI: () => WorkspaceAPIForWatcher;
+}
+
+const debouncedRecompute: DebouncedFunc<
+  (opts: DebouncedRecomputeOpts) => Promise<void>
+> = debounce(async (opts: DebouncedRecomputeOpts) => {
+  const allProjects = await opts.getWorkspaceAPI().getProjects();
+  // we are re-building **all** our VSCode custom contexts on every change
+  // to avoid maintaining the complex logic of more granular modifications to the current state.
+  await recomputeTagsContexts(allProjects, opts.setContext);
+}, RECOMPUTE_DEBOUNCE_DELAY);
+
 export async function initProjectTypeWatchers(
   opts: InitProjectTypeWatchersOpts
 ): Promise<void> {
-  // TODO: call recalculate here for initial state? or keep in extension.ts?
   await registerAllProjectsListeners(opts);
   opts.getWorkspaceAPI().onWorkspaceChanged(async () => {
-    // TODO: should we also re-calculate? -- probably yes, and `recomputeTagsContexts` remove from extension.ts?
     await removeAllProjectListeners();
     await registerAllProjectsListeners(opts);
+    void debouncedRecompute(opts);
   });
 }
 
@@ -42,7 +57,9 @@ async function registerAllProjectsListeners(
 ) {
   const projects = await opts.getWorkspaceAPI().getProjects();
   await Promise.all(
-    map(projects, (projectApi) => onProjectAdded({ projectApi, ...opts }))
+    map(projects, (projectApi) =>
+      registerSingleProjectListeners({ projectApi, ...opts })
+    )
   );
 }
 
@@ -50,13 +67,12 @@ async function removeAllProjectListeners() {
   const projWatcherEntries = Array.from(projectWatchers.entries());
   // parallel handling
   await Promise.all(
-    map(projWatcherEntries, async (entry) =>
-      onProjectRemoved(entry[1], entry[0])
+    map(projWatcherEntries, async ([_, currItemWatcher]) =>
+      cleanUpProjectRefs(currItemWatcher)
     )
   );
+  projectWatchers.clear();
 }
-
-const RECOMPUTE_DEBOUNCE_DELAY = 1000;
 
 interface OnProjectAddedOpts {
   projectApi: ProjectApiForWatcher;
@@ -64,28 +80,23 @@ interface OnProjectAddedOpts {
   getWorkspaceAPI: () => WorkspaceAPIForWatcher;
 }
 
-async function onProjectAdded(opts: OnProjectAddedOpts): Promise<void> {
+async function registerSingleProjectListeners(
+  opts: OnProjectAddedOpts
+): Promise<void> {
   const currItemWatcher = await opts.projectApi.watchItems();
   // voodoo magic, otherwise `updated` event would never be triggered
   await currItemWatcher.readItems();
 
-  // debouncing to avoid performance hit (re-calculating per user key press)
-  currItemWatcher.addListener(
-    "updated",
-    debounce(async () => {
-      const allProjects = await opts.getWorkspaceAPI().getProjects();
-      // we are re-building **all** our VSCode custom contexts on every change.
-      // to avoid maintaining the complex logic of more granular modifications to
-      await recomputeTagsContexts(allProjects, opts.setContext);
-    }, RECOMPUTE_DEBOUNCE_DELAY)
-  );
+  // debouncing to avoid performance hit (e.g: re-calculating on every user's key press)
+  currItemWatcher.addListener("updated", async () => {
+    const allProjects = await opts.getWorkspaceAPI().getProjects();
+    // we are re-building **all** our VSCode custom contexts on every change
+    // to avoid maintaining the complex logic of more granular modifications to the current state.
+    await recomputeTagsContexts(allProjects, opts.setContext);
+  });
   projectWatchers.set(opts.projectApi, currItemWatcher);
 }
 
-async function onProjectRemoved(
-  itemWatcher: ItemWatcherApi,
-  projectApi: ProjectApiForWatcher
-): Promise<void> {
+async function cleanUpProjectRefs(itemWatcher: ItemWatcherApi): Promise<void> {
   await itemWatcher.destroy();
-  projectWatchers.delete(projectApi);
 }
