@@ -17,8 +17,9 @@
     "prepare": "husky install",
     "release:version": "lerna version",
     "release:publish": "lerna publish from-git --yes --no-verify-access",
-    "ci": "npm-run-all legal:* format:validate lint:validate ci:subpackages coverage:merge",
+    "ci": "npm-run-all clean legal:* format:validate lint:validate ci:subpackages coverage:merge hoist:vsix",
     "ci:subpackages": "pnpm -r run ci",
+    "clean": "shx rm -rf ./vsix",
     "compile": "pnpm -r run clean && tsc --build",
     "compile:watch": "pnpm -r run clean  && tsc --build --watch",
     "format:fix": "prettier --write \"**/*.@(js|ts|json|md)\" --ignore-path=.gitignore",
@@ -28,7 +29,8 @@
     "coverage:merge": "node ./scripts/merge-coverage",
     "legal:delete": "pnpm -r exec -- shx rm -rf .reuse LICENSES || true",
     "legal:copy-reuse": "pnpm -r exec -- shx cp -r ../../.reuse .reuse",
-    "legal:copy-license": "pnpm -r exec -- shx cp -r ../../LICENSES LICENSES"
+    "legal:copy-license": "pnpm -r exec -- shx cp -r ../../LICENSES LICENSES",
+    "hoist:vsix": "shx mkdir -p vsix && cp examples/*/*.vsix ./vsix && cp packages/*/*.vsix ./vsix"
   },
   "devDependencies": {
     "@types/vscode": "^1.49.0",
