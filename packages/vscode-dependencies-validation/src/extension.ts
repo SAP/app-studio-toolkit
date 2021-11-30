@@ -88,9 +88,6 @@ async function displayProblematicDependencies(
 ): Promise<void> {
   const start = Date.now();
 
-  // const problemDeps: NPMDependencyIssue[] = await findDependencyIssues(
-  //   packageJsonUri.fsPath
-  // );
   const npmLsResult: NpmLsResult = await findDependencyIssues(
     packageJsonUri.fsPath
   );

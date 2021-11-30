@@ -38,17 +38,12 @@ async function executeAllFixCommand(
 
   const npmCommand = "install";
   try {
-    outputChannel.appendLine(
-      `Executing npm ${npmCommand} on ${dirname(packageJsonPath)} ...`
-    );
+    outputChannel.appendLine(`\nFixing dependency issues ...`);
     const start = Date.now();
-    await invokeNPMCommand(
-      [npmCommand],
-      dirname(packageJsonPath),
-      outputChannel
-    );
+    const config = { commandArgs: [npmCommand], cwd: dirname(packageJsonPath) };
+    await invokeNPMCommand(config, outputChannel);
 
-    outputChannel.append(`Succeeded in ${Date.now() - start} millis.`);
+    outputChannel.append(`Done. (${Date.now() - start} millis)\n`);
 
     void refreshPackageJsonDiagnostics(
       packageJsonPath,

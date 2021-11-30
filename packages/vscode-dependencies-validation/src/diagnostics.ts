@@ -1,4 +1,3 @@
-import { Point } from "unist";
 import {
   Diagnostic,
   DiagnosticSeverity,
@@ -10,7 +9,6 @@ import {
   workspace,
 } from "vscode";
 import { findDependencyIssues } from "@sap-devx/npm-dependencies-validation";
-// import { getDepIssueLocations, DependencyIssueLocation } from "./depsLocations";
 import { set } from "lodash";
 
 /** Code that is used to associate package.json diagnostic entries with code actions. */
@@ -32,56 +30,17 @@ export async function refreshDiagnostics(
     diagnostics.push(constructDiagnostic(npmLsResult.problems, doc.uri.fsPath));
   }
 
-  // const issueLocations: DependencyIssueLocation[] = getDepIssueLocations(
-  //   doc.getText(),
-  //   doc.uri.fsPath,
-  //   npmDependencyIssues
-  // );
-
-  // issueLocations.forEach((issueLocation) => {
-  //   const {
-  //     namePoint,
-  //     versionPoint,
-  //     actualVersion,
-  //     npmDepIssue,
-  //     packageJsonPath,
-  //   } = issueLocation;
-  //   const nameDiagnostic = constructDiagnostic(
-  //     namePoint,
-  //     npmDepIssue,
-  //     npmDepIssue.name,
-  //     packageJsonPath
-  //   );
-  //   diagnostics.push(nameDiagnostic);
-  //   const versionDiagnostic = constructDiagnostic(
-  //     versionPoint,
-  //     npmDepIssue,
-  //     actualVersion,
-  //     packageJsonPath
-  //   );
-  //   diagnostics.push(versionDiagnostic); //TODO: do we both name and version diagnostics ?
-  // });
-
   dependencyIssueDiagnostics.set(doc.uri, diagnostics);
 }
 
 function constructDiagnostic(
-  //point: Point,
   problems: string[],
-  //value: string,
   packageJsonPath: string
 ): Diagnostic {
-  //const { line, column } = point;
-
-  const range = new Range(
-    1, //line - 1,
-    1, //column,
-    1, //line - 1,
-    5 //column + value?.length || 0
-  );
+  const range = new Range(0, 0, 0, 10);
   const diagnostic = new Diagnostic(
     range,
-    problems?.join("\n"),
+    problems.join("\n"),
     DiagnosticSeverity.Error
   );
   diagnostic.code = NPM_DEPENDENCY_ISSUES;

@@ -27,13 +27,20 @@ export function invokeNPMCommand<T>(
 }
 
 function showError(error: Error, outputChannel?: VscodeOutputChannel): void {
-  const message = `${error.stack}`;
-  console.error(message);
-  outputChannel?.append(message);
+  const { stack } = error;
+  console.error(stack);
+  sendDataToOutputChannel(`${stack}`, outputChannel);
 }
 
 function showData(data: string, outputChannel?: VscodeOutputChannel): void {
   const dataStr = `${data}`;
   console.log(dataStr);
-  outputChannel?.append(dataStr);
+  sendDataToOutputChannel(dataStr, outputChannel);
+}
+
+function sendDataToOutputChannel(
+  data: string,
+  outputChannel: VscodeOutputChannel | undefined
+): void {
+  outputChannel?.append?.(data);
 }

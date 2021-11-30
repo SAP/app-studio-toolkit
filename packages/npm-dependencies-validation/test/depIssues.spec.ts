@@ -3,7 +3,7 @@ import { resolve } from "path";
 import { findDependencyIssues } from "../src/api";
 
 describe("dependencyIssues unit test", () => {
-  it("2 dependencies and 1 devDependency declared but are not installed", async () => {
+  it("2 dependencies declared but are not installed", async () => {
     const { problems } = await findDependencyIssues(
       "./test/projects/no_deps_installed/package.json"
     );
@@ -19,7 +19,7 @@ describe("dependencyIssues unit test", () => {
     assert.isDefined(lodashProblem);
   });
 
-  it("1 devDependency declared but is not installed", async () => {
+  it("2 devDependency declared but are not installed", async () => {
     const { problems } = await findDependencyIssues(
       "./test/projects/no_devDeps_installed/package.json"
     );
