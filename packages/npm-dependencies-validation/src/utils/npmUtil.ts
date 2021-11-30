@@ -1,15 +1,15 @@
 import { spawn } from "child_process";
-import { VscodeOutputChannel } from "../types";
+import { NpmCommandConfig, VscodeOutputChannel } from "../types";
 
 export function getNPM(): string {
   return /^win/.test(process.platform) ? "npm.cmd" : "npm";
 }
 
 export function invokeNPMCommand<T>(
-  commandArgs: string[],
-  cwd: string,
+  config: NpmCommandConfig,
   outputChannel?: VscodeOutputChannel
 ): Promise<T> {
+  const { commandArgs, cwd } = config;
   return new Promise((resolve, reject) => {
     const command = spawn(getNPM(), [...commandArgs, "--json"], { cwd });
 

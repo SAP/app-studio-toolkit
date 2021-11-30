@@ -9,15 +9,12 @@ import {
   ExtensionContext,
   workspace,
 } from "vscode";
-import {
-  findDependencyIssues,
-  NPMDependencyIssue,
-} from "@sap-devx/npm-dependencies-validation";
-import { getDepIssueLocations, DependencyIssueLocation } from "./depsLocations";
+import { findDependencyIssues } from "@sap-devx/npm-dependencies-validation";
+// import { getDepIssueLocations, DependencyIssueLocation } from "./depsLocations";
 import { set } from "lodash";
 
 /** Code that is used to associate package.json diagnostic entries with code actions. */
-export const NPM_DEPENDENCY_ISSUE = "npm_dependency_issue";
+export const NPM_DEPENDENCY_ISSUES = "npm_dependency_issues";
 
 /**
  * Analyzes the package.json text document for problems.
@@ -28,63 +25,66 @@ export async function refreshDiagnostics(
   doc: TextDocument,
   dependencyIssueDiagnostics: DiagnosticCollection
 ): Promise<void> {
-  const npmDependencyIssues = await findDependencyIssues(doc.uri.fsPath);
+  const npmLsResult = await findDependencyIssues(doc.uri.fsPath);
 
   const diagnostics: Diagnostic[] = [];
+  if (npmLsResult.problems) {
+    diagnostics.push(constructDiagnostic(npmLsResult.problems, doc.uri.fsPath));
+  }
 
-  const issueLocations: DependencyIssueLocation[] = getDepIssueLocations(
-    doc.getText(),
-    doc.uri.fsPath,
-    npmDependencyIssues
-  );
+  // const issueLocations: DependencyIssueLocation[] = getDepIssueLocations(
+  //   doc.getText(),
+  //   doc.uri.fsPath,
+  //   npmDependencyIssues
+  // );
 
-  issueLocations.forEach((issueLocation) => {
-    const {
-      namePoint,
-      versionPoint,
-      actualVersion,
-      npmDepIssue,
-      packageJsonPath,
-    } = issueLocation;
-    const nameDiagnostic = constructDiagnostic(
-      namePoint,
-      npmDepIssue,
-      npmDepIssue.name,
-      packageJsonPath
-    );
-    diagnostics.push(nameDiagnostic);
-    const versionDiagnostic = constructDiagnostic(
-      versionPoint,
-      npmDepIssue,
-      actualVersion,
-      packageJsonPath
-    );
-    diagnostics.push(versionDiagnostic); //TODO: do we both name and version diagnostics ?
-  });
+  // issueLocations.forEach((issueLocation) => {
+  //   const {
+  //     namePoint,
+  //     versionPoint,
+  //     actualVersion,
+  //     npmDepIssue,
+  //     packageJsonPath,
+  //   } = issueLocation;
+  //   const nameDiagnostic = constructDiagnostic(
+  //     namePoint,
+  //     npmDepIssue,
+  //     npmDepIssue.name,
+  //     packageJsonPath
+  //   );
+  //   diagnostics.push(nameDiagnostic);
+  //   const versionDiagnostic = constructDiagnostic(
+  //     versionPoint,
+  //     npmDepIssue,
+  //     actualVersion,
+  //     packageJsonPath
+  //   );
+  //   diagnostics.push(versionDiagnostic); //TODO: do we both name and version diagnostics ?
+  // });
 
   dependencyIssueDiagnostics.set(doc.uri, diagnostics);
 }
 
 function constructDiagnostic(
-  point: Point,
-  depIssue: NPMDependencyIssue,
-  value: string,
+  //point: Point,
+  problems: string[],
+  //value: string,
   packageJsonPath: string
 ): Diagnostic {
-  const { line, column } = point;
+  //const { line, column } = point;
 
   const range = new Range(
-    line - 1,
-    column,
-    line - 1,
-    column + value?.length || 0
+    1, //line - 1,
+    1, //column,
+    1, //line - 1,
+    5 //column + value?.length || 0
   );
   const diagnostic = new Diagnostic(
     range,
-    depIssue.message,
+    problems?.join("\n"),
     DiagnosticSeverity.Error
   );
-  diagnostic.code = NPM_DEPENDENCY_ISSUE;
+  diagnostic.code = NPM_DEPENDENCY_ISSUES;
   set(diagnostic, "packageJsonPath", packageJsonPath); // TODO: how to pass needed data to diagnostic ?
 
   return diagnostic;

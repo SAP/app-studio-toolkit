@@ -16,14 +16,16 @@ describe("npmUtil unit test", () => {
 
   describe("invokeNPMCommand failed", () => {
     it("outputChannel is not provided", () => {
-      return expect(
-        invokeNPMCommand(["ls"], "./non_existing_path")
-      ).to.be.rejectedWith(`spawn ${getNPM()} ENOENT`);
+      const config = { commandArgs: ["ls"], cwd: "./non_existing_path" };
+      return expect(invokeNPMCommand(config)).to.be.rejectedWith(
+        `spawn ${getNPM()} ENOENT`
+      );
     });
 
     it("outputChannel is provided", () => {
       const appendSpy: SinonSpy = sandbox.spy(outputChannel, "append");
-      return invokeNPMCommand(["ls"], "./non_existing_path", outputChannel)
+      const config = { commandArgs: ["ls"], cwd: "./non_existing_path" };
+      return invokeNPMCommand(config, outputChannel)
         .then(() => {
           fail("test should fail");
         })
@@ -36,17 +38,14 @@ describe("npmUtil unit test", () => {
 
   describe("invokeNPMCommand succeeded with ls", () => {
     it("outputChannel is not provided", () => {
-      return expect(invokeNPMCommand(["ls", "--depth=0"], "./")).to.be
-        .fulfilled;
+      const config = { commandArgs: ["ls", "--depth=0"], cwd: "./" };
+      return expect(invokeNPMCommand(config)).to.be.fulfilled;
     });
 
     it("outputChannel is provided", async () => {
       const appendSpy: SinonSpy = sandbox.spy(outputChannel, "append");
-      const result: NpmLsResult = await invokeNPMCommand(
-        ["ls", "--depth=0"],
-        "./",
-        outputChannel
-      );
+      const config = { commandArgs: ["ls", "--depth=0"], cwd: "./" };
+      const result: NpmLsResult = await invokeNPMCommand(config, outputChannel);
       expect(appendSpy.called).to.be.true;
       expect(result).to.haveOwnProperty("name");
       expect(result).to.haveOwnProperty("version");

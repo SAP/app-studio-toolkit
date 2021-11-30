@@ -11,8 +11,8 @@ import {
   TextDocument,
 } from "vscode";
 import { get } from "lodash";
-import { NPMDependencyIssue } from "@sap-devx/npm-dependencies-validation";
-import { NPM_DEPENDENCY_ISSUE } from "./diagnostics";
+// import { NPMDependencyIssue } from "@sap-devx/npm-dependencies-validation";
+import { NPM_DEPENDENCY_ISSUES } from "./diagnostics";
 import { FIX_ALL_COMMAND } from "./commands";
 
 export class NPMIssuesActionProvider implements CodeActionProvider {
@@ -26,7 +26,7 @@ export class NPMIssuesActionProvider implements CodeActionProvider {
   ): CodeAction[] {
     // for each diagnostic entry create a code action command
     return context.diagnostics
-      .filter((diagnostic) => diagnostic.code === NPM_DEPENDENCY_ISSUE)
+      .filter((diagnostic) => diagnostic.code === NPM_DEPENDENCY_ISSUES)
       .map((diagnostic) => this.createCommandCodeAction(diagnostic));
   }
 
@@ -44,7 +44,10 @@ function createCommand(diagnostic: Diagnostic): Command {
 }
 
 function createCodeAction(diagnostic: Diagnostic): CodeAction {
-  const action = new CodeAction("Fix All", CodeActionKind.QuickFix);
+  const action = new CodeAction(
+    "Fix all dependency issues",
+    CodeActionKind.QuickFix
+  );
 
   action.command = createCommand(diagnostic);
   action.diagnostics = [diagnostic];

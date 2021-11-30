@@ -1,4 +1,5 @@
 import { expect } from "chai";
+import { dirname, join, resolve } from "path";
 import { isCurrentlySupported } from "../../../src/utils/packageJsonUtil";
 
 describe("packageJsonUtil unit test", () => {
@@ -28,5 +29,19 @@ describe("packageJsonUtil unit test", () => {
       "test/utils/packageJsonUtil/projects/monoRepo/package.json";
     const res = await isCurrentlySupported(packageJsonPath);
     expect(res).to.be.false;
+  });
+
+  it("manged by npm", async () => {
+    const packageJsonPath =
+      "test/utils/packageJsonUtil/projects/npm-managed/package.json";
+    const res = await isCurrentlySupported(packageJsonPath);
+    expect(res).to.be.true;
+  });
+
+  it("non existing package.json", async () => {
+    const packageJsonPath =
+      "test/utils/packageJsonUtil/projects/not-existing-folder/package.json";
+    const res = await isCurrentlySupported(packageJsonPath);
+    expect(res).to.be.true;
   });
 });

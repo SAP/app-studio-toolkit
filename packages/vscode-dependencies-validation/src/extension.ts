@@ -8,7 +8,7 @@ import {
   OutputChannel,
 } from "vscode";
 import {
-  NPMDependencyIssue,
+  NpmLsResult,
   findDependencyIssues,
 } from "@sap-devx/npm-dependencies-validation";
 import { NPMIssuesActionProvider } from "./npmIssuesActionProvider";
@@ -30,11 +30,9 @@ export function activate(context: ExtensionContext) {
 
   void addFileWatcher();
 
-  // TODO: pattern does not work ???
-  // const packageJsonFileSelector: DocumentSelector = { language: "json", pattern: PACKAGE_JSON_PATTERN };
   context.subscriptions.push(
     languages.registerCodeActionsProvider(
-      "json",
+      { language: "json", scheme: "file", pattern: "**/package.json" },
       new NPMIssuesActionProvider(),
       {
         providedCodeActionKinds:
@@ -90,11 +88,16 @@ async function displayProblematicDependencies(
 ): Promise<void> {
   const start = Date.now();
 
-  const problemDeps: NPMDependencyIssue[] = await findDependencyIssues(
+  // const problemDeps: NPMDependencyIssue[] = await findDependencyIssues(
+  //   packageJsonUri.fsPath
+  // );
+  const npmLsResult: NpmLsResult = await findDependencyIssues(
     packageJsonUri.fsPath
   );
 
   void window.showInformationMessage(
-    `found ${problemDeps.length} problems in ${Date.now() - start} milliseconds`
+    `found ${npmLsResult.problems?.length || 0} problems in ${
+      Date.now() - start
+    } milliseconds`
   );
 }
