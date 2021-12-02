@@ -9,9 +9,7 @@ import {
 } from "vscode";
 import { findDependencyIssues } from "@sap-devx/npm-dependencies-validation";
 import { set } from "lodash";
-
-/** Code that is used to associate package.json diagnostic entries with code actions. */
-export const NPM_DEPENDENCY_ISSUES = "npm_dependency_issues";
+import { NPM_DEPENDENCY_ISSUES_CODE } from "./constants";
 
 /**
  * Analyzes the package.json text document for problems.
@@ -44,7 +42,7 @@ function constructDiagnostic(
     problems.join("\n"),
     DiagnosticSeverity.Error
   );
-  diagnostic.code = NPM_DEPENDENCY_ISSUES;
+  diagnostic.code = NPM_DEPENDENCY_ISSUES_CODE;
   set(diagnostic, "packageJsonPath", packageJsonPath); // TODO: how to pass needed data to diagnostic ?
 
   return diagnostic;

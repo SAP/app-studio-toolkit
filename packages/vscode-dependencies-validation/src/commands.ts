@@ -4,8 +4,6 @@ import { invokeNPMCommand } from "@sap-devx/npm-dependencies-validation";
 import { refreshDiagnostics } from "./diagnostics";
 import { VscodeOutputChannel } from "./vscodeTypes";
 
-export const FIX_ALL_ISSUES_COMMAND = "fix.all.dependency.issues.command";
-
 export async function fixAllDepIssuesCommand(
   outputChannel: VscodeOutputChannel,
   packageJsonPath: string,

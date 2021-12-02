@@ -1,23 +1,25 @@
-import {
+import type {
   CancellationToken,
-  CodeAction,
   CodeActionContext,
-  CodeActionKind,
   CodeActionProvider,
   Command,
   Diagnostic,
   Range,
   Selection,
   TextDocument,
+  CodeAction,
+  CodeActionKind,
 } from "vscode";
 import { get } from "lodash";
-import { NPM_DEPENDENCY_ISSUES } from "./diagnostics";
-import { FIX_ALL_ISSUES_COMMAND } from "./commands";
+import {
+  NPM_DEPENDENCY_ISSUES_CODE,
+  FIX_ALL_ISSUES_COMMAND,
+} from "./constants";
 
 export class NPMIssuesActionProvider implements CodeActionProvider {
-  public static readonly providedCodeActionKinds = [CodeActionKind.QuickFix];
+  constructor(private kind: CodeActionKind) {}
 
-  provideCodeActions(
+  public provideCodeActions(
     document: TextDocument,
     range: Range | Selection,
     context: CodeActionContext,
@@ -25,12 +27,21 @@ export class NPMIssuesActionProvider implements CodeActionProvider {
   ): CodeAction[] {
     // for each diagnostic entry create a code action command
     return context.diagnostics
-      .filter((diagnostic) => diagnostic.code === NPM_DEPENDENCY_ISSUES)
+      .filter((diagnostic) => diagnostic.code === NPM_DEPENDENCY_ISSUES_CODE)
       .map((diagnostic) => this.createCommandCodeAction(diagnostic));
   }
 
   private createCommandCodeAction(diagnostic: Diagnostic): CodeAction {
-    return createCodeAction(diagnostic);
+    const action: CodeAction = {
+      title: "Fix all dependency issues",
+      kind: this.kind,
+    };
+
+    action.command = createCommand(diagnostic);
+    action.diagnostics = [diagnostic];
+    action.isPreferred = true;
+
+    return action;
   }
 }
 
@@ -40,17 +51,4 @@ function createCommand(diagnostic: Diagnostic): Command {
     title: "Fix all dependency issues",
     arguments: [get(diagnostic, "packageJsonPath")],
   };
-}
-
-function createCodeAction(diagnostic: Diagnostic): CodeAction {
-  const action = new CodeAction(
-    "Fix all dependency issues",
-    CodeActionKind.QuickFix
-  );
-
-  action.command = createCommand(diagnostic);
-  action.diagnostics = [diagnostic];
-  action.isPreferred = true;
-
-  return action;
 }

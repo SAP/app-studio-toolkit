@@ -7,6 +7,7 @@ import {
   DiagnosticCollection,
   OutputChannel,
   commands,
+  CodeActionKind,
 } from "vscode";
 import {
   NpmLsResult,
@@ -39,10 +40,9 @@ function registerCodeActionsProvider(context: ExtensionContext): void {
   context.subscriptions.push(
     languages.registerCodeActionsProvider(
       { language: "json", scheme: "file", pattern: "**/package.json" },
-      new NPMIssuesActionProvider(),
+      new NPMIssuesActionProvider(CodeActionKind.QuickFix),
       {
-        providedCodeActionKinds:
-          NPMIssuesActionProvider.providedCodeActionKinds,
+        providedCodeActionKinds: [CodeActionKind.QuickFix],
       }
     )
   );
