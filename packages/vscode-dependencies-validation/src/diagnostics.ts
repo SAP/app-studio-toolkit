@@ -1,12 +1,5 @@
 import type { DiagnosticCollection, ExtensionContext } from "vscode";
-import {
-  Range,
-  DiagnosticSeverity,
-  Diagnostic,
-  window,
-  workspace,
-  Uri,
-} from "vscode";
+import { Range, Diagnostic, window, workspace, Uri } from "vscode";
 import { findDependencyIssues } from "@sap-devx/npm-dependencies-validation";
 import { set } from "lodash";
 import { NPM_DEPENDENCY_ISSUES_CODE } from "./constants";
@@ -40,49 +33,10 @@ function constructDiagnostic(
   const diagnostic = new Diagnostic(
     range,
     problems.join("\n"),
-    DiagnosticSeverity.Error
+    0 // DiagnosticSeverity.Error
   );
   diagnostic.code = NPM_DEPENDENCY_ISSUES_CODE;
   set(diagnostic, "packageJsonPath", packageJsonPath); // TODO: how to pass needed data to diagnostic ?
 
   return diagnostic;
-}
-
-export function subscribeToDocumentChanges(
-  context: ExtensionContext,
-  dependencyIssueDiagnostics: DiagnosticCollection
-): void {
-  if (window.activeTextEditor) {
-    void refreshDiagnostics(
-      window.activeTextEditor.document.uri.fsPath,
-      dependencyIssueDiagnostics
-    );
-  }
-
-  context.subscriptions.push(
-    window.onDidChangeActiveTextEditor((editor) => {
-      if (editor) {
-        void refreshDiagnostics(
-          editor.document.uri.fsPath,
-          dependencyIssueDiagnostics
-        );
-      }
-    })
-  );
-
-  context.subscriptions.push(
-    workspace.onDidChangeTextDocument(
-      (e) =>
-        void refreshDiagnostics(
-          e.document.uri.fsPath,
-          dependencyIssueDiagnostics
-        )
-    )
-  );
-
-  context.subscriptions.push(
-    workspace.onDidCloseTextDocument((doc) =>
-      dependencyIssueDiagnostics.delete(doc.uri)
-    )
-  );
 }

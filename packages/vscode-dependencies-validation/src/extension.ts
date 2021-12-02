@@ -14,8 +14,9 @@ import {
   findDependencyIssues,
 } from "@sap-devx/npm-dependencies-validation";
 import { NPMIssuesActionProvider } from "./npmIssuesActionProvider";
-import { subscribeToDocumentChanges } from "./diagnostics";
-import { fixAllDepIssuesCommand, FIX_ALL_ISSUES_COMMAND } from "./commands";
+import { fixAllDepIssuesCommand } from "./commands";
+import { FIX_ALL_ISSUES_COMMAND } from "./constants";
+import { refreshDiagnostics } from "./diagnostics";
 
 const PACKAGE_JSON = "package.json";
 const PACKAGE_JSON_PATTERN = `**​/${PACKAGE_JSON}`;
@@ -117,5 +118,44 @@ async function displayProblematicDependencies(
     `found ${npmLsResult.problems?.length || 0} problems in ${
       Date.now() - start
     } milliseconds`
+  );
+}
+
+function subscribeToDocumentChanges(
+  context: ExtensionContext,
+  dependencyIssueDiagnostics: DiagnosticCollection
+): void {
+  if (window.activeTextEditor) {
+    void refreshDiagnostics(
+      window.activeTextEditor.document.uri.fsPath,
+      dependencyIssueDiagnostics
+    );
+  }
+
+  context.subscriptions.push(
+    window.onDidChangeActiveTextEditor((editor) => {
+      if (editor) {
+        void refreshDiagnostics(
+          editor.document.uri.fsPath,
+          dependencyIssueDiagnostics
+        );
+      }
+    })
+  );
+
+  context.subscriptions.push(
+    workspace.onDidChangeTextDocument(
+      (e) =>
+        void refreshDiagnostics(
+          e.document.uri.fsPath,
+          dependencyIssueDiagnostics
+        )
+    )
+  );
+
+  context.subscriptions.push(
+    workspace.onDidCloseTextDocument((doc) =>
+      dependencyIssueDiagnostics.delete(doc.uri)
+    )
   );
 }

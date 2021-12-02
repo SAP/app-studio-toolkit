@@ -1,53 +1,9 @@
-import type { Diagnostic, DiagnosticCollection, Uri } from "vscode";
 import { dirname } from "path";
 import * as proxyquire from "proxyquire";
 import { createSandbox, SinonMock, SinonSandbox } from "sinon";
-import { VscodeOutputChannel } from "../src/vscodeTypes";
+import { outputChannel, diagnosticCollection } from "./vscodeMocks";
 import { NpmCommandConfig } from "@sap-devx/npm-dependencies-validation";
 import { fixAllDepIssuesCommand } from "../src/commands";
-
-const outputChannel: VscodeOutputChannel = {
-  append(value: string) {},
-  appendLine(value: string) {},
-  // @ts-expect-error -- https://stackoverflow.com/questions/68799234/typescript-pick-only-specific-method-from-overload-to-be-passed-to-parameterst
-  show(value?: boolean) {},
-};
-
-const diagnosticCollection: DiagnosticCollection = {
-  name: "",
-  // @ts-expect-error -- https://stackoverflow.com/questions/68799234/typescript-pick-only-specific-method-from-overload-to-be-passed-to-parameterst
-  set: function (
-    uri: Uri,
-    diagnostics: readonly Diagnostic[] | undefined
-  ): void {
-    throw new Error("Function not implemented.");
-  },
-  delete: function (uri: Uri): void {
-    throw new Error("Function not implemented.");
-  },
-  clear: function (): void {
-    throw new Error("Function not implemented.");
-  },
-  forEach: function (
-    callback: (
-      uri: Uri,
-      diagnostics: readonly Diagnostic[],
-      collection: DiagnosticCollection
-    ) => any,
-    thisArg?: any
-  ): void {
-    throw new Error("Function not implemented.");
-  },
-  get: function (uri: Uri): readonly Diagnostic[] | undefined {
-    throw new Error("Function not implemented.");
-  },
-  has: function (uri: Uri): boolean {
-    throw new Error("Function not implemented.");
-  },
-  dispose: function (): void {
-    throw new Error("Function not implemented.");
-  },
-};
 
 const npmDepsValidationProxy = {
   invokeNPMCommand() {
