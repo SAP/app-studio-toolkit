@@ -6,6 +6,7 @@ import {
   languages,
   DiagnosticCollection,
   OutputChannel,
+  commands,
 } from "vscode";
 import {
   NpmLsResult,
@@ -13,23 +14,28 @@ import {
 } from "@sap-devx/npm-dependencies-validation";
 import { NPMIssuesActionProvider } from "./npmIssuesActionProvider";
 import { subscribeToDocumentChanges } from "./diagnostics";
-import { registerFixCommand } from "./commands";
-
-let dependencyIssuesDiagnosticCollection: DiagnosticCollection;
+import { fixAllDepIssuesCommand, FIX_ALL_ISSUES_COMMAND } from "./commands";
 
 const PACKAGE_JSON = "package.json";
 const PACKAGE_JSON_PATTERN = `**​/${PACKAGE_JSON}`;
 const extName = "vscode-dependency-validation";
 
-let outputChannel: OutputChannel;
-
 export function activate(context: ExtensionContext) {
-  outputChannel = window.createOutputChannel(extName);
+  const outputChannel = window.createOutputChannel(extName);
+  const diagnosticCollection = createDiagnosticCollection(context, extName);
 
   void findIssues();
 
   void addFileWatcher();
 
+  registerCodeActionsProvider(context);
+
+  subscribeToDocumentChanges(context, diagnosticCollection);
+
+  registerCommands(context, outputChannel, diagnosticCollection);
+}
+
+function registerCodeActionsProvider(context: ExtensionContext): void {
   context.subscriptions.push(
     languages.registerCodeActionsProvider(
       { language: "json", scheme: "file", pattern: "**/package.json" },
@@ -40,17 +46,32 @@ export function activate(context: ExtensionContext) {
       }
     )
   );
+}
 
-  dependencyIssuesDiagnosticCollection =
-    languages.createDiagnosticCollection(extName);
-  context.subscriptions.push(dependencyIssuesDiagnosticCollection);
+function createDiagnosticCollection(
+  context: ExtensionContext,
+  extName: string
+): DiagnosticCollection {
+  const diagnosticCollection = languages.createDiagnosticCollection(extName);
+  context.subscriptions.push(diagnosticCollection);
+  return diagnosticCollection;
+}
 
-  subscribeToDocumentChanges(context, dependencyIssuesDiagnosticCollection);
-
-  registerFixCommand(
-    context,
-    outputChannel,
-    dependencyIssuesDiagnosticCollection
+function registerCommands(
+  context: ExtensionContext,
+  outputChannel: OutputChannel,
+  diagnosticCollection: DiagnosticCollection
+): void {
+  context.subscriptions.push(
+    commands.registerCommand(
+      FIX_ALL_ISSUES_COMMAND,
+      (packageJsonPath: string) =>
+        fixAllDepIssuesCommand(
+          outputChannel,
+          packageJsonPath,
+          diagnosticCollection
+        )
+    )
   );
 }
 

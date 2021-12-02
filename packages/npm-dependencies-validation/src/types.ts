@@ -19,7 +19,7 @@ export type DependenciesProperties = {
   };
 };
 
-export type VscodeOutputChannel = Partial<OutputChannel>;
+export type VscodeOutputChannel = Pick<OutputChannel, "append">;
 
 export type NpmCommandConfig = {
   cwd: string;

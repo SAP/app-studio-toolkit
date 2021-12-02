@@ -1,36 +1,13 @@
 import { dirname } from "path";
-import {
-  commands,
-  DiagnosticCollection,
-  ExtensionContext,
-  OutputChannel,
-  TextDocument,
-  Uri,
-  workspace,
-} from "vscode";
+import type { DiagnosticCollection, OutputChannel } from "vscode";
 import { invokeNPMCommand } from "@sap-devx/npm-dependencies-validation";
 import { refreshDiagnostics } from "./diagnostics";
+import { VscodeOutputChannel } from "./vscodeTypes";
 
-export const FIX_ALL_COMMAND = "fix.all.dependency.issues.command";
+export const FIX_ALL_ISSUES_COMMAND = "fix.all.dependency.issues.command";
 
-export function registerFixCommand(
-  context: ExtensionContext,
-  outputChannel: OutputChannel,
-  dependencyIssuesDiagnosticCollection: DiagnosticCollection
-) {
-  context.subscriptions.push(
-    commands.registerCommand(FIX_ALL_COMMAND, (packageJsonPath: string) =>
-      executeAllFixCommand(
-        outputChannel,
-        packageJsonPath,
-        dependencyIssuesDiagnosticCollection
-      )
-    )
-  );
-}
-
-async function executeAllFixCommand(
-  outputChannel: OutputChannel,
+export async function fixAllDepIssuesCommand(
+  outputChannel: VscodeOutputChannel,
   packageJsonPath: string,
   dependencyIssuesDiagnosticCollection: DiagnosticCollection
 ): Promise<void> {
@@ -54,19 +31,12 @@ async function executeAllFixCommand(
   }
 }
 
-function getPackageJsonDocument(
-  packageJsonPath: string
-): Thenable<TextDocument> {
-  return workspace.openTextDocument(Uri.file(packageJsonPath));
-}
-
 async function refreshPackageJsonDiagnostics(
   packageJsonPath: string,
   dependencyIssuesDiagnosticCollection: DiagnosticCollection
 ): Promise<void> {
-  const packageJsonTextDoc = await getPackageJsonDocument(packageJsonPath);
   await refreshDiagnostics(
-    packageJsonTextDoc,
+    packageJsonPath,
     dependencyIssuesDiagnosticCollection
   );
 }

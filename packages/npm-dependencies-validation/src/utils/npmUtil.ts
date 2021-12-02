@@ -42,5 +42,5 @@ function sendDataToOutputChannel(
   data: string,
   outputChannel: VscodeOutputChannel | undefined
 ): void {
-  outputChannel?.append?.(data);
+  outputChannel?.append(data);
 }

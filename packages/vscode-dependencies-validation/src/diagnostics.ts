@@ -1,12 +1,11 @@
+import type { DiagnosticCollection, ExtensionContext } from "vscode";
 import {
-  Diagnostic,
-  DiagnosticSeverity,
-  DiagnosticCollection,
-  TextDocument,
   Range,
+  DiagnosticSeverity,
+  Diagnostic,
   window,
-  ExtensionContext,
   workspace,
+  Uri,
 } from "vscode";
 import { findDependencyIssues } from "@sap-devx/npm-dependencies-validation";
 import { set } from "lodash";
@@ -20,17 +19,19 @@ export const NPM_DEPENDENCY_ISSUES = "npm_dependency_issues";
  * @param dependencyIssueDiagnostics diagnostic collection
  */
 export async function refreshDiagnostics(
-  doc: TextDocument,
+  packageJsonPath: string,
   dependencyIssueDiagnostics: DiagnosticCollection
 ): Promise<void> {
-  const npmLsResult = await findDependencyIssues(doc.uri.fsPath);
+  const npmLsResult = await findDependencyIssues(packageJsonPath);
 
   const diagnostics: Diagnostic[] = [];
   if (npmLsResult.problems) {
-    diagnostics.push(constructDiagnostic(npmLsResult.problems, doc.uri.fsPath));
+    diagnostics.push(
+      constructDiagnostic(npmLsResult.problems, packageJsonPath)
+    );
   }
 
-  dependencyIssueDiagnostics.set(doc.uri, diagnostics);
+  dependencyIssueDiagnostics.set(Uri.file(packageJsonPath), diagnostics);
 }
 
 function constructDiagnostic(
@@ -55,7 +56,7 @@ export function subscribeToDocumentChanges(
 ): void {
   if (window.activeTextEditor) {
     void refreshDiagnostics(
-      window.activeTextEditor.document,
+      window.activeTextEditor.document.uri.fsPath,
       dependencyIssueDiagnostics
     );
   }
@@ -63,14 +64,21 @@ export function subscribeToDocumentChanges(
   context.subscriptions.push(
     window.onDidChangeActiveTextEditor((editor) => {
       if (editor) {
-        void refreshDiagnostics(editor.document, dependencyIssueDiagnostics);
+        void refreshDiagnostics(
+          editor.document.uri.fsPath,
+          dependencyIssueDiagnostics
+        );
       }
     })
   );
 
   context.subscriptions.push(
     workspace.onDidChangeTextDocument(
-      (e) => void refreshDiagnostics(e.document, dependencyIssueDiagnostics)
+      (e) =>
+        void refreshDiagnostics(
+          e.document.uri.fsPath,
+          dependencyIssueDiagnostics
+        )
     )
   );
 

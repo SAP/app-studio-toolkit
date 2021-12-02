@@ -11,9 +11,8 @@ import {
   TextDocument,
 } from "vscode";
 import { get } from "lodash";
-// import { NPMDependencyIssue } from "@sap-devx/npm-dependencies-validation";
 import { NPM_DEPENDENCY_ISSUES } from "./diagnostics";
-import { FIX_ALL_COMMAND } from "./commands";
+import { FIX_ALL_ISSUES_COMMAND } from "./commands";
 
 export class NPMIssuesActionProvider implements CodeActionProvider {
   public static readonly providedCodeActionKinds = [CodeActionKind.QuickFix];
@@ -37,7 +36,7 @@ export class NPMIssuesActionProvider implements CodeActionProvider {
 
 function createCommand(diagnostic: Diagnostic): Command {
   return {
-    command: FIX_ALL_COMMAND,
+    command: FIX_ALL_ISSUES_COMMAND,
     title: "Fix all dependency issues",
     arguments: [get(diagnostic, "packageJsonPath")],
   };
