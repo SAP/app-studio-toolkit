@@ -151,7 +151,7 @@ export const range: Range = {
   },
 };
 
-export const context: CodeActionContext = {
+export const codeActionContext: CodeActionContext = {
   triggerKind: 2,
   diagnostics: [
     {

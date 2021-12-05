@@ -28,10 +28,10 @@ export class NPMIssuesActionProvider implements CodeActionProvider {
     // for each diagnostic entry create a code action command
     return context.diagnostics
       .filter((diagnostic) => diagnostic.code === NPM_DEPENDENCY_ISSUES_CODE)
-      .map((diagnostic) => this.createCommandCodeAction(diagnostic));
+      .map((diagnostic) => this.createCodeAction(diagnostic));
   }
 
-  private createCommandCodeAction(diagnostic: Diagnostic): CodeAction {
+  private createCodeAction(diagnostic: Diagnostic): CodeAction {
     const action: CodeAction = {
       title: "Fix all dependency issues",
       kind: this.kind,

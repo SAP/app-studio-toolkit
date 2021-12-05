@@ -9,7 +9,9 @@
   },
   "main": "index.js",
   "dependencies": {
-    "lodash": "4.17.21"
+    "json-fixer": "1.6.13"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "lodash": "4.7.21"
+  }
 }

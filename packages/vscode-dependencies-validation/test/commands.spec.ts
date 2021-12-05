@@ -2,7 +2,6 @@ import { dirname } from "path";
 import * as proxyquire from "proxyquire";
 import { createSandbox, SinonMock, SinonSandbox } from "sinon";
 import { outputChannel, diagnosticCollection } from "./vscodeMocks";
-import { NpmCommandConfig } from "@sap-devx/npm-dependencies-validation";
 import { fixAllDepIssuesCommand } from "../src/commands";
 
 const npmDepsValidationProxy = {
@@ -63,13 +62,15 @@ describe("commands unit test", () => {
       outputChannelMock
         .expects("appendLine")
         .withExactArgs(`\nFixing dependency issues ...`);
-      const config: NpmCommandConfig = {
-        commandArgs: ["install"],
-        cwd: dirname(packageJsonPath),
-      };
       npmDepsValidationMock
         .expects("invokeNPMCommand")
-        .withExactArgs(config, outputChannel)
+        .withExactArgs(
+          {
+            commandArgs: ["install"],
+            cwd: dirname(packageJsonPath),
+          },
+          outputChannel
+        )
         .resolves();
       outputChannelMock.expects("append");
       diagnosticsMock
@@ -91,13 +92,15 @@ describe("commands unit test", () => {
       outputChannelMock
         .expects("appendLine")
         .withExactArgs(`\nFixing dependency issues ...`);
-      const config: NpmCommandConfig = {
-        commandArgs: ["install"],
-        cwd: dirname(packageJsonPath),
-      };
       npmDepsValidationMock
         .expects("invokeNPMCommand")
-        .withExactArgs(config, outputChannel)
+        .withExactArgs(
+          {
+            commandArgs: ["install"],
+            cwd: dirname(packageJsonPath),
+          },
+          outputChannel
+        )
         .rejects(new Error("invokeNPMCommand failure"));
       outputChannelMock.expects("appendLine");
 

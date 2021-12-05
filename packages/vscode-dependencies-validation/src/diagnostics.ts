@@ -1,8 +1,8 @@
 import type { DiagnosticCollection } from "vscode";
 import { Range, Diagnostic, Uri } from "vscode";
 import { findDependencyIssues } from "@sap-devx/npm-dependencies-validation";
-import { set } from "lodash";
-import { NPM_DEPENDENCY_ISSUES_CODE } from "./constants";
+import { set, isEmpty } from "lodash";
+import { NPM_DEPENDENCY_ISSUES_CODE, PACKAGE_JSON_PATTERN } from "./constants";
 
 /**
  * Analyzes the package.json text document for problems.
@@ -13,18 +13,20 @@ export async function refreshDiagnostics(
   packageJsonPath: string,
   dependencyIssueDiagnostics: DiagnosticCollection
 ): Promise<void> {
-  const npmLsResult = await findDependencyIssues(packageJsonPath);
+  if (PACKAGE_JSON_PATTERN.test(packageJsonPath)) {
+    const { problems } = await findDependencyIssues(packageJsonPath);
 
-  const diagnostics: Diagnostic[] = [];
-  if (npmLsResult.problems) {
-    diagnostics.push(
-      constructDiagnostic(npmLsResult.problems, packageJsonPath)
-    );
+    let diagnostics: Diagnostic[] = [];
+
+    if (!isEmpty(problems)) {
+      diagnostics = [constructDiagnostic(problems, packageJsonPath)];
+    }
+
+    dependencyIssueDiagnostics.set(Uri.file(packageJsonPath), diagnostics);
   }
-
-  dependencyIssueDiagnostics.set(Uri.file(packageJsonPath), diagnostics);
 }
 
+// construct diagnostic to be displayed in the first line of the package.json
 function constructDiagnostic(
   problems: string[],
   packageJsonPath: string

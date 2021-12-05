@@ -17,10 +17,10 @@ export async function fixAllDepIssuesCommand(
     const start = Date.now();
     const config = { commandArgs: [npmCommand], cwd: dirname(packageJsonPath) };
     await invokeNPMCommand(config, outputChannel);
+    const millis = Date.now() - start;
+    outputChannel.append(`Done. (${millisToSeconds(millis)} seconds)\n`);
 
-    outputChannel.append(`Done. (${Date.now() - start} millis)\n`);
-
-    void refreshPackageJsonDiagnostics(
+    void refreshDiagnostics(
       packageJsonPath,
       dependencyIssuesDiagnosticCollection
     );
@@ -29,12 +29,6 @@ export async function fixAllDepIssuesCommand(
   }
 }
 
-async function refreshPackageJsonDiagnostics(
-  packageJsonPath: string,
-  dependencyIssuesDiagnosticCollection: DiagnosticCollection
-): Promise<void> {
-  await refreshDiagnostics(
-    packageJsonPath,
-    dependencyIssuesDiagnosticCollection
-  );
+function millisToSeconds(millis: number): string {
+  return ((millis % 60000) / 1000).toFixed(2);
 }
