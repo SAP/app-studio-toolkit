@@ -5,5 +5,5 @@
     "outDir": "dist",
     "baseUrl": "."
   },
-  "include": ["src/**/*", "test/**/*", "test"]
+  "include": ["src/**/*", "test/**/*"]
 }

@@ -2,7 +2,6 @@ import proxyquire = require("proxyquire");
 import { diagnosticCollection } from "./vscodeMocks";
 import { createSandbox, SinonMock, SinonSandbox } from "sinon";
 import { refreshDiagnostics } from "../src/diagnostics";
-import { range } from "lodash";
 import { NPM_DEPENDENCY_ISSUES_CODE } from "../src/constants";
 
 describe("diagnostics unit test", () => {

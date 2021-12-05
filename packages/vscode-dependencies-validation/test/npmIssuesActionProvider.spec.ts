@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import * as proxyquire from "proxyquire";
-import type { CodeAction, CodeActionKind } from "vscode";
+import type { CodeAction } from "vscode";
 import { NPMIssuesActionProvider } from "../src/npmIssuesActionProvider";
 import { range, textDocument, context, token, kind } from "./vscodeMocks";
 

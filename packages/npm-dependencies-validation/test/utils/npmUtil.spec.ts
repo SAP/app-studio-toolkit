@@ -1,16 +1,15 @@
-import { fail } from "assert";
-import { expect } from "chai";
+import { assert, expect } from "chai";
 import { createSandbox, SinonSpy } from "sinon";
-import { NpmLsResult, VscodeOutputChannel } from "../../src/types";
+import { NpmLsResult, OutputChannel } from "../../src/types";
 import { invokeNPMCommand, getNPM } from "../../src/utils/npmUtil";
 
 describe("npmUtil unit test", () => {
   const sandbox = createSandbox();
-  const outputChannel: VscodeOutputChannel = {
+  const outputChannel: OutputChannel = {
     append: (data: string) => console.log(data),
   };
 
-  afterEach(function () {
+  afterEach(() => {
     sandbox.restore();
   });
 
@@ -27,7 +26,7 @@ describe("npmUtil unit test", () => {
       const config = { commandArgs: ["ls"], cwd: "./non_existing_path" };
       return invokeNPMCommand(config, outputChannel)
         .then(() => {
-          fail("test should fail");
+          assert.fail("test should fail");
         })
         .catch((error: Error) => {
           expect(appendSpy.called).to.be.true;
@@ -55,7 +54,7 @@ describe("npmUtil unit test", () => {
   describe("npm command", () => {
     const originalPlatform = process.platform;
 
-    after(function () {
+    after(() => {
       Object.defineProperty(process, "platform", { value: originalPlatform });
     });
 

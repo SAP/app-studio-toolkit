@@ -1,5 +1,5 @@
-import type { DiagnosticCollection, ExtensionContext } from "vscode";
-import { Range, Diagnostic, window, workspace, Uri } from "vscode";
+import type { DiagnosticCollection } from "vscode";
+import { Range, Diagnostic, Uri } from "vscode";
 import { findDependencyIssues } from "@sap-devx/npm-dependencies-validation";
 import { set } from "lodash";
 import { NPM_DEPENDENCY_ISSUES_CODE } from "./constants";

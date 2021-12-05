@@ -26,6 +26,6 @@
     "ci": "npm-run-all clean compile coverage"
   },
   "dependencies": {
-    "@types/vscode": "^1.50.0"
+    "lodash": "^4.17.21"
   }
 }

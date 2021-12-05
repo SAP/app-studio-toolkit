@@ -22,7 +22,7 @@ const PACKAGE_JSON = "package.json";
 const PACKAGE_JSON_PATTERN = `**​/${PACKAGE_JSON}`;
 const extName = "vscode-dependency-validation";
 
-export function activate(context: ExtensionContext) {
+export function activate(context: ExtensionContext): void {
   const outputChannel = window.createOutputChannel(extName);
   const diagnosticCollection = createDiagnosticCollection(context, extName);
 

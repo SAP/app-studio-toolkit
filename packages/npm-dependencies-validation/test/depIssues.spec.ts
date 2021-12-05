@@ -39,13 +39,13 @@ describe("dependencyIssues unit test", () => {
     const result = await findDependencyIssues(
       "./test/projects/non_existing_folder/package.json"
     );
-    expect(result.problems).to.have.lengthOf(0);
+    expect(result.problems).to.be.empty;
   });
 
   it("no dependency issues are found, package is not supported", async () => {
     const result = await findDependencyIssues(
       resolve("./test/projects/not_supported/package.json")
     );
-    expect(result.problems).to.have.lengthOf(0);
+    expect(result.problems).to.be.empty;
   });
 });

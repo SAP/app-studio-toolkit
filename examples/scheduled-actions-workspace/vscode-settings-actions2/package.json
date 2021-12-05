@@ -8,6 +8,8 @@
     "url": "https://github.com/SAP/app-studio-toolkit"
   },
   "main": "index.js",
-  "dependencies": {},
+  "dependencies": {
+    "lodash": "4.17.21"
+  },
   "devDependencies": {}
 }

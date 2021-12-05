@@ -1,8 +1,4 @@
-import { OutputChannel } from "vscode";
-
 export type NpmLsResult = {
-  name?: string;
-  version?: string;
   problems: string[];
 };
 
@@ -19,7 +15,9 @@ export type DependenciesProperties = {
   };
 };
 
-export type VscodeOutputChannel = Pick<OutputChannel, "append">;
+export interface OutputChannel {
+  append: (message: string) => void;
+}
 
 export type NpmCommandConfig = {
   cwd: string;
