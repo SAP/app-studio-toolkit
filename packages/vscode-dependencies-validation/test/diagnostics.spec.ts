@@ -1,6 +1,6 @@
 import proxyquire = require("proxyquire");
 import { createSandbox, SinonMock, SinonSandbox } from "sinon";
-import { diagnosticCollection } from "./vscodeMocks";
+import { diagnosticCollectionMock } from "./vscodeMocks";
 import { refreshDiagnostics } from "../src/diagnostics";
 
 describe("diagnostics unit test", () => {
@@ -21,7 +21,7 @@ describe("diagnostics unit test", () => {
   let refreshDiagnosticsProxy: typeof refreshDiagnostics;
   let problems: string[] | undefined;
   let sandbox: SinonSandbox;
-  let diagnosticCollectionMock: SinonMock;
+  let diagnosticCollectionSinonMock: SinonMock;
 
   context("refreshDiagnostics()", () => {
     before(() => {
@@ -44,11 +44,11 @@ describe("diagnostics unit test", () => {
 
       refreshDiagnosticsProxy = diagnosticsModule.refreshDiagnostics;
 
-      diagnosticCollectionMock = sandbox.mock(diagnosticCollection);
+      diagnosticCollectionSinonMock = sandbox.mock(diagnosticCollectionMock);
     });
 
     afterEach(() => {
-      diagnosticCollectionMock.verify();
+      diagnosticCollectionSinonMock.verify();
     });
 
     after(() => {
@@ -57,19 +57,19 @@ describe("diagnostics unit test", () => {
 
     it("there are 2 dependency issues", async () => {
       problems = ["missing: json-fixer@1.6.12", "missing: lodash@0.0.1"];
-      diagnosticCollectionMock
+      diagnosticCollectionSinonMock
         .expects("set")
         .withArgs(Uri.file(packageJsonPath));
-      await refreshDiagnosticsProxy(packageJsonPath, diagnosticCollection);
+      await refreshDiagnosticsProxy(packageJsonPath, diagnosticCollectionMock);
     });
 
     it("there are no dependency issues", async () => {
       problems = undefined;
       const diagnostics: Diagnostic[] = [];
-      diagnosticCollectionMock
+      diagnosticCollectionSinonMock
         .expects("set")
         .withExactArgs(Uri.file(packageJsonPath), diagnostics);
-      await refreshDiagnosticsProxy(packageJsonPath, diagnosticCollection);
+      await refreshDiagnosticsProxy(packageJsonPath, diagnosticCollectionMock);
     });
   });
 });

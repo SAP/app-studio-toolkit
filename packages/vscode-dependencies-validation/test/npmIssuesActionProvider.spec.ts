@@ -4,11 +4,11 @@ import type { CodeAction } from "vscode";
 import { FIX_ALL_ISSUES_COMMAND } from "../src/constants";
 import { NPMIssuesActionProvider } from "../src/npmIssuesActionProvider";
 import {
-  range,
-  textDocument,
-  codeActionContext,
-  token,
-  kind,
+  rangeMock,
+  textDocumentMock,
+  codeActionContextMock,
+  cancellationTokenMock,
+  codeActionKindMock,
 } from "./vscodeMocks";
 
 const diagnosticsProxy = {
@@ -39,16 +39,16 @@ describe("npmIssuesActionProvider unit test", () => {
       );
 
       provider = new npmIssuesActionProviderModule.NPMIssuesActionProvider(
-        kind
+        codeActionKindMock
       );
     });
 
     it("provideCodeActions", () => {
       const actions: CodeAction[] = provider.provideCodeActions(
-        textDocument,
-        range,
-        codeActionContext,
-        token
+        textDocumentMock,
+        rangeMock,
+        codeActionContextMock,
+        cancellationTokenMock
       );
       expect(actions).to.have.lengthOf(1);
       const { command } = actions[0];

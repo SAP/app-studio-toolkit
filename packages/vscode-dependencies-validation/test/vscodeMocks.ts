@@ -14,14 +14,14 @@ import type {
 } from "vscode";
 import { VscodeOutputChannel } from "../src/vscodeTypes";
 
-export const outputChannel: VscodeOutputChannel = {
+export const outputChannelMock: VscodeOutputChannel = {
   append(value: string) {},
   appendLine(value: string) {},
   // @ts-expect-error -- https://stackoverflow.com/questions/68799234/typescript-pick-only-specific-method-from-overload-to-be-passed-to-parameterst
   show(value?: boolean) {},
 };
 
-export const diagnosticCollection: DiagnosticCollection = {
+export const diagnosticCollectionMock: DiagnosticCollection = {
   name: "",
   // @ts-expect-error -- https://stackoverflow.com/questions/68799234/typescript-pick-only-specific-method-from-overload-to-be-passed-to-parameterst
   set: function (
@@ -57,7 +57,7 @@ export const diagnosticCollection: DiagnosticCollection = {
   },
 };
 
-export const textDocument: TextDocument = {
+export const textDocumentMock: TextDocument = {
   fileName: "",
   isUntitled: false,
   languageId: "",
@@ -97,7 +97,7 @@ export const textDocument: TextDocument = {
   },
 };
 
-export const position: Position = {
+const positionMock: Position = {
   line: 0,
   character: 0,
   isBefore: function (other: Position): boolean {
@@ -128,9 +128,9 @@ export const position: Position = {
   },
 };
 
-export const range: Range = {
-  start: position,
-  end: position,
+export const rangeMock: Range = {
+  start: positionMock,
+  end: positionMock,
   isEmpty: false,
   isSingleLine: false,
   contains: function (positionOrRange: Position | Range): boolean {
@@ -151,17 +151,17 @@ export const range: Range = {
   },
 };
 
-export const codeActionContext: CodeActionContext = {
+export const codeActionContextMock: CodeActionContext = {
   triggerKind: 2,
   diagnostics: [
     {
-      range,
+      range: rangeMock,
       message: "",
       severity: 1,
       code: "other_code",
     },
     {
-      range,
+      range: rangeMock,
       message: "dependency issue",
       severity: 2,
       code: NPM_DEPENDENCY_ISSUES_CODE,
@@ -170,12 +170,12 @@ export const codeActionContext: CodeActionContext = {
   only: undefined,
 };
 
-export const token: CancellationToken = {
+export const cancellationTokenMock: CancellationToken = {
   isCancellationRequested: false,
   onCancellationRequested: {} as Event<any>,
 };
 
-export const kind: CodeActionKind = {
+export const codeActionKindMock: CodeActionKind = {
   value: "QuickFix",
   append: function (parts: string): CodeActionKind {
     throw new Error("Function not implemented.");

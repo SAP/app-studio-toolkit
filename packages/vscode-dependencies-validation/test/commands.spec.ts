@@ -1,7 +1,7 @@
 import { dirname } from "path";
 import * as proxyquire from "proxyquire";
 import { createSandbox, SinonMock, SinonSandbox } from "sinon";
-import { outputChannel, diagnosticCollection } from "./vscodeMocks";
+import { outputChannelMock, diagnosticCollectionMock } from "./vscodeMocks";
 import { fixAllDepIssuesCommand } from "../src/commands";
 
 const npmDepsValidationProxy = {
@@ -20,7 +20,7 @@ const diagnosticsProxy = {
 
 describe("commands unit test", () => {
   let sandbox: SinonSandbox;
-  let outputChannelMock: SinonMock;
+  let outputChannelSinonMock: SinonMock;
   let npmDepsValidationMock: SinonMock;
   let diagnosticsMock: SinonMock;
 
@@ -33,13 +33,13 @@ describe("commands unit test", () => {
   });
 
   beforeEach(() => {
-    outputChannelMock = sandbox.mock(outputChannel);
+    outputChannelSinonMock = sandbox.mock(outputChannelMock);
     npmDepsValidationMock = sandbox.mock(npmDepsValidationProxy);
     diagnosticsMock = sandbox.mock(diagnosticsProxy);
   });
 
   afterEach(() => {
-    outputChannelMock.verify();
+    outputChannelSinonMock.verify();
     npmDepsValidationMock.verify();
   });
 
@@ -58,8 +58,8 @@ describe("commands unit test", () => {
     it("succeeded", async () => {
       const packageJsonPath = "root/folder/package.json";
 
-      outputChannelMock.expects("show").withExactArgs(true);
-      outputChannelMock
+      outputChannelSinonMock.expects("show").withExactArgs(true);
+      outputChannelSinonMock
         .expects("appendLine")
         .withExactArgs(`\nFixing dependency issues ...`);
       npmDepsValidationMock
@@ -69,27 +69,27 @@ describe("commands unit test", () => {
             commandArgs: ["install"],
             cwd: dirname(packageJsonPath),
           },
-          outputChannel
+          outputChannelMock
         )
         .resolves();
-      outputChannelMock.expects("append");
+      outputChannelSinonMock.expects("append");
       diagnosticsMock
         .expects("refreshDiagnostics")
-        .withExactArgs(packageJsonPath, diagnosticCollection)
+        .withExactArgs(packageJsonPath, diagnosticCollectionMock)
         .resolves();
 
       await fixAllDepIssuesCommandProxy(
-        outputChannel,
+        outputChannelMock,
         packageJsonPath,
-        diagnosticCollection
+        diagnosticCollectionMock
       );
     });
 
     it("failed", async () => {
       const packageJsonPath = "root/folder/package.json";
 
-      outputChannelMock.expects("show").withExactArgs(true);
-      outputChannelMock
+      outputChannelSinonMock.expects("show").withExactArgs(true);
+      outputChannelSinonMock
         .expects("appendLine")
         .withExactArgs(`\nFixing dependency issues ...`);
       npmDepsValidationMock
@@ -99,15 +99,15 @@ describe("commands unit test", () => {
             commandArgs: ["install"],
             cwd: dirname(packageJsonPath),
           },
-          outputChannel
+          outputChannelMock
         )
         .rejects(new Error("invokeNPMCommand failure"));
-      outputChannelMock.expects("appendLine");
+      outputChannelSinonMock.expects("appendLine");
 
       await fixAllDepIssuesCommandProxy(
-        outputChannel,
+        outputChannelMock,
         packageJsonPath,
-        diagnosticCollection
+        diagnosticCollectionMock
       );
     });
   });
