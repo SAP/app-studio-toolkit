@@ -13,6 +13,7 @@ import {
   NpmLsResult,
   findDependencyIssues,
 } from "@sap-devx/npm-dependencies-validation";
+import { debounce } from "lodash";
 import { NPMIssuesActionProvider } from "./npmIssuesActionProvider";
 import { fixAllDepIssuesCommand } from "./commands";
 import { FIX_ALL_ISSUES_COMMAND, PACKAGE_JSON_PATTERN } from "./constants";
@@ -90,21 +91,26 @@ async function findIssues(): Promise<void> {
   });
 }
 
+const debouncedDisplayProblematicDependencies = debounce(
+  displayProblematicDependencies,
+  3000
+);
+
 // TODO: somebody added yarl.lock in filesystem (not via vscode) ??
 // TODO: what should happen after git clone ??
 function addFileWatcher(): void {
   const fileWatcher = workspace.createFileSystemWatcher("**/package.json"); // TODO: PACKAGE_JSON_PATTERN does not work here ???
   fileWatcher.onDidChange((uri: Uri) => {
-    void displayProblematicDependencies(uri);
+    void debouncedDisplayProblematicDependencies(uri);
   });
 
   fileWatcher.onDidCreate((uri: Uri) => {
-    void displayProblematicDependencies(uri);
+    void debouncedDisplayProblematicDependencies(uri);
   });
 
   fileWatcher.onDidDelete((uri: Uri) => {
     //TODO: check if we need it ??
-    void displayProblematicDependencies(uri);
+    void debouncedDisplayProblematicDependencies(uri);
   });
 }
 

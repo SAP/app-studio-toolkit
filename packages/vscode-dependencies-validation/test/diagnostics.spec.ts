@@ -2,6 +2,7 @@ import proxyquire = require("proxyquire");
 import { createSandbox, SinonMock, SinonSandbox } from "sinon";
 import { diagnosticCollectionMock } from "./vscodeMocks";
 import { refreshDiagnostics } from "../src/diagnostics";
+import { npmDepsValidationProxy } from "./moduleProxies";
 
 describe("diagnostics unit test", () => {
   const packageJsonPath = "/root/folder/package.json";
@@ -19,9 +20,9 @@ describe("diagnostics unit test", () => {
   }
 
   let refreshDiagnosticsProxy: typeof refreshDiagnostics;
-  let problems: string[] | undefined;
   let sandbox: SinonSandbox;
   let diagnosticCollectionSinonMock: SinonMock;
+  let npmDepsValidationSinonMock: SinonMock;
 
   context("refreshDiagnostics()", () => {
     before(() => {
@@ -36,19 +37,18 @@ describe("diagnostics unit test", () => {
           Uri,
           "@noCallThru": true,
         },
-        "@sap-devx/npm-dependencies-validation": {
-          findDependencyIssues: async () => Promise.resolve({ problems }),
-          "@noCallThru": true,
-        },
+        "@sap-devx/npm-dependencies-validation": npmDepsValidationProxy,
       });
 
       refreshDiagnosticsProxy = diagnosticsModule.refreshDiagnostics;
 
       diagnosticCollectionSinonMock = sandbox.mock(diagnosticCollectionMock);
+      npmDepsValidationSinonMock = sandbox.mock(npmDepsValidationProxy);
     });
 
     afterEach(() => {
       diagnosticCollectionSinonMock.verify();
+      npmDepsValidationSinonMock.verify();
     });
 
     after(() => {
@@ -56,7 +56,11 @@ describe("diagnostics unit test", () => {
     });
 
     it("there are 2 dependency issues", async () => {
-      problems = ["missing: json-fixer@1.6.12", "missing: lodash@0.0.1"];
+      npmDepsValidationSinonMock
+        .expects("findDependencyIssues")
+        .resolves({
+          problems: ["missing: json-fixer@1.6.12", "missing: lodash@0.0.1"],
+        });
       diagnosticCollectionSinonMock
         .expects("set")
         .withArgs(Uri.file(packageJsonPath));
@@ -64,7 +68,9 @@ describe("diagnostics unit test", () => {
     });
 
     it("there are no dependency issues", async () => {
-      problems = undefined;
+      npmDepsValidationSinonMock
+        .expects("findDependencyIssues")
+        .resolves({ problems: undefined });
       const diagnostics: Diagnostic[] = [];
       diagnosticCollectionSinonMock
         .expects("set")

@@ -12,6 +12,6 @@
     "json-fixer": "1.6.13"
   },
   "devDependencies": {
-    "lodash": "4.7.21"
+    "lodash": "4.17.21"
   }
 }

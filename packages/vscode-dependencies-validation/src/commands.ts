@@ -1,8 +1,12 @@
 import { dirname } from "path";
-import type { DiagnosticCollection } from "vscode";
+import type { DiagnosticCollection, OutputChannel } from "vscode";
 import { invokeNPMCommand } from "@sap-devx/npm-dependencies-validation";
 import { refreshDiagnostics } from "./diagnostics";
-import { VscodeOutputChannel } from "./vscodeTypes";
+
+type VscodeOutputChannel = Pick<
+  OutputChannel,
+  "append" | "show" | "appendLine"
+>;
 
 export async function fixAllDepIssuesCommand(
   outputChannel: VscodeOutputChannel,

@@ -9,21 +9,8 @@ import type {
 } from "vscode";
 import { FIX_ALL_ISSUES_COMMAND } from "../src/constants";
 import { NPMIssuesActionProvider } from "../src/npmIssuesActionProvider";
+import { diagnosticsProxy } from "./moduleProxies";
 import { codeActionContextMock } from "./vscodeMocks";
-
-const diagnosticsProxy = {
-  refreshDiagnostics() {
-    return Promise.reject("refreshDiagnostics method is not implemented");
-  },
-  "@noCallThru": true,
-};
-
-const commandsProxy = {
-  invokeNPMCommand() {
-    return Promise.reject("invokeNPMCommand method is not implemented");
-  },
-  "@noCallThru": true,
-};
 
 describe("npmIssuesActionProvider unit test", () => {
   let provider: NPMIssuesActionProvider;
@@ -34,7 +21,6 @@ describe("npmIssuesActionProvider unit test", () => {
         "../src/npmIssuesActionProvider",
         {
           "./diagnostics": diagnosticsProxy,
-          "./commands": commandsProxy,
         }
       );
 

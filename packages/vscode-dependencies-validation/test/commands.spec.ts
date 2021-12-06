@@ -1,29 +1,16 @@
 import { dirname } from "path";
 import * as proxyquire from "proxyquire";
 import { createSandbox, SinonMock, SinonSandbox } from "sinon";
-import { outputChannelMock } from "./vscodeMocks";
 import { fixAllDepIssuesCommand } from "../src/commands";
 import type { DiagnosticCollection } from "vscode";
-
-const npmDepsValidationProxy = {
-  invokeNPMCommand() {
-    return Promise.reject("invokeNPMCommand method is not implemented");
-  },
-  "@noCallThru": true,
-};
-
-const diagnosticsProxy = {
-  refreshDiagnostics() {
-    return Promise.reject("refreshDiagnostics method is not implemented");
-  },
-  "@noCallThru": true,
-};
+import { outputChannelMock } from "./vscodeMocks";
+import { diagnosticsProxy, npmDepsValidationProxy } from "./moduleProxies";
 
 describe("commands unit test", () => {
   let sandbox: SinonSandbox;
   let outputChannelSinonMock: SinonMock;
   let npmDepsValidationMock: SinonMock;
-  let diagnosticsMock: SinonMock;
+  let diagnosticsSinonMock: SinonMock;
 
   before(() => {
     sandbox = createSandbox();
@@ -36,7 +23,7 @@ describe("commands unit test", () => {
   beforeEach(() => {
     outputChannelSinonMock = sandbox.mock(outputChannelMock);
     npmDepsValidationMock = sandbox.mock(npmDepsValidationProxy);
-    diagnosticsMock = sandbox.mock(diagnosticsProxy);
+    diagnosticsSinonMock = sandbox.mock(diagnosticsProxy);
   });
 
   afterEach(() => {
@@ -74,7 +61,7 @@ describe("commands unit test", () => {
         )
         .resolves();
       outputChannelSinonMock.expects("append");
-      diagnosticsMock
+      diagnosticsSinonMock
         .expects("refreshDiagnostics")
         .withExactArgs(packageJsonPath, <DiagnosticCollection>{})
         .resolves();
