@@ -1,8 +1,9 @@
 import { dirname } from "path";
 import * as proxyquire from "proxyquire";
 import { createSandbox, SinonMock, SinonSandbox } from "sinon";
-import { outputChannelMock, diagnosticCollectionMock } from "./vscodeMocks";
+import { outputChannelMock } from "./vscodeMocks";
 import { fixAllDepIssuesCommand } from "../src/commands";
+import type { DiagnosticCollection } from "vscode";
 
 const npmDepsValidationProxy = {
   invokeNPMCommand() {
@@ -75,13 +76,13 @@ describe("commands unit test", () => {
       outputChannelSinonMock.expects("append");
       diagnosticsMock
         .expects("refreshDiagnostics")
-        .withExactArgs(packageJsonPath, diagnosticCollectionMock)
+        .withExactArgs(packageJsonPath, <DiagnosticCollection>{})
         .resolves();
 
       await fixAllDepIssuesCommandProxy(
         outputChannelMock,
         packageJsonPath,
-        diagnosticCollectionMock
+        <DiagnosticCollection>{}
       );
     });
 
@@ -107,7 +108,7 @@ describe("commands unit test", () => {
       await fixAllDepIssuesCommandProxy(
         outputChannelMock,
         packageJsonPath,
-        diagnosticCollectionMock
+        <DiagnosticCollection>{}
       );
     });
   });

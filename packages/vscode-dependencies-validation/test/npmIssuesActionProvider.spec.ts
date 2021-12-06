@@ -1,15 +1,15 @@
 import { expect } from "chai";
 import * as proxyquire from "proxyquire";
-import type { CodeAction } from "vscode";
+import type {
+  CodeAction,
+  Range,
+  TextDocument,
+  CodeActionKind,
+  CancellationToken,
+} from "vscode";
 import { FIX_ALL_ISSUES_COMMAND } from "../src/constants";
 import { NPMIssuesActionProvider } from "../src/npmIssuesActionProvider";
-import {
-  rangeMock,
-  textDocumentMock,
-  codeActionContextMock,
-  cancellationTokenMock,
-  codeActionKindMock,
-} from "./vscodeMocks";
+import { codeActionContextMock } from "./vscodeMocks";
 
 const diagnosticsProxy = {
   refreshDiagnostics() {
@@ -39,16 +39,16 @@ describe("npmIssuesActionProvider unit test", () => {
       );
 
       provider = new npmIssuesActionProviderModule.NPMIssuesActionProvider(
-        codeActionKindMock
+        <CodeActionKind>{}
       );
     });
 
     it("provideCodeActions", () => {
       const actions: CodeAction[] = provider.provideCodeActions(
-        textDocumentMock,
-        rangeMock,
+        <TextDocument>{},
+        <Range>{},
         codeActionContextMock,
-        cancellationTokenMock
+        <CancellationToken>{}
       );
       expect(actions).to.have.lengthOf(1);
       const { command } = actions[0];
