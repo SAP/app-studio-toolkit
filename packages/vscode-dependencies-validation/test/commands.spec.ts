@@ -1,8 +1,8 @@
+import type { DiagnosticCollection } from "vscode";
 import { dirname } from "path";
 import * as proxyquire from "proxyquire";
 import { createSandbox, SinonMock, SinonSandbox } from "sinon";
 import { fixAllDepIssuesCommand } from "../src/commands";
-import type { DiagnosticCollection } from "vscode";
 import { outputChannelMock } from "./vscodeMocks";
 import { diagnosticsProxy, npmDepsValidationProxy } from "./moduleProxies";
 

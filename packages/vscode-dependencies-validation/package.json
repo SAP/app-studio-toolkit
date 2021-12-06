@@ -16,6 +16,23 @@
     "*"
   ],
   "main": "./dist/extension.js",
+  "contributes": {
+    "configuration": {
+      "title": "Dependencies Validation",
+      "properties": {
+        "dependenciesValidation.enableAutomaticFix": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enables automatic dependencies misalignment fixing"
+        },
+        "dependenciesValidation.timeoutOnActivate": {
+          "type": "number",
+          "default": 0,
+          "description": "Delay of automatic dependencies misalignment fixing (seconds)"
+        }
+      }
+    }
+  },
   "scripts": {
     "ci": "npm-run-all clean compile bundle",
     "clean": "rimraf ./dist *.vsix",

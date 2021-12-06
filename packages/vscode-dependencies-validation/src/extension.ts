@@ -1,5 +1,4 @@
 import {
-  Uri,
   ExtensionContext,
   workspace,
   window,
@@ -9,15 +8,11 @@ import {
   commands,
   CodeActionKind,
 } from "vscode";
-import {
-  NpmLsResult,
-  findDependencyIssues,
-} from "@sap-devx/npm-dependencies-validation";
-import { debounce } from "lodash";
 import { NPMIssuesActionProvider } from "./npmIssuesActionProvider";
 import { fixAllDepIssuesCommand } from "./commands";
-import { FIX_ALL_ISSUES_COMMAND, PACKAGE_JSON_PATTERN } from "./constants";
+import { FIX_ALL_ISSUES_COMMAND } from "./constants";
 import { refreshDiagnostics } from "./diagnostics";
+import { setAutoDepsFixing } from "./autoDepsFixing";
 
 type Subscriptions = ExtensionContext["subscriptions"];
 
@@ -30,15 +25,13 @@ export function activate(context: ExtensionContext): void {
   const outputChannel = window.createOutputChannel(extId);
   const diagnosticCollection = createDiagnosticCollection(context, extId);
 
-  void findIssues();
-
-  void addFileWatcher();
-
   registerCodeActionsProvider(subscriptions);
 
   subscribeToDocumentChanges(subscriptions, diagnosticCollection);
 
   registerCommands(subscriptions, outputChannel, diagnosticCollection);
+
+  setAutoDepsFixing(workspace.getConfiguration());
 }
 
 function registerCodeActionsProvider(subscriptions: Subscriptions): void {
@@ -78,58 +71,6 @@ function registerCommands(
         )
     )
   );
-}
-
-// TODO: need to add file watcher for unsupported package manager files and properties
-async function findIssues(): Promise<void> {
-  const packageJsonUris: Uri[] = await workspace.findFiles(
-    "package.json",
-    "**​/node_modules/**"
-  );
-  packageJsonUris.forEach((packageJsonUri) => {
-    void displayProblematicDependencies(packageJsonUri);
-  });
-}
-
-const debouncedDisplayProblematicDependencies = debounce(
-  displayProblematicDependencies,
-  3000
-);
-
-// TODO: somebody added yarl.lock in filesystem (not via vscode) ??
-// TODO: what should happen after git clone ??
-function addFileWatcher(): void {
-  const fileWatcher = workspace.createFileSystemWatcher("**/package.json"); // TODO: PACKAGE_JSON_PATTERN does not work here ???
-  fileWatcher.onDidChange((uri: Uri) => {
-    void debouncedDisplayProblematicDependencies(uri);
-  });
-
-  fileWatcher.onDidCreate((uri: Uri) => {
-    void debouncedDisplayProblematicDependencies(uri);
-  });
-
-  fileWatcher.onDidDelete((uri: Uri) => {
-    //TODO: check if we need it ??
-    void debouncedDisplayProblematicDependencies(uri);
-  });
-}
-
-async function displayProblematicDependencies(
-  packageJsonUri: Uri
-): Promise<void> {
-  if (PACKAGE_JSON_PATTERN.test(packageJsonUri.fsPath)) {
-    const start = Date.now();
-
-    const npmLsResult: NpmLsResult = await findDependencyIssues(
-      packageJsonUri.fsPath
-    );
-
-    void window.showInformationMessage(
-      `found ${npmLsResult.problems?.length || 0} problems in ${
-        Date.now() - start
-      } milliseconds`
-    );
-  }
 }
 
 function subscribeToDocumentChanges(
