@@ -4,7 +4,6 @@ import {
 } from "@sap-devx/npm-dependencies-validation";
 import { debounce, isEmpty } from "lodash";
 import { dirname } from "path";
-import { PACKAGE_JSON_PATTERN } from "../constants";
 
 export async function findAndFixDepsIssues(
   packageJsonPath: string
@@ -25,5 +24,6 @@ export const debouncedFindAndFixDepsIssues = debounce(
 );
 
 export function isNotInNodeModules(absPath: string): boolean {
-  return PACKAGE_JSON_PATTERN.test(absPath);
+  const pattern = /^(?!.*[\\|\/]node_modules[\\|\/]).*[\\|\/].+/;
+  return pattern.test(absPath);
 }

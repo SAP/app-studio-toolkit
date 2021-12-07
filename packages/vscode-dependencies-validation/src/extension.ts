@@ -12,7 +12,7 @@ import { NPMIssuesActionProvider } from "./npmIssuesActionProvider";
 import { fixAllDepIssuesCommand } from "./commands";
 import { FIX_ALL_ISSUES_COMMAND } from "./constants";
 import { refreshDiagnostics } from "./diagnostics";
-import { activateDepsIssuesAutoFixing } from "./autofix/depsIssues";
+import { activateDepsIssuesAutoFix } from "./autofix/depsIssues";
 import { ContextSubscriptions } from "./vscodeTypes";
 
 export function activate(context: ExtensionContext): void {
@@ -30,7 +30,7 @@ export function activate(context: ExtensionContext): void {
 
   registerCommands(subscriptions, outputChannel, diagnosticCollection);
 
-  activateDepsIssuesAutoFixing(workspace);
+  activateDepsIssuesAutoFix(workspace);
 }
 
 function registerCodeActionsProvider(

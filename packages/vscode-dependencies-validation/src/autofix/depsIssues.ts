@@ -1,12 +1,14 @@
 import type { Uri } from "vscode";
 import { VscodeWorkspace } from "../vscodeTypes";
 import { getAutoFixDelay, isAutoFixEnabled } from "./configuration";
-import { addProjectsWatcher } from "./depsIssuesWatcher";
+import { addProjectsWatcher as addPackageJsonFileWatcher } from "./packageJsonFileWatcher";
+import { addUnsupportedFilesWatcher } from "./unsupportedFilesWatcher";
 import { findAndFixDepsIssues } from "./util";
 
-export function activateDepsIssuesAutoFixing(workspace: VscodeWorkspace): void {
+export function activateDepsIssuesAutoFix(workspace: VscodeWorkspace): void {
   fixWorkspaceProjects(workspace);
-  addProjectsWatcher(workspace);
+  addPackageJsonFileWatcher(workspace);
+  addUnsupportedFilesWatcher(workspace);
 }
 
 function fixWorkspaceProjects(workspace: VscodeWorkspace): void {
