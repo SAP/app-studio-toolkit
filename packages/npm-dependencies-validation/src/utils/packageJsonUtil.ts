@@ -1,6 +1,7 @@
 import { access, readFile } from "fs/promises";
 import { constants } from "fs";
 import { join, dirname } from "path";
+import { PackageJson } from "../types";
 
 const yarnManagerFiles = [
   "yarn.lock",
@@ -17,19 +18,19 @@ const pnpmManagerFiles = [
 ];
 const monorepoProps = ["workspaces"];
 
-async function readJsonFile(jsonFilePath: string): Promise<any> {
+async function readJsonFile(jsonFilePath: string): Promise<PackageJson> {
   try {
     const packageJsonContent = await readFile(jsonFilePath, "utf-8");
-    const content: { name: string } = JSON.parse(packageJsonContent);
+    const content: PackageJson = JSON.parse(packageJsonContent);
     return content;
   } catch (error) {
-    return {};
+    return {} as PackageJson;
   }
 }
 
-async function isPathExist(absPath: string): Promise<boolean> {
+export async function isPathExist(absPath: string): Promise<boolean> {
   try {
-    await access(absPath, constants.R_OK | constants.W_OK);
+    await access(absPath, constants.R_OK);
     return true;
   } catch (error) {
     return false;
@@ -41,10 +42,8 @@ async function pathContainsAnyOfFiles(
   absPath: string
 ): Promise<boolean> {
   for (const fileName of fileNames) {
-    const packageJsonDirPath = join(dirname(absPath));
-    if (await isPathExist(join(packageJsonDirPath, fileName))) {
-      return true;
-    }
+    // in case a file/dir name is found we exit the for-of loop
+    if (await isPathExist(join(dirname(absPath), fileName))) return true;
   }
 
   return false;
@@ -78,3 +77,7 @@ export async function isCurrentlySupported(
 
   return true;
 }
+
+export const internal = {
+  readJsonFile,
+};
