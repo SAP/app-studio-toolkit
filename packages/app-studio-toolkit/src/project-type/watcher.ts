@@ -3,22 +3,23 @@ import {
   ProjectApi,
   WorkspaceApi,
 } from "@sap/artifact-management";
-import { debounce, map, DebouncedFunc, partial } from "lodash";
+import { debounce, map, DebouncedFunc } from "lodash";
 import { recomputeTagsContexts } from "./custom-context";
-import { SetContext } from "./types";
+import { ProjectApiRead, SetContext } from "./types";
+import { KeyIn, Tag } from "@sap/artifact-management-base-types";
 
-export type ProjectApiForWatcher = Pick<ProjectApi, "watchItems">;
+export type ProjectApiWatchItems = Pick<ProjectApi, "watchItems">;
 
-const projectWatchers: Map<ProjectApiForWatcher, ItemWatcherApi> = new Map();
+const projectWatchers: Map<ProjectApiWatchItems, ItemWatcherApi> = new Map();
 
 export type WorkspaceAPIForWatcher = Pick<
   WorkspaceApi,
-  "onWorkspaceChanged" | "getProjects"
->;
-interface InitProjectTypeWatchersOpts {
-  setContext: SetContext;
-  getWorkspaceAPI: () => WorkspaceAPIForWatcher;
-}
+  "onWorkspaceChanged"
+> & {
+  getProjects(
+    tag?: KeyIn<typeof Tag>
+  ): Promise<(ProjectApiWatchItems & ProjectApiRead)[]>;
+};
 
 const RECOMPUTE_DEBOUNCE_DELAY = 1000;
 
@@ -35,6 +36,11 @@ const debouncedRecompute: DebouncedFunc<
   // to avoid maintaining the complex logic of more granular modifications to the current state.
   await recomputeTagsContexts(allProjects, opts.setContext);
 }, RECOMPUTE_DEBOUNCE_DELAY);
+
+interface InitProjectTypeWatchersOpts {
+  setContext: SetContext;
+  getWorkspaceAPI: () => WorkspaceAPIForWatcher;
+}
 
 export async function initProjectTypeWatchers(
   opts: InitProjectTypeWatchersOpts
@@ -54,7 +60,7 @@ interface RegisterAllProjectsListenersOpts {
 
 async function registerAllProjectsListeners(
   opts: RegisterAllProjectsListenersOpts
-) {
+): Promise<void> {
   const projects = await opts.getWorkspaceAPI().getProjects();
   await Promise.all(
     map(projects, (projectApi) =>
@@ -63,7 +69,7 @@ async function registerAllProjectsListeners(
   );
 }
 
-async function removeAllProjectListeners() {
+async function removeAllProjectListeners(): Promise<void> {
   const projWatcherEntries = Array.from(projectWatchers.entries());
   // parallel handling
   await Promise.all(
@@ -75,7 +81,7 @@ async function removeAllProjectListeners() {
 }
 
 interface OnProjectAddedOpts {
-  projectApi: ProjectApiForWatcher;
+  projectApi: ProjectApiWatchItems;
   setContext: SetContext;
   getWorkspaceAPI: () => WorkspaceAPIForWatcher;
 }
@@ -88,6 +94,7 @@ async function registerSingleProjectListeners(
   await currItemWatcher.readItems();
 
   // debouncing to avoid performance hit (e.g: re-calculating on every user's key press)
+  // TODO: replace this in-lined async with the debounced implementation above (need to test)
   currItemWatcher.addListener("updated", async () => {
     const allProjects = await opts.getWorkspaceAPI().getProjects();
     // we are re-building **all** our VSCode custom contexts on every change
