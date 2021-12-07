@@ -14,6 +14,7 @@ import { NPMIssuesActionProvider } from "../src/npmIssuesActionProvider";
 
 describe("npmIssuesActionProvider unit test", () => {
   let provider: NPMIssuesActionProvider;
+
   context("provideCodeActions()", () => {
     before(() => {
       const npmIssuesActionProviderModule = proxyquire(
@@ -22,10 +23,12 @@ describe("npmIssuesActionProvider unit test", () => {
           "./diagnostics": diagnosticsProxy,
         }
       );
+
       provider = new npmIssuesActionProviderModule.NPMIssuesActionProvider(
         <CodeActionKind>{}
       );
     });
+
     it("provideCodeActions", () => {
       const actions: CodeAction[] = provider.provideCodeActions(
         <TextDocument>{},

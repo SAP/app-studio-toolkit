@@ -5,6 +5,7 @@ import type {
   OutputChannel,
   CodeActionKind,
   Diagnostic,
+  Uri,
 } from "vscode";
 
 export const outputChannelMock = <OutputChannel>{};

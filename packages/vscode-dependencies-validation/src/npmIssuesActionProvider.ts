@@ -29,6 +29,7 @@ export function registerCodeActionsProvider(vscodeConfig: VscodeConfig): void {
     )
   );
 }
+
 export class NPMIssuesActionProvider implements CodeActionProvider {
   constructor(private kind: CodeActionKind) {}
 
