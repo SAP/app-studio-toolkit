@@ -1,30 +1,25 @@
-export type NPMIssueType = "missing" | "invalid" | "extraneous";
-
-export type Version = "required" | "version";
-
-export type NPMDependencyIssue = {
-  name: string;
-  version?: string;
-  type: NPMIssueType;
-  devDependency?: boolean;
+export type NpmLsResult = {
+  problems: string[];
 };
 
-export type NpmLsRDependencies = {
+export type DependenciesPropertyName = "dependencies" | "devDependencies";
+
+export type PackageJson = {
   name: string;
   version: string;
-  dependencies: Dependencies;
+} & DependenciesProperties;
+
+export type DependenciesProperties = {
+  [key in DependenciesPropertyName]?: {
+    [key: string]: string;
+  };
 };
 
-export type Dependencies = {
-  [key: string]: Dependency;
-};
+export interface OutputChannel {
+  append: (message: string) => void;
+}
 
-export type Dependency = IssueTypeProperty & VersionProperty;
-
-export type VersionProperty = {
-  [key in Version]?: string;
-};
-
-export type IssueTypeProperty = {
-  [key in NPMIssueType]?: boolean;
+export type NpmCommandConfig = {
+  cwd: string;
+  commandArgs: string[];
 };

@@ -1,3 +1,5 @@
-export { findDependencyIssues } from "./dependencyIssues";
+export { findDependencyIssues } from "./depIssues";
 
-export { NPMDependencyIssue } from "./types";
+export { invokeNPMCommand } from "./utils/npmUtil";
+
+export { NpmLsResult, NpmCommandConfig } from "./types";
