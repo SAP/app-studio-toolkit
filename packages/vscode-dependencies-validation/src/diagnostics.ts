@@ -2,9 +2,7 @@ import type { DiagnosticCollection } from "vscode";
 import { Range, Diagnostic, Uri } from "vscode";
 import { findDependencyIssues } from "@sap-devx/npm-dependencies-validation";
 import { set, isEmpty } from "lodash";
-import {
-  NPM_DEPENDENCY_ISSUES_CODE,
-} from "./constants";
+import { NPM_DEPENDENCY_ISSUES_CODE } from "./constants";
 import { isNotInNodeModules } from "./util";
 
 /**

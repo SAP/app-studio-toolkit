@@ -34,7 +34,7 @@
     }
   },
   "scripts": {
-    "ci": "npm-run-all clean compile bundle",
+    "ci": "npm-run-all clean compile coverage bundle",
     "clean": "rimraf ./dist *.vsix",
     "compile": "tsc -p ./",
     "test": "mocha",

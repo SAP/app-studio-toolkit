@@ -40,7 +40,8 @@ describe("commands unit test", () => {
         "@sap-devx/npm-dependencies-validation": npmDepsValidationProxy,
       });
 
-      fixAllDepIssuesCommandProxy = commandsModule.internal.fixAllDepIssuesCommand;
+      fixAllDepIssuesCommandProxy =
+        commandsModule.internal.fixAllDepIssuesCommand;
     });
 
     it("succeeded", async () => {

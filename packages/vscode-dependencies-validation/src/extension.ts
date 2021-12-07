@@ -17,8 +17,6 @@ import { registerCommands } from "./commands";
 export function activate(context: ExtensionContext): void {
   const vscodeConfig = createVscodeConfig(context);
 
-  const diagnosticCollection = createDiagnosticCollection(context);
-
   registerCodeActionsProvider(vscodeConfig);
 
   subscribeToPackageJsonChanges(vscodeConfig);
@@ -52,14 +50,16 @@ function createVscodeConfig(context: ExtensionContext): VscodeConfig {
     subscriptions,
     kind,
     extId,
-    diagnosticCollection
+    diagnosticCollection,
   };
 }
 
 function createDiagnosticCollection(
   context: ExtensionContext
 ): DiagnosticCollection {
-  const diagnosticCollection = languages.createDiagnosticCollection(context.extension.id);
+  const diagnosticCollection = languages.createDiagnosticCollection(
+    context.extension.id
+  );
   context.subscriptions.push(diagnosticCollection);
   return diagnosticCollection;
 }

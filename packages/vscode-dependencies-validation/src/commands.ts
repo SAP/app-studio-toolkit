@@ -1,11 +1,8 @@
-import { dirname } from "path";
 import type { DiagnosticCollection } from "vscode";
+import { dirname } from "path";
 import { invokeNPMCommand } from "@sap-devx/npm-dependencies-validation";
 import { refreshDiagnostics } from "./diagnostics";
-import {
-  VscodeConfig,
-  VscodeOutputChannel,
-} from "./vscodeTypes";
+import { VscodeConfig, VscodeOutputChannel } from "./vscodeTypes";
 import { FIX_ALL_ISSUES_COMMAND } from "./constants";
 
 async function fixAllDepIssuesCommand(
@@ -37,10 +34,9 @@ function millisToSeconds(millis: number): string {
   return ((millis % 60000) / 1000).toFixed(2);
 }
 
-export function registerCommands(
-  vscodeConfig: VscodeConfig
-): void {
-  const { subscriptions, commands, outputChannel, diagnosticCollection } = vscodeConfig;
+export function registerCommands(vscodeConfig: VscodeConfig): void {
+  const { subscriptions, commands, outputChannel, diagnosticCollection } =
+    vscodeConfig;
   subscriptions.push(
     commands.registerCommand(
       FIX_ALL_ISSUES_COMMAND,

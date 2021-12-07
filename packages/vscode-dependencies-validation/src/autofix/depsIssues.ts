@@ -6,9 +6,7 @@ import { addUnsupportedFilesWatcher } from "./unsupportedFilesWatcher";
 import { findAndFixDepsIssues } from "./fixUtil";
 import { clearDiagnostics } from "../util";
 
-export function activateDepsIssuesAutoFix(
-  vscodeConfig: VscodeConfig
-): void {
+export function activateDepsIssuesAutoFix(vscodeConfig: VscodeConfig): void {
   const { workspace, createUri, diagnosticCollection } = vscodeConfig;
   fixWorkspaceDepsIssues(workspace, diagnosticCollection, createUri);
   addPackageJsonFileWatcher(workspace, diagnosticCollection, createUri);
