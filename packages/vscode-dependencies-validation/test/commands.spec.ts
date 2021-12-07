@@ -2,7 +2,7 @@ import type { DiagnosticCollection } from "vscode";
 import { dirname } from "path";
 import * as proxyquire from "proxyquire";
 import { createSandbox, SinonMock, SinonSandbox } from "sinon";
-import { fixAllDepIssuesCommand } from "../src/commands";
+import { internal } from "../src/commands";
 import { outputChannelMock } from "./vscodeMocks";
 import { diagnosticsProxy, npmDepsValidationProxy } from "./moduleProxies";
 
@@ -32,7 +32,7 @@ describe("commands unit test", () => {
   });
 
   context("executeAllFixCommand()", () => {
-    let fixAllDepIssuesCommandProxy: typeof fixAllDepIssuesCommand;
+    let fixAllDepIssuesCommandProxy: typeof internal.fixAllDepIssuesCommand;
 
     before(() => {
       const commandsModule = proxyquire("../src/commands", {

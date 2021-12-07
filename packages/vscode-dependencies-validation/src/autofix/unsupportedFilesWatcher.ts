@@ -1,29 +1,45 @@
-import type { Uri, WorkspaceConfiguration } from "vscode";
+import type { DiagnosticCollection, Uri } from "vscode";
 import { dirname, join } from "path";
 import {
   yarnManagerFiles,
   pnpmManagerFiles,
   isPathExist,
 } from "@sap-devx/npm-dependencies-validation";
-import { VscodeWorkspace } from "../vscodeTypes";
+import { VscodeUriFile, VscodeWorkspace } from "../vscodeTypes";
 import { isAutoFixEnabled } from "./configuration";
-import { findAndFixDepsIssues, isNotInNodeModules } from "./util";
+import { findAndFixDepsIssues } from "./fixUtil";
+import { clearDiagnostics, isNotInNodeModules } from "../util";
 
-export function addUnsupportedFilesWatcher(workspace: VscodeWorkspace): void {
-  const wsConfig = workspace.getConfiguration();
+export function addUnsupportedFilesWatcher(
+  workspace: VscodeWorkspace,
+  diagnosticCollection: DiagnosticCollection,
+  createUri: VscodeUriFile
+): void {
   const unsupportedFilesPattern = constructUnsupportedFilesPattern();
   const fileWatcher = workspace.createFileSystemWatcher(
     unsupportedFilesPattern
   );
 
-  fileWatcher.onDidCreate((uri: Uri) => onFileSystemEvent(uri, wsConfig));
-  fileWatcher.onDidDelete((uri: Uri) => onFileSystemEvent(uri, wsConfig));
+  fileWatcher.onDidCreate((uri: Uri) =>
+    onFileSystemEvent(uri, workspace, diagnosticCollection, createUri)
+  );
+  fileWatcher.onDidDelete((uri: Uri) =>
+    onFileSystemEvent(uri, workspace, diagnosticCollection, createUri)
+  );
 }
 
-function onFileSystemEvent(uri: Uri, wsConfig: WorkspaceConfiguration): void {
+function onFileSystemEvent(
+  uri: Uri,
+  workspace: VscodeWorkspace,
+  diagnosticCollection: DiagnosticCollection,
+  createUri: VscodeUriFile
+): void {
   const packageJsonPath = getPackageJsonPath(uri.fsPath);
-  void shouldFixProject(wsConfig, packageJsonPath).then((shouldFix) => {
-    if (shouldFix) return findAndFixDepsIssues(packageJsonPath);
+  void shouldFixProject(workspace, packageJsonPath).then(async (shouldFix) => {
+    if (shouldFix) {
+      await findAndFixDepsIssues(packageJsonPath);
+      clearDiagnostics(diagnosticCollection, packageJsonPath, createUri);
+    }
   });
 }
 
@@ -37,11 +53,11 @@ function constructUnsupportedFilesPattern(): string {
 }
 
 async function shouldFixProject(
-  wsConfig: WorkspaceConfiguration,
+  workspace: VscodeWorkspace,
   packageJsonPath: string
 ): Promise<boolean> {
   const pathExists = await isPathExist(packageJsonPath);
   if (!pathExists) return false;
 
-  return isAutoFixEnabled(wsConfig) && isNotInNodeModules(packageJsonPath);
+  return isAutoFixEnabled(workspace) && isNotInNodeModules(packageJsonPath);
 }

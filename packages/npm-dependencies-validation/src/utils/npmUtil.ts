@@ -19,6 +19,8 @@ export function invokeNPMCommand<T>(
       resolve(jsonObjResult);
     });
 
+    // TODO: why there is no error event when npm install fails ???
+    // it fails when unavailable dependency/version defined in package.json
     command.on("error", (error) => {
       const { stack } = error;
       sendDataToOutputChannel(`${stack}`, outputChannel);

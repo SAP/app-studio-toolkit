@@ -15,8 +15,21 @@ import {
   NPM_DEPENDENCY_ISSUES_CODE,
   FIX_ALL_ISSUES_COMMAND,
 } from "./constants";
+import { VscodeConfig } from "./vscodeTypes";
 
-export class NPMIssuesActionProvider implements CodeActionProvider {
+export function registerCodeActionsProvider(vscodeConfig: VscodeConfig): void {
+  const { subscriptions, languages, kind } = vscodeConfig;
+  subscriptions.push(
+    languages.registerCodeActionsProvider(
+      { language: "json", scheme: "file", pattern: "**/package.json" }, // TODO: PACKAGE_JSON_PATTERN does not work here ???
+      new NPMIssuesActionProvider(kind),
+      {
+        providedCodeActionKinds: [kind],
+      }
+    )
+  );
+}
+class NPMIssuesActionProvider implements CodeActionProvider {
   constructor(private kind: CodeActionKind) {}
 
   public provideCodeActions(

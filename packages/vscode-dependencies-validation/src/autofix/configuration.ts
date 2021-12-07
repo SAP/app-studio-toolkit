@@ -1,12 +1,12 @@
-import type { WorkspaceConfiguration } from "vscode";
+import { VscodeWorkspace } from "../vscodeTypes";
 
 const ENABLE_AUTOFIX = "dependenciesValidation.enableAutoFix";
 const DELAY_AUTOFIX = "dependenciesValidation.delayAutoFix";
 
-export function isAutoFixEnabled(wsConfig: WorkspaceConfiguration): boolean {
-  return wsConfig.get(ENABLE_AUTOFIX, false);
+export function isAutoFixEnabled(workspace: VscodeWorkspace): boolean {
+  return workspace.getConfiguration().get(ENABLE_AUTOFIX, false);
 }
 
-export function getAutoFixDelay(wsConfig: WorkspaceConfiguration): number {
-  return wsConfig.get(DELAY_AUTOFIX, 0);
+export function getAutoFixDelay(workspace: VscodeWorkspace): number {
+  return workspace.getConfiguration().get(DELAY_AUTOFIX, 0);
 }

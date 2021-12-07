@@ -1,49 +1,54 @@
-import type { Uri, WorkspaceConfiguration } from "vscode";
-import { VscodeWorkspace } from "../vscodeTypes";
+import { clearDiagnostics, isNotInNodeModules } from "../util";
+import type { DiagnosticCollection, Uri } from "vscode";
+import { VscodeUriFile, VscodeWorkspace } from "../vscodeTypes";
 import { isAutoFixEnabled } from "./configuration";
-import {
-  debouncedFindAndFixDepsIssues,
-  findAndFixDepsIssues,
-  isNotInNodeModules,
-} from "./util";
+import { debouncedFindAndFixDepsIssues, findAndFixDepsIssues } from "./fixUtil";
 
 // TODO: what should happen after git clone ??
-export function addProjectsWatcher(workspace: VscodeWorkspace): void {
-  const wsConfig = workspace.getConfiguration();
-
-  const fileWatcher = workspace.createFileSystemWatcher("**/{package.json}"); // TODO: PACKAGE_JSON_PATTERN does not work here ???
+export function addProjectsWatcher(
+  workspace: VscodeWorkspace,
+  diagnosticCollection: DiagnosticCollection,
+  createUri: VscodeUriFile
+): void {
+  const fileWatcher = workspace.createFileSystemWatcher("**/{package.json}");
 
   fileWatcher.onDidChange((uri: Uri) =>
-    onPackageJsonChangeEvent(uri, wsConfig)
+    onPackageJsonChangeEvent(uri, workspace, diagnosticCollection, createUri)
   );
   fileWatcher.onDidCreate((uri: Uri) =>
-    onPackageJsonCreateEvent(uri, wsConfig)
+    onPackageJsonCreateEvent(uri, workspace, diagnosticCollection, createUri)
   );
 }
 
-function onPackageJsonChangeEvent(
+async function onPackageJsonChangeEvent(
   uri: Uri,
-  wsConfig: WorkspaceConfiguration
-): void {
+  workspace: VscodeWorkspace,
+  diagnosticCollection: DiagnosticCollection,
+  createUri: VscodeUriFile
+): Promise<void> {
   const { fsPath } = uri;
-  if (shouldFixProject(wsConfig, fsPath)) {
-    void debouncedFindAndFixDepsIssues(fsPath);
+  if (shouldFixProject(workspace, fsPath)) {
+    await debouncedFindAndFixDepsIssues(fsPath);
+    clearDiagnostics(diagnosticCollection, fsPath, createUri);
   }
 }
 
-function onPackageJsonCreateEvent(
+async function onPackageJsonCreateEvent(
   uri: Uri,
-  wsConfig: WorkspaceConfiguration
-): void {
+  workspace: VscodeWorkspace,
+  diagnosticCollection: DiagnosticCollection,
+  createUri: VscodeUriFile
+): Promise<void> {
   const { fsPath } = uri;
-  if (shouldFixProject(wsConfig, fsPath)) {
-    void findAndFixDepsIssues(fsPath);
+  if (shouldFixProject(workspace, fsPath)) {
+    await findAndFixDepsIssues(fsPath);
+    clearDiagnostics(diagnosticCollection, fsPath, createUri);
   }
 }
 
 function shouldFixProject(
-  wsConfig: WorkspaceConfiguration,
+  workspace: VscodeWorkspace,
   packageJsonPath: string
 ): boolean {
-  return isAutoFixEnabled(wsConfig) && isNotInNodeModules(packageJsonPath);
+  return isAutoFixEnabled(workspace) && isNotInNodeModules(packageJsonPath);
 }

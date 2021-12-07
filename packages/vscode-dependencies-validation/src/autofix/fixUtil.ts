@@ -1,9 +1,9 @@
+import { dirname } from "path";
 import {
   findDependencyIssues,
   invokeNPMCommand,
 } from "@sap-devx/npm-dependencies-validation";
 import { debounce, isEmpty } from "lodash";
-import { dirname } from "path";
 
 export async function findAndFixDepsIssues(
   packageJsonPath: string
@@ -22,8 +22,3 @@ export const debouncedFindAndFixDepsIssues = debounce(
   findAndFixDepsIssues,
   3000
 );
-
-export function isNotInNodeModules(absPath: string): boolean {
-  const pattern = /^(?!.*[\\|\/]node_modules[\\|\/]).*[\\|\/].+/;
-  return pattern.test(absPath);
-}

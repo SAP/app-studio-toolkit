@@ -2,9 +2,15 @@ import { dirname } from "path";
 import type { DiagnosticCollection } from "vscode";
 import { invokeNPMCommand } from "@sap-devx/npm-dependencies-validation";
 import { refreshDiagnostics } from "./diagnostics";
-import { VscodeOutputChannel } from "./vscodeTypes";
+import {
+  VscodeCommands,
+  VscodeConfig,
+  VscodeContextSubscriptions,
+  VscodeOutputChannel,
+} from "./vscodeTypes";
+import { FIX_ALL_ISSUES_COMMAND } from "./constants";
 
-export async function fixAllDepIssuesCommand(
+async function fixAllDepIssuesCommand(
   outputChannel: VscodeOutputChannel,
   packageJsonPath: string,
   dependencyIssuesDiagnosticCollection: DiagnosticCollection
@@ -32,3 +38,25 @@ export async function fixAllDepIssuesCommand(
 function millisToSeconds(millis: number): string {
   return ((millis % 60000) / 1000).toFixed(2);
 }
+
+export function registerCommands(
+  vscodeConfig: VscodeConfig,
+  diagnosticCollection: DiagnosticCollection
+): void {
+  const { subscriptions, commands, outputChannel } = vscodeConfig;
+  subscriptions.push(
+    commands.registerCommand(
+      FIX_ALL_ISSUES_COMMAND,
+      (packageJsonPath: string) =>
+        fixAllDepIssuesCommand(
+          outputChannel,
+          packageJsonPath,
+          diagnosticCollection
+        )
+    )
+  );
+}
+
+export const internal = {
+  fixAllDepIssuesCommand,
+};

@@ -3,112 +3,52 @@ import {
   workspace,
   window,
   languages,
-  DiagnosticCollection,
-  OutputChannel,
   commands,
   CodeActionKind,
+  Uri,
 } from "vscode";
-import { NPMIssuesActionProvider } from "./npmIssuesActionProvider";
-import { fixAllDepIssuesCommand } from "./commands";
-import { FIX_ALL_ISSUES_COMMAND } from "./constants";
-import { refreshDiagnostics } from "./diagnostics";
+import { registerCodeActionsProvider } from "./npmIssuesActionProvider";
 import { activateDepsIssuesAutoFix } from "./autofix/depsIssues";
-import { ContextSubscriptions } from "./vscodeTypes";
+import { VscodeConfig, VscodeUriFile } from "./vscodeTypes";
+import { subscribeToPackageJsonChanges } from "./editorChanges";
+import { createDiagnosticCollection } from "./diagnosticCollection";
+import { registerCommands } from "./commands";
 
 export function activate(context: ExtensionContext): void {
+  const vscodeConfig = createVscodeConfig(context);
+
+  registerCodeActionsProvider(vscodeConfig);
+
+  const diagnosticCollection = createDiagnosticCollection(vscodeConfig);
+
+  subscribeToPackageJsonChanges(vscodeConfig, diagnosticCollection);
+
+  registerCommands(vscodeConfig, diagnosticCollection);
+
+  activateDepsIssuesAutoFix(vscodeConfig, diagnosticCollection);
+}
+
+function createVscodeConfig(context: ExtensionContext): VscodeConfig {
   const {
     extension: { id: extId },
     subscriptions,
   } = context;
 
   const outputChannel = window.createOutputChannel(extId);
-  const diagnosticCollection = createDiagnosticCollection(context, extId);
+  // eslint-disable-next-line @typescript-eslint/unbound-method -- referencing static Uri method
+  const createUri: VscodeUriFile = Uri.file;
 
-  registerCodeActionsProvider(subscriptions);
+  const kind = CodeActionKind.QuickFix;
 
-  subscribeToDocumentChanges(subscriptions, diagnosticCollection);
-
-  registerCommands(subscriptions, outputChannel, diagnosticCollection);
-
-  activateDepsIssuesAutoFix(workspace);
-}
-
-function registerCodeActionsProvider(
-  subscriptions: ContextSubscriptions
-): void {
-  subscriptions.push(
-    languages.registerCodeActionsProvider(
-      { language: "json", scheme: "file", pattern: "**/package.json" }, // TODO: PACKAGE_JSON_PATTERN does not work here ???
-      new NPMIssuesActionProvider(CodeActionKind.QuickFix),
-      {
-        providedCodeActionKinds: [CodeActionKind.QuickFix],
-      }
-    )
-  );
-}
-
-function createDiagnosticCollection(
-  context: ExtensionContext,
-  extId: string
-): DiagnosticCollection {
-  const diagnosticCollection = languages.createDiagnosticCollection(extId);
-  context.subscriptions.push(diagnosticCollection);
-  return diagnosticCollection;
-}
-
-function registerCommands(
-  subscriptions: ContextSubscriptions,
-  outputChannel: OutputChannel,
-  diagnosticCollection: DiagnosticCollection
-): void {
-  subscriptions.push(
-    commands.registerCommand(
-      FIX_ALL_ISSUES_COMMAND,
-      (packageJsonPath: string) =>
-        fixAllDepIssuesCommand(
-          outputChannel,
-          packageJsonPath,
-          diagnosticCollection
-        )
-    )
-  );
-}
-
-function subscribeToDocumentChanges(
-  subscriptions: ContextSubscriptions,
-  dependencyIssueDiagnostics: DiagnosticCollection
-): void {
-  if (window.activeTextEditor) {
-    void refreshDiagnostics(
-      window.activeTextEditor.document.uri.fsPath,
-      dependencyIssueDiagnostics
-    );
-  }
-
-  subscriptions.push(
-    window.onDidChangeActiveTextEditor((editor) => {
-      if (editor) {
-        void refreshDiagnostics(
-          editor.document.uri.fsPath,
-          dependencyIssueDiagnostics
-        );
-      }
-    })
-  );
-
-  subscriptions.push(
-    workspace.onDidChangeTextDocument(
-      (e) =>
-        void refreshDiagnostics(
-          e.document.uri.fsPath,
-          dependencyIssueDiagnostics
-        )
-    )
-  );
-
-  subscriptions.push(
-    workspace.onDidCloseTextDocument((doc) =>
-      dependencyIssueDiagnostics.delete(doc.uri)
-    )
-  );
+  return {
+    window,
+    workspace,
+    commands,
+    languages,
+    outputChannel,
+    createUri,
+    subscriptions,
+    kind,
+    extId,
+  };
 }

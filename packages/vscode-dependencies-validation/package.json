@@ -28,7 +28,7 @@
         "dependenciesValidation.delayAutoFix": {
           "type": "number",
           "default": 0,
-          "description": "Delay of automatic dependencies misalignment fixing (seconds)"
+          "description": "Delays automatic dependencies misalignment fixing on startup (seconds)"
         }
       }
     }

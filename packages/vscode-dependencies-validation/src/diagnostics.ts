@@ -2,18 +2,21 @@ import type { DiagnosticCollection } from "vscode";
 import { Range, Diagnostic, Uri } from "vscode";
 import { findDependencyIssues } from "@sap-devx/npm-dependencies-validation";
 import { set, isEmpty } from "lodash";
-import { NPM_DEPENDENCY_ISSUES_CODE, PACKAGE_JSON_PATTERN } from "./constants";
+import {
+  NPM_DEPENDENCY_ISSUES_CODE,
+  NOT_IN_NODE_MODULES_PATTERN,
+} from "./constants";
 
 /**
- * Analyzes the package.json text document for problems.
- * @param packageJsonPath package.json path to analyze
+ * Analyzes package.json file for problems.
+ * @param packageJsonPath package.json file path to analyze
  * @param dependencyIssueDiagnostics diagnostic collection
  */
 export async function refreshDiagnostics(
   packageJsonPath: string,
   dependencyIssueDiagnostics: DiagnosticCollection
 ): Promise<void> {
-  if (PACKAGE_JSON_PATTERN.test(packageJsonPath)) {
+  if (isNotInNodeModules(packageJsonPath)) {
     const { problems } = await findDependencyIssues(packageJsonPath);
 
     const diagnostics = isEmpty(problems)
@@ -24,7 +27,11 @@ export async function refreshDiagnostics(
   }
 }
 
-// construct diagnostic to be displayed in the first line of the package.json
+function isNotInNodeModules(absPath: string): boolean {
+  return NOT_IN_NODE_MODULES_PATTERN.test(absPath);
+}
+
+// constructs diagnostic to be displayed in the first line of the package.json
 function constructDiagnostic(
   problems: string[],
   packageJsonPath: string
