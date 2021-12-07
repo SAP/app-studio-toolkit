@@ -56,11 +56,9 @@ describe("diagnostics unit test", () => {
     });
 
     it("there are 2 dependency issues", async () => {
-      npmDepsValidationSinonMock
-        .expects("findDependencyIssues")
-        .resolves({
-          problems: ["missing: json-fixer@1.6.12", "missing: lodash@0.0.1"],
-        });
+      npmDepsValidationSinonMock.expects("findDependencyIssues").resolves({
+        problems: ["missing: json-fixer@1.6.12", "missing: lodash@0.0.1"],
+      });
       diagnosticCollectionSinonMock
         .expects("set")
         .withArgs(Uri.file(packageJsonPath));

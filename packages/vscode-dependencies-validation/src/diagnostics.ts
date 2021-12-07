@@ -6,7 +6,7 @@ import { NPM_DEPENDENCY_ISSUES_CODE, PACKAGE_JSON_PATTERN } from "./constants";
 
 /**
  * Analyzes the package.json text document for problems.
- * @param doc package.json text document to analyze
+ * @param packageJsonPath package.json path to analyze
  * @param dependencyIssueDiagnostics diagnostic collection
  */
 export async function refreshDiagnostics(
@@ -16,11 +16,9 @@ export async function refreshDiagnostics(
   if (PACKAGE_JSON_PATTERN.test(packageJsonPath)) {
     const { problems } = await findDependencyIssues(packageJsonPath);
 
-    let diagnostics: Diagnostic[] = [];
-
-    if (!isEmpty(problems)) {
-      diagnostics = [constructDiagnostic(problems, packageJsonPath)];
-    }
+    const diagnostics = isEmpty(problems)
+      ? []
+      : [constructDiagnostic(problems, packageJsonPath)];
 
     dependencyIssueDiagnostics.set(Uri.file(packageJsonPath), diagnostics);
   }

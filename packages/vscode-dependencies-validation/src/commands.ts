@@ -1,5 +1,5 @@
 import { dirname } from "path";
-import type { DiagnosticCollection, OutputChannel } from "vscode";
+import type { DiagnosticCollection } from "vscode";
 import { invokeNPMCommand } from "@sap-devx/npm-dependencies-validation";
 import { refreshDiagnostics } from "./diagnostics";
 import { VscodeOutputChannel } from "./vscodeTypes";

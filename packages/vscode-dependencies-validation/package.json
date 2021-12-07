@@ -20,12 +20,12 @@
     "configuration": {
       "title": "Dependencies Validation",
       "properties": {
-        "dependenciesValidation.enableAutomaticFix": {
+        "dependenciesValidation.enableAutoFix": {
           "type": "boolean",
           "default": true,
           "description": "Enables automatic dependencies misalignment fixing"
         },
-        "dependenciesValidation.timeoutOnActivate": {
+        "dependenciesValidation.delayAutoFix": {
           "type": "number",
           "default": 0,
           "description": "Delay of automatic dependencies misalignment fixing (seconds)"

@@ -12,9 +12,8 @@ import { NPMIssuesActionProvider } from "./npmIssuesActionProvider";
 import { fixAllDepIssuesCommand } from "./commands";
 import { FIX_ALL_ISSUES_COMMAND } from "./constants";
 import { refreshDiagnostics } from "./diagnostics";
-import { setAutoDepsFixing } from "./autoDepsFixing";
-
-type Subscriptions = ExtensionContext["subscriptions"];
+import { activateDepsIssuesAutoFixing } from "./autofix/depsIssues";
+import { ContextSubscriptions } from "./vscodeTypes";
 
 export function activate(context: ExtensionContext): void {
   const {
@@ -31,10 +30,12 @@ export function activate(context: ExtensionContext): void {
 
   registerCommands(subscriptions, outputChannel, diagnosticCollection);
 
-  setAutoDepsFixing(workspace.getConfiguration());
+  activateDepsIssuesAutoFixing(workspace);
 }
 
-function registerCodeActionsProvider(subscriptions: Subscriptions): void {
+function registerCodeActionsProvider(
+  subscriptions: ContextSubscriptions
+): void {
   subscriptions.push(
     languages.registerCodeActionsProvider(
       { language: "json", scheme: "file", pattern: "**/package.json" }, // TODO: PACKAGE_JSON_PATTERN does not work here ???
@@ -56,7 +57,7 @@ function createDiagnosticCollection(
 }
 
 function registerCommands(
-  subscriptions: Subscriptions,
+  subscriptions: ContextSubscriptions,
   outputChannel: OutputChannel,
   diagnosticCollection: DiagnosticCollection
 ): void {
@@ -74,7 +75,7 @@ function registerCommands(
 }
 
 function subscribeToDocumentChanges(
-  subscriptions: Subscriptions,
+  subscriptions: ContextSubscriptions,
   dependencyIssueDiagnostics: DiagnosticCollection
 ): void {
   if (window.activeTextEditor) {
