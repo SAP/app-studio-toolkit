@@ -7,5 +7,11 @@
     "type": "git",
     "url": "https://github.com/SAP/app-studio-toolkit"
   },
-  "main": "index.js"
+  "main": "index.js",
+  "dependencies": {
+    "json-fixer": "1.6.13"
+  },
+  "devDependencies": {
+    "lodash": "4.17.21"
+  }
 }
