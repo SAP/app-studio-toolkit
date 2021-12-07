@@ -4,10 +4,9 @@ import { clearDiagnostics } from "./util";
 import { VscodeConfig } from "./vscodeTypes";
 
 export function subscribeToPackageJsonChanges(
-  vscodeConfig: VscodeConfig,
-  diagnosticCollection: DiagnosticCollection
+  vscodeConfig: VscodeConfig
 ): void {
-  const { window, subscriptions, workspace, createUri } = vscodeConfig;
+  const { window, subscriptions, workspace, createUri, diagnosticCollection } = vscodeConfig;
 
   if (window.activeTextEditor) {
     void refreshDiagnostics(

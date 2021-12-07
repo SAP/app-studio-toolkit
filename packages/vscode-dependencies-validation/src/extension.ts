@@ -6,26 +6,26 @@ import {
   commands,
   CodeActionKind,
   Uri,
+  DiagnosticCollection,
 } from "vscode";
 import { registerCodeActionsProvider } from "./npmIssuesActionProvider";
 import { activateDepsIssuesAutoFix } from "./autofix/depsIssues";
 import { VscodeConfig, VscodeUriFile } from "./vscodeTypes";
 import { subscribeToPackageJsonChanges } from "./editorChanges";
-import { createDiagnosticCollection } from "./diagnosticCollection";
 import { registerCommands } from "./commands";
 
 export function activate(context: ExtensionContext): void {
   const vscodeConfig = createVscodeConfig(context);
 
+  const diagnosticCollection = createDiagnosticCollection(context);
+
   registerCodeActionsProvider(vscodeConfig);
 
-  const diagnosticCollection = createDiagnosticCollection(vscodeConfig);
+  subscribeToPackageJsonChanges(vscodeConfig);
 
-  subscribeToPackageJsonChanges(vscodeConfig, diagnosticCollection);
+  registerCommands(vscodeConfig);
 
-  registerCommands(vscodeConfig, diagnosticCollection);
-
-  activateDepsIssuesAutoFix(vscodeConfig, diagnosticCollection);
+  activateDepsIssuesAutoFix(vscodeConfig);
 }
 
 function createVscodeConfig(context: ExtensionContext): VscodeConfig {
@@ -40,6 +40,8 @@ function createVscodeConfig(context: ExtensionContext): VscodeConfig {
 
   const kind = CodeActionKind.QuickFix;
 
+  const diagnosticCollection = createDiagnosticCollection(context);
+
   return {
     window,
     workspace,
@@ -50,5 +52,14 @@ function createVscodeConfig(context: ExtensionContext): VscodeConfig {
     subscriptions,
     kind,
     extId,
+    diagnosticCollection
   };
+}
+
+function createDiagnosticCollection(
+  context: ExtensionContext
+): DiagnosticCollection {
+  const diagnosticCollection = languages.createDiagnosticCollection(context.extension.id);
+  context.subscriptions.push(diagnosticCollection);
+  return diagnosticCollection;
 }

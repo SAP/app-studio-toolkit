@@ -7,6 +7,7 @@ import type {
   languages,
   commands,
   CodeActionKind,
+  DiagnosticCollection,
 } from "vscode";
 
 export type VscodeOutputChannel = Pick<
@@ -36,4 +37,5 @@ export type VscodeConfig = {
   outputChannel: VscodeOutputChannel;
   kind: CodeActionKind;
   extId: string;
+  diagnosticCollection: DiagnosticCollection;
 };

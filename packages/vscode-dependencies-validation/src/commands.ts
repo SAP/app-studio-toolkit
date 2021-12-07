@@ -3,9 +3,7 @@ import type { DiagnosticCollection } from "vscode";
 import { invokeNPMCommand } from "@sap-devx/npm-dependencies-validation";
 import { refreshDiagnostics } from "./diagnostics";
 import {
-  VscodeCommands,
   VscodeConfig,
-  VscodeContextSubscriptions,
   VscodeOutputChannel,
 } from "./vscodeTypes";
 import { FIX_ALL_ISSUES_COMMAND } from "./constants";
@@ -40,10 +38,9 @@ function millisToSeconds(millis: number): string {
 }
 
 export function registerCommands(
-  vscodeConfig: VscodeConfig,
-  diagnosticCollection: DiagnosticCollection
+  vscodeConfig: VscodeConfig
 ): void {
-  const { subscriptions, commands, outputChannel } = vscodeConfig;
+  const { subscriptions, commands, outputChannel, diagnosticCollection } = vscodeConfig;
   subscriptions.push(
     commands.registerCommand(
       FIX_ALL_ISSUES_COMMAND,

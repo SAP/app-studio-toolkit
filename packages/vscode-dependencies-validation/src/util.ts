@@ -1,6 +1,8 @@
 import type { DiagnosticCollection } from "vscode";
-import { NOT_IN_NODE_MODULES_PATTERN } from "./constants";
 import { VscodeUriFile } from "./vscodeTypes";
+
+const NOT_IN_NODE_MODULES_PATTERN =
+  /^(?!.*[\\|\/]node_modules[\\|\/]).*[\\|\/].+/;
 
 export function isNotInNodeModules(absPath: string): boolean {
   return NOT_IN_NODE_MODULES_PATTERN.test(absPath);

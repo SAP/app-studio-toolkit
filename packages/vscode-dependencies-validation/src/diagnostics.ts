@@ -4,8 +4,8 @@ import { findDependencyIssues } from "@sap-devx/npm-dependencies-validation";
 import { set, isEmpty } from "lodash";
 import {
   NPM_DEPENDENCY_ISSUES_CODE,
-  NOT_IN_NODE_MODULES_PATTERN,
 } from "./constants";
+import { isNotInNodeModules } from "./util";
 
 /**
  * Analyzes package.json file for problems.
@@ -25,10 +25,6 @@ export async function refreshDiagnostics(
 
     dependencyIssueDiagnostics.set(Uri.file(packageJsonPath), diagnostics);
   }
-}
-
-function isNotInNodeModules(absPath: string): boolean {
-  return NOT_IN_NODE_MODULES_PATTERN.test(absPath);
 }
 
 // constructs diagnostic to be displayed in the first line of the package.json
