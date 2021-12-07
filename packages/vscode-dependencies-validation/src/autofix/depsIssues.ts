@@ -1,26 +1,38 @@
 import type { DiagnosticCollection, Uri } from "vscode";
-import { VscodeConfig, VscodeUriFile, VscodeWorkspace } from "../vscodeTypes";
+import {
+  VscodeDepsIssuesConfig,
+  VscodeOutputChannel,
+  VscodeUriFile,
+  VscodeWorkspace,
+} from "../vscodeTypes";
 import { getAutoFixDelay, isAutoFixEnabled } from "./configuration";
 import { addProjectsWatcher as addPackageJsonFileWatcher } from "./packageJsonFileWatcher";
 import { addUnsupportedFilesWatcher } from "./unsupportedFilesWatcher";
 import { findAndFixDepsIssues } from "./fixUtil";
 import { clearDiagnostics } from "../util";
 
-export function activateDepsIssuesAutoFix(vscodeConfig: VscodeConfig): void {
-  const { workspace, createUri, diagnosticCollection } = vscodeConfig;
-  fixWorkspaceDepsIssues(workspace, diagnosticCollection, createUri);
-  addPackageJsonFileWatcher(workspace, diagnosticCollection, createUri);
-  addUnsupportedFilesWatcher(workspace, diagnosticCollection, createUri);
+export function activateDepsIssuesAutoFix(
+  vscodeConfig: VscodeDepsIssuesConfig
+): void {
+  fixWorkspaceDepsIssues(vscodeConfig);
+  addPackageJsonFileWatcher(vscodeConfig);
+  addUnsupportedFilesWatcher(vscodeConfig);
 }
 
-function fixWorkspaceDepsIssues(
-  workspace: VscodeWorkspace,
-  diagnosticCollection: DiagnosticCollection,
-  createUri: VscodeUriFile
-): void {
+// TODO: run fixing on config update
+
+function fixWorkspaceDepsIssues(vscodeConfig: VscodeDepsIssuesConfig): void {
+  const { workspace, createUri, diagnosticCollection, outputChannel } =
+    vscodeConfig;
+
   setTimeout(() => {
     if (isAutoFixEnabled(workspace)) {
-      void doWorkspaceDepsFixing(workspace, diagnosticCollection, createUri);
+      void doWorkspaceDepsFixing(
+        workspace,
+        diagnosticCollection,
+        createUri,
+        outputChannel
+      );
     }
   }, getAutoFixDelay(workspace));
 }
@@ -32,12 +44,14 @@ function getPackageJsonUris(workspace: VscodeWorkspace): Thenable<Uri[]> {
 async function doWorkspaceDepsFixing(
   workspace: VscodeWorkspace,
   diagnosticCollection: DiagnosticCollection,
-  createUri: VscodeUriFile
+  createUri: VscodeUriFile,
+  outputChannel: VscodeOutputChannel
 ): Promise<void> {
   const packageJsonUris = await getPackageJsonUris(workspace);
+  // TODO: should we do it in parrallel or sequentially ???
   packageJsonUris.forEach((uri: Uri) => {
     const { fsPath } = uri;
-    void findAndFixDepsIssues(fsPath).then(() =>
+    void findAndFixDepsIssues(fsPath, outputChannel).then(() =>
       clearDiagnostics(diagnosticCollection, fsPath, createUri)
     );
   });

@@ -14,6 +14,8 @@ import { VscodeConfig, VscodeUriFile } from "./vscodeTypes";
 import { subscribeToPackageJsonChanges } from "./editorChanges";
 import { registerCommands } from "./commands";
 
+// TODO: add logger for extension
+
 export function activate(context: ExtensionContext): void {
   const vscodeConfig = createVscodeConfig(context);
 
@@ -26,6 +28,7 @@ export function activate(context: ExtensionContext): void {
   activateDepsIssuesAutoFix(vscodeConfig);
 }
 
+// shared config
 function createVscodeConfig(context: ExtensionContext): VscodeConfig {
   const {
     extension: { id: extId },
@@ -49,7 +52,6 @@ function createVscodeConfig(context: ExtensionContext): VscodeConfig {
     createUri,
     subscriptions,
     kind,
-    extId,
     diagnosticCollection,
   };
 }

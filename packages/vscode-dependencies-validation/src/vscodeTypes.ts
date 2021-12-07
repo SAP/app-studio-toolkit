@@ -27,15 +27,35 @@ export type VscodeUriFile = typeof Uri.file;
 
 export type VscodeLanguages = typeof languages;
 
-export type VscodeConfig = {
-  workspace: VscodeWorkspace;
-  window: VscodeWindow;
-  commands: VscodeCommands;
-  languages: VscodeLanguages;
+export type VscodeConfig = VscodeCodeActionProviderCongig &
+  VscodePackageJsonChangesConfig &
+  VscodeCommandsConfig &
+  VscodeDepsIssuesConfig;
+
+export type VscodeCodeActionProviderCongig = {
   subscriptions: VscodeContextSubscriptions;
-  createUri: VscodeUriFile;
-  outputChannel: VscodeOutputChannel;
   kind: CodeActionKind;
-  extId: string;
+  languages: VscodeLanguages;
+};
+
+export type VscodePackageJsonChangesConfig = {
+  window: VscodeWindow;
+  subscriptions: VscodeContextSubscriptions;
+  workspace: VscodeWorkspace;
+  createUri: VscodeUriFile;
   diagnosticCollection: DiagnosticCollection;
+};
+
+export type VscodeCommandsConfig = {
+  commands: VscodeCommands;
+  subscriptions: VscodeContextSubscriptions;
+  outputChannel: VscodeOutputChannel;
+  diagnosticCollection: DiagnosticCollection;
+};
+
+export type VscodeDepsIssuesConfig = {
+  workspace: VscodeWorkspace;
+  createUri: VscodeUriFile;
+  diagnosticCollection: DiagnosticCollection;
+  outputChannel: VscodeOutputChannel;
 };

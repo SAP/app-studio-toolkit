@@ -5,26 +5,43 @@ import {
   pnpmManagerFiles,
   isPathExist,
 } from "@sap-devx/npm-dependencies-validation";
-import { VscodeUriFile, VscodeWorkspace } from "../vscodeTypes";
+import {
+  VscodeDepsIssuesConfig,
+  VscodeOutputChannel,
+  VscodeUriFile,
+  VscodeWorkspace,
+} from "../vscodeTypes";
 import { isAutoFixEnabled } from "./configuration";
 import { findAndFixDepsIssues } from "./fixUtil";
 import { clearDiagnostics, isNotInNodeModules } from "../util";
 
 export function addUnsupportedFilesWatcher(
-  workspace: VscodeWorkspace,
-  diagnosticCollection: DiagnosticCollection,
-  createUri: VscodeUriFile
+  vscodeConfig: VscodeDepsIssuesConfig
 ): void {
+  const { workspace, createUri, diagnosticCollection, outputChannel } =
+    vscodeConfig;
   const unsupportedFilesPattern = constructUnsupportedFilesPattern();
   const fileWatcher = workspace.createFileSystemWatcher(
     unsupportedFilesPattern
   );
 
   fileWatcher.onDidCreate((uri: Uri) =>
-    onFileSystemEvent(uri, workspace, diagnosticCollection, createUri)
+    onFileSystemEvent(
+      uri,
+      workspace,
+      diagnosticCollection,
+      createUri,
+      outputChannel
+    )
   );
   fileWatcher.onDidDelete((uri: Uri) =>
-    onFileSystemEvent(uri, workspace, diagnosticCollection, createUri)
+    onFileSystemEvent(
+      uri,
+      workspace,
+      diagnosticCollection,
+      createUri,
+      outputChannel
+    )
   );
 }
 
@@ -32,12 +49,13 @@ function onFileSystemEvent(
   uri: Uri,
   workspace: VscodeWorkspace,
   diagnosticCollection: DiagnosticCollection,
-  createUri: VscodeUriFile
+  createUri: VscodeUriFile,
+  outputChannel: VscodeOutputChannel
 ): void {
   const packageJsonPath = getPackageJsonPath(uri.fsPath);
   void shouldFixProject(workspace, packageJsonPath).then(async (shouldFix) => {
     if (shouldFix) {
-      await findAndFixDepsIssues(packageJsonPath);
+      await findAndFixDepsIssues(packageJsonPath, outputChannel);
       clearDiagnostics(diagnosticCollection, packageJsonPath, createUri);
     }
   });

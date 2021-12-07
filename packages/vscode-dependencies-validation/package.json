@@ -18,7 +18,7 @@
   "main": "./dist/extension.js",
   "contributes": {
     "configuration": {
-      "title": "Dependencies Validation",
+      "title": "NPM Dependencies Validation",
       "properties": {
         "dependenciesValidation.enableAutoFix": {
           "type": "boolean",
@@ -34,7 +34,7 @@
     }
   },
   "scripts": {
-    "ci": "npm-run-all clean compile coverage bundle",
+    "ci": "npm-run-all clean compile test bundle",
     "clean": "rimraf ./dist *.vsix",
     "compile": "tsc -p ./",
     "test": "mocha",

@@ -15,9 +15,11 @@ import {
   NPM_DEPENDENCY_ISSUES_CODE,
   FIX_ALL_ISSUES_COMMAND,
 } from "./constants";
-import { VscodeConfig } from "./vscodeTypes";
+import { VscodeCodeActionProviderCongig } from "./vscodeTypes";
 
-export function registerCodeActionsProvider(vscodeConfig: VscodeConfig): void {
+export function registerCodeActionsProvider(
+  vscodeConfig: VscodeCodeActionProviderCongig
+): void {
   const { subscriptions, languages, kind } = vscodeConfig;
   subscriptions.push(
     languages.registerCodeActionsProvider(

@@ -1,9 +1,9 @@
 import { refreshDiagnostics } from "./diagnostics";
 import { clearDiagnostics } from "./util";
-import { VscodeConfig } from "./vscodeTypes";
+import { VscodePackageJsonChangesConfig } from "./vscodeTypes";
 
 export function subscribeToPackageJsonChanges(
-  vscodeConfig: VscodeConfig
+  vscodeConfig: VscodePackageJsonChangesConfig
 ): void {
   const { window, subscriptions, workspace, createUri, diagnosticCollection } =
     vscodeConfig;
