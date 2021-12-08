@@ -1,3 +1,4 @@
+// TODO: extract a common utility instead of copying this script
 const { packageCommand } = require("vsce/out/package");
 const { expect } = require("chai");
 const { resolve } = require("path");
