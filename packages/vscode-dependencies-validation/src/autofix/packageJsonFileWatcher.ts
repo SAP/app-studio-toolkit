@@ -12,10 +12,19 @@ export function addPackageJsonFileWatcher(
   const fileWatcher =
     vscodeConfig.workspace.createFileSystemWatcher("**/package.json");
 
-  fileWatcher.onDidChange((uri: Uri) =>
-    debouncedHandlePackageJsonEvent(uri, vscodeConfig)
-  );
-  fileWatcher.onDidCreate((uri: Uri) =>
-    handlePackageJsonEvent(uri, vscodeConfig)
-  );
+  fileWatcher.onDidChange(onChange(vscodeConfig));
+  fileWatcher.onDidCreate(onCreate(vscodeConfig));
 }
+
+function onCreate(vscodeConfig: VscodeFileEventConfig): any {
+  return (uri: Uri) => handlePackageJsonEvent(uri, vscodeConfig);
+}
+
+function onChange(vscodeConfig: VscodeFileEventConfig): any {
+  return (uri: Uri) => debouncedHandlePackageJsonEvent(uri, vscodeConfig);
+}
+
+export const internal = {
+  onCreate,
+  onChange,
+};

@@ -14,3 +14,10 @@ export const npmDepsValidationProxy = {
   },
   "@noCallThru": true,
 };
+
+export const eventUtilProxy = {
+  handlePackageJsonEvent() {
+    return Promise.reject("handlePackageJsonEvent method is not implemented");
+  },
+  "@noCallThru": true,
+};
