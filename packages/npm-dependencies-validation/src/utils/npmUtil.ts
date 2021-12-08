@@ -5,7 +5,6 @@ export function getNPM(): string {
   return /^win/.test(process.platform) ? "npm.cmd" : "npm";
 }
 
-// TODO: add method for terminal without json
 // add --verbose
 // print to output channel when verbose is set (naive implementation)
 export function invokeNPMCommandWithJsonResult<T>(
@@ -36,7 +35,7 @@ export function invokeNPMCommand(
   outputChannel: OutputChannel
 ): Promise<void> {
   return new Promise((resolve, reject) => {
-    const command = executeSpawn(config);
+    const command = executeSpawn(config, []);
 
     // TODO: add start, cwd and end
     command.stdout.on("data", (data) => {
@@ -47,6 +46,7 @@ export function invokeNPMCommand(
       resolve();
     });
 
+    // TODO: does not stop here when an error occurs ?
     command.on("error", (error) => {
       const { stack } = error;
       sendDataToOutputChannel(`${stack}`, outputChannel);
@@ -57,7 +57,7 @@ export function invokeNPMCommand(
 
 function executeSpawn(
   config: NpmCommandConfig,
-  additionalArgs: string[] = []
+  additionalArgs: string[]
 ): ChildProcessWithoutNullStreams {
   const { commandArgs, cwd } = config;
   return spawn(getNPM(), [...commandArgs, ...additionalArgs], { cwd });

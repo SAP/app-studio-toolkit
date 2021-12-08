@@ -26,7 +26,7 @@ export function activateDepsIssuesAutoFix(
 
 function fixWorkspaceDepsIssues(vscodeConfig: VscodeFileEventConfig): void {
   setTimeout(() => {
-    void doWorkspaceDepsIssuesFix(vscodeConfig);
+    void findDepsIssuesFixThemAndCleanProblemsView(vscodeConfig);
   }, getAutoFixDelay(vscodeConfig.workspace));
 }
 
@@ -38,12 +38,12 @@ function onAutoFixChange(vscodeConfig: VscodeFileEventConfig): void {
   vscodeConfig.workspace.onDidChangeConfiguration((event) => {
     const affected = event.affectsConfiguration(ENABLE_AUTOFIX);
     if (affected) {
-      void doWorkspaceDepsIssuesFix(vscodeConfig);
+      void findDepsIssuesFixThemAndCleanProblemsView(vscodeConfig);
     }
   });
 }
 
-async function doWorkspaceDepsIssuesFix(
+async function findDepsIssuesFixThemAndCleanProblemsView(
   vscodeConfig: VscodeFileEventConfig
 ): Promise<void> {
   const { workspace, diagnosticCollection, outputChannel } = vscodeConfig;
@@ -51,9 +51,9 @@ async function doWorkspaceDepsIssuesFix(
 
   const packageJsonUris = await getPackageJsonUris(workspace);
   // TODO: should we do it in parrallel or sequentially ???
-  packageJsonUris.forEach((uri: Uri) => {
-    void findAndFixDepsIssues(uri, outputChannel).then(() =>
-      clearDiagnostics(diagnosticCollection, uri)
-    );
-  });
+  // currently it works sequentially
+  for (const uri of packageJsonUris) {
+    await findAndFixDepsIssues(uri, outputChannel);
+    clearDiagnostics(diagnosticCollection, uri);
+  }
 }

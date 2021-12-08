@@ -6,7 +6,7 @@ import { internal } from "../src/commands";
 import { outputChannelMock } from "./vscodeMocks";
 import { diagnosticsProxy, npmDepsValidationProxy } from "./moduleProxies";
 
-describe.skip("commands unit test", () => {
+describe.only("commands unit test", () => {
   let sandbox: SinonSandbox;
   let outputChannelSinonMock: SinonMock;
   let npmDepsValidationMock: SinonMock;
@@ -35,7 +35,7 @@ describe.skip("commands unit test", () => {
     npmDepsValidationMock.verify();
   });
 
-  context("executeAllFixCommand()", () => {
+  context("fixAllDepIssuesCommand()", () => {
     let fixAllDepIssuesCommandProxy: typeof internal.fixAllDepIssuesCommand;
 
     before(() => {

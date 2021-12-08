@@ -31,15 +31,16 @@ export async function findAndFixDepsIssues(
   return fixDepsIssues(packageJsonUri, outputChannel);
 }
 
-export function fixDepsIssues(
+export async function fixDepsIssues(
   packageJsonUri: Uri,
   outputChannel: VscodeOutputChannel
 ): Promise<void> {
-  return invokeNPMCommand(
-    {
-      commandArgs: ["install"],
-      cwd: dirname(packageJsonUri.fsPath),
-    },
-    outputChannel
-  );
+  // package.json parent dir
+  const cwd = dirname(packageJsonUri.fsPath);
+  outputChannel.appendLine(`\nFixing dependency issues of ${cwd} ...\n`);
+
+  const config = { commandArgs: ["install"], cwd };
+  await invokeNPMCommand(config, outputChannel);
+
+  outputChannel.appendLine(`Done.\n`);
 }
