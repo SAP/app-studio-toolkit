@@ -7,6 +7,7 @@ import { debounce, map, DebouncedFunc } from "lodash";
 import { recomputeTagsContexts } from "./custom-context";
 import { ProjectApiRead, SetContext } from "./types";
 import { KeyIn, Tag } from "@sap/artifact-management-base-types";
+import { getLogger } from "../logger/logger";
 
 export type ProjectApiWatchItems = Pick<ProjectApi, "watchItems">;
 
@@ -95,7 +96,12 @@ async function registerSingleProjectListeners(
 
   // debouncing to avoid performance hit (e.g: re-calculating on every user's key press)
   // TODO: replace this in-lined async with the debounced implementation above (need to test)
-  currItemWatcher.addListener("updated", async () => {
+  currItemWatcher.addListener("updated", async (e) => {
+    try {
+      getLogger().fatal("File Change Triggered");
+    } catch (e) {
+      const x = e;
+    }
     const allProjects = await opts.getWorkspaceAPI().getProjects();
     // we are re-building **all** our VSCode custom contexts on every change
     // to avoid maintaining the complex logic of more granular modifications to the current state.

@@ -77,7 +77,7 @@ importers:
     devDependencies:
       '@sap-devx/app-studio-toolkit-types': link:../../packages/app-studio-toolkit-types
 
-  examples/vscode-artifact-managment-context-menus:
+  examples/vscode-artifact-management-context-menus:
     specifiers: {}
 
   examples/vscode-using-workspace-api:
