@@ -1,17 +1,45 @@
-import type { DiagnosticCollection } from "vscode";
-import { VscodeUriFile } from "./vscodeTypes";
+import type { DiagnosticCollection, Uri } from "vscode";
+import { dirname } from "path";
+import {
+  findDependencyIssues,
+  invokeNPMCommand,
+} from "@sap-devx/npm-dependencies-validation";
+import { isEmpty } from "lodash";
+import { VscodeOutputChannel } from "./vscodeTypes";
 
 const NOT_IN_NODE_MODULES_PATTERN =
   /^(?!.*[\\|\/]node_modules[\\|\/]).*[\\|\/].+/;
 
-export function isNotInNodeModules(absPath: string): boolean {
-  return NOT_IN_NODE_MODULES_PATTERN.test(absPath);
+export function isNotInNodeModules(uri: Uri): boolean {
+  return NOT_IN_NODE_MODULES_PATTERN.test(uri.fsPath);
 }
 
 export function clearDiagnostics(
   diagnosticCollection: DiagnosticCollection,
-  absPath: string,
-  createUri: VscodeUriFile
+  fileUri: Uri
 ): void {
-  diagnosticCollection.delete(createUri(absPath));
+  diagnosticCollection.delete(fileUri);
+}
+
+export async function findAndFixDepsIssues(
+  packageJsonUri: Uri,
+  outputChannel: VscodeOutputChannel
+): Promise<void> {
+  const { problems } = await findDependencyIssues(packageJsonUri.fsPath);
+  if (isEmpty(problems)) return;
+
+  return fixDepsIssues(packageJsonUri, outputChannel);
+}
+
+export function fixDepsIssues(
+  packageJsonUri: Uri,
+  outputChannel: VscodeOutputChannel
+): Promise<void> {
+  return invokeNPMCommand(
+    {
+      commandArgs: ["install"],
+      cwd: dirname(packageJsonUri.fsPath),
+    },
+    outputChannel
+  );
 }

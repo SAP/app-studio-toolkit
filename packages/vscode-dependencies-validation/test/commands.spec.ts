@@ -1,4 +1,4 @@
-import type { DiagnosticCollection } from "vscode";
+import type { DiagnosticCollection, Uri } from "vscode";
 import { dirname } from "path";
 import * as proxyquire from "proxyquire";
 import { createSandbox, SinonMock, SinonSandbox } from "sinon";
@@ -11,6 +11,10 @@ describe("commands unit test", () => {
   let outputChannelSinonMock: SinonMock;
   let npmDepsValidationMock: SinonMock;
   let diagnosticsSinonMock: SinonMock;
+
+  const Uri = {
+    file: (path: string) => `uri_${path}`,
+  };
 
   before(() => {
     sandbox = createSandbox();
@@ -38,6 +42,10 @@ describe("commands unit test", () => {
       const commandsModule = proxyquire("../src/commands", {
         "./diagnostics": diagnosticsProxy,
         "@sap-devx/npm-dependencies-validation": npmDepsValidationProxy,
+        vscode: {
+          Uri,
+          "@noCallThru": true,
+        },
       });
 
       fixAllDepIssuesCommandProxy =
@@ -46,6 +54,8 @@ describe("commands unit test", () => {
 
     it("succeeded", async () => {
       const packageJsonPath = "root/folder/package.json";
+
+      const uri = Uri.file(packageJsonPath);
 
       outputChannelSinonMock.expects("show").withExactArgs(true);
       outputChannelSinonMock
@@ -69,13 +79,15 @@ describe("commands unit test", () => {
 
       await fixAllDepIssuesCommandProxy(
         outputChannelMock,
-        packageJsonPath,
-        <DiagnosticCollection>{}
+        <DiagnosticCollection>{},
+        uri as unknown as Uri
       );
     });
 
     it("failed", async () => {
       const packageJsonPath = "root/folder/package.json";
+
+      const uri = Uri.file(packageJsonPath);
 
       outputChannelSinonMock.expects("show").withExactArgs(true);
       outputChannelSinonMock
@@ -95,8 +107,8 @@ describe("commands unit test", () => {
 
       await fixAllDepIssuesCommandProxy(
         outputChannelMock,
-        packageJsonPath,
-        <DiagnosticCollection>{}
+        <DiagnosticCollection>{},
+        uri as unknown as Uri
       );
     });
   });

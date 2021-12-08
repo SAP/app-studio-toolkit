@@ -23,14 +23,17 @@ export type VscodeCommands = typeof commands;
 
 export type VscodeContextSubscriptions = ExtensionContext["subscriptions"];
 
-export type VscodeUriFile = typeof Uri.file;
+export type VscodeUriFile = {
+  createUri: typeof Uri.file;
+};
 
 export type VscodeLanguages = typeof languages;
 
 export type VscodeConfig = VscodeCodeActionProviderCongig &
   VscodePackageJsonChangesConfig &
   VscodeCommandsConfig &
-  VscodeDepsIssuesConfig;
+  VscodeFileEventConfig &
+  VscodeUriFile;
 
 export type VscodeCodeActionProviderCongig = {
   subscriptions: VscodeContextSubscriptions;
@@ -42,8 +45,13 @@ export type VscodePackageJsonChangesConfig = {
   window: VscodeWindow;
   subscriptions: VscodeContextSubscriptions;
   workspace: VscodeWorkspace;
-  createUri: VscodeUriFile;
   diagnosticCollection: DiagnosticCollection;
+};
+
+export type VscodeFileEventConfig = {
+  workspace: VscodeWorkspace;
+  diagnosticCollection: DiagnosticCollection;
+  outputChannel: VscodeOutputChannel;
 };
 
 export type VscodeCommandsConfig = {
@@ -51,11 +59,4 @@ export type VscodeCommandsConfig = {
   subscriptions: VscodeContextSubscriptions;
   outputChannel: VscodeOutputChannel;
   diagnosticCollection: DiagnosticCollection;
-};
-
-export type VscodeDepsIssuesConfig = {
-  workspace: VscodeWorkspace;
-  createUri: VscodeUriFile;
-  diagnosticCollection: DiagnosticCollection;
-  outputChannel: VscodeOutputChannel;
 };

@@ -3,6 +3,7 @@ import { createSandbox, SinonMock, SinonSandbox } from "sinon";
 import { diagnosticCollectionMock } from "./vscodeMocks";
 import { refreshDiagnostics } from "../src/diagnostics";
 import { npmDepsValidationProxy } from "./moduleProxies";
+import type { Uri } from "vscode";
 
 describe("diagnostics unit test", () => {
   const packageJsonPath = "/root/folder/package.json";
@@ -56,24 +57,30 @@ describe("diagnostics unit test", () => {
     });
 
     it("there are 2 dependency issues", async () => {
+      const uri = Uri.file(packageJsonPath);
       npmDepsValidationSinonMock.expects("findDependencyIssues").resolves({
         problems: ["missing: json-fixer@1.6.12", "missing: lodash@0.0.1"],
       });
-      diagnosticCollectionSinonMock
-        .expects("set")
-        .withArgs(Uri.file(packageJsonPath));
-      await refreshDiagnosticsProxy(packageJsonPath, diagnosticCollectionMock);
+      diagnosticCollectionSinonMock.expects("set").withArgs(uri);
+      await refreshDiagnosticsProxy(
+        uri as unknown as Uri,
+        diagnosticCollectionMock
+      );
     });
 
     it("there are no dependency issues", async () => {
+      const uri = Uri.file(packageJsonPath);
       npmDepsValidationSinonMock
         .expects("findDependencyIssues")
         .resolves({ problems: undefined });
       const diagnostics: Diagnostic[] = [];
       diagnosticCollectionSinonMock
         .expects("set")
-        .withExactArgs(Uri.file(packageJsonPath), diagnostics);
-      await refreshDiagnosticsProxy(packageJsonPath, diagnosticCollectionMock);
+        .withExactArgs(uri, diagnostics);
+      await refreshDiagnosticsProxy(
+        uri as unknown as Uri,
+        diagnosticCollectionMock
+      );
     });
   });
 });

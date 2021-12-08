@@ -1,71 +1,21 @@
-import { clearDiagnostics, isNotInNodeModules } from "../util";
-import type { DiagnosticCollection, Uri } from "vscode";
-import {
-  VscodeDepsIssuesConfig,
-  VscodeOutputChannel,
-  VscodeUriFile,
-  VscodeWorkspace,
-} from "../vscodeTypes";
-import { isAutoFixEnabled } from "./configuration";
-import { debouncedFindAndFixDepsIssues, findAndFixDepsIssues } from "./fixUtil";
+import type { Uri } from "vscode";
+import { debounce } from "lodash";
+import { VscodeFileEventConfig } from "../vscodeTypes";
+import { handlePackageJsonEvent } from "./eventUtil";
+
+const debouncedHandlePackageJsonEvent = debounce(handlePackageJsonEvent, 3000);
 
 // TODO: what should happen after git clone ??
-export function addProjectsWatcher(vscodeConfig: VscodeDepsIssuesConfig): void {
-  const { workspace, createUri, diagnosticCollection, outputChannel } =
-    vscodeConfig;
-  const fileWatcher = workspace.createFileSystemWatcher("**/{package.json}");
+export function addPackageJsonFileWatcher(
+  vscodeConfig: VscodeFileEventConfig
+): void {
+  const fileWatcher =
+    vscodeConfig.workspace.createFileSystemWatcher("**/package.json");
 
   fileWatcher.onDidChange((uri: Uri) =>
-    onPackageJsonChangeEvent(
-      uri,
-      workspace,
-      diagnosticCollection,
-      createUri,
-      outputChannel
-    )
+    debouncedHandlePackageJsonEvent(uri, vscodeConfig)
   );
   fileWatcher.onDidCreate((uri: Uri) =>
-    onPackageJsonCreateEvent(
-      uri,
-      workspace,
-      diagnosticCollection,
-      createUri,
-      outputChannel
-    )
+    handlePackageJsonEvent(uri, vscodeConfig)
   );
-}
-
-async function onPackageJsonChangeEvent(
-  uri: Uri,
-  workspace: VscodeWorkspace,
-  diagnosticCollection: DiagnosticCollection,
-  createUri: VscodeUriFile,
-  outputChannel: VscodeOutputChannel
-): Promise<void> {
-  const { fsPath } = uri;
-  if (shouldFixProject(workspace, fsPath)) {
-    await debouncedFindAndFixDepsIssues(fsPath, outputChannel);
-    clearDiagnostics(diagnosticCollection, fsPath, createUri);
-  }
-}
-
-async function onPackageJsonCreateEvent(
-  uri: Uri,
-  workspace: VscodeWorkspace,
-  diagnosticCollection: DiagnosticCollection,
-  createUri: VscodeUriFile,
-  outputChannel: VscodeOutputChannel
-): Promise<void> {
-  const { fsPath } = uri;
-  if (shouldFixProject(workspace, fsPath)) {
-    await findAndFixDepsIssues(fsPath, outputChannel);
-    clearDiagnostics(diagnosticCollection, fsPath, createUri);
-  }
-}
-
-function shouldFixProject(
-  workspace: VscodeWorkspace,
-  packageJsonPath: string
-): boolean {
-  return isAutoFixEnabled(workspace) && isNotInNodeModules(packageJsonPath);
 }

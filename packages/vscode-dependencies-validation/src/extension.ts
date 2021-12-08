@@ -36,11 +36,7 @@ function createVscodeConfig(context: ExtensionContext): VscodeConfig {
   } = context;
 
   const outputChannel = window.createOutputChannel(extId);
-  // eslint-disable-next-line @typescript-eslint/unbound-method -- referencing static Uri method
-  const createUri: VscodeUriFile = Uri.file;
-
   const kind = CodeActionKind.QuickFix;
-
   const diagnosticCollection = createDiagnosticCollection(context);
 
   return {
@@ -49,10 +45,11 @@ function createVscodeConfig(context: ExtensionContext): VscodeConfig {
     commands,
     languages,
     outputChannel,
-    createUri,
     subscriptions,
     kind,
     diagnosticCollection,
+    // eslint-disable-next-line @typescript-eslint/unbound-method -- referencing static Uri method
+    createUri: Uri.file,
   };
 }
 

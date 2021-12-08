@@ -1,6 +1,6 @@
 import { VscodeWorkspace } from "../vscodeTypes";
 
-const ENABLE_AUTOFIX = "dependenciesValidation.enableAutoFix";
+export const ENABLE_AUTOFIX = "dependenciesValidation.enableAutoFix";
 const DELAY_AUTOFIX = "dependenciesValidation.delayAutoFix";
 
 export function isAutoFixEnabled(workspace: VscodeWorkspace): boolean {

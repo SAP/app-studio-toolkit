@@ -5,12 +5,12 @@ import { VscodePackageJsonChangesConfig } from "./vscodeTypes";
 export function subscribeToPackageJsonChanges(
   vscodeConfig: VscodePackageJsonChangesConfig
 ): void {
-  const { window, subscriptions, workspace, createUri, diagnosticCollection } =
+  const { window, subscriptions, workspace, diagnosticCollection } =
     vscodeConfig;
 
   if (window.activeTextEditor) {
     void refreshDiagnostics(
-      window.activeTextEditor.document.uri.fsPath,
+      window.activeTextEditor.document.uri,
       diagnosticCollection
     );
   }
@@ -18,24 +18,20 @@ export function subscribeToPackageJsonChanges(
   subscriptions.push(
     window.onDidChangeActiveTextEditor((editor) => {
       if (editor) {
-        void refreshDiagnostics(
-          editor.document.uri.fsPath,
-          diagnosticCollection
-        );
+        void refreshDiagnostics(editor.document.uri, diagnosticCollection);
       }
     })
   );
 
   subscriptions.push(
     workspace.onDidChangeTextDocument(
-      (e) =>
-        void refreshDiagnostics(e.document.uri.fsPath, diagnosticCollection)
+      (e) => void refreshDiagnostics(e.document.uri, diagnosticCollection)
     )
   );
 
   subscriptions.push(
     workspace.onDidCloseTextDocument((doc) =>
-      clearDiagnostics(diagnosticCollection, doc.uri.fsPath, createUri)
+      clearDiagnostics(diagnosticCollection, doc.uri)
     )
   );
 }

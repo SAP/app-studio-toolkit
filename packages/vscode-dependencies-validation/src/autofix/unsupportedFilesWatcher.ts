@@ -1,81 +1,46 @@
-import type { DiagnosticCollection, Uri } from "vscode";
+import type { Uri } from "vscode";
 import { dirname, join } from "path";
 import {
   yarnManagerFiles,
   pnpmManagerFiles,
   isPathExist,
 } from "@sap-devx/npm-dependencies-validation";
-import {
-  VscodeDepsIssuesConfig,
-  VscodeOutputChannel,
-  VscodeUriFile,
-  VscodeWorkspace,
-} from "../vscodeTypes";
-import { isAutoFixEnabled } from "./configuration";
-import { findAndFixDepsIssues } from "./fixUtil";
-import { clearDiagnostics, isNotInNodeModules } from "../util";
+import { handlePackageJsonEvent } from "./eventUtil";
+import { VscodeFileEventConfig, VscodeUriFile } from "../vscodeTypes";
+
+type UnsupportedFilesEvent = VscodeFileEventConfig & VscodeUriFile;
 
 export function addUnsupportedFilesWatcher(
-  vscodeConfig: VscodeDepsIssuesConfig
+  vscodeConfig: UnsupportedFilesEvent
 ): void {
-  const { workspace, createUri, diagnosticCollection, outputChannel } =
-    vscodeConfig;
-  const unsupportedFilesPattern = constructUnsupportedFilesPattern();
-  const fileWatcher = workspace.createFileSystemWatcher(
-    unsupportedFilesPattern
+  const fileWatcher = vscodeConfig.workspace.createFileSystemWatcher(
+    constructUnsupportedFilesPattern()
   );
 
   fileWatcher.onDidCreate((uri: Uri) =>
-    onFileSystemEvent(
-      uri,
-      workspace,
-      diagnosticCollection,
-      createUri,
-      outputChannel
-    )
+    onUnsupportedFileEvent(uri, vscodeConfig)
   );
   fileWatcher.onDidDelete((uri: Uri) =>
-    onFileSystemEvent(
-      uri,
-      workspace,
-      diagnosticCollection,
-      createUri,
-      outputChannel
-    )
+    onUnsupportedFileEvent(uri, vscodeConfig)
   );
 }
 
-function onFileSystemEvent(
+async function onUnsupportedFileEvent(
   uri: Uri,
-  workspace: VscodeWorkspace,
-  diagnosticCollection: DiagnosticCollection,
-  createUri: VscodeUriFile,
-  outputChannel: VscodeOutputChannel
-): void {
-  const packageJsonPath = getPackageJsonPath(uri.fsPath);
-  void shouldFixProject(workspace, packageJsonPath).then(async (shouldFix) => {
-    if (shouldFix) {
-      await findAndFixDepsIssues(packageJsonPath, outputChannel);
-      clearDiagnostics(diagnosticCollection, packageJsonPath, createUri);
-    }
-  });
+  vscodeConfig: UnsupportedFilesEvent
+): Promise<void> {
+  const packageJsonUri = createPackageJsonUri(uri, vscodeConfig);
+  const pathExists = await isPathExist(packageJsonUri.fsPath);
+  if (!pathExists) return;
+
+  return handlePackageJsonEvent(packageJsonUri, vscodeConfig);
 }
 
-function getPackageJsonPath(filePath: string): string {
-  return join(dirname(filePath), "package.json");
+function createPackageJsonUri(uri: Uri, vscodeConfig: VscodeUriFile): Uri {
+  return vscodeConfig.createUri(join(dirname(uri.fsPath), "package.json"));
 }
 
 function constructUnsupportedFilesPattern(): string {
   const unsupportedFiles = [...yarnManagerFiles, ...pnpmManagerFiles];
   return `**/{${unsupportedFiles.join(",")}}`;
-}
-
-async function shouldFixProject(
-  workspace: VscodeWorkspace,
-  packageJsonPath: string
-): Promise<boolean> {
-  const pathExists = await isPathExist(packageJsonPath);
-  if (!pathExists) return false;
-
-  return isAutoFixEnabled(workspace) && isNotInNodeModules(packageJsonPath);
 }
