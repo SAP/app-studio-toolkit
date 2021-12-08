@@ -18,7 +18,7 @@ import {
 } from "../../src/autofix/packageJsonFileWatcher";
 import { eventUtilProxy } from "../moduleProxies";
 
-describe.only("packageJsonFileWatcher unit test", () => {
+describe("packageJsonFileWatcher unit test", () => {
   let sandbox: SinonSandbox;
   let createFileSystemWatcherSpy: SinonSpy;
   let onDidChangeSpy: SinonSpy;

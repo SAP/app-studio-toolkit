@@ -8,7 +8,7 @@ import {
 import { handlePackageJsonEvent } from "./eventUtil";
 import { VscodeFileEventConfig, VscodeUriFile } from "../vscodeTypes";
 
-type UnsupportedFilesEvent = VscodeFileEventConfig & VscodeUriFile;
+export type UnsupportedFilesEvent = VscodeFileEventConfig & VscodeUriFile;
 
 export function addUnsupportedFilesWatcher(
   vscodeConfig: UnsupportedFilesEvent
@@ -17,15 +17,11 @@ export function addUnsupportedFilesWatcher(
     constructUnsupportedFilesPattern()
   );
 
-  fileWatcher.onDidCreate((uri: Uri) =>
-    onUnsupportedFileEvent(uri, vscodeConfig)
-  );
-  fileWatcher.onDidDelete((uri: Uri) =>
-    onUnsupportedFileEvent(uri, vscodeConfig)
-  );
+  fileWatcher.onDidCreate(handleFileEvent(vscodeConfig));
+  fileWatcher.onDidDelete(handleFileEvent(vscodeConfig));
 }
 
-async function onUnsupportedFileEvent(
+async function onFileEvent(
   uri: Uri,
   vscodeConfig: UnsupportedFilesEvent
 ): Promise<void> {
@@ -44,3 +40,11 @@ function constructUnsupportedFilesPattern(): string {
   const unsupportedFiles = [...yarnManagerFiles, ...pnpmManagerFiles];
   return `**/{${unsupportedFiles.join(",")}}`;
 }
+
+function handleFileEvent(vscodeConfig: UnsupportedFilesEvent): any {
+  return (uri: Uri) => onFileEvent(uri, vscodeConfig);
+}
+
+export const internal = {
+  handleFileEvent,
+};

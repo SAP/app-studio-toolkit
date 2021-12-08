@@ -12,6 +12,9 @@ export const npmDepsValidationProxy = {
   findDependencyIssues() {
     return Promise.reject("findDependencyIssues method is not implemented");
   },
+  isPathExist() {
+    return Promise.reject("isPathExist method is not implemented");
+  },
   "@noCallThru": true,
 };
 
