@@ -35,8 +35,8 @@ describe.only("commands unit test", () => {
     npmDepsValidationMock.verify();
   });
 
-  context("fixAllDepIssuesCommand()", () => {
-    let fixAllDepIssuesCommandProxy: typeof internal.fixAllDepIssuesCommand;
+  context("fixProjectDepsIssues()", () => {
+    let fixProjectDepsIssuesProxy: typeof internal.fixProjectDepsIssues;
 
     before(() => {
       const commandsModule = proxyquire("../src/commands", {
@@ -48,7 +48,7 @@ describe.only("commands unit test", () => {
         },
       });
 
-      fixAllDepIssuesCommandProxy =
+      fixProjectDepsIssuesProxy =
         commandsModule.internal.fixAllDepIssuesCommand;
     });
 
@@ -77,7 +77,7 @@ describe.only("commands unit test", () => {
         .withExactArgs(packageJsonPath, <DiagnosticCollection>{})
         .resolves();
 
-      await fixAllDepIssuesCommandProxy(
+      await fixProjectDepsIssuesProxy(
         outputChannelMock,
         <DiagnosticCollection>{},
         uri as unknown as Uri
@@ -105,7 +105,7 @@ describe.only("commands unit test", () => {
         .rejects(new Error("invokeNPMCommand failure"));
       outputChannelSinonMock.expects("appendLine");
 
-      await fixAllDepIssuesCommandProxy(
+      await fixProjectDepsIssuesProxy(
         outputChannelMock,
         <DiagnosticCollection>{},
         uri as unknown as Uri
