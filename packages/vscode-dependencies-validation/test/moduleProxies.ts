@@ -24,3 +24,23 @@ export const eventUtilProxy = {
   },
   "@noCallThru": true,
 };
+
+export const configurationProxy = {
+  isAutoFixEnabled() {
+    throw new Error("configurationProxy method is not implemented");
+  },
+  "@noCallThru": true,
+};
+
+export const utilProxy = {
+  findAndFixDepsIssues() {
+    return Promise.reject("findAndFixDepsIssues method is not implemented");
+  },
+  isNotInNodeModules() {
+    throw new Error("isNotInNodeModules method is not implemented");
+  },
+  clearDiagnostics() {
+    throw new Error("clearDiagnostics method is not implemented");
+  },
+  "@noCallThru": true,
+};
