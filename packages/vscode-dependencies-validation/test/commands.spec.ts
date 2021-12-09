@@ -10,15 +10,8 @@ describe("commands unit test", () => {
   let outputChannelSinonMock: SinonMock;
   let utilProxySinonMock: SinonMock;
 
-  before(() => {
-    sandbox = createSandbox();
-  });
-
-  after(() => {
-    sandbox.restore();
-  });
-
   beforeEach(() => {
+    sandbox = createSandbox();
     outputChannelSinonMock = sandbox.mock(outputChannelMock);
     utilProxySinonMock = sandbox.mock(utilProxy);
   });
@@ -26,6 +19,7 @@ describe("commands unit test", () => {
   afterEach(() => {
     outputChannelSinonMock.verify();
     utilProxySinonMock.verify();
+    sandbox.restore();
   });
 
   context("fixProjectDepsIssues()", () => {
