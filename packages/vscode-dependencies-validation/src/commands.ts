@@ -5,27 +5,28 @@ import { clearDiagnostics, fixDepsIssues } from "./util";
 
 async function fixProjectDepsIssues(
   outputChannel: VscodeOutputChannel,
-  dependencyIssuesDiagnosticCollection: DiagnosticCollection,
+  diagnosticCollection: DiagnosticCollection,
   uri: Uri
 ): Promise<void> {
   // switched to outputchannel only in manual mode
   outputChannel.show(true);
   await fixDepsIssues(uri, outputChannel);
-  clearDiagnostics(dependencyIssuesDiagnosticCollection, uri);
+  clearDiagnostics(diagnosticCollection, uri);
 }
 
+// commands for manual fix of dependency issues
 export function registerCommands(vscodeConfig: VscodeCommandsConfig): void {
   const { subscriptions, commands, outputChannel, diagnosticCollection } =
     vscodeConfig;
   subscriptions.push(
     commands.registerCommand(
       FIX_ALL_ISSUES_COMMAND,
-      commandCallback(outputChannel, diagnosticCollection)
+      executeFixProjectDepsIssues(outputChannel, diagnosticCollection)
     )
   );
 }
 
-function commandCallback(
+function executeFixProjectDepsIssues(
   outputChannel: VscodeOutputChannel,
   diagnosticCollection: DiagnosticCollection
 ) {
@@ -35,4 +36,5 @@ function commandCallback(
 
 export const internal = {
   fixProjectDepsIssues,
+  executeFixProjectDepsIssues,
 };

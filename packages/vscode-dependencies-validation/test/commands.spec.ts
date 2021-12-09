@@ -1,20 +1,14 @@
 import type { DiagnosticCollection, Uri } from "vscode";
-import { dirname } from "path";
 import * as proxyquire from "proxyquire";
 import { createSandbox, SinonMock, SinonSandbox } from "sinon";
 import { internal } from "../src/commands";
 import { outputChannelMock } from "./vscodeMocks";
-import { diagnosticsProxy, npmDepsValidationProxy } from "./moduleProxies";
+import { utilProxy } from "./moduleProxies";
 
-describe.only("commands unit test", () => {
+describe("commands unit test", () => {
   let sandbox: SinonSandbox;
   let outputChannelSinonMock: SinonMock;
-  let npmDepsValidationMock: SinonMock;
-  let diagnosticsSinonMock: SinonMock;
-
-  const Uri = {
-    file: (path: string) => `uri_${path}`,
-  };
+  let utilProxySinonMock: SinonMock;
 
   before(() => {
     sandbox = createSandbox();
@@ -26,13 +20,12 @@ describe.only("commands unit test", () => {
 
   beforeEach(() => {
     outputChannelSinonMock = sandbox.mock(outputChannelMock);
-    npmDepsValidationMock = sandbox.mock(npmDepsValidationProxy);
-    diagnosticsSinonMock = sandbox.mock(diagnosticsProxy);
+    utilProxySinonMock = sandbox.mock(utilProxy);
   });
 
   afterEach(() => {
     outputChannelSinonMock.verify();
-    npmDepsValidationMock.verify();
+    utilProxySinonMock.verify();
   });
 
   context("fixProjectDepsIssues()", () => {
@@ -40,75 +33,32 @@ describe.only("commands unit test", () => {
 
     before(() => {
       const commandsModule = proxyquire("../src/commands", {
-        "./diagnostics": diagnosticsProxy,
-        "@sap-devx/npm-dependencies-validation": npmDepsValidationProxy,
-        vscode: {
-          Uri,
-          "@noCallThru": true,
-        },
+        "./util": utilProxy,
       });
 
-      fixProjectDepsIssuesProxy =
-        commandsModule.internal.fixAllDepIssuesCommand;
+      fixProjectDepsIssuesProxy = commandsModule.internal.fixProjectDepsIssues;
     });
 
     it("succeeded", async () => {
       const packageJsonPath = "root/folder/package.json";
-
-      const uri = Uri.file(packageJsonPath);
+      const uri = <Uri>{ fsPath: packageJsonPath };
+      const diagnosticCollection = <DiagnosticCollection>{};
 
       outputChannelSinonMock.expects("show").withExactArgs(true);
-      outputChannelSinonMock
-        .expects("appendLine")
-        .withExactArgs(`\nFixing dependency issues ...`);
-      npmDepsValidationMock
-        .expects("invokeNPMCommand")
-        .withExactArgs(
-          {
-            commandArgs: ["install"],
-            cwd: dirname(packageJsonPath),
-          },
-          outputChannelMock
-        )
+
+      utilProxySinonMock
+        .expects("fixDepsIssues")
+        .withExactArgs(uri, outputChannelMock)
         .resolves();
-      outputChannelSinonMock.expects("append");
-      diagnosticsSinonMock
-        .expects("refreshDiagnostics")
-        .withExactArgs(packageJsonPath, <DiagnosticCollection>{})
-        .resolves();
+
+      utilProxySinonMock
+        .expects("clearDiagnostics")
+        .withExactArgs(diagnosticCollection, uri);
 
       await fixProjectDepsIssuesProxy(
         outputChannelMock,
-        <DiagnosticCollection>{},
-        uri as unknown as Uri
-      );
-    });
-
-    it("failed", async () => {
-      const packageJsonPath = "root/folder/package.json";
-
-      const uri = Uri.file(packageJsonPath);
-
-      outputChannelSinonMock.expects("show").withExactArgs(true);
-      outputChannelSinonMock
-        .expects("appendLine")
-        .withExactArgs(`\nFixing dependency issues ...`);
-      npmDepsValidationMock
-        .expects("invokeNPMCommand")
-        .withExactArgs(
-          {
-            commandArgs: ["install"],
-            cwd: dirname(packageJsonPath),
-          },
-          outputChannelMock
-        )
-        .rejects(new Error("invokeNPMCommand failure"));
-      outputChannelSinonMock.expects("appendLine");
-
-      await fixProjectDepsIssuesProxy(
-        outputChannelMock,
-        <DiagnosticCollection>{},
-        uri as unknown as Uri
+        diagnosticCollection,
+        uri
       );
     });
   });

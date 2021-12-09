@@ -53,7 +53,7 @@ describe("eventUtil unit tests", () => {
       const delay = 30;
       workspaceConfigurationSinonMock
         .expects("get")
-        .withExactArgs(internal.DELAY_AUTOFIX, false)
+        .withExactArgs(internal.DELAY_AUTOFIX, 0)
         .returns(delay);
       const res = getAutoFixDelay(workspaceMock);
       expect(res).to.equal(delay);
