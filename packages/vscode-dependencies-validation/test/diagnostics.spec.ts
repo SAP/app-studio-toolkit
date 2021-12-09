@@ -58,10 +58,7 @@ describe("diagnostics unit test", () => {
         problems: ["missing: json-fixer@1.6.12", "missing: lodash@0.0.1"],
       });
       diagnosticCollectionSinonMock.expects("set").withArgs(uri);
-      await refreshDiagnosticsProxy(
-        uri,
-        diagnosticCollectionMock
-      );
+      await refreshDiagnosticsProxy(uri, diagnosticCollectionMock);
     });
 
     it("there are no dependency issues", async () => {
@@ -73,10 +70,7 @@ describe("diagnostics unit test", () => {
       diagnosticCollectionSinonMock
         .expects("set")
         .withExactArgs(uri, diagnostics);
-      await refreshDiagnosticsProxy(
-        uri,
-        diagnosticCollectionMock
-      );
+      await refreshDiagnosticsProxy(uri, diagnosticCollectionMock);
     });
   });
 });
