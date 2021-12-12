@@ -3,7 +3,7 @@ import { Range, Diagnostic } from "vscode";
 import { findDependencyIssues } from "@sap-devx/npm-dependencies-validation";
 import { isEmpty } from "lodash";
 import { NPM_DEPENDENCY_ISSUES_CODE } from "./constants";
-import { isNotInNodeModules } from "./util";
+import { isInsideNodeModules } from "./util";
 
 /**
  * Analyzes package.json file for problems.
@@ -14,15 +14,13 @@ export async function refreshDiagnostics(
   uri: Uri,
   dependencyIssueDiagnostics: DiagnosticCollection
 ): Promise<void> {
-  if (isNotInNodeModules(uri)) {
-    const { problems } = await findDependencyIssues(uri.fsPath);
+  if (isInsideNodeModules(uri)) return;
 
-    const diagnostics = isEmpty(problems)
-      ? []
-      : [constructDiagnostic(problems)];
+  const { problems } = await findDependencyIssues(uri.fsPath);
 
-    dependencyIssueDiagnostics.set(uri, diagnostics);
-  }
+  const diagnostics = isEmpty(problems) ? [] : [constructDiagnostic(problems)];
+
+  dependencyIssueDiagnostics.set(uri, diagnostics);
 }
 
 // constructs diagnostic to be displayed in the first line of the package.json

@@ -71,8 +71,8 @@ describe("packageJsonFileWatcher unit test", () => {
     });
   });
 
-  context("internal.onCreate()", () => {
-    let onCreateProxy: typeof internal.onCreate;
+  context("internal.handleFileEvent()", () => {
+    let handleFileEventProxy: typeof internal.handleFileEvent;
     let eventUtilProxySinonMock: SinonMock;
 
     before(() => {
@@ -83,7 +83,8 @@ describe("packageJsonFileWatcher unit test", () => {
         }
       );
 
-      onCreateProxy = packageJsonFileWatcherModule.internal.onCreate;
+      handleFileEventProxy =
+        packageJsonFileWatcherModule.internal.handleFileEvent;
 
       eventUtilProxySinonMock = sandbox.mock(eventUtilProxy);
     });
@@ -92,46 +93,14 @@ describe("packageJsonFileWatcher unit test", () => {
       eventUtilProxySinonMock.verify();
     });
 
-    it("handlePackageJsonEvent is called", async () => {
+    it("debouncedHandleProjectChange is called", async () => {
       const vscodeConfig = <VscodeFileEventConfig>{};
       const uri = <Uri>{};
       eventUtilProxySinonMock
-        .expects("handlePackageJsonEvent")
+        .expects("debouncedHandleProjectChange")
         .withExactArgs(uri, vscodeConfig)
         .resolves();
-      await onCreateProxy(vscodeConfig)(uri);
-    });
-  });
-
-  context("internal.onChange()", () => {
-    let onChangeProxy: typeof internal.onChange;
-    let eventUtilProxySinonMock: SinonMock;
-
-    before(() => {
-      const packageJsonFileWatcherModule = proxyquire(
-        "../../src/autofix/packageJsonFileWatcher",
-        {
-          "./eventUtil": eventUtilProxy,
-        }
-      );
-
-      onChangeProxy = packageJsonFileWatcherModule.internal.onChange;
-
-      eventUtilProxySinonMock = sandbox.mock(eventUtilProxy);
-    });
-
-    after(() => {
-      eventUtilProxySinonMock.verify();
-    });
-
-    it.skip("debouncedHandlePackageJsonEvent is called", async () => {
-      const vscodeConfig = <VscodeFileEventConfig>{};
-      const uri = <Uri>{};
-      eventUtilProxySinonMock
-        .expects("handlePackageJsonEvent")
-        .withExactArgs(uri, vscodeConfig)
-        .resolves();
-      await onChangeProxy(vscodeConfig)(uri);
+      await handleFileEventProxy(vscodeConfig)(uri);
     });
   });
 });

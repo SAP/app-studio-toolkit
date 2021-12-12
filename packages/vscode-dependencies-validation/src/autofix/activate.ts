@@ -50,8 +50,8 @@ async function findDepsIssuesFixThemAndCleanProblemsView(
   if (!isAutoFixEnabled(workspace)) return;
 
   const packageJsonUris = await getPackageJsonUris(workspace);
-  // TODO: should we do it in parrallel or sequentially ???
-  // currently it works sequentially
+
+  // works sequentially
   for (const uri of packageJsonUris) {
     await findAndFixDepsIssues(uri, outputChannel);
     clearDiagnostics(diagnosticCollection, uri);

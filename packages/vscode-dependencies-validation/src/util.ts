@@ -7,11 +7,10 @@ import {
 import { isEmpty } from "lodash";
 import { VscodeOutputChannel } from "./vscodeTypes";
 
-const NOT_IN_NODE_MODULES_PATTERN =
-  /^(?!.*[\\|\/]node_modules[\\|\/]).*[\\|\/].+/;
+const INSIDE_NODE_MODULES_PATTERN = new RegExp(`[\\|/]node_modules[\\|/]`); // TODO: does not work with path.sep ???
 
-export function isNotInNodeModules(uri: Uri): boolean {
-  return NOT_IN_NODE_MODULES_PATTERN.test(uri.fsPath);
+export function isInsideNodeModules(uri: Uri): boolean {
+  return INSIDE_NODE_MODULES_PATTERN.test(uri.fsPath);
 }
 
 export function clearDiagnostics(
@@ -37,10 +36,12 @@ export async function fixDepsIssues(
 ): Promise<void> {
   // package.json parent dir
   const cwd = dirname(packageJsonUri.fsPath);
-  outputChannel.appendLine(`\nFixing dependency issues of ${cwd} ...\n`);
+  outputChannel.appendLine(
+    `\nFixing dependency issues of ${packageJsonUri.fsPath} ...\n`
+  );
 
   const config = { commandArgs: ["install"], cwd };
   await invokeNPMCommand(config, outputChannel);
 
-  outputChannel.appendLine(`Done.\n`);
+  outputChannel.appendLine(`Done. ${packageJsonUri.fsPath}\n`);
 }

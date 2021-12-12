@@ -1,9 +1,6 @@
 import type { Uri } from "vscode";
-import { debounce } from "lodash";
 import { VscodeFileEventConfig } from "../vscodeTypes";
-import { handlePackageJsonEvent } from "./eventUtil";
-
-const debouncedHandlePackageJsonEvent = debounce(handlePackageJsonEvent, 3000);
+import { debouncedHandleProjectChange } from "./eventUtil";
 
 // TODO: what should happen after git clone ??
 export function addPackageJsonFileWatcher(
@@ -12,19 +9,14 @@ export function addPackageJsonFileWatcher(
   const fileWatcher =
     vscodeConfig.workspace.createFileSystemWatcher("**/package.json");
 
-  fileWatcher.onDidChange(onChange(vscodeConfig));
-  fileWatcher.onDidCreate(onCreate(vscodeConfig));
+  fileWatcher.onDidChange(handleFileEvent(vscodeConfig));
+  fileWatcher.onDidCreate(handleFileEvent(vscodeConfig));
 }
 
-function onCreate(vscodeConfig: VscodeFileEventConfig): any {
-  return (uri: Uri) => handlePackageJsonEvent(uri, vscodeConfig);
-}
-
-function onChange(vscodeConfig: VscodeFileEventConfig): any {
-  return (uri: Uri) => debouncedHandlePackageJsonEvent(uri, vscodeConfig);
+function handleFileEvent(vscodeConfig: VscodeFileEventConfig): any {
+  return (uri: Uri) => debouncedHandleProjectChange(uri, vscodeConfig);
 }
 
 export const internal = {
-  onCreate,
-  onChange,
+  handleFileEvent,
 };

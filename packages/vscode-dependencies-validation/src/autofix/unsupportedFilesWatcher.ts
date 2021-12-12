@@ -5,7 +5,7 @@ import {
   pnpmManagerFiles,
   isPathExist,
 } from "@sap-devx/npm-dependencies-validation";
-import { handlePackageJsonEvent } from "./eventUtil";
+import { debouncedHandleProjectChange } from "./eventUtil";
 import { VscodeFileEventConfig, VscodeUriFile } from "../vscodeTypes";
 
 export type UnsupportedFilesEvent = VscodeFileEventConfig & VscodeUriFile;
@@ -29,7 +29,7 @@ async function onFileEvent(
   const pathExists = await isPathExist(packageJsonUri.fsPath);
   if (!pathExists) return;
 
-  return handlePackageJsonEvent(packageJsonUri, vscodeConfig);
+  return debouncedHandleProjectChange(packageJsonUri, vscodeConfig);
 }
 
 function createPackageJsonUri(uri: Uri, vscodeConfig: VscodeUriFile): Uri {

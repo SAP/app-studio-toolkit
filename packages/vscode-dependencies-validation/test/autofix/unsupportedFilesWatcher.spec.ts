@@ -96,25 +96,23 @@ describe("packageJsonFileWatcher unit test", () => {
       npmDepsValidationProxySinonMock.verify();
     });
 
-    it("handlePackageJsonEvent is not called, package.json does not exist in the specified path", async () => {
-      const vscodeConfig = vscodeConfigMock;
-      const uri = <Uri>{ fsPath: resolve("root/folder/project/yarn.lock") };
+    it("handleFileEvent is not called, package.json does not exist in the specified path", async () => {
+      const uri = <Uri>{ fsPath: "root/folder/project/yarn.lock" };
 
       npmDepsValidationProxySinonMock.expects("isPathExist").returns(false);
-      eventUtilProxySinonMock.expects("handlePackageJsonEvent").never();
-      await handleFileEventProxy(vscodeConfig)(uri);
+      eventUtilProxySinonMock.expects("debouncedHandleProjectChange").never();
+      await handleFileEventProxy(vscodeConfigMock)(uri);
     });
 
-    it("handlePackageJsonEvent is not called, package.json exists in the specified path", async () => {
-      const vscodeConfig = vscodeConfigMock;
-      const uri = <Uri>{ fsPath: resolve("root/folder/project/yarn.lock") };
+    it("handleFileEvent is not called, package.json exists in the specified path", async () => {
+      const uri = <Uri>{ fsPath: "root/folder/project/yarn.lock" };
 
       npmDepsValidationProxySinonMock.expects("isPathExist").returns(true);
       eventUtilProxySinonMock
-        .expects("handlePackageJsonEvent") //TODO: use .withExactArgs(...) ???
+        .expects("debouncedHandleProjectChange")
         .resolves();
 
-      await handleFileEventProxy(vscodeConfig)(uri);
+      await handleFileEventProxy(vscodeConfigMock)(uri);
     });
   });
 });

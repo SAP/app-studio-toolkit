@@ -1,13 +1,16 @@
 import type { Uri } from "vscode";
+import { debounce } from "lodash";
 import { isAutoFixEnabled } from "./configuration";
 import {
   clearDiagnostics,
   findAndFixDepsIssues,
-  isNotInNodeModules,
+  isInsideNodeModules,
 } from "../util";
 import { VscodeFileEventConfig, VscodeWorkspace } from "../vscodeTypes";
 
-export async function handlePackageJsonEvent(
+export const debouncedHandleProjectChange = debounce(handleProjectChange, 3000);
+
+async function handleProjectChange(
   uri: Uri,
   vscodeConfig: VscodeFileEventConfig
 ): Promise<void> {
@@ -19,5 +22,11 @@ export async function handlePackageJsonEvent(
 }
 
 function canBeFixed(workspace: VscodeWorkspace, uri: Uri): boolean {
-  return isAutoFixEnabled(workspace) && isNotInNodeModules(uri);
+  if (isInsideNodeModules(uri)) return false;
+
+  return isAutoFixEnabled(workspace);
 }
+
+export const internal = {
+  handleProjectChange,
+};

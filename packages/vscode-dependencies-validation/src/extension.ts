@@ -9,8 +9,8 @@ import {
   DiagnosticCollection,
 } from "vscode";
 import { registerCodeActionsProvider } from "./npmIssuesActionProvider";
-import { activateDepsIssuesAutoFix } from "./autofix/depsIssues";
-import { VscodeConfig, VscodeUriFile } from "./vscodeTypes";
+import { activateDepsIssuesAutoFix } from "./autofix/activate";
+import { VscodeConfig } from "./vscodeTypes";
 import { subscribeToPackageJsonChanges } from "./editorChanges";
 import { registerCommands } from "./commands";
 

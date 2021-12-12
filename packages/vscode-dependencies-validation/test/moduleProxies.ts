@@ -19,8 +19,10 @@ export const npmDepsValidationProxy = {
 };
 
 export const eventUtilProxy = {
-  handlePackageJsonEvent() {
-    return Promise.reject("handlePackageJsonEvent method is not implemented");
+  debouncedHandleProjectChange() {
+    return Promise.reject(
+      "debouncedHandleProjectChange method is not implemented"
+    );
   },
   "@noCallThru": true,
 };
@@ -36,14 +38,10 @@ export const utilProxy = {
   findAndFixDepsIssues() {
     return Promise.reject("findAndFixDepsIssues method is not implemented");
   },
-  isNotInNodeModules() {
-    throw new Error("isNotInNodeModules method is not implemented");
-  },
   clearDiagnostics() {
     throw new Error("clearDiagnostics method is not implemented");
   },
   fixDepsIssues() {
     return Promise.reject("fixDepsIssues method is not implemented");
   },
-  "@noCallThru": true,
 };
