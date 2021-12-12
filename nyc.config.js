@@ -3,7 +3,6 @@ module.exports = {
   "check-coverage": true,
   all: true,
   include: "**/src/**",
-  exclude: "**/src/extension.ts",
   //   - https://reflectoring.io/100-percent-test-coverage/
   branches: 100,
   lines: 100,

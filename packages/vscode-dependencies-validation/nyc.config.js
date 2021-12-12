@@ -1,3 +1,4 @@
 module.exports = {
-  exclude: ["src/extension.ts", "test/**"],
+  include: "**/src/**",
+  exclude: ["src/extension.ts"],
 };

@@ -14,7 +14,6 @@ import {
   UnsupportedFilesEvent,
 } from "../../src/autofix/unsupportedFilesWatcher";
 import { eventUtilProxy, npmDepsValidationProxy } from "../moduleProxies";
-import { resolve } from "path";
 
 describe("packageJsonFileWatcher unit test", () => {
   let sandbox: SinonSandbox;

@@ -30,18 +30,20 @@ export async function findAndFixDepsIssues(
   return fixDepsIssues(packageJsonUri, outputChannel);
 }
 
+export const internal = {
+  fixing: (absPath: string) => `\nFixing dependency issues of ${absPath} ...\n`,
+  doneFixing: (absPath: string) => `Done. ${absPath}\n`,
+};
+
 export async function fixDepsIssues(
   packageJsonUri: Uri,
   outputChannel: VscodeOutputChannel
 ): Promise<void> {
-  // package.json parent dir
-  const cwd = dirname(packageJsonUri.fsPath);
-  outputChannel.appendLine(
-    `\nFixing dependency issues of ${packageJsonUri.fsPath} ...\n`
-  );
+  const { fsPath } = packageJsonUri;
+  outputChannel.appendLine(internal.fixing(fsPath));
 
-  const config = { commandArgs: ["install"], cwd };
+  const config = { commandArgs: ["install"], cwd: dirname(fsPath) };
   await invokeNPMCommand(config, outputChannel);
 
-  outputChannel.appendLine(`Done. ${packageJsonUri.fsPath}\n`);
+  outputChannel.appendLine(internal.doneFixing(fsPath));
 }
