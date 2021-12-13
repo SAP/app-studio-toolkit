@@ -6,6 +6,23 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "args": [
+        "-r",
+        "ts-node/register",
+        "--timeout",
+        "999999",
+        "--colors",
+        "${workspaceFolder}/packages/**/test/**/*.spec.ts"
+      ],
+      "internalConsoleOptions": "openOnSessionStart",
+      "name": "Mocha Tests",
+      "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+      "request": "launch",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "pwa-node",
+      "console": "integratedTerminal"
+    },
+    {
       "name": "Run Toolkit with sample",
       "type": "extensionHost",
       "request": "launch",
@@ -37,6 +54,7 @@
       "runtimeExecutable": "${execPath}",
       "args": [
         "--extensionDevelopmentPath=${workspaceFolder}/packages/app-studio-toolkit",
+        "--extensionDevelopmentPath=${workspaceFolder}/examples/vscode-using-workspace-api",
         "--extensionDevelopmentPath=${workspaceFolder}/examples/vscode-artifact-management-context-menus"
       ],
       "outFiles": ["${workspaceFolder}/dist/**/*.js"]

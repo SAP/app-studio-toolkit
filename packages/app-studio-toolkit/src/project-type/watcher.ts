@@ -93,13 +93,10 @@ async function registerSingleProjectListeners(
   // voodoo magic, otherwise `updated` event would never be triggered
   await currItemWatcher.readItems();
 
-  // debouncing to avoid performance hit (e.g: re-calculating on every user's key press)
-  // TODO: replace this in-lined async with the debounced implementation above (need to test)
-  currItemWatcher.addListener("updated", async () => {
-    const allProjects = await opts.getWorkspaceAPI().getProjects();
+  currItemWatcher.addListener("updated", () => {
     // we are re-building **all** our VSCode custom contexts on every change
     // to avoid maintaining the complex logic of more granular modifications to the current state.
-    await recomputeTagsContexts(allProjects, opts.setContext);
+    void debouncedRecompute(opts);
   });
   projectWatchers.set(opts.projectApi, currItemWatcher);
 }
@@ -107,3 +104,8 @@ async function registerSingleProjectListeners(
 async function cleanUpProjectRefs(itemWatcher: ItemWatcherApi): Promise<void> {
   await itemWatcher.destroy();
 }
+
+// for testing purpose only
+export const internal = {
+  projectWatchers,
+};

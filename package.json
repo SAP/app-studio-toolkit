@@ -63,6 +63,7 @@
     "shx": "^0.3.3",
     "rimraf": "^3.0.2",
     "patch-package": "6.4.7",
+    "ts-node": "^10.4.0",
     "vsce": "1.100.1"
   },
   "lint-staged": {

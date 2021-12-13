@@ -22,18 +22,18 @@ export function registerCommands(subscriptions: { dispose(): any }[]): void {
 
 function capPreviewCommand(resourceUri: Uri): void {
   void window.showInformationMessage(
-    `Previewing LCAP, resource: <${resourceUri.fsPath}>`
+    `bas_project_types:cap, resource: <${resourceUri.fsPath}>`
   );
 }
 
 function ui5DeployCommand(resourceUri: Uri): void {
   void window.showInformationMessage(
-    `Deploying UI5, resource: <${resourceUri.fsPath}>`
+    `bas_project_types:ui5, resource: <${resourceUri.fsPath}>`
   );
 }
 
 function ui5EditManifestCommand(resourceUri: Uri): void {
   void window.showInformationMessage(
-    `Editing UI5 Manifest, resource: <${resourceUri.fsPath}>`
+    `bas_project_types:ui5 + 'manifest.json', resource: <${resourceUri.fsPath}>`
   );
 }
