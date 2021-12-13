@@ -7,10 +7,20 @@ import { debounce, map, DebouncedFunc } from "lodash";
 import { recomputeTagsContexts } from "./custom-context";
 import { ProjectApiRead, SetContext } from "./types";
 import { KeyIn, Tag } from "@sap/artifact-management-base-types";
+import { getLogger } from "../../src/logger/logger";
+import { IChildLogger } from "@vscode-logging/types";
 
 export type ProjectApiWatchItems = Pick<ProjectApi, "watchItems">;
 
 const projectWatchers: Map<ProjectApiWatchItems, ItemWatcherApi> = new Map();
+
+let logger: IChildLogger;
+
+function getComponentLogger(): IChildLogger {
+  logger =
+    logger || getLogger().getChildLogger({ label: "project-type-watcher" });
+  return logger;
+}
 
 export type WorkspaceAPIForWatcher = Pick<
   WorkspaceApi,
@@ -47,6 +57,7 @@ export async function initProjectTypeWatchers(
 ): Promise<void> {
   await registerAllProjectsListeners(opts);
   opts.getWorkspaceAPI().onWorkspaceChanged(async () => {
+    getComponentLogger().trace(`onWorkspaceChanged triggered`);
     await removeAllProjectListeners();
     await registerAllProjectsListeners(opts);
     void debouncedRecompute(opts);
@@ -94,6 +105,9 @@ async function registerSingleProjectListeners(
   await currItemWatcher.readItems();
 
   currItemWatcher.addListener("updated", () => {
+    getComponentLogger().trace(`onProjectChanged triggered`, {
+      type: "updated",
+    });
     // we are re-building **all** our VSCode custom contexts on every change
     // to avoid maintaining the complex logic of more granular modifications to the current state.
     void debouncedRecompute(opts);

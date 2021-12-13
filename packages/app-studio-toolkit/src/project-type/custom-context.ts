@@ -8,7 +8,14 @@ import {
   SetContext,
   TagToAbsPaths,
 } from "./types";
+import { getLogger } from "../../src/logger/logger";
+import { IChildLogger } from "@vscode-logging/types";
 
+let logger: IChildLogger;
+function getComponentLogger(): IChildLogger {
+  logger = logger || getLogger().getChildLogger({ label: "custom-context" });
+  return logger;
+}
 // TODO: choose prefix...
 const VSCODE_CONTEXT_PREFIX = "bas_project_types:";
 
@@ -91,6 +98,11 @@ export function refreshAllVSCodeContext(
     const paths = Array.from(currTagMap.keys());
     const currContextName = `${VSCODE_CONTEXT_PREFIX}${currTagName}`;
     setContext(currContextName, paths);
+    getComponentLogger().debug(
+      `context recalculated`,
+      { contextName: currContextName },
+      { path: `${paths.join()}` }
+    );
   });
 }
 
