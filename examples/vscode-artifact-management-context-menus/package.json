@@ -27,6 +27,20 @@
   ],
   "contributes": {
     "menus": {
+      "commandPalette": [
+        {
+          "when": "false",
+          "command": "extension.capPreview"
+        },
+        {
+          "when": "false",
+          "command": "extension.ui5Deploy"
+        },
+        {
+          "when": "false",
+          "command": "extension.ui5EditManifest"
+        }
+      ],
       "explorer/context": [
         {
           "command": "extension.capPreview",
