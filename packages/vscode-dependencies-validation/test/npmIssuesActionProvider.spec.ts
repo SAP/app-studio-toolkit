@@ -6,16 +6,20 @@ import type {
   TextDocument,
   CodeActionKind,
   CancellationToken,
+  Disposable,
+  languages,
+  CodeActionProvider,
 } from "vscode";
 import { FIX_ALL_ISSUES_COMMAND } from "../src/constants";
 import { diagnosticsProxy } from "./moduleProxies";
 import { codeActionContextMock } from "./vscodeMocks";
+import { VscodeCodeActionProviderCongig } from "../src/vscodeTypes";
 import { NPMIssuesActionProvider } from "../src/npmIssuesActionProvider";
 
 describe("npmIssuesActionProvider unit test", () => {
-  let provider: NPMIssuesActionProvider;
-
   context("provideCodeActions()", () => {
+    let provider: NPMIssuesActionProvider;
+
     before(() => {
       const npmIssuesActionProviderModule = proxyquire(
         "../src/npmIssuesActionProvider",
@@ -24,8 +28,14 @@ describe("npmIssuesActionProvider unit test", () => {
         }
       );
 
-      provider = new npmIssuesActionProviderModule.NPMIssuesActionProvider(
-        <CodeActionKind>{}
+      const vscodeConfig = <VscodeCodeActionProviderCongig>{};
+      vscodeConfig.subscriptions = [];
+      vscodeConfig.languages = <typeof languages>{};
+      vscodeConfig.languages.registerCodeActionsProvider = () => <Disposable>{};
+      vscodeConfig.kind = <CodeActionKind>{};
+
+      provider = new npmIssuesActionProviderModule.registerCodeActionsProvider(
+        vscodeConfig
       );
     });
 
