@@ -9,8 +9,8 @@ import { VscodeOutputChannel } from "./vscodeTypes";
 
 const INSIDE_NODE_MODULES_PATTERN = new RegExp(`[\\|/]node_modules[\\|/]`); // TODO: does not work with path.sep ???
 
-export function isInsideNodeModules(uri: Uri): boolean {
-  return INSIDE_NODE_MODULES_PATTERN.test(uri.fsPath);
+export function isInsideNodeModules(absPath: string): boolean {
+  return INSIDE_NODE_MODULES_PATTERN.test(absPath);
 }
 
 export function clearDiagnostics(
@@ -30,9 +30,20 @@ export async function findAndFixDepsIssues(
   return fixDepsIssues(packageJsonUri, outputChannel);
 }
 
+function getDateAndTime(): string {
+  const today = new Date();
+  const date = `${today.getFullYear()}-${
+    today.getMonth() + 1
+  }-${today.getDate()}`;
+  const time = `${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`;
+  return `${date} ${time}`;
+}
+
 export const internal = {
-  fixing: (absPath: string) => `\nFixing dependency issues of ${absPath} ...\n`,
-  doneFixing: (absPath: string) => `Done. ${absPath}\n`,
+  fixing: (absPath: string) =>
+    `\n${absPath}\n[${getDateAndTime()}] Fixing dependency issues...\n`,
+  doneFixing: (absPath: string) =>
+    `\n[${getDateAndTime()}] Done. \n${absPath}\n`,
 };
 
 export async function fixDepsIssues(

@@ -1,4 +1,4 @@
-import type { Uri } from "vscode";
+import type { ConfigurationChangeEvent, Uri } from "vscode";
 import {
   VscodeFileEventConfig,
   VscodeUriFile,
@@ -35,12 +35,18 @@ function getPackageJsonUris(workspace: VscodeWorkspace): Thenable<Uri[]> {
 }
 
 function onAutoFixChange(vscodeConfig: VscodeFileEventConfig): void {
-  vscodeConfig.workspace.onDidChangeConfiguration((event) => {
+  vscodeConfig.workspace.onDidChangeConfiguration(
+    handleConfigurationChange(vscodeConfig)
+  );
+}
+
+function handleConfigurationChange(vscodeConfig: VscodeFileEventConfig): any {
+  return (event: ConfigurationChangeEvent) => {
     const affected = event.affectsConfiguration(ENABLE_AUTOFIX);
     if (affected) {
       void findDepsIssuesFixThemAndCleanProblemsView(vscodeConfig);
     }
-  });
+  };
 }
 
 async function findDepsIssuesFixThemAndCleanProblemsView(

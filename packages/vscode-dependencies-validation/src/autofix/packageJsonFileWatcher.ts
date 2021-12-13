@@ -2,7 +2,6 @@ import type { Uri } from "vscode";
 import { VscodeFileEventConfig } from "../vscodeTypes";
 import { debouncedHandleProjectChange } from "./eventUtil";
 
-// TODO: what should happen after git clone ??
 export function addPackageJsonFileWatcher(
   vscodeConfig: VscodeFileEventConfig
 ): void {

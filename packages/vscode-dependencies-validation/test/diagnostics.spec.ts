@@ -6,7 +6,6 @@ import { refreshDiagnostics } from "../src/diagnostics";
 import { npmDepsValidationProxy } from "./moduleProxies";
 
 describe("diagnostics unit test", () => {
-  const packageJsonPath = "/root/folder/package.json";
   class Range {
     constructor(n1: number, n2: number, n3: number, n4: number) {}
   }
@@ -52,8 +51,20 @@ describe("diagnostics unit test", () => {
       sandbox.restore();
     });
 
+    it("file uri is in node_modules", async () => {
+      const uri = <Uri>{ fsPath: "/root/project/node_modules/package.json" };
+      diagnosticCollectionSinonMock.expects("set").never();
+      await refreshDiagnosticsProxy(uri, diagnosticCollectionMock);
+    });
+
+    it("file uri is not package.json", async () => {
+      const uri = <Uri>{ fsPath: "/root/project/package-lock.json" };
+      diagnosticCollectionSinonMock.expects("set").never();
+      await refreshDiagnosticsProxy(uri, diagnosticCollectionMock);
+    });
+
     it("there are 2 dependency issues", async () => {
-      const uri = <Uri>{ fsPath: packageJsonPath };
+      const uri = <Uri>{ fsPath: "/root/folder/package.json" };
       npmDepsValidationSinonMock.expects("findDependencyIssues").resolves({
         problems: ["missing: json-fixer@1.6.12", "missing: lodash@0.0.1"],
       });
@@ -62,7 +73,7 @@ describe("diagnostics unit test", () => {
     });
 
     it("there are no dependency issues", async () => {
-      const uri = <Uri>{ fsPath: packageJsonPath };
+      const uri = <Uri>{ fsPath: "/root/folder/package.json" };
       npmDepsValidationSinonMock
         .expects("findDependencyIssues")
         .resolves({ problems: undefined });

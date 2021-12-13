@@ -8,6 +8,9 @@ import { refreshDiagnostics } from "./diagnostics";
 import { clearDiagnostics } from "./util";
 import { VscodePackageJsonChangesConfig } from "./vscodeTypes";
 
+// TODO: when node_modules deleted or changed diagnostics are not refreshed and errors are not shown for an opened package.json
+// the package.json file should be closed and opened again to trigger diagnostic refresh
+
 export function subscribeToPackageJsonChanges(
   vscodeConfig: VscodePackageJsonChangesConfig
 ): void {

@@ -23,7 +23,7 @@ export function registerCodeActionsProvider(
   const { subscriptions, languages, kind } = vscodeConfig;
   subscriptions.push(
     languages.registerCodeActionsProvider(
-      { language: "json", scheme: "file", pattern: "**/package.json" }, // TODO: PACKAGE_JSON_PATTERN does not work here ???
+      { language: "json", scheme: "file", pattern: "**/package.json" },
       new NPMIssuesActionProvider(kind),
       {
         providedCodeActionKinds: [kind],
@@ -60,7 +60,7 @@ export class NPMIssuesActionProvider implements CodeActionProvider {
     return action;
   }
 }
-// TODO: get packageJsonPath from text document
+
 function createCommand(uri: Uri): Command {
   return {
     command: FIX_ALL_ISSUES_COMMAND,

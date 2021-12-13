@@ -22,7 +22,7 @@ async function handleProjectChange(
 }
 
 function canBeFixed(workspace: VscodeWorkspace, uri: Uri): boolean {
-  if (isInsideNodeModules(uri)) return false;
+  if (isInsideNodeModules(uri.fsPath)) return false;
 
   return isAutoFixEnabled(workspace);
 }

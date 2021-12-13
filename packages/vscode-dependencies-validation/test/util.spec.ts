@@ -25,13 +25,13 @@ describe("util unit tests", () => {
 
   context("isInsideNodeModules()", () => {
     it("inside node_modules", () => {
-      const uri = <Uri>{ fsPath: "/root/project/node_modules/package.json" };
-      expect(isInsideNodeModules(uri)).to.be.true;
+      expect(isInsideNodeModules("/root/project/node_modules/package.json")).to
+        .be.true;
     });
 
     it("not inside node_modules", () => {
-      const uri = <Uri>{ fsPath: "/root/project/folder/package.json" };
-      expect(isInsideNodeModules(uri)).to.be.false;
+      expect(isInsideNodeModules("/root/project/folder/package.json")).to.be
+        .false;
     });
   });
 
