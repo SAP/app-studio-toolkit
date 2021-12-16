@@ -180,7 +180,7 @@ describe("custom VSCode contexts using @sap/artifact-management tags", () => {
             resolve();
           }, 2000);
         });
-      });
+      }).timeout(5000);
 
       it("will debounce re-calculating custom contexts to reduce CPU load", async () => {
         const mockGetApi = sandbox.mock(mockWsWatcherApi);
@@ -196,7 +196,7 @@ describe("custom VSCode contexts using @sap/artifact-management tags", () => {
             resolve();
           }, 3000);
         });
-      });
+      }).timeout(5000);
     });
 
     context("workspace changed - project added", () => {
@@ -267,7 +267,7 @@ describe("custom VSCode contexts using @sap/artifact-management tags", () => {
             resolve();
           }, 2000);
         });
-      });
+      }).timeout(5000);
     });
 
     context("workspace changed - project deleted", () => {

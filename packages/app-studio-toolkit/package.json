@@ -22,8 +22,8 @@
     "ci": "npm-run-all clean compile coverage bundle package",
     "clean": "rimraf ./dist *.vsix",
     "compile": "tsc -p ./",
-    "test": "mocha --timeout 5000",
-    "coverage": "nyc mocha --timeout 5000",
+    "test": "mocha",
+    "coverage": "nyc mocha",
     "bundle": "webpack --mode production",
     "package": "node ./scripts/package-vsix.js"
   },
