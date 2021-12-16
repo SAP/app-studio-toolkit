@@ -114,7 +114,7 @@ describe("custom VSCode contexts using @sap/artifact-management tags", () => {
         expect(setContextArgs).to.have.lengthOf(2);
         expect(setContextArgs).to.have.deep.members([
           {
-            contextName: "bas_project_types:AAA",
+            contextName: "sapProjectType:AAA",
             paths: [
               normalize("/user/projects/A"),
               normalize("/user/projects/A/db"),
@@ -122,7 +122,7 @@ describe("custom VSCode contexts using @sap/artifact-management tags", () => {
             ],
           },
           {
-            contextName: "bas_project_types:BBB",
+            contextName: "sapProjectType:BBB",
             paths: [
               normalize("/user/root/B"),
               normalize("/user/root/B/view"),

@@ -1,5 +1,5 @@
 import { Uri } from "vscode";
-import { WorkspaceApi } from "@sap/artifact-management-types";
+import { WorkspaceApi, Tag } from "@sap/artifact-management-types";
 
 /**
  * re-export of the types from `@sap/artifact-management-types for convenience
@@ -15,6 +15,41 @@ import { WorkspaceApi } from "@sap/artifact-management-types";
  * ```
  */
 export * as sam from "@sap/artifact-management-types";
+
+export type SapProjectType = "sapProjectType";
+export type VSCodeContextSeparator = ":";
+export type TagKey = keyof typeof Tag;
+
+/**
+ * The names of Custom VSCode contexts which can be used to define custom menu items
+ * depending on the resource's (file/folder) "project type" tags.
+ * - as defined by @sap/artifact-management package.
+ *
+ * For example: in a UI5 project the `webapp/manifest.json` file would be tagged with the `ui5` tag.
+ * This means a custom VSCode context named `sapProjectType:ui5` will be automagically populated
+ * and can then be used to create custom menu items for the UI5 `manifest.json`, e.g:
+ *
+ * In `package.json` of VSCode extension in `contributes.menus."explorer/context"` section:
+ * ```json
+ *   {
+ *         "command": "extension.ui5EditManifest",
+ *         "when": "resourcePath in sapProjectType:ui5 && resourceFilename == manifest.json"
+ *    }
+ * ```
+ * Note that:
+ * - The "project type" custom context (`sapProjectType:ui5`) uses the `sapProjectType:` prefix and the
+ *   tag name (`ui5` in this case) as the suffix.
+ * - The usage of the `in` **operator** in conjunction with `resourcePath` **editor context**.
+ * - A matching custom context would be created for **all** the tags detected in the workspace, e.g:
+ *   `ui5` / `cap` / `ui` / ...
+ *
+ * Relevant References:
+ * - https://code.visualstudio.com/api/references/when-clause-contexts
+ * - https://code.visualstudio.com/api/references/when-clause-contexts#in-conditional-operator
+ * - https://github.com/SAP/app-studio-toolkit/tree/main/examples/vscode-artifact-management-context-menus
+ */
+export type VSCodeProjectTypeContext =
+  `${SapProjectType}${VSCodeContextSeparator}${TagKey}`;
 
 export type BasWorkspaceApi = Pick<
   WorkspaceApi,

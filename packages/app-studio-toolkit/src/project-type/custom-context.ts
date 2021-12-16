@@ -1,23 +1,30 @@
 import { forEach } from "lodash";
 import { join, normalize } from "path";
 import { Project } from "@sap/artifact-management";
+import { IChildLogger } from "@vscode-logging/types";
+import {
+  SapProjectType,
+  TagKey,
+  VSCodeContextSeparator,
+} from "@sap-devx/app-studio-toolkit-types";
 import {
   AbsolutePath,
   ProjectApiRead,
-  ProjectTypeTag,
   SetContext,
   TagToAbsPaths,
 } from "./types";
-import { getLogger } from "../../src/logger/logger";
-import { IChildLogger } from "@vscode-logging/types";
+// TODO: this only works in custom-context-spec.ts due to previous tests globally mocking vscode
+//   STABILITY DEPENDS OO TEST FILES LOADING ORDER?!!!?!
+import { getLogger } from "../logger/logger";
 
 let logger: IChildLogger;
 function getComponentLogger(): IChildLogger {
   logger = logger || getLogger().getChildLogger({ label: "custom-context" });
   return logger;
 }
-// TODO: choose prefix...
-const VSCODE_CONTEXT_PREFIX = "bas_project_types:";
+
+const VSCODE_CONTEXT_PREFIX: `${SapProjectType}${VSCodeContextSeparator}` =
+  "sapProjectType:";
 
 /**
  * Fully re-calculates the TagsContext data from scratch.
@@ -52,7 +59,7 @@ export function transformProjectApiToTagsMaps(project: Project): TagToAbsPaths {
     tagToAbsPaths,
     projectAbsRoot,
     /* istanbul ignore next -- tags is (strangely) marked as optional */
-    project.tags ?? []
+    (project.tags as TagKey[]) ?? []
   );
   forEach(project.modules, (currModule) => {
     // `Module["path"]` is relative to the project's root
@@ -61,7 +68,7 @@ export function transformProjectApiToTagsMaps(project: Project): TagToAbsPaths {
       tagToAbsPaths,
       moduleAbsPath,
       /* istanbul ignore next -- tags is (strangely) marked as optional */
-      currModule.tags ?? []
+      (currModule.tags as TagKey[]) ?? []
     );
     forEach(currModule.items, (currItem) => {
       // `Item["path"]` is also relative to the project's root
@@ -70,7 +77,7 @@ export function transformProjectApiToTagsMaps(project: Project): TagToAbsPaths {
         tagToAbsPaths,
         itemAbsPath,
         /* istanbul ignore next -- tags is (strangely) marked as optional */
-        currItem.tags ?? []
+        (currItem.tags as TagKey[]) ?? []
       );
     });
   });
@@ -90,18 +97,18 @@ export function insertTagsData(
 }
 
 export function refreshAllVSCodeContext(
-  tagToPaths: TagToAbsPaths,
+  tagToAbsPaths: TagToAbsPaths,
   setContext: SetContext
 ): void {
   // cannot use lodash on ES6 Maps
-  tagToPaths.forEach((currTagMap, currTagName) => {
+  tagToAbsPaths.forEach((currTagMap, currTagName) => {
     const paths = Array.from(currTagMap.keys());
     const currContextName = `${VSCODE_CONTEXT_PREFIX}${currTagName}`;
     setContext(currContextName, paths);
     getComponentLogger().debug(
       `context recalculated`,
       { contextName: currContextName },
-      { path: `${paths.join()}` }
+      { paths: paths }
     );
   });
 }
@@ -109,7 +116,7 @@ export function refreshAllVSCodeContext(
 export function insertPathForMultipleTags(
   tagToAbsPath: TagToAbsPaths,
   absFsPath: AbsolutePath,
-  tags: ProjectTypeTag[]
+  tags: TagKey[]
 ): void {
   forEach(tags, (currTag) => {
     insertPathForSingleTag(tagToAbsPath, absFsPath, currTag);
@@ -119,12 +126,12 @@ export function insertPathForMultipleTags(
 export function insertPathForSingleTag(
   tagToAbsPath: TagToAbsPaths,
   absFsPath: AbsolutePath,
-  tag: ProjectTypeTag
+  tag: TagKey
 ): void {
   if (!tagToAbsPath.has(tag)) {
     tagToAbsPath.set(tag, new Map());
   }
 
-  const tagMap = tagToAbsPath.get(tag) as Map<AbsolutePath, boolean>;
+  const tagMap = tagToAbsPath.get(tag)!;
   tagMap.set(absFsPath, true);
 }
