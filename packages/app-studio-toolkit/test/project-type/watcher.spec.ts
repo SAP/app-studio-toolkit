@@ -166,7 +166,7 @@ describe("custom VSCode contexts using @sap/artifact-management tags", () => {
             each(projects, (project) => {
               const context = find(setContextArgs, [
                 "contextName",
-                `bas_project_types:${project.tags[0]}`,
+                `sapProjectType:${project.tags[0]}`,
               ]) || { paths: [] };
               expect(size(context.paths)).be.equal(3);
               expect(context.paths[0]).be.equal(normalize(project.path));
@@ -252,7 +252,7 @@ describe("custom VSCode contexts using @sap/artifact-management tags", () => {
             each(projects, (project) => {
               const context = find(setContextArgs, [
                 "contextName",
-                `bas_project_types:${project.tags[0]}`,
+                `sapProjectType:${project.tags[0]}`,
               ]) || { paths: [] };
               expect(size(context.paths)).be.equal(3);
               expect(context.paths[0]).be.equal(normalize(project.path));
