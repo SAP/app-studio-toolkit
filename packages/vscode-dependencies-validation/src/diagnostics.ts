@@ -17,6 +17,7 @@ export async function refreshDiagnostics(
 ): Promise<void> {
   const { fsPath } = uri;
 
+  // TODO: should these checks that `return undefined` be here? or are these a concern of the calling eventHandlers?
   if (isInsideNodeModules(fsPath)) return;
   if (basename(fsPath) !== "package.json") return;
 
