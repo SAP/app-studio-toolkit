@@ -1,38 +1,40 @@
-import { dirname } from "path";
-import type { DiagnosticCollection, OutputChannel } from "vscode";
-import { invokeNPMCommand } from "@sap-devx/npm-dependencies-validation";
-import { refreshDiagnostics } from "./diagnostics";
+import type { DiagnosticCollection, Uri } from "vscode";
+import { VscodeCommandsConfig, VscodeOutputChannel } from "./vscodeTypes";
+import { FIX_ALL_ISSUES_COMMAND } from "./constants";
+import { clearDiagnostics, fixDepsIssues } from "./util";
 
-type VscodeOutputChannel = Pick<
-  OutputChannel,
-  "append" | "show" | "appendLine"
->;
-
-export async function fixAllDepIssuesCommand(
+async function fixProjectDepsIssues(
   outputChannel: VscodeOutputChannel,
-  packageJsonPath: string,
-  dependencyIssuesDiagnosticCollection: DiagnosticCollection
+  diagnosticCollection: DiagnosticCollection,
+  uri: Uri
 ): Promise<void> {
+  // switched to outputchannel only in manual mode
   outputChannel.show(true);
-
-  const npmCommand = "install";
-  try {
-    outputChannel.appendLine(`\nFixing dependency issues ...`);
-    const start = Date.now();
-    const config = { commandArgs: [npmCommand], cwd: dirname(packageJsonPath) };
-    await invokeNPMCommand(config, outputChannel);
-    const millis = Date.now() - start;
-    outputChannel.append(`Done. (${millisToSeconds(millis)} seconds)\n`);
-
-    void refreshDiagnostics(
-      packageJsonPath,
-      dependencyIssuesDiagnosticCollection
-    );
-  } catch (error) {
-    outputChannel.appendLine(`Failed: ${error.stack}`);
-  }
+  await fixDepsIssues(uri, outputChannel);
+  clearDiagnostics(diagnosticCollection, uri);
 }
 
-function millisToSeconds(millis: number): string {
-  return ((millis % 60000) / 1000).toFixed(2);
+// commands for manual fix of dependency issues
+export function registerCommands(vscodeConfig: VscodeCommandsConfig): void {
+  const { subscriptions, commands, outputChannel, diagnosticCollection } =
+    vscodeConfig;
+  subscriptions.push(
+    commands.registerCommand(
+      FIX_ALL_ISSUES_COMMAND,
+      executeFixProjectDepsIssues(outputChannel, diagnosticCollection)
+    )
+  );
 }
+
+function executeFixProjectDepsIssues(
+  outputChannel: VscodeOutputChannel,
+  diagnosticCollection: DiagnosticCollection
+) {
+  return (uri: Uri) =>
+    fixProjectDepsIssues(outputChannel, diagnosticCollection, uri);
+}
+
+export const internal = {
+  fixProjectDepsIssues,
+  executeFixProjectDepsIssues,
+};
