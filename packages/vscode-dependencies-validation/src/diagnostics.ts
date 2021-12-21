@@ -1,36 +1,34 @@
-import type { DiagnosticCollection } from "vscode";
-import { Range, Diagnostic, Uri } from "vscode";
+import type { DiagnosticCollection, Uri } from "vscode";
+import { Range, Diagnostic } from "vscode";
+import { basename } from "path";
 import { findDependencyIssues } from "@sap-devx/npm-dependencies-validation";
-import { set, isEmpty } from "lodash";
-import { NPM_DEPENDENCY_ISSUES_CODE, PACKAGE_JSON_PATTERN } from "./constants";
+import { isEmpty } from "lodash";
+import { NPM_DEPENDENCY_ISSUES_CODE } from "./constants";
+import { isInsideNodeModules } from "./util";
 
 /**
- * Analyzes the package.json text document for problems.
- * @param doc package.json text document to analyze
+ * Analyzes package.json file for problems.
+ * @param packageJsonPath package.json file path to analyze
  * @param dependencyIssueDiagnostics diagnostic collection
  */
 export async function refreshDiagnostics(
-  packageJsonPath: string,
+  uri: Uri,
   dependencyIssueDiagnostics: DiagnosticCollection
 ): Promise<void> {
-  if (PACKAGE_JSON_PATTERN.test(packageJsonPath)) {
-    const { problems } = await findDependencyIssues(packageJsonPath);
+  const { fsPath } = uri;
 
-    let diagnostics: Diagnostic[] = [];
+  if (isInsideNodeModules(fsPath)) return;
+  if (basename(fsPath) !== "package.json") return;
 
-    if (!isEmpty(problems)) {
-      diagnostics = [constructDiagnostic(problems, packageJsonPath)];
-    }
+  const { problems } = await findDependencyIssues(fsPath);
 
-    dependencyIssueDiagnostics.set(Uri.file(packageJsonPath), diagnostics);
-  }
+  const diagnostics = isEmpty(problems) ? [] : [constructDiagnostic(problems)];
+
+  dependencyIssueDiagnostics.set(uri, diagnostics);
 }
 
-// construct diagnostic to be displayed in the first line of the package.json
-function constructDiagnostic(
-  problems: string[],
-  packageJsonPath: string
-): Diagnostic {
+// constructs diagnostic to be displayed in the first line of the package.json
+function constructDiagnostic(problems: string[]): Diagnostic {
   const range = new Range(0, 0, 0, 10);
   const diagnostic = new Diagnostic(
     range,
@@ -38,7 +36,6 @@ function constructDiagnostic(
     0 // DiagnosticSeverity.Error
   );
   diagnostic.code = NPM_DEPENDENCY_ISSUES_CODE;
-  set(diagnostic, "packageJsonPath", packageJsonPath); // TODO: how to pass needed data to diagnostic ?
 
   return diagnostic;
 }

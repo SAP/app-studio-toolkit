@@ -1,8 +1,8 @@
 import { dirname } from "path";
+import { isEmpty } from "lodash";
 import { NpmLsResult } from "./types";
 import { isCurrentlySupported, isPathExist } from "./utils/packageJsonUtil";
-import { invokeNPMCommand } from "./utils/npmUtil";
-import { isEmpty } from "lodash";
+import { invokeNPMCommandWithJsonResult } from "./utils/npmUtil";
 
 // ls --depth=0 shows only top-level dependencies
 const LS_ARGS: string[] = ["ls", "--depth=0"];
@@ -22,10 +22,12 @@ export async function findDependencyIssues(
     commandArgs: [...LS_ARGS],
     cwd,
   };
-  const npmLsResult = await invokeNPMCommand<NpmLsResult>(depsCommandConfig);
-  if (!isEmpty(npmLsResult.problems)) return npmLsResult;
+  const { problems = [] } = await invokeNPMCommandWithJsonResult<NpmLsResult>(
+    depsCommandConfig
+  );
+  if (!isEmpty(problems)) return { problems };
 
   // devDependencies issues and extraneous modules
   const devDepsCommandConfig = { commandArgs: [...LS_ARGS, "--dev"], cwd };
-  return invokeNPMCommand<NpmLsResult>(devDepsCommandConfig);
+  return invokeNPMCommandWithJsonResult<NpmLsResult>(devDepsCommandConfig);
 }

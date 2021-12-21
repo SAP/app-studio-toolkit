@@ -1,172 +1,64 @@
 import {
-  Uri,
   ExtensionContext,
   workspace,
   window,
   languages,
-  DiagnosticCollection,
-  OutputChannel,
   commands,
   CodeActionKind,
+  Uri,
+  DiagnosticCollection,
 } from "vscode";
-import {
-  NpmLsResult,
-  findDependencyIssues,
-} from "@sap-devx/npm-dependencies-validation";
-import { debounce } from "lodash";
-import { NPMIssuesActionProvider } from "./npmIssuesActionProvider";
-import { fixAllDepIssuesCommand } from "./commands";
-import { FIX_ALL_ISSUES_COMMAND, PACKAGE_JSON_PATTERN } from "./constants";
-import { refreshDiagnostics } from "./diagnostics";
+import { registerCodeActionsProvider } from "./npmIssuesActionProvider";
+import { activateDepsIssuesAutoFix } from "./autofix/activate";
+import { VscodeConfig } from "./vscodeTypes";
+import { subscribeToPackageJsonChanges } from "./editorChanges";
+import { registerCommands } from "./commands";
 
-type Subscriptions = ExtensionContext["subscriptions"];
+// TODO: add logger for extension
 
 export function activate(context: ExtensionContext): void {
+  const vscodeConfig = createVscodeConfig(context);
+
+  registerCodeActionsProvider(vscodeConfig);
+
+  subscribeToPackageJsonChanges(vscodeConfig);
+
+  registerCommands(vscodeConfig);
+
+  activateDepsIssuesAutoFix(vscodeConfig);
+}
+
+// shared config
+function createVscodeConfig(context: ExtensionContext): VscodeConfig {
   const {
     extension: { id: extId },
     subscriptions,
   } = context;
 
   const outputChannel = window.createOutputChannel(extId);
-  const diagnosticCollection = createDiagnosticCollection(context, extId);
+  const kind = CodeActionKind.QuickFix;
+  const diagnosticCollection = createDiagnosticCollection(context);
 
-  void findIssues();
-
-  void addFileWatcher();
-
-  registerCodeActionsProvider(subscriptions);
-
-  subscribeToDocumentChanges(subscriptions, diagnosticCollection);
-
-  registerCommands(subscriptions, outputChannel, diagnosticCollection);
-}
-
-function registerCodeActionsProvider(subscriptions: Subscriptions): void {
-  subscriptions.push(
-    languages.registerCodeActionsProvider(
-      { language: "json", scheme: "file", pattern: "**/package.json" }, // TODO: PACKAGE_JSON_PATTERN does not work here ???
-      new NPMIssuesActionProvider(CodeActionKind.QuickFix),
-      {
-        providedCodeActionKinds: [CodeActionKind.QuickFix],
-      }
-    )
-  );
+  return {
+    window,
+    workspace,
+    commands,
+    languages,
+    outputChannel,
+    subscriptions,
+    kind,
+    diagnosticCollection,
+    // eslint-disable-next-line @typescript-eslint/unbound-method -- referencing static Uri method
+    createUri: Uri.file,
+  };
 }
 
 function createDiagnosticCollection(
-  context: ExtensionContext,
-  extId: string
+  context: ExtensionContext
 ): DiagnosticCollection {
-  const diagnosticCollection = languages.createDiagnosticCollection(extId);
+  const diagnosticCollection = languages.createDiagnosticCollection(
+    context.extension.id
+  );
   context.subscriptions.push(diagnosticCollection);
   return diagnosticCollection;
-}
-
-function registerCommands(
-  subscriptions: Subscriptions,
-  outputChannel: OutputChannel,
-  diagnosticCollection: DiagnosticCollection
-): void {
-  subscriptions.push(
-    commands.registerCommand(
-      FIX_ALL_ISSUES_COMMAND,
-      (packageJsonPath: string) =>
-        fixAllDepIssuesCommand(
-          outputChannel,
-          packageJsonPath,
-          diagnosticCollection
-        )
-    )
-  );
-}
-
-// TODO: need to add file watcher for unsupported package manager files and properties
-async function findIssues(): Promise<void> {
-  const packageJsonUris: Uri[] = await workspace.findFiles(
-    "package.json",
-    "**​/node_modules/**"
-  );
-  packageJsonUris.forEach((packageJsonUri) => {
-    void displayProblematicDependencies(packageJsonUri);
-  });
-}
-
-const debouncedDisplayProblematicDependencies = debounce(
-  displayProblematicDependencies,
-  3000
-);
-
-// TODO: somebody added yarl.lock in filesystem (not via vscode) ??
-// TODO: what should happen after git clone ??
-function addFileWatcher(): void {
-  const fileWatcher = workspace.createFileSystemWatcher("**/package.json"); // TODO: PACKAGE_JSON_PATTERN does not work here ???
-  fileWatcher.onDidChange((uri: Uri) => {
-    void debouncedDisplayProblematicDependencies(uri);
-  });
-
-  fileWatcher.onDidCreate((uri: Uri) => {
-    void debouncedDisplayProblematicDependencies(uri);
-  });
-
-  fileWatcher.onDidDelete((uri: Uri) => {
-    //TODO: check if we need it ??
-    void debouncedDisplayProblematicDependencies(uri);
-  });
-}
-
-async function displayProblematicDependencies(
-  packageJsonUri: Uri
-): Promise<void> {
-  if (PACKAGE_JSON_PATTERN.test(packageJsonUri.fsPath)) {
-    const start = Date.now();
-
-    const npmLsResult: NpmLsResult = await findDependencyIssues(
-      packageJsonUri.fsPath
-    );
-
-    void window.showInformationMessage(
-      `found ${npmLsResult.problems?.length || 0} problems in ${
-        Date.now() - start
-      } milliseconds`
-    );
-  }
-}
-
-function subscribeToDocumentChanges(
-  subscriptions: Subscriptions,
-  dependencyIssueDiagnostics: DiagnosticCollection
-): void {
-  if (window.activeTextEditor) {
-    void refreshDiagnostics(
-      window.activeTextEditor.document.uri.fsPath,
-      dependencyIssueDiagnostics
-    );
-  }
-
-  subscriptions.push(
-    window.onDidChangeActiveTextEditor((editor) => {
-      if (editor) {
-        void refreshDiagnostics(
-          editor.document.uri.fsPath,
-          dependencyIssueDiagnostics
-        );
-      }
-    })
-  );
-
-  subscriptions.push(
-    workspace.onDidChangeTextDocument(
-      (e) =>
-        void refreshDiagnostics(
-          e.document.uri.fsPath,
-          dependencyIssueDiagnostics
-        )
-    )
-  );
-
-  subscriptions.push(
-    workspace.onDidCloseTextDocument((doc) =>
-      dependencyIssueDiagnostics.delete(doc.uri)
-    )
-  );
 }

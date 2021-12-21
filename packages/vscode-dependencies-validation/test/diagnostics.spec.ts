@@ -1,3 +1,4 @@
+import type { Uri } from "vscode";
 import proxyquire = require("proxyquire");
 import { createSandbox, SinonMock, SinonSandbox } from "sinon";
 import { diagnosticCollectionMock } from "./vscodeMocks";
@@ -5,10 +6,6 @@ import { refreshDiagnostics } from "../src/diagnostics";
 import { npmDepsValidationProxy } from "./moduleProxies";
 
 describe("diagnostics unit test", () => {
-  const packageJsonPath = "/root/folder/package.json";
-  const Uri = {
-    file: (path: string) => `uri_${path}`,
-  };
   class Range {
     constructor(n1: number, n2: number, n3: number, n4: number) {}
   }
@@ -34,7 +31,6 @@ describe("diagnostics unit test", () => {
         vscode: {
           Range,
           Diagnostic,
-          Uri,
           "@noCallThru": true,
         },
         "@sap-devx/npm-dependencies-validation": npmDepsValidationProxy,
@@ -55,25 +51,37 @@ describe("diagnostics unit test", () => {
       sandbox.restore();
     });
 
+    it("file uri is in node_modules", async () => {
+      const uri = <Uri>{ fsPath: "/root/project/node_modules/package.json" };
+      diagnosticCollectionSinonMock.expects("set").never();
+      await refreshDiagnosticsProxy(uri, diagnosticCollectionMock);
+    });
+
+    it("file uri is not package.json", async () => {
+      const uri = <Uri>{ fsPath: "/root/project/package-lock.json" };
+      diagnosticCollectionSinonMock.expects("set").never();
+      await refreshDiagnosticsProxy(uri, diagnosticCollectionMock);
+    });
+
     it("there are 2 dependency issues", async () => {
+      const uri = <Uri>{ fsPath: "/root/folder/package.json" };
       npmDepsValidationSinonMock.expects("findDependencyIssues").resolves({
         problems: ["missing: json-fixer@1.6.12", "missing: lodash@0.0.1"],
       });
-      diagnosticCollectionSinonMock
-        .expects("set")
-        .withArgs(Uri.file(packageJsonPath));
-      await refreshDiagnosticsProxy(packageJsonPath, diagnosticCollectionMock);
+      diagnosticCollectionSinonMock.expects("set").withArgs(uri);
+      await refreshDiagnosticsProxy(uri, diagnosticCollectionMock);
     });
 
     it("there are no dependency issues", async () => {
+      const uri = <Uri>{ fsPath: "/root/folder/package.json" };
       npmDepsValidationSinonMock
         .expects("findDependencyIssues")
         .resolves({ problems: undefined });
       const diagnostics: Diagnostic[] = [];
       diagnosticCollectionSinonMock
         .expects("set")
-        .withExactArgs(Uri.file(packageJsonPath), diagnostics);
-      await refreshDiagnosticsProxy(packageJsonPath, diagnosticCollectionMock);
+        .withExactArgs(uri, diagnostics);
+      await refreshDiagnosticsProxy(uri, diagnosticCollectionMock);
     });
   });
 });

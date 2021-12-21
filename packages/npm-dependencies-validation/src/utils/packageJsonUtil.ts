@@ -3,20 +3,18 @@ import { constants } from "fs";
 import { join, dirname } from "path";
 import { PackageJson } from "../types";
 
-const yarnManagerFiles = [
+export const yarnManagerFiles = [
   "yarn.lock",
   ".yarnrc",
   ".yarnrc.yml",
   ".yarn",
-  "./node_modules/.yarn-integrity",
 ];
-const pnpmManagerFiles = [
+export const pnpmManagerFiles = [
   "pnpm-workspace.yaml",
   "pnpm-lock.yaml",
   ".pnpmfile.cjs",
-  "./node_modules/.pnpm",
 ];
-const monorepoProps = ["workspaces"];
+export const monorepoProps = ["workspaces"];
 
 async function readJsonFile(jsonFilePath: string): Promise<PackageJson> {
   try {
