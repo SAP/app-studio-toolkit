@@ -4,6 +4,7 @@ import type {
   TextDocumentChangeEvent,
   TextEditor,
 } from "vscode";
+import { isEmpty } from "lodash";
 import { refreshDiagnostics } from "./diagnostics";
 import { clearDiagnostics } from "./util";
 import { VscodePackageJsonChangesConfig } from "./vscodeTypes";
@@ -57,7 +58,11 @@ function executeRefreshDiagnosticsOnDocumentChangeEvent(
   diagnosticCollection: DiagnosticCollection
 ) {
   return (event: TextDocumentChangeEvent) => {
-    void refreshDiagnostics(event.document.uri, diagnosticCollection);
+    // this event gets called multiple (four) times for each text change
+    // but only once for "true" text changes
+    if (!isEmpty(event.contentChanges)) {
+      void refreshDiagnostics(event.document.uri, diagnosticCollection);
+    }
   };
 }
 
