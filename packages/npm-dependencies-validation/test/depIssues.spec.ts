@@ -49,7 +49,7 @@ describe("dependencyIssues unit test", () => {
     expect(result.problems).to.be.empty;
   });
 
-  it("would detect no issues for a package.json without dependencies", async () => {
+  it.only("would detect no issues for a package.json without dependencies", async () => {
     const result = await findDependencyIssues(
       resolve("./test/projects/empty_no_issues/package.json")
     );

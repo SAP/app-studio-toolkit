@@ -11,10 +11,14 @@ export async function findDependencyIssues(
   absPackageJsonPath: string
 ): Promise<NpmLsResult> {
   const packageJsonExists = await isPathExist(absPackageJsonPath);
-  if (!packageJsonExists) return { problems: [] };
+  if (!packageJsonExists) {
+    return { problems: [] };
+  }
 
   const currentlySupported = await isCurrentlySupported(absPackageJsonPath);
-  if (!currentlySupported) return { problems: [] };
+  if (!currentlySupported) {
+    return { problems: [] };
+  }
 
   const cwd = dirname(absPackageJsonPath);
   // dependencies issues and extraneous modules
@@ -22,12 +26,21 @@ export async function findDependencyIssues(
     commandArgs: [...LS_ARGS],
     cwd,
   };
-  const { problems = [] } = await invokeNPMCommandWithJsonResult<NpmLsResult>(
+  const npmProdLsResult = await invokeNPMCommandWithJsonResult<NpmLsResult>(
     depsCommandConfig
   );
-  if (!isEmpty(problems)) return { problems };
+  const prodProblems = npmProdLsResult.problems ?? [];
+  // hack workaround for different behaviors of `npm ls` in different versions of npm
+  if (!isEmpty(prodProblems)) {
+    // early exit as we don't know if we can safely combine the results of prod/dev mode in all versions of npm.
+    return { problems: prodProblems };
+  }
 
-  // devDependencies issues and extraneous modules
+  // in npm6 `devDeps` related issues and extraneous deps are not detected via the regular `npm ls` command (without `--dev`).
   const devDepsCommandConfig = { commandArgs: [...LS_ARGS, "--dev"], cwd };
-  return invokeNPMCommandWithJsonResult<NpmLsResult>(devDepsCommandConfig);
+  const npmDevLsResults = await invokeNPMCommandWithJsonResult<NpmLsResult>(
+    devDepsCommandConfig
+  );
+  const devProblems = npmDevLsResults.problems ?? [];
+  return { problems: devProblems };
 }
