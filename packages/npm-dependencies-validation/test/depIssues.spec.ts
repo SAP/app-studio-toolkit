@@ -1,66 +1,83 @@
-import { expect, assert } from "chai";
+import { expect } from "chai";
 import { resolve } from "path";
 import { findDependencyIssues } from "../src/api";
 
-describe("dependencyIssues unit test", () => {
-  it("2 dependencies declared but are not installed", async () => {
-    const { problems } = await findDependencyIssues(
-      "./test/projects/missing_deps/package.json"
-    );
-    const jsonFixerProblem = problems.find((problem) =>
-      problem.startsWith("missing: json-fixer@1.6.12")
-    );
-    assert.isDefined(jsonFixerProblem);
-    const lodashProblem = problems.find((problem) =>
-      problem.startsWith("missing: lodash@~4.17.21")
-    );
-    assert.isDefined(lodashProblem);
+describe("`findDependencyIssues()` validation function ", () => {
+  // `__dirname` is executed in the compiled output...
+  const samplesDir = resolve(__dirname, "..", "..", "test", "packages-samples");
+
+  context("positive - issues detected", () => {
+    const positiveSamplesDir = resolve(samplesDir, "positive");
+
+    it("will detect multiple missing deps", async () => {
+      const samplePackage = resolve(
+        positiveSamplesDir,
+        "missing_deps/package.json"
+      );
+      const { problems } = await findDependencyIssues(samplePackage);
+      const jsonFixerProblem = problems.find((problem) =>
+        problem.startsWith("missing: json-fixer@1.6.12")
+      );
+      expect(jsonFixerProblem).to.exist;
+      const lodashProblem = problems.find((problem) =>
+        problem.startsWith("missing: lodash@~4.17.21")
+      );
+      expect(lodashProblem).to.exist;
+    });
+
+    it("will detect a single missing dev dep", async () => {
+      const samplePackage = resolve(
+        positiveSamplesDir,
+        "missing_dev_deps/package.json"
+      );
+      const { problems } = await findDependencyIssues(samplePackage);
+      const typeScriptProblem = problems.find((problem) =>
+        problem.startsWith("missing: typescript@^4.4.4")
+      );
+      expect(typeScriptProblem).to.exist;
+    });
   });
 
-  it("will detect a missing dev dep", async () => {
-    const { problems } = await findDependencyIssues(
-      "./test/projects/missing_dev_deps/package.json"
-    );
-    const typeScriptProblem = problems.find((problem) =>
-      problem.startsWith("missing: typescript@^4.4.4")
-    );
-    assert.isDefined(typeScriptProblem);
-  });
+  context("negative - no issues expected", () => {
+    const negativeSampleDir = resolve(samplesDir, "negative");
 
-  it("2 devDependency declared but are not installed", async () => {
-    const { problems } = await findDependencyIssues(
-      "./test/projects/no_devDeps_installed/package.json"
-    );
-    // missing typescript devDependency
-    const typescriptProblem = problems.find((problem) =>
-      problem.startsWith("missing: typescript@^4.4.4")
-    );
-    assert.isDefined(typescriptProblem);
-    // missing json-fixer devDependency
-    const jsonFixerProblem = problems.find((problem) =>
-      problem.startsWith("missing: json-fixer@~1.6.12")
-    );
-    assert.isDefined(jsonFixerProblem);
-  });
+    it("will not detect any issues when package is not found", async () => {
+      const samplePackage = resolve(
+        negativeSampleDir,
+        "somewhere",
+        "over",
+        "the",
+        "rainbow"
+      );
+      const result = await findDependencyIssues(samplePackage);
+      expect(result.problems).to.be.empty;
+    });
 
-  it("no dependency issues are found, package.json is not found", async () => {
-    const result = await findDependencyIssues(
-      "./test/projects/non_existing_folder/package.json"
-    );
-    expect(result.problems).to.be.empty;
-  });
+    it("will not detect any issues when, project type is not supported", async () => {
+      const samplePackage = resolve(
+        negativeSampleDir,
+        "not_supported/package.json"
+      );
+      const result = await findDependencyIssues(samplePackage);
+      expect(result.problems).to.be.empty;
+    });
 
-  it("no dependency issues are found, package is not supported", async () => {
-    const result = await findDependencyIssues(
-      resolve("./test/projects/not_supported/package.json")
-    );
-    expect(result.problems).to.be.empty;
-  });
+    it("will not detect any issues for a package without any dependencies", async () => {
+      const samplePackage = resolve(
+        negativeSampleDir,
+        "empty_no_issues/package.json"
+      );
+      const result = await findDependencyIssues(samplePackage);
+      expect(result.problems).to.be.empty;
+    });
 
-  it("would detect no issues for a package.json without dependencies", async () => {
-    const result = await findDependencyIssues(
-      resolve("./test/projects/empty_no_issues/package.json")
-    );
-    expect(result.problems).to.be.empty;
+    it("will not detect any issues for an invalid package", async () => {
+      const samplePackage = resolve(
+        negativeSampleDir,
+        "invalid_package_json/package.json"
+      );
+      const result = await findDependencyIssues(samplePackage);
+      expect(result.problems).to.be.empty;
+    });
   });
 });
