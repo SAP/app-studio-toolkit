@@ -1,4 +1,6 @@
-import { access, readFile } from "fs/promises";
+// importing directly from `fs/promises` is not supported on nodejs 12
+import { promises } from "fs";
+const { readFile, access } = promises;
 import { constants } from "fs";
 import { join, dirname } from "path";
 import { PackageJson } from "../types";
