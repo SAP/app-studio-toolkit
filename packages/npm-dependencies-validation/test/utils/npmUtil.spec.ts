@@ -6,6 +6,7 @@ import {
   getNPM,
   invokeNPMCommandWithJsonResult,
 } from "../../src/utils/npmUtil";
+import { npmSpawnTestTimeout } from "../config";
 
 describe("npmUtil unit test", () => {
   const sandbox = createSandbox();
@@ -31,7 +32,8 @@ describe("npmUtil unit test", () => {
         });
     });
 
-    it("invokeNPMCommandWithJsonResult succeeded with ls", async () => {
+    it("invokeNPMCommandWithJsonResult succeeded with ls", async function () {
+      this.timeout(npmSpawnTestTimeout);
       const appendSpy: SinonSpy = sandbox.spy(outputChannel, "append");
       const config = { commandArgs: ["ls", "--depth=0"], cwd: "./" };
       const result: NpmLsResult = await invokeNPMCommandWithJsonResult(
@@ -58,7 +60,8 @@ describe("npmUtil unit test", () => {
         });
     });
 
-    it("invokeNPMCommand succeeded with ls", async () => {
+    it("invokeNPMCommand succeeded with ls", async function () {
+      this.timeout(npmSpawnTestTimeout);
       const appendSpy: SinonSpy = sandbox.spy(outputChannel, "append");
       const config = { commandArgs: ["ls", "--depth=0"], cwd: "./" };
       await invokeNPMCommand(config, outputChannel);
