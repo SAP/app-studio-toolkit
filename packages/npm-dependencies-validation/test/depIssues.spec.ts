@@ -1,8 +1,10 @@
 import { expect } from "chai";
 import { resolve } from "path";
 import { findDependencyIssues } from "../src/api";
+import { npmSpawnTestTimeout } from "./config";
 
-describe("`findDependencyIssues()` validation function ", () => {
+describe("`findDependencyIssues()` validation function ", function () {
+  this.timeout(npmSpawnTestTimeout);
   // `__dirname` is executed in the compiled output...
   const samplesDir = resolve(__dirname, "..", "..", "test", "packages-samples");
 
