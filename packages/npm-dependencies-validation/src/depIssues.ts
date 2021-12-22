@@ -41,6 +41,7 @@ export async function findDependencyIssues(
   const npmDevLsResults = await invokeNPMCommandWithJsonResult<NpmLsResult>(
     devDepsCommandConfig
   );
+  /* istanbul ignore next  -- inconsistent behavior under npm6-8 so not all branches are reachable here */
   const devProblems = npmDevLsResults.problems ?? [];
   return { problems: devProblems };
 }

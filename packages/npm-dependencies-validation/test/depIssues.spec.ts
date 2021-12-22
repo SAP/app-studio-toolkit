@@ -5,18 +5,26 @@ import { findDependencyIssues } from "../src/api";
 describe("dependencyIssues unit test", () => {
   it("2 dependencies declared but are not installed", async () => {
     const { problems } = await findDependencyIssues(
-      "./test/projects/no_deps_installed/package.json"
+      "./test/projects/missing_deps/package.json"
     );
-    // missing json-fixer dependency
     const jsonFixerProblem = problems.find((problem) =>
       problem.startsWith("missing: json-fixer@1.6.12")
     );
     assert.isDefined(jsonFixerProblem);
-    // missing lodash dependency
     const lodashProblem = problems.find((problem) =>
       problem.startsWith("missing: lodash@~4.17.21")
     );
     assert.isDefined(lodashProblem);
+  });
+
+  it("will detect a missing dev dep", async () => {
+    const { problems } = await findDependencyIssues(
+      "./test/projects/missing_dev_deps/package.json"
+    );
+    const typeScriptProblem = problems.find((problem) =>
+      problem.startsWith("missing: typescript@^4.4.4")
+    );
+    assert.isDefined(typeScriptProblem);
   });
 
   it("2 devDependency declared but are not installed", async () => {
@@ -49,7 +57,7 @@ describe("dependencyIssues unit test", () => {
     expect(result.problems).to.be.empty;
   });
 
-  it.only("would detect no issues for a package.json without dependencies", async () => {
+  it("would detect no issues for a package.json without dependencies", async () => {
     const result = await findDependencyIssues(
       resolve("./test/projects/empty_no_issues/package.json")
     );
