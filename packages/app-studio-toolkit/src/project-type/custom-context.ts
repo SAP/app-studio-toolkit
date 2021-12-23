@@ -134,4 +134,14 @@ export function insertPathForSingleTag(
 
   const tagMap = tagToAbsPath.get(tag)!;
   tagMap.set(absFsPath, true);
+
+  const windowsLikeAbsPath = buildWinLikePath(absFsPath);
+  tagMap.set(windowsLikeAbsPath, true);
+}
+
+// hacky workaround
+// TODO: document this hack and the reasons behind it and how it works
+function buildWinLikePath(input: string): string {
+  const withBackSlash = input.replace(/\//g, "\\");
+  return withBackSlash;
 }
