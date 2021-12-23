@@ -8,7 +8,13 @@ import {
 } from "./basctlServer/basctlServer";
 import { ActionsController } from "./actions/controller";
 import { initLogger, getLogger } from "./logger/logger";
-import { initWorkspaceAPI } from "./project-type/workspace-instance";
+import {
+  getWorkspaceAPI,
+  initWorkspaceAPI,
+} from "./project-type/workspace-instance";
+import { recomputeTagsContexts } from "./project-type/custom-context";
+import { initProjectTypeWatchers } from "./project-type/watcher";
+import { setContextVSCode } from "./project-type/vscode-impl";
 
 export function activate(context: ExtensionContext): BasToolkit {
   initLogger(context);
@@ -25,6 +31,26 @@ export function activate(context: ExtensionContext): BasToolkit {
   const basToolkitAPI = createBasToolkitAPI(workspaceAPI, baseBasToolkitAPI);
 
   const logger = getLogger().getChildLogger({ label: "activate" });
+  // using `.then` instead of `await` to keep the activate function synchronized
+  // to avoid automatic wrapping of `BasToolKit` API in a promise.
+  workspaceAPI
+    .getProjects()
+    .then((allProjects) => recomputeTagsContexts(allProjects, setContextVSCode))
+    .catch(
+      /* istanbul ignore next -- should never get here, not cost effective to reproduce in test */
+      (e) => {
+        logger.error(
+          "Problem during initialization of context menus based on project type tags",
+          e
+        );
+      }
+    );
+
+  void initProjectTypeWatchers({
+    getWorkspaceAPI,
+    setContext: setContextVSCode,
+  });
+
   logger.info("The App-Studio-Toolkit Extension is active.");
 
   return basToolkitAPI;

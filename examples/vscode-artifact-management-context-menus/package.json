@@ -1,0 +1,74 @@
+{
+  "name": "vscode-artifact-management-context-menus",
+  "private": "true",
+  "version": "1.5.0",
+  "publisher": "SAPOSS",
+  "engines": {
+    "vscode": "^1.32.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/app-studio-toolkit"
+  },
+  "main": "./dist/src/extension",
+  "scripts": {
+    "ci": "npm-run-all clean compile package",
+    "clean": "rimraf dist *.vsix",
+    "compile": "tsc -p ./",
+    "package": "vsce package"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "activationEvents": [
+    "*"
+  ],
+  "contributes": {
+    "menus": {
+      "commandPalette": [
+        {
+          "when": "false",
+          "command": "extension.capPreview"
+        },
+        {
+          "when": "false",
+          "command": "extension.ui5Deploy"
+        },
+        {
+          "when": "false",
+          "command": "extension.ui5EditManifest"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "extension.capPreview",
+          "when": "resourcePath in sapProjectType:cap"
+        },
+        {
+          "command": "extension.ui5Deploy",
+          "when": "resourcePath in sapProjectType:ui5"
+        },
+        {
+          "command": "extension.ui5EditManifest",
+          "when": "resourcePath in sapProjectType:ui5 && resourceFilename == manifest.json"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "extension.capPreview",
+        "title": "Preview LCAP Application"
+      },
+      {
+        "command": "extension.ui5Deploy",
+        "title": "Deploy UI5 Application"
+      },
+      {
+        "command": "extension.ui5EditManifest",
+        "title": "Edit UI5 Manifest"
+      }
+    ]
+  }
+}

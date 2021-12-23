@@ -1,6 +1,7 @@
 module.exports = {
   // Common settings for JS Files.
   extends: ["plugin:eslint-comments/recommended", "prettier"],
+  ignorePatterns: ["samples/**/*.*"],
   env: {
     commonjs: true,
     mocha: true,
@@ -48,6 +49,16 @@ module.exports = {
             "ts-ignore": true,
             "ts-nocheck": true,
             "ts-check": true,
+          },
+        ],
+        "@typescript-eslint/no-misused-promises": [
+          "error",
+          {
+            // This sub-rule seems to detect issues which are technically true
+            // but do not seem to have an adverse effect most of the time
+            // so fixing the "issue" results worse code (not using async/await)
+            // See: https://stackoverflow.com/questions/67114152/typescript-eslint-throwing-a-promise-returned-error-on-a-express-router-async
+            checksVoidReturn: false,
           },
         ],
         // Too many false positives from `restrict-template-expressions`, see:
