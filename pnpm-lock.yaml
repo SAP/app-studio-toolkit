@@ -71,19 +71,19 @@ importers:
 
   examples/sample-action-client:
     specifiers:
-      '@sap-devx/app-studio-toolkit-types': ^1.4.0
+      '@sap-devx/app-studio-toolkit-types': ^1.5.0
     devDependencies:
       '@sap-devx/app-studio-toolkit-types': link:../../packages/app-studio-toolkit-types
 
   examples/vscode-using-workspace-api:
     specifiers:
-      '@sap-devx/app-studio-toolkit-types': ^1.4.0
+      '@sap-devx/app-studio-toolkit-types': ^1.5.0
     devDependencies:
       '@sap-devx/app-studio-toolkit-types': link:../../packages/app-studio-toolkit-types
 
   packages/app-studio-toolkit:
     specifiers:
-      '@sap-devx/app-studio-toolkit-types': ^1.4.0
+      '@sap-devx/app-studio-toolkit-types': ^1.5.0
       '@sap/artifact-management': 1.3.0
       '@types/lodash': ^4.14.168
       '@types/proxyquire': 1.3.28
@@ -1477,6 +1477,26 @@ packages:
       '@octokit/openapi-types': 11.2.0
     dev: true
 
+  /@pre-bundled/detective/5.2.0-patch-1:
+    resolution: {integrity: sha512-L/gqdWdFWyEveR5yKqsYSJWTOpe0+fR3fgH8LMg+iLGHfRg1CSa6Kv3ZRp9WnYwMDqbi+Bulr9MRcNZDmrCSQg==}
+    engines: {node: '>=0.8.0'}
+    hasBin: true
+    dev: false
+
+  /@pre-bundled/has-require/1.2.2-patch-1:
+    resolution: {integrity: sha512-RKxW9L3ALTu53H3lqvqQc0uHvT8KrTSnP04/cUqdu2vZMLo6/kVk44OtlBwCLuURByyIUpOd70KQy7RQZndRTA==}
+    dev: false
+
+  /@pre-bundled/replace-requires/1.1.0:
+    resolution: {integrity: sha512-i7Z+rhRtZBa0xkz0777wRnM9mkrcQgpVRefy5n+pXXLub3O2mMpQFpzf+uDWb+F209ZOOQY5Z6Y3yICFpYxeHw==}
+    engines: {node: '>=0.10.0'}
+    dev: false
+
+  /@pre-bundled/rimraf/3.0.0-patch-1:
+    resolution: {integrity: sha512-qJqZOsjuWY9qsloLQ1MrN/gkqnWno/50cLBzbMIfeR/KxEg47lgjrZ7DRjmv3iYmaLFh4TaJJ5bDIEkVwI4Sgg==}
+    hasBin: true
+    dev: false
+
   /@sap/artifact-management-base-types/1.2.0:
     resolution: {integrity: sha512-y4lLzqCJshrwbSMaLZSe43JzoCRC6lXvln287mxUv76rzgNWXql12IxVRKSb1W2Pre9RlADGLSmropLRsG/RKw==}
     dependencies:
@@ -1484,6 +1504,30 @@ packages:
       '@types/vscode': 1.52.0
       '@vscode-logging/types': 0.1.3
       vscode-languageserver-types: 3.16.0
+    dev: false
+
+  /@sap/artifact-management-base/1.3.0:
+    resolution: {integrity: sha512-VgtSUlFCg61Ac1SdlBM2xR1U1O6aW0gMTd1sOTbk+Iklht6lg+62QOOzmSrFSELGM7lZjQLRtgV4VPGuOFPIeA==}
+    dependencies:
+      ajv: 8.8.1
+      arg: 5.0.1
+      async: 3.2.2
+      chokidar: 3.5.2
+      ejs: 3.1.6
+      fast-glob: 3.2.7
+      glob: 7.2.0
+      ignore: 5.1.9
+      js-yaml: 4.1.0
+      lodash: 4.17.21
+      micromatch: 4.0.4
+      node-watch: 0.7.2
+      optional-require: 1.1.8
+      parse-gitignore: 1.0.1
+      vscode-jsonrpc: 6.0.0
+      vscode-languageserver-types: 3.16.0
+      winston: 3.3.3
+      winston-daily-rotate-file: 4.5.5_winston@3.3.3
+      yargs: 16.2.0
     dev: false
 
   /@sap/artifact-management-types/1.3.0:
@@ -1497,6 +1541,8 @@ packages:
     resolution: {integrity: sha512-BTHlmtnqQl9pQoDuhhszeY35gwuFYj5cITFZXoPCv4qK/+2G3EswLpM34p/Gv72yIuVtkjDl/vgjx9Ee2dxY7g==}
     hasBin: true
     dependencies:
+      '@sap/artifact-management-base': 1.3.0
+      '@sap/artifact-management-mdkplugin': /pre-bundled/2.2.1
       ajv: 8.8.1
       arg: 5.0.1
       async: 3.2.2
@@ -6092,6 +6138,10 @@ packages:
       kind-of: 6.0.3
     dev: true
 
+  /minimist/1.2.0:
+    resolution: {integrity: sha1-o1AIsg9BOD7sH7kU9M1d95omQoQ=}
+    dev: false
+
   /minimist/1.2.5:
     resolution: {integrity: sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==}
     dev: true
@@ -7063,6 +7113,11 @@ packages:
       tmp: 0.0.33
     dev: true
 
+  /patch-text/1.0.2:
+    resolution: {integrity: sha1-S/NuZeUXM9bpjwz2LgkDTaoDSKw=}
+    engines: {node: '>=0.10.0'}
+    dev: false
+
   /path-dirname/1.0.2:
     resolution: {integrity: sha1-zDPSTVJeCZpTiMAzbG4yuRYGCeA=}
     dev: false
@@ -7213,6 +7268,18 @@ packages:
   /posix-character-classes/0.1.1:
     resolution: {integrity: sha1-AerA/jta9xoqbAL+q7jB/vfgDqs=}
     engines: {node: '>=0.10.0'}
+    dev: false
+
+  /pre-bundled/2.2.1:
+    resolution: {integrity: sha512-6+A3Nvk+KabAgm3/sJ60xKWisiYsYon0J4Op5cOXLh0Sr0HLxcvlsSAVDp9vPFtQt92c8FnfrRgo7iZs0U0cUQ==}
+    hasBin: true
+    dependencies:
+      '@pre-bundled/detective': 5.2.0-patch-1
+      '@pre-bundled/has-require': 1.2.2-patch-1
+      '@pre-bundled/replace-requires': 1.1.0
+      '@pre-bundled/rimraf': 3.0.0-patch-1
+      minimist: 1.2.0
+      patch-text: 1.0.2
     dev: false
 
   /prelude-ls/1.2.1:
@@ -9401,7 +9468,6 @@ packages:
   /yargs-parser/20.2.4:
     resolution: {integrity: sha512-WOkpgNhPTlE73h4VFAFsOnomJVaovO8VqLDzy5saChRBFQFBoMYirowyW+Q9HB4HFF4Z7VZTiG3iSzJJA29yRA==}
     engines: {node: '>=10'}
-    dev: true
 
   /yargs-parser/20.2.9:
     resolution: {integrity: sha512-y11nGElTIV+CT3Zv9t7VKl+Q3hTQoT9a1Qzezhhl6Rp21gJ/IVTW7Z3y9EWXhuUBC2Shnf+DX0antecpAwSP8w==}
@@ -9452,7 +9518,6 @@ packages:
       string-width: 4.2.3
       y18n: 5.0.8
       yargs-parser: 20.2.4
-    dev: true
 
   /yargs/17.2.1:
     resolution: {integrity: sha512-XfR8du6ua4K6uLGm5S6fA+FIJom/MdJcFNVY8geLlp2v8GYbOXD4EB1tPNZsRn4vBzKGMgb5DRZMeWuFc2GO8Q==}

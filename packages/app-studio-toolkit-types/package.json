@@ -1,6 +1,6 @@
 {
   "name": "@sap-devx/app-studio-toolkit-types",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "author": "SAP SE",
   "license": "Apache-2.0",
   "description": "The SAP Business Application Studio Toolkit VSCode Extension's API type signatures",
