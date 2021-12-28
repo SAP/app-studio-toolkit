@@ -8,9 +8,10 @@ async function fixProjectDepsIssues(
   diagnosticCollection: DiagnosticCollection,
   uri: Uri
 ): Promise<void> {
-  // switched to outputchannel only in manual mode
+  // switched to output-channel only in manual mode
   outputChannel.show(true);
   await fixDepsIssues(uri, outputChannel);
+  // TODO: assumes the fixing was successful, instead we should consider re-running the validation...
   clearDiagnostics(diagnosticCollection, uri);
 }
 
@@ -26,6 +27,7 @@ export function registerCommands(vscodeConfig: VscodeCommandsConfig): void {
   );
 }
 
+// TODO: consider in-lining this function
 function executeFixProjectDepsIssues(
   outputChannel: VscodeOutputChannel,
   diagnosticCollection: DiagnosticCollection

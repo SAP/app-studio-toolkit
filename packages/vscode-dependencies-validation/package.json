@@ -39,7 +39,7 @@
     }
   },
   "scripts": {
-    "ci": "npm-run-all clean compile bundle package",
+    "ci": "npm-run-all clean compile coverage bundle package",
     "clean": "rimraf ./dist *.vsix ./coverage ./.nyc_output",
     "compile": "tsc -p ./",
     "watch": "tsc -p ./ --watch",

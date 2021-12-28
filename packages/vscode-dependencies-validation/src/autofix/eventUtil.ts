@@ -10,6 +10,7 @@ import { VscodeFileEventConfig, VscodeWorkspace } from "../vscodeTypes";
 
 export const debouncedHandleProjectChange = debounce(handleProjectChange, 3000);
 
+// TODO: would this get invoked during editor flow?
 async function handleProjectChange(
   uri: Uri,
   vscodeConfig: VscodeFileEventConfig
