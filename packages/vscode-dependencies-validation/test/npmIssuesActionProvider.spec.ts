@@ -13,7 +13,7 @@ import type {
 import { FIX_ALL_ISSUES_COMMAND } from "../src/constants";
 import { diagnosticsProxy } from "./moduleProxies";
 import { codeActionContextMock } from "./vscodeMocks";
-import { VscodeCodeActionProviderCongig } from "../src/vscodeTypes";
+import { VscodeCodeActionProviderConfig } from "../src/vscodeTypes";
 import { NPMIssuesActionProvider } from "../src/npmIssuesActionProvider";
 
 describe("npmIssuesActionProvider unit test", () => {
@@ -28,7 +28,7 @@ describe("npmIssuesActionProvider unit test", () => {
         }
       );
 
-      const vscodeConfig = <VscodeCodeActionProviderCongig>{};
+      const vscodeConfig = <VscodeCodeActionProviderConfig>{};
       vscodeConfig.subscriptions = [];
       vscodeConfig.languages = <typeof languages>{};
       vscodeConfig.languages.registerCodeActionsProvider = () => <Disposable>{};
