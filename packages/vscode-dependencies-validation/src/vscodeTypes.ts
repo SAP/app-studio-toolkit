@@ -29,13 +29,13 @@ export type VscodeUriFile = {
 
 export type VscodeLanguages = typeof languages;
 
-export type VscodeConfig = VscodeCodeActionProviderCongig &
+export type VscodeConfig = VscodeCodeActionProviderConfig &
   VscodePackageJsonChangesConfig &
   VscodeCommandsConfig &
   VscodeFileEventConfig &
   VscodeUriFile;
 
-export type VscodeCodeActionProviderCongig = {
+export type VscodeCodeActionProviderConfig = {
   subscriptions: VscodeContextSubscriptions;
   kind: CodeActionKind;
   languages: VscodeLanguages;

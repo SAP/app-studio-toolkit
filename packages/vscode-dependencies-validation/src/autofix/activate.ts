@@ -10,7 +10,6 @@ import {
   isAutoFixEnabled,
 } from "./configuration";
 import { addPackageJsonFileWatcher as addPackageJsonFileWatcher } from "./packageJsonFileWatcher";
-import { addUnsupportedFilesWatcher } from "./unsupportedFilesWatcher";
 import { findAndFixDepsIssues } from "../util";
 import { clearDiagnostics } from "../util";
 
@@ -19,7 +18,6 @@ export function activateDepsIssuesAutoFix(
 ): void {
   fixWorkspaceDepsIssues(vscodeConfig);
   addPackageJsonFileWatcher(vscodeConfig);
-  addUnsupportedFilesWatcher(vscodeConfig);
 
   onAutoFixChange(vscodeConfig);
 }

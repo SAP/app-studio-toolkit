@@ -10,25 +10,28 @@ import type {
   CodeAction,
   CodeActionKind,
   Uri,
-  ProviderResult,
 } from "vscode";
 import {
   NPM_DEPENDENCY_ISSUES_CODE,
   FIX_ALL_ISSUES_COMMAND,
   PACKAGE_JSON_FILTER,
 } from "./constants";
-import { VscodeCodeActionProviderCongig } from "./vscodeTypes";
+import { VscodeCodeActionProviderConfig } from "./vscodeTypes";
 
 export function registerCodeActionsProvider(
-  vscodeConfig: VscodeCodeActionProviderCongig
+  vscodeConfig: VscodeCodeActionProviderConfig
 ): NPMIssuesActionProvider {
   const { subscriptions, languages, kind } = vscodeConfig;
 
   const provider = new NPMIssuesActionProvider(kind);
   subscriptions.push(
-    languages.registerCodeActionsProvider(PACKAGE_JSON_FILTER, provider, {
-      providedCodeActionKinds: [kind],
-    })
+    languages.registerCodeActionsProvider(
+      { language: "json", pattern: PACKAGE_JSON_FILTER },
+      provider,
+      {
+        providedCodeActionKinds: [kind],
+      }
+    )
   );
 
   return provider;
