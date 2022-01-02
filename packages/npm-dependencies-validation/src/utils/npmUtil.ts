@@ -5,27 +5,30 @@ export function getNPM(): string {
   return /^win/.test(process.platform) ? "npm.cmd" : "npm";
 }
 
-// add --verbose
-// print to output channel when verbose is set (naive implementation)
 export function invokeNPMCommandWithJsonResult<T>(
   config: NpmCommandConfig,
   outputChannel?: OutputChannel
 ): Promise<T> {
   return new Promise((resolve, reject) => {
+    let jsonParseResult: any;
     const command = executeSpawn(config, ["--json"]);
 
-    command.stdout.on("data", (data) => {
+    command.stdout.on("data", (data: string) => {
       sendDataToOutputChannel(`${data}`, outputChannel);
-      const jsonObjResult: T = JSON.parse(data);
-      resolve(jsonObjResult);
+      jsonParseResult = JSON.parse(data);
     });
 
-    // TODO: why there is no error event when npm install fails ???
-    // it fails when unavailable dependency/version defined in package.json
-    command.on("error", (error) => {
-      const { stack } = error;
-      sendDataToOutputChannel(`${stack}`, outputChannel);
-      reject(error);
+    command.stderr.on("data", (data) => {
+      sendDataToOutputChannel(`${data}`, outputChannel);
+    });
+
+    command.on("error", (error) => onError(error, reject, outputChannel));
+
+    command.on("exit", () => {
+      const resultJsonObj: T = (
+        jsonParseResult.invalid ? {} : jsonParseResult
+      ) as T;
+      resolve(resultJsonObj);
     });
   });
 }
@@ -37,22 +40,27 @@ export function invokeNPMCommand(
   return new Promise((resolve, reject) => {
     const command = executeSpawn(config, []);
 
-    // TODO: add start, cwd and end
     command.stdout.on("data", (data) => {
       sendDataToOutputChannel(`${data}`, outputChannel);
     });
 
-    command.on("exit", () => {
-      resolve();
+    command.stderr.on("data", (data) => {
+      sendDataToOutputChannel(`${data}`, outputChannel);
     });
 
-    // TODO: does not stop here when an error occurs ?
-    command.on("error", (error) => {
-      const { stack } = error;
-      sendDataToOutputChannel(`${stack}`, outputChannel);
-      reject(error);
+    command.on("error", (error) => onError(error, reject, outputChannel));
+
+    command.on("exit", (exitCode) => {
+      // in case of an error exit code is not 0
+      exitCode === 0 ? resolve() : reject();
     });
   });
+}
+
+function onError(error: Error, reject: any, outputChannel?: OutputChannel) {
+  const { stack } = error;
+  sendDataToOutputChannel(`${stack}`, outputChannel);
+  reject(error);
 }
 
 function executeSpawn(

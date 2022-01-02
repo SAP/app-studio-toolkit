@@ -1,4 +1,4 @@
-import { assert, expect } from "chai";
+import { expect } from "chai";
 import { createSandbox, SinonSpy } from "sinon";
 import { NpmLsResult, OutputChannel } from "../../src/types";
 import {
@@ -19,55 +19,76 @@ describe("npmUtil unit test", () => {
   });
 
   context("invokeNPMCommandWithJsonResult()", () => {
-    it("invokeNPMCommandWithJsonResult failed", () => {
+    it("fails with non-existing package.json path", async () => {
       const appendSpy: SinonSpy = sandbox.spy(outputChannel, "append");
       const config = { commandArgs: ["ls"], cwd: "./non_existing_path" };
-      return invokeNPMCommandWithJsonResult(config, outputChannel)
-        .then(() => {
-          assert.fail("test should fail");
-        })
-        .catch((error: Error) => {
-          expect(appendSpy.called).to.be.true;
-          expect(error.message).to.equal(`spawn ${getNPM()} ENOENT`);
-        });
+      await expect(
+        invokeNPMCommandWithJsonResult<NpmLsResult>(config, outputChannel)
+      ).to.be.rejectedWith(`spawn ${getNPM()} ENOENT`);
+      expect(appendSpy.called).to.be.true;
     });
 
-    it("invokeNPMCommandWithJsonResult succeeded with ls", async function () {
+    it("fails with non-existing package.json path, outputChannel is not provided", async () => {
+      const config = { commandArgs: ["ls"], cwd: "./non_existing_path" };
+      await expect(
+        invokeNPMCommandWithJsonResult<NpmLsResult>(config)
+      ).to.be.rejectedWith(`spawn ${getNPM()} ENOENT`);
+    });
+
+    it("passes with ls", async function () {
       this.timeout(npmSpawnTestTimeout);
+
       const appendSpy: SinonSpy = sandbox.spy(outputChannel, "append");
       const config = { commandArgs: ["ls", "--depth=0"], cwd: "./" };
-      const result: NpmLsResult = await invokeNPMCommandWithJsonResult(
-        config,
-        outputChannel
-      );
+      await invokeNPMCommandWithJsonResult<NpmLsResult>(config, outputChannel);
       expect(appendSpy.called).to.be.true;
-      expect(result).to.haveOwnProperty("name");
-      expect(result).to.haveOwnProperty("version");
+    });
+
+    it("returns empty json object when package.json content is invalid json", async function () {
+      this.timeout(npmSpawnTestTimeout);
+
+      const config = {
+        commandArgs: ["ls", "--depth=0"],
+        cwd: "./test/packages-samples/negative/invalid_package_json_content",
+      };
+      const result: NpmLsResult =
+        await invokeNPMCommandWithJsonResult<NpmLsResult>(
+          config,
+          outputChannel
+        );
+      expect(result).to.be.empty;
     });
   });
 
   context("invokeNPMCommand()", () => {
-    it("invokeNPMCommand failed", () => {
+    it("fails with non-existing package.json path", async () => {
       const appendSpy: SinonSpy = sandbox.spy(outputChannel, "append");
       const config = { commandArgs: ["ls"], cwd: "./non_existing_path" };
-      return invokeNPMCommand(config, outputChannel)
-        .then(() => {
-          assert.fail("test should fail");
-        })
-        .catch((error: Error) => {
-          expect(appendSpy.called).to.be.true;
-          expect(error.message).to.equal(`spawn ${getNPM()} ENOENT`);
-        });
+      await expect(invokeNPMCommand(config, outputChannel)).to.be.rejectedWith(
+        `spawn ${getNPM()} ENOENT`
+      );
+      expect(appendSpy.called).to.be.true;
     });
 
-    it("invokeNPMCommand succeeded with ls", async function () {
+    it("passes with ls", async function () {
       this.timeout(npmSpawnTestTimeout);
       const appendSpy: SinonSpy = sandbox.spy(outputChannel, "append");
       const config = { commandArgs: ["ls", "--depth=0"], cwd: "./" };
       await invokeNPMCommand(config, outputChannel);
       expect(appendSpy.called).to.be.true;
     });
+
+    it("fails with package.json with invalid json content", async function () {
+      this.timeout(npmSpawnTestTimeout);
+
+      const config = {
+        commandArgs: ["ls", "--depth=0"],
+        cwd: "./test/packages-samples/negative/invalid_package_json_content",
+      };
+      await expect(invokeNPMCommand(config, outputChannel)).to.be.rejected;
+    });
   });
+
   describe("npm command", () => {
     const originalPlatform = process.platform;
 
