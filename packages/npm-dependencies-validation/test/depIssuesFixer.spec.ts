@@ -19,7 +19,13 @@ describe("`fixDependencyIssues()` function ", function () {
     rmdirSync(nodeModulesPath, { recursive: true });
 
     const packageLockPath = join(packagePath, "package-lock.json");
-    rmSync(packageLockPath, { recursive: true });
+    rmSync(packageLockPath, { force: true });
+  });
+
+  it("will fix missing deps", async () => {
+    await expect(
+      fixDependencyIssues("non_existing_package_path", outputChannel)
+    ).to.be.fulfilled;
   });
 
   it("will fix missing deps", async function () {
