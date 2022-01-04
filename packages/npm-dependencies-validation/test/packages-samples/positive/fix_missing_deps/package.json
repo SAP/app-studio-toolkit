@@ -1,0 +1,8 @@
+{
+  "name": "install_missing_deps",
+  "version": "1.0.0",
+  "dependencies": {
+    "json-fixer": "1.6.12"
+  },
+  "devDependencies": {}
+}
