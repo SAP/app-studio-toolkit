@@ -1,11 +1,5 @@
-export { findDependencyIssues } from "./depIssues";
+export { findDependencyIssues } from "./depIssuesFinder";
 
-export { invokeNPMCommand } from "./utils/npmUtil";
+export { fixDependencyIssues } from "./depIssuesFixer";
 
-export { NpmLsResult, NpmCommandConfig } from "./types";
-
-export {
-  yarnManagerFiles,
-  pnpmManagerFiles,
-  isPathExist,
-} from "./utils/packageJsonUtil";
+export { NpmLsResult } from "./types";

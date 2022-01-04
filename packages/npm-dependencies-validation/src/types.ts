@@ -17,9 +17,15 @@ export type DependenciesProperties = {
 
 export interface OutputChannel {
   append: (message: string) => void;
+  appendLine: (message: string) => void;
 }
 
 export type NpmCommandConfig = {
   cwd: string;
   commandArgs: string[];
+};
+
+export type FilePaths = {
+  filePath: string;
+  dirPath: string;
 };
