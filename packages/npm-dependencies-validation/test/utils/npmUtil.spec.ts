@@ -1,4 +1,5 @@
 import { expect } from "chai";
+import { resolve } from "path";
 import { createSandbox, SinonSpy } from "sinon";
 import { NpmLsResult, OutputChannel } from "../../src/types";
 import {
@@ -8,10 +9,11 @@ import {
 } from "../../src/utils/npmUtil";
 import { npmSpawnTestTimeout } from "../config";
 
-describe("npmUtil unit test", () => {
+describe.only("npmUtil unit test", () => {
   const sandbox = createSandbox();
   const outputChannel: OutputChannel = {
     append: (data: string) => console.log(data),
+    appendLine: (data: string) => console.log(`${data}\n`),
   };
 
   afterEach(() => {
@@ -47,9 +49,13 @@ describe("npmUtil unit test", () => {
     it("returns empty json object when package.json content is invalid json", async function () {
       this.timeout(npmSpawnTestTimeout);
 
+      const jsonMock = sandbox.mock(JSON);
+      jsonMock
+        .expects("parse")
+        .returns({ invalid: true, problems: ["JSON parse error..."] });
       const config = {
         commandArgs: ["ls", "--depth=0"],
-        cwd: "./test/packages-samples/negative/invalid_package_json_content",
+        cwd: resolve("./test/packages-samples/negative/invalid_package_json"),
       };
       const result: NpmLsResult =
         await invokeNPMCommandWithJsonResult<NpmLsResult>(
@@ -57,6 +63,7 @@ describe("npmUtil unit test", () => {
           outputChannel
         );
       expect(result).to.be.empty;
+      jsonMock.verify();
     });
   });
 
@@ -80,12 +87,14 @@ describe("npmUtil unit test", () => {
 
     it("fails with package.json with invalid json content", async function () {
       this.timeout(npmSpawnTestTimeout);
-
+      const cwd = resolve(
+        "./test/packages-samples/negative/invalid_package_json_content"
+      );
       const config = {
         commandArgs: ["ls", "--depth=0"],
-        cwd: "./test/packages-samples/negative/invalid_package_json_content",
+        cwd,
       };
-      await expect(invokeNPMCommand(config, outputChannel)).to.be.rejected;
+      await expect(invokeNPMCommand(config, outputChannel)).to.be.fulfilled;
     });
   });
 
