@@ -1,4 +1,5 @@
 import { ChildProcessWithoutNullStreams, spawn } from "child_process";
+import { get } from "lodash";
 import { NpmCommandConfig, OutputChannel } from "../types";
 
 export function getNPM(): string {
@@ -10,7 +11,7 @@ export function invokeNPMCommandWithJsonResult<T>(
   outputChannel?: OutputChannel
 ): Promise<T> {
   return new Promise((resolve, reject) => {
-    let jsonParseResult: any;
+    let jsonParseResult: T;
     const command = executeSpawn(config, ["--json"]);
 
     command.stdout.on("data", (data: string) => {
@@ -25,9 +26,9 @@ export function invokeNPMCommandWithJsonResult<T>(
     command.on("error", (error) => onError(error, reject, outputChannel));
 
     command.on("exit", () => {
-      const resultJsonObj: T = (
-        jsonParseResult.invalid ? {} : jsonParseResult
-      ) as T;
+      const resultJsonObj: T = get(jsonParseResult, "invalid")
+        ? ({} as T)
+        : jsonParseResult;
       resolve(resultJsonObj);
     });
   });
