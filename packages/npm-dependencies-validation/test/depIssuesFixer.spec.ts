@@ -17,7 +17,10 @@ describe("`fixDependencyIssues()` function ", function () {
   afterEach(async () => {
     const packagePath = dirname(packageJsonPath);
     const nodeModulesPath = join(packagePath, "node_modules");
-    rmdirSync(nodeModulesPath, { recursive: true });
+
+    if (await isPathExist(nodeModulesPath)) {
+      rmdirSync(nodeModulesPath, { recursive: true });
+    }
 
     const packageLockPath = join(packagePath, "package-lock.json");
     if (await isPathExist(packageLockPath)) {
