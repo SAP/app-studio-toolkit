@@ -14,22 +14,19 @@ const OPTIMIZED_PATHS_TO_FUNC: Map<
 // https://ux.stackexchange.com/questions/95336/how-long-should-the-debounce-timeout-be
 const DEBOUNCE_WAIT = 2000;
 
-// TODO: test only the caching
-//      - prop1: by URI identity
-//      - prop2: NOT original `refreshDiagnostics` function
 export function getOptimizedRefreshDiagnostics(
   uri: Uri
 ): RefreshDiagnosticsFunc {
-  if (!OPTIMIZED_PATHS_TO_FUNC.has(uri.fsPath)) {
+  if (!OPTIMIZED_PATHS_TO_FUNC.has(uri.path)) {
     const debounced = debounce(refreshDiagnostics, DEBOUNCE_WAIT, {
       trailing: true,
     });
-    OPTIMIZED_PATHS_TO_FUNC.set(uri.fsPath, {
+    OPTIMIZED_PATHS_TO_FUNC.set(uri.path, {
       func: debounced as RefreshDiagnosticsFunc,
       uri,
     });
   }
-  return OPTIMIZED_PATHS_TO_FUNC.get(uri.fsPath)!.func;
+  return OPTIMIZED_PATHS_TO_FUNC.get(uri.path)!.func;
 }
 
 const SECOND = 1000;
@@ -41,14 +38,14 @@ const MINUTE = 60 * SECOND;
 // So a large interval is used to reduce filesystem load from this cleanup process.
 const GC_INTERVAL = 15 * MINUTE;
 
-// TODO: eslint comment that the TCO of such test is too high
+/* istanbul ignore next -- TCO of testing this setInterval is too high*/
 setInterval(() => {
   try {
     garbageCollect(workspace.getWorkspaceFolder);
   } catch (e) {
     // TODO: log this error once logging is implemented
   }
-}, GC_INTERVAL);
+}, GC_INTERVAL).unref(); // with `unref()` the process will never be "done" and mocha will never exit
 
 /**
  * A naive cleanup which removes references to the debounced functions
@@ -58,10 +55,10 @@ function garbageCollect(
   getWorkspaceFolder: typeof workspace.getWorkspaceFolder
 ): void {
   const entries = OPTIMIZED_PATHS_TO_FUNC.entries();
-  for (const [fsPath, { uri }] of entries) {
+  for (const [path, { uri }] of entries) {
     const isOutSideWorkspace = getWorkspaceFolder(uri) === undefined;
     if (isOutSideWorkspace) {
-      OPTIMIZED_PATHS_TO_FUNC.delete(fsPath);
+      OPTIMIZED_PATHS_TO_FUNC.delete(path);
     }
   }
 }
