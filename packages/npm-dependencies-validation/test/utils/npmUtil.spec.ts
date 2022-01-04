@@ -9,11 +9,11 @@ import {
 } from "../../src/utils/npmUtil";
 import { npmSpawnTestTimeout } from "../config";
 
-describe.only("npmUtil unit test", () => {
+describe("npmUtil unit test", () => {
   const sandbox = createSandbox();
   const outputChannel: OutputChannel = {
     append: (data: string) => console.log(data),
-    appendLine: (data: string) => console.log(`${data}\n`),
+    appendLine: (data: string) => console.log(data),
   };
 
   afterEach(() => {
@@ -85,16 +85,14 @@ describe.only("npmUtil unit test", () => {
       expect(appendSpy.called).to.be.true;
     });
 
-    it("fails with package.json with invalid json content", async function () {
+    it("fails when installing non existing npm package", async function () {
       this.timeout(npmSpawnTestTimeout);
-      const cwd = resolve(
-        "./test/packages-samples/negative/invalid_package_json_content"
-      );
+      const cwd = resolve("./test/packages-samples/negative");
       const config = {
-        commandArgs: ["ls", "--depth=0"],
+        commandArgs: ["install", "nonexisting@1.2.3"],
         cwd,
       };
-      await expect(invokeNPMCommand(config, outputChannel)).to.be.fulfilled;
+      await expect(invokeNPMCommand(config, outputChannel)).to.be.rejected;
     });
   });
 

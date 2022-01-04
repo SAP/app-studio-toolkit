@@ -53,8 +53,9 @@ export function invokeNPMCommand(
 
     command.on("error", (error) => onError(error, reject, outputChannel));
 
-    command.on("exit", () => {
-      resolve();
+    command.on("exit", (exitCode) => {
+      // in case of an error exit code is not 0
+      exitCode === 0 ? resolve() : reject();
     });
   });
 }
