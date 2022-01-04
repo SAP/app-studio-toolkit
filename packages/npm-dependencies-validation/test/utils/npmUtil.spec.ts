@@ -76,10 +76,10 @@ describe("npmUtil unit test", () => {
       expect(appendSpy.called).to.be.true;
     });
 
-    it("passes with ls", async function () {
+    it("passes with npm -v", async function () {
       this.timeout(npmSpawnTestTimeout);
       const appendSpy: SinonSpy = sandbox.spy(outputChannel, "append");
-      const config = { commandArgs: ["ls", "--depth=0"], cwd: "./" };
+      const config = { commandArgs: ["-v"], cwd: "./" };
       await invokeNPMCommand(config, outputChannel);
       expect(appendSpy.called).to.be.true;
     });

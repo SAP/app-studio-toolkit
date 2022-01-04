@@ -1,8 +1,9 @@
 import { expect } from "chai";
 import { resolve, join, dirname } from "path";
-import { rmdirSync, rmSync } from "fs";
+import { rmdirSync, unlinkSync } from "fs";
 import { OutputChannel } from "../src/types";
 import { fixDependencyIssues, findDependencyIssues } from "../src/api";
+import { isPathExist } from "../src/utils/fileUtil";
 
 describe("`fixDependencyIssues()` function ", function () {
   const outputChannel: OutputChannel = {
@@ -13,16 +14,18 @@ describe("`fixDependencyIssues()` function ", function () {
     "./test/packages-samples/positive/fix_missing_deps/package.json"
   );
 
-  afterEach(() => {
+  afterEach(async () => {
     const packagePath = dirname(packageJsonPath);
     const nodeModulesPath = join(packagePath, "node_modules");
     rmdirSync(nodeModulesPath, { recursive: true });
 
     const packageLockPath = join(packagePath, "package-lock.json");
-    rmSync(packageLockPath, { force: true });
+    if (await isPathExist(packageLockPath)) {
+      unlinkSync(packageLockPath);
+    }
   });
 
-  it("will fix missing deps", async () => {
+  it("will not fix missing deps", async () => {
     await expect(fixDependencyIssues("non_existing_package_json_path")).to.be
       .fulfilled;
   });
