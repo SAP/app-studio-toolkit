@@ -9,7 +9,7 @@ import {
 } from "../../src/utils/npmUtil";
 import { npmSpawnTestTimeout } from "../config";
 
-describe("npmUtil unit test", () => {
+describe.only("npmUtil unit test", () => {
   const sandbox = createSandbox();
   const outputChannel: OutputChannel = {
     append: (data: string) => console.log(data),
@@ -49,9 +49,13 @@ describe("npmUtil unit test", () => {
     it("returns empty json object when package.json content is invalid json", async function () {
       this.timeout(npmSpawnTestTimeout);
 
+      const jsonMock = sandbox.mock(JSON);
+      jsonMock
+        .expects("parse")
+        .returns({ invalid: true, problems: ["JSON parse error..."] });
       const config = {
         commandArgs: ["ls", "--depth=0"],
-        cwd: "./test/packages-samples/negative/invalid_package_json_content",
+        cwd: resolve("./test/packages-samples/negative/invalid_package_json"),
       };
       const result: NpmLsResult =
         await invokeNPMCommandWithJsonResult<NpmLsResult>(
@@ -59,6 +63,7 @@ describe("npmUtil unit test", () => {
           outputChannel
         );
       expect(result).to.be.empty;
+      jsonMock.verify();
     });
   });
 
