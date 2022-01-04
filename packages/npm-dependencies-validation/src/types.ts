@@ -23,3 +23,8 @@ export type NpmCommandConfig = {
   cwd: string;
   commandArgs: string[];
 };
+
+export type FilePaths = {
+  filePath: string;
+  dirPath: string;
+};

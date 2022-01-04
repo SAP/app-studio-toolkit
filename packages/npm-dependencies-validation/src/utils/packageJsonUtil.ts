@@ -1,9 +1,9 @@
 // importing directly from `fs/promises` is not supported on nodejs 12
 import { promises } from "fs";
-const { readFile, access } = promises;
-import { constants } from "fs";
+const { readFile } = promises;
 import { join, dirname } from "path";
-import { PackageJson } from "../types";
+import { FilePaths, PackageJson } from "../types";
+import { emptyJsonObject, isPathExist, toJsonObject } from "./fileUtil";
 
 export const yarnManagerFiles = [
   "yarn.lock",
@@ -18,22 +18,12 @@ export const pnpmManagerFiles = [
 ];
 export const monorepoProps = ["workspaces"];
 
-async function readJsonFile(jsonFilePath: string): Promise<PackageJson> {
+async function readJsonFile<T>(jsonFilePath: string): Promise<T> {
   try {
     const packageJsonContent = await readFile(jsonFilePath, "utf-8");
-    const content: PackageJson = JSON.parse(packageJsonContent);
-    return content;
+    return toJsonObject<T>(packageJsonContent);
   } catch (error) {
-    return {} as PackageJson;
-  }
-}
-
-export async function isPathExist(absPath: string): Promise<boolean> {
-  try {
-    await access(absPath, constants.R_OK);
-    return true;
-  } catch (error) {
-    return false;
+    return emptyJsonObject<T>();
   }
 }
 
@@ -58,7 +48,7 @@ function isManagedByPnpm(packageJsonPath: string): Promise<boolean> {
 }
 
 async function isMonoRepoRoot(packageJsonPath: string): Promise<boolean> {
-  const content = await readJsonFile(packageJsonPath);
+  const content = await readJsonFile<PackageJson>(packageJsonPath);
   return monorepoProps.some((property) => {
     return property in content;
   });
@@ -81,3 +71,10 @@ export async function isCurrentlySupported(
 export const internal = {
   readJsonFile,
 };
+
+export function createPackageJsonPaths(absPackageJsonPath: string): FilePaths {
+  return {
+    filePath: absPackageJsonPath,
+    dirPath: dirname(absPackageJsonPath),
+  };
+}
