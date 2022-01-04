@@ -1,24 +1,26 @@
+import { dirname } from "path";
 import { isEmpty } from "lodash";
 import { NpmLsResult } from "./types";
-import { isPathExist } from "./utils/fileUtil";
+import { isCurrentlySupported, isPathExist } from "./utils/packageJsonUtil";
 import { invokeNPMCommandWithJsonResult } from "./utils/npmUtil";
-import {
-  getPackageJsonPaths,
-  isCurrentlySupported,
-} from "./utils/packageJsonUtil";
 
 // ls --depth=0 shows only top-level dependencies
 const LS_ARGS: string[] = ["ls", "--depth=0"];
 
 export async function findDependencyIssues(
-  absPath: string
+  absPackageJsonPath: string
 ): Promise<NpmLsResult> {
-  const { filePath, dirPath: cwd } = getPackageJsonPaths(absPath);
-  const shouldFind = await shouldFindDependencyIssues(filePath);
-  if (!shouldFind) {
+  const packageJsonExists = await isPathExist(absPackageJsonPath);
+  if (!packageJsonExists) {
     return { problems: [] };
   }
 
+  const currentlySupported = await isCurrentlySupported(absPackageJsonPath);
+  if (!currentlySupported) {
+    return { problems: [] };
+  }
+
+  const cwd = dirname(absPackageJsonPath);
   // dependencies issues and extraneous modules
   const depsCommandConfig = {
     commandArgs: [...LS_ARGS],
@@ -27,7 +29,7 @@ export async function findDependencyIssues(
   const npmProdLsResult = await invokeNPMCommandWithJsonResult<NpmLsResult>(
     depsCommandConfig
   );
-  const prodProblems = getProblems(npmProdLsResult);
+  const prodProblems = npmProdLsResult.problems ?? [];
   // hack workaround for different behaviors of `npm ls` in different versions of npm
   if (!isEmpty(prodProblems)) {
     // early exit as we don't know if we can safely combine the results of prod/dev mode in all versions of npm.
@@ -40,21 +42,6 @@ export async function findDependencyIssues(
     devDepsCommandConfig
   );
   /* istanbul ignore next  -- inconsistent behavior under npm6-8 so not all branches are reachable here */
-  return { problems: getProblems(npmDevLsResults) };
-}
-
-function getProblems(npmLsResult: NpmLsResult): string[] {
-  return npmLsResult.problems ?? [];
-}
-
-async function shouldFindDependencyIssues(
-  packageJsonPath: string
-): Promise<boolean> {
-  const packageJsonExists = await isPathExist(packageJsonPath);
-  if (!packageJsonExists) return false;
-
-  const currentlySupported = await isCurrentlySupported(packageJsonPath);
-  if (!currentlySupported) return false;
-
-  return true;
+  const devProblems = npmDevLsResults.problems ?? [];
+  return { problems: devProblems };
 }
