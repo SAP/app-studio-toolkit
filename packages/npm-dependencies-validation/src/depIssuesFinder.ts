@@ -3,7 +3,7 @@ import { NpmLsResult } from "./types";
 import { isPathExist } from "./utils/fileUtil";
 import { invokeNPMCommandWithJsonResult } from "./utils/npmUtil";
 import {
-  getPackageJsonPaths,
+  createPackageJsonPaths,
   isCurrentlySupported,
 } from "./utils/packageJsonUtil";
 
@@ -13,7 +13,7 @@ const LS_ARGS: string[] = ["ls", "--depth=0"];
 export async function findDependencyIssues(
   absPath: string
 ): Promise<NpmLsResult> {
-  const { filePath, dirPath: cwd } = getPackageJsonPaths(absPath);
+  const { filePath, dirPath: cwd } = createPackageJsonPaths(absPath);
   const shouldFind = await shouldFindDependencyIssues(filePath);
   if (!shouldFind) {
     return { problems: [] };

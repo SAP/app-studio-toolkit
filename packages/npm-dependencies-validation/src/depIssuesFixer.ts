@@ -2,7 +2,7 @@ import { OutputChannel } from "./types";
 import { isPathExist } from "./utils/fileUtil";
 import { invokeNPMCommand } from "./utils/npmUtil";
 import { print } from "./logger";
-import { getPackageJsonPaths } from "./utils/packageJsonUtil";
+import { createPackageJsonPaths } from "./utils/packageJsonUtil";
 
 export const internal = {
   fixing: (absPath: string) =>
@@ -15,7 +15,7 @@ export async function fixDependencyIssues(
   absPath: string,
   outputChannel?: OutputChannel
 ): Promise<void> {
-  const { filePath, dirPath: cwd } = getPackageJsonPaths(absPath);
+  const { filePath, dirPath: cwd } = createPackageJsonPaths(absPath);
   const shouldFix = await shouldFixDependencyIssues(filePath);
   if (!shouldFix) return;
 

@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { resolve, join } from "path";
+import { resolve, join, dirname } from "path";
 import { rmdirSync, rmSync } from "fs";
 import { OutputChannel } from "../src/types";
 import { fixDependencyIssues, findDependencyIssues } from "../src/api";
@@ -9,11 +9,12 @@ describe("`fixDependencyIssues()` function ", function () {
     append: (data: string) => console.log(data),
   };
 
-  const packagePath = resolve(
-    "./test/packages-samples/positive/fix_missing_deps"
+  const packageJsonPath = resolve(
+    "./test/packages-samples/positive/fix_missing_deps/package.json"
   );
 
   afterEach(() => {
+    const packagePath = dirname(packageJsonPath);
     const nodeModulesPath = join(packagePath, "node_modules");
     rmdirSync(nodeModulesPath, { recursive: true });
 
@@ -22,7 +23,7 @@ describe("`fixDependencyIssues()` function ", function () {
   });
 
   it("will fix missing deps", async () => {
-    await expect(fixDependencyIssues("non_existing_package_path")).to.be
+    await expect(fixDependencyIssues("non_existing_package_json_path")).to.be
       .fulfilled;
   });
 
@@ -30,17 +31,17 @@ describe("`fixDependencyIssues()` function ", function () {
     this.timeout(20000);
 
     const { problems: problemsBeforeFix } = await findDependencyIssues(
-      packagePath
+      packageJsonPath
     );
     const jsonFixerProblem = problemsBeforeFix.find((problem) =>
       problem.startsWith("missing: json-fixer@1.6.12")
     );
     expect(jsonFixerProblem).to.exist;
 
-    await fixDependencyIssues(packagePath, outputChannel);
+    await fixDependencyIssues(packageJsonPath, outputChannel);
 
     const { problems: problemsAfterFix } = await findDependencyIssues(
-      packagePath
+      packageJsonPath
     );
     expect(problemsAfterFix).to.be.empty;
   });

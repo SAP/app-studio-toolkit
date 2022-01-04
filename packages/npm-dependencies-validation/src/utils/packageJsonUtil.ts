@@ -3,12 +3,7 @@ import { promises } from "fs";
 const { readFile } = promises;
 import { join, dirname } from "path";
 import { FilePaths, PackageJson } from "../types";
-import {
-  createFilePaths,
-  emptyJsonObject,
-  isPathExist,
-  toJsonObject,
-} from "./fileUtil";
+import { emptyJsonObject, isPathExist, toJsonObject } from "./fileUtil";
 
 export const yarnManagerFiles = [
   "yarn.lock",
@@ -77,7 +72,9 @@ export const internal = {
   readJsonFile,
 };
 
-export function getPackageJsonPaths(absPath: string): FilePaths {
-  const packageJsonPaths: FilePaths = createFilePaths(absPath, "package.json");
-  return packageJsonPaths;
+export function createPackageJsonPaths(absPackageJsonPath: string): FilePaths {
+  return {
+    filePath: absPackageJsonPath,
+    dirPath: dirname(absPackageJsonPath),
+  };
 }
