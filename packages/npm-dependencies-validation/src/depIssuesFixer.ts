@@ -1,7 +1,7 @@
 import { OutputChannel } from "./types";
 import { isPathExist } from "./utils/fileUtil";
 import { invokeNPMCommand } from "./utils/npmUtil";
-import { printLine } from "./utils/outputUtil";
+import { print } from "./logger";
 import { getPackageJsonPaths } from "./utils/packageJsonUtil";
 
 export const internal = {
@@ -13,18 +13,18 @@ export const internal = {
 
 export async function fixDependencyIssues(
   absPath: string,
-  outputChannel: OutputChannel
+  outputChannel?: OutputChannel
 ): Promise<void> {
   const { filePath, dirPath: cwd } = getPackageJsonPaths(absPath);
   const shouldFix = await shouldFixDependencyIssues(filePath);
   if (!shouldFix) return;
 
-  printLine(internal.fixing(filePath), outputChannel);
+  print(internal.fixing(filePath), outputChannel);
 
   const config = { commandArgs: ["install"], cwd };
   await invokeNPMCommand(config, outputChannel);
 
-  printLine(internal.doneFixing(filePath), outputChannel);
+  print(internal.doneFixing(filePath), outputChannel);
 }
 
 function getDateAndTime(): string {

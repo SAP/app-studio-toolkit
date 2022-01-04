@@ -2,7 +2,7 @@ import { ChildProcessWithoutNullStreams, spawn } from "child_process";
 import { get } from "lodash";
 import { NpmCommandConfig, OutputChannel } from "../types";
 import { emptyJsonObject, toJsonObject } from "./fileUtil";
-import { print } from "./outputUtil";
+import { print } from "../logger";
 
 export function getNPM(): string {
   return /^win/.test(process.platform) ? "npm.cmd" : "npm";
@@ -38,7 +38,7 @@ export function invokeNPMCommandWithJsonResult<T>(
 
 export function invokeNPMCommand(
   config: NpmCommandConfig,
-  outputChannel: OutputChannel
+  outputChannel?: OutputChannel
 ): Promise<void> {
   return new Promise((resolve, reject) => {
     const command = executeSpawn(config, []);

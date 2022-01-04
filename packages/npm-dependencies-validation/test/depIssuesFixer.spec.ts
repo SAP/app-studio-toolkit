@@ -7,7 +7,6 @@ import { fixDependencyIssues, findDependencyIssues } from "../src/api";
 describe("`fixDependencyIssues()` function ", function () {
   const outputChannel: OutputChannel = {
     append: (data: string) => console.log(data),
-    appendLine: (data: string) => console.log(`${data}\n`),
   };
 
   const packagePath = resolve(
@@ -23,9 +22,8 @@ describe("`fixDependencyIssues()` function ", function () {
   });
 
   it("will fix missing deps", async () => {
-    await expect(
-      fixDependencyIssues("non_existing_package_path", outputChannel)
-    ).to.be.fulfilled;
+    await expect(fixDependencyIssues("non_existing_package_path")).to.be
+      .fulfilled;
   });
 
   it("will fix missing deps", async function () {

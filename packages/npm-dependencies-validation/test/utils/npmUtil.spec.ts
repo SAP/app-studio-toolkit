@@ -13,7 +13,6 @@ describe("npmUtil unit test", () => {
   const sandbox = createSandbox();
   const outputChannel: OutputChannel = {
     append: (data: string) => console.log(data),
-    appendLine: (data: string) => console.log(data),
   };
 
   afterEach(() => {
