@@ -1,8 +1,7 @@
 import type { DiagnosticCollection, Uri } from "vscode";
 import { VscodeCommandsConfig, VscodeOutputChannel } from "./vscodeTypes";
 import { FIX_ALL_ISSUES_COMMAND } from "./constants";
-import { clearDiagnostics } from "./util";
-import { fixDependencyIssues } from "@sap-devx/npm-dependencies-validation";
+import { clearDiagnostics, fixDepsIssues } from "./util";
 
 async function fixProjectDepsIssues(
   outputChannel: VscodeOutputChannel,
@@ -11,7 +10,7 @@ async function fixProjectDepsIssues(
 ): Promise<void> {
   // switched to outputchannel only in manual mode
   outputChannel.show(true);
-  await fixDependencyIssues(uri.fsPath, outputChannel);
+  await fixDepsIssues(uri, outputChannel);
   clearDiagnostics(diagnosticCollection, uri);
 }
 

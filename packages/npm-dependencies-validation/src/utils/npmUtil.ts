@@ -1,7 +1,5 @@
 import { ChildProcessWithoutNullStreams, spawn } from "child_process";
 import { NpmCommandConfig, OutputChannel } from "../types";
-import { toJsonObject } from "./fileUtil";
-import { print } from "./outputUtil";
 
 export function getNPM(): string {
   return /^win/.test(process.platform) ? "npm.cmd" : "npm";
@@ -16,12 +14,12 @@ export function invokeNPMCommandWithJsonResult<T>(
     const command = executeSpawn(config, ["--json"]);
 
     command.stdout.on("data", (data: string) => {
-      print(`${data}`, outputChannel);
-      jsonParseResult = toJsonObject(data);
+      sendDataToOutputChannel(`${data}`, outputChannel);
+      jsonParseResult = JSON.parse(data);
     });
 
     command.stderr.on("data", (data) => {
-      print(`${data}`, outputChannel);
+      sendDataToOutputChannel(`${data}`, outputChannel);
     });
 
     command.on("error", (error) => onError(error, reject, outputChannel));
@@ -43,24 +41,25 @@ export function invokeNPMCommand(
     const command = executeSpawn(config, []);
 
     command.stdout.on("data", (data) => {
-      print(`${data}`, outputChannel);
+      sendDataToOutputChannel(`${data}`, outputChannel);
     });
 
     command.stderr.on("data", (data) => {
-      print(`${data}`, outputChannel);
+      sendDataToOutputChannel(`${data}`, outputChannel);
     });
 
     command.on("error", (error) => onError(error, reject, outputChannel));
 
-    command.on("exit", () => {
-      resolve();
+    command.on("exit", (exitCode) => {
+      // in case of an error exit code is not 0
+      exitCode === 0 ? resolve() : reject();
     });
   });
 }
 
 function onError(error: Error, reject: any, outputChannel?: OutputChannel) {
   const { stack } = error;
-  print(`${stack}`, outputChannel);
+  sendDataToOutputChannel(`${stack}`, outputChannel);
   reject(error);
 }
 
@@ -70,4 +69,11 @@ function executeSpawn(
 ): ChildProcessWithoutNullStreams {
   const { commandArgs, cwd } = config;
   return spawn(getNPM(), [...commandArgs, ...additionalArgs], { cwd });
+}
+
+function sendDataToOutputChannel(
+  data: string,
+  outputChannel?: OutputChannel
+): void {
+  outputChannel?.append(data);
 }

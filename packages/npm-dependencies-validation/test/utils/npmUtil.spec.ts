@@ -1,5 +1,4 @@
 import { expect } from "chai";
-import { resolve } from "path";
 import { createSandbox, SinonSpy } from "sinon";
 import { NpmLsResult, OutputChannel } from "../../src/types";
 import {
@@ -13,7 +12,6 @@ describe("npmUtil unit test", () => {
   const sandbox = createSandbox();
   const outputChannel: OutputChannel = {
     append: (data: string) => console.log(data),
-    appendLine: (data: string) => console.log(`${data}\n`),
   };
 
   afterEach(() => {
@@ -82,14 +80,12 @@ describe("npmUtil unit test", () => {
 
     it("fails with package.json with invalid json content", async function () {
       this.timeout(npmSpawnTestTimeout);
-      const cwd = resolve(
-        "./test/packages-samples/negative/invalid_package_json_content"
-      );
+
       const config = {
         commandArgs: ["ls", "--depth=0"],
-        cwd,
+        cwd: "./test/packages-samples/negative/invalid_package_json_content",
       };
-      await expect(invokeNPMCommand(config, outputChannel)).to.be.fulfilled;
+      await expect(invokeNPMCommand(config, outputChannel)).to.be.rejected;
     });
   });
 

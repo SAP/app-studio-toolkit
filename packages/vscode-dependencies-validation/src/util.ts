@@ -1,7 +1,8 @@
 import type { DiagnosticCollection, Uri } from "vscode";
+import { dirname } from "path";
 import {
   findDependencyIssues,
-  fixDependencyIssues,
+  invokeNPMCommand,
 } from "@sap-devx/npm-dependencies-validation";
 import { isEmpty } from "lodash";
 import { VscodeOutputChannel } from "./vscodeTypes";
@@ -23,9 +24,37 @@ export async function findAndFixDepsIssues(
   packageJsonUri: Uri,
   outputChannel: VscodeOutputChannel
 ): Promise<void> {
-  const { fsPath } = packageJsonUri;
-  const { problems } = await findDependencyIssues(fsPath);
+  const { problems } = await findDependencyIssues(packageJsonUri.fsPath);
   if (isEmpty(problems)) return;
 
-  await fixDependencyIssues(fsPath, outputChannel);
+  return fixDepsIssues(packageJsonUri, outputChannel);
+}
+
+function getDateAndTime(): string {
+  const today = new Date();
+  const date = `${today.getFullYear()}-${
+    today.getMonth() + 1
+  }-${today.getDate()}`;
+  const time = `${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`;
+  return `${date} ${time}`;
+}
+
+export const internal = {
+  fixing: (absPath: string) =>
+    `\n${absPath}\n[${getDateAndTime()}] Fixing dependency issues...\n`,
+  doneFixing: (absPath: string) =>
+    `\n[${getDateAndTime()}] Done. \n${absPath}\n`,
+};
+
+export async function fixDepsIssues(
+  packageJsonUri: Uri,
+  outputChannel: VscodeOutputChannel
+): Promise<void> {
+  const { fsPath } = packageJsonUri;
+  outputChannel.appendLine(internal.fixing(fsPath));
+
+  const config = { commandArgs: ["install"], cwd: dirname(fsPath) };
+  await invokeNPMCommand(config, outputChannel);
+
+  outputChannel.appendLine(internal.doneFixing(fsPath));
 }

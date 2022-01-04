@@ -6,11 +6,14 @@ export const diagnosticsProxy = {
 };
 
 export const npmDepsValidationProxy = {
-  fixdDependencyIssues() {
-    return Promise.reject("fixdDependencyIssues method is not implemented");
+  invokeNPMCommand() {
+    return Promise.reject("invokeNPMCommand method is not implemented");
   },
   findDependencyIssues() {
     return Promise.reject("findDependencyIssues method is not implemented");
+  },
+  isPathExist() {
+    return Promise.reject("isPathExist method is not implemented");
   },
   "@noCallThru": true,
 };
