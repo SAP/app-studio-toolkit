@@ -10,7 +10,9 @@ import { VscodeFileEventConfig, VscodeWorkspace } from "../vscodeTypes";
 
 export const debouncedHandleProjectChange = debounce(handleProjectChange, 3000);
 
-// TODO: would this get invoked during editor flow?
+// TODO: would this get invoked while package.json is being edited flow?
+//   may cause duplicate "npm i"...
+//   attempt to filter out events for files which are actively edited?
 async function handleProjectChange(
   uri: Uri,
   vscodeConfig: VscodeFileEventConfig

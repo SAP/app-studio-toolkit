@@ -50,7 +50,6 @@ setInterval(() => {
 /**
  * A naive cleanup which removes references to the debounced functions
  */
-// TODO: test deletion from the `Map`
 function garbageCollect(
   getWorkspaceFolder: typeof workspace.getWorkspaceFolder
 ): void {
