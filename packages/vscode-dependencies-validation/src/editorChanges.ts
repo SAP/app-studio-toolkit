@@ -64,13 +64,13 @@ function executeRefreshDiagnosticsOnDocumentChangeEvent(
   diagnosticCollection: DiagnosticCollection
 ) {
   return (event: TextDocumentChangeEvent) => {
+    const uri = event.document.uri;
     if (
       // this event gets called multiple (four) times for each text change
       // but only once for "true" text changes
       !isEmpty(event.contentChanges) &&
-      shouldBeChecked(event.document.uri.path)
+      shouldBeChecked(uri.path)
     ) {
-      const uri = event.document.uri;
       const optimizedRefreshDiag = getOptimizedRefreshDiagnostics(uri);
       void optimizedRefreshDiag(uri, diagnosticCollection);
     }
