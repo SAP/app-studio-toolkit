@@ -51,18 +51,6 @@ describe("diagnostics unit test", () => {
       sandbox.restore();
     });
 
-    it("file uri is in node_modules", async () => {
-      const uri = <Uri>{ fsPath: "/root/project/node_modules/package.json" };
-      diagnosticCollectionSinonMock.expects("set").never();
-      await refreshDiagnosticsProxy(uri, diagnosticCollectionMock);
-    });
-
-    it("file uri is not package.json", async () => {
-      const uri = <Uri>{ fsPath: "/root/project/package-lock.json" };
-      diagnosticCollectionSinonMock.expects("set").never();
-      await refreshDiagnosticsProxy(uri, diagnosticCollectionMock);
-    });
-
     it("there are 2 dependency issues", async () => {
       const uri = <Uri>{ fsPath: "/root/folder/package.json" };
       npmDepsValidationSinonMock.expects("findDependencyIssues").resolves({

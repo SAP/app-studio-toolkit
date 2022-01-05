@@ -1,29 +1,20 @@
 import type { DiagnosticCollection, Uri } from "vscode";
 import { Range, Diagnostic } from "vscode";
-import { basename } from "path";
-import { findDependencyIssues } from "@sap-devx/npm-dependencies-validation";
 import { isEmpty } from "lodash";
+import { findDependencyIssues } from "@sap-devx/npm-dependencies-validation";
 import { NPM_DEPENDENCY_ISSUES_CODE } from "./constants";
-import { isInsideNodeModules } from "./util";
 
 /**
  * Analyzes package.json file for problems.
- * @param packageJsonPath package.json file path to analyze
+ * @param uri package.json file path to analyze
  * @param dependencyIssueDiagnostics diagnostic collection
  */
 export async function refreshDiagnostics(
   uri: Uri,
   dependencyIssueDiagnostics: DiagnosticCollection
 ): Promise<void> {
-  const { fsPath } = uri;
-
-  if (isInsideNodeModules(fsPath)) return;
-  if (basename(fsPath) !== "package.json") return;
-
-  const { problems } = await findDependencyIssues(fsPath);
-
+  const { problems } = await findDependencyIssues(uri.fsPath);
   const diagnostics = isEmpty(problems) ? [] : [constructDiagnostic(problems)];
-
   dependencyIssueDiagnostics.set(uri, diagnostics);
 }
 
