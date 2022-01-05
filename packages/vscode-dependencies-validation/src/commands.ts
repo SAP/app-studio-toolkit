@@ -8,9 +8,11 @@ async function fixProjectDepsIssues(
   diagnosticCollection: DiagnosticCollection,
   uri: Uri
 ): Promise<void> {
-  // switched to outputchannel only in manual mode
+  // switched to output-channel only in manual mode
   outputChannel.show(true);
   await fixDepsIssues(uri, outputChannel);
+  // fixDepsIssues would `reject` is a problem occurred
+  // so the diagnostics would **not** always be cleared.
   clearDiagnostics(diagnosticCollection, uri);
 }
 
