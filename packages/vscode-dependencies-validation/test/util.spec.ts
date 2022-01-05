@@ -77,7 +77,7 @@ describe("util unit tests", () => {
       outchannelSinonMock
         .expects("appendLine")
         .withExactArgs(internal.doneFixing(uri.fsPath));
-      npmDepsValidationSinonMock.expects("invokeNPMCommand").resolves();
+      npmDepsValidationSinonMock.expects("fixDependencyIssues").resolves();
       await fixDepsIssuesProxy(uri, outputChannel);
     });
 
@@ -91,7 +91,7 @@ describe("util unit tests", () => {
         .withExactArgs(internal.doneFixing(uri.fsPath))
         .never();
       npmDepsValidationSinonMock
-        .expects("invokeNPMCommand")
+        .expects("fixDependencyIssues")
         .rejects(new Error("Failure"));
       await expect(fixDepsIssuesProxy(uri, outputChannel)).to.be.rejectedWith(
         "Failure"
@@ -144,7 +144,7 @@ describe("util unit tests", () => {
       outchannelSinonMock
         .expects("appendLine")
         .withExactArgs(internal.doneFixing(uri.fsPath));
-      npmDepsValidationSinonMock.expects("invokeNPMCommand").resolves();
+      npmDepsValidationSinonMock.expects("fixDependencyIssues").resolves();
 
       npmDepsValidationSinonMock
         .expects("findDependencyIssues")
