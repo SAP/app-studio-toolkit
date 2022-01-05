@@ -26,7 +26,7 @@ export async function findAndFixDepsIssues(
   const { problems } = await findDependencyIssues(packageJsonUri.fsPath);
   if (isEmpty(problems)) return;
 
-  return fixDepsIssues(packageJsonUri, outputChannel);
+  await fixDepsIssues(packageJsonUri, outputChannel);
 }
 
 function getDateAndTime(): string {
