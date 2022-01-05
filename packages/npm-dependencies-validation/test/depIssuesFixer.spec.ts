@@ -4,6 +4,7 @@ import { rmdirSync, unlinkSync } from "fs";
 import { OutputChannel } from "../src/types";
 import { fixDependencyIssues, findDependencyIssues } from "../src/api";
 import { doesPathExist } from "../src/utils/fileUtil";
+import { npmSpawnTestTimeout } from "./config";
 
 describe("`fixDependencyIssues()` function ", function () {
   const outputChannel: OutputChannel = {
@@ -37,7 +38,7 @@ describe("`fixDependencyIssues()` function ", function () {
     });
 
     it("will fix missing deps", async function () {
-      this.timeout(20000);
+      this.timeout(npmSpawnTestTimeout * 2);
 
       const { problems: problemsBeforeFix } = await findDependencyIssues(
         packageJsonPath
