@@ -11,7 +11,7 @@ export function toJsonObject<T>(jsonContent: string): T {
   }
 }
 
-export async function isPathExist(absPath: string): Promise<boolean> {
+export async function doesPathExist(absPath: string): Promise<boolean> {
   try {
     await access(absPath, constants.R_OK);
     return true;

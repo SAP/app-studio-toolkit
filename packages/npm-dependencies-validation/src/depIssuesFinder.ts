@@ -1,6 +1,6 @@
 import { isEmpty } from "lodash";
 import { NpmLsResult } from "./types";
-import { isPathExist } from "./utils/fileUtil";
+import { doesPathExist } from "./utils/fileUtil";
 import { invokeNPMCommandWithJsonResult } from "./utils/npmUtil";
 import {
   createPackageJsonPaths,
@@ -39,7 +39,7 @@ export async function findDependencyIssues(
   const npmDevLsResults = await invokeNPMCommandWithJsonResult<NpmLsResult>(
     devDepsCommandConfig
   );
-  /* istanbul ignore next  -- inconsistent behavior under npm6-8 so not all branches are reachable here */
+
   return { problems: getProblems(npmDevLsResults) };
 }
 
@@ -50,7 +50,7 @@ function getProblems(npmLsResult: NpmLsResult): string[] {
 async function shouldFindDependencyIssues(
   packageJsonPath: string
 ): Promise<boolean> {
-  const packageJsonExists = await isPathExist(packageJsonPath);
+  const packageJsonExists = await doesPathExist(packageJsonPath);
   if (!packageJsonExists) return false;
 
   const currentlySupported = await isCurrentlySupported(packageJsonPath);

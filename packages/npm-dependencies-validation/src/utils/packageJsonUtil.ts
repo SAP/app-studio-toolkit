@@ -3,7 +3,7 @@ import { promises } from "fs";
 const { readFile } = promises;
 import { join, dirname } from "path";
 import { FilePaths, PackageJson } from "../types";
-import { emptyJsonObject, isPathExist, toJsonObject } from "./fileUtil";
+import { emptyJsonObject, doesPathExist, toJsonObject } from "./fileUtil";
 
 export const yarnManagerFiles = [
   "yarn.lock",
@@ -33,7 +33,7 @@ async function pathContainsAnyOfFiles(
 ): Promise<boolean> {
   for (const fileName of fileNames) {
     // in case a file/dir name is found we exit the for-of loop
-    if (await isPathExist(join(dirname(absPath), fileName))) return true;
+    if (await doesPathExist(join(dirname(absPath), fileName))) return true;
   }
 
   return false;

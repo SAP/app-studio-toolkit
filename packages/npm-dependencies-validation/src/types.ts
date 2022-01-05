@@ -16,7 +16,7 @@ export type DependenciesProperties = {
 };
 
 export interface OutputChannel {
-  append: (message: string) => void;
+  appendLine: (message: string) => void;
 }
 
 export type NpmCommandConfig = {

@@ -7,14 +7,13 @@ describe("fileUtil unit tests", () => {
       const content = `{"name": "test"}`;
       type TestJson = { name: string };
       const result: TestJson = toJsonObject<TestJson>(content);
-      expect(result).to.haveOwnProperty("name");
-      expect(result.name).to.equal("test");
+      expect(result).to.deep.equal({ name: "test" });
     });
 
     it("will return empty object for invalid json string", () => {
       const content = `{"invalid json"}`;
       const result: { name: string } = toJsonObject(content);
-      expect(result).to.be.empty;
+      expect(result).to.deep.equal({});
     });
   });
 });

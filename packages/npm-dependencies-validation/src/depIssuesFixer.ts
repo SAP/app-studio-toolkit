@@ -1,14 +1,14 @@
 import { OutputChannel } from "./types";
-import { isPathExist } from "./utils/fileUtil";
+import { doesPathExist } from "./utils/fileUtil";
 import { invokeNPMCommand } from "./utils/npmUtil";
 import { print } from "./logger";
 import { createPackageJsonPaths } from "./utils/packageJsonUtil";
 
 export const internal = {
   fixing: (absPath: string) =>
-    `\n${absPath}\n[${getDateAndTime()}] Fixing dependency issues...\n`,
+    `\n${absPath}\n[${getTime()}] Fixing dependency issues...\n`,
   doneFixing: (absPath: string) =>
-    `\n[${getDateAndTime()}] Done. \n${absPath}\n`,
+    `\n[${getTime()}] Done fixing dependency issues. \n${absPath}\n`,
 };
 
 export async function fixDependencyIssues(
@@ -27,19 +27,14 @@ export async function fixDependencyIssues(
   print(internal.doneFixing(filePath), outputChannel);
 }
 
-function getDateAndTime(): string {
-  const today = new Date();
-  const date = `${today.getFullYear()}-${
-    today.getMonth() + 1
-  }-${today.getDate()}`;
-  const time = `${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`;
-  return `${date} ${time}`;
+function getTime(): string {
+  return new Date().toLocaleTimeString();
 }
 
 async function shouldFixDependencyIssues(
   packageJsonPath: string
 ): Promise<boolean> {
-  const packageJsonExists = await isPathExist(packageJsonPath);
+  const packageJsonExists = await doesPathExist(packageJsonPath);
   if (!packageJsonExists) return false;
 
   return true;
