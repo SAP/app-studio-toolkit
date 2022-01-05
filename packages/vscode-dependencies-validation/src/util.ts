@@ -27,5 +27,5 @@ export async function findAndFixDepsIssues(
   const { problems } = await findDependencyIssues(fsPath);
   if (isEmpty(problems)) return;
 
-  return fixDependencyIssues(fsPath, outputChannel);
+  await fixDependencyIssues(fsPath, outputChannel);
 }
