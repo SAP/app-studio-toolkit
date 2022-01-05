@@ -9,7 +9,7 @@ async function fixProjectDepsIssues(
   diagnosticCollection: DiagnosticCollection,
   uri: Uri
 ): Promise<void> {
-  // switched to outputchannel only in manual mode
+  // switched to output-channel only in manual mode
   outputChannel.show(true);
   await fixDependencyIssues(uri.fsPath, outputChannel);
   clearDiagnostics(diagnosticCollection, uri);
