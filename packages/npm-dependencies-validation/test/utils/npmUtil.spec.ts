@@ -12,7 +12,7 @@ import { npmSpawnTestTimeout } from "../config";
 describe("npmUtil unit test", () => {
   const sandbox = createSandbox();
   const outputChannel: OutputChannel = {
-    append: (data: string) => console.log(data),
+    appendLine: (data: string) => console.log(data),
   };
 
   afterEach(() => {
@@ -21,7 +21,7 @@ describe("npmUtil unit test", () => {
 
   context("invokeNPMCommandWithJsonResult()", () => {
     it("fails with non-existing package.json path", async () => {
-      const appendSpy: SinonSpy = sandbox.spy(outputChannel, "append");
+      const appendSpy: SinonSpy = sandbox.spy(outputChannel, "appendLine");
       const config = { commandArgs: ["ls"], cwd: "./non_existing_path" };
       await expect(
         invokeNPMCommandWithJsonResult<NpmLsResult>(config, outputChannel)
@@ -39,7 +39,7 @@ describe("npmUtil unit test", () => {
     it("passes with ls", async function () {
       this.timeout(npmSpawnTestTimeout);
 
-      const appendSpy: SinonSpy = sandbox.spy(outputChannel, "append");
+      const appendSpy: SinonSpy = sandbox.spy(outputChannel, "appendLine");
       const config = { commandArgs: ["ls", "--depth=0"], cwd: "./" };
       await invokeNPMCommandWithJsonResult<NpmLsResult>(config, outputChannel);
       expect(appendSpy.called).to.be.true;
@@ -68,7 +68,7 @@ describe("npmUtil unit test", () => {
 
   context("invokeNPMCommand()", () => {
     it("fails with non-existing package.json path", async () => {
-      const appendSpy: SinonSpy = sandbox.spy(outputChannel, "append");
+      const appendSpy: SinonSpy = sandbox.spy(outputChannel, "appendLine");
       const config = { commandArgs: ["ls"], cwd: "./non_existing_path" };
       await expect(invokeNPMCommand(config, outputChannel)).to.be.rejectedWith(
         `spawn ${getNPM()} ENOENT`
@@ -76,10 +76,10 @@ describe("npmUtil unit test", () => {
       expect(appendSpy.called).to.be.true;
     });
 
-    it("passes with ls", async function () {
+    it("passes with npm -v", async function () {
       this.timeout(npmSpawnTestTimeout);
-      const appendSpy: SinonSpy = sandbox.spy(outputChannel, "append");
-      const config = { commandArgs: ["ls", "--depth=0"], cwd: "./" };
+      const appendSpy: SinonSpy = sandbox.spy(outputChannel, "appendLine");
+      const config = { commandArgs: ["-v"], cwd: "./" };
       await invokeNPMCommand(config, outputChannel);
       expect(appendSpy.called).to.be.true;
     });

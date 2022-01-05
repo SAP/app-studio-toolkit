@@ -1,8 +1,7 @@
 import type { DiagnosticCollection, Uri } from "vscode";
-import { dirname } from "path";
 import {
   findDependencyIssues,
-  invokeNPMCommand,
+  fixDependencyIssues,
 } from "@sap-devx/npm-dependencies-validation";
 import { isEmpty } from "lodash";
 import { VscodeOutputChannel } from "./vscodeTypes";
@@ -53,8 +52,7 @@ export async function fixDepsIssues(
   const { fsPath } = packageJsonUri;
   outputChannel.appendLine(internal.fixing(fsPath));
 
-  const config = { commandArgs: ["install"], cwd: dirname(fsPath) };
-  await invokeNPMCommand(config, outputChannel);
+  await fixDependencyIssues(fsPath, outputChannel);
 
   outputChannel.appendLine(internal.doneFixing(fsPath));
 }
