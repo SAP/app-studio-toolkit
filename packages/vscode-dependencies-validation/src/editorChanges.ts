@@ -18,16 +18,13 @@ export function subscribeToPackageJsonChanges(
 ): void {
   const { window, subscriptions, workspace, diagnosticCollection } =
     vscodeConfig;
-
   if (
     window.activeTextEditor &&
     shouldBeChecked(window.activeTextEditor.document.uri.path)
   ) {
     const uri = window.activeTextEditor.document.uri;
-    if (shouldBeChecked(uri.path)) {
-      const optimizedRefreshDiag = getOptimizedRefreshDiagnostics(uri);
-      void optimizedRefreshDiag(uri, diagnosticCollection);
-    }
+    const optimizedRefreshDiag = getOptimizedRefreshDiagnostics(uri);
+    void optimizedRefreshDiag(uri, diagnosticCollection);
   }
 
   subscriptions.push(
