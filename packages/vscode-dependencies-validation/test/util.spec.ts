@@ -5,8 +5,6 @@ import proxyquire = require("proxyquire");
 import {
   isInsideNodeModules,
   clearDiagnostics,
-  fixDepsIssues,
-  internal,
   findAndFixDepsIssues,
 } from "../src/util";
 import { VscodeOutputChannel } from "../src/vscodeTypes";
@@ -46,59 +44,6 @@ describe("util unit tests", () => {
     });
   });
 
-  context("fixDepsIssues()", () => {
-    const outputChannel = <VscodeOutputChannel>{};
-    outputChannel.appendLine = (message: string) => "";
-
-    let outchannelSinonMock: SinonMock;
-    let fixDepsIssuesProxy: typeof fixDepsIssues;
-    let npmDepsValidationSinonMock: SinonMock;
-
-    beforeEach(() => {
-      const utilProxyModule = proxyquire("../src/util", {
-        "@sap-devx/npm-dependencies-validation": npmDepsValidationProxy,
-      });
-
-      outchannelSinonMock = sandbox.mock(outputChannel);
-      npmDepsValidationSinonMock = sandbox.mock(npmDepsValidationProxy);
-
-      fixDepsIssuesProxy = utilProxyModule.fixDepsIssues;
-    });
-
-    afterEach(() => {
-      outchannelSinonMock.verify();
-    });
-
-    it("npm install succeeded", async () => {
-      const uri = <Uri>{ fsPath: "/root/project/package.json" };
-      outchannelSinonMock
-        .expects("appendLine")
-        .withExactArgs(internal.fixing(uri.fsPath));
-      outchannelSinonMock
-        .expects("appendLine")
-        .withExactArgs(internal.doneFixing(uri.fsPath));
-      npmDepsValidationSinonMock.expects("fixDependencyIssues").resolves();
-      await fixDepsIssuesProxy(uri, outputChannel);
-    });
-
-    it("npm install failed", async () => {
-      const uri = <Uri>{ fsPath: "/root/project/package.json" };
-      outchannelSinonMock
-        .expects("appendLine")
-        .withExactArgs(internal.fixing(uri.fsPath));
-      outchannelSinonMock
-        .expects("appendLine")
-        .withExactArgs(internal.doneFixing(uri.fsPath))
-        .never();
-      npmDepsValidationSinonMock
-        .expects("fixDependencyIssues")
-        .rejects(new Error("Failure"));
-      await expect(fixDepsIssuesProxy(uri, outputChannel)).to.be.rejectedWith(
-        "Failure"
-      );
-    });
-  });
-
   context("findAndFixDepsIssues()", () => {
     const outputChannel = <VscodeOutputChannel>{};
     outputChannel.appendLine = (message: string) => "";
@@ -124,10 +69,7 @@ describe("util unit tests", () => {
 
     it("no npm problems were found", async () => {
       const uri = <Uri>{ fsPath: "/root/project/package.json" };
-      outchannelSinonMock
-        .expects("appendLine")
-        .withExactArgs(internal.fixing(uri.fsPath))
-        .never();
+      npmDepsValidationSinonMock.expects("fixDependencyIssues").never();
 
       npmDepsValidationSinonMock
         .expects("findDependencyIssues")
@@ -138,12 +80,6 @@ describe("util unit tests", () => {
 
     it("npm problems were found", async () => {
       const uri = <Uri>{ fsPath: "/root/project/package.json" };
-      outchannelSinonMock
-        .expects("appendLine")
-        .withExactArgs(internal.fixing(uri.fsPath));
-      outchannelSinonMock
-        .expects("appendLine")
-        .withExactArgs(internal.doneFixing(uri.fsPath));
       npmDepsValidationSinonMock.expects("fixDependencyIssues").resolves();
 
       npmDepsValidationSinonMock

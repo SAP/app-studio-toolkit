@@ -37,8 +37,5 @@ export const utilProxy = {
   },
   clearDiagnostics() {
     throw new Error("clearDiagnostics method is not implemented");
-  },
-  fixDepsIssues() {
-    return Promise.reject("fixDepsIssues method is not implemented");
-  },
+  }
 };
