@@ -37,5 +37,5 @@ export const utilProxy = {
   },
   clearDiagnostics() {
     throw new Error("clearDiagnostics method is not implemented");
-  }
+  },
 };
