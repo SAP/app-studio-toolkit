@@ -41,11 +41,6 @@ describe("commands unit test", () => {
       outputChannelSinonMock.expects("show").withExactArgs(true);
 
       utilProxySinonMock
-        .expects("fixDepsIssues")
-        .withExactArgs(uri, outputChannelMock)
-        .resolves();
-
-      utilProxySinonMock
         .expects("clearDiagnostics")
         .withExactArgs(diagnosticCollection, uri);
 

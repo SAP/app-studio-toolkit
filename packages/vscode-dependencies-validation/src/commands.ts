@@ -1,7 +1,8 @@
 import type { DiagnosticCollection, Uri } from "vscode";
+import { fixDependencyIssues } from "@sap-devx/npm-dependencies-validation";
 import { VscodeCommandsConfig, VscodeOutputChannel } from "./vscodeTypes";
 import { FIX_ALL_ISSUES_COMMAND } from "./constants";
-import { clearDiagnostics, fixDepsIssues } from "./util";
+import { clearDiagnostics } from "./util";
 
 async function fixProjectDepsIssues(
   outputChannel: VscodeOutputChannel,
@@ -10,9 +11,7 @@ async function fixProjectDepsIssues(
 ): Promise<void> {
   // switched to output-channel only in manual mode
   outputChannel.show(true);
-  await fixDepsIssues(uri, outputChannel);
-  // fixDepsIssues would `reject` is a problem occurred
-  // so the diagnostics would **not** always be cleared.
+  await fixDependencyIssues(uri.fsPath, outputChannel);
   clearDiagnostics(diagnosticCollection, uri);
 }
 
