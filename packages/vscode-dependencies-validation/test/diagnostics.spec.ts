@@ -61,7 +61,7 @@ describe("diagnostics unit test", () => {
         problems: ["missing: json-fixer@1.6.12", "missing: lodash@0.0.1"],
       });
       diagnosticCollectionSinonMock.expects("set").withArgs(uri);
-      loggerSinonMock.expects("info").returns("");
+      loggerSinonMock.expects("trace").returns("");
       await refreshDiagnosticsProxy(uri, diagnosticCollectionMock);
     });
 
@@ -74,7 +74,7 @@ describe("diagnostics unit test", () => {
       diagnosticCollectionSinonMock
         .expects("set")
         .withExactArgs(uri, diagnostics);
-      loggerSinonMock.expects("info").never();
+      loggerSinonMock.expects("trace").never();
       await refreshDiagnosticsProxy(uri, diagnosticCollectionMock);
     });
   });

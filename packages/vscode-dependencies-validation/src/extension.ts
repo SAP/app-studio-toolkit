@@ -7,6 +7,7 @@ import {
   CodeActionKind,
   Uri,
   DiagnosticCollection,
+  OutputChannel,
 } from "vscode";
 import { initLogger, getLogger } from "./logger/logger";
 import { registerCodeActionsProvider } from "./npmIssuesActionProvider";
@@ -16,9 +17,10 @@ import { subscribeToPackageJsonChanges } from "./editorChanges";
 import { registerCommands } from "./commands";
 
 export function activate(context: ExtensionContext): void {
-  initLogger(context);
+  const outputChannel = window.createOutputChannel(context.extension.id);
+  initLogger(context, outputChannel);
 
-  const vscodeConfig = createVscodeConfig(context);
+  const vscodeConfig = createVscodeConfig(context, outputChannel);
 
   registerCodeActionsProvider(vscodeConfig);
 
@@ -33,13 +35,12 @@ export function activate(context: ExtensionContext): void {
 }
 
 // shared config
-function createVscodeConfig(context: ExtensionContext): VscodeConfig {
-  const {
-    extension: { id: extId },
-    subscriptions,
-  } = context;
+function createVscodeConfig(
+  context: ExtensionContext,
+  outputChannel: OutputChannel
+): VscodeConfig {
+  const { subscriptions } = context;
 
-  const outputChannel = window.createOutputChannel(extId);
   const kind = CodeActionKind.QuickFix;
   const diagnosticCollection = createDiagnosticCollection(context);
 

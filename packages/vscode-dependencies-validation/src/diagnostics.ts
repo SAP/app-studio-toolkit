@@ -32,7 +32,7 @@ function constructDiagnostic(problems: string[]): Diagnostic {
   );
   diagnostic.code = NPM_DEPENDENCY_ISSUES_CODE;
 
-  logger.info(`Diagnostic ${message} has been added.`);
+  logger.trace(`Diagnostic ${message} has been added.`);
 
   return diagnostic;
 }

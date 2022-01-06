@@ -1,4 +1,4 @@
-import { ExtensionContext, window } from "vscode";
+import { ExtensionContext, OutputChannel, window } from "vscode";
 import { IVSCodeExtLogger } from "@vscode-logging/types";
 import { configureLogger, NOOP_LOGGER } from "@vscode-logging/wrapper";
 
@@ -17,13 +17,16 @@ export function getLogger(): IVSCodeExtLogger {
 }
 
 /* istanbul ignore next - ignoring "legacy" missing coverage to enforce all new code to be 100% */
-export function initLogger(context: ExtensionContext): void {
-  const extensionName = "vscode-dependency-validation"; // If the extension name changes, change this too
+export function initLogger(
+  context: ExtensionContext,
+  outputChannel: OutputChannel
+): void {
+  const extensionName = context.extension.id; // If the extension name changes, change this too
   try {
     logger = configureLogger({
       extName: extensionName,
       logPath: context.logPath,
-      logOutputChannel: window.createOutputChannel(extensionName),
+      logOutputChannel: outputChannel,
       loggingLevelProp: LOGGING_LEVEL_CONFIG_PROP,
       sourceLocationProp: SOURCE_TRACKING_CONFIG_PROP,
       subscriptions: context.subscriptions,
