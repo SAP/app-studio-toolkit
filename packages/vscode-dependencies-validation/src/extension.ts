@@ -8,15 +8,16 @@ import {
   Uri,
   DiagnosticCollection,
 } from "vscode";
+import { initLogger, getLogger } from "./logger/logger";
 import { registerCodeActionsProvider } from "./npmIssuesActionProvider";
 import { activateDepsIssuesAutoFix } from "./autofix/activate";
 import { VscodeConfig } from "./vscodeTypes";
 import { subscribeToPackageJsonChanges } from "./editorChanges";
 import { registerCommands } from "./commands";
 
-// TODO: add logger for extension
-
 export function activate(context: ExtensionContext): void {
+  initLogger(context);
+
   const vscodeConfig = createVscodeConfig(context);
 
   registerCodeActionsProvider(vscodeConfig);
@@ -26,6 +27,9 @@ export function activate(context: ExtensionContext): void {
   registerCommands(vscodeConfig);
 
   activateDepsIssuesAutoFix(vscodeConfig);
+
+  const logger = getLogger().getChildLogger({ label: "activate" });
+  logger.info("The Vscode Dependencies Validation Extension is active.");
 }
 
 // shared config
