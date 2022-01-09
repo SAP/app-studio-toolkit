@@ -78,7 +78,14 @@
           "scope": "window"
         }
       }
-    }
+    },
+    "themes": [
+      {
+        "label": "SAP Fiori Quartz Light",
+        "uiTheme": "vs",
+        "path": "./src/themes/light-default-clean.json"
+      }
+    ]
   },
   "icon": "icon.png"
 }
