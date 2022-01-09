@@ -3,7 +3,7 @@ import proxyquire = require("proxyquire");
 import { createSandbox, SinonMock, SinonSandbox } from "sinon";
 import { diagnosticCollectionMock } from "./vscodeMocks";
 import { refreshDiagnostics } from "../src/diagnostics";
-import { npmDepsValidationProxy } from "./moduleProxies";
+import { loggerProxy, npmDepsValidationProxy } from "./moduleProxies";
 
 describe("diagnostics unit test", () => {
   class Range {
@@ -20,6 +20,7 @@ describe("diagnostics unit test", () => {
   let sandbox: SinonSandbox;
   let diagnosticCollectionSinonMock: SinonMock;
   let npmDepsValidationSinonMock: SinonMock;
+  let loggerSinonMock: SinonMock;
 
   context("refreshDiagnostics()", () => {
     before(() => {
@@ -33,6 +34,7 @@ describe("diagnostics unit test", () => {
           Diagnostic,
           "@noCallThru": true,
         },
+        "./logger/logger": loggerProxy,
         "@sap-devx/npm-dependencies-validation": npmDepsValidationProxy,
       });
 
@@ -40,11 +42,13 @@ describe("diagnostics unit test", () => {
 
       diagnosticCollectionSinonMock = sandbox.mock(diagnosticCollectionMock);
       npmDepsValidationSinonMock = sandbox.mock(npmDepsValidationProxy);
+      loggerSinonMock = sandbox.mock(diagnosticsModule.internal.logger);
     });
 
     afterEach(() => {
       diagnosticCollectionSinonMock.verify();
       npmDepsValidationSinonMock.verify();
+      loggerSinonMock.verify();
     });
 
     after(() => {
@@ -57,6 +61,7 @@ describe("diagnostics unit test", () => {
         problems: ["missing: json-fixer@1.6.12", "missing: lodash@0.0.1"],
       });
       diagnosticCollectionSinonMock.expects("set").withArgs(uri);
+      loggerSinonMock.expects("trace").returns("");
       await refreshDiagnosticsProxy(uri, diagnosticCollectionMock);
     });
 
@@ -69,6 +74,7 @@ describe("diagnostics unit test", () => {
       diagnosticCollectionSinonMock
         .expects("set")
         .withExactArgs(uri, diagnostics);
+      loggerSinonMock.expects("trace").never();
       await refreshDiagnosticsProxy(uri, diagnosticCollectionMock);
     });
   });

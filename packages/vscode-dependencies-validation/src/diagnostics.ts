@@ -2,7 +2,10 @@ import type { DiagnosticCollection, Uri } from "vscode";
 import { Range, Diagnostic } from "vscode";
 import { isEmpty } from "lodash";
 import { findDependencyIssues } from "@sap-devx/npm-dependencies-validation";
+import { getLogger } from "./logger/logger";
 import { NPM_DEPENDENCY_ISSUES_CODE } from "./constants";
+
+const logger = getLogger().getChildLogger({ label: "diagnostics" });
 
 /**
  * Analyzes package.json file for problems.
@@ -21,12 +24,19 @@ export async function refreshDiagnostics(
 // constructs diagnostic to be displayed in the first line of the package.json
 function constructDiagnostic(problems: string[]): Diagnostic {
   const range = new Range(0, 0, 0, 10);
+  const message = problems.join("\n");
   const diagnostic = new Diagnostic(
     range,
-    problems.join("\n"),
+    message,
     0 // DiagnosticSeverity.Error
   );
   diagnostic.code = NPM_DEPENDENCY_ISSUES_CODE;
 
+  logger.trace(`Diagnostic ${message} has been added.`);
+
   return diagnostic;
 }
+
+export const internal = {
+  logger,
+};

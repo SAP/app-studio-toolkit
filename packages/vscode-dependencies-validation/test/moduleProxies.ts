@@ -39,3 +39,21 @@ export const utilProxy = {
     throw new Error("clearDiagnostics method is not implemented");
   },
 };
+
+export const loggerProxy = {
+  getLogger() {
+    return {
+      getChildLogger() {
+        return {
+          info() {
+            throw new Error("info method is not implemented");
+          },
+          trace() {
+            throw new Error("trace method is not implemented");
+          },
+        };
+      },
+    };
+  },
+  "@noCallThru": true,
+};
