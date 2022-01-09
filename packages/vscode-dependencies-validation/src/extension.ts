@@ -7,17 +7,20 @@ import {
   CodeActionKind,
   Uri,
   DiagnosticCollection,
+  OutputChannel,
 } from "vscode";
+import { initLogger, getLogger } from "./logger/logger";
 import { registerCodeActionsProvider } from "./npmIssuesActionProvider";
 import { activateDepsIssuesAutoFix } from "./autofix/activate";
 import { VscodeConfig } from "./vscodeTypes";
 import { subscribeToPackageJsonChanges } from "./editorChanges";
 import { registerCommands } from "./commands";
 
-// TODO: add logger for extension
-
 export function activate(context: ExtensionContext): void {
-  const vscodeConfig = createVscodeConfig(context);
+  const outputChannel = window.createOutputChannel(context.extension.id);
+  initLogger(context, outputChannel);
+
+  const vscodeConfig = createVscodeConfig(context, outputChannel);
 
   registerCodeActionsProvider(vscodeConfig);
 
@@ -26,16 +29,18 @@ export function activate(context: ExtensionContext): void {
   registerCommands(vscodeConfig);
 
   activateDepsIssuesAutoFix(vscodeConfig);
+
+  const logger = getLogger().getChildLogger({ label: "activate" });
+  logger.info("The Vscode Dependencies Validation Extension is active.");
 }
 
 // shared config
-function createVscodeConfig(context: ExtensionContext): VscodeConfig {
-  const {
-    extension: { id: extId },
-    subscriptions,
-  } = context;
+function createVscodeConfig(
+  context: ExtensionContext,
+  outputChannel: OutputChannel
+): VscodeConfig {
+  const { subscriptions } = context;
 
-  const outputChannel = window.createOutputChannel(extId);
   const kind = CodeActionKind.QuickFix;
   const diagnosticCollection = createDiagnosticCollection(context);
 
