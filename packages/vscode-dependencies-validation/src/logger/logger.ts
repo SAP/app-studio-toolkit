@@ -1,4 +1,4 @@
-import { ExtensionContext, OutputChannel, window } from "vscode";
+import { ExtensionContext, OutputChannel } from "vscode";
 import { IVSCodeExtLogger } from "@vscode-logging/types";
 import { configureLogger, NOOP_LOGGER } from "@vscode-logging/wrapper";
 
@@ -16,12 +16,11 @@ export function getLogger(): IVSCodeExtLogger {
   return logger;
 }
 
-/* istanbul ignore next - ignoring "legacy" missing coverage to enforce all new code to be 100% */
 export function initLogger(
   context: ExtensionContext,
   outputChannel: OutputChannel
 ): void {
-  const extensionName = context.extension.id; // If the extension name changes, change this too
+  const extensionName = context.extension.id;
   try {
     logger = configureLogger({
       extName: extensionName,
@@ -31,7 +30,7 @@ export function initLogger(
       sourceLocationProp: SOURCE_TRACKING_CONFIG_PROP,
       subscriptions: context.subscriptions,
     });
-  } catch (error) /* istanbul ignore next -- this is complex to test and will give little value */ {
+  } catch (error) {
     console.error(
       `Logs won't be available for the ${extensionName} extension: "`,
       error.message
