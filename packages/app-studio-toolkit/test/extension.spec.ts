@@ -75,6 +75,28 @@ describe("extension unit test", () => {
     loggerMock.verify();
   });
 
+  describe("package definitions", () => {
+    let packageJson: {
+      contributes: {
+        themes: [{ label: string; uiTheme: string; path: string }];
+      };
+    };
+
+    before(() => {
+      packageJson = require("../../package.json");
+    });
+
+    it("theme contribution verifying", () => {
+      expect(packageJson.contributes.themes).deep.equal([
+        {
+          label: "SAP Fiori Quartz Light",
+          uiTheme: "vs",
+          path: "./src/themes/light-default-clean.json",
+        },
+      ]);
+    });
+  });
+
   describe("activate", () => {
     it("performs defined actions", () => {
       const context: any = {};
