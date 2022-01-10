@@ -12,10 +12,6 @@ import {
   VscodeOutputChannel,
   VscodeWorkspace,
 } from "../../src/vscodeTypes";
-import {
-  addPackageJsonFileWatcher,
-  internal,
-} from "../../src/autofix/packageJsonFileWatcher";
 import { eventUtilProxy } from "../moduleProxies";
 
 describe("packageJsonFileWatcher unit test", () => {
@@ -23,6 +19,9 @@ describe("packageJsonFileWatcher unit test", () => {
   let createFileSystemWatcherSpy: SinonSpy;
   let onDidChangeSpy: SinonSpy;
   let onDidCreateSpy: SinonSpy;
+  let handleFileEventProxy: any;
+  let addPackageJsonFileWatcher: any;
+  let eventUtilProxySinonMock: SinonMock;
 
   const fileSystemWatcherMock = <FileSystemWatcher>{};
   fileSystemWatcherMock.onDidChange = () => <Disposable>{};
@@ -37,27 +36,41 @@ describe("packageJsonFileWatcher unit test", () => {
     outputChannel: <VscodeOutputChannel>{},
   };
 
-  before(() => {
-    sandbox = createSandbox();
-  });
-
   after(() => {
     sandbox.restore();
   });
 
   beforeEach(() => {
+    sandbox = createSandbox();
+
     createFileSystemWatcherSpy = sandbox.spy(
       workspaceMock,
       "createFileSystemWatcher"
     );
     onDidChangeSpy = sandbox.spy(fileSystemWatcherMock, "onDidChange");
     onDidCreateSpy = sandbox.spy(fileSystemWatcherMock, "onDidCreate");
+
+    const packageJsonFileWatcherModule = proxyquire(
+      "../../src/autofix/packageJsonFileWatcher",
+      {
+        "./eventUtil": eventUtilProxy,
+      }
+    );
+
+    handleFileEventProxy =
+      packageJsonFileWatcherModule.internal.handleFileEvent;
+
+    addPackageJsonFileWatcher =
+      packageJsonFileWatcherModule.addPackageJsonFileWatcher;
+
+    eventUtilProxySinonMock = sandbox.mock(eventUtilProxy);
   });
 
   afterEach(() => {
     createFileSystemWatcherSpy.restore();
     onDidChangeSpy.restore();
     onDidCreateSpy.restore();
+    eventUtilProxySinonMock.verify();
   });
 
   context("addPackageJsonFileWatcher()", () => {
@@ -72,27 +85,6 @@ describe("packageJsonFileWatcher unit test", () => {
   });
 
   context("internal.handleFileEvent()", () => {
-    let handleFileEventProxy: typeof internal.handleFileEvent;
-    let eventUtilProxySinonMock: SinonMock;
-
-    before(() => {
-      const packageJsonFileWatcherModule = proxyquire(
-        "../../src/autofix/packageJsonFileWatcher",
-        {
-          "./eventUtil": eventUtilProxy,
-        }
-      );
-
-      handleFileEventProxy =
-        packageJsonFileWatcherModule.internal.handleFileEvent;
-
-      eventUtilProxySinonMock = sandbox.mock(eventUtilProxy);
-    });
-
-    after(() => {
-      eventUtilProxySinonMock.verify();
-    });
-
     it("debouncedHandleProjectChange is called", async () => {
       const vscodeConfig = <VscodeFileEventConfig>{};
       const uri = <Uri>{};

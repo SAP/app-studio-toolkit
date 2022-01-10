@@ -2,21 +2,24 @@ import type { Uri } from "vscode";
 import { SinonMock, createSandbox, SinonSandbox } from "sinon";
 import * as proxyquire from "proxyquire";
 import { VscodeFileEventConfig } from "../../src/vscodeTypes";
-import { internal } from "../../src/autofix/eventUtil";
-import { configurationProxy, utilProxy } from "../moduleProxies";
+import { configurationProxy, loggerProxy, utilProxy } from "../moduleProxies";
 
 describe("eventUtil unit tests", () => {
   let sandbox: SinonSandbox;
   let configurationProxySinonMock: SinonMock;
   let utilProxySinonMock: SinonMock;
-  let handleProjectChangeProxy: typeof internal.handleProjectChange;
+  let loggerProxySinonMock: SinonMock;
+  let handleProjectChangeProxy: any;
 
   const vscodeConfig = <VscodeFileEventConfig>{};
 
-  beforeEach(() => {
+  before(() => {
     sandbox = createSandbox();
+  });
 
+  beforeEach(() => {
     const eventUtilProxyModule = proxyquire("../../src/autofix/eventUtil", {
+      "../logger/logger": loggerProxy,
       "./configuration": configurationProxy,
       "../util": utilProxy,
     });
@@ -25,11 +28,14 @@ describe("eventUtil unit tests", () => {
     configurationProxySinonMock = sandbox.mock(configurationProxy);
     handleProjectChangeProxy =
       eventUtilProxyModule.internal.handleProjectChange;
+    loggerProxySinonMock = sandbox.mock(eventUtilProxyModule.internal.logger);
   });
 
   afterEach(() => {
     utilProxySinonMock.verify();
     configurationProxySinonMock.verify();
+    loggerProxySinonMock.verify();
+    sandbox.restore();
   });
 
   context("internal.handleProjectChange()", () => {
@@ -37,6 +43,7 @@ describe("eventUtil unit tests", () => {
       const uri = <Uri>{ fsPath: "root/folder/project/package.json" };
       configurationProxySinonMock.expects("isAutoFixEnabled").returns(false);
       utilProxySinonMock.expects("findAndFixDepsIssues").never();
+      loggerProxySinonMock.expects("trace");
 
       await handleProjectChangeProxy(uri, vscodeConfig);
     });
@@ -47,6 +54,7 @@ describe("eventUtil unit tests", () => {
       };
 
       utilProxySinonMock.expects("findAndFixDepsIssues").never();
+      loggerProxySinonMock.expects("trace");
 
       await handleProjectChangeProxy(uri, vscodeConfig);
     });
@@ -63,6 +71,7 @@ describe("eventUtil unit tests", () => {
       utilProxySinonMock
         .expects("clearDiagnostics")
         .withExactArgs(diagnosticCollection, uri);
+      loggerProxySinonMock.expects("trace").thrice();
 
       await handleProjectChangeProxy(uri, vscodeConfig);
     });
