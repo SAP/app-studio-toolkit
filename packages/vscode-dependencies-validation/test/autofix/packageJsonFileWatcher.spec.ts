@@ -12,6 +12,10 @@ import {
   VscodeOutputChannel,
   VscodeWorkspace,
 } from "../../src/vscodeTypes";
+import type {
+  addPackageJsonFileWatcher,
+  internal,
+} from "../../src/autofix/packageJsonFileWatcher";
 import { eventUtilProxy } from "../moduleProxies";
 
 describe("packageJsonFileWatcher unit test", () => {
@@ -19,8 +23,8 @@ describe("packageJsonFileWatcher unit test", () => {
   let createFileSystemWatcherSpy: SinonSpy;
   let onDidChangeSpy: SinonSpy;
   let onDidCreateSpy: SinonSpy;
-  let handleFileEventProxy: any;
-  let addPackageJsonFileWatcher: any;
+  let handleFileEventProxy: typeof internal.handleFileEvent;
+  let addPckJsonFileWatcher: typeof addPackageJsonFileWatcher;
   let eventUtilProxySinonMock: SinonMock;
 
   const fileSystemWatcherMock = <FileSystemWatcher>{};
@@ -60,7 +64,7 @@ describe("packageJsonFileWatcher unit test", () => {
     handleFileEventProxy =
       packageJsonFileWatcherModule.internal.handleFileEvent;
 
-    addPackageJsonFileWatcher =
+    addPckJsonFileWatcher =
       packageJsonFileWatcherModule.addPackageJsonFileWatcher;
 
     eventUtilProxySinonMock = sandbox.mock(eventUtilProxy);
@@ -75,7 +79,7 @@ describe("packageJsonFileWatcher unit test", () => {
 
   context("addPackageJsonFileWatcher()", () => {
     it("filesystem watcher created and package.json events are handled", () => {
-      addPackageJsonFileWatcher(vscodeConfigMock);
+      addPckJsonFileWatcher(vscodeConfigMock);
       expect(
         createFileSystemWatcherSpy.calledOnceWithExactly("**/package.json")
       );
