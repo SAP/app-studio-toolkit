@@ -15,16 +15,19 @@ function logger(): IChildLogger {
   return getLogger().getChildLogger({ label: "autofix_eventUtils" });
 }
 
+// TODO: discuss: rename to debouncedHandlePkgJsonAutoFix?
+//       or `optimizedXYZ` because debounce is just one way to effectively handle rapid events
 export const debouncedHandleProjectChange = debounce(handleProjectChange, 3000);
 
-// TODO: would this get invoked while package.json is being edited flow?
-//   may cause duplicate "npm i"...
-//   attempt to filter out events for files which are actively edited?
+// TODO: discuss: rename to handlePkgJsonAutoFix? because it seems specific to auto-fix
 async function handleProjectChange(
   uri: Uri,
   vscodeConfig: VscodeFileEventConfig
 ): Promise<void> {
   const { workspace, diagnosticCollection, outputChannel } = vscodeConfig;
+  if (!isAutoFixEnabled(workspace)) {
+    return;
+  }
   const fixProject = canBeFixed(workspace, uri);
 
   const projectPath = dirname(uri.fsPath);
@@ -43,8 +46,8 @@ async function handleProjectChange(
 
 function canBeFixed(workspace: VscodeWorkspace, uri: Uri): boolean {
   if (isInsideNodeModules(uri.fsPath)) return false;
-
-  return isAutoFixEnabled(workspace);
+  // TODO: to discuss: should we ensure this is a package.json file?
+  return true;
 }
 
 export const internal = {

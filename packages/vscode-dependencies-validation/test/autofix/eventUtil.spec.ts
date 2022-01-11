@@ -48,7 +48,6 @@ describe("eventUtil unit tests", () => {
       const uri = <Uri>{ fsPath: "root/folder/project/package.json" };
       configurationProxySinonMock.expects("isAutoFixEnabled").returns(false);
       utilProxySinonMock.expects("findAndFixDepsIssues").never();
-      loggerProxySinonMock.expects("trace");
 
       await handleProjectChangeProxy(uri, vscodeConfig);
     });
