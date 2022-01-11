@@ -6,7 +6,7 @@ import { IChildLogger } from "@vscode-logging/types";
 import { getLogger } from "./logger/logger";
 import { NPM_DEPENDENCY_ISSUES_CODE } from "./constants";
 
-export function logger(): IChildLogger {
+function logger(): IChildLogger {
   return getLogger().getChildLogger({ label: "diagnostics" });
 }
 
