@@ -1,4 +1,4 @@
-import { ExtensionContext, OutputChannel } from "vscode";
+import type { ExtensionContext, OutputChannel } from "vscode";
 import { IVSCodeExtLogger } from "@vscode-logging/types";
 import { configureLogger, NOOP_LOGGER } from "@vscode-logging/wrapper";
 

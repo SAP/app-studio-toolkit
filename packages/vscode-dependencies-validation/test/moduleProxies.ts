@@ -40,19 +40,19 @@ export const utilProxy = {
   },
 };
 
+export const loggerProxyObject = {
+  info(): any {
+    throw new Error("info method is not implemented");
+  },
+  trace(): any {
+    throw new Error("trace method is not implemented");
+  },
+};
+
 export const loggerProxy = {
   getLogger() {
     return {
-      getChildLogger() {
-        return {
-          info() {
-            throw new Error("info method is not implemented");
-          },
-          trace() {
-            throw new Error("trace method is not implemented");
-          },
-        };
-      },
+      getChildLogger: () => loggerProxyObject,
     };
   },
   "@noCallThru": true,
