@@ -2,10 +2,13 @@ import type { DiagnosticCollection, Uri } from "vscode";
 import { Range, Diagnostic } from "vscode";
 import { isEmpty } from "lodash";
 import { findDependencyIssues } from "@sap-devx/npm-dependencies-validation";
+import { IChildLogger } from "@vscode-logging/types";
 import { getLogger } from "./logger/logger";
 import { NPM_DEPENDENCY_ISSUES_CODE } from "./constants";
 
-const logger = getLogger().getChildLogger({ label: "diagnostics" });
+export function logger(): IChildLogger {
+  return getLogger().getChildLogger({ label: "diagnostics" });
+}
 
 /**
  * Analyzes package.json file for problems.
@@ -32,11 +35,7 @@ function constructDiagnostic(problems: string[]): Diagnostic {
   );
   diagnostic.code = NPM_DEPENDENCY_ISSUES_CODE;
 
-  logger.trace(`Diagnostic ${message} has been added.`);
+  logger().trace(`Diagnostic ${message} has been added.`);
 
   return diagnostic;
 }
-
-export const internal = {
-  logger,
-};

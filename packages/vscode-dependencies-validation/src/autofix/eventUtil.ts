@@ -1,6 +1,7 @@
 import type { Uri } from "vscode";
 import { debounce } from "lodash";
 import { dirname } from "path";
+import { IChildLogger } from "@vscode-logging/types";
 import { isAutoFixEnabled } from "./configuration";
 import {
   clearDiagnostics,
@@ -10,7 +11,9 @@ import {
 import { VscodeFileEventConfig, VscodeWorkspace } from "../vscodeTypes";
 import { getLogger } from "../logger/logger";
 
-const logger = getLogger().getChildLogger({ label: "autofix_eventUtils" });
+function logger(): IChildLogger {
+  return getLogger().getChildLogger({ label: "autofix_eventUtils" });
+}
 
 export const debouncedHandleProjectChange = debounce(handleProjectChange, 3000);
 
@@ -25,16 +28,16 @@ async function handleProjectChange(
   const fixProject = canBeFixed(workspace, uri);
 
   const projectPath = dirname(uri.fsPath);
-  logger.trace(`${projectPath} project can be fixed - ${fixProject}`);
+  logger().trace(`${projectPath} project can be fixed - ${fixProject}`);
 
   if (fixProject) {
     await findAndFixDepsIssues(uri, outputChannel);
 
-    logger.trace(`${projectPath} project issues are fixed`);
+    logger().trace(`${projectPath} project issues are fixed`);
 
     clearDiagnostics(diagnosticCollection, uri);
 
-    logger.trace(`${projectPath} project diagnostics are cleared`);
+    logger().trace(`${projectPath} project diagnostics are cleared`);
   }
 }
 
@@ -46,5 +49,4 @@ function canBeFixed(workspace: VscodeWorkspace, uri: Uri): boolean {
 
 export const internal = {
   handleProjectChange,
-  logger,
 };

@@ -2,7 +2,12 @@ import type { Uri } from "vscode";
 import { SinonMock, createSandbox, SinonSandbox } from "sinon";
 import * as proxyquire from "proxyquire";
 import { VscodeFileEventConfig } from "../../src/vscodeTypes";
-import { configurationProxy, loggerProxy, utilProxy } from "../moduleProxies";
+import {
+  configurationProxy,
+  loggerProxy,
+  utilProxy,
+  loggerProxyObject,
+} from "../moduleProxies";
 
 describe("eventUtil unit tests", () => {
   let sandbox: SinonSandbox;
@@ -28,7 +33,7 @@ describe("eventUtil unit tests", () => {
     configurationProxySinonMock = sandbox.mock(configurationProxy);
     handleProjectChangeProxy =
       eventUtilProxyModule.internal.handleProjectChange;
-    loggerProxySinonMock = sandbox.mock(eventUtilProxyModule.internal.logger);
+    loggerProxySinonMock = sandbox.mock(loggerProxyObject);
   });
 
   afterEach(() => {

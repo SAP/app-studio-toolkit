@@ -3,7 +3,11 @@ import proxyquire = require("proxyquire");
 import { createSandbox, SinonMock, SinonSandbox } from "sinon";
 import { diagnosticCollectionMock } from "./vscodeMocks";
 import { refreshDiagnostics } from "../src/diagnostics";
-import { loggerProxy, npmDepsValidationProxy } from "./moduleProxies";
+import {
+  loggerProxy,
+  npmDepsValidationProxy,
+  loggerProxyObject,
+} from "./moduleProxies";
 
 describe("diagnostics unit test", () => {
   class Range {
@@ -42,7 +46,8 @@ describe("diagnostics unit test", () => {
 
       diagnosticCollectionSinonMock = sandbox.mock(diagnosticCollectionMock);
       npmDepsValidationSinonMock = sandbox.mock(npmDepsValidationProxy);
-      loggerSinonMock = sandbox.mock(diagnosticsModule.internal.logger);
+
+      loggerSinonMock = sandbox.mock(loggerProxyObject);
     });
 
     afterEach(() => {
