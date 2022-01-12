@@ -1,4 +1,5 @@
 import type { ConfigurationChangeEvent, Uri } from "vscode";
+import { IChildLogger } from "@vscode-logging/types";
 import {
   VscodeFileEventConfig,
   VscodeUriFile,
@@ -10,8 +11,12 @@ import {
   isAutoFixEnabled,
 } from "./configuration";
 import { addPackageJsonFileWatcher as addPackageJsonFileWatcher } from "./packageJsonFileWatcher";
-import { findAndFixDepsIssues } from "../util";
-import { clearDiagnostics } from "../util";
+import { findAndFixDepsIssues, clearDiagnostics } from "../util";
+import { getLogger } from "../logger/logger";
+
+function logger(): IChildLogger {
+  return getLogger().getChildLogger({ label: "activate" });
+}
 
 export function activateDepsIssuesAutoFix(
   vscodeConfig: VscodeFileEventConfig & VscodeUriFile
@@ -29,7 +34,7 @@ function fixWorkspaceDepsIssues(vscodeConfig: VscodeFileEventConfig): void {
 }
 
 function getPackageJsonUris(workspace: VscodeWorkspace): Thenable<Uri[]> {
-  return workspace.findFiles("package.json", "**​/node_modules/**");
+  return workspace.findFiles("package.json", "**/node_modules/**");
 }
 
 function onAutoFixChange(vscodeConfig: VscodeFileEventConfig): void {
@@ -41,6 +46,7 @@ function onAutoFixChange(vscodeConfig: VscodeFileEventConfig): void {
 function handleConfigurationChange(vscodeConfig: VscodeFileEventConfig): any {
   return (event: ConfigurationChangeEvent) => {
     const affected = event.affectsConfiguration(ENABLE_AUTOFIX);
+    logger().trace(`${ENABLE_AUTOFIX} configuration is affected - ${affected}`);
     if (affected) {
       void findDepsIssuesFixThemAndCleanProblemsView(vscodeConfig);
     }

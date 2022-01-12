@@ -6,10 +6,8 @@ import {
 import { isEmpty } from "lodash";
 import { VscodeOutputChannel } from "./vscodeTypes";
 
-const INSIDE_NODE_MODULES_PATTERN = new RegExp(`[\\|/]node_modules[\\|/]`);
-
 export function isInsideNodeModules(absPath: string): boolean {
-  return INSIDE_NODE_MODULES_PATTERN.test(absPath);
+  return /[\\/]node_modules[\\/]/.test(absPath);
 }
 
 export function clearDiagnostics(

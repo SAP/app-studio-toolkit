@@ -2,6 +2,7 @@ import type { Uri } from "vscode";
 import { workspace } from "vscode";
 import { debounce } from "lodash";
 import { refreshDiagnostics } from "../diagnostics";
+import { getLogger } from "../logger/logger";
 
 type RefreshDiagnosticsFunc = typeof refreshDiagnostics;
 const OPTIMIZED_PATHS_TO_FUNC: Map<
@@ -43,7 +44,7 @@ setInterval(() => {
   try {
     garbageCollect(workspace.getWorkspaceFolder);
   } catch (e) {
-    // TODO: log this error once logging is implemented
+    getLogger().getChildLogger({ label: "debounce" }).error(e.stack);
   }
 }, GC_INTERVAL).unref(); // with `unref()` the process will never be "done" and mocha will never exit
 

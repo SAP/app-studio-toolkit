@@ -3,6 +3,7 @@ import { noop, map, uniq } from "lodash";
 import { URI } from "vscode-uri";
 import type { WorkspaceFolder } from "vscode";
 import { expect } from "chai";
+import { loggerProxy } from "../moduleProxies";
 
 const proxyQuireNoCallThru = proxyquire.noCallThru();
 
@@ -14,6 +15,7 @@ describe("debounce module", () => {
       // we are only testing the caching logic, not any real flow...
       "../diagnostics": { refreshDiagnostics: noop },
       vscode: { workspace: {} },
+      "../logger/logger": loggerProxy,
     });
   });
 

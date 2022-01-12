@@ -8,5 +8,13 @@
     }
   ],
   "settings": {
+    "actions": [
+      {
+        "id": "openSettingsAction",
+        "actionType": "COMMAND",
+        "name": "workbench.action.openSettings"
+      },
+      "extension-defined-action-id3"
+    ]
   }
 }

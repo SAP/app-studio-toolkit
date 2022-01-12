@@ -36,7 +36,7 @@ export function activate(context: ExtensionContext): void {
 
   activateDepsIssuesAutoFix(vscodeConfig);
 
-  const logger = getLogger().getChildLogger({ label: "activate" });
+  const logger = getLogger().getChildLogger({ label: "extension" });
   logger.info("The Vscode Dependencies Validation Extension is active.");
 }
 
