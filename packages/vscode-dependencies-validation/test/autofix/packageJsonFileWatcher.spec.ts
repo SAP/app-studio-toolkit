@@ -89,11 +89,11 @@ describe("packageJsonFileWatcher unit test", () => {
   });
 
   context("internal.handleFileEvent()", () => {
-    it("debouncedHandleProjectChange is called", async () => {
+    it("debouncedHandlePkgJsonAutoFix is called", async () => {
       const vscodeConfig = <VscodeFileEventConfig>{};
       const uri = <Uri>{};
       eventUtilProxySinonMock
-        .expects("debouncedHandleProjectChange")
+        .expects("debouncedHandlePkgJsonAutoFix")
         .withExactArgs(uri, vscodeConfig)
         .resolves();
       await handleFileEventProxy(vscodeConfig)(uri);

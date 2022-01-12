@@ -65,6 +65,7 @@ function executeRefreshDiagnosticsOnDocumentChangeEvent(
 ) {
   return (event: TextDocumentChangeEvent) => {
     const uri = event.document.uri;
+
     if (
       // this event gets called multiple (four) times for each text change
       // but only once for "true" text changes

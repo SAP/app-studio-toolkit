@@ -8,13 +8,14 @@ import {
   utilProxy,
   loggerProxyObject,
 } from "../moduleProxies";
+import type { internal } from "../../src/autofix/eventUtil";
 
 describe("eventUtil unit tests", () => {
   let sandbox: SinonSandbox;
   let configurationProxySinonMock: SinonMock;
   let utilProxySinonMock: SinonMock;
   let loggerProxySinonMock: SinonMock;
-  let handleProjectChangeProxy: any;
+  let handlePkgJsonAutoFixProxy: typeof internal.handlePkgJsonAutoFix;
 
   const vscodeConfig = <VscodeFileEventConfig>{};
 
@@ -31,8 +32,8 @@ describe("eventUtil unit tests", () => {
 
     utilProxySinonMock = sandbox.mock(utilProxy);
     configurationProxySinonMock = sandbox.mock(configurationProxy);
-    handleProjectChangeProxy =
-      eventUtilProxyModule.internal.handleProjectChange;
+    handlePkgJsonAutoFixProxy =
+      eventUtilProxyModule.internal.handlePkgJsonAutoFix;
     loggerProxySinonMock = sandbox.mock(loggerProxyObject);
   });
 
@@ -48,9 +49,8 @@ describe("eventUtil unit tests", () => {
       const uri = <Uri>{ fsPath: "root/folder/project/package.json" };
       configurationProxySinonMock.expects("isAutoFixEnabled").returns(false);
       utilProxySinonMock.expects("findAndFixDepsIssues").never();
-      loggerProxySinonMock.expects("trace");
 
-      await handleProjectChangeProxy(uri, vscodeConfig);
+      await handlePkgJsonAutoFixProxy(uri, vscodeConfig);
     });
 
     it("path is in node_modules", async () => {
@@ -58,10 +58,11 @@ describe("eventUtil unit tests", () => {
         fsPath: "root/folder/project/node_modules/packagefolder/package.json",
       };
 
+      configurationProxySinonMock.expects("isAutoFixEnabled").returns(true);
       utilProxySinonMock.expects("findAndFixDepsIssues").never();
       loggerProxySinonMock.expects("trace");
 
-      await handleProjectChangeProxy(uri, vscodeConfig);
+      await handlePkgJsonAutoFixProxy(uri, vscodeConfig);
     });
 
     it("dependency issues can be fixed", async () => {
@@ -78,7 +79,7 @@ describe("eventUtil unit tests", () => {
         .withExactArgs(diagnosticCollection, uri);
       loggerProxySinonMock.expects("trace").thrice();
 
-      await handleProjectChangeProxy(uri, vscodeConfig);
+      await handlePkgJsonAutoFixProxy(uri, vscodeConfig);
     });
   });
 });

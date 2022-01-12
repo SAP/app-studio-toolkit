@@ -8,24 +8,27 @@ import {
   findAndFixDepsIssues,
   isInsideNodeModules,
 } from "../util";
-import { VscodeFileEventConfig, VscodeWorkspace } from "../vscodeTypes";
+import { VscodeFileEventConfig } from "../vscodeTypes";
 import { getLogger } from "../logger/logger";
 
 function logger(): IChildLogger {
   return getLogger().getChildLogger({ label: "autofix_eventUtils" });
 }
 
-export const debouncedHandleProjectChange = debounce(handleProjectChange, 3000);
+export const debouncedHandlePkgJsonAutoFix = debounce(
+  handlePkgJsonAutoFix,
+  3000
+);
 
-// TODO: would this get invoked while package.json is being edited flow?
-//   may cause duplicate "npm i"...
-//   attempt to filter out events for files which are actively edited?
-async function handleProjectChange(
+async function handlePkgJsonAutoFix(
   uri: Uri,
   vscodeConfig: VscodeFileEventConfig
 ): Promise<void> {
   const { workspace, diagnosticCollection, outputChannel } = vscodeConfig;
-  const fixProject = canBeFixed(workspace, uri);
+  if (!isAutoFixEnabled(workspace)) {
+    return;
+  }
+  const fixProject = canBeFixed(uri);
 
   const projectPath = dirname(uri.fsPath);
   logger().trace(`${projectPath} project can be fixed - ${fixProject}`);
@@ -41,12 +44,12 @@ async function handleProjectChange(
   }
 }
 
-function canBeFixed(workspace: VscodeWorkspace, uri: Uri): boolean {
+function canBeFixed(uri: Uri): boolean {
   if (isInsideNodeModules(uri.fsPath)) return false;
-
-  return isAutoFixEnabled(workspace);
+  // TODO: to discuss: should we ensure this is a package.json file?
+  return true;
 }
 
 export const internal = {
-  handleProjectChange,
+  handlePkgJsonAutoFix,
 };

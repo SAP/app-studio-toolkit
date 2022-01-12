@@ -18,9 +18,9 @@ export function getLogger(): IVSCodeExtLogger {
 
 export function initLogger(
   context: ExtensionContext,
-  outputChannel: OutputChannel
+  outputChannel: OutputChannel,
+  extensionName: string
 ): void {
-  const extensionName = context.extension.id;
   try {
     logger = configureLogger({
       extName: extensionName,

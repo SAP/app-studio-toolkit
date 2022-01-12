@@ -16,9 +16,9 @@ export const npmDepsValidationProxy = {
 };
 
 export const eventUtilProxy = {
-  debouncedHandleProjectChange() {
+  debouncedHandlePkgJsonAutoFix() {
     return Promise.reject(
-      "debouncedHandleProjectChange method is not implemented"
+      "debouncedHandlePkgJsonAutoFix method is not implemented"
     );
   },
   "@noCallThru": true,
@@ -26,7 +26,7 @@ export const eventUtilProxy = {
 
 export const configurationProxy = {
   isAutoFixEnabled() {
-    throw new Error("configurationProxy method is not implemented");
+    throw new Error("isAutoFixEnabled method is not implemented");
   },
   "@noCallThru": true,
 };

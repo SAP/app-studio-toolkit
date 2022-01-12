@@ -17,10 +17,16 @@ import { subscribeToPackageJsonChanges } from "./editorChanges";
 import { registerCommands } from "./commands";
 
 export function activate(context: ExtensionContext): void {
-  const outputChannel = window.createOutputChannel(context.extension.id);
-  initLogger(context, outputChannel);
+  const extensionName = "vscode-dependencies-validation";
 
-  const vscodeConfig = createVscodeConfig(context, outputChannel);
+  const outputChannel = window.createOutputChannel(extensionName);
+  initLogger(context, outputChannel, extensionName);
+
+  const vscodeConfig = createVscodeConfig(
+    context,
+    outputChannel,
+    extensionName
+  );
 
   registerCodeActionsProvider(vscodeConfig);
 
@@ -37,12 +43,16 @@ export function activate(context: ExtensionContext): void {
 // shared config
 function createVscodeConfig(
   context: ExtensionContext,
-  outputChannel: OutputChannel
+  outputChannel: OutputChannel,
+  extensionName: string
 ): VscodeConfig {
   const { subscriptions } = context;
 
   const kind = CodeActionKind.QuickFix;
-  const diagnosticCollection = createDiagnosticCollection(context);
+  const diagnosticCollection = createDiagnosticCollection(
+    context,
+    extensionName
+  );
 
   return {
     window,
@@ -59,11 +69,11 @@ function createVscodeConfig(
 }
 
 function createDiagnosticCollection(
-  context: ExtensionContext
+  context: ExtensionContext,
+  extensionName: string
 ): DiagnosticCollection {
-  const diagnosticCollection = languages.createDiagnosticCollection(
-    context.extension.id
-  );
+  const diagnosticCollection =
+    languages.createDiagnosticCollection(extensionName);
   context.subscriptions.push(diagnosticCollection);
   return diagnosticCollection;
 }
