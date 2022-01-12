@@ -5,10 +5,10 @@ on:
   # See: https://github.community/t/duplicate-checks-on-push-and-pull-request-simultaneous-event/18012
   push:
     branches:
-      - main
+      - main*
   pull_request:
     branches:
-      - main
+      - main*
 
 jobs:
   build:
@@ -20,6 +20,9 @@ jobs:
           - 12.x
           - 14.x
           - 16.x
+      # https://stackoverflow.com/questions/61070925/github-actions-disable-auto-cancel-when-job-fails
+      fail-fast: false
+
     steps:
       # using `v1` because of: https://github.com/actions/checkout/issues/246
       - uses: actions/checkout@v1

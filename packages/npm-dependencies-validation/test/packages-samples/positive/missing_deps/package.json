@@ -1,0 +1,9 @@
+{
+  "name": "no_deps_installed",
+  "version": "1.0.0",
+  "dependencies": {
+    "lodash": "~4.17.21",
+    "json-fixer": "1.6.12"
+  },
+  "devDependencies": {}
+}
