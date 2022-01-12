@@ -1,7 +1,7 @@
 import type { Uri } from "vscode";
 import { PACKAGE_JSON_FILTER } from "../constants";
 import { VscodeFileEventConfig } from "../vscodeTypes";
-import { debouncedHandleProjectChange } from "./eventUtil";
+import { debouncedHandlePkgJsonAutoFix } from "./eventUtil";
 
 export function addPackageJsonFileWatcher(
   vscodeConfig: VscodeFileEventConfig
@@ -14,7 +14,7 @@ export function addPackageJsonFileWatcher(
 }
 
 function handleFileEvent(vscodeConfig: VscodeFileEventConfig): any {
-  return (uri: Uri) => debouncedHandleProjectChange(uri, vscodeConfig);
+  return (uri: Uri) => debouncedHandlePkgJsonAutoFix(uri, vscodeConfig);
 }
 
 export const internal = {

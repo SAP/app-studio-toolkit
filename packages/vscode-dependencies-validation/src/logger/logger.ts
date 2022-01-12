@@ -18,12 +18,13 @@ export function getLogger(): IVSCodeExtLogger {
 
 export function initLogger(
   context: ExtensionContext,
-  outputChannel: OutputChannel
+  outputChannel: OutputChannel,
+  extName: string
 ): void {
   const extensionName = context.extension.id;
   try {
     logger = configureLogger({
-      extName: extensionName,
+      extName,
       logPath: context.logPath,
       logOutputChannel: outputChannel,
       loggingLevelProp: LOGGING_LEVEL_CONFIG_PROP,
