@@ -23,17 +23,17 @@
   ],
   "contributes": {
     "configuration": {
-      "title": "NPM Dependencies Validation",
+      "title": "NPM Dependency Validation",
       "properties": {
         "dependenciesValidation.enableAutoFix": {
           "type": "boolean",
-          "default": true,
-          "description": "Enables automatic dependencies misalignment fixing"
+          "default": false,
+          "description": "Enables the automatic fixing of dependency misalignment"
         },
         "dependenciesValidation.delayAutoFix": {
           "type": "number",
-          "default": 0,
-          "description": "Delays automatic dependencies misalignment fixing on startup (seconds)"
+          "default": 10,
+          "description": "Delays the automatic fixing of dependency misalignment on startup (seconds)"
         },
         "dependenciesValidation.logging.level": {
           "type": "string",
@@ -53,7 +53,7 @@
         "dependenciesValidation.logging.sourceLocationTracking": {
           "type": "boolean",
           "default": false,
-          "description": "Should Source Code Location Info be added to log entries, DANGER - May be very slow, only use in debugging scenarios",
+          "description": "If chosen, the location of the source code is added to log entries. Warning - this action may slow your extension. We recommend you use it only for debugging.",
           "scope": "window"
         }
       }
