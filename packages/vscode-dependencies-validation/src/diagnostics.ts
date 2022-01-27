@@ -5,6 +5,7 @@ import { findDependencyIssues } from "@sap-devx/npm-dependencies-validation";
 import { IChildLogger } from "@vscode-logging/types";
 import { getLogger } from "./logger/logger";
 import { NPM_DEPENDENCY_ISSUES_CODE } from "./constants";
+import { depIssuesToProblemStrings } from "./util";
 
 function logger(): IChildLogger {
   return getLogger().getChildLogger({ label: "diagnostics" });
@@ -19,7 +20,8 @@ export async function refreshDiagnostics(
   uri: Uri,
   dependencyIssueDiagnostics: DiagnosticCollection
 ): Promise<void> {
-  const { problems } = await findDependencyIssues(uri.fsPath);
+  const depIssues = await findDependencyIssues(uri.fsPath);
+  const problems = depIssuesToProblemStrings(depIssues);
   const diagnostics = isEmpty(problems) ? [] : [constructDiagnostic(problems)];
   dependencyIssueDiagnostics.set(uri, diagnostics);
 }

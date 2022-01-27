@@ -11,6 +11,7 @@ importers:
       '@commitlint/config-conventional': 13.2.0
       '@types/chai': ^4.2.22
       '@types/chai-as-promised': ^7.1.4
+      '@types/deep-equal-in-any-order': ^1.0.1
       '@types/lodash': 4.14.177
       '@types/mocha': ^9.0.0
       '@types/node': ^16.10.3
@@ -22,6 +23,7 @@ importers:
       chai-as-promised: ^7.1.1
       coveralls: ^3.1.1
       cz-conventional-changelog: 3.3.0
+      deep-equal-in-any-order: ^1.1.15
       eslint: 7.30.0
       eslint-config-prettier: 8.3.0
       eslint-plugin-eslint-comments: 3.2.0
@@ -47,6 +49,7 @@ importers:
       '@commitlint/config-conventional': 13.2.0
       '@types/chai': 4.2.22
       '@types/chai-as-promised': 7.1.4
+      '@types/deep-equal-in-any-order': 1.0.1
       '@types/lodash': 4.14.177
       '@types/mocha': 9.0.0
       '@types/node': 16.11.10
@@ -58,6 +61,7 @@ importers:
       chai-as-promised: 7.1.1_chai@4.3.4
       coveralls: 3.1.1
       cz-conventional-changelog: 3.3.0
+      deep-equal-in-any-order: 1.1.15
       eslint: 7.30.0
       eslint-config-prettier: 8.3.0_eslint@7.30.0
       eslint-plugin-eslint-comments: 3.2.0_eslint@7.30.0
@@ -132,9 +136,20 @@ importers:
 
   packages/npm-dependencies-validation:
     specifiers:
+      '@types/fs-extra': ^9.0.13
+      '@types/semver': ^7.3.9
+      fs-extra: 10.0.0
       lodash: 4.17.21
+      semver: 7.3.5
+      type-fest: ^2.11.1
     dependencies:
+      fs-extra: 10.0.0
       lodash: 4.17.21
+      semver: 7.3.5
+    devDependencies:
+      '@types/fs-extra': 9.0.13
+      '@types/semver': 7.3.9
+      type-fest: 2.11.1
 
   packages/vscode-dependencies-validation:
     specifiers:
@@ -1633,6 +1648,10 @@ packages:
     resolution: {integrity: sha512-tFfcE+DSTzWAgifkjik9AySNqIyNoYwmR+uecPwwD/XRNfvOjmC/FjCxpiUGDkDVDphPfCUecSQVFw+lN3M3kQ==}
     dev: true
 
+  /@types/deep-equal-in-any-order/1.0.1:
+    resolution: {integrity: sha512-hUWUUE53WjKfcCncSmWmNXVNNT+0Iz7gYFnov3zdCXrX3Thxp1Cnmfd5LwWOeCVUV5LhpiFgS05vaAG72doo9w==}
+    dev: true
+
   /@types/eslint-scope/3.7.1:
     resolution: {integrity: sha512-SCFeogqiptms4Fg29WpOTk5nHIzfpKCemSN63ksBQYKTcXoJEmJagV+DhVmbapZzY4/5YaOV1nZwrsU79fFm1g==}
     dependencies:
@@ -1649,6 +1668,12 @@ packages:
 
   /@types/estree/0.0.50:
     resolution: {integrity: sha512-C6N5s2ZFtuZRj54k2/zyRhNDjJwwcViAM3Nbm8zjBpbqAdZ00mr0CFxvSKeO8Y/e03WVFLpQMdHYVfUd6SB+Hw==}
+    dev: true
+
+  /@types/fs-extra/9.0.13:
+    resolution: {integrity: sha512-nEnwB++1u5lVDM2UI4c1+5R+FYaKfaAzS4OococimjVm3nQw3TuzH5UNsocrcTBbhnerblyHj4A49qXbIiZdpA==}
+    dependencies:
+      '@types/node': 16.11.10
     dev: true
 
   /@types/json-schema/7.0.9:
@@ -1689,6 +1714,10 @@ packages:
 
   /@types/proxyquire/1.3.28:
     resolution: {integrity: sha512-SQaNzWQ2YZSr7FqAyPPiA3FYpux2Lqh3HWMZQk47x3xbMCqgC/w0dY3dw9rGqlweDDkrySQBcaScXWeR+Yb11Q==}
+    dev: true
+
+  /@types/semver/7.3.9:
+    resolution: {integrity: sha512-L/TMpyURfBkf+o/526Zb6kd/tchUP3iBDEPjqjb+U2MAJhVRxxrmr2fwpe08E7QsV7YLcpq0tUaQ9O9x97ZIxQ==}
     dev: true
 
   /@types/sinon/10.0.6:
@@ -3376,6 +3405,13 @@ packages:
       type-detect: 4.0.8
     dev: true
 
+  /deep-equal-in-any-order/1.1.15:
+    resolution: {integrity: sha512-/W36YW15Z+AymTkswOoCOX++gWLd0XBy1lFlxmML/m/PW0/0GuNkE65UTA2qiuPrKJTxXssKKrvtIZkOh+yEHA==}
+    dependencies:
+      lodash.mapvalues: 4.6.0
+      sort-any: 2.0.0
+    dev: true
+
   /deep-is/0.1.4:
     resolution: {integrity: sha512-oIPzksmTg4/MriiaYGO+okXDT7ztn/w3Eptv/+gSIdMdKsJo0u4CfYNFJPy+4SKMuCqGw2wxnA+URMg3t8a/bQ==}
     dev: true
@@ -4294,7 +4330,6 @@ packages:
       graceful-fs: 4.2.8
       jsonfile: 6.1.0
       universalify: 2.0.0
-    dev: true
 
   /fs-extra/7.0.1:
     resolution: {integrity: sha512-YJDaCJZEnBmcbw13fvdAM9AwNOJwOzrE4pqMqBq5nFiEqXUqHwlK4B+3pUw6JNvfSPtX05xFHtYy/1ni01eGCw==}
@@ -5851,6 +5886,10 @@ packages:
     resolution: {integrity: sha1-dx7Hg540c9nEzeKLGTlMNWL09tM=}
     dev: true
 
+  /lodash.mapvalues/4.6.0:
+    resolution: {integrity: sha1-G6+lAF3p3W9PJmaMMMo3IwzJaJw=}
+    dev: true
+
   /lodash.merge/4.6.2:
     resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
     dev: true
@@ -5918,7 +5957,6 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       yallist: 4.0.0
-    dev: true
 
   /make-dir/2.1.0:
     resolution: {integrity: sha512-LS9X+dc8KLxXCb8dni79fLIIUA5VyZoyjSMCwTluaXA0o27cCK0bhXkpgw+sTXVpPy/lSO57ilRixqk0vDmtRA==}
@@ -7895,7 +7933,6 @@ packages:
     hasBin: true
     dependencies:
       lru-cache: 6.0.0
-    dev: true
 
   /serialize-javascript/6.0.0:
     resolution: {integrity: sha512-Qr3TosvguFt8ePWqsvRfrKyQXIiW+nGbYpy8XK24NQHE83caxWt+mIymTT19DGFbNWNLfEwsrkSmN64lVWB9ag==}
@@ -8094,6 +8131,12 @@ packages:
     dependencies:
       ip: 1.1.5
       smart-buffer: 4.2.0
+    dev: true
+
+  /sort-any/2.0.0:
+    resolution: {integrity: sha512-T9JoiDewQEmWcnmPn/s9h/PH9t3d/LSWi0RgVmXSuDYeZXTZOZ1/wrK2PHaptuR1VXe3clLLt0pD6sgVOwjNEA==}
+    dependencies:
+      lodash: 4.17.21
     dev: true
 
   /sort-keys/2.0.0:
@@ -8809,6 +8852,11 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
+  /type-fest/2.11.1:
+    resolution: {integrity: sha512-fPcV5KLAqFfmhHobtAUwEpbpfYhVF7wSLVgbG/7mIGe/Pete7ky/bPAPRkzbWdrj0/EkswFAAR2feJCgigkUKg==}
+    engines: {node: '>=12.20'}
+    dev: true
+
   /type/1.2.0:
     resolution: {integrity: sha512-+5nt5AAniqsCnu2cEQQdpzCAh33kVx8n0VoFidKpB1dVVLAN/F+bgVOqOJqOnEnrhp222clB5p3vUlD+1QAnfg==}
     dev: false
@@ -9459,7 +9507,6 @@ packages:
 
   /yallist/4.0.0:
     resolution: {integrity: sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==}
-    dev: true
 
   /yaml/1.10.2:
     resolution: {integrity: sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg==}

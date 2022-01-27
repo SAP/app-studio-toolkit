@@ -1,20 +1,20 @@
-import { expect } from "chai";
 import { resolve, join, dirname } from "path";
-import { rmdirSync, unlinkSync } from "fs";
+import { expect } from "chai";
+import { removeSync } from "fs-extra";
+import { last, noop } from "lodash";
 import { OutputChannel } from "../src/types";
 import { fixDependencyIssues, findDependencyIssues } from "../src/api";
-import { doesPathExist } from "../src/utils/fileUtil";
 import { npmSpawnTestTimeout } from "./config";
 
-describe("`fixDependencyIssues()` function ", function () {
-  const outputChannel: OutputChannel = {
-    appendLine: (data: string) => console.log(data),
-  };
-
+describe("`fixDependencyIssues()` function ", () => {
   context("negative", () => {
     it("will not fix missing deps", async () => {
-      await expect(fixDependencyIssues("non_existing_package_json_path")).to.be
-        .fulfilled;
+      const outputChannel: OutputChannel = {
+        appendLine: noop,
+      };
+      await expect(
+        fixDependencyIssues("non_existing_package_json_path", outputChannel)
+      ).to.be.fulfilled;
     });
   });
 
@@ -23,37 +23,27 @@ describe("`fixDependencyIssues()` function ", function () {
       "./test/packages-samples/positive/fix_missing_deps/package.json"
     );
 
-    afterEach(async () => {
+    afterEach(() => {
       const packagePath = dirname(packageJsonPath);
       const nodeModulesPath = join(packagePath, "node_modules");
-
-      if (await doesPathExist(nodeModulesPath)) {
-        rmdirSync(nodeModulesPath, { recursive: true });
-      }
-
       const packageLockPath = join(packagePath, "package-lock.json");
-      if (await doesPathExist(packageLockPath)) {
-        unlinkSync(packageLockPath);
-      }
+
+      removeSync(nodeModulesPath);
+      removeSync(packageLockPath);
     });
 
-    it("will fix missing deps", async function () {
-      this.timeout(npmSpawnTestTimeout * 2);
-
-      const { problems: problemsBeforeFix } = await findDependencyIssues(
-        packageJsonPath
-      );
-      const jsonFixerProblem = problemsBeforeFix.find((problem) =>
-        problem.startsWith("missing: json-fixer@1.6.12")
-      );
-      expect(jsonFixerProblem).to.exist;
+    it("will fix missing deps", async () => {
+      const output: string[] = [];
+      const outputChannel: OutputChannel = {
+        appendLine: (data: string) => output.push(data),
+      };
+      const problemsBeforeFix = await findDependencyIssues(packageJsonPath);
+      expect(problemsBeforeFix).to.not.be.empty;
 
       await fixDependencyIssues(packageJsonPath, outputChannel);
-
-      const { problems: problemsAfterFix } = await findDependencyIssues(
-        packageJsonPath
-      );
+      expect(last(output)).to.contain("Done fixing dependency issues");
+      const problemsAfterFix = await findDependencyIssues(packageJsonPath);
       expect(problemsAfterFix).to.be.empty;
-    });
+    }).timeout(npmSpawnTestTimeout);
   });
 });

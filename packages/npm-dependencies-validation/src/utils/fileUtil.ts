@@ -11,6 +11,7 @@ export function toJsonObject<T>(jsonContent: string): T {
   }
 }
 
+// TODO: use fs-extra instead
 export async function doesPathExist(absPath: string): Promise<boolean> {
   try {
     await access(absPath, constants.R_OK);

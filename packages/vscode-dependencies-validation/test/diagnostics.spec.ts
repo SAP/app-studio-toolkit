@@ -1,6 +1,7 @@
 import type { Uri } from "vscode";
 import proxyquire = require("proxyquire");
 import { createSandbox, SinonMock, SinonSandbox } from "sinon";
+import { DepIssue } from "@sap-devx/npm-dependencies-validation";
 import { diagnosticCollectionMock } from "./vscodeMocks";
 import { refreshDiagnostics } from "../src/diagnostics";
 import {
@@ -62,9 +63,19 @@ describe("diagnostics unit test", () => {
 
     it("there are 2 dependency issues", async () => {
       const uri = <Uri>{ fsPath: "/root/folder/package.json" };
-      npmDepsValidationSinonMock.expects("findDependencyIssues").resolves({
-        problems: ["missing: json-fixer@1.6.12", "missing: lodash@0.0.1"],
-      });
+      const depIssues: DepIssue[] = [
+        { type: "missing", isDev: false, name: "json-fixer" },
+        {
+          type: "mismatch",
+          isDev: false,
+          name: "lodash",
+          actual: "4.17.1",
+          expected: "~3.0.0",
+        },
+      ];
+      npmDepsValidationSinonMock
+        .expects("findDependencyIssues")
+        .resolves(depIssues);
       diagnosticCollectionSinonMock.expects("set").withArgs(uri);
       loggerSinonMock.expects("trace").returns("");
       await refreshDiagnosticsProxy(uri, diagnosticCollectionMock);
@@ -72,9 +83,7 @@ describe("diagnostics unit test", () => {
 
     it("there are no dependency issues", async () => {
       const uri = <Uri>{ fsPath: "/root/folder/package.json" };
-      npmDepsValidationSinonMock
-        .expects("findDependencyIssues")
-        .resolves({ problems: undefined });
+      npmDepsValidationSinonMock.expects("findDependencyIssues").resolves([]);
       const diagnostics: Diagnostic[] = [];
       diagnosticCollectionSinonMock
         .expects("set")

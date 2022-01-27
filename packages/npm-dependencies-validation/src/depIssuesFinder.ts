@@ -1,60 +1,144 @@
-import { isEmpty } from "lodash";
-import { NpmLsResult } from "./types";
-import { doesPathExist } from "./utils/fileUtil";
-import { invokeNPMCommandWithJsonResult } from "./utils/npmUtil";
+import { pathExists, readJson } from "fs-extra";
+import { dirname, resolve } from "path";
+import { compact, map } from "lodash";
+import { satisfies } from "semver";
+import { PackageJson } from "type-fest";
 import {
-  createPackageJsonPaths,
-  isCurrentlySupported,
-} from "./utils/packageJsonUtil";
+  DepIssue,
+  MismatchDepIssue,
+  MissingDepIssue,
+  PackageJsonDeps,
+  SemVerRange,
+} from "./types";
 
-// ls --depth=0 shows only top-level dependencies
-const LS_ARGS: string[] = ["ls", "--depth=0"];
+const NO_ISSUES = undefined;
+const PKG_JSON_DEFAULT_DEPS: PackageJsonDeps = {
+  dependencies: {},
+  devDependencies: {},
+};
+Object.freeze(PKG_JSON_DEFAULT_DEPS);
 
 export async function findDependencyIssues(
   absPath: string
-): Promise<NpmLsResult> {
-  const { filePath, dirPath: cwd } = createPackageJsonPaths(absPath);
-  const shouldFind = await shouldFindDependencyIssues(filePath);
-  if (!shouldFind) {
-    return { problems: [] };
-  }
-
-  // dependencies issues and extraneous modules
-  const depsCommandConfig = {
-    commandArgs: [...LS_ARGS],
-    cwd,
+): Promise<DepIssue[]> {
+  // we don't actually need default values, but it is best to not rely on behavior for `undefined` values
+  const defaultPkgJson: Required<PackageJsonDeps> = {
+    dependencies: {},
+    devDependencies: {},
   };
-  const npmProdLsResult = await invokeNPMCommandWithJsonResult<NpmLsResult>(
-    depsCommandConfig
-  );
-  const prodProblems = getProblems(npmProdLsResult);
-  // hack workaround for different behaviors of `npm ls` in different versions of npm
-  if (!isEmpty(prodProblems)) {
-    // early exit as we don't know if we can safely combine the results of prod/dev mode in all versions of npm.
-    return { problems: prodProblems };
+
+  let pkgJsonValue: Required<PackageJsonDeps>;
+  try {
+    pkgJsonValue = {
+      ...defaultPkgJson,
+      ...((await readJson(absPath, {
+        throws: false,
+      })) as PackageJsonDeps),
+    };
+  } catch {
+    // For example: if the root package.json file has been deleted immediately
+    // after `findDependencyIssues` has been called.
+    return [];
   }
 
-  // in npm6 `devDeps` related issues and extraneous deps are not detected via the regular `npm ls` command (without `--dev`).
-  const devDepsCommandConfig = { commandArgs: [...LS_ARGS, "--dev"], cwd };
-  const npmDevLsResults = await invokeNPMCommandWithJsonResult<NpmLsResult>(
-    devDepsCommandConfig
+  const nodeModulesPath = resolve(dirname(absPath), "node_modules");
+
+  const depsIssues = await validateDepsIssues({
+    deps: pkgJsonValue.dependencies,
+    nodeModulesPath,
+    isDev: false,
+  });
+
+  const devDepsIssues = await validateDepsIssues({
+    deps: pkgJsonValue.devDependencies,
+    nodeModulesPath,
+    isDev: true,
+  });
+
+  return [...depsIssues, ...devDepsIssues];
+}
+
+async function validateDepsIssues(opts: {
+  deps: PackageJsonDeps["dependencies" | "devDependencies"];
+  nodeModulesPath: string;
+  isDev: boolean;
+}): Promise<DepIssue[]> {
+  // using `Promise.all` because `map` is not promise aware.
+  const allValidationResults: (DepIssue | undefined)[] = await Promise.all(
+    map(opts.deps, async (expectedVerRange, depName) => {
+      try {
+        const depPkgJsonPath = resolve(
+          opts.nodeModulesPath,
+          depName,
+          "package.json"
+        );
+        return (
+          (await validateMissingDep({
+            depPkgJsonPath,
+            depName,
+            isDev: opts.isDev,
+          })) ??
+          (await validateMismatchDep({
+            depPkgJsonPath,
+            depName,
+            expectedVerRange,
+            isDev: opts.isDev,
+          }))
+        );
+      } catch (e) {
+        // intentionally ignoring promise rejections / exceptions
+        // as we are only interested in "real" npm issues we can report to the end user
+        /* istanbul ignore next -- Too low benefit for testing this edge case  */
+        return NO_ISSUES;
+      }
+    })
   );
 
-  return { problems: getProblems(npmDevLsResults) };
+  const actualValidationIssues = compact(allValidationResults);
+  return actualValidationIssues;
 }
 
-function getProblems(npmLsResult: NpmLsResult): string[] {
-  return npmLsResult.problems ?? [];
+async function validateMissingDep(opts: {
+  depPkgJsonPath: string;
+  depName: string;
+  isDev: boolean;
+}): Promise<MissingDepIssue | undefined> {
+  const pkgJsonExists = await pathExists(opts.depPkgJsonPath);
+  if (!pkgJsonExists) {
+    return {
+      type: "missing" as "missing",
+      name: opts.depName,
+      isDev: opts.isDev,
+    };
+  } else {
+    return NO_ISSUES;
+  }
 }
 
-async function shouldFindDependencyIssues(
-  packageJsonPath: string
-): Promise<boolean> {
-  const packageJsonExists = await doesPathExist(packageJsonPath);
-  if (!packageJsonExists) return false;
+async function validateMismatchDep(opts: {
+  depPkgJsonPath: string;
+  depName: string;
+  expectedVerRange: SemVerRange;
+  isDev: boolean;
+}): Promise<MismatchDepIssue | undefined> {
+  const { version: actualVersion } = (await readJson(
+    opts.depPkgJsonPath
+  )) as PackageJson;
 
-  const currentlySupported = await isCurrentlySupported(packageJsonPath);
-  if (!currentlySupported) return false;
+  // edge case of missing `version` property in package.json is ignored
+  if (actualVersion === undefined) {
+    return NO_ISSUES;
+  }
 
-  return true;
+  if (!satisfies(actualVersion, opts.expectedVerRange)) {
+    return {
+      type: "mismatch" as "mismatch",
+      name: opts.depName,
+      expected: opts.expectedVerRange,
+      actual: actualVersion,
+      isDev: opts.isDev,
+    };
+  } else {
+    return NO_ISSUES;
+  }
 }

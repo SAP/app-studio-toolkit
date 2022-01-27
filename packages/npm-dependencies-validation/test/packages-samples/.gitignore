@@ -1,0 +1,2 @@
+# our samples can include "dummy" contents of `node_modules` dir
+!/**/node_modules/

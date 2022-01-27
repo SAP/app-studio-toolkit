@@ -1,9 +1,11 @@
 // importing directly from `fs/promises` is not supported on nodejs 12
 import { promises } from "fs";
+import { dirname, join } from "path";
+import { PackageJson } from "type-fest";
+import { FilePaths } from "../types";
+import { doesPathExist, emptyJsonObject, toJsonObject } from "./fileUtil";
+
 const { readFile } = promises;
-import { join, dirname } from "path";
-import { FilePaths, PackageJson } from "../types";
-import { emptyJsonObject, doesPathExist, toJsonObject } from "./fileUtil";
 
 export const yarnManagerFiles = [
   "yarn.lock",
@@ -72,6 +74,7 @@ export const internal = {
   readJsonFile,
 };
 
+// TODO: check where else is this used and if it is still needed
 export function createPackageJsonPaths(absPackageJsonPath: string): FilePaths {
   return {
     filePath: absPackageJsonPath,

@@ -1,0 +1,7 @@
+{
+  "name": "mismatch-dep",
+  "version": "1.0.0",
+  "dependencies": {
+    "missing-math": "^3.2.0"
+  }
+}
