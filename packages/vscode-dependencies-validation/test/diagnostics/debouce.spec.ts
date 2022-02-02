@@ -13,7 +13,7 @@ describe("debounce module", () => {
   beforeEach(() => {
     debounceModule = proxyQuireNoCallThru("../../src/diagnostics/debounce", {
       // we are only testing the caching logic, not any real flow...
-      "../diagnostics": { refreshDiagnostics: noop },
+      "./refreshDiagnostics": { refreshDiagnostics: noop },
       vscode: { workspace: {} },
       "../logger/logger": loggerProxy,
     });

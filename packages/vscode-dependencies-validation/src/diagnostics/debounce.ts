@@ -1,7 +1,7 @@
 import type { Uri } from "vscode";
 import { workspace } from "vscode";
 import { debounce } from "lodash";
-import { refreshDiagnostics } from "../diagnostics";
+import { refreshDiagnostics } from "./refreshDiagnostics";
 import { getLogger } from "../logger/logger";
 
 type RefreshDiagnosticsFunc = typeof refreshDiagnostics;
