@@ -21,41 +21,46 @@ Object.freeze(PKG_JSON_DEFAULT_DEPS);
 export async function findDependencyIssues(
   absPath: string
 ): Promise<DepIssue[]> {
-  // we don't actually need default values, but it is best to not rely on behavior for `undefined` values
-  const defaultPkgJson: Required<PackageJsonDeps> = {
-    dependencies: {},
-    devDependencies: {},
-  };
-
-  let pkgJsonValue: Required<PackageJsonDeps>;
-  try {
-    pkgJsonValue = {
-      ...defaultPkgJson,
-      ...((await readJson(absPath, {
-        throws: false,
-      })) as PackageJsonDeps),
-    };
-  } catch {
-    // For example: if the root package.json file has been deleted immediately
-    // after `findDependencyIssues` has been called.
-    return [];
-  }
-
+  const rootDeps = await readRootDeps(absPath);
   const nodeModulesPath = resolve(dirname(absPath), "node_modules");
 
   const depsIssues = await validateDepsIssues({
-    deps: pkgJsonValue.dependencies,
+    deps: rootDeps.dependencies,
     nodeModulesPath,
     isDev: false,
   });
 
   const devDepsIssues = await validateDepsIssues({
-    deps: pkgJsonValue.devDependencies,
+    deps: rootDeps.devDependencies,
     nodeModulesPath,
     isDev: true,
   });
 
   return [...depsIssues, ...devDepsIssues];
+}
+
+async function readRootDeps(
+  absPath: string
+): Promise<Required<PackageJsonDeps>> {
+  const defaultEmptyDepsProps: Required<PackageJsonDeps> = {
+    dependencies: {},
+    devDependencies: {},
+  };
+
+  let depsAndDevDeps: Required<PackageJsonDeps>;
+  try {
+    depsAndDevDeps = {
+      // ensure the `dependencies` and `devDependencies` property **exist**
+      ...defaultEmptyDepsProps,
+      ...((await readJson(absPath, {
+        throws: false,
+      })) as PackageJsonDeps),
+    };
+  } catch {
+    return defaultEmptyDepsProps;
+  }
+
+  return depsAndDevDeps;
 }
 
 async function validateDepsIssues(opts: {
@@ -64,6 +69,7 @@ async function validateDepsIssues(opts: {
   isDev: boolean;
 }): Promise<DepIssue[]> {
   // using `Promise.all` because `map` is not promise aware.
+  // This also means the file system access is done concurrently.
   const allValidationResults: (DepIssue | undefined)[] = await Promise.all(
     map(opts.deps, async (expectedVerRange, depName) => {
       try {
