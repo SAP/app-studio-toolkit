@@ -85,7 +85,7 @@ describe("util unit tests", () => {
       npmDepsValidationSinonMock
         .expects("findDependencyIssues")
         .withExactArgs(uri.fsPath)
-        .resolves({ problems: ["missing: json-fixer@1.6.12"] });
+        .resolves([{ type: "missing", name: "lodash", isDev: false }]);
       await findAndFixDepsIssuesProxy(uri, outputChannel);
     });
   });

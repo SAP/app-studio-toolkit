@@ -1,19 +1,4 @@
-export type NpmLsResult = {
-  problems: string[];
-};
-
-export type DependenciesPropertyName = "dependencies" | "devDependencies";
-
-export type PackageJson = {
-  name: string;
-  version: string;
-} & DependenciesProperties;
-
-export type DependenciesProperties = {
-  [key in DependenciesPropertyName]?: {
-    [key: string]: string;
-  };
-};
+import { PackageJson } from "type-fest";
 
 export interface OutputChannel {
   appendLine: (message: string) => void;
@@ -24,7 +9,32 @@ export type NpmCommandConfig = {
   commandArgs: string[];
 };
 
+// TODO: evaluate if this is still used?
 export type FilePaths = {
   filePath: string;
   dirPath: string;
 };
+
+export type PackageJsonVersion = string;
+export type SemVerRange = string;
+
+export type PackageJsonDeps = Pick<
+  PackageJson,
+  "dependencies" | "devDependencies"
+>;
+
+export type DepIssue = MismatchDepIssue | MissingDepIssue;
+
+export interface MismatchDepIssue {
+  type: "mismatch";
+  name: string;
+  isDev: boolean;
+  expected: SemVerRange;
+  actual: PackageJsonVersion;
+}
+
+export interface MissingDepIssue {
+  type: "missing";
+  name: string;
+  isDev: boolean;
+}

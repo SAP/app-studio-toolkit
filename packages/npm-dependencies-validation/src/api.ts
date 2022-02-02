@@ -2,4 +2,4 @@ export { findDependencyIssues } from "./depIssuesFinder";
 
 export { fixDependencyIssues } from "./depIssuesFixer";
 
-export { NpmLsResult } from "./types";
+export { DepIssue, MismatchDepIssue, MissingDepIssue } from "./types";

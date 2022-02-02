@@ -29,6 +29,13 @@
     "coverage": "nyc mocha"
   },
   "dependencies": {
-    "lodash": "4.17.21"
+    "lodash": "4.17.21",
+    "fs-extra": "10.0.0",
+    "semver": "7.3.5"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^9.0.13",
+    "@types/semver": "^7.3.9",
+    "type-fest": "^2.11.1"
   }
 }

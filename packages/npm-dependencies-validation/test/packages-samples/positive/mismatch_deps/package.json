@@ -1,0 +1,10 @@
+{
+  "name": "mismatch-dep",
+  "version": "1.0.0",
+  "dependencies": {
+    "mismatched": "3.3.3"
+  },
+  "devDependencies": {
+    "range-parser": "~1.2.1"
+  }
+}

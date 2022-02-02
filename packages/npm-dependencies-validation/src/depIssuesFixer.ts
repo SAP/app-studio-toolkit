@@ -13,7 +13,8 @@ export const internal = {
 
 export async function fixDependencyIssues(
   absPath: string,
-  outputChannel?: OutputChannel
+  // TODO: wrap in a more generic logger interface
+  outputChannel: OutputChannel
 ): Promise<void> {
   const { filePath, dirPath: cwd } = createPackageJsonPaths(absPath);
   const shouldFix = await shouldFixDependencyIssues(filePath);
