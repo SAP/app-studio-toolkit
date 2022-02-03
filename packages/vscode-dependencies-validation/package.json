@@ -76,7 +76,8 @@
     "vscode-languageserver-textdocument": "1.0.4",
     "lodash": "^4.17.21",
     "jsonc-parser": "3.0.0",
-    "fs-extra": "10.0.0"
+    "fs-extra": "10.0.0",
+    "ts-essentials": "9.1.2"
   },
   "devDependencies": {
     "@types/fs-extra": "^9.0.13",

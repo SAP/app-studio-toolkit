@@ -5,9 +5,5 @@
     "outDir": "dist",
     "baseUrl": "."
   },
-  "include": ["src/**/*", "test/**/*"],
-
-  "typeAcquisition": {
-    "exclude": ["jest"]
-  }
+  "include": ["src/**/*", "test/**/*"]
 }
