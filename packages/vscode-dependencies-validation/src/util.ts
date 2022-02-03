@@ -2,9 +2,8 @@ import type { DiagnosticCollection, Uri } from "vscode";
 import {
   findDependencyIssues,
   fixDependencyIssues,
-  DepIssue,
 } from "@sap-devx/npm-dependencies-validation";
-import { isEmpty, map, compact } from "lodash";
+import { isEmpty } from "lodash";
 import { VscodeOutputChannel } from "./vscodeTypes";
 
 export function isInsideNodeModules(absPath: string): boolean {
