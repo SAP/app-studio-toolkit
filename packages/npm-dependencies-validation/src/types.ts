@@ -17,11 +17,8 @@ export type FilePaths = {
 
 export type PackageJsonVersion = string;
 export type SemVerRange = string;
-
-export type PackageJsonDeps = Pick<
-  PackageJson,
-  "dependencies" | "devDependencies"
->;
+export type DepsProp = "dependencies" | "devDependencies";
+export type PackageJsonDeps = Pick<PackageJson, DepsProp>;
 
 export type DepIssue = MismatchDepIssue | MissingDepIssue;
 

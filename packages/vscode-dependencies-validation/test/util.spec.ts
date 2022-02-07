@@ -74,7 +74,7 @@ describe("util unit tests", () => {
       npmDepsValidationSinonMock
         .expects("findDependencyIssues")
         .withExactArgs(uri.fsPath)
-        .resolves({ problems: [] });
+        .resolves([]);
       await findAndFixDepsIssuesProxy(uri, outputChannel);
     });
 

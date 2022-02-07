@@ -1,7 +1,7 @@
 import type { Uri } from "vscode";
 import { workspace } from "vscode";
 import { debounce } from "lodash";
-import { refreshDiagnostics } from "../diagnostics";
+import { refreshDiagnostics } from "./refreshDiagnostics";
 import { getLogger } from "../logger/logger";
 
 type RefreshDiagnosticsFunc = typeof refreshDiagnostics;
@@ -10,16 +10,18 @@ const OPTIMIZED_PATHS_TO_FUNC: Map<
   { func: RefreshDiagnosticsFunc; uri: Uri }
 > = new Map();
 
-// we are using a fairly long `wait` because the operation of detecting package.json
-// dependencies issues is very heavy.
 // https://ux.stackexchange.com/questions/95336/how-long-should-the-debounce-timeout-be
-const DEBOUNCE_WAIT = 2000;
+// If the debounce is too small, changes may not be persisted in time to the disk for our
+// the validation logic to run correctly.
+const DEBOUNCE_WAIT = 1500;
 
 export function getOptimizedRefreshDiagnostics(
   uri: Uri
 ): RefreshDiagnosticsFunc {
   if (!OPTIMIZED_PATHS_TO_FUNC.has(uri.path)) {
     const debounced = debounce(refreshDiagnostics, DEBOUNCE_WAIT, {
+      // using trailing edge to wait until the end of the wait timeout, to allow time
+      // for VSCode to persist the changes to the "disk".
       trailing: true,
     });
     OPTIMIZED_PATHS_TO_FUNC.set(uri.path, {
