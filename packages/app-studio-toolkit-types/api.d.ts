@@ -1,5 +1,36 @@
 import { Uri } from "vscode";
 import { WorkspaceApi } from "@sap/artifact-management-types";
+import { PackageJson } from "type-fest";
+
+export type PackageName = string;
+export type SemVer = string;
+export type SemVerRange = string;
+
+export interface NodeUpgradeSpec {
+  package:
+    | {
+        from: PackageName;
+        to: PackageName;
+      }
+    | PackageName;
+  version: {
+    from: SemVer | SemVerRange;
+    to: SemVer | SemVerRange;
+  };
+  // TODO: consider include/exclude props (glob / project-type / ?)
+}
+
+/**
+ * Optional additional BAS specific metadata on a VSCode extension running in BAS.
+ */
+export interface BASPackageJson extends PackageJson {
+  BASContributes?: {
+    actions?: IAction[];
+    upgrade: {
+      nodejs: NodeUpgradeSpec[];
+    };
+  };
+}
 
 /**
  * re-export of the types from `@sap/artifact-management-types for convenience

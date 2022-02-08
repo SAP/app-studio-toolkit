@@ -13,6 +13,9 @@
       "path": "./packages/vscode-dependencies-validation"
     },
     {
+      "path": "./packages/vscode-deps-upgrade-tool"
+    },
+    {
       "path": "./examples/sample-action-client"
     },
     {

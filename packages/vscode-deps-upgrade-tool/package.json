@@ -1,0 +1,42 @@
+{
+  "name": "vscode-deps-upgrade-tool",
+  "displayName": "VSCode Dependencies Upgrade Tool",
+  "version": "1.6.1",
+  "private": true,
+  "description": "TBD",
+  "categories": [
+    "Other"
+  ],
+  "engines": {
+    "vscode": "^1.50.0"
+  },
+  "license": "Apache-2.0",
+  "publisher": "SAPOSS",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/app-studio-toolkit",
+    "directory": "packages/vscode-deps-upgrade-tool"
+  },
+  "main": "./dist/src/extension",
+  "activationEvents": [
+    "*"
+  ],
+  "contributes": {},
+  "scripts": {
+    "ci": "npm-run-all clean compile coverage bundle package",
+    "clean": "rimraf ./dist *.vsix ./coverage ./.nyc_output",
+    "compile": "tsc -p ./",
+    "watch": "tsc -p ./ --watch",
+    "test": "mocha",
+    "coverage": "nyc mocha",
+    "bundle": "webpack --mode production",
+    "package": "node ./scripts/package-vsix.js"
+  },
+  "dependencies": {
+    "@vscode-logging/wrapper": "1.0.1"
+  },
+  "devDependencies": {
+    "@sap-devx/app-studio-toolkit-types": "1.5.0",
+    "type-fest": "2.11.1"
+  }
+}
