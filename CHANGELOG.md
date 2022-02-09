@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/SAP/app-studio-toolkit/compare/v1.6.1...v1.7.0) (2022-02-09)
+
+### Features
+
+- display diagnostics at correct position ([#176](https://github.com/SAP/app-studio-toolkit/issues/176)) ([4e390f6](https://github.com/SAP/app-studio-toolkit/commit/4e390f612e4582ea703cc5868a77f646b3279c3a))
+
 ## [1.6.1](https://github.com/SAP/app-studio-toolkit/compare/v1.6.0...v1.6.1) (2022-01-23)
 
 **Note:** Version bump only for package root

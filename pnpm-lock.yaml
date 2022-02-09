@@ -153,7 +153,7 @@ importers:
 
   packages/vscode-dependencies-validation:
     specifiers:
-      '@sap-devx/npm-dependencies-validation': ^1.6.0
+      '@sap-devx/npm-dependencies-validation': ^1.7.0
       '@types/fs-extra': ^9.0.13
       '@types/jest': ^27.4.0
       '@vscode-logging/types': 0.1.4
