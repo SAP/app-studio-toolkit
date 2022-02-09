@@ -1,6 +1,6 @@
 {
   "name": "vscode-dependencies-validation",
-  "displayName": "vscode-dependencies-validation",
+  "displayName": "NPM Dependencies Validation",
   "version": "1.7.0",
   "private": true,
   "description": "Diagnostics and quick-fixes for NPM dependencies issues for VSCode",
@@ -15,7 +15,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/SAP/app-studio-toolkit",
-    "directory": "packages/npm-dependencies-validation"
+    "directory": "packages/vscode-dependencies-validation"
   },
   "main": "./dist/src/extension",
   "activationEvents": [
@@ -33,7 +33,7 @@
         "dependenciesValidation.delayAutoFix": {
           "type": "number",
           "default": 10,
-          "description": "Delays the automatic fixing of dependency misalignment on startup (seconds)"
+          "description": "Delay (in seconds) for the automatic fixing of dependency misalignment on startup"
         },
         "dependenciesValidation.logging.level": {
           "type": "string",
