@@ -189,12 +189,20 @@ importers:
   packages/vscode-deps-upgrade-tool:
     specifiers:
       '@sap-devx/app-studio-toolkit-types': 1.5.0
+      '@types/validate-npm-package-name': ^3.0.3
       '@vscode-logging/wrapper': 1.0.1
+      lodash: 4.17.21
+      semver: 7.3.5
       type-fest: 2.11.1
+      validate-npm-package-name: 3.0.0
     dependencies:
       '@vscode-logging/wrapper': 1.0.1
+      lodash: 4.17.21
+      semver: 7.3.5
+      validate-npm-package-name: 3.0.0
     devDependencies:
       '@sap-devx/app-studio-toolkit-types': link:../app-studio-toolkit-types
+      '@types/validate-npm-package-name': 3.0.3
       type-fest: 2.11.1
 
 packages:
@@ -2146,6 +2154,10 @@ packages:
     resolution: {integrity: sha512-Hl219/BT5fLAaz6NDkSuhzasy49dwQS/DSdu4MdggFB8zcXv7vflBI3xp7FEmkmdDkBUI2bPUNeMttp2knYdxw==}
     dev: true
 
+  /@types/validate-npm-package-name/3.0.3:
+    resolution: {integrity: sha512-dLhCHEIjf9++/vHaHCo/ngJzGqGGbPh/f7HKwznEk3WFL64t/VKuRiVpyQH4afX93YkCV94I9M0Cx+DBLk1Dsg==}
+    dev: true
+
   /@types/vscode/1.52.0:
     resolution: {integrity: sha512-Kt3bvWzAvvF/WH9YEcrCICDp0Z7aHhJGhLJ1BxeyNP6yRjonWqWnAIh35/pXAjswAnWOABrYlF7SwXR9+1nnLA==}
     dev: false
@@ -3097,7 +3109,6 @@ packages:
 
   /builtins/1.0.3:
     resolution: {integrity: sha1-y5T662HIaWRR2zZTThQi+U8K7og=}
-    dev: true
 
   /byline/5.0.0:
     resolution: {integrity: sha1-dBxSFkaOrcRXsDQQEYrXfejB3bE=}
@@ -10438,7 +10449,6 @@ packages:
     resolution: {integrity: sha1-X6kS2B630MdK/BQN5zF/DKffQ34=}
     dependencies:
       builtins: 1.0.3
-    dev: true
 
   /value-or-function/3.0.0:
     resolution: {integrity: sha1-HCQ6ULWVwb5Up1S/7OhWO5/42BM=}
