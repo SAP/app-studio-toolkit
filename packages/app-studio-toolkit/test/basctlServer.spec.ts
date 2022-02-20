@@ -122,13 +122,6 @@ describe("basctlServer", () => {
     );
   });
 
-  it("closes if server exists", () => {
-    mockIpc();
-    startBasctlServer();
-    serverMock.expects("close");
-    closeBasctlServer();
-  });
-
   it("does nothing if server doesn't exist", () => {
     closeBasctlServer();
   });
