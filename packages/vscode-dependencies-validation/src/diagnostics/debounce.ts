@@ -11,9 +11,7 @@ const OPTIMIZED_PATHS_TO_FUNC: Map<
 > = new Map();
 
 // https://ux.stackexchange.com/questions/95336/how-long-should-the-debounce-timeout-be
-// If the debounce is too small, changes may not be persisted in time to the disk for our
-// the validation logic to run correctly.
-const DEBOUNCE_WAIT = 1500;
+const DEBOUNCE_WAIT = 500;
 
 export function getOptimizedRefreshDiagnostics(
   uri: Uri
