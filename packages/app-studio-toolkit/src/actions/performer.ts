@@ -29,9 +29,11 @@ export async function _performAction(action: BasAction): Promise<any> {
         });
       }
       case FILE: {
-        return commands.executeCommand("vscode.open", action.uri, {
-          viewColumn: ViewColumn.Two,
-        });
+        return action.uri.scheme === "file"
+          ? commands.executeCommand("vscode.open", action.uri, {
+              viewColumn: ViewColumn.Two,
+            })
+          : commands.executeCommand("vscode.open", action.uri);
       }
       default:
         throw new Error(`actionType is not supported`);

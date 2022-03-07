@@ -16,8 +16,15 @@ const testVscode = {
   ViewColumn: {
     Two: 2,
   },
+  Uri: {
+    parse: (path: string, strict?: boolean) => {
+      const parts = path.split("://");
+      return { scheme: parts[0], fsPath: parts[1] };
+    },
+  },
 };
 
+mockVscode(testVscode, "dist/src/actions/actionsFactory.js");
 mockVscode(testVscode, "dist/src/actions/performer.js");
 import { _performAction } from "../src/actions/performer";
 import { window } from "vscode";
@@ -124,6 +131,34 @@ describe("performer test", () => {
       commandsMock
         .expects("executeCommand")
         .withExactArgs("vscode.open", fileAction.uri, { viewColumn: 2 })
+        .rejects(new Error("Something bad happened"));
+      await expect(_performAction(fileAction)).to.be.rejectedWith(
+        "Something bad happened"
+      );
+    });
+
+    it("is fulfilled if executeCommand with 'external link' scheme is fulfilled", async () => {
+      const fileJson = {
+        actionType: "FILE",
+        uri: "http:///home/user/projects/myproj/sourcefile.js",
+      };
+      const fileAction = ActionsFactory.createAction(fileJson) as IFileAction;
+      commandsMock
+        .expects("executeCommand")
+        .withExactArgs("vscode.open", fileAction.uri);
+      // check that no error is thrown
+      await _performAction(fileAction);
+    });
+
+    it("is rejected if executeCommand  with 'external link' scheme rejects", async () => {
+      const fileJson = {
+        actionType: "FILE",
+        uri: "https:///home/user/projects/myproj/sourcefile.js",
+      };
+      const fileAction = ActionsFactory.createAction(fileJson) as IFileAction;
+      commandsMock
+        .expects("executeCommand")
+        .withExactArgs("vscode.open", fileAction.uri)
         .rejects(new Error("Something bad happened"));
       await expect(_performAction(fileAction)).to.be.rejectedWith(
         "Something bad happened"
