@@ -31,6 +31,7 @@
     "legal:copy-license": "pnpm -r exec -- shx cp -r ../../LICENSES LICENSES"
   },
   "devDependencies": {
+    "lodash": "^4.17.21",
     "@types/vscode": "^1.49.0",
     "@types/chai": "^4.2.22",
     "@types/chai-as-promised": "^7.1.4",

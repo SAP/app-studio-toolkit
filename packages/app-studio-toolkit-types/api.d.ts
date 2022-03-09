@@ -7,17 +7,11 @@ export type SemVer = string;
 export type SemVerRange = string;
 
 export interface NodeUpgradeSpec {
-  package:
-    | {
-        from: PackageName;
-        to: PackageName;
-      }
-    | PackageName;
+  package: PackageName;
   version: {
     from: SemVer | SemVerRange;
     to: SemVer | SemVerRange;
   };
-  // TODO: consider include/exclude props (glob / project-type / ?)
 }
 
 /**

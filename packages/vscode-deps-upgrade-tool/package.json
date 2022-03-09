@@ -27,16 +27,20 @@
     "clean": "rimraf ./dist *.vsix ./coverage ./.nyc_output",
     "compile": "tsc -p ./",
     "watch": "tsc -p ./ --watch",
-    "test": "mocha",
-    "coverage": "nyc mocha",
+    "test": "echo mocha",
+    "coverage": "echo nyc mocha",
     "bundle": "webpack --mode production",
     "package": "node ./scripts/package-vsix.js"
   },
   "dependencies": {
+    "@types/fs-extra": "^9.0.13",
     "@vscode-logging/wrapper": "1.0.1",
     "lodash": "4.17.21",
     "semver": "7.3.5",
-    "validate-npm-package-name": "3.0.0"
+    "fs-extra": "^10.0.1",
+    "jsonc-parser": "3.0.0",
+    "validate-npm-package-name": "3.0.0",
+    "delay": "5.0.0"
   },
   "devDependencies": {
     "@types/validate-npm-package-name": "^3.0.3",

@@ -1,25 +1,36 @@
-import { ExtensionContext, window } from "vscode";
+import { ExtensionContext, window, extensions, workspace } from "vscode";
+import { range } from "delay";
+import { readUpgradeMetadata } from "./metadata";
+import { applyUpgrades } from "./apply-upgrades";
+
+const SECOND = 1000;
+const MINUTE = SECOND * 60;
 
 export function activate(context: ExtensionContext): void {
   // TODO: why don't we get it from the context?
   const extensionName = "vscode-deps-upgrade-tool";
 
+  // intentionally not using await to avoid deadlocking the extension's `activate` function
+  void updateOnStartup();
   const outputChannel = window.createOutputChannel(extensionName);
   // TODO: implement logger
   // initLogger(context, outputChannel, extensionName);
 
   // TODO:
-  //   0. locate metadata for upgrades
-  //   1. collect pkg.json files
-  //   2. apply upgrades (delay on start? e.g 15mins? or maybe a random range?)
-  //   4. notifications (grouped?) (what happens to a notification if it is ignored?)
-  //   5. vscode settings
+  //   5. vscode settings (which?)
 
   // const logger = getLogger().getChildLogger({ label: "extension" });
-  // logger.info("The Vscode Dependencies Validation Extension is active.");
+  // logger.info("The Vscode Dependencies Upgrade Extension is active.");
 }
 
-// Out Of Scope for MVP
-// 3. option : apply upgrades AGAIN every specific interval?
-// 6. exclude by pkg.json property
-// 7. manual mode (via problems view per opened file or via notifications?) (???)
+async function updateOnStartup() {
+  const upgradeMetadata = readUpgradeMetadata(extensions.all);
+  const pkgJsonUris = await workspace.findFiles(
+    "package.json",
+    "**/node_modules/**"
+  );
+
+  // TODO: product definition for delay and evaluate need for user settings
+  // await range(5 * MINUTE, 30 * MINUTE);
+  await applyUpgrades(pkgJsonUris, upgradeMetadata);
+}
