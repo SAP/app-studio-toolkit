@@ -2,7 +2,7 @@ import type { Uri } from "vscode";
 import type { PackageJson } from "type-fest";
 import { Edit, JSONPath, modify, applyEdits } from "jsonc-parser";
 import { flatMap, filter, isString } from "lodash";
-import { satisfies } from "semver";
+import { satisfies, subset, valid, validRange} from "semver";
 import { readFile, writeFile } from "fs-extra";
 import { NodeUpgradeSpec } from "@sap-devx/app-studio-toolkit-types";
 
@@ -16,6 +16,7 @@ export async function applyUpgrades(
       const pkgValue = JSON.parse(pkgText);
       await applyUpgradeSinglePkg(pkgUri, pkgText, pkgValue, upgrades);
     } catch (e) {
+      // TODO: do we stop everything if only a single upgradeSpec causes issues? or do we allow more granular errors?
       // TODO: log error
     }
   }
@@ -56,16 +57,22 @@ export function pickApplicableUpgrades(
 ): NodeUpgradeSpec[] {
   const applicableUpgrades = filter(upgrades, (_) => {
     const depName = _.package;
-    const depVersion = deps?.[depName];
-    const fromVerOrRange = _.version.from;
+    const pkgJsonVersion = deps?.[depName];
+    const upgradeFrom = _.version.from;
 
-    const hasValidVersion = depVersion !== undefined && isString(depVersion);
-    // we check for string equality to support versions numbers that are **not** valid semver versions
-    // TODO: satisfies does not work correctly when given a version range!!!
-    const versionMatchesUpgradeSpec =
-      depVersion === fromVerOrRange || satisfies(depVersion!, fromVerOrRange);
+    if (!isString(pkgJsonVersion)) {
+      return false
+    }
 
-    return hasValidVersion && versionMatchesUpgradeSpec;
+    // strict equality matching allows limited support for none semVer versions
+    const isExactVersionMatch = pkgJsonVersion === upgradeFrom
+    const isVersionInRangeMatch = !!(valid(pkgJsonVersion) && satisfies(pkgJsonVersion, upgradeFrom))
+    // If the version in the pkg.json is a range, it must be a subset of the `upgradeFrom` version, e.g:
+    // - [^1.1.6] ∈ [^1.1.1]
+    // - [^1.1.1] ∉ [^1.1.6]  (1.1.1, 1.1.2,...) are not contained in ^1.1.6 which means x >=1.1.6 AND x <2.0.0
+    const isRangeSubsetMatch = !!(validRange(pkgJsonVersion) && subset(pkgJsonVersion, upgradeFrom))
+
+    return isExactVersionMatch || isVersionInRangeMatch || isRangeSubsetMatch;
   });
 
   return applicableUpgrades;

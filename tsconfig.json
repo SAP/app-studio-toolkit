@@ -20,6 +20,9 @@
     },
     {
       "path": "./examples/vscode-using-workspace-api"
+    },
+    {
+      "path": "./examples/vscode-nodejs-upgrade-tool"
     }
   ],
   "files": [],

@@ -53,6 +53,19 @@
       "outFiles": [
         "${workspaceFolder}/packages/vscode-dependencies-validation/dist/**/*.js"
       ]
+    },
+    {
+      "name": "Run upgrade scenario sample",
+      "type": "extensionHost",
+      "request": "launch",
+      "runtimeExecutable": "${execPath}",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}/packages/vscode-deps-upgrade-tool",
+        "--extensionDevelopmentPath=${workspaceFolder}/examples/vscode-nodejs-upgrade-tool"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/packages/vscode-deps-upgrade-tool/dist/**/*.js"
+      ]
     }
   ]
 }

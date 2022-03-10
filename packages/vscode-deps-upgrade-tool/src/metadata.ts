@@ -22,6 +22,7 @@ export function readUpgradeMetadata(
 
   const validUpgradeSpec: NodeUpgradeSpec[] = filter(
     flatNodeUpgradeSpec,
+    // TODO: consider if we want to keep the input validation or not?
     matchesUpgradeSchema
   );
 
