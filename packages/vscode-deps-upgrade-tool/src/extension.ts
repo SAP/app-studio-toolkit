@@ -22,8 +22,6 @@ export function activate(context: ExtensionContext): void {
 async function updateOnStartup() {
   const upgradeMetadata = readUpgradeMetadata(extensions.all);
 
-  // TODO: do we want to do additional filtering (e.g yarn project?)
-  //   Probably not because the auto upgrade is still relevant even if the followup `npm` is not executed
   const pkgJsonUris = await workspace.findFiles(
     "package.json",
     "**/node_modules/**"

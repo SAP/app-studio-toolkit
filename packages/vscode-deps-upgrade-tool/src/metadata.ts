@@ -1,6 +1,5 @@
 import type { extensions } from "vscode";
 import { filter, map, isEmpty, isArray, flatten, has, isString } from "lodash";
-import { parse as parseSemVer } from "semver";
 import * as isValidPkgName from "validate-npm-package-name";
 import { NodeUpgradeSpec } from "@sap-devx/app-studio-toolkit-types";
 
@@ -20,9 +19,10 @@ export function readUpgradeMetadata(
 
   const flatNodeUpgradeSpec: NodeUpgradeSpec[] = flatten(nonEmptyUpgradeSpecs);
 
+  // todo: log errors somewhere
+  // todo: how to link errors back to **exact** extensions which provided them
   const validUpgradeSpec: NodeUpgradeSpec[] = filter(
     flatNodeUpgradeSpec,
-    // TODO: consider if we want to keep the input validation or not?
     matchesUpgradeSchema
   );
 
@@ -32,7 +32,11 @@ export function readUpgradeMetadata(
 export function matchesUpgradeSchema(
   upgradeSpec: Partial<NodeUpgradeSpec>
 ): boolean {
-  if (!has(upgradeSpec, "version")) {
+  if (!matchPackageProperty(upgradeSpec.package)) {
+    return false;
+  }
+
+  if (!matchVersionProperty(upgradeSpec.version)) {
     return false;
   }
 
@@ -41,8 +45,7 @@ export function matchesUpgradeSchema(
 
 export function matchPackageProperty(
   value: any
-): value is Pick<NodeUpgradeSpec, "package"> {
-  // top level properties
+): value is NodeUpgradeSpec["package"] {
   if (!has(value, "package")) {
     return false;
   } else {
@@ -51,12 +54,23 @@ export function matchPackageProperty(
       if (!isValidPkgName(pkgSpec)) {
         return false;
       }
-    } else if (isFromToObjSpec(pkgSpec)) {
-      if (!matchFromToProp(pkgSpec.from) || !matchFromToProp(pkgSpec.to)) {
-        return false;
-      }
     } else {
-      // neither `string` nor { from:string, to:string }
+      return false;
+    }
+  }
+
+  // alles goot
+  return true;
+}
+
+export function matchVersionProperty(
+  value: any
+): value is NodeUpgradeSpec["version"] {
+  if (!has(value, "package")) {
+    return false;
+  } else {
+    const versionSpec = value.version;
+    if (!isFromToObjSpec(versionSpec)) {
       return false;
     }
   }
@@ -66,13 +80,31 @@ export function matchPackageProperty(
 }
 
 export function isFromToObjSpec(value: any): value is { from: any; to: any } {
-  return has(value, "from") && has(value, "from");
+  if (has(value, "from")) {
+    if (!matchFromOrToProp(value.from)) {
+      return false;
+    }
+  } else {
+    return false;
+  }
+
+  if (has(value, "to")) {
+    if (!matchFromOrToProp(value.to)) {
+      return false;
+    }
+  } else {
+    return false;
+  }
+
+  // alles goot
+  return true;
 }
 
-export function matchFromToProp(value: any): value is string {
+export function matchFromOrToProp(value: any): value is string {
+  // we are not matching for exact SemVer strings or SemVer ranges because
+  // a package may use a none SemVer identifier for the versions
+  // and rely on strict version equality for applying the upgrade
   if (!isString(value)) {
-    return false;
-  } else if (parseSemVer(value) === null) {
     return false;
   }
 
