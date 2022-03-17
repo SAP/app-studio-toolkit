@@ -1,6 +1,6 @@
 {
   "name": "vscode-deps-upgrade-tool",
-  "displayName": "VSCode Dependencies Upgrade Tool",
+  "displayName": "VSCode NPM Dependency Upgrade Tool",
   "version": "1.6.1",
   "private": true,
   "description": "TBD",
@@ -21,7 +21,49 @@
   "activationEvents": [
     "*"
   ],
-  "contributes": {},
+  "contributes": {
+    "configuration": {
+      "title": "NPM Dependency Upgrades",
+      "properties": {
+        "dependencyUpgrade.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Is the automatic NPM Dependency Upgrades enabled"
+        },
+        "dependencyUpgrade.delay.min": {
+          "type": "number",
+          "default": 5,
+          "description": "Minimum time to wait after workspace start before pending dependency upgrades would be applied"
+        },
+        "dependencyUpgrade.delay.max": {
+          "type": "number",
+          "default": 15,
+          "description": "Maximum time to wait after workspace start before pending dependency upgrades would be applied"
+        },
+        "dependencyUpgrade.logging.level": {
+          "type": "string",
+          "enum": [
+            "off",
+            "fatal",
+            "error",
+            "warn",
+            "info",
+            "debug",
+            "trace"
+          ],
+          "default": "error",
+          "description": "The verbosity of logging. The Order is off < fatal < error < warn < info < debug < trace.",
+          "scope": "window"
+        },
+        "dependencyUpgrade.logging.sourceLocationTracking": {
+          "type": "boolean",
+          "default": false,
+          "description": "If chosen, the location of the source code is added to log entries. Warning - this action may slow your extension. We recommend you use it only for debugging.",
+          "scope": "window"
+        }
+      }
+    }
+  },
   "scripts": {
     "ci": "npm-run-all clean compile coverage bundle package",
     "clean": "rimraf ./dist *.vsix ./coverage ./.nyc_output",

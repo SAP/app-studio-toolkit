@@ -1,1 +1,1 @@
-# vscode-deps-upgrade-tool
+# vscode-npm-dependency-upgrade-tool

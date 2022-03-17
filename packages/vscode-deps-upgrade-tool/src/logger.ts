@@ -1,10 +1,10 @@
 import type { ExtensionContext, OutputChannel } from "vscode";
 import { IVSCodeExtLogger } from "@vscode-logging/types";
 import { configureLogger, NOOP_LOGGER } from "@vscode-logging/wrapper";
-
-export const LOGGING_LEVEL_CONFIG_PROP = "dependenciesUpgrade.logging.level";
-export const SOURCE_TRACKING_CONFIG_PROP =
-  "dependenciesUpgrade.logging.sourceLocationTracking";
+import {
+  LOGGING_LEVEL_CONFIG_PROP,
+  SOURCE_TRACKING_CONFIG_PROP,
+} from "./settings";
 
 let logger: IVSCodeExtLogger = NOOP_LOGGER;
 
