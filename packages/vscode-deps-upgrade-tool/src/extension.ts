@@ -1,10 +1,14 @@
 import { ExtensionContext, window, extensions, workspace } from "vscode";
 import { range } from "delay";
-import { isEmpty } from "lodash";
+import { isEmpty, partial } from "lodash";
 import { readUpgradeMetadata } from "./metadata";
 import { applyUpgrades } from "./apply-upgrades";
 import { getLogger, initLogger } from "./logger";
-import { getMaxInitialDelay, getMinInitialDelay, isEnabled } from "./settings";
+import {
+  ConfigPropsKeys,
+  getConfigProp as getConfigPropOrg,
+  GetConfigPropOnlyProp,
+} from "./settings";
 
 const SECOND = 1000;
 const MINUTE = SECOND * 60;
@@ -31,10 +35,15 @@ async function updateOnStartup() {
     );
   }
 
-  const getConfiguration = workspace.getConfiguration;
-  if (isEnabled(workspace.getConfiguration)) {
-    const minDelay = getMinInitialDelay(getConfiguration);
-    const maxDelay = getMaxInitialDelay(getConfiguration);
+  // helper to avoid sending `workspace.getConfiguration` everytime
+  const getConfigProp: GetConfigPropOnlyProp = partial(
+    getConfigPropOrg,
+    workspace.getConfiguration
+  );
+
+  if (getConfigProp("ENABLED")) {
+    const minDelay = getConfigProp("DELAY_MIN");
+    const maxDelay = getConfigProp("DELAY_MAX");
     await range(minDelay * MINUTE, maxDelay * MINUTE);
     const pkgJsonUris = await workspace.findFiles(
       "package.json",

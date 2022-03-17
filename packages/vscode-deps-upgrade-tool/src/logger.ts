@@ -1,10 +1,7 @@
 import type { ExtensionContext, OutputChannel } from "vscode";
 import { IVSCodeExtLogger } from "@vscode-logging/types";
 import { configureLogger, NOOP_LOGGER } from "@vscode-logging/wrapper";
-import {
-  LOGGING_LEVEL_CONFIG_PROP,
-  SOURCE_TRACKING_CONFIG_PROP,
-} from "./settings";
+import { CONFIG_PROPS_AND_FULL_NAME } from "./settings";
 
 let logger: IVSCodeExtLogger = NOOP_LOGGER;
 
@@ -26,8 +23,8 @@ export function initLogger(
       extName: extensionName,
       logPath: context.logPath,
       logOutputChannel: outputChannel,
-      loggingLevelProp: LOGGING_LEVEL_CONFIG_PROP,
-      sourceLocationProp: SOURCE_TRACKING_CONFIG_PROP,
+      loggingLevelProp: CONFIG_PROPS_AND_FULL_NAME.LOGGING_LEVEL,
+      sourceLocationProp: CONFIG_PROPS_AND_FULL_NAME.SOURCE_TRACKING,
       subscriptions: context.subscriptions,
     });
   } catch (error) {
