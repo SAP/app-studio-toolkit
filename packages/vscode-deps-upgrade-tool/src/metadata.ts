@@ -1,112 +1,87 @@
 import type { extensions } from "vscode";
-import { filter, map, isEmpty, isArray, flatten, has, isString } from "lodash";
+import { filter, flatMap, forEach, has, isEmpty, isString, map } from "lodash";
 import * as isValidPkgName from "validate-npm-package-name";
 import { NodeUpgradeSpec } from "@sap-devx/app-studio-toolkit-types";
 
-export function readUpgradeMetadata(
-  allExtensions: typeof extensions.all
-): NodeUpgradeSpec[] {
-  const allUpgradeSpec: any[] = map(
-    allExtensions,
-    (_) => _.packageJSON?.BASContributes?.upgrade?.nodejs as unknown
-  );
-  const nonEmptyUpgradeSpecs: NodeUpgradeSpec[][] = filter(
-    allUpgradeSpec,
-    (_) => {
-      return _ !== undefined && isArray(_) && !isEmpty(_);
-    }
-  );
+export function readUpgradeMetadata(allExtensions: typeof extensions.all): {
+  upgrades: NodeUpgradeSpec[];
+  issues: string[];
+} {
+  const upgrades: NodeUpgradeSpec[] = [];
+  const issues: string[] = [];
+  forEach(allExtensions, (ext) => {
+    const extName = ext.packageJSON.name;
+    const extUpgrades =
+      (ext.packageJSON?.BASContributes?.upgrade?.nodejs as NodeUpgradeSpec[]) ??
+      [];
 
-  const flatNodeUpgradeSpec: NodeUpgradeSpec[] = flatten(nonEmptyUpgradeSpecs);
+    const extValidUpgrades = filter(extUpgrades, (_) =>
+      isEmpty(validateUpgradeSchema(_))
+    );
+    upgrades.push(...extValidUpgrades);
 
-  // todo: log errors somewhere
-  // todo: how to link errors back to **exact** extensions which provided them
-  const validUpgradeSpec: NodeUpgradeSpec[] = filter(
-    flatNodeUpgradeSpec,
-    matchesUpgradeSchema
-  );
+    const extIssues = flatMap(extUpgrades, validateUpgradeSchema);
+    const extIssuesWithPkgNamePrefix = map(
+      extIssues,
+      (_) => `In extension: <${extName}> nodejs upgrade specs: ${_}`
+    );
+    issues.push(...extIssuesWithPkgNamePrefix);
+  });
 
-  return validUpgradeSpec;
+  return { upgrades, issues };
 }
 
-export function matchesUpgradeSchema(
+export function validateUpgradeSchema(
   upgradeSpec: Partial<NodeUpgradeSpec>
-): boolean {
-  if (!matchPackageProperty(upgradeSpec.package)) {
-    return false;
-  }
+): string[] {
+  const packagePropIssues = validatePackageProperty(upgradeSpec);
+  const versionPropIssues = validateVersionProperty(upgradeSpec);
 
-  if (!matchVersionProperty(upgradeSpec.version)) {
-    return false;
-  }
-
-  return true;
+  return [...packagePropIssues, ...versionPropIssues];
 }
 
-export function matchPackageProperty(
-  value: any
-): value is NodeUpgradeSpec["package"] {
+export function validatePackageProperty(value: any): string[] {
+  const issues: string[] = [];
+
   if (!has(value, "package")) {
-    return false;
+    issues.push("missing `package` property");
   } else {
     const pkgSpec = value.package;
     if (isString(pkgSpec)) {
       if (!isValidPkgName(pkgSpec)) {
-        return false;
+        issues.push("the `package` property must be a valid npm package name");
       }
     } else {
-      return false;
+      issues.push("the `package` property must be a string literal");
     }
   }
 
-  // alles goot
-  return true;
+  return issues;
 }
 
-export function matchVersionProperty(
-  value: any
-): value is NodeUpgradeSpec["version"] {
-  if (!has(value, "package")) {
-    return false;
+export function validateVersionProperty(value: any): string[] {
+  const issues: string[] = [];
+
+  if (!has(value, "version")) {
+    issues.push("missing `version` property");
   } else {
-    const versionSpec = value.version;
-    if (!isFromToObjSpec(versionSpec)) {
-      return false;
+    const version = value.version;
+    if (has(version, "from")) {
+      if (!isString(version.from)) {
+        issues.push("`version.from` property must be a string literal");
+      }
+    } else {
+      issues.push("missing `version.from` property");
+    }
+
+    if (has(version, "to")) {
+      if (!isString(version.to)) {
+        issues.push("`version.to` property must be a string literal");
+      }
+    } else {
+      issues.push("missing `version.to` property");
     }
   }
 
-  // alles goot
-  return true;
-}
-
-export function isFromToObjSpec(value: any): value is { from: any; to: any } {
-  if (has(value, "from")) {
-    if (!matchFromOrToProp(value.from)) {
-      return false;
-    }
-  } else {
-    return false;
-  }
-
-  if (has(value, "to")) {
-    if (!matchFromOrToProp(value.to)) {
-      return false;
-    }
-  } else {
-    return false;
-  }
-
-  // alles goot
-  return true;
-}
-
-export function matchFromOrToProp(value: any): value is string {
-  // we are not matching for exact SemVer strings or SemVer ranges because
-  // a package may use a none SemVer identifier for the versions
-  // and rely on strict version equality for applying the upgrade
-  if (!isString(value)) {
-    return false;
-  }
-
-  return true;
+  return issues;
 }
