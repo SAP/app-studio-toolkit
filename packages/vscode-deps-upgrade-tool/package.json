@@ -1,9 +1,9 @@
 {
   "name": "vscode-deps-upgrade-tool",
   "displayName": "NPM Dependency Upgrade Tool",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "private": true,
-  "description": "TBD",
+  "description": "Modifies package.json dependencies by using metadata in 'BASContributes.upgrade.node' property",
   "categories": [
     "Other"
   ],

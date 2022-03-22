@@ -65,6 +65,7 @@
         "--extensionDevelopmentPath=${workspaceFolder}/examples/vscode-nodejs-upgrade-tool"
       ],
       "outFiles": [
+        "${workspaceFolder}/packages/vscode-dependencies-validation/dist/**/*.js",
         "${workspaceFolder}/packages/vscode-deps-upgrade-tool/dist/**/*.js"
       ]
     }
