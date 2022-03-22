@@ -20,6 +20,8 @@ export async function fixDependencyIssues(
   const shouldFix = await shouldFixDependencyIssues(filePath);
   if (!shouldFix) return;
 
+  // it is important to indicate to the end user an `npm install` process is in progress
+  outputChannel.show(true);
   print(internal.fixing(filePath), outputChannel);
 
   const config = { commandArgs: ["install"], cwd };

@@ -11,6 +11,7 @@ describe("`fixDependencyIssues()` function ", () => {
     it("will not fix missing deps", async () => {
       const outputChannel: OutputChannel = {
         appendLine: noop,
+        show: noop,
       };
       await expect(
         fixDependencyIssues("non_existing_package_json_path", outputChannel)
@@ -36,6 +37,7 @@ describe("`fixDependencyIssues()` function ", () => {
       const output: string[] = [];
       const outputChannel: OutputChannel = {
         appendLine: (data: string) => output.push(data),
+        show: noop,
       };
       const problemsBeforeFix = await findDependencyIssues(packageJsonPath);
       expect(problemsBeforeFix).to.not.be.empty;

@@ -1,5 +1,6 @@
 import { expect } from "chai";
 import { resolve } from "path";
+import { noop } from "lodash";
 import { createSandbox, SinonSpy } from "sinon";
 import { OutputChannel } from "../../src/types";
 import { getNPM, invokeNPMCommand } from "../../src/utils/npmUtil";
@@ -9,6 +10,7 @@ describe("npmUtil unit test", () => {
   const sandbox = createSandbox();
   const outputChannel: OutputChannel = {
     appendLine: (data: string) => console.log(data),
+    show: noop,
   };
 
   afterEach(() => {

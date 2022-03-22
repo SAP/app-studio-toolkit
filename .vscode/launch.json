@@ -60,6 +60,7 @@
       "request": "launch",
       "runtimeExecutable": "${execPath}",
       "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}/packages/vscode-dependencies-validation",
         "--extensionDevelopmentPath=${workspaceFolder}/packages/vscode-deps-upgrade-tool",
         "--extensionDevelopmentPath=${workspaceFolder}/examples/vscode-nodejs-upgrade-tool"
       ],
