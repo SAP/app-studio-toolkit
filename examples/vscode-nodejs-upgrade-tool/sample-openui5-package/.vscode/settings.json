@@ -1,4 +1,8 @@
 // Place your settings in this file to overwrite default and user settings.
 {
-  "dependenciesValidation.enableAutoFix": true
+  "dependenciesValidation.enableAutoFix": true,
+  "dependencyUpgrade.enabled": true,
+  "dependencyUpgrade.delay.min": 0,
+  "dependencyUpgrade.delay.max": 0,
+  "dependencyUpgrade.logging.level": "trace"
 }

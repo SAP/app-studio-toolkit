@@ -1,11 +1,10 @@
 import { ExtensionContext, window, extensions, workspace } from "vscode";
-import { range } from "delay";
-import { isEmpty, partial } from "lodash";
+import * as delay from "delay";
+import { isEmpty, partial, map } from "lodash";
 import { readUpgradeMetadata } from "./metadata";
 import { applyUpgrades } from "./apply-upgrades";
 import { getLogger, initLogger } from "./logger";
 import {
-  ConfigPropsKeys,
   getConfigProp as getConfigPropOrg,
   GetConfigPropOnlyProp,
 } from "./settings";
@@ -44,18 +43,22 @@ async function updateOnStartup() {
   if (getConfigProp("ENABLED")) {
     const minDelay = getConfigProp("DELAY_MIN");
     const maxDelay = getConfigProp("DELAY_MAX");
-    await range(minDelay * MINUTE, maxDelay * MINUTE);
+    const randomDelay = minDelay + Math.random() * (maxDelay - minDelay);
+    getLogger().trace("Selected initial delay (minutes)", { randomDelay });
+    await delay(randomDelay * MINUTE);
     const pkgJsonUris = await workspace.findFiles(
       "package.json",
       "**/node_modules/**"
     );
+    const pkgJsonFsPaths = map(pkgJsonUris, (_) => _.fsPath);
+    getLogger().trace("package.json files to check for upgrade:", {
+      uris: pkgJsonFsPaths,
+    });
     await applyUpgrades(pkgJsonUris, upgradeMetadata.upgrades);
   }
 }
 
 // TODO:
-//  - check whole flow with mis-alignment
-//    - ensure output channel focus and notifications in mis-alignment work well in combination with update
 //  - evaluate need / importance of usage analytics
 //  - documentation (d.ts)
 //  - documentation (extension)

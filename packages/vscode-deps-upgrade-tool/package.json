@@ -1,6 +1,6 @@
 {
   "name": "vscode-deps-upgrade-tool",
-  "displayName": "VSCode NPM Dependency Upgrade Tool",
+  "displayName": "NPM Dependency Upgrade Tool",
   "version": "1.6.1",
   "private": true,
   "description": "TBD",
@@ -28,7 +28,7 @@
         "dependencyUpgrade.enabled": {
           "type": "boolean",
           "default": false,
-          "description": "Is the automatic NPM Dependency Upgrades enabled"
+          "description": "Enables the automatic dependency updates"
         },
         "dependencyUpgrade.delay.min": {
           "type": "number",
