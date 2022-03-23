@@ -93,7 +93,6 @@ export function createTextEditsForUpgrade(
     const depName = _.package;
     const depPath: JSONPath = [devProp, depName];
 
-    // TODO: test that it is safe to use `modify` on same dep multiple times
     return modify(pkgText, depPath, _.version.to, {});
   });
   return allEdits;

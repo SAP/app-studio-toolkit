@@ -1,13 +1,10 @@
 import { ExtensionContext, window, extensions, workspace } from "vscode";
 import * as delay from "delay";
-import { isEmpty, partial, map } from "lodash";
+import { isEmpty, map } from "lodash";
 import { readUpgradeMetadata } from "./metadata";
 import { applyUpgrades } from "./apply-upgrades";
 import { getLogger, initLogger } from "./logger";
-import {
-  getConfigProp as getConfigPropOrg,
-  GetConfigPropOnlyProp,
-} from "./settings";
+import { getConfigProp } from "./settings";
 
 const SECOND = 1000;
 const MINUTE = SECOND * 60;
@@ -34,15 +31,11 @@ async function updateOnStartup() {
     );
   }
 
-  // helper to avoid sending `workspace.getConfiguration` everytime
-  const getConfigProp: GetConfigPropOnlyProp = partial(
-    getConfigPropOrg,
-    workspace.getConfiguration
-  );
+  const wsGetCfg = workspace.getConfiguration;
 
-  if (getConfigProp("ENABLED")) {
-    const minDelay = getConfigProp("DELAY_MIN");
-    const maxDelay = getConfigProp("DELAY_MAX");
+  if (getConfigProp(wsGetCfg, "ENABLED")) {
+    const minDelay = getConfigProp(wsGetCfg, "DELAY_MIN");
+    const maxDelay = getConfigProp(wsGetCfg, "DELAY_MAX");
     const randomDelay = minDelay + Math.random() * (maxDelay - minDelay);
     getLogger().trace("Selected initial delay (minutes)", { randomDelay });
     await delay(randomDelay * MINUTE);
