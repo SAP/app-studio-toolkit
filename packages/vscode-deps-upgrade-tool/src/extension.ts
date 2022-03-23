@@ -10,14 +10,14 @@ const SECOND = 1000;
 const MINUTE = SECOND * 60;
 
 export function activate(context: ExtensionContext): void {
-  const extensionName = context.extension.packageJSON.displayName;
-  const outputChannel = window.createOutputChannel(extensionName);
-  initLogger(context, outputChannel, extensionName);
+  const extensionDisplayName = context.extension.packageJSON.displayName;
+  const outputChannel = window.createOutputChannel(extensionDisplayName);
+  initLogger(context, outputChannel, extensionDisplayName);
 
   // intentionally not using await to avoid deadlocking the extension's `activate` function
   void updateOnStartup();
   const logger = getLogger().getChildLogger({ label: "extension" });
-  logger.info(`The ${extensionName} Extension is active.`);
+  logger.info(`The ${extensionDisplayName} Extension is active.`);
 }
 
 async function updateOnStartup() {
