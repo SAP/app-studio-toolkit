@@ -10,7 +10,10 @@ const SECOND = 1000;
 const MINUTE = SECOND * 60;
 
 export function activate(context: ExtensionContext): void {
-  const extensionDisplayName = context.extension.packageJSON.displayName;
+  // The `context.extension.packageJSON.displayName` does not work in Theia
+  // So we must duplicate the string.
+  // TODO: a unit test which validates this duplication
+  const extensionDisplayName = "NPM Dependency Upgrade Tool";
   const outputChannel = window.createOutputChannel(extensionDisplayName);
   initLogger(context, outputChannel, extensionDisplayName);
 
