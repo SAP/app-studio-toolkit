@@ -2,6 +2,7 @@ import { PackageJson } from "type-fest";
 
 export interface OutputChannel {
   appendLine: (message: string) => void;
+  show(preserveFocus?: boolean): void;
 }
 
 export type NpmCommandConfig = {

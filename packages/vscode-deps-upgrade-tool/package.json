@@ -1,0 +1,92 @@
+{
+  "name": "vscode-deps-upgrade-tool",
+  "displayName": "NPM Dependency Upgrade Tool",
+  "version": "1.7.0",
+  "private": true,
+  "description": "Modifies package.json dependencies by using metadata in 'BASContributes.upgrade.node' property",
+  "categories": [
+    "Other"
+  ],
+  "engines": {
+    "vscode": "^1.50.0"
+  },
+  "license": "Apache-2.0",
+  "publisher": "SAPOSS",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/app-studio-toolkit",
+    "directory": "packages/vscode-deps-upgrade-tool"
+  },
+  "main": "./dist/src/extension",
+  "activationEvents": [
+    "*"
+  ],
+  "contributes": {
+    "configuration": {
+      "title": "NPM Dependency Upgrades",
+      "properties": {
+        "dependencyUpgrade.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enables the automatic dependency updates"
+        },
+        "dependencyUpgrade.delay.min": {
+          "type": "number",
+          "default": 5,
+          "description": "Minimum time to wait after workspace start before pending dependency upgrades would be applied"
+        },
+        "dependencyUpgrade.delay.max": {
+          "type": "number",
+          "default": 15,
+          "description": "Maximum time to wait after workspace start before pending dependency upgrades would be applied"
+        },
+        "dependencyUpgrade.logging.level": {
+          "type": "string",
+          "enum": [
+            "off",
+            "fatal",
+            "error",
+            "warn",
+            "info",
+            "debug",
+            "trace"
+          ],
+          "default": "error",
+          "description": "The verbosity of logging. The Order is off < fatal < error < warn < info < debug < trace.",
+          "scope": "window"
+        },
+        "dependencyUpgrade.logging.sourceLocationTracking": {
+          "type": "boolean",
+          "default": false,
+          "description": "If chosen, the location of the source code is added to log entries. Warning - this action may slow your extension. We recommend you use it only for debugging.",
+          "scope": "window"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "ci": "npm-run-all clean compile coverage bundle package",
+    "clean": "rimraf ./dist *.vsix ./coverage ./.nyc_output",
+    "compile": "tsc -p ./",
+    "watch": "tsc -p ./ --watch",
+    "test": "echo mocha",
+    "coverage": "echo nyc mocha",
+    "bundle": "webpack --mode production",
+    "package": "node ./scripts/package-vsix.js"
+  },
+  "dependencies": {
+    "@types/fs-extra": "^9.0.13",
+    "@vscode-logging/wrapper": "1.0.1",
+    "lodash": "4.17.21",
+    "semver": "7.3.5",
+    "fs-extra": "^10.0.1",
+    "jsonc-parser": "3.0.0",
+    "validate-npm-package-name": "3.0.0",
+    "delay": "5.0.0"
+  },
+  "devDependencies": {
+    "@types/validate-npm-package-name": "^3.0.3",
+    "@sap-devx/app-studio-toolkit-types": "1.5.0",
+    "type-fest": "2.11.1"
+  }
+}
