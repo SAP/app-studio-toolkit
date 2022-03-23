@@ -21,12 +21,6 @@ export const CONFIG_PROPS_AND_DEFAULTS = {
 
 export type ConfigPropsKeys = keyof typeof CONFIG_PROPS_AND_DEFAULTS;
 
-// using _.partial does not property infer this type (minus the `getConfiguration` parameter)
-// so we are defining it ourselves.
-export type GetConfigPropOnlyProp = <R extends ConfigPropsKeys>(
-  prop: R
-) => typeof CONFIG_PROPS_AND_DEFAULTS[R];
-
 export function getConfigProp<R extends ConfigPropsKeys>(
   getConfiguration: typeof workspace["getConfiguration"],
   prop: R
