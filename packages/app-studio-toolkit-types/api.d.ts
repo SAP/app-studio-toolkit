@@ -2,30 +2,6 @@ import { Uri } from "vscode";
 import { WorkspaceApi } from "@sap/artifact-management-types";
 import { PackageJson } from "type-fest";
 
-export type PackageName = string;
-export type SemVer = string;
-export type SemVerRange = string;
-
-export interface NodeUpgradeSpec {
-  package: PackageName;
-  version: {
-    from: SemVer | SemVerRange;
-    to: SemVer | SemVerRange;
-  };
-}
-
-/**
- * Optional additional BAS specific metadata on a VSCode extension running in BAS.
- */
-export interface BASPackageJson extends PackageJson {
-  BASContributes?: {
-    actions?: IAction[];
-    upgrade: {
-      nodejs: NodeUpgradeSpec[];
-    };
-  };
-}
-
 /**
  * re-export of the types from `@sap/artifact-management-types for convenience
  * Example usage:
@@ -40,6 +16,50 @@ export interface BASPackageJson extends PackageJson {
  * ```
  */
 export * as sam from "@sap/artifact-management-types";
+
+/**
+ * Optional additional BAS specific metadata on a VSCode extension running in BAS.
+ */
+export interface BASPackageJson extends PackageJson {
+  BASContributes?: {
+    actions?: IAction[];
+    // metadata for the "NPM Dependency Upgrade Tool"
+    // See: https://github.com/SAP/app-studio-toolkit/tree/main/packages/vscode-deps-upgrade-tool
+    upgrade: {
+      nodejs: NodeUpgradeSpec[];
+    };
+  };
+}
+
+export type PackageName = string;
+/**
+ * An exact semVer version, e.g "1.2.3"
+ */
+export type SemVer = string;
+/**
+ * See: https://github.com/npm/node-semver#ranges
+ * See: https://github.com/npm/node-semver#advanced-range-syntax
+ */
+export type SemVerRange = string;
+
+export interface NodeUpgradeSpec {
+  /**
+   * The target package name to upgrade, e.g: "eslint"
+   */
+  package: PackageName;
+  version: {
+    /**
+     * The target version to upgrade, note that ranges are also supported,
+     * e.g: "^7.0.0" means to upgrade all versions included in the range: `7.0.0 >= x < 8.0.0`
+     */
+    from: SemVer | SemVerRange;
+    /**
+     * The version string to upgrade to, this string will be "inserted" as is
+     * in the relevant dependency **value** in the package.json
+     */
+    to: SemVer | SemVerRange;
+  };
+}
 
 export type BasWorkspaceApi = Pick<
   WorkspaceApi,

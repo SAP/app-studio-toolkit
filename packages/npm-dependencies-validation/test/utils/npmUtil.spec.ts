@@ -36,7 +36,7 @@ describe("npmUtil unit test", () => {
     });
 
     it("fails when installing non existing npm package", async function () {
-      this.timeout(npmSpawnTestTimeout);
+      this.timeout(npmSpawnTestTimeout * 2);
       const cwd = resolve("./test/packages-samples/negative");
       const config = {
         commandArgs: ["install", "nonexisting@1.2.3"],

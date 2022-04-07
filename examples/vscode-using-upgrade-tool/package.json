@@ -12,7 +12,7 @@
   },
   "main": "./dist/src/extension.js",
   "scripts": {
-    "ci": "npm-run-all clean compile package",
+    "ci": "npm-run-all clean compile",
     "clean": "rimraf dist *.vsix",
     "compile": "tsc -p ./",
     "package": "vsce package"
