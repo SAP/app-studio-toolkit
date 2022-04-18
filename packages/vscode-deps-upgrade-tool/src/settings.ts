@@ -1,6 +1,5 @@
 import type { workspace } from "vscode";
 
-// TODO: test that the full names here is aligned with the package.json full names value
 export const CONFIG_PROPS_AND_FULL_NAME: Record<ConfigPropsKeys, string> = {
   ENABLED: "dependencyUpgrade.enabled",
   LOGGING_LEVEL: "dependencyUpgrade.logging.level",
@@ -9,8 +8,6 @@ export const CONFIG_PROPS_AND_FULL_NAME: Record<ConfigPropsKeys, string> = {
   DELAY_MAX: "dependencyUpgrade.delay.max",
 };
 
-// TODO: test that the defaultValue here is aligned with the package.json default value
-// TODO: test that both `CONFIG_PROPS_AND_FULL_NAME` and `CONFIG_PROPS_AND_DEFAULTS` have same set of keys
 export const CONFIG_PROPS_AND_DEFAULTS = {
   ENABLED: false,
   LOGGING_LEVEL: "error",
@@ -21,6 +18,7 @@ export const CONFIG_PROPS_AND_DEFAULTS = {
 
 export type ConfigPropsKeys = keyof typeof CONFIG_PROPS_AND_DEFAULTS;
 
+/* istanbul ignore next -- little value in implementing tests for this function (mainly VSCode APIS...) */
 export function getConfigProp<R extends ConfigPropsKeys>(
   getConfiguration: typeof workspace["getConfiguration"],
   prop: R

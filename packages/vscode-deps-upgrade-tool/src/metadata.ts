@@ -1,19 +1,27 @@
-import type { extensions } from "vscode";
+import type { extensions, Extension } from "vscode";
 import { filter, flatMap, forEach, has, isEmpty, isString, map } from "lodash";
 import * as isValidPkgName from "validate-npm-package-name";
 import { NodeUpgradeSpec } from "@sap-devx/app-studio-toolkit-types";
 
-export function readUpgradeMetadata(allExtensions: typeof extensions.all): {
+export function readUpgradeMetadata(
+  allExtensions: readonly Pick<Extension<any>, "packageJSON">[]
+): {
   upgrades: NodeUpgradeSpec[];
   issues: string[];
 } {
   const upgrades: NodeUpgradeSpec[] = [];
   const issues: string[] = [];
   forEach(allExtensions, (ext) => {
+    // many istanbul ignore statements due to:
+    // https://github.com/istanbuljs/istanbuljs/issues/526
     const extName = ext.packageJSON.name;
-    const extUpgrades =
-      (ext.packageJSON?.BASContributes?.upgrade?.nodejs as NodeUpgradeSpec[]) ??
-      [];
+    /* istanbul ignore next */
+    const basContributes = ext.packageJSON?.BASContributes;
+    /* istanbul ignore next */
+    const upgrade = basContributes?.upgrade;
+    /* istanbul ignore next */
+    const nodesJSUpgrades = upgrade?.nodejs;
+    const extUpgrades = nodesJSUpgrades ?? [];
 
     const extValidUpgrades = filter(extUpgrades, (_) =>
       isEmpty(validateUpgradeSchema(_))
@@ -48,7 +56,7 @@ export function validatePackageProperty(value: any): string[] {
   } else {
     const pkgSpec = value.package;
     if (isString(pkgSpec)) {
-      if (!isValidPkgName(pkgSpec)) {
+      if (!isValidPkgName(pkgSpec).validForNewPackages) {
         issues.push("the `package` property must be a valid npm package name");
       }
     } else {

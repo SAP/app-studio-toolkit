@@ -1,6 +1,7 @@
 import type { ExtensionContext, OutputChannel } from "vscode";
 import { IVSCodeExtLogger } from "@vscode-logging/types";
-import { configureLogger, NOOP_LOGGER } from "@vscode-logging/wrapper";
+// avoiding the main wrapper's entry point in-order to avoid its import of "vscode"
+import { NOOP_LOGGER } from "@vscode-logging/wrapper/dist/src/noop-logger";
 import { CONFIG_PROPS_AND_FULL_NAME } from "./settings";
 
 let logger: IVSCodeExtLogger = NOOP_LOGGER;
@@ -19,6 +20,8 @@ export function initLogger(
   extensionName: string
 ): void {
   try {
+    // using `require` to avoid the wrapper's import of `vscode`.
+    const configureLogger = require("@vscode-logging/wrapper").configureLogger;
     logger = configureLogger({
       extName: extensionName,
       logPath: context.logPath,

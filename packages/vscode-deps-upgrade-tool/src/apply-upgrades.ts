@@ -15,8 +15,10 @@ export async function applyUpgrades(
     try {
       const pkgText = await readFile(pkgUri.fsPath, "utf-8");
       const pkgValue = JSON.parse(pkgText);
-      await applyUpgradeSinglePkg(pkgUri, pkgText, pkgValue, upgrades);
+      const editedText = computeEditedPkgText(pkgText, pkgValue, upgrades);
+      await persistToFs(pkgUri, editedText);
     } catch (e) {
+      /* istanbul ignore next -- edge case of extreme failure, not worth testing */
       getLogger().error(`failed to upgrade ${pkgUri.fsPath}`, {
         errMsg: e.message,
       });
@@ -24,8 +26,7 @@ export async function applyUpgrades(
   }
 }
 
-export async function applyUpgradeSinglePkg(
-  pkgUri: Uri,
+export function computeEditedPkgText(
   pkgText: string,
   pkgValue: PackageJson,
   upgrades: NodeUpgradeSpec[]
@@ -49,8 +50,8 @@ export async function applyUpgradeSinglePkg(
     ...depsTextEdits,
     ...devDepsTextEdits,
   ]);
-  // TODO: consider DI for testability
-  await persistToFs(pkgUri, editedText);
+
+  return editedText;
 }
 
 export function pickApplicableUpgrades(
