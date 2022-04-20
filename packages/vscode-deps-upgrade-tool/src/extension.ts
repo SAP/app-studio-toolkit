@@ -53,13 +53,3 @@ async function updateOnStartup() {
     await applyUpgrades(pkgJsonUris, upgradeMetadata.upgrades);
   }
 }
-
-// TODO:
-//  - evaluate need / importance of usage analytics
-//  - documentation (d.ts)
-//  - documentation (extension)
-//  - documentation (example)
-//  - **unit** tests
-
-// TODO: blocked
-// - Choose initial random delay

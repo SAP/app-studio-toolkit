@@ -69,8 +69,8 @@
     "clean": "rimraf ./dist *.vsix ./coverage ./.nyc_output",
     "compile": "tsc -p ./",
     "watch": "tsc -p ./ --watch",
-    "test": "echo mocha",
-    "coverage": "echo nyc mocha",
+    "test": "mocha",
+    "coverage": "nyc mocha",
     "bundle": "webpack --mode production",
     "package": "node ./scripts/package-vsix.js"
   },
@@ -87,6 +87,7 @@
   "devDependencies": {
     "@sap-devx/app-studio-toolkit-types": "^1.8.0",
     "@types/validate-npm-package-name": "^3.0.3",
-    "type-fest": "2.11.1"
+    "type-fest": "2.11.1",
+    "vscode-uri": "^3.0.3"
   }
 }

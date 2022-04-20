@@ -1,0 +1,10 @@
+{
+  "name": "apply-upgrades-fixture",
+  "dependencies": {
+    "@ui5/cli": "1.12.2",
+    "lodash": "4.17.0"
+  },
+  "devDependencies": {
+    "mocha": "7.10.1"
+  }
+}

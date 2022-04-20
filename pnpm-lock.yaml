@@ -202,6 +202,7 @@ importers:
       semver: 7.3.5
       type-fest: 2.11.1
       validate-npm-package-name: 3.0.0
+      vscode-uri: ^3.0.3
     dependencies:
       '@types/fs-extra': 9.0.13
       '@vscode-logging/wrapper': 1.0.1
@@ -215,6 +216,7 @@ importers:
       '@sap-devx/app-studio-toolkit-types': link:../app-studio-toolkit-types
       '@types/validate-npm-package-name': 3.0.3
       type-fest: 2.11.1
+      vscode-uri: 3.0.3
 
 packages:
 

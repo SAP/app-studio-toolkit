@@ -7,6 +7,7 @@ module.exports = {
   exclude: [
     "packages/vscode-dependencies-validation/src/commands.ts",
     "packages/vscode-dependencies-validation/src/logger/logger.ts",
+    "packages/vscode-deps-upgrade-tool/src/logger.ts",
   ],
   //   - https://reflectoring.io/100-percent-test-coverage/
   branches: 100,
