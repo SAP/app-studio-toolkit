@@ -1,6 +1,6 @@
 {
   "name": "@sap-devx/npm-dependencies-validation",
-  "version": "1.8.0",
+  "version": "1.8.3",
   "private": true,
   "description": "Detects NPM dependencies issues",
   "author": "SAP SE",
