@@ -97,7 +97,7 @@ export interface BasToolkit {
    * @returns true is environment is LCAP in BAS,
    *          `undefined` otherwise.
    */
-  isLCAPEnabled: () => Promise<boolean | undefined>;
+  isLCAPEnabled: () => Promise<boolean>;
 
   /**
    * Determine whether BAS is opened for running action or editing a project
