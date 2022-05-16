@@ -92,12 +92,14 @@ export interface BasToolkit {
   getAction: (id: string) => BasAction | undefined;
 
   /**
-   * Is environment LCAP or not
-   *
-   * @returns true is environment is LCAP in BAS,
-   *          `undefined` otherwise.
+   * @deprecated - use the synchronized {@link BasToolkit.isLCAPEnabledSync} instead.
    */
   isLCAPEnabled: () => Promise<boolean>;
+
+  /**
+   * Is environment LCAP or not
+   */
+  isLCAPEnabledSync: () => boolean;
 
   /**
    * Determine whether BAS is opened for running action or editing a project
