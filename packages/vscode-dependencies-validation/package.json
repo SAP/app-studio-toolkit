@@ -1,7 +1,7 @@
 {
   "name": "vscode-dependencies-validation",
   "displayName": "NPM Dependencies Validation",
-  "version": "1.8.0",
+  "version": "1.8.2",
   "private": true,
   "description": "Diagnostics and quick-fixes for NPM dependencies issues for VSCode",
   "categories": [
@@ -71,7 +71,7 @@
     "package": "node ./scripts/package-vsix.js"
   },
   "dependencies": {
-    "@sap-devx/npm-dependencies-validation": "^1.8.0",
+    "@sap-devx/npm-dependencies-validation": "^1.8.2",
     "@vscode-logging/wrapper": "1.0.1",
     "fs-extra": "10.0.0",
     "jsonc-parser": "3.0.0",
