@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.4](https://github.com/SAP/app-studio-toolkit/compare/v1.8.3...v1.8.4) (2022-05-18)
+
+### Bug Fixes
+
+- ensure License related files are part of the packaged .vsix ([#191](https://github.com/SAP/app-studio-toolkit/issues/191)) ([834a041](https://github.com/SAP/app-studio-toolkit/commit/834a04130e93b4e84f560868db5b34b43b2983ce))
+
 ## [1.8.3](https://github.com/SAP/app-studio-toolkit/compare/v1.8.1...v1.8.3) (2022-05-16)
 
 ### Bug Fixes
