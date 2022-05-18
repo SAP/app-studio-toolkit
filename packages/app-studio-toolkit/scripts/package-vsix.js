@@ -2,7 +2,7 @@ const { packageCommand } = require("vsce/out/package");
 const { expect } = require("chai");
 const { resolve } = require("path");
 const { readFileSync, writeFileSync, copyFileSync } = require("fs");
-const { writeJsonSync, copySync, emptyDirSync } = require("fs-extra");
+const { writeJsonSync } = require("fs-extra");
 const rootExtDir = resolve(__dirname, "..");
 const pkgJsonPath = resolve(rootExtDir, "package.json");
 // Read & save the original literal representation of the pkg.json
