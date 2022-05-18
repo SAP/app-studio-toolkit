@@ -9,7 +9,7 @@ import {
   FileAction,
 } from "../actions/impl";
 import { getLogger } from "../logger/logger";
-import { isLCAPEnabled } from "../apis/validateLCAP";
+import { isLCAPEnabled, isLCAPEnabledSync } from "../apis/validateLCAP";
 import { isOpenedForAction } from "../apis/isOpenedForAction";
 
 /**
@@ -45,6 +45,7 @@ export const baseBasToolkitAPI: Omit<BasToolkit, "workspaceAPI"> = {
   getAction: (actionId: string) => ActionsController.getAction(actionId),
   performAction,
   isLCAPEnabled,
+  isLCAPEnabledSync,
   isOpenedForAction,
 
   actions: {

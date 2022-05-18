@@ -1,70 +1,57 @@
-import * as proxyquire from "proxyquire";
 import { expect } from "chai";
 import { mockVscode } from "../mockUtil";
+import { createSandbox, SinonMock, SinonSandbox } from "sinon";
 
+const extensions = { getExtension: () => undefined };
 const testVscode = {
-  window: {
-    createOutputChannel: () => "",
-  },
-  ExtensionContext: {},
+  extensions,
 };
 
 mockVscode(testVscode, "dist/src/logger/logger.js");
-import { isLCAPEnabled } from "../../src/apis/validateLCAP";
-import { BasToolkit } from "@sap-devx/app-studio-toolkit-types";
+mockVscode(testVscode, "dist/src/apis/validateLCAP.js");
+import { isLCAPEnabled, LACP_EXTENSION_ID } from "../../src/apis/validateLCAP";
 
-describe("validate LCAP  API", () => {
-  it("should return undefined", async () => {
+describe("validate LCAP API", () => {
+  it("should return false", async () => {
     const parameterValue = await isLCAPEnabled();
-    expect(parameterValue).to.be.undefined;
+    expect(parameterValue).to.be.false;
   });
 
-  describe("when is lcap is not found", () => {
-    let isLCAPEnabled: BasToolkit["isLCAPEnabled"];
+  describe("validate returned value according to LCAP extension existence", () => {
+    let extensionsMock: SinonMock;
+    let sandbox: SinonSandbox;
 
     before(() => {
-      const validateLCAPModule = proxyquire("../../src/apis/validateLCAP", {
-        "../utils/optional-require": {
-          optionalRequire() {
-            const sapPlugin = {
-              window: {
-                isLCAPEnabled: () => undefined,
-              },
-            };
-            return sapPlugin;
-          },
-        },
-      });
-
-      isLCAPEnabled = validateLCAPModule.isLCAPEnabled;
+      sandbox = createSandbox();
     });
 
-    it("should return undefined", async () => {
+    after(() => {
+      sandbox.restore();
+    });
+
+    beforeEach(() => {
+      extensionsMock = sandbox.mock(testVscode.extensions);
+    });
+
+    afterEach(() => {
+      extensionsMock.verify();
+    });
+
+    it("should return false when LCAP extension does not exist", async () => {
+      extensionsMock
+        .expects("getExtension")
+        .withExactArgs(LACP_EXTENSION_ID)
+        .returns(undefined);
       const parameterValue = await isLCAPEnabled();
-      expect(parameterValue).to.be.undefined;
-    });
-  });
-
-  describe("when is LCAP is true", () => {
-    let isLCAPEnabled: BasToolkit["isLCAPEnabled"];
-
-    before(() => {
-      const validateLCAPModule = proxyquire("../../src/apis/validateLCAP", {
-        "../utils/optional-require": {
-          optionalRequire() {
-            const sapPlugin = {
-              window: {
-                isLCAPEnabled: () => true,
-              },
-            };
-            return sapPlugin;
-          },
-        },
-      });
-      isLCAPEnabled = validateLCAPModule.isLCAPEnabled;
+      expect(parameterValue).to.be.false;
     });
 
-    it("should return undefined", async () => {
+    it("should return true when LCAP extension exists", async () => {
+      const extension = { id: LACP_EXTENSION_ID };
+      extensionsMock
+        .expects("getExtension")
+        .withExactArgs(LACP_EXTENSION_ID)
+        .returns(extension);
       const parameterValue = await isLCAPEnabled();
       expect(parameterValue).to.be.true;
     });

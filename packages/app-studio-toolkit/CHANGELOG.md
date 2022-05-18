@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.3](https://github.com/SAP/app-studio-toolkit/compare/v1.8.1...v1.8.3) (2022-05-16)
+
+### Bug Fixes
+
+- support recognize LCAP mode also for vscode ([#192](https://github.com/SAP/app-studio-toolkit/issues/192)) ([2c2131f](https://github.com/SAP/app-studio-toolkit/commit/2c2131fac0615fb3ea7781965f409c83b3e172a4))
+- support recognize LCAP mode also for vscode ([#192](https://github.com/SAP/app-studio-toolkit/issues/192)) ([#193](https://github.com/SAP/app-studio-toolkit/issues/193)) ([b50a38a](https://github.com/SAP/app-studio-toolkit/commit/b50a38a53c3b812fbec0bf7019f94d26a94f231c))
+
 # [1.8.0](https://github.com/SAP/app-studio-toolkit/compare/v1.7.1...v1.8.0) (2022-03-23)
 
 ### Bug Fixes
