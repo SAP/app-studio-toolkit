@@ -1,7 +1,7 @@
 const { packageCommand } = require("vsce/out/package");
 const { expect } = require("chai");
 const { resolve } = require("path");
-const { readFileSync, writeFileSync } = require("fs");
+const { readFileSync, writeFileSync, copyFileSync } = require("fs");
 const { writeJsonSync } = require("fs-extra");
 const rootExtDir = resolve(__dirname, "..");
 const pkgJsonPath = resolve(rootExtDir, "package.json");
@@ -16,6 +16,12 @@ expect(pkgJson.main).to.equal("./dist/src/extension");
 // to reduce loading time.
 pkgJson.main = "./dist/extension";
 writeJsonSync(pkgJsonPath, pkgJson, { spaces: 2, EOF: "\n" });
+
+// Ensure License and copywrite related files are part of the packaged .vsix
+const rootMonoRepoDir = resolve(__dirname, "..", "..", "..");
+const licenseRootMonoRepoPath = resolve(rootMonoRepoDir, "LICENSE");
+const licenseExtPath = resolve(rootExtDir, "LICENSE");
+copyFileSync(licenseRootMonoRepoPath, licenseExtPath);
 
 // Time to create the VSIX.
 packageCommand({

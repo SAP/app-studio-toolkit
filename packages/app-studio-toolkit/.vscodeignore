@@ -3,6 +3,8 @@
 
 # except
 !LICENSES
+!LICENSE
+!.reuse
 !README.md
 !package.json
 !icon.png
