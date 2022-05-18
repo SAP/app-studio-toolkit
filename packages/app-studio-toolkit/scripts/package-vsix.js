@@ -23,16 +23,6 @@ const licenseRootMonoRepoPath = resolve(rootMonoRepoDir, "LICENSE");
 const licenseExtPath = resolve(rootExtDir, "LICENSE");
 copyFileSync(licenseRootMonoRepoPath, licenseExtPath);
 
-const licensesDirPath = resolve(rootMonoRepoDir, "LICENSES");
-const licensesDirExtPath = resolve(rootExtDir, "LICENSES");
-emptyDirSync(licensesDirExtPath);
-copySync(licensesDirPath, licensesDirExtPath);
-
-const reuseDirPath = resolve(rootMonoRepoDir, ".reuse");
-const reuseDirExtPath = resolve(rootExtDir, "LICENSES");
-emptyDirSync(reuseDirExtPath);
-copySync(reuseDirPath, reuseDirExtPath);
-
 // Time to create the VSIX.
 packageCommand({
   cwd: rootExtDir,
