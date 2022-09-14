@@ -19,7 +19,6 @@
   },
   "main": "./dist/src/extension",
   "scripts": {
-    "postinstall": "patch-package",
     "ci": "npm-run-all clean compile coverage bundle package",
     "clean": "rimraf ./dist *.vsix ./.nyc_output",
     "compile": "tsc -p ./",
