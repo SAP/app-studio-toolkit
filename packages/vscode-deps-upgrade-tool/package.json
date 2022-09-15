@@ -85,8 +85,10 @@
     "validate-npm-package-name": "3.0.0"
   },
   "devDependencies": {
-    "@sap-devx/app-studio-toolkit-types": "^1.8.3",
     "@types/validate-npm-package-name": "^3.0.3",
+    "@types/semver": "^7.3.12",
+    "@vscode-logging/types": "^0.1.4",
+    "@sap-devx/app-studio-toolkit-types": "^1.8.3",
     "type-fest": "2.11.1",
     "vscode-uri": "^3.0.3"
   }
