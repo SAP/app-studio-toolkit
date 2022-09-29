@@ -33,6 +33,7 @@
     "dropdown.border": "#89919a",
     "dropdown.foreground": "#32363a",
     "dropdown.listBackground": "#ffffff",
+    "icon.foreground": "#ffffff",
     "input.background": "#ffffff",
     "input.border": "#89919a",
     "input.foreground": "#32363a",
