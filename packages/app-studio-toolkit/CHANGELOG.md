@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.5](https://github.com/SAP/app-studio-toolkit/compare/v1.8.4...v1.8.5) (2022-10-03)
+
+### Bug Fixes
+
+- fix fiori header icons ([#197](https://github.com/SAP/app-studio-toolkit/issues/197)) ([952bd66](https://github.com/SAP/app-studio-toolkit/commit/952bd66432e4d39b1b8448f4e8fa13fd3b71edbc))
+
 ## [1.8.4](https://github.com/SAP/app-studio-toolkit/compare/v1.8.3...v1.8.4) (2022-05-18)
 
 ### Bug Fixes
