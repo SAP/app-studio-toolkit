@@ -12,6 +12,8 @@ export function createWorkspaceProxy(
     onWorkspaceChanged: (
       ...args: Parameters<WorkspaceApi["onWorkspaceChanged"]>
     ) => workspaceImpl.onWorkspaceChanged(...args),
+    startWatch: () => workspaceImpl.startWatch(),
+    stopWatch: () => workspaceImpl.stopWatch(),
   };
 
   Object.freeze(basWsAPI);
