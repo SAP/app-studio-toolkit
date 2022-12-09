@@ -63,11 +63,7 @@ export interface NodeUpgradeSpec {
 
 export type BasWorkspaceApi = Pick<
   WorkspaceApi,
-  | "getProjects"
-  | "getProjectUris"
-  | "onWorkspaceChanged"
-  | "startWatch"
-  | "stopWatch"
+  "getProjects" | "getProjectUris" | "onWorkspaceChanged"
 >;
 
 export interface BasToolkit {

@@ -18,8 +18,6 @@ describe("the `createWorkspaceProxy` utility", () => {
       onWorkspaceChanged(...args: any[]) {
         return args;
       },
-      startWatch() {},
-      stopWatch() {},
     } as unknown as WorkspaceApi;
     /* eslint-enable  @typescript-eslint/no-unsafe-return -- test dummy mock */
     workspaceProxy = createWorkspaceProxy(dummyReturnArgsWorkspaceImpl);
@@ -35,7 +33,7 @@ describe("the `createWorkspaceProxy` utility", () => {
     });
 
     it("exposes only three properties", () => {
-      expect(Object.keys(workspaceProxy)).to.have.lengthOf(5);
+      expect(Object.keys(workspaceProxy)).to.have.lengthOf(3);
     });
   });
 
@@ -76,28 +74,6 @@ describe("the `createWorkspaceProxy` utility", () => {
       expect(workspaceProxy.onWorkspaceChanged(changeHandler)).to.deep.equal([
         changeHandler,
       ]);
-    });
-  });
-
-  context("`startWatch()` method", () => {
-    it("is exposed", () => {
-      expect(workspaceProxy).to.have.property("startWatch");
-      expect(typeof workspaceProxy.startWatch).to.equal("function");
-    });
-
-    it("passes through arguments", () => {
-      expect(workspaceProxy.startWatch()).to.equal(undefined);
-    });
-  });
-
-  context("`stopWatch()` method", () => {
-    it("is exposed", () => {
-      expect(workspaceProxy).to.have.property("stopWatch");
-      expect(typeof workspaceProxy.stopWatch).to.equal("function");
-    });
-
-    it("passes through arguments", () => {
-      expect(workspaceProxy.stopWatch()).to.equal(undefined);
     });
   });
 });

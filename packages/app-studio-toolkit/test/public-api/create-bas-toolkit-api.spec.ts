@@ -42,8 +42,6 @@ describe("the `createBasToolkitAPI()` utility", () => {
         "getProjects",
         "getProjectUris",
         "onWorkspaceChanged",
-        "startWatch",
-        "stopWatch",
       ]);
       expect(basToolkit.workspaceAPI.getProjects()).to.equal(333);
     });

@@ -8,5 +8,7 @@ let workspaceAPI: WorkspaceApi;
  */
 export function initWorkspaceAPI(): WorkspaceApi {
   workspaceAPI = new WorkspaceImpl(vscode);
+  workspaceAPI.startWatch();
+
   return workspaceAPI;
 }
