@@ -80,7 +80,7 @@ importers:
 
   examples/sample-action-client:
     specifiers:
-      '@sap-devx/app-studio-toolkit-types': ^1.8.3
+      '@sap-devx/app-studio-toolkit-types': ^1.9.0
     devDependencies:
       '@sap-devx/app-studio-toolkit-types': link:../../packages/app-studio-toolkit-types
 
@@ -89,13 +89,13 @@ importers:
 
   examples/vscode-using-workspace-api:
     specifiers:
-      '@sap-devx/app-studio-toolkit-types': ^1.8.3
+      '@sap-devx/app-studio-toolkit-types': ^1.9.0
     devDependencies:
       '@sap-devx/app-studio-toolkit-types': link:../../packages/app-studio-toolkit-types
 
   packages/app-studio-toolkit:
     specifiers:
-      '@sap-devx/app-studio-toolkit-types': ^1.8.3
+      '@sap-devx/app-studio-toolkit-types': ^1.9.0
       '@sap/artifact-management': 1.17.2
       '@types/lodash': ^4.14.168
       '@types/proxyquire': 1.3.28
@@ -184,7 +184,7 @@ importers:
 
   packages/vscode-deps-upgrade-tool:
     specifiers:
-      '@sap-devx/app-studio-toolkit-types': ^1.8.3
+      '@sap-devx/app-studio-toolkit-types': ^1.9.0
       '@types/fs-extra': ^9.0.13
       '@types/semver': ^7.3.12
       '@types/validate-npm-package-name': ^3.0.3
