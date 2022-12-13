@@ -80,13 +80,5 @@
     "extends": [
       "@commitlint/config-conventional"
     ]
-  },
-  "pnpm": {
-    "overrides": {
-      "@sap/artifact-management-mdkplugin": "npm:pre-bundled@^2.2.1"
-    },
-    "patchedDependencies": {
-      "@sap/artifact-management@1.3.0": "patches/@sap__artifact-management@1.3.0.patch"
-    }
   }
 }
