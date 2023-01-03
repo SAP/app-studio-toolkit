@@ -21,7 +21,7 @@ export function activate(context: ExtensionContext): BasToolkit {
 
   void ActionsController.performActionsFromURL();
 
-  const workspaceAPI = initWorkspaceAPI();
+  const workspaceAPI = initWorkspaceAPI(context);
   const basToolkitAPI = createBasToolkitAPI(workspaceAPI, baseBasToolkitAPI);
 
   const logger = getLogger().getChildLogger({ label: "activate" });

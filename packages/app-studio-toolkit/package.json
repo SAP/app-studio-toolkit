@@ -28,7 +28,7 @@
     "package": "node ./scripts/package-vsix.js"
   },
   "dependencies": {
-    "@sap/artifact-management": "1.17.2",
+    "@sap/artifact-management": "1.18.0",
     "@vscode-logging/wrapper": "1.0.1",
     "lodash": "4.17.21"
   },
@@ -81,6 +81,12 @@
         "label": "SAP Fiori Quartz Light",
         "uiTheme": "vs",
         "path": "./src/themes/light-default-clean.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "project-api.command.run",
+        "title": "Run a specific command of Project API"
       }
     ]
   },
