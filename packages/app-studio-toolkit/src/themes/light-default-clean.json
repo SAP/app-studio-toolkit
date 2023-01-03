@@ -180,6 +180,7 @@
     "gitDecoration.conflictingResourceForeground": "#0a6ed1",
     "gitDecoration.submoduleResourceForeground": "#107e3e",
     "debugToolBar.background": "#ffffff",
+    "debugIcon.startForeground": "#89D185",
     "settings.headerForeground": "#32363a",
     "settings.modifiedItemIndicator": "#0f828f",
     "welcomePage.buttonBackground": "#ffffff",
