@@ -124,12 +124,12 @@ importers:
 
   packages/app-studio-toolkit-types:
     specifiers:
-      '@sap/artifact-management-types': 1.17.2
+      '@sap/artifact-management-types': 1.18.0
       '@types/vscode': ^1.49.0
       '@vscode-logging/types': 0.1.4
       type-fest: 2.11.1
     dependencies:
-      '@sap/artifact-management-types': 1.17.2
+      '@sap/artifact-management-types': 1.18.0
       '@types/vscode': 1.62.0
       '@vscode-logging/types': 0.1.4
       type-fest: 2.11.1
@@ -1592,8 +1592,8 @@ packages:
       '@octokit/openapi-types': 11.2.0
     dev: true
 
-  /@sap/artifact-management-base-types/1.16.0:
-    resolution: {integrity: sha512-cMoy+mJvowHIboNXxc8/4jUTzoE4zOJ8i5ElVETce46biOmj/AFrH1P6N1AgKnE9yuBeVlZ75koa5tBwX+tsew==}
+  /@sap/artifact-management-base-types/1.18.0:
+    resolution: {integrity: sha512-RabZLDV91kbvpOyDVHcncuOeZm2ziy/vyeXca+ZjmKhiRxwTkTkXv8v8Jrh5nVEM/fwogOirvVpxXHP/kmtOMg==}
     dependencies:
       '@types/node': 14.14.6
       '@types/vscode': 1.52.0
@@ -1623,10 +1623,10 @@ packages:
       '@sap/artifact-management-base': 1.18.0
     dev: false
 
-  /@sap/artifact-management-types/1.17.2:
-    resolution: {integrity: sha512-sh10FCI1PeqqOWk8HijjtB2nqrx7TkLG8cNqs9Dzf78bYEi8/JEa+0ufiBA9rh+PqRWdDeRC/iDK0c2Ytz5SqA==}
+  /@sap/artifact-management-types/1.18.0:
+    resolution: {integrity: sha512-Pkkhe9aIpESCugUDuDh7Wd0Ohy2BpKWqVn2lHzpzK1GxUtnu9M88Oy1PwkOUQIyBE+zo7Ouh22xqAxnQPAtPnQ==}
     dependencies:
-      '@sap/artifact-management-base-types': 1.16.0
+      '@sap/artifact-management-base-types': 1.18.0
     dev: false
 
   /@sap/artifact-management/1.18.0:

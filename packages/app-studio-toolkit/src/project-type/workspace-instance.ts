@@ -1,6 +1,7 @@
 import { WorkspaceImpl, WorkspaceApi } from "@sap/artifact-management";
 import * as vscode from "vscode";
 import { CommandExecutor } from "@sap/artifact-management";
+import { isPlainObject } from "lodash";
 
 let workspaceAPI: WorkspaceApi;
 
@@ -19,10 +20,10 @@ export function initWorkspaceAPI(
       async (command, ...params) => {
         try {
           let result = await CommandExecutor.execute(command, ...params);
-          if (typeof result !== "string") {
+          if (isPlainObject(result)) {
             result = JSON.stringify(result, undefined, 2);
           }
-          return (result as string) + "\n";
+          return !result ? "\n" : (result as string) + "\n";
         } catch (error) {
           return (
             `Failed to execute the command ${command} with the error: ${error.message}` +
