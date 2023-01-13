@@ -1,7 +1,7 @@
 import { WorkspaceImpl, WorkspaceApi } from "@sap/artifact-management";
 import * as vscode from "vscode";
 import { CommandExecutor } from "@sap/artifact-management";
-import { isPlainObject } from "lodash";
+import { isPlainObject, isString } from "lodash";
 
 let workspaceAPI: WorkspaceApi;
 
@@ -23,7 +23,14 @@ export function initWorkspaceAPI(
           if (isPlainObject(result)) {
             result = JSON.stringify(result, undefined, 2);
           }
-          return !result ? "\n" : (result as string) + "\n";
+
+          if (isString(result)) {
+            return (result ) + "\n";
+          } else if (result === undefined) {
+            return "\n";
+          } else {
+            return "Unsupported type of result: " + typeof result;
+          }
         } catch (error) {
           return (
             `Failed to execute the command ${command} with the error: ${error.message}` +

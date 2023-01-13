@@ -67,14 +67,14 @@ describe("workspace-instance unit test", () => {
 
     workspaceInstance.initWorkspaceAPI(context);
 
-    expect(commandParmater).to.be.equal("project-api.command.run");
+    expect(commandParmater).to.equal("project-api.command.run");
 
     commandExecutorMock
       .expects("execute")
       .withExactArgs("testCommand", "testProjectPath")
       .returns("testResult");
     const result = await callbackParmater("testCommand", "testProjectPath");
-    expect(result.startsWith("testResult")).to.be.true;
+    expect(result).to.match(/^testResult/);
   });
 
   it("run BAS command and return OBJECT result", async () => {
@@ -86,7 +86,7 @@ describe("workspace-instance unit test", () => {
 
     workspaceInstance.initWorkspaceAPI(context);
 
-    expect(commandParmater).to.be.equal("project-api.command.run");
+    expect(commandParmater).equal("project-api.command.run");
 
     commandExecutorMock
       .expects("execute")
@@ -95,7 +95,7 @@ describe("workspace-instance unit test", () => {
         result: "Result is an object",
       });
     const result = await callbackParmater("testCommand", "testProjectPath");
-    expect(result.indexOf("Result is an object") >= 0).to.be.true;
+    expect(result).includes("Result is an object");
   });
 
   it("run BAS command and no return", async () => {
@@ -107,13 +107,32 @@ describe("workspace-instance unit test", () => {
 
     workspaceInstance.initWorkspaceAPI(context);
 
-    expect(commandParmater).to.be.equal("project-api.command.run");
+    expect(commandParmater).to.equal("project-api.command.run");
 
     commandExecutorMock
       .expects("execute")
       .withExactArgs("testCommand", "testProjectPath");
     const result = await callbackParmater("testCommand", "testProjectPath");
-    expect(!result.trim()).to.be.true;
+    expect(result.trim()).to.be.empty;
+  });
+
+  it("run BAS command and return unsupported type of result", async () => {
+    const context: any = {
+      subscriptions: {
+        push: () => {},
+      },
+    };
+
+    workspaceInstance.initWorkspaceAPI(context);
+
+    expect(commandParmater).equal("project-api.command.run");
+
+    commandExecutorMock
+      .expects("execute")
+      .withExactArgs("testCommand", "testProjectPath")
+      .returns(true);
+    const result = await callbackParmater("testCommand", "testProjectPath");
+    expect(result).includes("boolean");
   });
 
   it("unsupported command", async () => {
@@ -125,7 +144,7 @@ describe("workspace-instance unit test", () => {
 
     workspaceInstance.initWorkspaceAPI(context);
 
-    expect(commandParmater).to.be.equal("project-api.command.run");
+    expect(commandParmater).to.equal("project-api.command.run");
 
     commandExecutorMock
       .expects("execute")
@@ -135,6 +154,6 @@ describe("workspace-instance unit test", () => {
       "unsupportedCommand",
       "testProjectPath"
     );
-    expect(result.indexOf("Unsupported command") >= 0).to.be.true;
+    expect(result).includes("Unsupported command");
   });
 });
