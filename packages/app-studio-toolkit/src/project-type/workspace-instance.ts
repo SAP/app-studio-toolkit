@@ -25,7 +25,7 @@ export function initWorkspaceAPI(
           }
 
           if (isString(result)) {
-            return (result ) + "\n";
+            return result + "\n";
           } else if (result === undefined) {
             return "\n";
           } else {
