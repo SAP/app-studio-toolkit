@@ -97,6 +97,11 @@ describe("extension unit test", () => {
           uiTheme: "vs",
           path: "./src/themes/light-default-clean.json",
         },
+        {
+          label: "SAP Fiori Quartz Dark",
+          uiTheme: "vs-dark",
+          path: "./src/themes/dark-default-clean.json",
+        },
       ]);
     });
   });
