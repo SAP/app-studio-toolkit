@@ -29,6 +29,9 @@ const testVscode = {
     getConfiguration: () => wsConfig,
     onDidChangeWorkspaceFolders: () => {},
   },
+  commands: {
+    registerCommand: () => {},
+  },
 };
 
 mockVscode(testVscode, "dist/src/extension.js");
@@ -36,6 +39,7 @@ mockVscode(testVscode, "dist/src/actions/controller.js");
 mockVscode(testVscode, "dist/src/actions/performer.js");
 mockVscode(testVscode, "dist/src/actions/actionsConfig.js");
 mockVscode(testVscode, "dist/src/basctlServer/basctlServer.js");
+mockVscode(testVscode, "dist/src/project-type/workspace-instance.js");
 import * as extension from "../src/extension";
 import * as performer from "../src/actions/performer";
 import * as basctlServer from "../src/basctlServer/basctlServer";
@@ -104,7 +108,11 @@ describe("extension unit test", () => {
 
   describe("activate", () => {
     it("performs defined actions", () => {
-      const context: any = {};
+      const context: any = {
+        subscriptions: {
+          push: () => {},
+        },
+      };
 
       loggerMock.expects("initLogger").withExactArgs(context);
       basctlServerMock.expects("startBasctlServer");
@@ -123,7 +131,11 @@ describe("extension unit test", () => {
     });
 
     it("does nothing with no actions", () => {
-      const context: any = {};
+      const context: any = {
+        subscriptions: {
+          push: () => {},
+        },
+      };
 
       loggerMock.expects("initLogger").withExactArgs(context);
       basctlServerMock.expects("startBasctlServer");

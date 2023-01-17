@@ -96,7 +96,7 @@ importers:
   packages/app-studio-toolkit:
     specifiers:
       '@sap-devx/app-studio-toolkit-types': ^1.9.0
-      '@sap/artifact-management': 1.17.2
+      '@sap/artifact-management': 1.18.0
       '@types/lodash': ^4.14.168
       '@types/proxyquire': 1.3.28
       '@vscode-logging/types': 0.1.4
@@ -108,7 +108,7 @@ importers:
       p-defer: 3.0.0
       proxyquire: 2.1.3
     dependencies:
-      '@sap/artifact-management': 1.17.2
+      '@sap/artifact-management': 1.18.0
       '@vscode-logging/wrapper': 1.0.1
       lodash: 4.17.21
     devDependencies:
@@ -124,12 +124,12 @@ importers:
 
   packages/app-studio-toolkit-types:
     specifiers:
-      '@sap/artifact-management-types': 1.17.2
+      '@sap/artifact-management-types': 1.18.0
       '@types/vscode': ^1.49.0
       '@vscode-logging/types': 0.1.4
       type-fest: 2.11.1
     dependencies:
-      '@sap/artifact-management-types': 1.17.2
+      '@sap/artifact-management-types': 1.18.0
       '@types/vscode': 1.62.0
       '@vscode-logging/types': 0.1.4
       type-fest: 2.11.1
@@ -437,6 +437,11 @@ packages:
       '@babel/helper-validator-identifier': 7.15.7
       to-fast-properties: 2.0.0
     dev: true
+
+  /@colors/colors/1.5.0:
+    resolution: {integrity: sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==}
+    engines: {node: '>=0.1.90'}
+    dev: false
 
   /@commitlint/cli/13.2.0:
     resolution: {integrity: sha512-RqG0cxxiwaL9OgQbA2ZEfZaVIRJmbtsZgnj5G07AjN7///s/40grSN4/kDl8YjUgvAZskPfJRoGGYNvHJ4zHWA==}
@@ -1587,8 +1592,8 @@ packages:
       '@octokit/openapi-types': 11.2.0
     dev: true
 
-  /@sap/artifact-management-base-types/1.16.0:
-    resolution: {integrity: sha512-cMoy+mJvowHIboNXxc8/4jUTzoE4zOJ8i5ElVETce46biOmj/AFrH1P6N1AgKnE9yuBeVlZ75koa5tBwX+tsew==}
+  /@sap/artifact-management-base-types/1.18.0:
+    resolution: {integrity: sha512-RabZLDV91kbvpOyDVHcncuOeZm2ziy/vyeXca+ZjmKhiRxwTkTkXv8v8Jrh5nVEM/fwogOirvVpxXHP/kmtOMg==}
     dependencies:
       '@types/node': 14.14.6
       '@types/vscode': 1.52.0
@@ -1596,67 +1601,49 @@ packages:
       vscode-languageserver-types: 3.16.0
     dev: false
 
-  /@sap/artifact-management-base/1.17.2:
-    resolution: {integrity: sha512-pwewEqTFWe5YXC1b1wiw0MwQLceMOLbnh1FU3Diz/B+X88tJSmfZzFhkiWjvB8Lml3kFt+O6ZiRlzH7uK4fMmw==}
+  /@sap/artifact-management-base/1.18.0:
+    resolution: {integrity: sha512-66pzKu+dBywCqh2diqI8xJHGQfjSK4m5/AlAgsSVLEARk51BnNpbQTDmwSUblYhBpoP+2LTVwbOSPMX8rMBkzg==}
     engines: {node: ^14.14.0 || ^16.15.0}
     dependencies:
-      ajv: 8.8.1
-      arg: 5.0.1
-      async: 3.2.2
-      chokidar: 3.5.2
       ejs: 3.1.8
       fast-glob: 3.2.7
-      glob: 7.2.0
       ignore: 5.1.9
       js-yaml: 4.1.0
       lodash: 4.17.21
-      micromatch: 4.0.4
-      node-watch: 0.7.2
       parse-gitignore: 1.0.1
       vscode-languageserver-types: 3.16.0
       winston: 3.3.3
       winston-daily-rotate-file: 4.5.5_winston@3.3.3
-      yargs: 17.2.1
+      winston-transport: 4.5.0
     dev: false
 
-  /@sap/artifact-management-mdkplugin/1.17.2:
-    resolution: {integrity: sha512-BqWBG4OzfvXMOUgjYYReJptoulKYUqNAk2FctdyKz35qCSofNUIVQHwk7lH7u6vAZZcuHP2QdInXJfF63SDVOQ==}
+  /@sap/artifact-management-mdkplugin/1.18.0:
+    resolution: {integrity: sha512-SlmUkTVcKEPDOrn73+Np/KoFptH1SWR1uNVFwmYR7gLG7lR7hDUjdJioL2Fn1cNVTmbzXocW09gRvTTUCllHFg==}
     dependencies:
-      '@sap/artifact-management-base': 1.17.2
-      fast-glob: 3.2.7
-      glob: 7.2.0
+      '@sap/artifact-management-base': 1.18.0
     dev: false
 
-  /@sap/artifact-management-types/1.17.2:
-    resolution: {integrity: sha512-sh10FCI1PeqqOWk8HijjtB2nqrx7TkLG8cNqs9Dzf78bYEi8/JEa+0ufiBA9rh+PqRWdDeRC/iDK0c2Ytz5SqA==}
+  /@sap/artifact-management-types/1.18.0:
+    resolution: {integrity: sha512-Pkkhe9aIpESCugUDuDh7Wd0Ohy2BpKWqVn2lHzpzK1GxUtnu9M88Oy1PwkOUQIyBE+zo7Ouh22xqAxnQPAtPnQ==}
     dependencies:
-      '@sap/artifact-management-base-types': 1.16.0
+      '@sap/artifact-management-base-types': 1.18.0
     dev: false
 
-  /@sap/artifact-management/1.17.2:
-    resolution: {integrity: sha512-U5bdvAAMe8gMIYLGlvnNOt1GPHnK6VUsO/LUa8KxU55OFkVzPKp+HVblhnB2U3CVjQPqS9FSraZFiq62f/MCKA==}
+  /@sap/artifact-management/1.18.0:
+    resolution: {integrity: sha512-ifccLcgBKdsJvjC//b8Vk2O1bwrilWjNmqcXaFh/fRxuJIOs5esByQG56SfgGC01I2Fj5gS1wx4xqCI6oxVj1g==}
     hasBin: true
     dependencies:
-      '@sap/artifact-management-base': 1.17.2
-      '@sap/artifact-management-mdkplugin': 1.17.2
+      '@sap/artifact-management-base': 1.18.0
+      '@sap/artifact-management-mdkplugin': 1.18.0
       ajv: 8.8.1
-      arg: 5.0.1
-      async: 3.2.2
       chokidar: 3.5.2
-      ejs: 3.1.8
-      fast-glob: 3.2.7
-      glob: 7.2.0
-      ignore: 5.1.9
       js-yaml: 4.1.0
       lodash: 4.17.21
       micromatch: 4.0.4
-      node-watch: 0.7.2
       parse-gitignore: 1.0.1
-      simple-git: 3.6.0
+      simple-git: 3.15.1
       uuid: 8.3.2
       vscode-languageserver-types: 3.16.0
-      winston: 3.3.3
-      winston-daily-rotate-file: 4.5.5_winston@3.3.3
       xml2js: 0.4.23
       yargs: 17.2.1
     transitivePeerDependencies:
@@ -2273,10 +2260,6 @@ packages:
     resolution: {integrity: sha512-58S9QDqG0Xx27YwPSt9fJxivjYl432YCwfDMfZ+71RAqUrZef7LrKQZ3LHLOwCS4FLNBplP533Zx895SeOCHvA==}
     dev: true
 
-  /arg/5.0.1:
-    resolution: {integrity: sha512-e0hDa9H2Z9AwFkk2qDlwhoMYE4eToKarchkQHovNdLTCYMHZHeRjI71crOh+dio4K6u1IcwubQqo79Ga4CyAQA==}
-    dev: false
-
   /argparse/1.0.10:
     resolution: {integrity: sha512-o5Roy6tNG4SL/FOkCAN6RzjiakZS25RLYFrcMttJqbdd8BWrnA+fGz57iN5Pb06pvBGvl5gQ0B48dJlslXvoTg==}
     dependencies:
@@ -2333,10 +2316,6 @@ packages:
     resolution: {integrity: sha512-Z7tMw1ytTXt5jqMcOP+OQteU1VuNK9Y02uuJtKQ1Sv69jXQKKg5cibLwGJow8yzZP+eAc18EmLGPal0bp36rvQ==}
     engines: {node: '>=8'}
     dev: true
-
-  /async/3.2.2:
-    resolution: {integrity: sha512-H0E+qZaDEfx/FY4t7iLRv1W2fFI6+pyCeTw1uN20AQPiwqwM6ojPxHxdLv4z8hi2DtnW9BOckSspLucW7pIE5g==}
-    dev: false
 
   /async/3.2.4:
     resolution: {integrity: sha512-iAB+JbDEGXhyIUavoDl9WP/Jj106Kz9DEn1DPgYw5ruDn0e3Wgi3sKFm55sASdGBNOQB8F59d9qQ7deqrHA8wQ==}
@@ -3879,6 +3858,7 @@ packages:
 
   /fs.realpath/1.0.0:
     resolution: {integrity: sha1-FQStJSMVjKpA20onh8sBQRmU6k8=}
+    dev: true
 
   /fsevents/2.3.2:
     resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
@@ -4073,6 +4053,7 @@ packages:
       minimatch: 3.0.4
       once: 1.4.0
       path-is-absolute: 1.0.1
+    dev: true
 
   /global-dirs/0.1.1:
     resolution: {integrity: sha1-sxnA3UYH81PzvpzKTHL8FIxJ9EU=}
@@ -4362,6 +4343,7 @@ packages:
     dependencies:
       once: 1.4.0
       wrappy: 1.0.2
+    dev: true
 
   /inherits/2.0.4:
     resolution: {integrity: sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==}
@@ -5122,6 +5104,16 @@ packages:
       triple-beam: 1.3.0
     dev: false
 
+  /logform/2.4.2:
+    resolution: {integrity: sha512-W4c9himeAwXEdZ05dQNerhFz2XG80P9Oj0loPUMV23VC2it0orMHQhJm4hdnnor3rd1HsGf6a2lPwBM1zeXHGw==}
+    dependencies:
+      '@colors/colors': 1.5.0
+      fecha: 4.2.1
+      ms: 2.1.3
+      safe-stable-stringify: 2.4.2
+      triple-beam: 1.3.0
+    dev: false
+
   /longest/2.0.1:
     resolution: {integrity: sha1-eB4YMpaqlPbU2RbcM10NF676I/g=}
     engines: {node: '>=0.10.0'}
@@ -5308,6 +5300,7 @@ packages:
     resolution: {integrity: sha512-yJHVQEhyqPLUTgt9B83PXu6W3rx4MvvHvSUvToogpwoGDOUQ+yDrR0HRot+yOCdCO7u4hX3pWft6kWBBcqh0UA==}
     dependencies:
       brace-expansion: 1.1.11
+    dev: true
 
   /minimatch/3.1.2:
     resolution: {integrity: sha512-J7p63hRiAjw1NDEww1W7i37+ByIrOWO5XQQAzZ3VOcL0PNybwpfmV/N05zFAzwQ9USyEcX6t3UO+K5aqBQOIHw==}
@@ -5586,11 +5579,6 @@ packages:
     resolution: {integrity: sha512-CqyzN6z7Q6aMeF/ktcMVTzhAHCEpf8SOarwpzpf8pNBY2k5/oM34UHldUwp8VKI7uxct2HxSRdJjBaZeESzcxA==}
     dev: true
 
-  /node-watch/0.7.2:
-    resolution: {integrity: sha512-g53VjSARRv1JdST0LZRIg8RiuLr1TaBbVPsVvxh0/0Ymvi0xYUjDuoqQQAWtHJQUXhiShowPT/aXKNeHBcyQsw==}
-    engines: {node: '>=6'}
-    dev: false
-
   /nopt/4.0.3:
     resolution: {integrity: sha512-CvaGwVMztSMJLOeXPrez7fyfObdZqNUK1cPAEzLHrTybIua9pMdmmPR5YwtfNftIOMv3DPUhFaxsZMNTQO20Kg==}
     hasBin: true
@@ -5858,6 +5846,7 @@ packages:
     resolution: {integrity: sha1-WDsap3WWHUsROsF9nFC6753Xa9E=}
     dependencies:
       wrappy: 1.0.2
+    dev: true
 
   /one-time/1.0.0:
     resolution: {integrity: sha512-5DXOiRKwuSEcQ/l0kGCF6Q3jcADFv5tSmRaJck/OqkVFcOzutB134KRSfF0xDrL39MNnqxbHBbUUcjZIhTgb2g==}
@@ -6142,6 +6131,7 @@ packages:
   /path-is-absolute/1.0.1:
     resolution: {integrity: sha1-F0uSaHNVNP+8es5r9TpanhtcX18=}
     engines: {node: '>=0.10.0'}
+    dev: true
 
   /path-key/2.0.1:
     resolution: {integrity: sha1-QRyttXTFoUDTpLGRDUDYDMn0C0A=}
@@ -6666,6 +6656,11 @@ packages:
     resolution: {integrity: sha512-ERq4hUjKDbJfE4+XtZLFPCDi8Vb1JqaxAPTxWFLBx8XcAlf9Bda/ZJdVezs/NAfsMQScyIlUMx+Yeu7P7rx5jw==}
     dev: false
 
+  /safe-stable-stringify/2.4.2:
+    resolution: {integrity: sha512-gMxvPJYhP0O9n2pvcfYfIuYgbledAOJFcqRThtPRmjscaipiwcwPPKLytpVzMkG2HAN87Qmo2d4PtGiri1dSLA==}
+    engines: {node: '>=10'}
+    dev: false
+
   /safer-buffer/2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
     dev: true
@@ -6779,8 +6774,8 @@ packages:
     resolution: {integrity: sha512-sDl4qMFpijcGw22U5w63KmD3cZJfBuFlVNbVMKje2keoKML7X2UzWbc4XrmEbDwg0NXJc3yv4/ox7b+JWb57kQ==}
     dev: true
 
-  /simple-git/3.6.0:
-    resolution: {integrity: sha512-2e+4QhOVO59GeLsHgwSMKNrSKCnuACeA/gMNrLCYR8ID9qwm4hViVt4WsODcUGjx//KDv6GMLC6Hs/MeosgXxg==}
+  /simple-git/3.15.1:
+    resolution: {integrity: sha512-73MVa5984t/JP4JcQt0oZlKGr42ROYWC3BcUZfuHtT3IHKPspIvL0cZBnvPXF7LL3S/qVeVHVdYYmJ3LOTw4Rg==}
     dependencies:
       '@kwsites/file-exists': 1.1.1
       '@kwsites/promise-deferred': 1.1.1
@@ -7853,7 +7848,7 @@ packages:
       object-hash: 2.2.0
       triple-beam: 1.3.0
       winston: 3.3.3
-      winston-transport: 4.4.0
+      winston-transport: 4.5.0
     dev: false
 
   /winston-transport/4.3.0:
@@ -7871,6 +7866,15 @@ packages:
     dependencies:
       logform: 2.3.0
       readable-stream: 2.3.7
+      triple-beam: 1.3.0
+    dev: false
+
+  /winston-transport/4.5.0:
+    resolution: {integrity: sha512-YpZzcUzBedhlTAfJg6vJDlyEai/IFMIVcaEZZyl3UXIl4gmqRpU7AE89AHLkbzLUsv0NVmw7ts+iztqKxxPW1Q==}
+    engines: {node: '>= 6.4.0'}
+    dependencies:
+      logform: 2.4.2
+      readable-stream: 3.6.0
       triple-beam: 1.3.0
     dev: false
 
@@ -7921,6 +7925,7 @@ packages:
 
   /wrappy/1.0.2:
     resolution: {integrity: sha1-tSQ9jz7BqjXxNkYFvA0QNuMKtp8=}
+    dev: true
 
   /write-file-atomic/2.4.3:
     resolution: {integrity: sha512-GaETH5wwsX+GcnzhPgKcKjJ6M2Cq3/iZp1WyY/X1CSqrW+jVNM9Y7D8EC2sM4ZG/V8wZlSniJnCKWPmBYAucRQ==}
