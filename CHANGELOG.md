@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0](https://github.com/SAP/app-studio-toolkit/compare/v1.9.0...v1.10.0) (2023-01-17)
+
+### Features
+
+- add fiori dark ([#204](https://github.com/SAP/app-studio-toolkit/issues/204)) ([8def932](https://github.com/SAP/app-studio-toolkit/commit/8def93274da21421d9bc0f16f475ad990ca7882a))
+- expose project api cli methods from BAS commands ([#203](https://github.com/SAP/app-studio-toolkit/issues/203)) ([121ba02](https://github.com/SAP/app-studio-toolkit/commit/121ba020c69bfd3bd78f84764d6473729257e8b8))
+
+### Reverts
+
+- Revert "chore: update "Last Run" debug icon color on vscode top header for Fiori light quartz theme (#202)" (#205) ([6795ce5](https://github.com/SAP/app-studio-toolkit/commit/6795ce50d6c0ff0aad3e065f37decb2c55be3a51)), closes [#202](https://github.com/SAP/app-studio-toolkit/issues/202) [#205](https://github.com/SAP/app-studio-toolkit/issues/205)
+
 # [1.9.0](https://github.com/SAP/app-studio-toolkit/compare/v1.8.6...v1.9.0) (2022-12-13)
 
 ### Features
