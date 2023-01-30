@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.1](https://github.com/SAP/app-studio-toolkit/compare/v1.10.0...v1.10.1) (2023-01-30)
+
+### Bug Fixes
+
+- update "SAP Fiori Quartz Dark" theme colors ([#207](https://github.com/SAP/app-studio-toolkit/issues/207)) ([9367dca](https://github.com/SAP/app-studio-toolkit/commit/9367dca2427bb2e1ea93cbfe57511d55ae50b0fa))
+
 # [1.10.0](https://github.com/SAP/app-studio-toolkit/compare/v1.9.0...v1.10.0) (2023-01-17)
 
 ### Features
