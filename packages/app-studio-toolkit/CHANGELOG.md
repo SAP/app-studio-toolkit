@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0](https://github.com/SAP/app-studio-toolkit/compare/v1.10.2...v1.11.0) (2023-02-13)
+
+### Features
+
+- update project api to 1.19 ([#209](https://github.com/SAP/app-studio-toolkit/issues/209)) ([ae6bbfe](https://github.com/SAP/app-studio-toolkit/commit/ae6bbfeec71b1e9dff30767d15d83c130e086f67))
+
 ## [1.10.2](https://github.com/SAP/app-studio-toolkit/compare/v1.10.1...v1.10.2) (2023-02-08)
 
 ### Bug Fixes
