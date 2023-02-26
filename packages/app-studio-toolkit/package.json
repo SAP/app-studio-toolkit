@@ -86,6 +86,11 @@
         "label": "SAP Fiori Quartz Dark",
         "uiTheme": "vs-dark",
         "path": "./src/themes/dark-default-clean.json"
+      },
+      {
+        "label": "SAP Fiori Horizon Dark",
+        "uiTheme": "vs-dark",
+        "path": "./src/themes/dark-fiori-horizon"
       }
     ],
     "commands": [
