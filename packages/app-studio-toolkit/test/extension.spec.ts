@@ -105,7 +105,7 @@ describe("extension unit test", () => {
         {
           label: "SAP Fiori Horizon Dark",
           uiTheme: "vs-dark",
-          path: "./src/themes/dark-fiori-horizon",
+          path: "./src/themes/dark-fiori-horizon.spec",
         },
       ]);
     });
