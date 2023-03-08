@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.11.2](https://github.com/SAP/app-studio-toolkit/compare/v1.11.1...v1.11.2) (2023-03-08)
+
+### Bug Fixes
+
+- updates to "SAP Fiori Evening Horizon" ([#212](https://github.com/SAP/app-studio-toolkit/issues/212)) ([5e86a25](https://github.com/SAP/app-studio-toolkit/commit/5e86a251299479a3192d17da04f5e7b841b50a6f))
+
 ## [1.11.1](https://github.com/SAP/app-studio-toolkit/compare/v1.11.0...v1.11.1) (2023-02-27)
 
 **Note:** Version bump only for package root
