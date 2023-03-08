@@ -103,7 +103,7 @@ describe("extension unit test", () => {
           path: "./src/themes/dark-default-clean.json",
         },
         {
-          label: "SAP Fiori Horizon Dark",
+          label: "SAP Fiori Evening Horizon",
           uiTheme: "vs-dark",
           path: "./src/themes/dark-fiori-horizon.json",
         },

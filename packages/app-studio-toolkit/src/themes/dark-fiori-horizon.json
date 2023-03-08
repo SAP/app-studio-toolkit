@@ -1,5 +1,5 @@
 {
-  "name": "SAP Fiori Horizon Dark",
+  "name": "SAP Fiori Evening Horizon",
   "type": "dark",
   "colors": {
     "charts.foreground": "#EAECEE",
@@ -31,7 +31,7 @@
     "checkbox.background": "#1D232A",
     "checkbox.border": "#758ca4",
     "dropdown.background": "#1D232A",
-    "dropdown.border": "#758ca4",
+    "dropdown.border": "#1D232A",
     "dropdown.foreground": "#ffffff",
     "dropdown.listBackground": "#1D232A",
     "input.background": "#2E3742",
