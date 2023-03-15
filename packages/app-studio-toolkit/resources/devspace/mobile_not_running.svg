@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 16 16">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_539" data-name="Rectangle 539" width="8.477" height="8.477" fill="none"/>
+    </clipPath>
+    <clipPath id="clip-sap_mobile_icon">
+      <rect width="16" height="16"/>
+    </clipPath>
+  </defs>
+  <g id="sap_mobile_icon" clip-path="url(#clip-sap_mobile_icon)">
+    <g id="Group_3907" data-name="Group 3907" transform="translate(-81.91 -64.693)">
+      <path id="Path_1840" data-name="Path 1840" d="M95.893,67.387A8,8,0,0,0,81.91,72.693h1.573a6.426,6.426,0,0,1,10.9-4.608l-1.459.676,1.991,1.4,1.991,1.4.219-2.425.218-2.425Z" fill="#4f6374"/>
+      <path id="Path_1841" data-name="Path 1841" d="M97.551,85.034a6.421,6.421,0,0,1-10.9,4.606l1.611-.811-2.036-1.336-2.036-1.336-.139,2.431-.139,2.431,1.266-.638a8,8,0,0,0,13.947-5.348Z" transform="translate(-1.214 -12.341)" fill="#4f6374"/>
+      <g id="Group_3768" data-name="Group 3768" transform="translate(85.81 68.258)">
+        <g id="Group_3767" data-name="Group 3767" transform="translate(0 0)" clip-path="url(#clip-path)">
+          <g id="_HANA_dev_spave_48x48" data-name=" HANA dev spave 48x48" transform="translate(0.795 0.265)">
+            <g id="Path_1547" data-name="Path 1547">
+              <path id="Path_1842" data-name="Path 1842" d="M96.727,76.44l-1.441.886v1.725l-1.44-.871V76.456l1.44-.871Zm-2.881,2.327,1.44.855v1.741l-1.44-.871Zm3.466-2.611L95.856,75.3l1.456-.871,1.44.871Zm0,.586,1.44.855v1.741l-1.44.854-1.456-.855V77.6Zm0,4.052,1.44-.871v1.725l-1.44.871-1.456-.871V79.922Zm3.45-4.337v1.725l-1.441.87V77.327l-1.44-.87,1.44-.871Zm-1.44,3.166,1.44-.855v1.725l-1.44.871Z" transform="translate(-93.846 -74.43)" fill="#009bdd"/>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

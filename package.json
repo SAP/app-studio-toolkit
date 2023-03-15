@@ -7,10 +7,6 @@
       "examples/*"
     ]
   },
-  "engines": {
-    "node": ">=12",
-    "pnpm": ">=7"
-  },
   "scripts": {
     "version": "pnpm install && git add pnpm-lock.yaml",
     "preinstall": "npx only-allow pnpm",
@@ -29,6 +25,19 @@
     "legal:delete": "pnpm -r exec -- shx rm -rf .reuse LICENSES || true",
     "legal:copy-reuse": "pnpm -r exec -- shx cp -r ../../.reuse .reuse",
     "legal:copy-license": "pnpm -r exec -- shx cp -r ../../LICENSES LICENSES"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "lint-staged": {
+    "*.{js,ts,json,md}": [
+      "prettier --write"
+    ],
+    "*.{ts,js}": [
+      "eslint --fix --max-warnings=0 --ignore-pattern=!.*"
+    ]
   },
   "devDependencies": {
     "@commitlint/cli": "13.2.0",
@@ -68,17 +77,8 @@
     "webpack": "5.61.0",
     "webpack-cli": "4.9.1"
   },
-  "lint-staged": {
-    "*.{js,ts,json,md}": [
-      "prettier --write"
-    ],
-    "*.{ts,js}": [
-      "eslint --fix --max-warnings=0 --ignore-pattern=!.*"
-    ]
-  },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ]
+  "engines": {
+    "node": ">=12",
+    "pnpm": ">=7"
   }
 }

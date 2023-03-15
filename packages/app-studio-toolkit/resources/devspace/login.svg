@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 16 16">
+  <defs>
+    <clipPath id="clip-Login__dark">
+      <rect width="16" height="16"/>
+    </clipPath>
+  </defs>
+  <g id="Login__dark" data-name="Login _dark" clip-path="url(#clip-Login__dark)">
+    <g id="Group_3547" data-name="Group 3547" transform="translate(-670.363 -861)">
+      <line id="Line_104" data-name="Line 104" x2="10.065" transform="translate(670.863 869.16)" fill="none" stroke="#ccc" stroke-width="1"/>
+      <path id="Path_1649" data-name="Path 1649" d="M677.737,867.285l2.112,2.148-2.008,2.313" transform="translate(1.033 -0.273)" fill="none" stroke="#ccc" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      <path id="Path_1652" data-name="Path 1652" d="M680.1,863a6.092,6.092,0,0,0-5.934,4.756h.966a5.142,5.142,0,1,1,.038,2.809H674.2A6.082,6.082,0,1,0,680.1,863Z" transform="translate(-0.242)" fill="#ccc"/>
+    </g>
+  </g>
+</svg>

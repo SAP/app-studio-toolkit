@@ -28,7 +28,7 @@ packageCommand({
   cwd: rootExtDir,
   packagePath: undefined,
   baseContentUrl: undefined,
-  baseImagesUrl: undefined,
+  baseImagesUrl: `https://github.com/SAP/app-studio-toolkit.git`,
   useYarn: true,
   ignoreFile: undefined,
   expandGitHubIssueLinks: undefined,

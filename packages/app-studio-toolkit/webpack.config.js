@@ -14,6 +14,53 @@ const config = Object.assign({}, baseConfig, {
     // https://webpack.js.org/configuration/module/#modulenoparse
     // used to avoid transforming native require usage in `optional-require` implementation
     noParse: /native-require\.(js|ts)$/,
+    rules: [
+      {
+        test: /\.ts$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: "ts-loader",
+          },
+        ],
+      },
+      {
+        test: /node_modules[/|\\]fast-json-stringify[/|\\]index.js/,
+        loader: "string-replace-loader",
+        options: {
+          search: "require[(]'long",
+          replace: "__non_webpack_require__('long",
+          flags: "g",
+        },
+      },
+      {
+        test: /node_modules[/|\\]express[/|\\]lib[/|\\]view.js/,
+        loader: "string-replace-loader",
+        options: {
+          search: "require[(]mod",
+          replace: "__non_webpack_require__(mod",
+          flags: "g",
+        },
+      },
+      {
+        test: /node_modules[/|\\]ssh-config[/|\\]index.js/,
+        loader: "string-replace-loader",
+        options: {
+          search: "require[(]mod",
+          replace: "__non_webpack_require__(mod",
+          flags: "g",
+        },
+      },
+      {
+        test: /node_modules[/|\\]@microsoft[/|\\]dev-tunnels-ssh[/|\\]algorithms[/|\\]node[/|\\]nodeRsa.js/,
+        loader: "string-replace-loader",
+        options: {
+          search: "require[(]'node-rsa",
+          replace: "__non_webpack_require__('node-rsa",
+          flags: "g",
+        },
+      },
+    ],
   },
   // 📖 -> https://webpack.js.org/configuration/externals/
   externals: {

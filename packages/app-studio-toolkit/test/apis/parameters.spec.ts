@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import * as proxyquire from "proxyquire";
+import proxyquire from "proxyquire";
 import { NOOP_LOGGER } from "@vscode-logging/wrapper";
 
 type GetParamSignature = (parameterName: string) => Promise<string | undefined>;

@@ -1,6 +1,6 @@
 import { mockVscode } from "./mockUtil";
 import { expect, use } from "chai";
-import * as chaiAsPromised from "chai-as-promised";
+import chaiAsPromised from "chai-as-promised";
 import * as _ from "lodash";
 import { SinonSandbox, SinonMock, createSandbox } from "sinon";
 import { BasAction, ICommandAction } from "@sap-devx/app-studio-toolkit-types";

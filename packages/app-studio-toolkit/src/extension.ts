@@ -9,6 +9,10 @@ import {
 import { ActionsController } from "./actions/controller";
 import { initLogger, getLogger } from "./logger/logger";
 import { initWorkspaceAPI } from "./project-type/workspace-instance";
+import {
+  deactivateBasRemoteExplorer,
+  initBasRemoteExplorer,
+} from "./bas-remote/instance";
 
 export function activate(context: ExtensionContext): BasToolkit {
   initLogger(context);
@@ -24,6 +28,8 @@ export function activate(context: ExtensionContext): BasToolkit {
   const workspaceAPI = initWorkspaceAPI(context);
   const basToolkitAPI = createBasToolkitAPI(workspaceAPI, baseBasToolkitAPI);
 
+  void initBasRemoteExplorer(context);
+
   const logger = getLogger().getChildLogger({ label: "activate" });
   logger.info("The App-Studio-Toolkit Extension is active.");
 
@@ -32,4 +38,5 @@ export function activate(context: ExtensionContext): BasToolkit {
 
 export function deactivate() {
   closeBasctlServer();
+  deactivateBasRemoteExplorer();
 }

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 16 16">
+  <defs>
+    <clipPath id="clip-sap_mobile_green">
+      <rect width="16" height="16"/>
+    </clipPath>
+  </defs>
+  <g id="sap_mobile_green" clip-path="url(#clip-sap_mobile_green)">
+    <g id="Group_3920" data-name="Group 3920" transform="translate(130.636 104.328)">
+      <circle id="Ellipse_19" data-name="Ellipse 19" cx="3.452" cy="3.452" r="3.452" transform="translate(-121.54 -104.324)" fill="#0ea527"/>
+      <g id="Group_3919" data-name="Group 3919">
+        <path id="Path_2018" data-name="Path 2018" d="M-124.516-99.333l-1.44.871v1.724l1.44.871v-1.725l1.441-.886Z" fill="#009bdd"/>
+        <path id="Path_2019" data-name="Path 2019" d="M-125.956-94.426l1.44.871V-95.3l-1.44-.855Z" fill="#009bdd"/>
+        <path id="Path_2020" data-name="Path 2020" d="M-121.8-98.387c-.023-.035-.038-.076-.06-.112l-.063.038Z" fill="#009bdd"/>
+        <path id="Path_2021" data-name="Path 2021" d="M-122.121-98.981a4.4,4.4,0,0,1-.394-1.493l-1.431.856,1.456.856Z" fill="#009bdd"/>
+        <path id="Path_2022" data-name="Path 2022" d="M-123.946-95v1.726l1.456.871,1.44-.871v-1.725l-1.44.871Z" fill="#009bdd"/>
+        <path id="Path_2023" data-name="Path 2023" d="M-120.481-97.116v1.25l1.2-.726A4.409,4.409,0,0,1-120.481-97.116Z" fill="#009bdd"/>
+        <path id="Path_2024" data-name="Path 2024" d="M-120.48-93.554l1.44-.871V-96.15l-1.44.855Z" fill="#009bdd"/>
+        <path id="Path_2025" data-name="Path 2025" d="M-123.946-97.318v1.737l1.456.855,1.44-.854v-1.741l-1.44-.855Z" fill="#009bdd"/>
+      </g>
+      <path id="Path_1841" data-name="Path 1841" d="M-116.209-96.324a6.421,6.421,0,0,1-6.416,6.426,6.423,6.423,0,0,1-4.484-1.82l1.611-.811-2.036-1.336L-129.57-95.2l-.139,2.431-.139,2.431,1.266-.638a8,8,0,0,0,11.3.6,8,8,0,0,0,2.649-5.944Z" fill="#4f6374"/>
+      <path id="Path_2026" data-name="Path 2026" d="M-121.069-104.156a7.983,7.983,0,0,0-6.878,1.853,8,8,0,0,0-2.689,5.979h1.573a6.427,6.427,0,0,1,6.431-6.422c.169,0,.338.012.506.025A4.439,4.439,0,0,1-121.069-104.156Z" fill="#4f6374"/>
+    </g>
+  </g>
+</svg>
