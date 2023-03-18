@@ -7,7 +7,6 @@
     "target": "es2017",
     "declaration": true,
     "sourceMap": true,
-    "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "useUnknownInCatchVariables": false

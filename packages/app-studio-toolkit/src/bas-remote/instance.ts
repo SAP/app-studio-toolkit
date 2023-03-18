@@ -110,12 +110,12 @@ export async function initBasRemoteExplorer(
   context.subscriptions.push(
     commands.registerCommand("local-extension.landscape.set", cmdLandscapeSet)
   );
+
   context.subscriptions.push(
     commands.registerCommand(
       "local-extension.login",
       async (item: LandscapeNode) => {
-        await getJwt(item.url);
-        devSpaceExplorer.refreshTree();
+        return getJwt(item.url).finally(() => devSpaceExplorer.refreshTree());
       }
     )
   );
