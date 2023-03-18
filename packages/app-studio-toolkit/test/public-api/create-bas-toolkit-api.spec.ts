@@ -40,6 +40,7 @@ describe("the `createBasToolkitAPI()` utility", () => {
       expect(basToolkit).to.have.property("workspaceAPI");
       expect(Object.keys(basToolkit.workspaceAPI)).to.have.members([
         "getProjects",
+        "getProject",
         "getProjectUris",
         "onWorkspaceChanged",
       ]);
