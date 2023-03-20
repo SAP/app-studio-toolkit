@@ -12,6 +12,9 @@ describe("the `createWorkspaceProxy` utility", () => {
       getProjects(...args: any[]) {
         return args;
       },
+      getProject(...args: any[]) {
+        return args;
+      },
       getProjectUris(...args: any[]) {
         return args;
       },
@@ -32,8 +35,8 @@ describe("the `createWorkspaceProxy` utility", () => {
       expect(workspaceProxy).to.be.sealed;
     });
 
-    it("exposes only three properties", () => {
-      expect(Object.keys(workspaceProxy)).to.have.lengthOf(3);
+    it("exposes only four properties", () => {
+      expect(Object.keys(workspaceProxy)).to.have.lengthOf(4);
     });
   });
 
@@ -45,6 +48,19 @@ describe("the `createWorkspaceProxy` utility", () => {
 
     it("passes through arguments", () => {
       expect(workspaceProxy.getProjects(Tag.CAP)).to.deep.equal([Tag.CAP]);
+    });
+  });
+
+  context("`getProject()` method", () => {
+    it("is exposed", () => {
+      expect(workspaceProxy).to.have.property("getProject");
+      expect(typeof workspaceProxy.getProject).to.equal("function");
+    });
+
+    it("passes through arguments", () => {
+      expect(workspaceProxy.getProject("dummyPath")).to.deep.equal([
+        "dummyPath",
+      ]);
     });
   });
 
