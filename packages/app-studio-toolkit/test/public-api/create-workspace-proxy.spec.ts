@@ -35,7 +35,7 @@ describe("the `createWorkspaceProxy` utility", () => {
       expect(workspaceProxy).to.be.sealed;
     });
 
-    it("exposes only three properties", () => {
+    it("exposes only four properties", () => {
       expect(Object.keys(workspaceProxy)).to.have.lengthOf(4);
     });
   });
