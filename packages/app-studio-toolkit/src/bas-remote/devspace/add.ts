@@ -13,7 +13,7 @@ import {
   getDevSpaceRequiredExtensions,
   getDevSpacesSpec,
 } from "./spec_and_extensions";
-import { getJwt } from "../../auth/authentication";
+import { getJwt } from "../../authentication/auth-utils";
 
 export async function cmdDevSpaceAdd(landscape: LandscapeNode): Promise<void> {
   const devSpacePick: DevSpacePick = await multiStepInput(landscape);
@@ -96,9 +96,6 @@ export async function createDevSpace(
 ): Promise<void> {
   try {
     const jwt = await getJwt(landscapeUrl);
-    if (!jwt) {
-      throw new Error(`authorization token can't be obtained`);
-    }
     // TODO: Delete workaround
     devSpaceDetails.extensions = filterExtensionsWorkaround(devSpaceDetails);
     await devspace.createDevSpace(landscapeUrl, devSpaceDetails, jwt);

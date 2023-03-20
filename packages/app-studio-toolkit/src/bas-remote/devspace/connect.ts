@@ -18,6 +18,7 @@ import {
   runChannelClientAsProcess,
   savePK,
   SSHConfigInfo,
+  SSHD_SOCKET_PORT,
   updateSSHConfig,
 } from "../tunnel/ssh-utils";
 
@@ -61,7 +62,7 @@ async function createTunnel(
   // Start chisel tunnel
   progress.report({ message: "Starting new VPN tunnel to dev-space" });
   tunnel = await runChannelClientAsProcess({
-    host: `port9880-${new URL(devSpace.wsUrl).hostname}`,
+    host: `port${SSHD_SOCKET_PORT}-${new URL(devSpace.wsUrl).hostname}`,
     landscape: devSpace.landscapeUrl,
   });
   // Stability of tunnel time

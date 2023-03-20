@@ -2,7 +2,7 @@ import { window, commands } from "vscode";
 import { DevSpaceNode } from "../tree/treeItems";
 import { getLogger } from "../../logger/logger";
 import { messages } from "../messages";
-import { getJwt } from "../../auth/authentication";
+import { getJwt } from "../../authentication/auth-utils";
 import { devspace } from "@sap/bas-sdk";
 
 export async function cmdDevSpaceDelete(devSpace: DevSpaceNode): Promise<void> {
@@ -17,11 +17,11 @@ export async function cmdDevSpaceDelete(devSpace: DevSpaceNode): Promise<void> {
 
 async function deleteDevSpace(landscapeUrl: string, wsId: string) {
   try {
-    const jwt = await getJwt(landscapeUrl);
-    if (!jwt) {
-      throw new Error(`authorization token can't be obtained`);
-    }
-    await devspace.deleteDevSpace(landscapeUrl, wsId, jwt);
+    await devspace.deleteDevSpace(
+      landscapeUrl,
+      wsId,
+      await getJwt(landscapeUrl)
+    );
     const message = messages.info_devspace_deleted(wsId);
     getLogger().info(message);
     void window.showInformationMessage(message);

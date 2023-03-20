@@ -2,7 +2,7 @@ import { commands, ConfigurationTarget, workspace } from "vscode";
 import type { ExtensionContext } from "vscode";
 import { DevSpacesExplorer } from "./tree/devSpacesExplorer";
 import { LandscapeNode } from "./tree/treeItems";
-import { getJwt } from "../auth/authentication";
+import { getJwt } from "../authentication/auth-utils";
 import { cmdLandscapeDelete } from "./landscape/delete";
 import { cmdLandscapeSet } from "./landscape/set";
 import { cmdLandscapeOpenDevSpaceManager } from "./landscape/open";

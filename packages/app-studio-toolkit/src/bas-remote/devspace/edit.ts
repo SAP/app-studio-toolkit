@@ -13,7 +13,7 @@ import { DevSpaceInfo, getDevSpaces, PackName } from "./devspace";
 import { messages } from "../messages";
 import { devspace } from "@sap/bas-sdk";
 import { $enum } from "ts-enum-util";
-import { getJwt } from "../../auth/authentication";
+import { getJwt } from "../../authentication/auth-utils";
 
 // interface DevSpaceEdit {
 //   extensions: string[];
@@ -108,9 +108,6 @@ async function editDevSpace(
 ): Promise<void> {
   try {
     const jwt = await getJwt(landscapeUrl);
-    if (!jwt) {
-      throw new Error(`authorization token can't be obtained`);
-    }
     // TODO: Delete workaround
     devSpaceDetails.extensions = filterExtensionsWorkaround(
       devSpaceDetails,

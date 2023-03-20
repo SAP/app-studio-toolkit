@@ -3,7 +3,7 @@ import { getLogger } from "../../logger/logger";
 import { DevSpaceNode } from "../tree/treeItems";
 import { autoRefresh, RefreshRate } from "../utils";
 import { messages } from "../messages";
-import { getJwt } from "../../auth/authentication";
+import { getJwt } from "../../authentication/auth-utils";
 import { devspace } from "@sap/bas-sdk";
 
 const START = false;
@@ -36,18 +36,13 @@ async function updateDevSpace(
   suspend: boolean
 ) {
   try {
-    const jwt = await getJwt(landscapeUrl);
-    if (!jwt) {
-      throw new Error(`authorization token can't be obtained`);
-    }
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return -- suppress warn
     return (
       devspace
         .updateDevSpace(
           landscapeUrl,
           wsId,
           { Suspended: suspend, WorkspaceDisplayName: wsName },
-          jwt
+          await getJwt(landscapeUrl)
         )
         // eslint-disable-next-line @typescript-eslint/no-unused-vars -- suppress warn
         .then((_) => {

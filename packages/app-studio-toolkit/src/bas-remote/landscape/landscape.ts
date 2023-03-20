@@ -1,6 +1,6 @@
 import { ConfigurationTarget, workspace } from "vscode";
 import { compact, trim, uniq } from "lodash";
-import { hasJwt } from "../../auth/authentication";
+import { hasJwt } from "../../authentication/auth-utils";
 import { URL } from "node:url";
 
 export interface LandscapeInfo {

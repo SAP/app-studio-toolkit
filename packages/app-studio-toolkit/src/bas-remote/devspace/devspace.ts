@@ -2,7 +2,7 @@ import { window } from "vscode";
 import { getLogger } from "../../logger/logger";
 import { messages } from "../messages";
 import { devspace } from "@sap/bas-sdk";
-import { getJwt } from "../../auth/authentication";
+import { getJwt } from "../../authentication/auth-utils";
 import { $enum } from "ts-enum-util";
 // import { waccess, wOP } from "../utils";
 
@@ -33,9 +33,6 @@ export async function getDevSpaces(
 ): Promise<DevSpaceInfo[]> {
   return getJwt(landscapeUrl)
     .then((jwt) => {
-      if (!jwt) {
-        throw new Error(`authorization token can't be obtained`);
-      }
       return devspace
         .getDevSpaces(landscapeUrl, jwt)
         .then((devspaces: devspace.DevspaceInfo[]) => {

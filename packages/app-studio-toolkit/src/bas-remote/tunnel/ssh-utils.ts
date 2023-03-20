@@ -1,6 +1,5 @@
 import { window, workspace } from "vscode";
 import * as url from "url";
-// import { waccess, wOP } from "../utils";
 import { getLogger } from "../../logger/logger";
 import { messages } from "../messages";
 import * as path from "path";
@@ -8,10 +7,13 @@ import * as fs from "fs";
 import { homedir } from "os";
 const sshConfig = require("ssh-config");
 import { DevSpaceNode } from "../tree/treeItems";
-import { getJwt } from "../../auth/authentication";
+import { getJwt } from "../../authentication/auth-utils";
 import { isEmpty } from "lodash";
 import { ChildProcess } from "child_process";
-// import { ssh } from "@devx-wing/dev-tunnels";
+import { authentication, tunnel } from "@sap/bas-sdk";
+
+export const SSHD_SOCKET_PORT = 9880;
+export const SSH_SOCKET_PORT = 443;
 
 export interface SSHConfigInfo {
   name: string;
@@ -33,17 +35,16 @@ export async function getPK(
   adminUrl: string,
   landscapeUrl: string
 ): Promise<string> {
-  return Promise.resolve("");
-  // return waccess(wOP.GET, { landscape: landscapeUrl, path: `key`, host: adminUrl })
-  //   .then((response) => {
-  //     return response.data as string;
-  //   })
-  //   .catch((error: Error) => {
-  //     const message = messages.err_get_key(error.toString());
-  //     getLogger().error(message);
-  //     void window.showErrorMessage(message);
-  //     return "";
-  //   });
+  return getJwt(landscapeUrl)
+    .then((jwt) => {
+      return authentication.obtainKey(jwt, landscapeUrl, adminUrl);
+    })
+    .catch((error: Error) => {
+      const message = messages.err_get_key(error.toString());
+      getLogger().error(message);
+      void window.showErrorMessage(message);
+      return "";
+    });
 }
 
 export function savePK(pk: string, urlStr: string): string | undefined {
@@ -63,7 +64,6 @@ export function savePK(pk: string, urlStr: string): string | undefined {
     getLogger().info(`Private Key file ${fileName} created`);
     return fileName;
   } catch (e) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument -- suppress warn
     const message: string = e.toString();
     getLogger().error(message);
     void window.showErrorMessage(message);
@@ -74,13 +74,11 @@ function getSSHConfig(sshConfigFile: string): typeof sshConfig | undefined {
   if (fs.existsSync(sshConfigFile)) {
     const configData: Buffer = fs.readFileSync(sshConfigFile);
     getLogger().info(`SSH Config file ${sshConfigFile} exists`);
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return -- suppress
     return sshConfig.parse(configData.toString());
   } else {
     getLogger().info(
       `SSH Config file ${sshConfigFile} doest exist, creating new file`
     );
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return -- suppress
     return sshConfig.parse({});
   }
 }
@@ -132,15 +130,20 @@ export async function runChannelClientAsProcess(opt: {
 }): Promise<ChildProcess | undefined> {
   const urlObj: url.UrlWithStringQuery = url.parse(opt.host);
   // const channelOsPath: string = getDevChannelPath();
-  const port = 443;
-  const jwt = await getJwt(opt.landscape);
-  if (isEmpty(jwt)) {
+  try {
+    const jwt = await getJwt(opt.landscape);
+    if (jwt) {
+      void tunnel.ssh(url.format(urlObj), SSH_SOCKET_PORT, "user", jwt);
+      getLogger().info(
+        `Start dev-channel client for ${opt.host} on port ${SSH_SOCKET_PORT}`
+      );
+    }
+  } catch (e) {
+    getLogger().error(
+      `Error: can't start dev-channel client for ${opt.host} on port ${SSH_SOCKET_PORT}, error: ${e}`
+    );
     return;
   }
-
-  getLogger().info(`Start dev-channel client for ${opt.host} on port ${port}`);
-
-  // void ssh(url.format(urlObj), port, "user", jwt!, { Reconnect: "true" });
 
   // const channelProcess = exec(`node ${channelOsPath} ssh ${url.format(urlObj)} -j ${jwt} -p ${port} -l user`);
 

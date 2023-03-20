@@ -1,6 +1,6 @@
 import { window, workspace } from "vscode";
 import { devspace } from "@sap/bas-sdk";
-import { getJwt } from "../../auth/authentication";
+import { getJwt } from "../../authentication/auth-utils";
 import { getLogger } from "../../logger/logger";
 import { messages } from "../messages";
 import { throws } from "assert";
@@ -52,15 +52,10 @@ export function getDevSpacesSpec(
 ): Promise<devspace.DevSpaceSpec | void> {
   return getJwt(landscapeUrl)
     .then((jwt) => {
-      if (!jwt) {
-        throw new Error(`authorization token can't be obtained`);
-      }
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return -- suppress eslint warning
       return devspace
         .getDevSpacesSpec(landscapeUrl, jwt)
         .then((spec: devspace.DevSpaceSpec | undefined) => {
           getLogger().info(`Successfully got Dev Space Spec`);
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-return -- suppress eslint warning
           return spec;
         });
     })
@@ -74,13 +69,8 @@ export function getDevSpacesSpec(
 export function getExtensionPacks(
   landscapeUrl: string
 ): Promise<devspace.ExtensionPackInfo[]> {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return -- suppress eslint warning
   return getJwt(landscapeUrl)
     .then((jwt) => {
-      if (!jwt) {
-        throw new Error(`authorization token can't be obtained`);
-      }
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return -- suppress eslint warning
       return devspace.getExtensionPacks(landscapeUrl, jwt);
     })
     .catch((error: Error) => {

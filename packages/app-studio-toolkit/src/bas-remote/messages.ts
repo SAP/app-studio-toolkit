@@ -5,8 +5,8 @@ export const messages = {
   ICON_MISSING: (iconName: string): string =>
     `Could not find an icon named '${iconName}'. Make sure you imported the matching file.`,
   name_extention: `BAS Remote Explorer`,
-  err_incorrect_jwt: (url: string) =>
-    `Incorrect jwt recieved. Please refresh your browser window to relogin and try again. for ${url}`,
+  // err_incorrect_jwt: (url: string) =>
+  //   `Incorrect jwt recieved. Please refresh your browser window to relogin and try again. for ${url}`,
   err_listening: (port: number, message: string, url: string) =>
     `Error listening on port ${port} to get jwt: ${message} for ${url}`,
   err_get_jwt_timeout: (ms: number) => `Getting JWT Timed out in ${ms} ms.`,
