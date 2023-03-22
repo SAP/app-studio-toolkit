@@ -54,6 +54,7 @@ export function closeTunnel(): boolean {
 
 async function createTunnel(
   devSpace: DevSpaceNode,
+  config: SSHConfigInfo,
   progress: Progress<{ message?: string; increment?: number }>
 ): Promise<any> {
   progress.report({ message: "Closing old VPN tunnel to dev-space" });
@@ -64,6 +65,7 @@ async function createTunnel(
   tunnel = await runChannelClientAsProcess({
     host: `port${SSHD_SOCKET_PORT}-${new URL(devSpace.wsUrl).hostname}`,
     landscape: devSpace.landscapeUrl,
+    localPort: config.port,
   });
   // Stability of tunnel time
   // progress.report({ message: "Waiting for VPN tunnel to dev-space stability" });
@@ -84,7 +86,7 @@ async function createTunnelAndGetHostName(
       const config = await getTunnelConfigurations(devSpace, progress);
       if (config) {
         // Create tunnel
-        await createTunnel(devSpace, progress);
+        await createTunnel(devSpace, config, progress);
         // Add linux to host records in settings json
         await updateRemotePlatformSetting(config);
         return config.name;

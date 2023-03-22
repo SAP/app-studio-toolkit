@@ -11,7 +11,7 @@ import { getJwt } from "../authentication/auth-utils";
 import { ChildProcess } from "child_process";
 import { authentication, tunnel } from "@sap/bas-sdk";
 
-export const SSHD_SOCKET_PORT = 9880;
+export const SSHD_SOCKET_PORT = 9880; // TODO change
 export const SSH_SOCKET_PORT = 443;
 
 export interface SSHConfigInfo {
@@ -89,7 +89,7 @@ export function updateSSHConfig(
   const urlObj: url.UrlWithStringQuery = url.parse(devSpace.landscapeUrl);
   const sectionName = `${urlObj.host}.${devSpace.id}`;
   const sshConfigFile: string = getSshConfigFilePath();
-  const port = "8080";
+  const port = getRandomArbitrary();
   try {
     // get ssh config object form ssh config file
     const config = getSSHConfig(sshConfigFile);
@@ -108,7 +108,7 @@ export function updateSSHConfig(
     //save the ssh config object back to file
     const configData: string = sshConfig.stringify(config);
     fs.writeFileSync(sshConfigFile, configData);
-    return { name: sectionName, port: port } as SSHConfigInfo;
+    return { name: sectionName, port: `${port}` } as SSHConfigInfo;
   } catch (err) {
     const message = messages.err_config_update(
       sshConfigFile,
@@ -126,17 +126,21 @@ export function updateSSHConfig(
 export async function runChannelClientAsProcess(opt: {
   host: string;
   landscape: string;
+  localPort: string;
 }): Promise<ChildProcess | undefined> {
   const urlObj: url.UrlWithStringQuery = url.parse(opt.host);
   // const channelOsPath: string = getDevChannelPath();
   try {
     const jwt = await getJwt(opt.landscape);
-    if (jwt) {
-      void tunnel.ssh(url.format(urlObj), SSH_SOCKET_PORT, "user", jwt);
-      getLogger().info(
-        `Start dev-channel client for ${opt.host} on port ${SSH_SOCKET_PORT}`
-      );
-    }
+    void tunnel.ssh({
+      host: { url: url.format(urlObj), port: `${SSH_SOCKET_PORT}` },
+      client: { port: opt.localPort },
+      username: "user",
+      jwt,
+    });
+    getLogger().info(
+      `Start dev-channel client for ${opt.host} on port ${SSH_SOCKET_PORT}`
+    );
   } catch (e) {
     getLogger().error(
       `Error: can't start dev-channel client for ${opt.host} on port ${SSH_SOCKET_PORT}, error: ${e}`
@@ -192,4 +196,10 @@ export async function runChannelClientAsProcess(opt: {
   //     channelOutput.stderrLine(`Error: ${err.message}`);
   //   });
   // });
+}
+
+export function getRandomArbitrary(min?: number, max?: number): number {
+  max = max || 13654;
+  min = min || 11432;
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
