@@ -12,7 +12,7 @@ import { initWorkspaceAPI } from "./project-type/workspace-instance";
 import {
   deactivateBasRemoteExplorer,
   initBasRemoteExplorer,
-} from "./bas-remote/instance";
+} from "./devspace-manager/instance";
 
 export function activate(context: ExtensionContext): BasToolkit {
   initLogger(context);

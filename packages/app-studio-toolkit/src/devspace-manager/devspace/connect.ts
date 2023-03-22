@@ -20,7 +20,7 @@ import {
   SSHConfigInfo,
   SSHD_SOCKET_PORT,
   updateSSHConfig,
-} from "../tunnel/ssh-utils";
+} from "../../tunnel/ssh-utils";
 
 let tunnel: ChildProcess | undefined;
 

@@ -7,7 +7,7 @@ import {
   getSvgIconPath,
 } from "./treeItems";
 import { messages } from "../messages";
-import { getConnectedLandscapes } from "../landscape/landscape";
+import { getLandscapes } from "../landscape/landscape";
 import { compact, map } from "lodash";
 
 export class DevSpaceDataProvider implements TreeDataProvider<TreeItem> {
@@ -56,7 +56,7 @@ export class DevSpaceDataProvider implements TreeDataProvider<TreeItem> {
 
   private async getTreeTopLevelChildren(): Promise<Thenable<TreeNode[]>> {
     const iconPath = getSvgIconPath("bas_logo");
-    const landscapes = await getConnectedLandscapes();
+    const landscapes = await getLandscapes();
 
     const rootNodes = compact(
       map(landscapes, (landscape) => {

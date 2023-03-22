@@ -1,4 +1,9 @@
-import { commands, ConfigurationTarget, workspace } from "vscode";
+import {
+  authentication,
+  commands,
+  ConfigurationTarget,
+  workspace,
+} from "vscode";
 import type { ExtensionContext } from "vscode";
 import { DevSpacesExplorer } from "./tree/devSpacesExplorer";
 import { LandscapeNode } from "./tree/treeItems";
@@ -16,6 +21,7 @@ import {
   cmdDevSpaceConnectSameWindow,
   cmdDevSpaceOpenInBAS,
 } from "./devspace/connect";
+import { BasRemoteAuthenticationProvider } from "../authentication/authProvider";
 
 export async function initBasRemoteExplorer(
   context: ExtensionContext
@@ -115,8 +121,22 @@ export async function initBasRemoteExplorer(
     commands.registerCommand(
       "local-extension.login",
       async (item: LandscapeNode) => {
-        return getJwt(item.url).finally(() => devSpaceExplorer.refreshTree());
+        await authentication.getSession(
+          BasRemoteAuthenticationProvider.id,
+          [item.url],
+          { forceNewSession: true }
+        );
+        devSpaceExplorer.refreshTree();
       }
+    )
+  );
+
+  context.subscriptions.push(
+    authentication.registerAuthenticationProvider(
+      BasRemoteAuthenticationProvider.id,
+      "Bas Remote",
+      new BasRemoteAuthenticationProvider(context.secrets),
+      { supportsMultipleAccounts: true }
     )
   );
 }

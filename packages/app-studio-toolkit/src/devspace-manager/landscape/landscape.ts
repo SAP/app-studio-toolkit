@@ -1,6 +1,6 @@
 import { ConfigurationTarget, workspace } from "vscode";
 import { compact, trim, uniq } from "lodash";
-import { hasJwt } from "../../authentication/auth-utils";
+import { getJwt, hasJwt } from "../../authentication/auth-utils";
 import { URL } from "node:url";
 
 export interface LandscapeInfo {
@@ -9,8 +9,7 @@ export interface LandscapeInfo {
   isLoggedIn: boolean;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- temp suppressed
-function isLandscapeLoggedIn(url: string): boolean {
+function isLandscapeLoggedIn(url: string): Promise<boolean> {
   return hasJwt(url);
 }
 
@@ -22,14 +21,16 @@ export async function getLandscapes(): Promise<LandscapeInfo[]> {
     compact((config ?? "").split(",").map((value) => trim(value)))
   );
 
-  return landscapes.map((landscape) => {
+  const lands: LandscapeInfo[] = [];
+  for (const landscape of landscapes) {
     const url = new URL(landscape);
-    return {
+    lands.push({
       name: url.hostname,
       url: url.toString(),
-      isLoggedIn: isLandscapeLoggedIn(landscape),
-    };
-  });
+      isLoggedIn: await isLandscapeLoggedIn(landscape),
+    });
+  }
+  return lands;
 }
 
 export async function removeLandscape(landscapeName: string): Promise<void> {
@@ -49,8 +50,7 @@ export async function removeLandscape(landscapeName: string): Promise<void> {
 }
 
 export async function getConnectedLandscapes(): Promise<LandscapeInfo[]> {
-  return getLandscapes();
-  // .then((landscapes) => {
-  //   return landscapes.filter((landscape) => landscape?.isLoggedIn);
-  // });
+  return getLandscapes().then((landscapes) => {
+    return landscapes.filter((landscape) => landscape?.isLoggedIn);
+  });
 }

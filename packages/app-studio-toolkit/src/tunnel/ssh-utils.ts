@@ -1,14 +1,13 @@
 import { window, workspace } from "vscode";
 import * as url from "url";
-import { getLogger } from "../../logger/logger";
-import { messages } from "../messages";
+import { getLogger } from "../logger/logger";
+import { messages } from "../devspace-manager/messages";
 import * as path from "path";
 import * as fs from "fs";
 import { homedir } from "os";
 const sshConfig = require("ssh-config");
-import { DevSpaceNode } from "../tree/treeItems";
-import { getJwt } from "../../authentication/auth-utils";
-import { isEmpty } from "lodash";
+import { DevSpaceNode } from "../devspace-manager/tree/treeItems";
+import { getJwt } from "../authentication/auth-utils";
 import { ChildProcess } from "child_process";
 import { authentication, tunnel } from "@sap/bas-sdk";
 

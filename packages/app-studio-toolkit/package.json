@@ -304,7 +304,7 @@
     "ms-vscode-remote.remote-ssh-edit"
   ],
   "engines": {
-    "vscode": "^1.59.0"
+    "vscode": "^1.76.0"
   },
   "icon": "icon.png"
 }
