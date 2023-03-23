@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.11.4](https://github.com/SAP/app-studio-toolkit/compare/v1.11.3...v1.11.4) (2023-03-23)
+
+### Bug Fixes
+
+- updated colors for fiori themes ([#214](https://github.com/SAP/app-studio-toolkit/issues/214)) ([50a1f0c](https://github.com/SAP/app-studio-toolkit/commit/50a1f0c105371cd258a4cffabb2edbb58ffc80f3))
+
 ## [1.11.3](https://github.com/SAP/app-studio-toolkit/compare/v1.11.2...v1.11.3) (2023-03-20)
 
 **Note:** Version bump only for package root
