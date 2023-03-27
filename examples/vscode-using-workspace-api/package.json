@@ -1,7 +1,7 @@
 {
   "name": "vscode-using-workspace-api",
   "private": "true",
-  "version": "1.11.1",
+  "version": "1.11.3",
   "publisher": "SAPOSS",
   "engines": {
     "vscode": "^1.32.0"
@@ -18,7 +18,7 @@
     "package": "vsce package"
   },
   "devDependencies": {
-    "@sap-devx/app-studio-toolkit-types": "^1.11.1"
+    "@sap-devx/app-studio-toolkit-types": "^1.11.3"
   },
   "categories": [
     "Other"

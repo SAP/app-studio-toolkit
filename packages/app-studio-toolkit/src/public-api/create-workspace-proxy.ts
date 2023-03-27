@@ -7,6 +7,8 @@ export function createWorkspaceProxy(
   const basWsAPI = {
     getProjects: (...args: Parameters<WorkspaceApi["getProjects"]>) =>
       workspaceImpl.getProjects(...args),
+    getProject: (...args: Parameters<WorkspaceApi["getProject"]>) =>
+      workspaceImpl.getProject(...args),
     getProjectUris: (...args: Parameters<WorkspaceApi["getProjectUris"]>) =>
       workspaceImpl.getProjectUris(...args),
     onWorkspaceChanged: (
