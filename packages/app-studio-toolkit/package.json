@@ -329,7 +329,7 @@
     "viewsWelcome": [
       {
         "view": "dev-spaces",
-        "contents": "You haven’t connected to SAP Business Application Studio landscapes\n[Connect Landscape](command:local-extension.landscape.set)\nHow to connect Dev Space [user guide](https://github.wdf.com/devx-wing/bas-remote-explorer/blob/master/README.md)"
+        "contents": "You haven’t connected to SAP Business Application Studio landscapes\n[Connect Landscape](command:local-extension.landscape.set)\nHow to connect Dev Space [user guide](https://github.com/SAP/app-studio-toolkit/blob/main/packages/app-studio-toolkit/README.md)"
       }
     ]
   },
@@ -380,7 +380,7 @@
     "ms-vscode-remote.remote-ssh-edit"
   ],
   "engines": {
-    "vscode": "^1.76.0"
+    "vscode": "^1.44.2"
   },
   "icon": "icon.png"
 }

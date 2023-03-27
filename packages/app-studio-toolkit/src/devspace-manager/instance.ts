@@ -124,16 +124,14 @@ export async function initBasRemoteExplorer(
         const session = await authentication.getSession(
           BasRemoteAuthenticationProvider.id,
           [item.url],
-          { forceNewSession: true }
+          { createIfNone: true }
         );
-        {
-          // refresh tree event once when token expired
-          setTimeout(
-            () => devSpaceExplorer.refreshTree(),
-            (jwtDecode<JwtPayload>(session.accessToken).exp ?? 0) * 1000 -
-              Date.now()
-          );
-        }
+        // refresh tree event once when token expired
+        setTimeout(
+          () => devSpaceExplorer.refreshTree(),
+          (jwtDecode<JwtPayload>(session.accessToken).exp ?? 0) * 1000 -
+            Date.now()
+        );
         devSpaceExplorer.refreshTree();
       }
     )
