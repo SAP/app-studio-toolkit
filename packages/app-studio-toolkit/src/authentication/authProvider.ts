@@ -1,4 +1,3 @@
-import * as bassdk from "@sap/bas-sdk";
 import {
   authentication,
   AuthenticationProvider,
@@ -9,12 +8,13 @@ import {
   EventEmitter,
   SecretStorage,
 } from "vscode";
+import { retrieveJwt } from "./auth-utils";
 
 export class BasRemoteAuthenticationProvider
   implements AuthenticationProvider, Disposable
 {
-  static id = "bas-remote";
-  private secretKey: string = "key";
+  static id = "bas-authenticator";
+  private secretKey: string = "bas";
 
   // this property is used to determine if the token has been changed in another window of VS Code.
   // It is used in the checkForUpdates function.
@@ -114,7 +114,7 @@ export class BasRemoteAuthenticationProvider
   async createSession(_scopes: string[]): Promise<AuthenticationSession> {
     this.ensureInitialized(_scopes);
 
-    const token = await bassdk.authentication.retrieveJwt(_scopes[0]);
+    const token = await retrieveJwt(_scopes[0]);
 
     // Note: this example doesn't do any validation of the token beyond making sure it's not empty.
     if (!token) {

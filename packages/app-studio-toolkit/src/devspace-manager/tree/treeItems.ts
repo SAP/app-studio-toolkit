@@ -8,6 +8,7 @@ import {
   getDevSpaces,
   PackName,
 } from "../devspace/devspace";
+import { devspace } from "@sap/bas-sdk";
 import { $enum } from "ts-enum-util";
 import { compact, get, isEmpty, map } from "lodash";
 import { getLogger } from "../../logger/logger";
@@ -177,9 +178,6 @@ export class LandscapeNode extends TreeNode {
   }
 
   private getLabel(devSpace: DevSpaceInfo): string {
-    if (!devSpace.sshEnabled)
-      return `${devSpace.devspaceDisplayName} (not desktop compatible)`;
-
     switch (devSpace.status) {
       case DevSpaceStatus.RUNNING:
       case DevSpaceStatus.STOPPED:
@@ -208,17 +206,13 @@ export class LandscapeNode extends TreeNode {
       .toLowerCase();
     switch (devSpace.status) {
       case DevSpaceStatus.RUNNING: {
-        const shorrten = `${packName}_${
-          devSpace.sshEnabled ? "running" : "error"
-        }`;
+        const shorrten = `${packName}_running`;
         return getSvgIconPath(shorrten);
       }
       case DevSpaceStatus.STARTING:
       case DevSpaceStatus.STOPPED:
       case DevSpaceStatus.STOPPING: {
-        const shorrten = `${packName}_${
-          devSpace.sshEnabled ? "not_running" : "error"
-        }`;
+        const shorrten = `${packName}_not_running`;
         return getSvgIconPath(shorrten);
       }
       case DevSpaceStatus.SAFE_MODE:
@@ -230,9 +224,6 @@ export class LandscapeNode extends TreeNode {
   }
 
   private getContextView(devSpace: DevSpaceInfo): string {
-    if (!devSpace.sshEnabled) {
-      return "dev-space-not-desktop-compatible";
-    }
     switch (devSpace.status) {
       case DevSpaceStatus.RUNNING:
         return "dev-space-running";

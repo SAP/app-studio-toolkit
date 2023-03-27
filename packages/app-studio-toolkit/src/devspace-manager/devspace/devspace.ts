@@ -44,7 +44,6 @@ export async function getDevSpaces(
               packDisplayName: ds.packDisplayName,
               url: ds.url,
               id: ds.id,
-              sshEnabled: ds.sshEnabled,
               optionalExtensions: ds.optionalExtensions,
               technicalExtensions: ds.technicalExtensions,
               status: $enum(DevSpaceStatus).asKeyOrDefault(

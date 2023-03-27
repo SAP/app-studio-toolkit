@@ -7,7 +7,6 @@ import {
 import type { ExtensionContext } from "vscode";
 import { DevSpacesExplorer } from "./tree/devSpacesExplorer";
 import { LandscapeNode } from "./tree/treeItems";
-import { getJwt } from "../authentication/auth-utils";
 import { cmdLandscapeDelete } from "./landscape/delete";
 import { cmdLandscapeSet } from "./landscape/set";
 import { cmdLandscapeOpenDevSpaceManager } from "./landscape/open";
@@ -22,6 +21,7 @@ import {
   cmdDevSpaceOpenInBAS,
 } from "./devspace/connect";
 import { BasRemoteAuthenticationProvider } from "../authentication/authProvider";
+import jwtDecode, { JwtPayload } from "jwt-decode";
 
 export async function initBasRemoteExplorer(
   context: ExtensionContext
@@ -121,11 +121,19 @@ export async function initBasRemoteExplorer(
     commands.registerCommand(
       "local-extension.login",
       async (item: LandscapeNode) => {
-        await authentication.getSession(
+        const session = await authentication.getSession(
           BasRemoteAuthenticationProvider.id,
           [item.url],
           { forceNewSession: true }
         );
+        {
+          // refresh tree event once when token expired
+          setTimeout(
+            () => devSpaceExplorer.refreshTree(),
+            (jwtDecode<JwtPayload>(session.accessToken).exp ?? 0) * 1000 -
+              Date.now()
+          );
+        }
         devSpaceExplorer.refreshTree();
       }
     )
@@ -134,7 +142,7 @@ export async function initBasRemoteExplorer(
   context.subscriptions.push(
     authentication.registerAuthenticationProvider(
       BasRemoteAuthenticationProvider.id,
-      "Bas Remote",
+      "Bussines Application Studio", // TODO get official string
       new BasRemoteAuthenticationProvider(context.secrets),
       { supportsMultipleAccounts: true }
     )

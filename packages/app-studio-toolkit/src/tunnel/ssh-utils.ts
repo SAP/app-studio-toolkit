@@ -9,7 +9,8 @@ const sshConfig = require("ssh-config");
 import { DevSpaceNode } from "../devspace-manager/tree/treeItems";
 import { getJwt } from "../authentication/auth-utils";
 import { ChildProcess } from "child_process";
-import { authentication, tunnel } from "@sap/bas-sdk";
+import { remotessh } from "@sap/bas-sdk";
+import { ssh } from "./ssh";
 
 export const SSHD_SOCKET_PORT = 9880; // TODO change
 export const SSH_SOCKET_PORT = 443;
@@ -31,12 +32,14 @@ function getSshConfigFolderPath(): string {
 }
 
 export async function getPK(
-  adminUrl: string,
-  landscapeUrl: string
+  landscapeUrl: string,
+  wsId: string
 ): Promise<string> {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return -- suppress warn
   return getJwt(landscapeUrl)
     .then((jwt) => {
-      return authentication.obtainKey(jwt, landscapeUrl, adminUrl);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return -- suppress warn
+      return remotessh.getKey(landscapeUrl, jwt, wsId);
     })
     .catch((error: Error) => {
       const message = messages.err_get_key(error.toString());
@@ -132,7 +135,7 @@ export async function runChannelClientAsProcess(opt: {
   // const channelOsPath: string = getDevChannelPath();
   try {
     const jwt = await getJwt(opt.landscape);
-    void tunnel.ssh({
+    void ssh({
       host: { url: url.format(urlObj), port: `${SSH_SOCKET_PORT}` },
       client: { port: opt.localPort },
       username: "user",
@@ -199,7 +202,14 @@ export async function runChannelClientAsProcess(opt: {
 }
 
 export function getRandomArbitrary(min?: number, max?: number): number {
-  max = max || 13654;
-  min = min || 11432;
+  max = max || 33654;
+  min = min || 30432;
+  // verify max is larger than min
+  const tmp = Math.max(min, max);
+  if (tmp !== max) {
+    // swap min <-> max
+    min = max;
+    max = tmp;
+  }
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }

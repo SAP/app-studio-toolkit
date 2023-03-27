@@ -30,10 +30,7 @@ async function getTunnelConfigurations(
 ): Promise<SSHConfigInfo | undefined> {
   // Obtaining SSH key
   progress.report({ message: "Obtaining SSH key" });
-  const sshAdminUrl = new URL(devSpace.wsUrl);
-  sshAdminUrl.hostname = `port35000-${sshAdminUrl.hostname}`;
-  sshAdminUrl.pathname = `key`;
-  const pk = await getPK(sshAdminUrl.toString(), devSpace.landscapeUrl);
+  const pk = await getPK(devSpace.landscapeUrl, devSpace.id);
   if (!pk) {
     return;
   }
@@ -60,7 +57,7 @@ async function createTunnel(
   progress.report({ message: "Closing old VPN tunnel to dev-space" });
   closeTunnel();
 
-  // Start chisel tunnel
+  // Start ssh tunnel
   progress.report({ message: "Starting new VPN tunnel to dev-space" });
   tunnel = await runChannelClientAsProcess({
     host: `port${SSHD_SOCKET_PORT}-${new URL(devSpace.wsUrl).hostname}`,
