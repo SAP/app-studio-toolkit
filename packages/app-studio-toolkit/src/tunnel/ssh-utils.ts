@@ -12,7 +12,7 @@ import { ChildProcess } from "child_process";
 import { remotessh } from "@sap/bas-sdk";
 import { ssh } from "./ssh";
 
-export const SSHD_SOCKET_PORT = 9880; // TODO change
+export const SSHD_SOCKET_PORT = 33765;
 export const SSH_SOCKET_PORT = 443;
 
 export interface SSHConfigInfo {

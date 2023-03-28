@@ -18,7 +18,7 @@ export async function cmdDevSpaceDelete(devSpace: DevSpaceNode): Promise<void> {
 async function deleteDevSpace(landscapeUrl: string, wsId: string) {
   try {
     const jwt = await getJwt(landscapeUrl);
-    await devspace.deleteDevSpace(landscapeUrl, wsId, jwt);
+    await devspace.deleteDevSpace(landscapeUrl, jwt, wsId);
     const message = messages.info_devspace_deleted(wsId);
     getLogger().info(message);
     void window.showInformationMessage(message);

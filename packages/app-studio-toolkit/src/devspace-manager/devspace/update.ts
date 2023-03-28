@@ -39,12 +39,10 @@ async function updateDevSpace(
     const jwt = await getJwt(landscapeUrl);
     return (
       devspace
-        .updateDevSpace(
-          landscapeUrl,
-          wsId,
-          { Suspended: suspend, WorkspaceDisplayName: wsName },
-          jwt
-        )
+        .updateDevSpace(landscapeUrl, jwt, wsId, {
+          Suspended: suspend,
+          WorkspaceDisplayName: wsName,
+        })
         // eslint-disable-next-line @typescript-eslint/no-unused-vars -- suppress warn
         .then((_) => {
           const status: string = suspend ? "stoped" : "started";

@@ -55,7 +55,7 @@ export class DevSpaceDataProvider implements TreeDataProvider<TreeItem> {
   }
 
   private async getTreeTopLevelChildren(): Promise<Thenable<TreeNode[]>> {
-    const iconPath = getSvgIconPath("bas_logo");
+    const iconPath = getSvgIconPath("landscape");
     const landscapes = await getLandscapes();
 
     const rootNodes = compact(

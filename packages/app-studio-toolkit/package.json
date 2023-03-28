@@ -25,6 +25,12 @@
     "test": "mocha"
   },
   "contributes": {
+    "authentication": [
+      {
+        "id": "baslandscapepat",
+        "label": "SAP BAS"
+      }
+    ],
     "commands": [
       {
         "command": "project-api.command.run",

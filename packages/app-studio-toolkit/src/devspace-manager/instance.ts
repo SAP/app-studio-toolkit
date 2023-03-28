@@ -124,7 +124,7 @@ export async function initBasRemoteExplorer(
         const session = await authentication.getSession(
           BasRemoteAuthenticationProvider.id,
           [item.url],
-          { createIfNone: true }
+          { forceNewSession: true } as any
         );
         // refresh tree event once when token expired
         setTimeout(

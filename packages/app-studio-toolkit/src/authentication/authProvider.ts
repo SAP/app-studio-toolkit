@@ -13,7 +13,7 @@ import { retrieveJwt } from "./auth-utils";
 export class BasRemoteAuthenticationProvider
   implements AuthenticationProvider, Disposable
 {
-  static id = "bas-authenticator";
+  static id = "BASLandscapePAT";
   private secretKey: string = "bas";
 
   // this property is used to determine if the token has been changed in another window of VS Code.

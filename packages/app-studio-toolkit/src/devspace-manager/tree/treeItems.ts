@@ -17,44 +17,60 @@ import { getLogger } from "../../logger/logger";
 //   label: string;
 //   url: string;
 // }
+type IconPath = { light: string; dark: string } | string;
 
-export function getSvgIconPath(iconName: string): string {
-  const icons: any = {
-    bas_logo: path.join("common", "pane.svg"),
-    basic_error: path.join("devspace", "basic_error.svg"),
-    basic_running: path.join("devspace", "basic_running.svg"),
-    basic_not_running: path.join("devspace", "basic_not_running.svg"),
-    cap_error: path.join("devspace", "cap_error.svg"),
-    cap_running: path.join("devspace", "cap_running.svg"),
-    cap_not_running: path.join("devspace", "cap_not_running.svg"),
-    fiori_error: path.join("devspace", "fiori_error.svg"),
-    fiori_running: path.join("devspace", "fiori_running.svg"),
-    fiori_not_running: path.join("devspace", "fiori_not_running.svg"),
-    sme_error: path.join("devspace", "sme_error"),
-    sme_running: path.join("devspace", "sme_running.svg"),
-    sme_not_running: path.join("devspace", "sme_not_running.svg"),
-    mobile_error: path.join("devspace", "mobile_error.svg"),
-    mobile_running: path.join("devspace", "mobile_running.svg"),
-    mobile_not_running: path.join("devspace", "mobile_not_running.svg"),
-    hana_error: path.join("devspace", "hana_error.svg"),
-    hana_running: path.join("devspace", "hana_running.svg"),
-    hana_not_running: path.join("devspace", "hana_not_running.svg"),
-    lcap_error: path.join("devspace", "mobile_error.svg"),
-    lcap_running: path.join("devspace", "mobile_running.svg"),
-    lcap_not_running: path.join("devspace", "mobile_not_running.svg"),
+export function getSvgIconPath(iconName: string): IconPath {
+  const icons = {
+    landscape: { path: "common", name: "land.svg" },
+    basic_error: { path: "devspace", name: "basic_error.svg" },
+    basic_running: { path: "devspace", name: "basic_running.svg" },
+    basic_not_running: { path: "devspace", name: "basic_not_running.svg" },
+    cap_error: { path: "devspace", name: "cap_error.svg" },
+    cap_running: { path: "devspace", name: "cap_running.svg" },
+    cap_not_running: { path: "devspace", name: "cap_not_running.svg" },
+    fiori_error: { path: "devspace", name: "fiori_error.svg" },
+    fiori_running: { path: "devspace", name: "fiori_running.svg" },
+    fiori_not_running: { path: "devspace", name: "fiori_not_running.svg" },
+    sme_error: { path: "devspace", name: "sme_error" },
+    sme_running: { path: "devspace", name: "sme_running.svg" },
+    sme_not_running: { path: "devspace", name: "sme_not_running.svg" },
+    mobile_error: { path: "devspace", name: "mobile_error.svg" },
+    mobile_running: { path: "devspace", name: "mobile_running.svg" },
+    mobile_not_running: { path: "devspace", name: "mobile_not_running.svg" },
+    hana_error: { path: "devspace", name: "hana_error.svg" },
+    hana_running: { path: "devspace", name: "hana_running.svg" },
+    hana_not_running: { path: "devspace", name: "hana_not_running.svg" },
+    lcap_error: { path: "devspace", name: "mobile_error.svg" },
+    lcap_running: { path: "devspace", name: "cloud_running.svg" },
+    lcap_not_running: { path: "devspace", name: "cloud_not_running.svg" },
   };
-  let iconPath = "";
-  const required: string = get(icons, iconName);
-  if (required) {
-    iconPath = path.join(
-      __dirname,
-      "..",
-      "..",
-      "..",
-      "..",
-      "resources",
-      required
-    );
+  let iconPath: IconPath = "";
+  const property: { path: string; name: string } = get(icons, iconName);
+  if (property) {
+    iconPath = {
+      light: path.join(
+        __dirname,
+        "..",
+        "..",
+        "..",
+        "..",
+        "resources",
+        property.path,
+        "light",
+        property.name
+      ),
+      dark: path.join(
+        __dirname,
+        "..",
+        "..",
+        "..",
+        "..",
+        "resources",
+        property.path,
+        "dark",
+        property.name
+      ),
+    };
   } else {
     getLogger().error(messages.ICON_MISSING(iconName));
   }
@@ -65,7 +81,7 @@ export abstract class TreeNode extends TreeItem {
   constructor(
     public readonly label: string,
     public readonly collapsibleState: TreeItemCollapsibleState,
-    public readonly iconPath: string,
+    public readonly iconPath: IconPath,
     public readonly parentName: string,
     public readonly contextValue?: string,
     public readonly command?: Command,
@@ -117,7 +133,7 @@ export class DevSpaceNode extends TreeNode {
   constructor(
     label: string,
     collapsibleState: TreeItemCollapsibleState,
-    iconPath: string,
+    iconPath: IconPath,
     parentName: string,
     landscapeName: string,
     landscapeUrl: string,
@@ -157,7 +173,7 @@ export class LandscapeNode extends TreeNode {
   constructor(
     label: string,
     collapsibleState: TreeItemCollapsibleState,
-    iconPath: string,
+    iconPath: IconPath,
     parentName: string,
     tooltip: string,
     name: string,
@@ -200,7 +216,7 @@ export class LandscapeNode extends TreeNode {
     throw new Error("Didn't expect to get here");
   }
 
-  private getIconPath(devSpace: DevSpaceInfo): string {
+  private getIconPath(devSpace: DevSpaceInfo): IconPath {
     const packName: string = $enum(PackName)
       .getKeyOrThrow(devSpace.pack)
       .toLowerCase();
