@@ -100,7 +100,7 @@ importers:
       '@microsoft/dev-tunnels-ssh-tcp': ^3.11.1
       '@sap-devx/app-studio-toolkit-types': ^1.11.1
       '@sap/artifact-management': 1.20.1
-      '@sap/bas-sdk': 'file: ../../../../../bas-sdk/packages-sdk/bas-sdk'
+      '@sap/bas-sdk': 3.3.0
       '@types/body-parser': 1.19.2
       '@types/express': ^4.17.15
       '@types/http-terminator': ^2.0.2
@@ -131,7 +131,7 @@ importers:
       '@microsoft/dev-tunnels-ssh-keys': 3.11.1
       '@microsoft/dev-tunnels-ssh-tcp': 3.11.1
       '@sap/artifact-management': 1.20.1
-      '@sap/bas-sdk': file:../bas-sdk/packages-sdk/bas-sdk
+      '@sap/bas-sdk': 3.3.0
       '@vscode-logging/wrapper': 1.0.1
       axios: 1.3.4
       body-parser: 1.20.1
@@ -601,7 +601,7 @@ packages:
     dependencies:
       '@commitlint/top-level': 13.2.0
       '@commitlint/types': 13.2.0
-      fs-extra: 10.0.0
+      fs-extra: 10.0.1
       git-raw-commits: 2.0.10
     dev: true
 
@@ -1722,6 +1722,21 @@ packages:
       yargs: 17.2.1
     transitivePeerDependencies:
       - supports-color
+    dev: false
+
+  /@sap/bas-sdk/3.3.0:
+    resolution: {integrity: sha512-Z1YFYbVzTnHpV1Ayl/bxUpO3W32b6U6CozBlux7Ourut9+Ez0b1OLa5tDO27m8HJtfaR7yOuJaTzJ1jvfpHDug==}
+    dependencies:
+      axios: 1.3.4
+      cross-spawn: 7.0.3
+      fs-extra: 11.1.1
+      lodash: 4.17.21
+      url-join: 4.0.1
+      ws: 8.13.0
+    transitivePeerDependencies:
+      - bufferutil
+      - debug
+      - utf-8-validate
     dev: false
 
   /@sinonjs/commons/1.8.3:
@@ -3406,11 +3421,6 @@ packages:
       clone: 1.0.4
     dev: true
 
-  /define-lazy-prop/2.0.0:
-    resolution: {integrity: sha512-Ds09qNh8yw3khSjiJjiUInaGX9xlqZDY7JVryGxdxV7NPeuqQfplOpQ66yJFZut3jLa5zOwkXw1g9EI2uKh4Og==}
-    engines: {node: '>=8'}
-    dev: false
-
   /define-properties/1.1.3:
     resolution: {integrity: sha512-3MqfYKj2lLzdMSf8ZIZE/V+Zuy+BgD6f164e8K2w7dgnpKArBDerGYpM46IYYcjnkdPNMjPk9A6VFB8+3SKlXQ==}
     engines: {node: '>= 0.4'}
@@ -4258,6 +4268,14 @@ packages:
       graceful-fs: 4.2.8
       jsonfile: 6.1.0
       universalify: 2.0.0
+
+  /fs-extra/11.1.1:
+    resolution: {integrity: sha512-MGIE4HOvQCeUCzmlHs0vXpih4ysz4wg9qiSAu6cd42lVwPbTM1TjV7RusoyQqMmk/95gdQZX72u+YW+c3eEpFQ==}
+    engines: {node: '>=14.14'}
+    dependencies:
+      graceful-fs: 4.2.8
+      jsonfile: 6.1.0
+      universalify: 2.0.0
     dev: false
 
   /fs-extra/8.1.0:
@@ -4942,12 +4960,6 @@ packages:
       has-tostringtag: 1.0.0
     dev: true
 
-  /is-docker/2.2.1:
-    resolution: {integrity: sha512-F+i2BKsFrH66iaUFc0woD8sLy8getkwTwtOBjvs56Cx4CgJDeKQeqfz8wAYiSb8JOprWhHH5p77PbmYCvvUuXQ==}
-    engines: {node: '>=8'}
-    hasBin: true
-    dev: false
-
   /is-extglob/2.1.1:
     resolution: {integrity: sha1-qIwCU1eR8C7TfHahueqXc8gz+MI=}
     engines: {node: '>=0.10.0'}
@@ -5100,13 +5112,6 @@ packages:
     resolution: {integrity: sha512-eXK1UInq2bPmjyX6e3VHIzMLobc4J94i4AWn+Hpq3OU5KkrRC96OAcR3PRJ/pGu6m8TRnBHP9dkXQVsT/COVIA==}
     engines: {node: '>=0.10.0'}
     dev: true
-
-  /is-wsl/2.2.0:
-    resolution: {integrity: sha512-fKzAra0rGJUUBwGBgNkHZuToZcn+TtXHpeCgmkMJMMYx1sQDYaCSyjJBSCa2nH1DGm7s3n1oBnohoVTBaN7Lww==}
-    engines: {node: '>=8'}
-    dependencies:
-      is-docker: 2.2.1
-    dev: false
 
   /isarray/0.0.1:
     resolution: {integrity: sha1-ihis/Kmo9Bd+Cav8YDiTmwXR7t8=}
@@ -5287,7 +5292,7 @@ packages:
     dev: false
 
   /jsonfile/4.0.0:
-    resolution: {integrity: sha1-h3Gq4HmbZAdrdmQPygWPnBDjPss=}
+    resolution: {integrity: sha512-m6F1R3z8jjlf2imQHS2Qez5sjKWQzbuuhuJ/FKYFRZvPE3PuHcSMVZzfsLhGVOkfd20obL5SWEBew5ShlquNxg==}
     optionalDependencies:
       graceful-fs: 4.2.8
 
@@ -6382,15 +6387,6 @@ packages:
     dependencies:
       mimic-fn: 2.1.0
     dev: true
-
-  /open/8.4.2:
-    resolution: {integrity: sha512-7x81NCL719oNbsq/3mh+hVrAWmFuEYUqrq/Iw3kUzH8ReypT9QQ0BLoJS7/G9k6N81XjW4qHWtjWwe/9eLy1EQ==}
-    engines: {node: '>=12'}
-    dependencies:
-      define-lazy-prop: 2.0.0
-      is-docker: 2.2.1
-      is-wsl: 2.2.0
-    dev: false
 
   /optionator/0.9.1:
     resolution: {integrity: sha512-74RlY5FCnhq4jRxVUPKDaRwrVNXMqsGsiW6AJw4XK8hmtm10wC0ypZBLw5IIp85NZMr91+qd1RvvENwg7jjRFw==}
@@ -8829,29 +8825,3 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
     dev: true
-
-  file:../bas-sdk/packages-sdk/bas-sdk:
-    resolution: {directory: ../bas-sdk/packages-sdk/bas-sdk, type: directory}
-    name: '@sap/bas-sdk'
-    version: 3.1.0
-    dependencies:
-      '@microsoft/dev-tunnels-ssh': 3.11.1
-      '@microsoft/dev-tunnels-ssh-keys': 3.11.1
-      '@microsoft/dev-tunnels-ssh-tcp': 3.11.1
-      axios: 1.3.4
-      body-parser: 1.20.1
-      cross-spawn: 7.0.3
-      express: 4.18.2
-      http-terminator: 3.2.0
-      jwt-decode: 3.1.2
-      lodash: 4.17.21
-      open: 8.4.2
-      url-join: 4.0.1
-      websocket: 1.0.34
-      ws: 8.13.0
-    transitivePeerDependencies:
-      - bufferutil
-      - debug
-      - supports-color
-      - utf-8-validate
-    dev: false

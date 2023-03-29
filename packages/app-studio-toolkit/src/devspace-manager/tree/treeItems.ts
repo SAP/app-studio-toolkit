@@ -25,24 +25,34 @@ export function getSvgIconPath(iconName: string): IconPath {
     basic_error: { path: "devspace", name: "basic_error.svg" },
     basic_running: { path: "devspace", name: "basic_running.svg" },
     basic_not_running: { path: "devspace", name: "basic_not_running.svg" },
+    basic_transitioning: { path: "devspace", name: "basic_transitioning.svg" },
     cap_error: { path: "devspace", name: "cap_error.svg" },
     cap_running: { path: "devspace", name: "cap_running.svg" },
     cap_not_running: { path: "devspace", name: "cap_not_running.svg" },
+    cap_transitioning: { path: "devspace", name: "cap_transitioning.svg" },
     fiori_error: { path: "devspace", name: "fiori_error.svg" },
     fiori_running: { path: "devspace", name: "fiori_running.svg" },
     fiori_not_running: { path: "devspace", name: "fiori_not_running.svg" },
+    fiori_transitioning: { path: "devspace", name: "fiori_transitioning.svg" },
     sme_error: { path: "devspace", name: "sme_error" },
     sme_running: { path: "devspace", name: "sme_running.svg" },
     sme_not_running: { path: "devspace", name: "sme_not_running.svg" },
+    sme_transitioning: { path: "devspace", name: "sme_transitioning.svg" },
     mobile_error: { path: "devspace", name: "mobile_error.svg" },
     mobile_running: { path: "devspace", name: "mobile_running.svg" },
     mobile_not_running: { path: "devspace", name: "mobile_not_running.svg" },
+    mobile_transitioning: {
+      path: "devspace",
+      name: "mobile_transitioning.svg",
+    },
     hana_error: { path: "devspace", name: "hana_error.svg" },
     hana_running: { path: "devspace", name: "hana_running.svg" },
     hana_not_running: { path: "devspace", name: "hana_not_running.svg" },
+    hana_transitioning: { path: "devspace", name: "hana_transitioning.svg" },
     lcap_error: { path: "devspace", name: "mobile_error.svg" },
     lcap_running: { path: "devspace", name: "cloud_running.svg" },
     lcap_not_running: { path: "devspace", name: "cloud_not_running.svg" },
+    lcap_transitioning: { path: "devspace", name: "cloud_transitioning.svg" },
   };
   let iconPath: IconPath = "";
   const property: { path: string; name: string } = get(icons, iconName);
@@ -222,14 +232,14 @@ export class LandscapeNode extends TreeNode {
       .toLowerCase();
     switch (devSpace.status) {
       case DevSpaceStatus.RUNNING: {
-        const shorrten = `${packName}_running`;
-        return getSvgIconPath(shorrten);
+        return getSvgIconPath(`${packName}_running`);
       }
       case DevSpaceStatus.STARTING:
-      case DevSpaceStatus.STOPPED:
       case DevSpaceStatus.STOPPING: {
-        const shorrten = `${packName}_not_running`;
-        return getSvgIconPath(shorrten);
+        return getSvgIconPath(`${packName}_transitioning`);
+      }
+      case DevSpaceStatus.STOPPED: {
+        return getSvgIconPath(`${packName}_not_running`);
       }
       case DevSpaceStatus.SAFE_MODE:
       case DevSpaceStatus.ERROR:

@@ -22,6 +22,7 @@ import {
 } from "./devspace/connect";
 import { BasRemoteAuthenticationProvider } from "../authentication/authProvider";
 import jwtDecode, { JwtPayload } from "jwt-decode";
+import { autoRefresh, RefreshRate } from "./utils";
 
 export async function initBasRemoteExplorer(
   context: ExtensionContext
@@ -126,13 +127,14 @@ export async function initBasRemoteExplorer(
           [item.url],
           { forceNewSession: true } as any
         );
-        // refresh tree event once when token expired
-        setTimeout(
-          () => devSpaceExplorer.refreshTree(),
-          (jwtDecode<JwtPayload>(session.accessToken).exp ?? 0) * 1000 -
-            Date.now()
-        );
-        devSpaceExplorer.refreshTree();
+        if (session?.accessToken) {
+          // refresh util jwt expired
+          autoRefresh(
+            RefreshRate.SEC_30,
+            (jwtDecode<JwtPayload>(session.accessToken).exp ?? 0) * 1000 -
+              Date.now()
+          );
+        }
       }
     )
   );
