@@ -1,5 +1,6 @@
 import {
   authentication,
+  AuthenticationGetSessionOptions,
   commands,
   ConfigurationTarget,
   workspace,
@@ -125,7 +126,9 @@ export async function initBasRemoteExplorer(
         const session = await authentication.getSession(
           BasRemoteAuthenticationProvider.id,
           [item.url],
-          { forceNewSession: true } as any
+          { forceNewSession: true } as AuthenticationGetSessionOptions & {
+            forceNewSession: boolean;
+          }
         );
         if (session?.accessToken) {
           // refresh util jwt expired
