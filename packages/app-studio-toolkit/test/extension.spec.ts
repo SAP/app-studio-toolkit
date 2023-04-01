@@ -32,6 +32,12 @@ const testVscode = {
   commands: {
     registerCommand: () => {},
   },
+  TreeItem: class MockTreeItem {
+    public readonly label: string;
+    constructor(label?: string) {
+      this.label = label || "";
+    }
+  },
 };
 
 mockVscode(testVscode, "dist/src/extension.js");
@@ -40,12 +46,14 @@ mockVscode(testVscode, "dist/src/actions/performer.js");
 mockVscode(testVscode, "dist/src/actions/actionsConfig.js");
 mockVscode(testVscode, "dist/src/basctlServer/basctlServer.js");
 mockVscode(testVscode, "dist/src/project-type/workspace-instance.js");
+mockVscode(testVscode, "dist/src/devspace-manager/instance.js");
 import * as extension from "../src/extension";
 import * as performer from "../src/actions/performer";
 import * as basctlServer from "../src/basctlServer/basctlServer";
 import * as logger from "../src/logger/logger";
 import { fail } from "assert";
 import { ActionsFactory } from "../src/actions/actionsFactory";
+import * as basRemoteExplorerInstance from "../src/devspace-manager/instance";
 
 describe("extension unit test", () => {
   let sandbox: SinonSandbox;
@@ -54,6 +62,7 @@ describe("extension unit test", () => {
   let performerMock: SinonMock;
   let wsConfigMock: SinonMock;
   let loggerMock: SinonMock;
+  let basRemoteExplorerMock: SinonMock;
 
   before(() => {
     sandbox = createSandbox();
@@ -69,6 +78,7 @@ describe("extension unit test", () => {
     performerMock = sandbox.mock(performer);
     wsConfigMock = sandbox.mock(wsConfig);
     loggerMock = sandbox.mock(logger);
+    basRemoteExplorerMock = sandbox.mock(basRemoteExplorerInstance);
   });
 
   afterEach(() => {
@@ -77,6 +87,7 @@ describe("extension unit test", () => {
     performerMock.verify();
     wsConfigMock.verify();
     loggerMock.verify();
+    basRemoteExplorerMock.verify();
   });
 
   describe("package definitions", () => {
@@ -119,6 +130,9 @@ describe("extension unit test", () => {
         },
       };
 
+      basRemoteExplorerMock
+        .expects("initBasRemoteExplorer")
+        .withExactArgs(context);
       loggerMock.expects("initLogger").withExactArgs(context);
       basctlServerMock.expects("startBasctlServer");
       const scheduledAction = {

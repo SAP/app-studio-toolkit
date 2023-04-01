@@ -1,6 +1,6 @@
 import { ConfigurationTarget, workspace } from "vscode";
 import { compact, trim, uniq } from "lodash";
-import { getJwt, hasJwt } from "../../authentication/auth-utils";
+import { hasJwt } from "../../authentication/auth-utils";
 import { URL } from "node:url";
 
 export interface LandscapeInfo {
@@ -51,6 +51,6 @@ export async function removeLandscape(landscapeName: string): Promise<void> {
 
 export async function getConnectedLandscapes(): Promise<LandscapeInfo[]> {
   return getLandscapes().then((landscapes) => {
-    return landscapes.filter((landscape) => landscape?.isLoggedIn);
+    return landscapes.filter((landscape) => landscape.isLoggedIn);
   });
 }
