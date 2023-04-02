@@ -10,5 +10,6 @@
 !icon.png
 # bundled sources
 !dist/
+!resources/
 # the source maps point to src/ dir
 !src/

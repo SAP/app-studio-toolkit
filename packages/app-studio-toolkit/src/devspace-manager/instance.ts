@@ -41,7 +41,7 @@ export async function initBasRemoteExplorer(
   );
 
   // // Tree Commands
-  const devSpaceExplorer = new DevSpacesExplorer();
+  const devSpaceExplorer = new DevSpacesExplorer(context.extensionPath);
   context.subscriptions.push(
     commands.registerCommand("local-extension.tree.refresh", () =>
       devSpaceExplorer.refreshTree()
@@ -138,6 +138,7 @@ export async function initBasRemoteExplorer(
               Date.now()
           );
         }
+        devSpaceExplorer.refreshTree();
       }
     )
   );

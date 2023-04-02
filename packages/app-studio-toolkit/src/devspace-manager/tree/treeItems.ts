@@ -1,4 +1,4 @@
-import { TreeItemCollapsibleState, TreeItem, workspace, Uri } from "vscode";
+import { TreeItemCollapsibleState, TreeItem } from "vscode";
 import type { Command } from "vscode";
 import * as path from "path";
 import { messages } from "../messages";
@@ -8,7 +8,6 @@ import {
   getDevSpaces,
   PackName,
 } from "../devspace/devspace";
-import { devspace } from "@sap/bas-sdk";
 import { $enum } from "ts-enum-util";
 import { compact, get, isEmpty, map } from "lodash";
 import { getLogger } from "../../logger/logger";
@@ -19,7 +18,10 @@ import { getLogger } from "../../logger/logger";
 // }
 type IconPath = { light: string; dark: string } | string;
 
-export function getSvgIconPath(iconName: string): IconPath {
+export function getSvgIconPath(
+  extensionPath: string,
+  iconName: string
+): IconPath {
   const icons = {
     landscape: { path: "common", name: "land.svg" },
     basic_error: { path: "devspace", name: "basic_error.svg" },
@@ -59,22 +61,14 @@ export function getSvgIconPath(iconName: string): IconPath {
   if (property) {
     iconPath = {
       light: path.join(
-        __dirname,
-        "..",
-        "..",
-        "..",
-        "..",
+        extensionPath,
         "resources",
         property.path,
         "light",
         property.name
       ),
       dark: path.join(
-        __dirname,
-        "..",
-        "..",
-        "..",
-        "..",
+        extensionPath,
         "resources",
         property.path,
         "dark",
@@ -181,6 +175,7 @@ export class LandscapeNode extends TreeNode {
   public readonly name: string;
   public readonly url: string;
   constructor(
+    private readonly extensionPath: string,
     label: string,
     collapsibleState: TreeItemCollapsibleState,
     iconPath: IconPath,
@@ -232,18 +227,18 @@ export class LandscapeNode extends TreeNode {
       .toLowerCase();
     switch (devSpace.status) {
       case DevSpaceStatus.RUNNING: {
-        return getSvgIconPath(`${packName}_running`);
+        return getSvgIconPath(this.extensionPath, `${packName}_running`);
       }
       case DevSpaceStatus.STARTING:
       case DevSpaceStatus.STOPPING: {
-        return getSvgIconPath(`${packName}_transitioning`);
+        return getSvgIconPath(this.extensionPath, `${packName}_transitioning`);
       }
       case DevSpaceStatus.STOPPED: {
-        return getSvgIconPath(`${packName}_not_running`);
+        return getSvgIconPath(this.extensionPath, `${packName}_not_running`);
       }
       case DevSpaceStatus.SAFE_MODE:
       case DevSpaceStatus.ERROR:
-        return getSvgIconPath(`${packName}_error`);
+        return getSvgIconPath(this.extensionPath, `${packName}_error`);
       default:
         this.assertUnreachable(devSpace.status);
     }

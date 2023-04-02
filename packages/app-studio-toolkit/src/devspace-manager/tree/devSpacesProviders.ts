@@ -17,6 +17,7 @@ export class DevSpaceDataProvider implements TreeDataProvider<TreeItem> {
   public readonly onDidChangeTreeData: Event<TreeItem | undefined> =
     this.privateOnDidChangeTreeData.event;
   private loading = false;
+  constructor(private readonly extensionPath: string) {}
 
   public setLoading(loading: boolean): void {
     this.loading = loading;
@@ -55,12 +56,13 @@ export class DevSpaceDataProvider implements TreeDataProvider<TreeItem> {
   }
 
   private async getTreeTopLevelChildren(): Promise<Thenable<TreeNode[]>> {
-    const iconPath = getSvgIconPath("landscape");
+    const iconPath = getSvgIconPath(this.extensionPath, "landscape");
     const landscapes = await getLandscapes();
 
     const rootNodes = compact(
       map(landscapes, (landscape) => {
         return new LandscapeNode(
+          this.extensionPath,
           landscape.name,
           TreeItemCollapsibleState.Expanded,
           iconPath,

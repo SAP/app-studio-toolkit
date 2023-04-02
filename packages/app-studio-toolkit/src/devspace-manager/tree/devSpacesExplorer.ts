@@ -6,8 +6,8 @@ export class DevSpacesExplorer {
   private readonly devSpacesExplorerView: TreeView<TreeItem>;
   private readonly devSpacesExplorerProvider: DevSpaceDataProvider;
 
-  constructor() {
-    this.devSpacesExplorerProvider = new DevSpaceDataProvider();
+  constructor(extensionPath: string) {
+    this.devSpacesExplorerProvider = new DevSpaceDataProvider(extensionPath);
     this.devSpacesExplorerView = window.createTreeView("dev-spaces", {
       treeDataProvider: this.devSpacesExplorerProvider,
       showCollapseAll: true,
