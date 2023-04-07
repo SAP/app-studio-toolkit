@@ -1,5 +1,5 @@
 import { window, commands } from "vscode";
-import { messages } from "../messages";
+import { messages } from "../common/messages";
 import { LandscapeNode } from "../tree/treeItems";
 import { removeLandscape } from "./landscape";
 

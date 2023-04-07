@@ -6,7 +6,7 @@ import {
   LoadingNode,
   getSvgIconPath,
 } from "./treeItems";
-import { messages } from "../messages";
+import { messages } from "../common/messages";
 import { getLandscapes } from "../landscape/landscape";
 import { compact, map } from "lodash";
 

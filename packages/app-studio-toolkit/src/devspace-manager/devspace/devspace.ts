@@ -1,6 +1,6 @@
 import { window } from "vscode";
 import { getLogger } from "../../logger/logger";
-import { messages } from "../messages";
+import { messages } from "../common/messages";
 import { devspace } from "@sap/bas-sdk";
 import { getJwt } from "../../authentication/auth-utils";
 import { $enum } from "ts-enum-util";
@@ -30,7 +30,7 @@ export interface DevSpaceInfo extends Omit<devspace.DevspaceInfo, "status"> {
 }
 export async function getDevSpaces(
   landscapeUrl: string
-): Promise<DevSpaceInfo[]> {
+): Promise<DevSpaceInfo[] | void> {
   return getJwt(landscapeUrl)
     .then((jwt) => {
       return devspace
@@ -59,6 +59,5 @@ export async function getDevSpaces(
       const message = messages.err_get_devspace(e.toString());
       getLogger().error(message);
       void window.showErrorMessage(message);
-      return [];
     });
 }

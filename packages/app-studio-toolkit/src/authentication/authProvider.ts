@@ -1,14 +1,14 @@
-import {
-  authentication,
+import { authentication, Disposable, EventEmitter } from "vscode";
+import type {
   AuthenticationProvider,
   AuthenticationProviderAuthenticationSessionsChangeEvent,
   AuthenticationSession,
-  Disposable,
+  AuthenticationSessionAccountInformation,
   Event,
-  EventEmitter,
   SecretStorage,
 } from "vscode";
 import { retrieveJwt } from "./auth-utils";
+import { getLogger } from "../logger/logger";
 
 export class BasRemoteAuthenticationProvider
   implements AuthenticationProvider, Disposable
@@ -116,14 +116,16 @@ export class BasRemoteAuthenticationProvider
 
     const token = await retrieveJwt(_scopes[0]);
 
-    // Note: this example doesn't do any validation of the token beyond making sure it's not empty.
+    // Note: consider to do some validation of the token beyond making sure it's not empty.
     if (!token) {
-      throw new Error("PAT is required");
+      const message = `PAT is required`;
+      getLogger().error(message);
+      throw new Error(message);
     }
 
     // Don't set `currentToken` here, since we want to fire the proper events in the `checkForUpdates` call
     await this.secretStorage.store(`${this.secretKey}_${_scopes[0]}`, token);
-    console.log(`Successfully logged in ${_scopes[0]} landscape`);
+    getLogger().debug(`Jwt successfully stored for ${_scopes[0]} landscape`);
 
     return new BasRemoteSession(
       BasRemoteAuthenticationProvider.id,
@@ -139,12 +141,7 @@ export class BasRemoteAuthenticationProvider
 }
 
 class BasRemoteSession implements AuthenticationSession {
-  // We don't know the user's account name, so we'll just use a constant
-  account; // = { id: BasRemoteAuthenticationProvider.id, label: 'Personal Access Token' };
-  // // This id isn't used for anything in this example, so we set it to a constant
-  //private readonly id; // = BasRemoteAuthenticationProvider.id;
-  // We don't know what scopes the PAT has, so we have an empty array here.
-  // readonly scopes = [];
+  readonly account: AuthenticationSessionAccountInformation;
 
   /**
    *

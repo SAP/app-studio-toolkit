@@ -1,11 +1,10 @@
 import {
   authentication,
-  AuthenticationGetSessionOptions,
   commands,
   ConfigurationTarget,
   workspace,
 } from "vscode";
-import type { ExtensionContext } from "vscode";
+import type { ExtensionContext, AuthenticationGetSessionOptions } from "vscode";
 import { DevSpacesExplorer } from "./tree/devSpacesExplorer";
 import { LandscapeNode } from "./tree/treeItems";
 import { cmdLandscapeDelete } from "./landscape/delete";
@@ -22,8 +21,8 @@ import {
   cmdDevSpaceOpenInBAS,
 } from "./devspace/connect";
 import { BasRemoteAuthenticationProvider } from "../authentication/authProvider";
-import jwtDecode, { JwtPayload } from "jwt-decode";
-import { autoRefresh, RefreshRate } from "./utils";
+import { autoRefresh, RefreshRate } from "./landscape/landscape";
+import { timeUntilJwtExpires } from "../../src/authentication/auth-utils";
 
 export async function initBasRemoteExplorer(
   context: ExtensionContext
@@ -134,8 +133,7 @@ export async function initBasRemoteExplorer(
           // refresh util jwt expired
           autoRefresh(
             RefreshRate.SEC_30,
-            (jwtDecode<JwtPayload>(session.accessToken).exp ?? 0) * 1000 -
-              Date.now()
+            timeUntilJwtExpires(session.accessToken)
           );
         }
         devSpaceExplorer.refreshTree();

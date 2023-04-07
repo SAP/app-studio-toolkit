@@ -1,7 +1,7 @@
 import { TreeItemCollapsibleState, TreeItem } from "vscode";
 import type { Command } from "vscode";
 import * as path from "path";
-import { messages } from "../messages";
+import { messages } from "../common/messages";
 import {
   DevSpaceInfo,
   DevSpaceStatus,
@@ -12,10 +12,6 @@ import { $enum } from "ts-enum-util";
 import { compact, get, isEmpty, map } from "lodash";
 import { getLogger } from "../../logger/logger";
 
-// export interface LandscapeNode {
-//   label: string;
-//   url: string;
-// }
 type IconPath = { light: string; dark: string } | string;
 
 export function getSvgIconPath(
@@ -216,7 +212,6 @@ export class LandscapeNode extends TreeNode {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- suppress warn
   private assertUnreachable(_x: never): never {
     throw new Error("Didn't expect to get here");
   }
@@ -264,44 +259,45 @@ export class LandscapeNode extends TreeNode {
   public async getChildren(element: LandscapeNode): Promise<TreeNode[]> {
     const devSpaces = /log-in/g.test(element?.contextValue ?? "")
       ? await getDevSpaces(element.url)
-      : [];
-    let devSpaceNodes: TreeNode[] = isEmpty(devSpaces)
-      ? [
-          new EmptyNode(
-            messages.DEV_SPACE_EXPLORER_AUTHENTICATION_FAILURE,
-            TreeItemCollapsibleState.None,
-            "",
-            ""
-          ),
-        ]
-      : compact(
-          map(devSpaces, (devSpace) => {
-            return new DevSpaceNode(
-              this.getLabel(devSpace),
-              TreeItemCollapsibleState.None,
-              this.getIconPath(devSpace),
-              element.label ?? "",
-              element.name ?? "",
-              element.url ?? "",
-              devSpace.url,
-              devSpace.id,
-              devSpace.status,
-              this.getContextView(devSpace),
-              devSpace.id,
-              devSpace.pack
-            );
-          })
-        );
-
-    if (isEmpty(devSpaceNodes)) {
+      : undefined;
+    let devSpaceNodes: TreeNode[];
+    if (!devSpaces) {
       devSpaceNodes = [
         new EmptyNode(
-          messages.DEV_SPACE_EXPLORER_NO_DEV_SPACES,
+          messages.DEV_SPACE_EXPLORER_AUTHENTICATION_FAILURE,
           TreeItemCollapsibleState.None,
           "",
           ""
         ),
       ];
+    } else {
+      devSpaceNodes = isEmpty(devSpaces)
+        ? [
+            new EmptyNode(
+              messages.DEV_SPACE_EXPLORER_NO_DEV_SPACES,
+              TreeItemCollapsibleState.None,
+              "",
+              ""
+            ),
+          ]
+        : compact(
+            map(devSpaces, (devSpace) => {
+              return new DevSpaceNode(
+                this.getLabel(devSpace),
+                TreeItemCollapsibleState.None,
+                this.getIconPath(devSpace),
+                element.label ?? "",
+                element.name ?? "",
+                element.url ?? "",
+                devSpace.url,
+                devSpace.id,
+                devSpace.status,
+                this.getContextView(devSpace),
+                devSpace.id,
+                devSpace.pack
+              );
+            })
+          );
     }
     return devSpaceNodes;
   }

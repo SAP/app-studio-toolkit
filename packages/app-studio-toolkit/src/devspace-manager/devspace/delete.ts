@@ -1,7 +1,7 @@
 import { window, commands } from "vscode";
 import { DevSpaceNode } from "../tree/treeItems";
 import { getLogger } from "../../logger/logger";
-import { messages } from "../messages";
+import { messages } from "../common/messages";
 import { getJwt } from "../../authentication/auth-utils";
 import { devspace } from "@sap/bas-sdk";
 

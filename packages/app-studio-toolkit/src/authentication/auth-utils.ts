@@ -7,11 +7,10 @@ import { createHttpTerminator, HttpTerminator } from "http-terminator";
 import { BasRemoteAuthenticationProvider } from "./authProvider";
 import { core } from "@sap/bas-sdk";
 
-const JWT_TIMEOUT = 60 * 1000; // 60s
+export const JWT_TIMEOUT = 60 * 1000; // 60s
 const EXT_LOGIN_PORTNUM = 55532;
 
 const serverCache = new Map<string, HttpTerminator>();
-let jwtRemotePromise: Promise<string | undefined> = Promise.resolve(undefined);
 
 enum eHeaders {
   "Access-Control-Allow-Origin" = "Access-Control-Allow-Origin",
@@ -25,6 +24,13 @@ function isJwtExpired(jwt: string): boolean {
   const expired = (decodedJwt.exp ?? 0) * 1000;
   getLogger().info(`jwt expires at ${new Date(expired).toString()}`);
   return Date.now() >= expired;
+}
+
+export function timeUntilJwtExpires(jwt: string): number {
+  const decodedJwt: JwtPayload = jwtDecode<JwtPayload>(jwt);
+  const untilExpired = (decodedJwt.exp ?? 0) * 1000 - Date.now();
+  getLogger().info(`jwt expires in ${untilExpired / 1000} seconds`);
+  return untilExpired;
 }
 
 async function loginToLandscape(landscapeUrl: string): Promise<boolean> {
@@ -66,13 +72,14 @@ async function getJwtFromServer(landscapeUrl: string): Promise<string> {
     });
 
     app.post("/ext-login", function (request, response) {
-      const jwt: string = request?.body?.jwt;
-      if (jwt.startsWith("<html>")) {
-        const message = `Incorrect token recieved for ${landscapeUrl}. Login failed`;
-        getLogger().error(message);
-        void window.showErrorMessage(message);
+      const jwt: string | undefined = request?.body?.jwt;
+      if (!jwt || jwt.startsWith("<html>")) {
         response.send({ status: "error" });
-        reject();
+        reject(
+          new Error(
+            `Incorrect token recieved for ${landscapeUrl}. Login failed`
+          )
+        );
       } else {
         getLogger().info(`jwt recieved from remote for ${landscapeUrl}`);
         response.send({ status: "ok" });
@@ -85,10 +92,11 @@ async function getJwtFromServer(landscapeUrl: string): Promise<string> {
     });
 
     server.on("error", function (err) {
-      const message = `Error listening to get jwt: ${err.message} for ${landscapeUrl}`;
-      getLogger().error(message);
-      void window.showErrorMessage(message);
-      reject();
+      reject(
+        new Error(
+          `Error listening to get jwt: ${err.message} for ${landscapeUrl}`
+        )
+      );
     });
 
     serverCache.set(landscapeUrl, createHttpTerminator({ server }));
@@ -103,9 +111,7 @@ async function getJwtFromServerWithTimeout(
   const timeout = new Promise<string>((resolve, reject) => {
     const delay = setTimeout(() => {
       clearTimeout(delay);
-      const message = `Login time out in ${ms} ms.`;
-      getLogger().error(message);
-      reject(message);
+      reject(new Error(`Login time out in ${ms} ms.`));
     }, ms);
   });
 
@@ -116,14 +122,13 @@ async function getJwtFromServerWithTimeout(
 async function retrieveJwtFromRemote(
   landscapeUrl: string
 ): Promise<string | undefined> {
-  // if server is not running already
   const jwtPromise = getJwtFromServerWithTimeout(
     JWT_TIMEOUT,
     getJwtFromServer(landscapeUrl)
   );
 
   const accepted = await loginToLandscape(landscapeUrl);
-  // if user presses copy | cancel
+  // browser open failed
   if (!accepted) {
     void closeServer(landscapeUrl);
     return;
@@ -137,12 +142,11 @@ async function closeServer(landscapeUrl: string): Promise<void> {
   getLogger().info(`closing server for ${landscapeUrl}`);
 }
 
-export function retrieveJwt(landscapeUrl: string): Promise<string | undefined> {
-  return (jwtRemotePromise = jwtRemotePromise
-    .then(() => retrieveJwtFromRemote(landscapeUrl))
-    .catch((e) => {
-      throw e;
-    }));
+export function retrieveJwt(landscapeUrl: string): Promise<string | void> {
+  return retrieveJwtFromRemote(landscapeUrl).catch((e) => {
+    void window.showErrorMessage(e.message);
+    getLogger().error(e.toString());
+  });
 }
 
 export async function getJwt(landscapeUrl: string): Promise<string> {
@@ -153,7 +157,9 @@ export async function getJwt(landscapeUrl: string): Promise<string> {
   if (session?.accessToken) {
     return session.accessToken;
   } else {
-    throw new Error("PAT not exists");
+    const message = `PAT not exists`;
+    getLogger().debug(message);
+    throw new Error(message);
   }
 }
 

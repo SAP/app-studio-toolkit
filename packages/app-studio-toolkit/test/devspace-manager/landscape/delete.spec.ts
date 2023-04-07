@@ -2,7 +2,7 @@ import proxyquire from "proxyquire";
 import { SinonMock, mock } from "sinon";
 import * as land from "../../../src/devspace-manager/landscape/delete";
 import { LandscapeNode } from "../../../src/devspace-manager/tree/treeItems";
-import { messages } from "../../../src/devspace-manager/messages";
+import { messages } from "../../../src/devspace-manager/common/messages";
 
 describe("landscapes delete unit test", () => {
   let cmdLandscapeDeleteProxy: typeof land.cmdLandscapeDelete;

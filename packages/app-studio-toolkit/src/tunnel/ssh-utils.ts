@@ -1,7 +1,7 @@
 import { window, workspace } from "vscode";
 import * as url from "url";
 import { getLogger } from "../logger/logger";
-import { messages } from "../devspace-manager/messages";
+import { messages } from "../devspace-manager/common/messages";
 import * as path from "path";
 import * as fs from "fs";
 import { homedir } from "os";

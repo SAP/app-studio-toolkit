@@ -1,4 +1,5 @@
 import { expect } from "chai";
+import { SinonMock, mock, stub } from "sinon";
 import { URL } from "url";
 import { mockVscode } from "../../../test/mockUtil";
 
@@ -18,11 +19,17 @@ const wsConfig = {
     ) {
       lands = value.split(",");
     }
+    return Promise.resolve();
   },
 };
 const testVscode = {
   workspace: {
     getConfiguration: () => wsConfig,
+  },
+  commands: {
+    executeCommand: () => {
+      throw new Error(`not implemented`);
+    },
   },
   ConfigurationTarget: localConfigurationTarget,
 };
@@ -32,8 +39,15 @@ mockVscode(testVscode, "dist/src/devspace-manager/landscape/landscape.js");
 import * as land from "../../../src/devspace-manager/landscape/landscape";
 
 describe("landscapes unit test", () => {
+  let mockCommands: SinonMock;
+
   beforeEach(() => {
+    mockCommands = mock(testVscode.commands);
     lands = [];
+  });
+
+  afterEach(() => {
+    mockCommands.verify();
   });
 
   const landscapeUrl1 = "https://my.landscape-1.com";
@@ -91,14 +105,25 @@ describe("landscapes unit test", () => {
     expect(lands).be.undefined;
   });
 
-  it("getConnectedLandscapes, few items, nothing found", async () => {
-    lands?.push(landscapeUrl1);
-    lands?.push(landscapeUrl2);
-    expect(await land.getConnectedLandscapes()).be.deep.equal([]);
+  it("autoRefresh, landscapes empty", () => {
+    lands = undefined;
+    mockCommands.expects(`executeCommand`).never();
+    land.autoRefresh(100, 200);
   });
 
-  it("getConnectedLandscapes, no items, nothing found", async () => {
-    lands = undefined;
-    expect(await land.getConnectedLandscapes()).be.deep.equal([]);
+  it("autoRefresh, landscapes exist", (done) => {
+    lands?.push(landscapeUrl2);
+    mockCommands
+      .expects(`executeCommand`)
+      .atLeast(3)
+      .withExactArgs("local-extension.tree.refresh");
+    land.autoRefresh(100, 350);
+    setTimeout(() => done(), 500);
+  });
+
+  it("autoRefresh, exception thrown", (done) => {
+    lands?.push(`ttt:\\wrong..pattern`);
+    land.autoRefresh(100, 200);
+    setTimeout(() => done(), 500);
   });
 });

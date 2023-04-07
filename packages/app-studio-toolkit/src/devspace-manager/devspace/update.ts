@@ -1,10 +1,10 @@
 import { window, commands } from "vscode";
 import { getLogger } from "../../logger/logger";
 import { DevSpaceNode } from "../tree/treeItems";
-import { autoRefresh, RefreshRate } from "../utils";
-import { messages } from "../messages";
+import { messages } from "../common/messages";
 import { getJwt } from "../../authentication/auth-utils";
 import { devspace } from "@sap/bas-sdk";
+import { RefreshRate, autoRefresh } from "../landscape/landscape";
 
 const START = false;
 const STOP = true;

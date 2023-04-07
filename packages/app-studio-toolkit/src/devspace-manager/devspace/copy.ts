@@ -1,5 +1,5 @@
 import { env, window } from "vscode";
-import { messages } from "../messages";
+import { messages } from "../common/messages";
 import { DevSpaceNode } from "../tree/treeItems";
 
 export async function cmdCopyWsId(devSpace: DevSpaceNode): Promise<void> {
