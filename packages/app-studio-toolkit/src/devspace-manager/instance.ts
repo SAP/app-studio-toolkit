@@ -17,7 +17,6 @@ import { cmdDevSpaceEdit } from "./devspace/edit";
 import { cmdCopyWsId } from "./devspace/copy";
 import {
   cmdDevSpaceConnectNewWindow,
-  cmdDevSpaceConnectSameWindow,
   cmdDevSpaceOpenInBAS,
 } from "./devspace/connect";
 import { BasRemoteAuthenticationProvider } from "../authentication/authProvider";
@@ -32,14 +31,12 @@ export async function initBasRemoteExplorer(
     .getConfiguration()
     .update("workbench.startupEditor", "none", ConfigurationTarget.Global);
 
-  // General Commands
   context.subscriptions.push(
     commands.registerCommand("local-extension.tree.settings", () =>
       commands.executeCommand("workbench.action.openSettings", "Desktop Client")
     )
   );
 
-  // // Tree Commands
   const devSpaceExplorer = new DevSpacesExplorer(context.extensionPath);
   context.subscriptions.push(
     commands.registerCommand("local-extension.tree.refresh", () =>
@@ -47,7 +44,6 @@ export async function initBasRemoteExplorer(
     )
   );
 
-  // Dev space commands
   context.subscriptions.push(
     commands.registerCommand(
       "local-extension.dev-space.connect-new-window",
@@ -55,12 +51,6 @@ export async function initBasRemoteExplorer(
     )
   );
 
-  context.subscriptions.push(
-    commands.registerCommand(
-      "local-extension.dev-space.connect-same-window",
-      cmdDevSpaceConnectSameWindow
-    )
-  );
   context.subscriptions.push(
     commands.registerCommand(
       "local-extension.dev-space.open-in-bas",
@@ -95,7 +85,6 @@ export async function initBasRemoteExplorer(
     )
   );
 
-  // Landscape commands
   context.subscriptions.push(
     commands.registerCommand(
       "local-extension.landscape.open-dev-space-manager",

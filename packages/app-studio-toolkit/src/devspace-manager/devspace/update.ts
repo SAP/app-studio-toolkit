@@ -34,28 +34,28 @@ async function updateDevSpace(
   wsId: string,
   wsName: string,
   suspend: boolean
-) {
-  try {
-    const jwt = await getJwt(landscapeUrl);
-    return (
-      devspace
+): Promise<void> {
+  return getJwt(landscapeUrl)
+    .then((jwt) => {
+      return devspace
         .updateDevSpace(landscapeUrl, jwt, wsId, {
           Suspended: suspend,
           WorkspaceDisplayName: wsName,
         })
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars -- suppress warn
-        .then((_) => {
-          const status: string = suspend ? "stoped" : "started";
-          getLogger().info(`WS ${wsName} (${wsId}) was ${status}`);
-          void window.showInformationMessage(
-            `WS ${wsName} (${wsId}) was ${status}`
-          );
-          void commands.executeCommand("local-extension.tree.refresh");
-        })
-    );
-  } catch (e) {
-    const message = messages.err_ws_update(wsId, e.toString());
-    getLogger().error(message);
-    void window.showErrorMessage(message);
-  }
+        .then(() => {
+          const message = `Devspace ${wsName} (${wsId}) was ${
+            suspend ? "stoped" : "started"
+          }`;
+          getLogger().info(message);
+          void window.showInformationMessage(message);
+        });
+    })
+    .catch((e) => {
+      const message = messages.err_ws_update(wsId, e.toString());
+      getLogger().error(message);
+      void window.showErrorMessage(message);
+    })
+    .finally(() => {
+      void commands.executeCommand("local-extension.tree.refresh");
+    });
 }

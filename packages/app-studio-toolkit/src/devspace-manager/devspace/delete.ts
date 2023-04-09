@@ -4,6 +4,11 @@ import { getLogger } from "../../logger/logger";
 import { messages } from "../common/messages";
 import { getJwt } from "../../authentication/auth-utils";
 import { devspace } from "@sap/bas-sdk";
+import {
+  cleanRemotePlatformSetting,
+  deletePK,
+  removeSSHConfig,
+} from "../tunnel/ssh-utils";
 
 export async function cmdDevSpaceDelete(devSpace: DevSpaceNode): Promise<void> {
   const selection = await window.showInformationMessage(
@@ -11,21 +16,35 @@ export async function cmdDevSpaceDelete(devSpace: DevSpaceNode): Promise<void> {
     ...[messages.lbl_yes, messages.lbl_no]
   );
   if (selection == messages.lbl_yes) {
-    return deleteDevSpace(devSpace.landscapeUrl, devSpace.id);
+    try {
+      await deleteDevSpace(devSpace.landscapeUrl, devSpace.id);
+      await cleanDevspaceConfig(devSpace);
+      const message = messages.info_devspace_deleted(devSpace.id);
+      getLogger().info(message);
+      void window.showInformationMessage(message);
+    } catch (e) {
+      const message = messages.err_devspace_delete(devSpace.id, e.toString());
+      getLogger().error(message);
+      void window.showErrorMessage(message);
+    } finally {
+      void commands.executeCommand("local-extension.tree.refresh");
+    }
   }
 }
 
 async function deleteDevSpace(landscapeUrl: string, wsId: string) {
+  await devspace.deleteDevSpace(landscapeUrl, await getJwt(landscapeUrl), wsId);
+}
+
+async function cleanDevspaceConfig(devSpace: DevSpaceNode): Promise<void> {
   try {
-    const jwt = await getJwt(landscapeUrl);
-    await devspace.deleteDevSpace(landscapeUrl, jwt, wsId);
-    const message = messages.info_devspace_deleted(wsId);
-    getLogger().info(message);
-    void window.showInformationMessage(message);
-    void commands.executeCommand("local-extension.tree.refresh");
+    deletePK(devSpace.wsUrl);
+    removeSSHConfig(devSpace);
+    await cleanRemotePlatformSetting(devSpace);
+    getLogger().info(`Devspace ssh config info cleaned`);
   } catch (e) {
-    const message = messages.err_devspace_delete(wsId, e.toString());
-    getLogger().error(message);
-    void window.showErrorMessage(message);
+    getLogger().error(
+      `Can't complete the devspace ssh config cleaning: ${e.toString()}`
+    );
   }
 }

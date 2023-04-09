@@ -1,30 +1,22 @@
 import { connection as WebSocket, client as WebSocketClient } from "websocket";
-
 import {
   SshAlgorithms,
   SshSessionConfiguration,
   SshProtocolExtensionNames,
   BaseStream,
-  CancellationToken,
   ObjectDisposedError,
   Stream,
   SshClientSession,
   SshDisconnectReason,
 } from "@microsoft/dev-tunnels-ssh";
 import { PortForwardingService } from "@microsoft/dev-tunnels-ssh-tcp";
+import { getLogger } from "../../logger/logger";
 
 let session: SshClientSession;
 
-class WebSocketServerStream extends BaseStream {
+class WebSocketClientStream extends BaseStream {
   public constructor(private readonly websocket: WebSocket) {
     super();
-    if (!websocket) throw new TypeError("WebSocket is required.");
-
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion -- ignore warning
-    const binaryType = (websocket as any).binaryType;
-    if (typeof binaryType === "string" && binaryType !== "arraybuffer") {
-      throw new Error("WebSocket must use arraybuffer binary type.");
-    }
 
     websocket.on("message", (data) => {
       if (data.type === "binary") {
@@ -32,43 +24,37 @@ class WebSocketServerStream extends BaseStream {
       }
     });
     websocket.on("close", (code?: number, reason?: string) => {
-      if (typeof code === undefined || !code) {
+      if (!code) {
         this.onEnd();
       } else {
         const error = new Error(reason);
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- ignore
         (<any>error).code = code;
         this.onError(error);
       }
     });
   }
 
-  public async write(
-    data: Buffer,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- suppress warn
-    cancellation?: CancellationToken
-  ): Promise<void> {
-    if (!data) throw new TypeError("Data is required.");
-    if (this.disposed) throw new ObjectDisposedError(this);
+  public async write(data: Buffer): Promise<void> {
+    if (this.disposed) {
+      throw new ObjectDisposedError(this);
+    }
+    if (!data) {
+      throw new TypeError("Data is required.");
+    }
 
     this.websocket.send(data);
     return Promise.resolve();
   }
 
-  public async close(
-    error?: Error,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- suppress warn
-    cancellation?: CancellationToken
-  ): Promise<void> {
-    if (this.disposed) throw new ObjectDisposedError(this);
+  public async close(error?: Error): Promise<void> {
+    if (this.disposed) {
+      throw new ObjectDisposedError(this);
+    }
 
     if (!error) {
       this.websocket.close();
     } else {
-      const code: number | undefined =
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- ignore
-        typeof (<any>error).code === "number" ? (<any>error).code : undefined;
-      this.websocket.drop(code, error.message);
+      this.websocket.drop((<any>error).code, error.message);
     }
     this.disposed = true;
     this.closedEmitter.fire({ error });
@@ -80,17 +66,22 @@ class WebSocketServerStream extends BaseStream {
     if (!this.disposed) {
       this.websocket.close();
     }
-
     super.dispose();
   }
 }
 
 export async function ssh(opts: {
-  host: { url: string; port: string };
-  client: { port: string };
+  host: {
+    url: string;
+    port: string;
+  };
+  client: {
+    port: string;
+  };
   username: string;
   jwt: string;
 }): Promise<void> {
+  // close the opened session if exists
   const isContinue = new Promise((res) => {
     if (session) {
       void session
@@ -122,7 +113,7 @@ export async function ssh(opts: {
   });
   const stream = await new Promise<Stream>((resolve, reject) => {
     wsClient.on("connect", (connection) => {
-      resolve(new WebSocketServerStream(connection));
+      resolve(new WebSocketClientStream(connection));
     });
     wsClient.on("connectFailed", function error(e) {
       reject(new Error(`Failed to connect to server at ${serverUri}:${e}`));
@@ -135,26 +126,30 @@ export async function ssh(opts: {
       .connect(stream)
       .then(() => {
         void session.onAuthenticating((e) => {
+          // there is no authentication in this solution
           e.authenticationPromise = Promise.resolve({});
         });
 
+        // authorise client by name 'user'
         void session.authenticateClient({
           username: opts.username,
-          // publicKeys: [privateKey],
           publicKeys: [],
         });
 
         const pfs = session.activateService(PortForwardingService);
-        void pfs.forwardToRemotePort(
-          "127.0.0.1",
-          parseInt(opts.client.port, 10),
-          "127.0.0.1",
-          2222
-        );
-        console.debug("connected");
+        void pfs
+          .forwardToRemotePort(
+            "127.0.0.1",
+            parseInt(opts.client.port, 10),
+            "127.0.0.1",
+            2222
+          )
+          .then(() => {
+            getLogger().debug(`ssh session connected`);
+          });
       })
       .catch((e) => {
-        console.error(e);
+        getLogger().error(`ssh session droped : ${e.message}`);
         reject(e);
       });
   });

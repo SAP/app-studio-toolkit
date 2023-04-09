@@ -1,16 +1,7 @@
-import {
-  window,
-  workspace,
-  ProgressLocation,
-  commands,
-  ConfigurationTarget,
-  env,
-  Uri,
-} from "vscode";
+import { window, ProgressLocation, commands, env, Uri } from "vscode";
 import type { Progress } from "vscode";
 import { DevSpaceNode } from "../tree/treeItems";
 import urljoin from "url-join";
-import { assign } from "lodash";
 import { ChildProcess } from "child_process";
 import { URL } from "node:url";
 import {
@@ -19,28 +10,23 @@ import {
   savePK,
   SSHConfigInfo,
   SSHD_SOCKET_PORT,
+  updateRemotePlatformSetting,
   updateSSHConfig,
-} from "../../tunnel/ssh-utils";
+} from "../tunnel/ssh-utils";
+import { getLogger } from "../../../src/logger/logger";
 
-let tunnel: ChildProcess | undefined;
+let tunnel: ChildProcess | void;
 
 async function getTunnelConfigurations(
   devSpace: DevSpaceNode,
   progress: Progress<{ message?: string; increment?: number }>
-): Promise<SSHConfigInfo | undefined> {
-  // Obtaining SSH key
+): Promise<SSHConfigInfo> {
   progress.report({ message: "Obtaining SSH key" });
   const pk = await getPK(devSpace.landscapeUrl, devSpace.id);
-  if (!pk) {
-    return;
-  }
-  // Save PK to file
+
   progress.report({ message: "Save PK to file" });
   const pkFilePath = savePK(pk, devSpace.wsUrl);
-  if (!pkFilePath) {
-    return;
-  }
-  // Update config file with SSH connection
+
   progress.report({ message: "Update config file with SSH connection" });
   return updateSSHConfig(pkFilePath, devSpace);
 }
@@ -54,18 +40,15 @@ async function createTunnel(
   config: SSHConfigInfo,
   progress: Progress<{ message?: string; increment?: number }>
 ): Promise<any> {
-  progress.report({ message: "Closing old VPN tunnel to dev-space" });
+  progress.report({ message: "Closing old tunnel to dev-space" });
   closeTunnel();
 
-  // Start ssh tunnel
-  progress.report({ message: "Starting new VPN tunnel to dev-space" });
+  progress.report({ message: "Starting new tunnel to dev-space" });
   tunnel = await runChannelClientAsProcess({
     host: `port${SSHD_SOCKET_PORT}-${new URL(devSpace.wsUrl).hostname}`,
     landscape: devSpace.landscapeUrl,
     localPort: config.port,
   });
-  // Stability of tunnel time
-  // progress.report({ message: "Waiting for VPN tunnel to dev-space stability" });
 }
 
 async function createTunnelAndGetHostName(
@@ -77,62 +60,48 @@ async function createTunnelAndGetHostName(
       title: "Connecting to " + devSpace.label,
       cancellable: true,
     },
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- suppress warn
     async (progress, cancel) => {
       // Set tunnel configurations
       const config = await getTunnelConfigurations(devSpace, progress);
-      if (config) {
-        // Create tunnel
-        await createTunnel(devSpace, config, progress);
-        // Add linux to host records in settings json
-        await updateRemotePlatformSetting(config);
-        return config.name;
-      }
+      // Create tunnel
+      await createTunnel(devSpace, config, progress);
+      // Add linux to host records in settings json
+      await updateRemotePlatformSetting(config);
+      return config.name;
     }
   );
-}
-
-async function updateRemotePlatformSetting(config: SSHConfigInfo) {
-  const remotePlatform: any = {};
-  remotePlatform[config.name] = "linux";
-
-  const remotePlatformsList =
-    workspace.getConfiguration().get("remote.SSH.remotePlatform") || {};
-  assign(remotePlatform, remotePlatformsList);
-  await workspace
-    .getConfiguration()
-    .update(
-      "remote.SSH.remotePlatform",
-      remotePlatform,
-      ConfigurationTarget.Global
-    );
 }
 
 export async function cmdDevSpaceConnectNewWindow(
   devSpace: DevSpaceNode
 ): Promise<void> {
-  const hostName = await createTunnelAndGetHostName(devSpace);
-  void commands.executeCommand("opensshremotes.openEmptyWindow", {
-    host: hostName,
-  });
-}
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- temp suppress
-export async function cmdDevSpaceConnectSameWindow(
-  devSpace: DevSpaceNode
-): Promise<void> {
-  await window.showWarningMessage("This feature is not supported yet");
-  // TODO: uncommnet when chisel is fixed
-  // const hostName = await createTunnelAndGetHostName(devSpace);
-  // await commands.executeCommand("opensshremotesexplorer.emptyWindowInCurrentWindow", {
-  //   hostName: hostName
-  // });
+  try {
+    const hostName = await createTunnelAndGetHostName(devSpace);
+    void commands.executeCommand("opensshremotes.openEmptyWindow", {
+      host: hostName,
+    });
+  } catch (err) {
+    const message = `Can't connect the devspace ${
+      devSpace.wsUrl
+    }: ${err.toString()}`;
+    getLogger().error(message);
+    void window.showErrorMessage(message);
+  }
 }
 
 export async function cmdDevSpaceOpenInBAS(
   devSpace: DevSpaceNode
 ): Promise<boolean> {
-  return env.openExternal(
-    Uri.parse(urljoin(devSpace.landscapeUrl, `index.html`, `#${devSpace.id}`))
-  );
+  try {
+    return env.openExternal(
+      Uri.parse(urljoin(devSpace.landscapeUrl, `index.html`, `#${devSpace.id}`))
+    );
+  } catch (err) {
+    const message = `Can't open the devspace ${
+      devSpace.landscapeUrl
+    }: ${err.toString()}`;
+    getLogger().error(message);
+    void window.showErrorMessage(message);
+    return false;
+  }
 }

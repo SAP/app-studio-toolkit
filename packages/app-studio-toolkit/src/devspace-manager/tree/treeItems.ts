@@ -161,7 +161,6 @@ export class DevSpaceNode extends TreeNode {
     this.status = status;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- suppress
   public getChildren(element?: TreeNode): Thenable<TreeNode[]> {
     return Promise.resolve([]);
   }
