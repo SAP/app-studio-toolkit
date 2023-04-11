@@ -1,8 +1,16 @@
-import { ConfigurationTarget, commands, workspace } from "vscode";
+import {
+  AuthenticationGetSessionOptions,
+  ConfigurationTarget,
+  authentication,
+  commands,
+  workspace,
+} from "vscode";
 import { compact, isEmpty, size, trim, uniq } from "lodash";
-import { hasJwt } from "../../authentication/auth-utils";
+import { hasJwt, timeUntilJwtExpires } from "../../authentication/auth-utils";
 import { URL } from "node:url";
 import { getLogger } from "../../../src/logger/logger";
+import { LandscapeNode } from "../tree/treeItems";
+import { BasRemoteAuthenticationProvider } from "../../authentication/authProvider";
 
 export enum RefreshRate {
   ALWAYS = -1,
@@ -52,7 +60,7 @@ export function getLanscapesConfig(): string[] {
         ""
       )
         .split(",")
-        .map((value) => trim(value))
+        .map((value) => (value ? new URL(trim(value)).toString() : value))
     )
   );
 }
@@ -93,5 +101,21 @@ export async function removeLandscape(landscapeName: string): Promise<void> {
     if (size(updated) !== size(config)) {
       return updateLandscapesConfig(updated);
     }
+  }
+}
+
+export async function cmdLoginToLandscape(node: LandscapeNode): Promise<void> {
+  try {
+    const session = await authentication.getSession(
+      BasRemoteAuthenticationProvider.id,
+      [node.url],
+      { forceNewSession: true } as AuthenticationGetSessionOptions
+    );
+    if (session?.accessToken) {
+      // refresh util jwt expired
+      autoRefresh(RefreshRate.SEC_30, timeUntilJwtExpires(session.accessToken));
+    }
+  } finally {
+    void commands.executeCommand("local-extension.tree.refresh");
   }
 }

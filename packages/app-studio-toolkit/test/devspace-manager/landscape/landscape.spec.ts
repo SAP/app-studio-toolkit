@@ -1,6 +1,5 @@
 import { expect } from "chai";
-import { SinonMock, mock, stub } from "sinon";
-import { URL } from "url";
+import { SinonMock, mock } from "sinon";
 import { mockVscode } from "../../../test/mockUtil";
 
 enum localConfigurationTarget {
@@ -32,22 +31,34 @@ const testVscode = {
     },
   },
   ConfigurationTarget: localConfigurationTarget,
+  authentication: {
+    getSession: () => {
+      throw new Error(`not implemented`);
+    },
+  },
 };
 
 mockVscode(testVscode, "dist/src/devspace-manager/landscape/landscape.js");
 
 import * as land from "../../../src/devspace-manager/landscape/landscape";
+import { BasRemoteAuthenticationProvider } from "../../../src/authentication/authProvider";
+import { LandscapeNode } from "../../../src/devspace-manager/tree/treeItems";
+import { fail } from "assert";
+import { URL } from "node:url";
 
 describe("landscapes unit test", () => {
   let mockCommands: SinonMock;
+  let mockAuthentication: SinonMock;
 
   beforeEach(() => {
     mockCommands = mock(testVscode.commands);
+    mockAuthentication = mock(testVscode.authentication);
     lands = [];
   });
 
   afterEach(() => {
     mockCommands.verify();
+    mockAuthentication.verify();
   });
 
   const landscapeUrl1 = "https://my.landscape-1.com";
@@ -84,7 +95,7 @@ describe("landscapes unit test", () => {
     lands?.push(landscapeUrl1);
     lands?.push(landscapeUrl2);
     await land.removeLandscape(landscapeUrl1);
-    expect(lands).be.deep.equal([landscapeUrl2]);
+    expect(lands).be.deep.equal([new URL(landscapeUrl2).toString()]);
   });
 
   it("removeLandscape, only one item exists", async () => {
@@ -125,5 +136,56 @@ describe("landscapes unit test", () => {
     lands?.push(`ttt:\\wrong..pattern`);
     land.autoRefresh(100, 200);
     setTimeout(() => done(), 500);
+  });
+
+  describe("cmdLoginToLandscape scope", () => {
+    const landscape = `http://my.landscape.test`;
+    const node = {
+      url: landscape,
+    };
+
+    it("cmdLoginToLandscape - session not exists", async () => {
+      mockCommands
+        .expects(`executeCommand`)
+        .withExactArgs(`local-extension.tree.refresh`)
+        .resolves();
+      mockAuthentication
+        .expects(`getSession`)
+        .withExactArgs(BasRemoteAuthenticationProvider.id, [landscape], {
+          forceNewSession: true,
+        })
+        .resolves();
+      await land.cmdLoginToLandscape(node as LandscapeNode);
+    });
+
+    it("cmdLoginToLandscape - token not exists", async () => {
+      mockCommands
+        .expects(`executeCommand`)
+        .withExactArgs(`local-extension.tree.refresh`)
+        .resolves();
+      mockAuthentication
+        .expects(`getSession`)
+        .withExactArgs(BasRemoteAuthenticationProvider.id, [landscape], {
+          forceNewSession: true,
+        })
+        .resolves({});
+      await land.cmdLoginToLandscape(node as LandscapeNode);
+    });
+
+    it("cmdLoginToLandscape - wrong token specified", async () => {
+      mockCommands
+        .expects(`executeCommand`)
+        .withExactArgs(`local-extension.tree.refresh`)
+        .resolves();
+      mockAuthentication
+        .expects(`getSession`)
+        .resolves({ accessToken: `token` });
+      try {
+        await land.cmdLoginToLandscape(node as LandscapeNode);
+        fail("should fail due to fake token parsing");
+      } catch (e) {
+        // nothing to do
+      }
+    });
   });
 });

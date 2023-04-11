@@ -5,7 +5,6 @@ import * as fs from "fs";
 import { homedir } from "os";
 import { DevSpaceNode } from "../tree/treeItems";
 import { getJwt } from "../../authentication/auth-utils";
-import { ChildProcess } from "child_process";
 import { remotessh } from "@sap/bas-sdk";
 import { ssh } from "./ssh";
 import { URL } from "node:url";
@@ -173,7 +172,7 @@ export async function runChannelClientAsProcess(opt: {
   host: string;
   landscape: string;
   localPort: string;
-}): Promise<ChildProcess | void> {
+}): Promise<void> {
   void ssh({
     host: { url: opt.host, port: `${SSH_SOCKET_PORT}` },
     client: { port: opt.localPort },
@@ -184,55 +183,6 @@ export async function runChannelClientAsProcess(opt: {
   getLogger().info(
     `Start dev-channel client for ${opt.host} on port ${SSH_SOCKET_PORT}`
   );
-
-  // const channelProcess = exec(`node ${channelOsPath} ssh ${url.format(urlObj)} -j ${jwt} -p ${port} -l user`);
-
-  // return new Promise((resolve, reject) => {
-  //   const channelOutput = {
-  //     resolved: false,
-  //     retries: 0,
-
-  //     stdoutLine(msg: string) {
-  //       // TODO: handel all errors
-  //       if (!this.resolved && msg.includes("connected")) {
-  //         this.resolved = true;
-  //         return resolve(channelProcess);
-  //       }
-  //       if (!this.resolved && msg.includes("client: Retrying")) {
-  //         this.retries++;
-  //         if (this.retries > 3) {
-  //           //fails:
-  //           this.resolved = true;
-  //           // reject('Cannot establish tunnel to dev-space');
-  //           return reject(channelProcess);
-  //         }
-  //       }
-  //       getLogger().info(`channel: ${msg}`);
-  //     },
-  //     stderrLine(msg: string) {
-  //       getLogger().error(`channel-err: ${msg}`);
-  //       return reject(msg);
-  //     },
-  //   };
-
-  //   channelProcess.stdout?.on("data", (data: string) => {
-  //     channelOutput.stdoutLine(data.toString());
-  //   });
-
-  //   channelProcess.stderr?.on("data", (data: string) => {
-  //     channelOutput.stdoutLine(data.toString());
-  //   });
-
-  //   channelProcess.on("exit", (code: number, signal: string) => {
-  //     code == 0
-  //       ? channelOutput.stdoutLine(`Exit: code ${code} and siganl: ${signal}`)
-  //       : channelOutput.stderrLine(`Exit: code ${code} and siganl: ${signal}`);
-  //   });
-
-  //   channelProcess.on("error", (err) => {
-  //     channelOutput.stderrLine(`Error: ${err.message}`);
-  //   });
-  // });
 }
 
 export function getRandomArbitrary(min?: number, max?: number): number {

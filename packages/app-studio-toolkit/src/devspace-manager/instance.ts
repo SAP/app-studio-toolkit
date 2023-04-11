@@ -19,9 +19,8 @@ import {
   cmdDevSpaceConnectNewWindow,
   cmdDevSpaceOpenInBAS,
 } from "./devspace/connect";
-import { BasRemoteAuthenticationProvider } from "../authentication/authProvider";
-import { autoRefresh, RefreshRate } from "./landscape/landscape";
-import { timeUntilJwtExpires } from "../../src/authentication/auth-utils";
+import { BasRemoteAuthenticationProvider } from "../../src/authentication/authProvider";
+import { cmdLoginToLandscape } from "./landscape/landscape";
 
 export async function initBasRemoteExplorer(
   context: ExtensionContext
@@ -38,6 +37,7 @@ export async function initBasRemoteExplorer(
   );
 
   const devSpaceExplorer = new DevSpacesExplorer(context.extensionPath);
+
   context.subscriptions.push(
     commands.registerCommand("local-extension.tree.refresh", () =>
       devSpaceExplorer.refreshTree()
@@ -57,27 +57,33 @@ export async function initBasRemoteExplorer(
       cmdDevSpaceOpenInBAS
     )
   );
+
   context.subscriptions.push(
     commands.registerCommand(
       "local-extension.dev-space.start",
       cmdDevSpaceStart
     )
   );
+
   context.subscriptions.push(
     commands.registerCommand("local-extension.dev-space.stop", cmdDevSpaceStop)
   );
+
   context.subscriptions.push(
     commands.registerCommand(
       "local-extension.dev-space.delete",
       cmdDevSpaceDelete
     )
   );
+
   context.subscriptions.push(
     commands.registerCommand("local-extension.dev-space.add", cmdDevSpaceAdd)
   );
+
   context.subscriptions.push(
     commands.registerCommand("local-extension.dev-space.edit", cmdDevSpaceEdit)
   );
+
   context.subscriptions.push(
     commands.registerCommand(
       "local-extension.dev-space.copy-ws-id",
@@ -108,26 +114,7 @@ export async function initBasRemoteExplorer(
   );
 
   context.subscriptions.push(
-    commands.registerCommand(
-      "local-extension.login",
-      async (item: LandscapeNode) => {
-        const session = await authentication.getSession(
-          BasRemoteAuthenticationProvider.id,
-          [item.url],
-          { forceNewSession: true } as AuthenticationGetSessionOptions & {
-            forceNewSession: boolean;
-          }
-        );
-        if (session?.accessToken) {
-          // refresh util jwt expired
-          autoRefresh(
-            RefreshRate.SEC_30,
-            timeUntilJwtExpires(session.accessToken)
-          );
-        }
-        devSpaceExplorer.refreshTree();
-      }
-    )
+    commands.registerCommand("local-extension.login", cmdLoginToLandscape)
   );
 
   context.subscriptions.push(

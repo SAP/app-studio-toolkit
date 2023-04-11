@@ -152,6 +152,6 @@ class BasRemoteSession implements AuthenticationSession {
     readonly scopes: string[],
     public readonly accessToken: string
   ) {
-    this.account = { id: id, label: "Personal Access Token" };
+    this.account = { id: id, label: "BAS Access Token" };
   }
 }

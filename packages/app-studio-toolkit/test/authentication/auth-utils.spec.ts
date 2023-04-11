@@ -89,16 +89,16 @@ describe("auth-utils unit test", () => {
   });
 
   const landscape = `https://my.landscape-1.com`;
+  const dummyToken =
+    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmb28iOiJiYXIiLCJleHAiOjEzOTMyODY4OTMsImlhdCI6MTM5MzI2ODg5M30.4-iaDojEVl0pJQMjrbM1EzUIfAZgsbK_kgnVyVxFSVo";
 
   it("timeUntilJwtExpires, expired", () => {
-    const jwt =
-      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmb28iOiJiYXIiLCJleHAiOjEzOTMyODY4OTMsImlhdCI6MTM5MzI2ODg5M30.4-iaDojEVl0pJQMjrbM1EzUIfAZgsbK_kgnVyVxFSVo";
+    const jwt = dummyToken;
     expect(authUtilsProxy.timeUntilJwtExpires(jwt)).to.be.lt(0);
   });
 
   it("timeUntilJwtExpires, `exp` not defined", () => {
-    const jwt =
-      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiSm9zw6kiLCJpYXQiOjE0MjU2NDQ5NjZ9.1CfFtdGUPs6q8kT3OGQSVlhEMdbuX0HfNSqum0023a0";
+    const jwt = dummyToken;
     expect(authUtilsProxy.timeUntilJwtExpires(jwt)).to.be.lt(0);
   });
 
@@ -128,8 +128,7 @@ describe("auth-utils unit test", () => {
 
   it("hasJwt, session exists, expired", async () => {
     const session = {
-      accessToken:
-        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmb28iOiJiYXIiLCJleHAiOjEzOTMyODY4OTMsImlhdCI6MTM5MzI2ODg5M30.4-iaDojEVl0pJQMjrbM1EzUIfAZgsbK_kgnVyVxFSVo",
+      accessToken: dummyToken,
     };
     mockAuth
       .expects(`getSession`)

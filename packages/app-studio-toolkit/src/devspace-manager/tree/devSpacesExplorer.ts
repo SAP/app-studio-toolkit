@@ -1,6 +1,6 @@
 import { window, TreeItem } from "vscode";
 import type { TreeView } from "vscode";
-import { DevSpaceDataProvider } from "./devSpacesProviders";
+import { DevSpaceDataProvider } from "./devSpacesProvider";
 
 export class DevSpacesExplorer {
   private readonly devSpacesExplorerView: TreeView<TreeItem>;
