@@ -14,6 +14,8 @@ export function createWorkspaceProxy(
     onWorkspaceChanged: (
       ...args: Parameters<WorkspaceApi["onWorkspaceChanged"]>
     ) => workspaceImpl.onWorkspaceChanged(...args),
+    getPluginManager: (...args: Parameters<WorkspaceApi["getPluginManager"]>) =>
+      workspaceImpl.getPluginManager(...args),
   };
 
   Object.freeze(basWsAPI);
