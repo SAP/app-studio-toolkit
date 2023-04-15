@@ -6,7 +6,7 @@ import { ChildProcess } from "child_process";
 import { URL } from "node:url";
 import {
   getPK,
-  runChannelClientAsProcess,
+  runChannelClient,
   savePK,
   SSHConfigInfo,
   SSHD_SOCKET_PORT,
@@ -44,7 +44,7 @@ async function createTunnel(
   closeTunnel();
 
   progress.report({ message: "Starting new tunnel to dev-space" });
-  tunnel = await runChannelClientAsProcess({
+  tunnel = await runChannelClient({
     host: `port${SSHD_SOCKET_PORT}-${new URL(devSpace.wsUrl).hostname}`,
     landscape: devSpace.landscapeUrl,
     localPort: config.port,

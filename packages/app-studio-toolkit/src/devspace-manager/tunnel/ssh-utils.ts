@@ -13,6 +13,7 @@ const sshConfig = require("ssh-config");
 
 export const SSHD_SOCKET_PORT = 33765;
 export const SSH_SOCKET_PORT = 443;
+const KEY_SSH_REMOTE_PLATFORM = "remote.SSH.remotePlatform";
 
 export interface SSHConfigInfo {
   name: string;
@@ -39,6 +40,10 @@ export async function getPK(
   });
 }
 
+function composeKeyFileName(folder: string, url: string): string {
+  return path.join(folder, `${new URL(url).host}.key`);
+}
+
 export function savePK(pk: string, urlStr: string): string {
   //construct file named "<ws-url>.key"
   const sshFolderPath: string = getSshConfigFolderPath();
@@ -46,10 +51,7 @@ export function savePK(pk: string, urlStr: string): string {
     fs.mkdirSync(sshFolderPath);
   }
 
-  const fileName: string = path.join(
-    sshFolderPath,
-    `${new URL(urlStr).host}.key`
-  );
+  const fileName: string = composeKeyFileName(sshFolderPath, urlStr);
   if (fs.existsSync(fileName)) {
     fs.unlinkSync(fileName);
   }
@@ -59,16 +61,14 @@ export function savePK(pk: string, urlStr: string): string {
 }
 
 export function deletePK(wsUrl: string): void {
-  const fileName: string = path.join(
-    getSshConfigFolderPath(),
-    `${new URL(wsUrl).host}.key`
-  );
+  const fileName: string = composeKeyFileName(getSshConfigFolderPath(), wsUrl);
+  let message = `Private key file ${fileName} deleted`;
   if (fs.existsSync(fileName)) {
     fs.unlinkSync(fileName);
-    getLogger().info(`Private key file ${fileName} deleted`);
   } else {
-    getLogger().info(`Private key file ${fileName} doesn't exists`);
+    message = `Private key file ${fileName} doesn't exists`;
   }
+  getLogger().info(message);
 }
 
 function getSSHConfig(sshConfigFile: string): typeof sshConfig | undefined {
@@ -124,24 +124,26 @@ export function removeSSHConfig(devSpace: DevSpaceNode): void {
   const config = getSSHConfig(sshConfigFile);
   // remove the section by name
   config.remove({
-    Host: `${new URL(devSpace.landscapeUrl).host}.${devSpace.id}`,
+    Host: `${composeSSHConfigSectionName(devSpace.landscapeUrl, devSpace.id)}`,
   });
   //save the ssh config object back to file
   fs.writeFileSync(sshConfigFile, sshConfig.stringify(config));
 }
 
-export async function updateRemotePlatformSetting(config: SSHConfigInfo) {
+export async function updateRemotePlatformSetting(
+  config: SSHConfigInfo
+): Promise<void> {
   const remotePlatform: any = {};
   remotePlatform[config.name] = "linux";
 
   const remotePlatformsList =
-    workspace.getConfiguration().get("remote.SSH.remotePlatform") || {};
-  assign(remotePlatform, remotePlatformsList);
+    workspace.getConfiguration().get(KEY_SSH_REMOTE_PLATFORM) || {};
+  assign(remotePlatformsList, remotePlatform);
   await workspace
     .getConfiguration()
     .update(
-      "remote.SSH.remotePlatform",
-      remotePlatform,
+      KEY_SSH_REMOTE_PLATFORM,
+      remotePlatformsList,
       ConfigurationTarget.Global
     );
 }
@@ -149,26 +151,24 @@ export async function updateRemotePlatformSetting(config: SSHConfigInfo) {
 export async function cleanRemotePlatformSetting(
   devSpace: DevSpaceNode
 ): Promise<void> {
-  const remotePlatform: any = {};
-  const remotePlatformsList =
-    workspace.getConfiguration().get("remote.SSH.remotePlatform") || {};
+  const remotePlatform =
+    workspace.getConfiguration().get(KEY_SSH_REMOTE_PLATFORM) || {};
   const sectionName = composeSSHConfigSectionName(
     devSpace.landscapeUrl,
     devSpace.id
   );
-  assign(remotePlatform, remotePlatformsList);
   unset(remotePlatform, sectionName);
 
   await workspace
     .getConfiguration()
     .update(
-      "remote.SSH.remotePlatform",
+      KEY_SSH_REMOTE_PLATFORM,
       remotePlatform,
       ConfigurationTarget.Global
     );
 }
 
-export async function runChannelClientAsProcess(opt: {
+export async function runChannelClient(opt: {
   host: string;
   landscape: string;
   localPort: string;
