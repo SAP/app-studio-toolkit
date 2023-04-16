@@ -10,23 +10,21 @@ const START = false;
 const STOP = true;
 
 export async function cmdDevSpaceStart(devSpace: DevSpaceNode): Promise<void> {
-  await updateDevSpace(
+  return updateDevSpace(
     devSpace.landscapeUrl,
     devSpace.id,
     devSpace.label,
     START
   );
-  autoRefresh(RefreshRate.SEC_10, RefreshRate.MIN_2);
 }
 
 export async function cmdDevSpaceStop(devSpace: DevSpaceNode): Promise<void> {
-  await updateDevSpace(
+  return updateDevSpace(
     devSpace.landscapeUrl,
     devSpace.id,
     devSpace.label,
     STOP
   );
-  autoRefresh(RefreshRate.SEC_10, RefreshRate.MIN_2);
 }
 
 async function updateDevSpace(
@@ -48,6 +46,7 @@ async function updateDevSpace(
           }`;
           getLogger().info(message);
           void window.showInformationMessage(message);
+          autoRefresh(RefreshRate.SEC_10, RefreshRate.MIN_2);
         });
     })
     .catch((e) => {

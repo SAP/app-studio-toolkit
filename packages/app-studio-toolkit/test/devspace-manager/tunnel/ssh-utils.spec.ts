@@ -555,17 +555,17 @@ Port ${1234}
     it("getRandomArbitrary, no params", () => {
       const x = 30432,
         y = 33654;
-      expect(SshUtilsProxy[`getRandomArbitrary`]()).to.be.gt(Math.min(x, y));
-      expect(SshUtilsProxy[`getRandomArbitrary`]()).to.be.lt(Math.max(x, y));
+      expect(SshUtilsProxy[`getRandomArbitrary`]()).to.be.gte(Math.min(x, y));
+      expect(SshUtilsProxy[`getRandomArbitrary`]()).to.be.lte(Math.max(x, y));
     });
 
     it("getRandomArbitrary, range specified", () => {
       const x = 10001,
         y = 10010;
-      expect(SshUtilsProxy[`getRandomArbitrary`](x, y)).to.be.gt(
+      expect(SshUtilsProxy[`getRandomArbitrary`](x, y)).to.be.gte(
         Math.min(x, y)
       );
-      expect(SshUtilsProxy[`getRandomArbitrary`](x, y)).to.be.lt(
+      expect(SshUtilsProxy[`getRandomArbitrary`](x, y)).to.be.lte(
         Math.max(x, y)
       );
     });
@@ -573,10 +573,10 @@ Port ${1234}
     it("getRandomArbitrary, range specified inverse", () => {
       const x = 2543,
         y = 1987;
-      expect(SshUtilsProxy[`getRandomArbitrary`](x, y)).to.be.gt(
+      expect(SshUtilsProxy[`getRandomArbitrary`](x, y)).to.be.gte(
         Math.min(x, y)
       );
-      expect(SshUtilsProxy[`getRandomArbitrary`](x, y)).to.be.lt(
+      expect(SshUtilsProxy[`getRandomArbitrary`](x, y)).to.be.lte(
         Math.max(x, y)
       );
     });

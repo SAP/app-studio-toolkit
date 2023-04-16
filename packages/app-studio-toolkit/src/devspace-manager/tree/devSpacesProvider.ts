@@ -6,9 +6,8 @@ import {
   LoadingNode,
   getSvgIconPath,
 } from "./treeItems";
-import { messages } from "../common/messages";
 import { getLandscapes } from "../landscape/landscape";
-import { compact, map } from "lodash";
+import { map } from "lodash";
 
 export class DevSpaceDataProvider implements TreeDataProvider<TreeItem> {
   // Instance elements
@@ -34,14 +33,7 @@ export class DevSpaceDataProvider implements TreeDataProvider<TreeItem> {
   public async getChildren(element?: TreeNode): Promise<TreeNode[]> {
     // TODO: Implement loading of tree scenario
     if (this.loading) {
-      return Promise.resolve([
-        new LoadingNode(
-          messages.DEV_SPACE_EXPLORER_LOADING,
-          TreeItemCollapsibleState.None,
-          "",
-          ""
-        ),
-      ]);
+      return Promise.resolve([new LoadingNode()]);
     }
     return this.getChildrenPromise(element);
   }
@@ -59,21 +51,19 @@ export class DevSpaceDataProvider implements TreeDataProvider<TreeItem> {
     const iconPath = getSvgIconPath(this.extensionPath, "landscape");
     const landscapes = await getLandscapes();
 
-    const rootNodes = compact(
-      map(landscapes, (landscape) => {
-        return new LandscapeNode(
-          this.extensionPath,
-          landscape.name,
-          TreeItemCollapsibleState.Expanded,
-          iconPath,
-          "",
-          landscape.isLoggedIn ? "Logged in" : "Not logged in",
-          landscape.name,
-          landscape.url,
-          `landscape-${landscape.isLoggedIn ? "log-in" : "log-out"}`
-        );
-      })
-    );
+    const rootNodes = map(landscapes, (landscape) => {
+      return new LandscapeNode(
+        this.extensionPath,
+        landscape.name,
+        TreeItemCollapsibleState.Expanded,
+        iconPath,
+        "",
+        landscape.isLoggedIn ? "Logged in" : "Not logged in",
+        landscape.name,
+        landscape.url,
+        `landscape-${landscape.isLoggedIn ? "log-in" : "log-out"}`
+      );
+    });
 
     return rootNodes;
   }

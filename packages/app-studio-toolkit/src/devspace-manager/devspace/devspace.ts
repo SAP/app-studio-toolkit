@@ -4,7 +4,6 @@ import { messages } from "../common/messages";
 import { devspace } from "@sap/bas-sdk";
 import { getJwt } from "../../authentication/auth-utils";
 import { $enum } from "ts-enum-util";
-// import { waccess, wOP } from "../utils";
 
 export enum DevSpaceStatus {
   RUNNING = "RUNNING",
@@ -28,6 +27,7 @@ export enum PackName {
 export interface DevSpaceInfo extends Omit<devspace.DevspaceInfo, "status"> {
   status: DevSpaceStatus;
 }
+
 export async function getDevSpaces(
   landscapeUrl: string
 ): Promise<DevSpaceInfo[] | void> {

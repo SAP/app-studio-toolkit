@@ -2,12 +2,8 @@ import { TreeItemCollapsibleState, TreeItem } from "vscode";
 import type { Command } from "vscode";
 import * as path from "path";
 import { messages } from "../common/messages";
-import {
-  DevSpaceInfo,
-  DevSpaceStatus,
-  getDevSpaces,
-  PackName,
-} from "../devspace/devspace";
+import { DevSpaceStatus, getDevSpaces, PackName } from "../devspace/devspace";
+import type { DevSpaceInfo } from "../devspace/devspace";
 import { $enum } from "ts-enum-util";
 import { compact, get, isEmpty, map } from "lodash";
 import { getLogger } from "../../logger/logger";
@@ -95,13 +91,8 @@ export abstract class TreeNode extends TreeItem {
 }
 
 export class EmptyNode extends TreeNode {
-  constructor(
-    label: string,
-    collapsibleState: TreeItemCollapsibleState,
-    iconPath: string,
-    parentName: string
-  ) {
-    super(label, collapsibleState, iconPath, parentName);
+  constructor(label: string) {
+    super(label, TreeItemCollapsibleState.None, ``, ``);
   }
 
   public getChildren(): Thenable<TreeNode[]> {
@@ -109,18 +100,9 @@ export class EmptyNode extends TreeNode {
   }
 }
 
-export class LoadingNode extends TreeNode {
-  constructor(
-    label: string,
-    collapsibleState: TreeItemCollapsibleState,
-    iconPath: string,
-    parentName: string
-  ) {
-    super(label, collapsibleState, iconPath, parentName);
-  }
-
-  public getChildren(): Thenable<TreeNode[]> {
-    return Promise.resolve([]);
+export class LoadingNode extends EmptyNode {
+  constructor() {
+    super(messages.DEV_SPACE_EXPLORER_LOADING);
   }
 }
 
@@ -256,29 +238,17 @@ export class LandscapeNode extends TreeNode {
   }
 
   public async getChildren(element: LandscapeNode): Promise<TreeNode[]> {
-    const devSpaces = /log-in/g.test(element?.contextValue ?? "")
+    const devSpaces = /log-in/g.test(element.contextValue ?? "")
       ? await getDevSpaces(element.url)
       : undefined;
     let devSpaceNodes: TreeNode[];
     if (!devSpaces) {
       devSpaceNodes = [
-        new EmptyNode(
-          messages.DEV_SPACE_EXPLORER_AUTHENTICATION_FAILURE,
-          TreeItemCollapsibleState.None,
-          "",
-          ""
-        ),
+        new EmptyNode(messages.DEV_SPACE_EXPLORER_AUTHENTICATION_FAILURE),
       ];
     } else {
       devSpaceNodes = isEmpty(devSpaces)
-        ? [
-            new EmptyNode(
-              messages.DEV_SPACE_EXPLORER_NO_DEV_SPACES,
-              TreeItemCollapsibleState.None,
-              "",
-              ""
-            ),
-          ]
+        ? [new EmptyNode(messages.DEV_SPACE_EXPLORER_NO_DEV_SPACES)]
         : compact(
             map(devSpaces, (devSpace) => {
               return new DevSpaceNode(
@@ -287,7 +257,7 @@ export class LandscapeNode extends TreeNode {
                 this.getIconPath(devSpace),
                 element.label ?? "",
                 element.name ?? "",
-                element.url ?? "",
+                element.url,
                 devSpace.url,
                 devSpace.id,
                 devSpace.status,
