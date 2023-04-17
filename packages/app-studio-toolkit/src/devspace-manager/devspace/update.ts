@@ -41,11 +41,12 @@ async function updateDevSpace(
           WorkspaceDisplayName: wsName,
         })
         .then(() => {
-          const message = `Devspace ${wsName} (${wsId}) was ${
-            suspend ? "stoped" : "started"
-          }`;
-          getLogger().info(message);
-          void window.showInformationMessage(message);
+          getLogger().info(
+            messages.info_devspace_state_updated(wsName, wsId, suspend)
+          );
+          void window.showInformationMessage(
+            messages.info_devspace_state_updated(wsName, wsId, suspend)
+          );
           autoRefresh(RefreshRate.SEC_10, RefreshRate.MIN_2);
         });
     })

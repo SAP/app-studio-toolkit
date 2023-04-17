@@ -4,6 +4,7 @@ import * as auth from "../../src/authentication/auth-utils";
 import { BasRemoteAuthenticationProvider } from "../../src/authentication/authProvider";
 import { fail } from "assert";
 import proxyquire from "proxyquire";
+import { messages } from "../../src/devspace-manager/common/messages";
 
 describe("auth-utils unit test", () => {
   const vscodeProxy = {
@@ -122,7 +123,7 @@ describe("auth-utils unit test", () => {
       await authUtilsProxy.getJwt(landscape);
       fail(`should fail`);
     } catch (e) {
-      expect(e.message).to.equal(`PAT not exists`);
+      expect(e.message).to.equal(messages.err_get_jwt_not_exists);
     }
   });
 

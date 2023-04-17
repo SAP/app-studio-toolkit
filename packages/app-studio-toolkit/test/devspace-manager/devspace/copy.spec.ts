@@ -69,7 +69,7 @@ describe("cmdCopyWsId unit test", () => {
     mockClip.expects(`writeText`).withExactArgs(node.id).rejects(err);
     mockWindow
       .expects(`showErrorMessage`)
-      .withExactArgs(`Can't copy devspace identificator: ${err.message}`)
+      .withExactArgs(messages.err_copy_devspace_id(err.message))
       .resolves();
     await devspaceCopyProxy(node);
   });

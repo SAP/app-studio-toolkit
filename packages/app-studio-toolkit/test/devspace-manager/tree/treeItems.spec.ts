@@ -101,7 +101,7 @@ describe("devSpacesExplorer unit test", () => {
     });
 
     it("LoadingNode", () => {
-      expect(node.label).to.be.equal(messages.DEV_SPACE_EXPLORER_LOADING);
+      expect(node.label).to.be.equal(messages.lbl_dev_space_explorer_loading);
       expect(node.collapsibleState).to.be.equal(
         proxyTreeItemCollapsibleState.None
       );
@@ -223,7 +223,7 @@ describe("devSpacesExplorer unit test", () => {
       const children = await node.getChildren(item);
       expect(children.length).to.be.equal(1);
       expect(children[0].label).to.be.equal(
-        messages.DEV_SPACE_EXPLORER_AUTHENTICATION_FAILURE
+        messages.lbl_dev_space_explorer_authentication_failure
       );
     });
 
@@ -234,7 +234,7 @@ describe("devSpacesExplorer unit test", () => {
       const children = await node.getChildren(item);
       expect(children.length).to.be.equal(1);
       expect(children[0].label).to.be.equal(
-        messages.DEV_SPACE_EXPLORER_NO_DEV_SPACES
+        messages.lbl_dev_space_explorer_no_dev_spaces
       );
     });
 

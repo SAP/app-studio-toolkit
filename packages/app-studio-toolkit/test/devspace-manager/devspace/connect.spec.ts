@@ -6,6 +6,7 @@ import { DevSpaceNode } from "../../../src/devspace-manager/tree/treeItems";
 import { SSHD_SOCKET_PORT } from "../../../src/devspace-manager/tunnel/ssh-utils";
 import { URL } from "node:url";
 import urljoin from "url-join";
+import { messages } from "../../../src/devspace-manager/common/messages";
 
 describe("devspace connect unit test", () => {
   let sandbox: SinonSandbox;
@@ -137,7 +138,7 @@ describe("devspace connect unit test", () => {
       mockWindow
         .expects(`showErrorMessage`)
         .withExactArgs(
-          `Can't open the devspace ${node.landscapeUrl}: ${err.toString()}`
+          messages.err_open_devspace_in_bas(node.landscapeUrl, err.message)
         )
         .resolves();
       expect(await connectProxy.cmdDevSpaceOpenInBAS(node)).to.be.false;

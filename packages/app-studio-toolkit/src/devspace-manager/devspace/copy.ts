@@ -8,8 +8,7 @@ export async function cmdCopyWsId(devSpace: DevSpaceNode): Promise<void> {
     await env.clipboard.writeText(devSpace.id);
     void window.showInformationMessage(messages.info_wsid_copied);
   } catch (err) {
-    const message = `Can't copy devspace identificator: ${err.message}`;
-    getLogger().error(message);
-    void window.showErrorMessage(message);
+    getLogger().error(messages.err_copy_devspace_id(err.message));
+    void window.showErrorMessage(messages.err_copy_devspace_id(err.message));
   }
 }

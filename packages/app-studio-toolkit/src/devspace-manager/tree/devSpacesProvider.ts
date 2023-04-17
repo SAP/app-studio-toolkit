@@ -8,6 +8,7 @@ import {
 } from "./treeItems";
 import { getLandscapes } from "../landscape/landscape";
 import { map } from "lodash";
+import { messages } from "../common/messages";
 
 export class DevSpaceDataProvider implements TreeDataProvider<TreeItem> {
   // Instance elements
@@ -58,10 +59,12 @@ export class DevSpaceDataProvider implements TreeDataProvider<TreeItem> {
         TreeItemCollapsibleState.Expanded,
         iconPath,
         "",
-        landscape.isLoggedIn ? "Logged in" : "Not logged in",
+        landscape.isLoggedIn
+          ? messages.lbl_logged_in
+          : messages.lbl_not_logged_in,
         landscape.name,
         landscape.url,
-        `landscape-${landscape.isLoggedIn ? "log-in" : "log-out"}`
+        messages.lbl_landscape_context_status(landscape.isLoggedIn)
       );
     });
 

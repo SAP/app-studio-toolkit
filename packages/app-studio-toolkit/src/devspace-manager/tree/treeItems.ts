@@ -68,7 +68,7 @@ export function getSvgIconPath(
       ),
     };
   } else {
-    getLogger().error(messages.ICON_MISSING(iconName));
+    getLogger().error(messages.lbl_icon_missing(iconName));
   }
   return iconPath;
 }
@@ -102,7 +102,7 @@ export class EmptyNode extends TreeNode {
 
 export class LoadingNode extends EmptyNode {
   constructor() {
-    super(messages.DEV_SPACE_EXPLORER_LOADING);
+    super(messages.lbl_dev_space_explorer_loading);
   }
 }
 
@@ -194,7 +194,7 @@ export class LandscapeNode extends TreeNode {
   }
 
   private assertUnreachable(_x: never): never {
-    throw new Error("Didn't expect to get here");
+    throw new Error(messages.err_assert_unreachable);
   }
 
   private getIconPath(devSpace: DevSpaceInfo): IconPath {
@@ -203,18 +203,30 @@ export class LandscapeNode extends TreeNode {
       .toLowerCase();
     switch (devSpace.status) {
       case DevSpaceStatus.RUNNING: {
-        return getSvgIconPath(this.extensionPath, `${packName}_running`);
+        return getSvgIconPath(
+          this.extensionPath,
+          `${packName}_${messages.lbl_devspace_status_runnig}`
+        );
       }
       case DevSpaceStatus.STARTING:
       case DevSpaceStatus.STOPPING: {
-        return getSvgIconPath(this.extensionPath, `${packName}_transitioning`);
+        return getSvgIconPath(
+          this.extensionPath,
+          `${packName}_${messages.lbl_devspace_status_transitioning}`
+        );
       }
       case DevSpaceStatus.STOPPED: {
-        return getSvgIconPath(this.extensionPath, `${packName}_not_running`);
+        return getSvgIconPath(
+          this.extensionPath,
+          `${packName}_${messages.lbl_devspace_status_not_runnig}`
+        );
       }
       case DevSpaceStatus.SAFE_MODE:
       case DevSpaceStatus.ERROR:
-        return getSvgIconPath(this.extensionPath, `${packName}_error`);
+        return getSvgIconPath(
+          this.extensionPath,
+          `${packName}_${messages.lbl_devspace_status_error}`
+        );
       default:
         this.assertUnreachable(devSpace.status);
     }
@@ -223,15 +235,15 @@ export class LandscapeNode extends TreeNode {
   private getContextView(devSpace: DevSpaceInfo): string {
     switch (devSpace.status) {
       case DevSpaceStatus.RUNNING:
-        return "dev-space-running";
+        return messages.lbl_devspace_context_runnig;
       case DevSpaceStatus.STOPPED:
-        return "dev-space-stopped";
+        return messages.lbl_devspace_context_stopped;
       case DevSpaceStatus.STARTING:
       case DevSpaceStatus.STOPPING:
-        return "dev-space-transitioning";
+        return messages.lbl_devspace_context_transitioning;
       case DevSpaceStatus.SAFE_MODE:
       case DevSpaceStatus.ERROR:
-        return "dev-space-error";
+        return messages.lbl_devspace_context_error;
       default:
         this.assertUnreachable(devSpace.status);
     }
@@ -244,11 +256,11 @@ export class LandscapeNode extends TreeNode {
     let devSpaceNodes: TreeNode[];
     if (!devSpaces) {
       devSpaceNodes = [
-        new EmptyNode(messages.DEV_SPACE_EXPLORER_AUTHENTICATION_FAILURE),
+        new EmptyNode(messages.lbl_dev_space_explorer_authentication_failure),
       ];
     } else {
       devSpaceNodes = isEmpty(devSpaces)
-        ? [new EmptyNode(messages.DEV_SPACE_EXPLORER_NO_DEV_SPACES)]
+        ? [new EmptyNode(messages.lbl_dev_space_explorer_no_dev_spaces)]
         : compact(
             map(devSpaces, (devSpace) => {
               return new DevSpaceNode(

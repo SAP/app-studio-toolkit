@@ -14,6 +14,7 @@ import {
   updateSSHConfig,
 } from "../tunnel/ssh-utils";
 import { getLogger } from "../../../src/logger/logger";
+import { messages } from "../common/messages";
 
 let tunnel: ChildProcess | void;
 
@@ -21,13 +22,15 @@ async function getTunnelConfigurations(
   devSpace: DevSpaceNode,
   progress: Progress<{ message?: string; increment?: number }>
 ): Promise<SSHConfigInfo> {
-  progress.report({ message: "Obtaining SSH key" });
+  progress.report({ message: messages.info_obtaining_key });
   const pk = await getPK(devSpace.landscapeUrl, devSpace.id);
 
-  progress.report({ message: "Save PK to file" });
+  progress.report({ message: messages.info_save_pk_to_file });
   const pkFilePath = savePK(pk, devSpace.wsUrl);
 
-  progress.report({ message: "Update config file with SSH connection" });
+  progress.report({
+    message: messages.info_update_config_file_with_ssh_connection,
+  });
   return updateSSHConfig(pkFilePath, devSpace);
 }
 
@@ -40,10 +43,10 @@ async function createTunnel(
   config: SSHConfigInfo,
   progress: Progress<{ message?: string; increment?: number }>
 ): Promise<any> {
-  progress.report({ message: "Closing old tunnel to dev-space" });
+  progress.report({ message: messages.info_closing_old_tunnel });
   closeTunnel();
 
-  progress.report({ message: "Starting new tunnel to dev-space" });
+  progress.report({ message: messages.info_staring_new_tunnel });
   tunnel = await runChannelClient({
     host: `port${SSHD_SOCKET_PORT}-${new URL(devSpace.wsUrl).hostname}`,
     landscape: devSpace.landscapeUrl,
@@ -57,7 +60,7 @@ async function createTunnelAndGetHostName(
   return window.withProgress<string | undefined>(
     {
       location: ProgressLocation.Notification,
-      title: "Connecting to " + devSpace.label,
+      title: `Connecting to ${devSpace.label}`,
       cancellable: true,
     },
     async (progress, cancel) => {
@@ -97,11 +100,12 @@ export async function cmdDevSpaceOpenInBAS(
       Uri.parse(urljoin(devSpace.landscapeUrl, `index.html`, `#${devSpace.id}`))
     );
   } catch (err) {
-    const message = `Can't open the devspace ${
-      devSpace.landscapeUrl
-    }: ${err.toString()}`;
-    getLogger().error(message);
-    void window.showErrorMessage(message);
+    getLogger().error(
+      messages.err_open_devspace_in_bas(devSpace.landscapeUrl, err.message)
+    );
+    void window.showErrorMessage(
+      messages.err_open_devspace_in_bas(devSpace.landscapeUrl, err.message)
+    );
     return false;
   }
 }

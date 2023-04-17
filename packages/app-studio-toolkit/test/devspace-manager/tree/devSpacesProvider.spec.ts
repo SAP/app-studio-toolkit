@@ -151,7 +151,9 @@ describe("devSpacesProvider unit test", () => {
     expect(children[0].collapsibleState).to.be.equal(
       proxyTreeItemCollapsibleState.None
     );
-    expect(children[0].label).to.be.equal(messages.DEV_SPACE_EXPLORER_LOADING);
+    expect(children[0].label).to.be.equal(
+      messages.lbl_dev_space_explorer_loading
+    );
   });
 
   it("getChildren, with specified element", async () => {

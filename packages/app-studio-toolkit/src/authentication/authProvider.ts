@@ -9,6 +9,7 @@ import type {
 } from "vscode";
 import { retrieveJwt } from "./auth-utils";
 import { getLogger } from "../logger/logger";
+import { messages } from "../../src/devspace-manager/common/messages";
 
 export class BasRemoteAuthenticationProvider
   implements AuthenticationProvider, Disposable
@@ -118,9 +119,8 @@ export class BasRemoteAuthenticationProvider
 
     // Note: consider to do some validation of the token beyond making sure it's not empty.
     if (!token) {
-      const message = `PAT is required`;
-      getLogger().error(message);
-      throw new Error(message);
+      getLogger().error(messages.err_get_jwt_required);
+      throw new Error(messages.err_get_jwt_required);
     }
 
     // Don't set `currentToken` here, since we want to fire the proper events in the `checkForUpdates` call
