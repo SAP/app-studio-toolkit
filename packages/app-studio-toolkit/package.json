@@ -69,7 +69,8 @@
       },
       {
         "command": "local-extension.dev-space.connect-new-window",
-        "title": "Open in new window"
+        "title": "Open in new window",
+        "icon": "$(empty-window)"
       },
       {
         "command": "local-extension.dev-space.connect-same-window",
@@ -254,7 +255,8 @@
         },
         {
           "command": "local-extension.dev-space.connect-new-window",
-          "when": "view == dev-spaces && viewItem == dev-space-running"
+          "when": "view == dev-spaces && viewItem == dev-space-running",
+          "group": "inline"
         },
         {
           "command": "local-extension.dev-space.open-in-bas",
