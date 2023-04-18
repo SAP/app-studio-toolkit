@@ -5,6 +5,11 @@ import * as devspaceModule from "../../../src/devspace-manager/devspace/update";
 import { DevSpaceNode } from "../../../src/devspace-manager/tree/treeItems";
 import { messages } from "../../../src/devspace-manager/common/messages";
 import { RefreshRate } from "../../../src/devspace-manager/landscape/landscape";
+import {
+  DevSpaceInfo,
+  DevSpaceStatus,
+} from "../../../src/devspace-manager/devspace/devspace";
+import { cloneDeep } from "lodash";
 
 describe("devspace start/stop unit test", () => {
   let devspaceProxy: typeof devspaceModule;
@@ -24,7 +29,7 @@ describe("devspace start/stop unit test", () => {
     },
   };
 
-  const proxyDevSpace = {
+  const proxySdkDevSpace = {
     devspace: {
       updateDevSpace: () => {
         throw new Error("not implemented");
@@ -38,9 +43,16 @@ describe("devspace start/stop unit test", () => {
     },
   };
 
-  const landscapeProxy = {
+  const proxyLandscape = {
     RefreshRate,
     autoRefresh: (): void => {
+      throw new Error(`not implemented`);
+    },
+  };
+
+  const proxyDevspace = {
+    DevSpaceStatus,
+    getDevSpaces: (): void => {
       throw new Error(`not implemented`);
     },
   };
@@ -54,33 +66,37 @@ describe("devspace start/stop unit test", () => {
           window: proxyWindow,
           "@noCallThru": true,
         },
-        "@sap/bas-sdk": proxyDevSpace,
+        "@sap/bas-sdk": proxySdkDevSpace,
         "../../authentication/auth-utils": proxyAuthUtils,
-        "../landscape/landscape": landscapeProxy,
+        "../landscape/landscape": proxyLandscape,
+        "./devspace": proxyDevspace,
       }
     );
   });
 
   let mockAuthUtils: SinonMock;
-  let mockDevspace: SinonMock;
+  let mockSdkDevspace: SinonMock;
   let mockCommands: SinonMock;
   let mockWindow: SinonMock;
   let mockLandscape: SinonMock;
+  let mockDevspace: SinonMock;
 
   beforeEach(() => {
     mockAuthUtils = mock(proxyAuthUtils);
-    mockDevspace = mock(proxyDevSpace.devspace);
+    mockSdkDevspace = mock(proxySdkDevSpace.devspace);
     mockCommands = mock(proxyCommands);
     mockWindow = mock(proxyWindow);
-    mockLandscape = mock(landscapeProxy);
+    mockLandscape = mock(proxyLandscape);
+    mockDevspace = mock(proxyDevspace);
   });
 
   afterEach(() => {
     mockAuthUtils.verify();
-    mockDevspace.verify();
+    mockSdkDevspace.verify();
     mockCommands.verify();
     mockWindow.verify();
     mockLandscape.verify();
+    mockDevspace.verify();
   });
 
   const node: DevSpaceNode = <DevSpaceNode>{
@@ -90,12 +106,41 @@ describe("devspace start/stop unit test", () => {
   };
   const jwt = `devscape-jwt`;
 
+  const devspaces: DevSpaceInfo[] = [
+    {
+      devspaceDisplayName: `devspaceDisplayName-1`,
+      devspaceOrigin: `devspaceOrigin`,
+      pack: `pack-1`,
+      packDisplayName: `packDisplayName-1`,
+      url: `url`,
+      id: `id`,
+      optionalExtensions: `optionalExtensions`,
+      technicalExtensions: `technicalExtensions`,
+      status: DevSpaceStatus.STOPPED,
+    },
+    {
+      devspaceDisplayName: `devspaceDisplayName-2`,
+      devspaceOrigin: `devspaceOrigin`,
+      pack: `pack-2`,
+      packDisplayName: `packDisplayName-2`,
+      url: `url-2`,
+      id: `id-2`,
+      optionalExtensions: `optionalExtensions`,
+      technicalExtensions: `technicalExtensions`,
+      status: DevSpaceStatus.RUNNING,
+    },
+  ];
+
   it("cmdDevSpaceStart, succedded", async () => {
+    mockDevspace
+      .expects(`getDevSpaces`)
+      .withExactArgs(node.landscapeUrl)
+      .resolves(devspaces);
     mockAuthUtils
       .expects(`getJwt`)
       .withExactArgs(node.landscapeUrl)
       .resolves(jwt);
-    mockDevspace
+    mockSdkDevspace
       .expects(`updateDevSpace`)
       .withExactArgs(node.landscapeUrl, jwt, node.id, {
         Suspended: false,
@@ -119,6 +164,10 @@ describe("devspace start/stop unit test", () => {
 
   it("cmdDevSpaceStart, failed", async () => {
     const err = new Error(`error`);
+    mockDevspace
+      .expects(`getDevSpaces`)
+      .withExactArgs(node.landscapeUrl)
+      .resolves(devspaces);
     mockAuthUtils
       .expects(`getJwt`)
       .withExactArgs(node.landscapeUrl)
@@ -135,12 +184,34 @@ describe("devspace start/stop unit test", () => {
     await devspaceProxy.cmdDevSpaceStart(node);
   });
 
+  it("cmdDevSpaceStart, failure by 2 running devspaces restriction", async () => {
+    const localDevspaces = cloneDeep(devspaces);
+    localDevspaces[0].status = DevSpaceStatus.STARTING;
+    mockDevspace
+      .expects(`getDevSpaces`)
+      .withExactArgs(node.landscapeUrl)
+      .resolves(localDevspaces);
+    mockWindow
+      .expects(`showInformationMessage`)
+      .withExactArgs(messages.info_can_run_only_2_devspaces)
+      .resolves();
+    await devspaceProxy.cmdDevSpaceStart(node);
+  });
+
+  it("cmdDevSpaceStart, failure by other reason", async () => {
+    mockDevspace
+      .expects(`getDevSpaces`)
+      .withExactArgs(node.landscapeUrl)
+      .resolves();
+    await devspaceProxy.cmdDevSpaceStart(node);
+  });
+
   it("cmdDevSpaceStop, succedded", async () => {
     mockAuthUtils
       .expects(`getJwt`)
       .withExactArgs(node.landscapeUrl)
       .resolves(jwt);
-    mockDevspace
+    mockSdkDevspace
       .expects(`updateDevSpace`)
       .withExactArgs(node.landscapeUrl, jwt, node.id, {
         Suspended: true,

@@ -54,4 +54,5 @@ export const messages = {
   ) => `Devspace ${wsName} (${wsId}) was ${suspend ? "stoped" : "started"}`,
   info_wsid_copied: `ws id was copied to clip board`,
   info_devspace_deleted: (wsId: string) => `Deleted Dev Space '${wsId}'`,
+  info_can_run_only_2_devspaces: `You can only run 2 dev spaces at a time. To run another dev space, you must stop a running one.`,
 };

@@ -5,17 +5,45 @@ import { messages } from "../common/messages";
 import { getJwt } from "../../authentication/auth-utils";
 import { devspace } from "@sap/bas-sdk";
 import { RefreshRate, autoRefresh } from "../landscape/landscape";
+import { DevSpaceStatus, getDevSpaces } from "./devspace";
 
 const START = false;
 const STOP = true;
 
 export async function cmdDevSpaceStart(devSpace: DevSpaceNode): Promise<void> {
-  return updateDevSpace(
-    devSpace.landscapeUrl,
-    devSpace.id,
-    devSpace.label,
-    START
-  );
+  const canRun = await isItPossibleToStart(devSpace.landscapeUrl);
+  if (typeof canRun === `boolean` && canRun === true) {
+    return updateDevSpace(
+      devSpace.landscapeUrl,
+      devSpace.id,
+      devSpace.label,
+      START
+    );
+  } else if (typeof canRun === `string`) {
+    void window.showInformationMessage(canRun);
+  }
+}
+
+async function isItPossibleToStart(
+  landscapeUrl: string
+): Promise<boolean | string> {
+  const devSpaces = await getDevSpaces(landscapeUrl);
+  if (!devSpaces) {
+    // failure to obtain devspace info
+    return false;
+  }
+  if (
+    devSpaces.filter(
+      (devspace) =>
+        devspace.status === DevSpaceStatus.RUNNING ||
+        devspace.status === DevSpaceStatus.STARTING
+    ).length < 2
+  ) {
+    return true;
+  } else {
+    getLogger().info(`There are 2 dev spaces running for ${landscapeUrl}`);
+    return messages.info_can_run_only_2_devspaces;
+  }
 }
 
 export async function cmdDevSpaceStop(devSpace: DevSpaceNode): Promise<void> {
