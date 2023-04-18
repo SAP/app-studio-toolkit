@@ -91,8 +91,8 @@ export abstract class TreeNode extends TreeItem {
 }
 
 export class EmptyNode extends TreeNode {
-  constructor(label: string) {
-    super(label, TreeItemCollapsibleState.None, ``, ``);
+  constructor(label: string, state?: TreeItemCollapsibleState) {
+    super(label, state ?? TreeItemCollapsibleState.None, ``, ``);
   }
 
   public getChildren(): Thenable<TreeNode[]> {
@@ -101,8 +101,8 @@ export class EmptyNode extends TreeNode {
 }
 
 export class LoadingNode extends EmptyNode {
-  constructor() {
-    super(messages.lbl_dev_space_explorer_loading);
+  constructor(state?: TreeItemCollapsibleState) {
+    super(messages.lbl_dev_space_explorer_loading, state);
   }
 }
 

@@ -143,8 +143,7 @@ describe("devSpacesProvider unit test", () => {
     expect(item.contextValue).to.be.equal(`landscape-log-in`);
   });
 
-  it.skip("getChildren, element not specified, loading mode is turned on", async () => {
-    instance = new devSpacesProviderProxy(path);
+  it("getChildren, element not specified, loading mode is turned on", async () => {
     instance.setLoading(true);
     const children = await instance.getChildren();
     expect(children.length).to.be.equal(1);

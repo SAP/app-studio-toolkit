@@ -36,15 +36,8 @@ export const messages = {
     `Can't copy devspace identificator: ${err}}`,
   err_assert_unreachable: `Didn't expect to get here`,
   err_get_devspace: (message: string) => `Failed to get Dev Spaces, ${message}`,
-  err_get_key: (message: string) => `Failed to get SSHP Key, ${message}`,
-  err_get_extpack: (message: string) =>
-    `Failed to get Extension packs, ${message}`,
   err_devspace_delete: (wsId: string, reason: string) =>
     `Failed Deleting '${wsId}': ${reason}`,
-  err_devspace_create: (name: string, reason: string) =>
-    `Failed Creating '${name}', ${reason}`,
-  err_config_update: (name: string, reason: string) =>
-    `Could't update config file ${name} : ${reason}`,
   err_ws_update: (wsId: string, reason: string) =>
     `Failed to update ws ${wsId}, ${reason}`,
   err_name_validation: `The name must start with a letter or number and may contain any alphanumeric charcters or undrscores. Special characters can't be used.`,
@@ -59,15 +52,6 @@ export const messages = {
     wsId: string,
     suspend: boolean
   ) => `Devspace ${wsName} (${wsId}) was ${suspend ? "stoped" : "started"}`,
-  info_feature_not_supported: () => `This feature is not supported yet`,
   info_wsid_copied: `ws id was copied to clip board`,
-  info_config_not_exist: (name: string) =>
-    `SSH Config file ${name} doest exist, creating new file`,
   info_devspace_deleted: (wsId: string) => `Deleted Dev Space '${wsId}'`,
-  info_devspace_edited: (name: string, id: string) =>
-    `WS ${name} (${id}) was edited`,
-  info_devspace_create: (name: string) => `Creating Dev Space '${name}'`,
-
-  txt_login_canceled: (landscape: string) =>
-    `User canceled request to login for ${landscape}`,
 };

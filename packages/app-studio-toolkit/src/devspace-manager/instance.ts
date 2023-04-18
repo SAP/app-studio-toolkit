@@ -4,9 +4,8 @@ import {
   ConfigurationTarget,
   workspace,
 } from "vscode";
-import type { ExtensionContext, AuthenticationGetSessionOptions } from "vscode";
+import type { ExtensionContext } from "vscode";
 import { DevSpacesExplorer } from "./tree/devSpacesExplorer";
-import { LandscapeNode } from "./tree/treeItems";
 import { cmdLandscapeDelete } from "./landscape/delete";
 import { cmdLandscapeSet } from "./landscape/set";
 import { cmdLandscapeOpenDevSpaceManager } from "./landscape/open";
@@ -16,6 +15,7 @@ import { cmdDevSpaceAdd } from "./devspace/add";
 import { cmdDevSpaceEdit } from "./devspace/edit";
 import { cmdCopyWsId } from "./devspace/copy";
 import {
+  closeTunnel,
   cmdDevSpaceConnectNewWindow,
   cmdDevSpaceOpenInBAS,
 } from "./devspace/connect";
@@ -129,5 +129,5 @@ export async function initBasRemoteExplorer(
 
 export function deactivateBasRemoteExplorer(): void {
   // kill opened ssh channel if exists
-  // closeTunnel();
+  closeTunnel();
 }

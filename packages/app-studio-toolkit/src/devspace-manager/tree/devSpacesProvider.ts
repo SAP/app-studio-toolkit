@@ -34,7 +34,7 @@ export class DevSpaceDataProvider implements TreeDataProvider<TreeItem> {
   public async getChildren(element?: TreeNode): Promise<TreeNode[]> {
     // TODO: Implement loading of tree scenario
     if (this.loading) {
-      return Promise.resolve([new LoadingNode()]);
+      return Promise.resolve([new LoadingNode(TreeItemCollapsibleState.None)]);
     }
     return this.getChildrenPromise(element);
   }

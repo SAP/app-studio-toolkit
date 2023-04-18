@@ -130,5 +130,7 @@ describe("extension unit test", () => {
     });
   });
 
-  it("deactivate", () => {});
+  it("deactivate", () => {
+    instance.deactivateBasRemoteExplorer();
+  });
 });
