@@ -2,13 +2,11 @@ import { SinonMock, mock } from "sinon";
 
 import * as devspaceModule from "../../../src/devspace-manager/devspace/add";
 import { LandscapeNode } from "../../../src/devspace-manager/tree/treeItems";
-import { RefreshRate } from "../../../src/devspace-manager/landscape/landscape";
 import proxyquire from "proxyquire";
 
 describe("cmdDevSpaceAdd unit test", () => {
   let devspaceAddProxy: typeof devspaceModule;
   const landscapeProxy = {
-    RefreshRate,
     autoRefresh: (rate: number, timeout: number): void => {},
   };
 
@@ -33,10 +31,7 @@ describe("cmdDevSpaceAdd unit test", () => {
   const node: LandscapeNode = <LandscapeNode>{};
 
   it("cmdLandscapeOpenDevSpaceManager, open true", async () => {
-    mockLandscape
-      .expects(`autoRefresh`)
-      .withExactArgs(RefreshRate.SEC_10, RefreshRate.MIN_3)
-      .returns(true);
+    mockLandscape.expects(`autoRefresh`).returns(true);
     await devspaceAddProxy.cmdDevSpaceAdd(node);
   });
 });

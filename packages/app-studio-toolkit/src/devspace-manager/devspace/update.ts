@@ -4,7 +4,7 @@ import { DevSpaceNode } from "../tree/treeItems";
 import { messages } from "../common/messages";
 import { getJwt } from "../../authentication/auth-utils";
 import { devspace } from "@sap/bas-sdk";
-import { RefreshRate, autoRefresh } from "../landscape/landscape";
+import { autoRefresh } from "../landscape/landscape";
 import { DevSpaceStatus, getDevSpaces } from "./devspace";
 
 const START = false;
@@ -75,7 +75,7 @@ async function updateDevSpace(
           void window.showInformationMessage(
             messages.info_devspace_state_updated(wsName, wsId, suspend)
           );
-          autoRefresh(RefreshRate.SEC_10, RefreshRate.MIN_2);
+          autoRefresh();
         });
     })
     .catch((e) => {

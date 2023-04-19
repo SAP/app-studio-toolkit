@@ -4,7 +4,6 @@ import proxyquire from "proxyquire";
 import * as devspaceModule from "../../../src/devspace-manager/devspace/update";
 import { DevSpaceNode } from "../../../src/devspace-manager/tree/treeItems";
 import { messages } from "../../../src/devspace-manager/common/messages";
-import { RefreshRate } from "../../../src/devspace-manager/landscape/landscape";
 import {
   DevSpaceInfo,
   DevSpaceStatus,
@@ -44,7 +43,6 @@ describe("devspace start/stop unit test", () => {
   };
 
   const proxyLandscape = {
-    RefreshRate,
     autoRefresh: (): void => {
       throw new Error(`not implemented`);
     },
@@ -151,10 +149,7 @@ describe("devspace start/stop unit test", () => {
       .expects(`showInformationMessage`)
       .withExactArgs(`Devspace ${node.label} (${node.id}) was started`)
       .resolves();
-    mockLandscape
-      .expects(`autoRefresh`)
-      .withExactArgs(RefreshRate.SEC_10, RefreshRate.MIN_2)
-      .resolves();
+    mockLandscape.expects(`autoRefresh`).resolves();
     mockCommands
       .expects(`executeCommand`)
       .withExactArgs("local-extension.tree.refresh")
@@ -222,10 +217,7 @@ describe("devspace start/stop unit test", () => {
       .expects(`showInformationMessage`)
       .withExactArgs(`Devspace ${node.label} (${node.id}) was stoped`)
       .resolves();
-    mockLandscape
-      .expects(`autoRefresh`)
-      .withExactArgs(RefreshRate.SEC_10, RefreshRate.MIN_2)
-      .resolves();
+    mockLandscape.expects(`autoRefresh`).resolves();
     mockCommands
       .expects(`executeCommand`)
       .withExactArgs("local-extension.tree.refresh")

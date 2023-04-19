@@ -12,23 +12,15 @@ import { getLogger } from "../../../src/logger/logger";
 import { LandscapeNode } from "../tree/treeItems";
 import { BasRemoteAuthenticationProvider } from "../../authentication/authProvider";
 
-export enum RefreshRate {
-  ALWAYS = -1,
-  SEC_5 = 5 * 1000,
-  SEC_10 = 10 * 1000,
-  SEC_15 = 15 * 1000,
-  SEC_30 = 30 * 1000,
-  MIN_2 = 2 * 60 * 1000,
-  MIN_3 = 3 * 60 * 1000,
-}
-
-export function autoRefresh(refreshRate: number, timeOut: number): void {
+export function autoRefresh(refreshRate?: number, timeOut?: number): void {
+  refreshRate = refreshRate ?? 10 * 1000; // 10 sec default
+  timeOut = timeOut ?? 2 * 60 * 1000; // 2 min default
   let refreshedTime = 0;
   const refreshInterval: NodeJS.Timer = setInterval(() => {
     getLandscapes()
       .then((landscapes) => {
-        if (refreshedTime < timeOut && !isEmpty(landscapes)) {
-          refreshedTime += refreshRate;
+        if (refreshedTime < timeOut! && !isEmpty(landscapes)) {
+          refreshedTime += refreshRate!;
           getLogger().info(`Auto refresh ${refreshedTime} out of ${timeOut}`);
           void commands.executeCommand("local-extension.tree.refresh");
         } else {
@@ -112,8 +104,8 @@ export async function cmdLoginToLandscape(node: LandscapeNode): Promise<void> {
       { forceNewSession: true } as AuthenticationGetSessionOptions
     );
     if (session?.accessToken) {
-      // refresh util jwt expired
-      autoRefresh(RefreshRate.SEC_30, timeUntilJwtExpires(session.accessToken));
+      // auto refresh util jwt expired
+      autoRefresh(30 * 1000, timeUntilJwtExpires(session.accessToken));
     }
   } finally {
     void commands.executeCommand("local-extension.tree.refresh");
