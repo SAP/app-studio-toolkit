@@ -321,7 +321,8 @@
       "BAS": [
         {
           "id": "dev-spaces",
-          "name": "Dev Spaces"
+          "name": "Dev Spaces",
+          "when": "!isWeb"
         }
       ]
     },
