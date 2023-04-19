@@ -119,7 +119,7 @@ describe("landscapes unit test", () => {
   it("autoRefresh, landscapes empty", () => {
     lands = undefined;
     mockCommands.expects(`executeCommand`).never();
-    land.autoRefresh(100, 200);
+    land.autoRefresh();
   });
 
   it("autoRefresh, landscapes exist", (done) => {

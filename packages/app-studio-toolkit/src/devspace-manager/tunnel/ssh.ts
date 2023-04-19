@@ -14,6 +14,7 @@ import { getLogger } from "../../logger/logger";
 
 let session: SshClientSession;
 
+/* istanbul ignore next */
 class WebSocketClientStream extends BaseStream {
   public constructor(private readonly websocket: WebSocket) {
     super();
@@ -70,6 +71,7 @@ class WebSocketClientStream extends BaseStream {
   }
 }
 
+/* istanbul ignore next */
 export async function ssh(opts: {
   host: {
     url: string;

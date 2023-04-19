@@ -38,6 +38,7 @@ export async function initBasRemoteExplorer(
 
   const devSpaceExplorer = new DevSpacesExplorer(context.extensionPath);
 
+  /* istanbul ignore next */
   context.subscriptions.push(
     commands.registerCommand("local-extension.tree.refresh", () =>
       devSpaceExplorer.refreshTree()

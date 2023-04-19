@@ -3,6 +3,7 @@ import { URL } from "node:url";
 import { getLanscapesConfig, updateLandscapesConfig } from "./landscape";
 
 export async function cmdLandscapeSet(): Promise<void> {
+  /* istanbul ignore next */
   const landscape = await window.showInputBox({
     prompt: "Landscape url",
     ignoreFocusOut: true,

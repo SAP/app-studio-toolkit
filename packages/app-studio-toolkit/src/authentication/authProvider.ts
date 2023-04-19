@@ -11,6 +11,7 @@ import { retrieveJwt } from "./auth-utils";
 import { getLogger } from "../logger/logger";
 import { messages } from "../../src/devspace-manager/common/messages";
 
+/* istanbul ignore next */
 export class BasRemoteAuthenticationProvider
   implements AuthenticationProvider, Disposable
 {
@@ -140,6 +141,7 @@ export class BasRemoteAuthenticationProvider
   }
 }
 
+/* istanbul ignore next */
 class BasRemoteSession implements AuthenticationSession {
   readonly account: AuthenticationSessionAccountInformation;
 

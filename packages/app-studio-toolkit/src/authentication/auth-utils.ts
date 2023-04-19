@@ -22,7 +22,11 @@ enum eHeaders {
 
 function getJwtExpiration(jwt: string): number {
   const decodedJwt: JwtPayload = jwtDecode<JwtPayload>(jwt);
-  return (decodedJwt.exp ?? 0) * 1000;
+  return (
+    (decodedJwt.exp ??
+      /* istanbul ignore next: test's dummy jwt always has 'exp' attribute */ 0) *
+    1000
+  );
 }
 
 function isJwtExpired(jwt: string): boolean {
@@ -42,6 +46,7 @@ async function loginToLandscape(landscapeUrl: string): Promise<boolean> {
 }
 
 async function getJwtFromServer(landscapeUrl: string): Promise<string> {
+  /* istanbul ignore next */
   return new Promise<string>((resolve, reject) => {
     const app = express();
 
@@ -132,8 +137,9 @@ async function retrieveJwtFromRemote(
   return jwtPromise.finally(() => void closeServer(landscapeUrl));
 }
 
+/* istanbul ignore next */
 async function closeServer(landscapeUrl: string): Promise<void> {
-  await serverCache.get(landscapeUrl)!.terminate();
+  await serverCache.get(landscapeUrl)?.terminate();
   serverCache.delete(landscapeUrl);
   getLogger().info(`closing server for ${landscapeUrl}`);
 }

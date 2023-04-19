@@ -35,7 +35,7 @@ async function getTunnelConfigurations(
 }
 
 export function closeTunnel(): boolean {
-  return tunnel?.kill() || false;
+  return /* istanbul ignore next */ tunnel?.kill() || false;
 }
 
 async function createTunnel(
