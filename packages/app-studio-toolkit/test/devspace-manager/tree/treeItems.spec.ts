@@ -287,7 +287,7 @@ describe("devSpacesExplorer unit test", () => {
         node.getLabel(devspace);
         fail(`should fail`);
       } catch (e) {
-        expect(e.message).to.be.equal(`Didn't expect to get here`);
+        expect(e.message).to.be.equal(messages.err_assert_unreachable);
       }
     });
 
@@ -340,7 +340,7 @@ describe("devSpacesExplorer unit test", () => {
       try {
         node.getIconPath(devspace);
       } catch (e) {
-        expect(e.message).to.be.equal(`Didn't expect to get here`);
+        expect(e.message).to.be.equal(messages.err_assert_unreachable);
       }
     });
 
@@ -350,7 +350,7 @@ describe("devSpacesExplorer unit test", () => {
       try {
         node.getContextView(devspace);
       } catch (e) {
-        expect(e.message).to.be.equal(`Didn't expect to get here`);
+        expect(e.message).to.be.equal(messages.err_assert_unreachable);
       }
     });
 

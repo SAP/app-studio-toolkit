@@ -173,15 +173,17 @@ describe("devspace connect unit test", () => {
     it("cmdDevSpaceConnectNewWindow, succedded", async () => {
       mockProgress
         .expects(`report`)
-        .withExactArgs({ message: "Obtaining SSH key" })
+        .withExactArgs({ message: `${messages.info_obtaining_key}` })
         .returns(true);
       mockProgress
         .expects(`report`)
-        .withExactArgs({ message: "Save PK to file" })
+        .withExactArgs({ message: `${messages.info_save_pk_to_file}` })
         .returns(true);
       mockProgress
         .expects(`report`)
-        .withExactArgs({ message: "Update config file with SSH connection" })
+        .withExactArgs({
+          message: `${messages.info_update_config_file_with_ssh_connection}`,
+        })
         .returns(true);
       mockSshUtils
         .expects("getPK")
@@ -197,11 +199,11 @@ describe("devspace connect unit test", () => {
         .resolves(config);
       mockProgress
         .expects(`report`)
-        .withExactArgs({ message: "Closing old tunnel to dev-space" })
+        .withExactArgs({ message: `${messages.info_closing_old_tunnel}` })
         .returns(true);
       mockProgress
         .expects(`report`)
-        .withExactArgs({ message: "Starting new tunnel to dev-space" })
+        .withExactArgs({ message: `${messages.info_staring_new_tunnel}` })
         .returns(true);
       mockSshUtils.expects("runChannelClient").withExactArgs(opts).resolves();
       mockSshUtils
@@ -220,7 +222,7 @@ describe("devspace connect unit test", () => {
       const err = new Error(`error during getPK`);
       mockProgress
         .expects(`report`)
-        .withExactArgs({ message: "Obtaining SSH key" })
+        .withExactArgs({ message: `${messages.info_obtaining_key}` })
         .returns(true);
       mockSshUtils
         .expects("getPK")

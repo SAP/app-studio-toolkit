@@ -147,7 +147,9 @@ describe("devspace start/stop unit test", () => {
       .resolves();
     mockWindow
       .expects(`showInformationMessage`)
-      .withExactArgs(`Devspace ${node.label} (${node.id}) was started`)
+      .withExactArgs(
+        messages.info_devspace_state_updated(node.label, node.id, false)
+      )
       .resolves();
     mockLandscape.expects(`autoRefresh`).resolves();
     mockCommands
@@ -215,7 +217,9 @@ describe("devspace start/stop unit test", () => {
       .resolves();
     mockWindow
       .expects(`showInformationMessage`)
-      .withExactArgs(`Devspace ${node.label} (${node.id}) was stoped`)
+      .withExactArgs(
+        messages.info_devspace_state_updated(node.label, node.id, true)
+      )
       .resolves();
     mockLandscape.expects(`autoRefresh`).resolves();
     mockCommands

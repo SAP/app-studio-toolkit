@@ -190,9 +190,7 @@ describe("auth-utils unit test", () => {
       mockEnv.expects("openExternal").resolves(true);
       mockWindow
         .expects("showErrorMessage")
-        .withExactArgs(
-          `Incorrect token recieved for ${landscape}. Login failed`
-        )
+        .withExactArgs(messages.err_incorrect_jwt(landscape))
         .resolves();
       setTimeout(() => {
         expect(extLoginListener).to.be.ok;
@@ -207,9 +205,7 @@ describe("auth-utils unit test", () => {
       mockEnv.expects("openExternal").resolves(true);
       mockWindow
         .expects("showErrorMessage")
-        .withExactArgs(
-          `Incorrect token recieved for ${landscape}. Login failed`
-        )
+        .withExactArgs(messages.err_incorrect_jwt(landscape))
         .resolves();
       request.body.jwt = `<html> wrong flow </html>`;
       setTimeout(() => {
@@ -226,9 +222,7 @@ describe("auth-utils unit test", () => {
       const err = new Error(`server error`);
       mockWindow
         .expects("showErrorMessage")
-        .withExactArgs(
-          `Error listening to get jwt: ${err.message} for ${landscape}`
-        )
+        .withExactArgs(messages.err_listening(err.message, landscape))
         .resolves();
       setTimeout(() => {
         expect(cbOnServerError).to.be.ok;

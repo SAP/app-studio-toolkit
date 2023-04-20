@@ -1,6 +1,6 @@
 # Application Studio Toolkit Themes
 
-This VS Code extension provides the collor themes for Bussiness Application Studio.
+This VS Code extension provides the color themes for Bussiness Application Studio.
 
 ## Installation
 
