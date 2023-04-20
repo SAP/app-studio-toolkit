@@ -1,0 +1,53 @@
+{
+  "name": "app-studio-toolkit-themes",
+  "displayName": "SAP Business Application Studio themes",
+  "version": "1.11.4",
+  "private": true,
+  "description": "Provides SAP Business Application Studio themes",
+  "categories": [
+    "Themes"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/app-studio-toolkit",
+    "directory": "packages/app-studio-toolkit-themes"
+  },
+  "license": "Apache-2.0",
+  "publisher": "SAPOSS",
+  "main": "./dist/src/extension",
+  "scripts": {
+    "bundle": "webpack --mode production",
+    "ci": "npm-run-all clean compile coverage bundle package",
+    "clean": "rimraf ./dist *.vsix ./.nyc_output",
+    "compile": "tsc -p ./",
+    "coverage": "nyc mocha",
+    "package": "node ./scripts/package-vsix.js",
+    "test": "mocha"
+  },
+  "contributes": {
+    "themes": [
+      {
+        "label": "SAP Fiori Quartz Light",
+        "uiTheme": "vs",
+        "path": "./src/themes/light-default-clean.json"
+      },
+      {
+        "label": "SAP Fiori Quartz Dark",
+        "uiTheme": "vs-dark",
+        "path": "./src/themes/dark-default-clean.json"
+      },
+      {
+        "label": "SAP Fiori Evening Horizon",
+        "uiTheme": "vs-dark",
+        "path": "./src/themes/dark-fiori-horizon.json"
+      }
+    ]
+  },
+  "activationEvents": [
+    "*"
+  ],
+  "engines": {
+    "vscode": "^1.76.0"
+  },
+  "icon": "icon.png"
+}

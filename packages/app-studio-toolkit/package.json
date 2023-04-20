@@ -3,7 +3,7 @@
   "displayName": "SAP Business Application Studio toolkit",
   "version": "1.11.4",
   "private": true,
-  "description": "Provides rich tools for executing common platform tasks.",
+  "description": "Allows you to remotely control dev spaces that are hosted in SAP Business Application Studio from VS Code.",
   "categories": [
     "Other"
   ],
@@ -300,23 +300,6 @@
         }
       ]
     },
-    "themes": [
-      {
-        "label": "SAP Fiori Quartz Light",
-        "uiTheme": "vs",
-        "path": "./src/themes/light-default-clean.json"
-      },
-      {
-        "label": "SAP Fiori Quartz Dark",
-        "uiTheme": "vs-dark",
-        "path": "./src/themes/dark-default-clean.json"
-      },
-      {
-        "label": "SAP Fiori Evening Horizon",
-        "uiTheme": "vs-dark",
-        "path": "./src/themes/dark-fiori-horizon.json"
-      }
-    ],
     "views": {
       "BAS": [
         {

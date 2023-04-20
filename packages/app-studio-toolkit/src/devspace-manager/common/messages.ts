@@ -1,5 +1,5 @@
 export const messages = {
-  lbl_dev_space_explorer_no_dev_spaces: `Could not find any devspaces in landscape.`,
+  lbl_dev_space_explorer_no_dev_spaces: `Could not find any dev spaces in this landscape.`,
   lbl_dev_space_explorer_authentication_failure: `Could not authenticate to landscape.`,
   lbl_dev_space_explorer_loading: `Loading...`,
   lbl_icon_missing: (iconName: string): string =>
@@ -17,42 +17,44 @@ export const messages = {
   lbl_devspace_context_transitioning: `dev-space-transitioning`,
   lbl_devspace_context_error: `dev-space-error`,
   lbl_delete_landscape: (label: string) =>
-    `This action will delete the landscape '${label}'`,
+    `Are you sure you want to delete the '${label}' landscape?`,
   lbl_delete_devspace: (label: string, id: string) =>
-    `This action will delete the ws '${label}' (${id})`,
+    ` Are you sure you want to delete the '${label}' (${id}) dev space?`,
   lbl_yes: `Yes`,
   lbl_no: `No`,
 
   err_incorrect_jwt: (url: string) =>
-    `Incorrect token recieved for ${url}. Login failed`,
+    `Incorrect token recieved for ${url}. Login failed.`,
   err_listening: (message: string, url: string) =>
-    `Error listening to get jwt: ${message} for ${url}`,
+    `An error occurred while listening for the JWT: ${message} for ${url}`,
   err_get_jwt_timeout: (ms: number) => `Login time out in ${ms} ms.`,
-  err_get_jwt_not_exists: `Personal Access Token does not exist`,
+  err_get_jwt_not_exists: `Personal Access Token does not exist.`,
   err_get_jwt_required: `Personal Access Token is required`,
   err_open_devspace_in_bas: (landscapeUrl: string, err: string) =>
-    `Can't open the devspace ${landscapeUrl}: ${err}`,
+    `Cannot open the devspace ${landscapeUrl}: ${err} .`,
   err_copy_devspace_id: (err: string) =>
-    `Can't copy devspace identificator: ${err}}`,
-  err_assert_unreachable: `Didn't expect to get here`,
-  err_get_devspace: (message: string) => `Failed to get Dev Spaces, ${message}`,
+    `Cannot copy the dev space ID: ${err}}`,
+  err_assert_unreachable: `Unexpected error.`,
+  err_get_devspace: (message: string) => `Failed to get dev spaces, ${message}`,
   err_devspace_delete: (wsId: string, reason: string) =>
-    `Failed Deleting '${wsId}': ${reason}`,
+    `Could not delete '${wsId}': ${reason}`,
   err_ws_update: (wsId: string, reason: string) =>
-    `Failed to update ws ${wsId}, ${reason}`,
-  err_name_validation: `The name must start with a letter or number and may contain any alphanumeric charcters or undrscores. Special characters can't be used.`,
+    `Could not update the ${wsId}  dev space, ${reason}`,
+  err_name_validation: `The name may contain alphanumeric charcters or undrscores. It must start with an alphanumeric character. Special characters can't be used.`,
 
-  info_obtaining_key: `Obtaining SSH key`,
-  info_save_pk_to_file: `Save PK to file`,
-  info_update_config_file_with_ssh_connection: `Update config file with SSH connection`,
-  info_closing_old_tunnel: `Closing old tunnel to dev-space`,
-  info_staring_new_tunnel: `Starting new tunnel to dev-space`,
+  info_obtaining_key: `Obtaining SSH key…`,
+  info_save_pk_to_file: `Saving PK to file…`,
+  info_update_config_file_with_ssh_connection: `Updating the config file with the SSH connection…`,
+  info_closing_old_tunnel: `Closing the old tunnel to the dev space…`,
+  info_staring_new_tunnel: `Starting a new tunnel to the dev space…`,
   info_devspace_state_updated: (
     wsName: string,
     wsId: string,
     suspend: boolean
-  ) => `Devspace ${wsName} (${wsId}) was ${suspend ? "stoped" : "started"}`,
-  info_wsid_copied: `ws id was copied to clip board`,
-  info_devspace_deleted: (wsId: string) => `Deleted Dev Space '${wsId}'`,
+  ) =>
+    `The ${wsName} (${wsId}) dev space was ${suspend ? "stoped" : "started"}`,
+  info_wsid_copied: `The dev space ID was copied to the clipboard.`,
+  info_devspace_deleted: (wsId: string) =>
+    `The '${wsId}' dev space has been deleted.`,
   info_can_run_only_2_devspaces: `You can only run 2 dev spaces at a time. To run another dev space, you must stop a running one.`,
 };

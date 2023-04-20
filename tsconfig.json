@@ -4,6 +4,9 @@
       "path": "./packages/app-studio-toolkit"
     },
     {
+      "path": "./packages/app-studio-toolkit-themes"
+    },
+    {
       "path": "./packages/app-studio-toolkit-types"
     },
     {
