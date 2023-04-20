@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0](https://github.com/SAP/app-studio-toolkit/compare/v1.11.4...v1.12.0) (2023-04-20)
+
+### Features
+
+- bas remote functionality ([#216](https://github.com/SAP/app-studio-toolkit/issues/216)) ([cd3bca4](https://github.com/SAP/app-studio-toolkit/commit/cd3bca41de0e8156ad7e6e5ee4553a6d2dc530d5))
+
 ## [1.11.4](https://github.com/SAP/app-studio-toolkit/compare/v1.11.3...v1.11.4) (2023-03-23)
 
 ### Bug Fixes
