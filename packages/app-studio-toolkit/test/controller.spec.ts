@@ -1,5 +1,5 @@
-import * as proxyquire from "proxyquire";
-import * as pDefer from "p-defer";
+import proxyquire from "proxyquire";
+import pDefer from "p-defer";
 import { expect } from "chai";
 import { mockVscode } from "./mockUtil";
 import { SinonSandbox, SinonMock, createSandbox } from "sinon";

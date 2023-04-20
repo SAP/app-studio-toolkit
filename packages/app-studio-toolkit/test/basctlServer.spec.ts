@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { SinonSandbox, SinonMock, createSandbox, match } from "sinon";
-import * as net from "net";
-import * as fs from "fs";
+import net from "net";
+import fs from "fs";
 import { mockVscode } from "./mockUtil";
 
 const testVscode = {

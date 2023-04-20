@@ -1,11 +1,9 @@
 import { mockVscode } from "./mockUtil";
 import { expect, use } from "chai";
-import * as chaiAsPromised from "chai-as-promised";
+import chaiAsPromised from "chai-as-promised";
 import * as _ from "lodash";
 import { SinonSandbox, SinonMock, createSandbox } from "sinon";
 import { BasAction, ICommandAction } from "@sap-devx/app-studio-toolkit-types";
-import { ActionsController } from "../src/actions/controller";
-import * as vscode from "vscode";
 import { COMMAND, SNIPPET } from "../src/constants";
 
 use(chaiAsPromised);
@@ -15,8 +13,10 @@ const testVscode = {
 };
 
 mockVscode(testVscode, "dist/src/api.js");
+mockVscode(testVscode, "dist/src/actions/controller.js");
 mockVscode(testVscode, "dist/src/logger/logger.js");
 
+import { ActionsController } from "../src/actions/controller";
 import { baseBasToolkitAPI as bas } from "../src/public-api/base-bas-api";
 
 describe("api unit test", () => {
@@ -96,7 +96,7 @@ describe("api unit test", () => {
         },
       },
     ];
-    _.set(vscode, "extensions.all", allExtensioms);
+    _.set(testVscode, "extensions.all", allExtensioms);
 
     ActionsController.loadContributedActions();
     const result = bas.getAction("abc123");

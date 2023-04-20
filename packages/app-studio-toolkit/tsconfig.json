@@ -4,6 +4,7 @@
     "rootDir": ".",
     "outDir": "dist",
     "baseUrl": ".",
+    "esModuleInterop": true,
     "skipLibCheck": true
   },
   "include": ["src/**/*", "test/**/*"]

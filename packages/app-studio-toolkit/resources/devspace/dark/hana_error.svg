@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 16 16">
+  <defs>
+    <clipPath id="clip-sap_hana_error_op1">
+      <rect width="16" height="16"/>
+    </clipPath>
+  </defs>
+  <g id="sap_hana_error_op1" data-name="sap_hana_error – op1" clip-path="url(#clip-sap_hana_error_op1)">
+    <g id="Group_3930" data-name="Group 3930" transform="translate(145.028 136.604)">
+      <path id="Path_1574" data-name="Path 1574" d="M-130.216-128.219l-2.012-3.483-2.01-3.483a.28.28,0,0,0-.383-.1.282.282,0,0,0-.1.1l-2.01,3.483-2.011,3.483a.277.277,0,0,0,.1.377h0a.274.274,0,0,0,.139.038h8.045a.277.277,0,0,0,.278-.277.277.277,0,0,0-.037-.14Zm-3.816-.774a.447.447,0,0,1-.447.447h0a.448.448,0,0,1-.446-.447v-.2a.447.447,0,0,1,.444-.446h0a.447.447,0,0,1,.447.446Zm0-1.533a.447.447,0,0,1-.447.447h0a.448.448,0,0,1-.446-.447v-2.627a.447.447,0,0,1,.445-.447h0a.447.447,0,0,1,.447.447h0Z" fill="#ffaf00"/>
+      <g id="Group_3929" data-name="Group 3929">
+        <path id="Path_2044" data-name="Path 2044" d="M-144.026-127.458v2.736l2.271,1.373v-2.761Z" fill="#7baedf" stroke="#283d53" stroke-width="0.4"/>
+        <path id="Path_2045" data-name="Path 2045" d="M-137.8-123.823l-2.5-1.494v2.734l2.5,1.493,2.47-1.493v-2.732Z" fill="#7baedf" stroke="#283d53" stroke-width="0.4"/>
+        <path id="Path_2046" data-name="Path 2046" d="M-141.56-133.459l-2.469,1.493,0,2.962,2.271,1.372v-2.949l2.478-1.523Z" fill="#7baedf" stroke="#283d53" stroke-width="0.4"/>
+        <path id="Path_2047" data-name="Path 2047" d="M-132.714-126.8l-1.17.695v2.76l2.271-1.373V-126.8Z" fill="#7baedf" stroke="#283d53" stroke-width="0.4"/>
+        <path id="Path_2048" data-name="Path 2048" d="M-138.5-126.8a1.276,1.276,0,0,1-.649-.177,1.279,1.279,0,0,1-.456-1.738l1.352-2.341-2.046,1.2v3l2.5,1.466,2.374-1.407Z" fill="#7baedf" stroke="#283d53" stroke-width="0.4"/>
+        <path id="Path_2049" data-name="Path 2049" d="M-136.9-133.409l.706-1.223-1.611-.972-2.308,1.377,2.308,1.355Z" fill="#7baedf" stroke="#283d53" stroke-width="0.4"/>
+      </g>
+    </g>
+  </g>
+</svg>
