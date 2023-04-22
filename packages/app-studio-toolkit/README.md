@@ -15,21 +15,21 @@ This is the recommended development experience while working locally.
 1. In the SAP Business Application Studio Desktop view, click `+`.
 
 2. Enter your landscape URL.
-   ![](./assets/add-landscape.png)
+   ![](https://github.com/SAP/app-studio-toolkit/blob/main/packages/app-studio-toolkit/assets/add-landscape.png?raw=true)
 
 3. Select your landscape and log in.
 
 4. Once you are connected, your dev spaces are displayed and you can manage them from VS Code.
 
 Any change made in VS Code is mirrored in SAP Business Application Studio and vice-versa.
-![](./assets/landscapesvsbrowser.png)
+![](https://github.com/SAP/app-studio-toolkit/blob/main/packages/app-studio-toolkit/assets/landscapesvsbrowser.png?raw=true)
 
 5. Once a dev space is started, you can open it in a new window.<br>**_Note_**: _We support only one open dev space at a time_.
 
 ### Overview
 
 The image below shows the Storyboard so seen in VS Code.
-![](./assets/storyboard.png)
+![](https://github.com/SAP/app-studio-toolkit/blob/main/packages/app-studio-toolkit/assets/storyboard.png?raw=true)
 
 For more information about SAP Business Application Studio features, see the [It’s time to plan your move to SAP Business Application Studio](https://blogs.sap.com/2022/01/10/its-time-to-plan-your-move-to-sap-business-application-studio/) blog post.
 
