@@ -11,7 +11,6 @@ import { getLogger } from "../logger/logger";
 import { messages } from "../../src/devspace-manager/common/messages";
 import { debounce, isEmpty } from "lodash";
 
-/* istanbul ignore next */
 export class BasRemoteAuthenticationProvider
   implements AuthenticationProvider, Disposable
 {
@@ -161,7 +160,6 @@ export class BasRemoteAuthenticationProvider
   }
 }
 
-/* istanbul ignore next */
 class BasRemoteSession implements AuthenticationSession {
   readonly account = {
     id: BasRemoteAuthenticationProvider.id,
