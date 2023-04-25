@@ -37,6 +37,10 @@
         "title": "Run a specific command of Project API"
       },
       {
+        "command": "local-extension.command.open-in-bas",
+        "title": "Open DevSpace in VSCode"
+      },
+      {
         "command": "local-extension.tree.refresh",
         "title": "Refresh",
         "icon": "$(refresh)"
