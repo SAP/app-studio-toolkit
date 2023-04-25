@@ -144,13 +144,6 @@
       {
         "title": "Business Application Studio Desktop Client",
         "properties": {
-          "sap-remote.backend-version": {
-            "type": "string",
-            "title": "Business Application Studio Desktop Client",
-            "default": "remotessh-v028",
-            "description": "Back End Extension Version",
-            "scope": "window"
-          },
           "sap-remote.landscape-name": {
             "type": "string",
             "title": "Business Application Studio Desktop Client",
