@@ -121,7 +121,7 @@ export async function initBasRemoteExplorer(
   context.subscriptions.push(
     authentication.registerAuthenticationProvider(
       BasRemoteAuthenticationProvider.id,
-      "Bussines Application Studio", // TODO get official string
+      "Business Application Studio", // TODO get official string
       new BasRemoteAuthenticationProvider(context.secrets),
       { supportsMultipleAccounts: true }
     )

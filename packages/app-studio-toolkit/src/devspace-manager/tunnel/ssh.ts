@@ -12,7 +12,7 @@ import {
 import { PortForwardingService } from "@microsoft/dev-tunnels-ssh-tcp";
 import { getLogger } from "../../logger/logger";
 
-let session: SshClientSession;
+const sessionMap: Map<string, SshClientSession> = new Map();
 
 /* istanbul ignore next */
 class WebSocketClientStream extends BaseStream {
@@ -83,8 +83,10 @@ export async function ssh(opts: {
   username: string;
   jwt: string;
 }): Promise<void> {
+  const serverUri = `wss://${opts.host.url}:${opts.host.port}`;
   // close the opened session if exists
   const isContinue = new Promise((res) => {
+    const session = sessionMap.get(serverUri);
     if (session) {
       void session
         .close(SshDisconnectReason.byApplication)
@@ -107,7 +109,6 @@ export async function ssh(opts: {
 
   config.addService(PortForwardingService);
 
-  const serverUri = `wss://${opts.host.url}:${opts.host.port}`;
   const wsClient = new WebSocketClient();
 
   wsClient.connect(serverUri, "ssh", undefined, {
@@ -123,7 +124,8 @@ export async function ssh(opts: {
   });
 
   return new Promise((resolve, reject) => {
-    session = new SshClientSession(config);
+    const session = new SshClientSession(config);
+    sessionMap.set(serverUri, session);
     void session
       .connect(stream)
       .then(() => {
