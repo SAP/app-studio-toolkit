@@ -2,6 +2,7 @@ import {
   authentication,
   commands,
   ConfigurationTarget,
+  window,
   workspace,
 } from "vscode";
 import type { ExtensionContext } from "vscode";
@@ -21,6 +22,8 @@ import {
 } from "./devspace/connect";
 import { BasRemoteAuthenticationProvider } from "../../src/authentication/authProvider";
 import { cmdLoginToLandscape } from "./landscape/landscape";
+import { getBasUriHandler } from "./handler/basHandler";
+import { cmdOpenInVSCode } from "./devspace/open";
 
 export async function initBasRemoteExplorer(
   context: ExtensionContext
@@ -119,11 +122,24 @@ export async function initBasRemoteExplorer(
   );
 
   context.subscriptions.push(
+    commands.registerCommand(
+      "local-extension.dev-space.open-in-code",
+      cmdOpenInVSCode
+    )
+  );
+
+  context.subscriptions.push(
     authentication.registerAuthenticationProvider(
       BasRemoteAuthenticationProvider.id,
       "Bussines Application Studio", // TODO get official string
       new BasRemoteAuthenticationProvider(context.secrets),
       { supportsMultipleAccounts: true }
+    )
+  );
+
+  context.subscriptions.push(
+    window.registerUriHandler(
+      getBasUriHandler(devSpaceExplorer.getDevSpacesExplorerProvider())
     )
   );
 }

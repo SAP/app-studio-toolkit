@@ -85,6 +85,11 @@
         "title": "Open dev space in SAP Business application studio"
       },
       {
+        "command": "local-extension.dev-space.open-in-code",
+        "title": "Open dev space in vscode",
+        "category": "SAP Business Application Studio"
+      },
+      {
         "command": "local-extension.dev-space.start",
         "title": "Start dev space",
         "icon": "$(play)"
@@ -215,6 +220,10 @@
         {
           "when": "false",
           "command": "local-extension.dev-space.open-in-bas"
+        },
+        {
+          "when": "isWeb",
+          "command": "local-extension.dev-space.open-in-code"
         },
         {
           "when": "false",
