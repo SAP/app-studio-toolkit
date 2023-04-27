@@ -116,7 +116,7 @@ describe("extension unit test", () => {
         .expects(`registerAuthenticationProvider`)
         .withArgs(
           BasRemoteAuthenticationProvider.id,
-          "Bussines Application Studio"
+          "Business Application Studio"
         )
         .returns({});
       await instance.initBasRemoteExplorer(context);
