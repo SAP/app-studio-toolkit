@@ -23,7 +23,7 @@ export async function cmdLandscapeSet(): Promise<void> {
   }
 }
 
-async function addLandscape(landscapeName: string): Promise<void> {
+export async function addLandscape(landscapeName: string): Promise<void> {
   const toAdd = new URL(landscapeName).toString();
   const landscapes = getLanscapesConfig();
   if (
