@@ -374,10 +374,6 @@
     "ms-vscode-remote.remote-ssh",
     "ms-vscode-remote.remote-ssh-edit"
   ],
-  "extensionDependencies": [
-    "ms-vscode-remote.remote-ssh",
-    "ms-vscode-remote.remote-ssh-edit"
-  ],
   "engines": {
     "vscode": "^1.76.0"
   },
