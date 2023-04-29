@@ -32,20 +32,25 @@ async function getLandscapeFromUrl(
   devSpacesProvider: DevSpaceDataProvider,
   landscapeParam: string
 ): Promise<LandscapeNode> {
+  const findLandscapeNode = async (): Promise<LandscapeNode> => {
+    const node = (
+      (await devSpacesProvider.getChildren()) as LandscapeNode[]
+    ).find((el) => el.name === landscapeParam);
+    if (!node) {
+      throw new Error(messages.err_landscape_not_added(landscapeParam));
+    }
+    return node;
+  };
   const landscapes = await getLandscapes();
   const landscape = landscapes.find((el) => el.name === landscapeParam);
   if (!landscape) {
     await addLandscape(`https://${landscapeParam}`);
   }
-  const landscapeNode = (
-    (await devSpacesProvider.getChildren()) as LandscapeNode[]
-  ).find((el) => el.name === landscapeParam);
-  if (!landscapeNode) {
-    throw new Error(messages.err_landscape_not_added(landscapeParam));
-  }
-
+  let landscapeNode = await findLandscapeNode();
   if (!/log-in/g.test(landscapeNode.contextValue ?? "")) {
     await cmdLoginToLandscape(landscapeNode);
+    await new Promise<void>((resolve) => setTimeout(() => resolve(), 1000));
+    landscapeNode = await findLandscapeNode();
   }
   return landscapeNode;
 }
