@@ -41,6 +41,18 @@ export const messages = {
   err_ws_update: (wsId: string, reason: string) =>
     `Could not update the ${wsId}  dev space, ${reason}`,
   err_name_validation: `The name may contain alphanumeric charcters or undrscores. It must start with an alphanumeric character. Special characters can't be used.`,
+  err_no_devspaces_in_landscape: (landscape: string) =>
+    `There are no devspaces in this landscape '${landscape}'`,
+  err_devspace_missing: (id: string) => `Devspace '${id}' is missing`,
+  err_devspace_must_be_started: `DevSpace must be started before running it`,
+  err_landscape_not_added: (landscape: string) =>
+    `Falied to add landscape '${landscape}'`,
+  err_url_param_missing: (query: string, name: string) =>
+    `${name} parameter is missing from URL query '${query}'`,
+  err_url_has_incorrect_format: (url: string) =>
+    `URL ${url} has incorrect format`,
+  err_open_devspace_in_code: (reason: string) =>
+    `Can't open the devspace: ${reason}`,
 
   info_obtaining_key: `Obtaining SSH key…`,
   info_save_pk_to_file: `Saving PK to file…`,
@@ -52,7 +64,7 @@ export const messages = {
     wsId: string,
     suspend: boolean
   ) =>
-    `The ${wsName} (${wsId}) dev space was ${suspend ? "stoped" : "started"}`,
+    `The ${wsName} (${wsId}) dev space was ${suspend ? "stopped" : "started"}`,
   info_wsid_copied: `The dev space ID was copied to the clipboard.`,
   info_devspace_deleted: (wsId: string) =>
     `The '${wsId}' dev space has been deleted.`,

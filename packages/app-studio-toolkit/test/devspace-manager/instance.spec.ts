@@ -27,6 +27,7 @@ const vscodeProxy = {
   },
   window: {
     createTreeView: () => {},
+    registerUriHandler: () => {},
   },
   TreeItem: class MockTreeItem {
     public readonly label: string;
@@ -102,6 +103,7 @@ describe("extension unit test", () => {
         `local-extension.landscape.delete`,
         `local-extension.landscape.set`,
         `local-extension.login`,
+        `local-extension.dev-space.open-in-code`,
       ];
       expect(registry.size).to.be.equal(commands.length);
       for (const item of registry.keys()) {
@@ -114,7 +116,7 @@ describe("extension unit test", () => {
         .expects(`registerAuthenticationProvider`)
         .withArgs(
           BasRemoteAuthenticationProvider.id,
-          "Bussines Application Studio"
+          "Business Application Studio"
         )
         .returns({});
       await instance.initBasRemoteExplorer(context);
