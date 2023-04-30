@@ -27,11 +27,11 @@ How to connect your Visual Studio Code to your SAP Business Application Studio e
 
 2. On the Command Palette prompt, enter your landscape URL (you can copy it from your Business Application Studio dev-space manager environment).<br>**_Note_**: _You can connect to multiple landscapes from the same VSCode installation_.
 
-   ![](assets/connect-new-landscape.png?raw=true)
+   ![](https://github.com/SAP/app-studio-toolkit/blob/main/packages/app-studio-toolkit/assets/connect-new-landscape.png?raw=true)
 
 3. Once you are logged-in, your existing dev-spaces will be listed, you can also create new dev-space in case needed.
 
-![](assets/browse-bas-landscape.png?raw=true)
+![](https://github.com/SAP/app-studio-toolkit/blob/main/packages/app-studio-toolkit/assets/browse-bas-landscape.png?raw=true)
 
 4. If a dev-space is started, you will notice a green indication on the dev-space icon. For starting a dev-space, click on the 'play' icon (hover to the right of the dev-space).
 
