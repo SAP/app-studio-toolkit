@@ -21,6 +21,9 @@ describe("the `createWorkspaceProxy` utility", () => {
       onWorkspaceChanged(...args: any[]) {
         return args;
       },
+      getPluginManager(...args: any[]) {
+        return args;
+      },
     } as unknown as WorkspaceApi;
     /* eslint-enable  @typescript-eslint/no-unsafe-return -- test dummy mock */
     workspaceProxy = createWorkspaceProxy(dummyReturnArgsWorkspaceImpl);
@@ -35,8 +38,8 @@ describe("the `createWorkspaceProxy` utility", () => {
       expect(workspaceProxy).to.be.sealed;
     });
 
-    it("exposes only four properties", () => {
-      expect(Object.keys(workspaceProxy)).to.have.lengthOf(4);
+    it("exposes only five properties", () => {
+      expect(Object.keys(workspaceProxy)).to.have.lengthOf(5);
     });
   });
 
@@ -89,6 +92,21 @@ describe("the `createWorkspaceProxy` utility", () => {
       const changeHandler = (event: string, folders: string[]) => {};
       expect(workspaceProxy.onWorkspaceChanged(changeHandler)).to.deep.equal([
         changeHandler,
+      ]);
+    });
+  });
+
+  context("`getPluginManager()` method", () => {
+    it("is exposed", () => {
+      expect(workspaceProxy).to.have.property("getPluginManager");
+      expect(typeof workspaceProxy.getPluginManager).to.equal("function");
+    });
+
+    it("passes through arguments", () => {
+      // @ts-expect-error -- `getPluginManager` has no arguments, but we cannot assume it will
+      //                      never have any arguments so the pass-through is still implemented and tested.
+      expect(workspaceProxy.getPluginManager("dummyArg")).to.deep.equal([
+        "dummyArg",
       ]);
     });
   });

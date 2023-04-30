@@ -43,6 +43,7 @@ describe("the `createBasToolkitAPI()` utility", () => {
         "getProject",
         "getProjectUris",
         "onWorkspaceChanged",
+        "getPluginManager",
       ]);
       expect(basToolkit.workspaceAPI.getProjects()).to.equal(333);
     });
