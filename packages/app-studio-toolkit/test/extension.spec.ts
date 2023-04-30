@@ -50,15 +50,18 @@ mockVscode(testVscode, "dist/src/devspace-manager/instance.js");
 import * as extension from "../src/extension";
 import * as performer from "../src/actions/performer";
 import * as basctlServer from "../src/basctlServer/basctlServer";
+import * as runInBas from "../src/utils/bas-utils";
 import * as logger from "../src/logger/logger";
 import { fail } from "assert";
 import { ActionsFactory } from "../src/actions/actionsFactory";
 import * as basRemoteExplorerInstance from "../src/devspace-manager/instance";
+import { difference, find } from "lodash";
 
 describe("extension unit test", () => {
   let sandbox: SinonSandbox;
   let workspaceMock: SinonMock;
   let basctlServerMock: SinonMock;
+  let isRunInBasMock: SinonMock;
   let performerMock: SinonMock;
   let wsConfigMock: SinonMock;
   let loggerMock: SinonMock;
@@ -75,6 +78,7 @@ describe("extension unit test", () => {
   beforeEach(() => {
     workspaceMock = sandbox.mock(testVscode.workspace);
     basctlServerMock = sandbox.mock(basctlServer);
+    isRunInBasMock = sandbox.mock(runInBas);
     performerMock = sandbox.mock(performer);
     wsConfigMock = sandbox.mock(wsConfig);
     loggerMock = sandbox.mock(logger);
@@ -84,10 +88,46 @@ describe("extension unit test", () => {
   afterEach(() => {
     workspaceMock.verify();
     basctlServerMock.verify();
+    isRunInBasMock.verify();
     performerMock.verify();
     wsConfigMock.verify();
     loggerMock.verify();
     basRemoteExplorerMock.verify();
+  });
+
+  describe("package definitions", () => {
+    let packageJson: {
+      contributes: {
+        menus: {
+          commandPalette: {
+            when: string;
+            command: string;
+          }[];
+        };
+      };
+      extensionPack: string[];
+    };
+
+    before(() => {
+      packageJson = require("../../package.json");
+    });
+
+    it("extension pack definition verifing", () => {
+      expect(
+        difference(packageJson.extensionPack, [
+          "ms-vscode-remote.remote-ssh",
+          "ms-vscode-remote.remote-ssh-edit",
+        ])
+      ).to.be.empty;
+    });
+
+    it("command 'local-extension.dev-space.open-in-code' is available on web only", () => {
+      const command = find(packageJson.contributes.menus.commandPalette, [
+        `command`,
+        `local-extension.dev-space.open-in-code`,
+      ]);
+      expect(command).to.haveOwnProperty("when").equal("isWeb");
+    });
   });
 
   describe("activate", () => {
@@ -102,6 +142,7 @@ describe("extension unit test", () => {
         .expects("initBasRemoteExplorer")
         .withExactArgs(context);
       loggerMock.expects("initLogger").withExactArgs(context);
+      isRunInBasMock.expects("isRunInBAS").returns(true);
       basctlServerMock.expects("startBasctlServer");
       const scheduledAction = {
         name: "actName",
@@ -125,7 +166,7 @@ describe("extension unit test", () => {
       };
 
       loggerMock.expects("initLogger").withExactArgs(context);
-      basctlServerMock.expects("startBasctlServer");
+      isRunInBasMock.expects("isRunInBAS").returns(false);
       performerMock.expects("_performAction").never();
 
       wsConfigMock.expects("get").withExactArgs("actions", []).returns([]);
@@ -140,6 +181,7 @@ describe("extension unit test", () => {
       const testError = new Error("Socket failure");
 
       loggerMock.expects("initLogger").withExactArgs(context);
+      isRunInBasMock.expects("isRunInBAS").returns(true);
       basctlServerMock.expects("startBasctlServer").throws(testError);
 
       try {

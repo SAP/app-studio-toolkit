@@ -289,7 +289,7 @@ describe("basHandler scope", () => {
       .expects(`cmdLoginToLandscape`)
       .withExactArgs(copyNodes[0])
       .resolves(landscapes);
-    mockDevSpaceProvider.expects(`getChildren`).resolves(copyNodes);
+    mockDevSpaceProvider.expects(`getChildren`).twice().resolves(copyNodes);
     const mockLandscapeNode = mock(copyNodes[0]);
     mockLandscapeNode.expects(`getChildren`).resolves(devspaces);
     mockDevSpaceConnect
@@ -308,7 +308,7 @@ describe("basHandler scope", () => {
       .expects(`cmdLoginToLandscape`)
       .withExactArgs(copyNodes[0])
       .resolves(landscapes);
-    mockDevSpaceProvider.expects(`getChildren`).resolves(copyNodes);
+    mockDevSpaceProvider.expects(`getChildren`).twice().resolves(copyNodes);
     const mockLandscapeNode = mock(copyNodes[0]);
     mockLandscapeNode.expects(`getChildren`).resolves(devspaces);
     mockDevSpaceConnect
