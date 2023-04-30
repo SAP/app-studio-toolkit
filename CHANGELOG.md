@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.13.0](https://github.com/SAP/app-studio-toolkit/compare/v1.12.1...v1.13.0) (2023-04-30)
+
+### Bug Fixes
+
+- starting basctl server when run in BAS only ([#225](https://github.com/SAP/app-studio-toolkit/issues/225)) ([655da11](https://github.com/SAP/app-studio-toolkit/commit/655da11671cb6ffaa83dabbe56366711a719a6a2))
+
+### Features
+
+- bas url handler declared ([#224](https://github.com/SAP/app-studio-toolkit/issues/224)) ([085a356](https://github.com/SAP/app-studio-toolkit/commit/085a356821291e570fd0278148a7b998a1bbf0f3))
+- updated documentation ([#226](https://github.com/SAP/app-studio-toolkit/issues/226)) ([0d510f7](https://github.com/SAP/app-studio-toolkit/commit/0d510f751a27b6ede01251c3e210011e2ca67a6e))
+
 ## [1.12.1](https://github.com/SAP/app-studio-toolkit/compare/v1.12.0...v1.12.1) (2023-04-22)
 
 **Note:** Version bump only for package root
