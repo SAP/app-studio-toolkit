@@ -1,4 +1,4 @@
-import { ExtensionContext } from "vscode";
+import type { ExtensionContext } from "vscode";
 import { BasToolkit } from "@sap-devx/app-studio-toolkit-types";
 import { baseBasToolkitAPI } from "./public-api/base-bas-api";
 import { createBasToolkitAPI } from "./public-api/create-bas-toolkit-api";
@@ -13,11 +13,14 @@ import {
   deactivateBasRemoteExplorer,
   initBasRemoteExplorer,
 } from "./devspace-manager/instance";
+import { isRunInBAS } from "./utils/bas-utils";
 
 export function activate(context: ExtensionContext): BasToolkit {
   initLogger(context);
 
-  startBasctlServer();
+  if (isRunInBAS()) {
+    startBasctlServer();
+  }
 
   ActionsController.loadContributedActions();
 
