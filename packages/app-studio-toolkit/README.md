@@ -2,37 +2,49 @@
 
 ## Description
 
-The **SAP Business Application Studio toolkit** allows you to remotely control dev spaces that are hosted in SAP Business Application Studio.
+**SAP Business Application Studio toolkit** allows you to securely connect to your SAP Business Application Studio dev-spaces directly from your local Visual Studio Code desktop installation.
 
-From Visual Studio Code, you open a desktop client that allows you to work on a dev space as if you were in SAP Business Application Studio.
+For getting started with SAP Business Application Studio, please refer to the 'Getting Started' section on our [community page](https://community.sap.com/topics/business-application-studio).
 
-You can run commands and enjoy great productivity tools such as storyboard, service center, run configurations, task manager, and many more. All you need to do, is install the extension and connect to your landscape — no special knowledge or software required.
+## Features
 
-This is the recommended development experience while working locally.
+- Enjoy SAP Business Application Studio tailored dev-sapces, directly from your local VSCode installation, including tools and configurations which are not available on your local OS or manage multiple versions of them.
+- Connect to your diffrent centrally managed SAP environments (e.g : API Business Hub Entrprise, your subaccount destinaitions and many others) via the Business Application Studio service center.
+- Develop directly on SAP Business Technology Platform (the same environment you deploy to).
+- Separate your development environment to avoid impacting your local machine configuration.
+- Access an existing dev-space from multiple machines or locations.
+- Access multiple dev-spaces from one VSCode desktop installation.
+- Create new dev-spaces directly from your VSCode desktop installation.
+- Debug an application running somewhere else such as a customer site or in the cloud
+- Enjoy the rich VSCode extensions marketplace according to your needs and skillset
+- Allows easy access through a hosted secure environment, available anywhere, anytime.
 
-### Connect your Visual Studio Code to SAP Business Application Studio
+## Usage
 
-1. In the SAP Business Application Studio Desktop view, click `+`.
+How to connect your Visual Studio Code to your SAP Business Application Studio environment
 
-2. Enter your landscape URL.
-   ![](https://github.com/SAP/app-studio-toolkit/blob/main/packages/app-studio-toolkit/assets/add-landscape.png?raw=true)
+1. Open SAP Business Application Studio side panel on your VSCode desktop installation, click on the "Connect Landscape" button or the `+` icon.
 
-3. Select your landscape and log in.
+2. On the Command Palette prompt, enter your landscape URL (you can copy it from your Business Application Studio dev-space manager environment).<br>**_Note_**: _You can connect to multiple landscapes from the same VSCode installation_.
 
-4. Once you are connected, your dev spaces are displayed and you can manage them from VS Code.
+   ![](assets/connect-new-landscape.png?raw=true)
 
-Any change made in VS Code is mirrored in SAP Business Application Studio and vice-versa.
-![](https://github.com/SAP/app-studio-toolkit/blob/main/packages/app-studio-toolkit/assets/landscapesvsbrowser.png?raw=true)
+3. Once you are logged-in, your existing dev-spaces will be listed, you can also create new dev-space in case needed.
 
-5. Once a dev space is started, you can open it in a new window.<br>**_Note_**: _We support only one open dev space at a time_.
+![](assets/browse-bas-landscape.png?raw=true)
 
-### Overview
+4. If a dev-space is started, you will notice a green indication on the dev-space icon. For starting a dev-space, click on the 'play' icon (hover to the right of the dev-space).
 
-The image below shows the Storyboard so seen in VS Code.
-![](https://github.com/SAP/app-studio-toolkit/blob/main/packages/app-studio-toolkit/assets/storyboard.png?raw=true)
+5. For openning a dev-space, clock on the new windows icon (hover to the right of the dev-space).<br>**_Note_**: _You can open only one open dev space at a time_.
 
-For more information about SAP Business Application Studio features, see the [It’s time to plan your move to SAP Business Application Studio](https://blogs.sap.com/2022/01/10/its-time-to-plan-your-move-to-sap-business-application-studio/) blog post.
+## Support
 
-## How to obtain support
+Join the SAP Business [Application Studio Community](https://community.sap.com/topics/business-application-studio). Ask Questions, Read the Latest Blogs, Explore Content. Please assign tag: SAP Business Application Studio
+
+To log an issue with SAP Business Application Studio, please see [Contact SAP Support](https://help.sap.com/docs/bas/sap-business-application-studio/contact-sap-support).
 
 To get more help, support, and information please open a github [issue](https://github.com/SAP/app-studio-toolkit/issues).
+
+## Documentation
+
+Visit SAP Help Portal for SAP Business Application Studio [documentation](https://help.sap.com/docs/bas).
