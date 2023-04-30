@@ -4,12 +4,11 @@
 
 **SAP Business Application Studio toolkit** allows you to securely connect to your SAP Business Application Studio dev-spaces directly from your local Visual Studio Code desktop installation.
 
-
 For getting started with SAP Business Application Studio, please refer to the 'Getting Started' section on our [community page](https://community.sap.com/topics/business-application-studio).
 
 ## Features
 
-- Enjoy SAP Business Application Studio tailored dev-sapces, directly from your local VSCode installation, including tools and configurations which are not available on your local OS or manage multiple versions of them. 
+- Enjoy SAP Business Application Studio tailored dev-sapces, directly from your local VSCode installation, including tools and configurations which are not available on your local OS or manage multiple versions of them.
 - Connect to your diffrent centrally managed SAP environments (e.g : API Business Hub Entrprise, your subaccount destinaitions and many others) via the Business Application Studio service center.
 - Develop directly on SAP Business Technology Platform (the same environment you deploy to).
 - Separate your development environment to avoid impacting your local machine configuration.
@@ -19,7 +18,6 @@ For getting started with SAP Business Application Studio, please refer to the 'G
 - Debug an application running somewhere else such as a customer site or in the cloud
 - Enjoy the rich VSCode extensions marketplace according to your needs and skillset
 - Allows easy access through a hosted secure environment, available anywhere, anytime.
-
 
 ## Usage
 
@@ -38,8 +36,6 @@ How to connect your Visual Studio Code to your SAP Business Application Studio e
 4. If a dev-space is started, you will notice a green indication on the dev-space icon. For starting a dev-space, click on the 'play' icon (hover to the right of the dev-space).
 
 5. For openning a dev-space, clock on the new windows icon (hover to the right of the dev-space).<br>**_Note_**: _You can open only one open dev space at a time_.
-
-
 
 ## Support
 
