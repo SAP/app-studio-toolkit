@@ -339,9 +339,24 @@ describe("devSpacesExplorer unit test", () => {
       devspace.status = `Unreachable`;
       try {
         node.getIconPath(devspace);
+        fail(`should fail`);
       } catch (e) {
         expect(e.message).to.be.equal(messages.err_assert_unreachable);
       }
+    });
+
+    it("getIconPath, 'Unknown', Running", () => {
+      const devspace = cloneDeep(devspaces[0]);
+      devspace.pack = `SAP Unknown`;
+      devspace.status = DevSpaceStatus.SAFE_MODE;
+      const iconPath = node.getIconPath(devspace);
+      expect(iconPath.hasOwnProperty(`dark`)).to.be.true;
+      expect(iconPath.hasOwnProperty(`light`)).to.be.true;
+      expect(
+        path
+          .parse(iconPath.dark)
+          .name.endsWith(messages.lbl_devspace_status_error)
+      ).to.be.true;
     });
 
     it("getContextView, unreachable", () => {
@@ -349,6 +364,7 @@ describe("devSpacesExplorer unit test", () => {
       devspace.status = `Unreachable`;
       try {
         node.getContextView(devspace);
+        fail(`should fail`);
       } catch (e) {
         expect(e.message).to.be.equal(messages.err_assert_unreachable);
       }

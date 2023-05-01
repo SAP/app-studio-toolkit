@@ -199,7 +199,7 @@ export class LandscapeNode extends TreeNode {
 
   private getIconPath(devSpace: DevSpaceInfo): IconPath {
     const packName: string = $enum(PackName)
-      .getKeyOrThrow(devSpace.pack)
+      .getKeyOrDefault(devSpace.pack, `BASIC`)
       .toLowerCase();
     switch (devSpace.status) {
       case DevSpaceStatus.RUNNING: {

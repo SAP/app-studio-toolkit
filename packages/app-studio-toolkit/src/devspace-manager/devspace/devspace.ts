@@ -28,6 +28,13 @@ export interface DevSpaceInfo extends Omit<devspace.DevspaceInfo, "status"> {
   status: DevSpaceStatus;
 }
 
+function patchPack(pack: string): string {
+  // known mishmash : `SAP HANA Public` vs. `SAP Hana`
+  return pack.toLowerCase().startsWith(PackName.HANA.toLocaleLowerCase())
+    ? PackName.HANA
+    : pack;
+}
+
 export async function getDevSpaces(
   landscapeUrl: string
 ): Promise<DevSpaceInfo[] | void> {
@@ -40,7 +47,7 @@ export async function getDevSpaces(
             acc.push({
               devspaceDisplayName: ds.devspaceDisplayName,
               devspaceOrigin: ds.devspaceOrigin,
-              pack: ds.pack,
+              pack: patchPack(ds.pack),
               packDisplayName: ds.packDisplayName,
               url: ds.url,
               id: ds.id,
