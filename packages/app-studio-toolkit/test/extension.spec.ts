@@ -55,7 +55,7 @@ import * as logger from "../src/logger/logger";
 import { fail } from "assert";
 import { ActionsFactory } from "../src/actions/actionsFactory";
 import * as basRemoteExplorerInstance from "../src/devspace-manager/instance";
-import { difference, find } from "lodash";
+import { find, xor } from "lodash";
 
 describe("extension unit test", () => {
   let sandbox: SinonSandbox;
@@ -105,7 +105,7 @@ describe("extension unit test", () => {
           }[];
         };
       };
-      extensionPack: string[];
+      extensionDependencies: string[];
     };
 
     before(() => {
@@ -114,7 +114,7 @@ describe("extension unit test", () => {
 
     it("extension pack definition verifing", () => {
       expect(
-        difference(packageJson.extensionPack, [
+        xor(packageJson.extensionDependencies, [
           "ms-vscode-remote.remote-ssh",
           "ms-vscode-remote.remote-ssh-edit",
         ])

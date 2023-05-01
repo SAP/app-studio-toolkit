@@ -5,6 +5,7 @@ import proxyquire from "proxyquire";
 import * as devspaceModule from "../../../src/devspace-manager/devspace/devspace";
 import { messages } from "../../../src/devspace-manager/common/messages";
 import { devspace } from "@sap/bas-sdk";
+import { cloneDeep } from "lodash";
 
 describe("getDevSpaces unit test", () => {
   let devspaceProxy: typeof devspaceModule;
@@ -117,6 +118,20 @@ describe("getDevSpaces unit test", () => {
         status: devspaceProxy.DevSpaceStatus.RUNNING,
       },
     ]);
+  });
+
+  it("getDevSpaces, pack patch applied succedded", async () => {
+    mockAuthUtils.expects(`getJwt`).withExactArgs(landscape).resolves(jwt);
+    const cloned = cloneDeep(devspaces);
+    cloned[0].pack = `SAP HANA Public`;
+    mockDevspace
+      .expects(`getDevSpaces`)
+      .withExactArgs(landscape, jwt)
+      .resolves(cloned);
+    const expected = (await devspaceProxy.getDevSpaces(
+      landscape
+    )) as devspaceModule.DevSpaceInfo[];
+    expect(expected[0].pack).to.be.equal(devspaceModule.PackName.HANA);
   });
 
   it("getDevSpaces, failed", async () => {

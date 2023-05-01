@@ -370,7 +370,7 @@
     "string-replace-loader": "3.1.0",
     "ts-loader": "9.4.2"
   },
-  "extensionPack": [
+  "extensionDependencies": [
     "ms-vscode-remote.remote-ssh",
     "ms-vscode-remote.remote-ssh-edit"
   ],
