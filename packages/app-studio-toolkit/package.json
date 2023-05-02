@@ -312,7 +312,7 @@
         {
           "id": "dev-spaces",
           "name": "Dev Spaces",
-          "when": "!isWeb"
+          "when": "ext.runPlatform =~ /desktop/"
         }
       ]
     },
