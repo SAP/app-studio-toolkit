@@ -17,18 +17,26 @@ const proxyExtension = {
   },
 };
 
+const proxyCommands = {
+  executeCommand: () => {
+    throw new Error(`not implemented`);
+  },
+};
+
 const testVscode = {
   extensions: proxyExtension,
   env: proxyEnv,
   ExtensionKind: proxyExtensionKind,
+  commands: proxyCommands,
 };
 
 mockVscode(testVscode, "dist/src/utils/bas-utils.js");
-import { isRunInBAS } from "../../src/utils/bas-utils";
+import { ExtensionRunMode, isRunInBAS } from "../../src/utils/bas-utils";
 
 describe("bas-utils unit test", () => {
   let sandbox: SinonSandbox;
   let mockExtension: SinonMock;
+  let mockCommands: SinonMock;
 
   before(() => {
     sandbox = createSandbox();
@@ -40,10 +48,12 @@ describe("bas-utils unit test", () => {
 
   beforeEach(() => {
     mockExtension = sandbox.mock(proxyExtension);
+    mockCommands = sandbox.mock(proxyCommands);
   });
 
   afterEach(() => {
     mockExtension.verify();
+    mockCommands.verify();
   });
 
   const landscape = `https://my-landscape.test.com`;
@@ -51,12 +61,28 @@ describe("bas-utils unit test", () => {
   describe("isRunInBAS scope", () => {
     it("isRunInBAS, running locally, process.env.WS_BASE_URL is undefined", () => {
       sandbox.stub(process, `env`).value({});
+      mockCommands
+        .expects(`executeCommand`)
+        .withExactArgs(
+          `setContext`,
+          `ext.runPlatform`,
+          ExtensionRunMode.desktop
+        )
+        .resolves();
       expect(isRunInBAS()).to.be.false;
     });
 
     it("isRunInBAS, running through ssh-remote, process.env.WS_BASE_URL is defined", () => {
       sandbox.stub(process, `env`).value({ WS_BASE_URL: landscape });
       sandbox.stub(proxyEnv, `remoteName`).value(`ssh-remote`);
+      mockCommands
+        .expects(`executeCommand`)
+        .withExactArgs(
+          `setContext`,
+          `ext.runPlatform`,
+          ExtensionRunMode.basRemote
+        )
+        .resolves();
       expect(isRunInBAS()).to.be.false;
     });
 
@@ -66,6 +92,14 @@ describe("bas-utils unit test", () => {
       mockExtension
         .expects(`getExtension`)
         .returns({ extensionKind: proxyExtensionKind.Workspace });
+      mockCommands
+        .expects(`executeCommand`)
+        .withExactArgs(
+          `setContext`,
+          `ext.runPlatform`,
+          ExtensionRunMode.basWorkspace
+        )
+        .resolves();
       expect(isRunInBAS()).to.be.true;
     });
 
@@ -75,6 +109,10 @@ describe("bas-utils unit test", () => {
       mockExtension
         .expects(`getExtension`)
         .returns({ extensionKind: proxyExtensionKind.UI });
+      mockCommands
+        .expects(`executeCommand`)
+        .withExactArgs(`setContext`, `ext.runPlatform`, ExtensionRunMode.basUi)
+        .resolves();
       expect(isRunInBAS()).to.be.false;
     });
 
@@ -82,6 +120,14 @@ describe("bas-utils unit test", () => {
       sandbox.stub(process, `env`).value({ WS_BASE_URL: landscape });
       sandbox.stub(proxyEnv, `remoteName`).value(landscape);
       mockExtension.expects(`getExtension`).returns(undefined);
+      mockCommands
+        .expects(`executeCommand`)
+        .withExactArgs(
+          `setContext`,
+          `ext.runPlatform`,
+          ExtensionRunMode.unexpected
+        )
+        .resolves();
       expect(isRunInBAS()).to.be.false;
     });
   });
