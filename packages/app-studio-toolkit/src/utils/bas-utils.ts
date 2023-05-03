@@ -1,4 +1,11 @@
-import { ExtensionKind, commands, env, extensions } from "vscode";
+import {
+  ConfigurationTarget,
+  ExtensionKind,
+  commands,
+  env,
+  extensions,
+  workspace,
+} from "vscode";
 import { join, split, tail } from "lodash";
 import { URL } from "node:url";
 
@@ -34,10 +41,6 @@ function getExtensionRunPlatform(): ExtensionRunMode {
             runPlatform = ExtensionRunMode.basUi;
             break;
         }
-        runPlatform =
-          ext.extensionKind === ExtensionKind.Workspace
-            ? ExtensionRunMode.basWorkspace
-            : ExtensionRunMode.basUi;
       }
     } else {
       runPlatform = ExtensionRunMode.basRemote;
@@ -48,5 +51,13 @@ function getExtensionRunPlatform(): ExtensionRunMode {
 
   // view panel visibility expects that value is available
   void commands.executeCommand("setContext", `ext.runPlatform`, runPlatform);
+
+  // workaround for preventing the generic vscode welcome screen
+  if (runPlatform === ExtensionRunMode.basRemote) {
+    void workspace
+      .getConfiguration()
+      .update("workbench.startupEditor", "none", ConfigurationTarget.Global);
+  }
+
   return runPlatform;
 }

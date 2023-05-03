@@ -170,6 +170,9 @@ describe("extension unit test", () => {
       performerMock.expects("_performAction").never();
 
       wsConfigMock.expects("get").withExactArgs("actions", []).returns([]);
+      basRemoteExplorerMock
+        .expects("initBasRemoteExplorer")
+        .withExactArgs(context);
 
       const result = extension.activate(context);
       expect(result).to.haveOwnProperty("getExtensionAPI");

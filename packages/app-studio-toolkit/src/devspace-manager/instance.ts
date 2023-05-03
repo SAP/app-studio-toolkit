@@ -25,14 +25,7 @@ import { cmdLoginToLandscape } from "./landscape/landscape";
 import { getBasUriHandler } from "./handler/basHandler";
 import { cmdOpenInVSCode } from "./devspace/open";
 
-export async function initBasRemoteExplorer(
-  context: ExtensionContext
-): Promise<void> {
-  // workaround for preventing the generic vscode welcome screen
-  await workspace
-    .getConfiguration()
-    .update("workbench.startupEditor", "none", ConfigurationTarget.Global);
-
+export function initBasRemoteExplorer(context: ExtensionContext): void {
   context.subscriptions.push(
     commands.registerCommand("local-extension.tree.settings", () =>
       commands.executeCommand("workbench.action.openSettings", "Desktop Client")
