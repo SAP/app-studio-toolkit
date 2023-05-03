@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.13.2](https://github.com/SAP/app-studio-toolkit/compare/v1.13.1...v1.13.2) (2023-05-03)
+
+### Bug Fixes
+
+- update the `workbench.startupEditor` setting in `remote` mode only ([#231](https://github.com/SAP/app-studio-toolkit/issues/231)) ([3e004ca](https://github.com/SAP/app-studio-toolkit/commit/3e004ca457e1792261ad74cabfcc38ba7923b574))
+
 ## [1.13.1](https://github.com/SAP/app-studio-toolkit/compare/v1.13.0...v1.13.1) (2023-05-02)
 
 **Note:** Version bump only for package root
