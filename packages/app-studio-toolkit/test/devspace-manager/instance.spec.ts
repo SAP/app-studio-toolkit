@@ -85,8 +85,8 @@ describe("extension unit test", () => {
   };
 
   describe("initBasRemoteExplorer", () => {
-    it("verifying registered commands", async () => {
-      await instance.initBasRemoteExplorer(context);
+    it("verifying registered commands", () => {
+      instance.initBasRemoteExplorer(context);
       const commands = [
         `local-extension.tree.settings`,
         `local-extension.tree.refresh`,
@@ -111,7 +111,7 @@ describe("extension unit test", () => {
       }
     });
 
-    it("authentication provider registered", async () => {
+    it("authentication provider registered", () => {
       authenticationMock
         .expects(`registerAuthenticationProvider`)
         .withArgs(
@@ -119,15 +119,15 @@ describe("extension unit test", () => {
           "Business Application Studio"
         )
         .returns({});
-      await instance.initBasRemoteExplorer(context);
+      instance.initBasRemoteExplorer(context);
     });
 
-    it("command `local-extension.tree.settings`", async () => {
+    it("command `local-extension.tree.settings`", () => {
       commandsMock
         .expects(`executeCommand`)
         .withExactArgs(`workbench.action.openSettings`, `Desktop Client`)
         .returns({});
-      await instance.initBasRemoteExplorer(context);
+      instance.initBasRemoteExplorer(context);
       registry.get(`local-extension.tree.settings`)?.();
     });
   });

@@ -31,7 +31,7 @@ export function activate(context: ExtensionContext): BasToolkit {
   const workspaceAPI = initWorkspaceAPI(context);
   const basToolkitAPI = createBasToolkitAPI(workspaceAPI, baseBasToolkitAPI);
 
-  void initBasRemoteExplorer(context);
+  initBasRemoteExplorer(context);
 
   const logger = getLogger().getChildLogger({ label: "activate" });
   logger.info("The App-Studio-Toolkit Extension is active.");
