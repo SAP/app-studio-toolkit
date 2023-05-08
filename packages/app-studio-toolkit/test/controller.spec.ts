@@ -155,8 +155,18 @@ describe("controller unit test", () => {
       context("performActionsFromURL()", () => {
         let actionCtrlProxy: typeof ActionsController;
         let performActionArgsPromise: Promise<BasAction>;
+        let requireMock;
 
         before(() => {
+          requireMock = require("mock-require");
+          const configuration = { actions: "openSettingsAction,stam" };
+          const sapPlugin = {
+            window: {
+              configuration: () => configuration,
+            },
+          };
+          requireMock("@sap/plugin", sapPlugin);
+
           const performActionDeferred = pDefer<BasAction>();
           performActionArgsPromise = performActionDeferred.promise;
 

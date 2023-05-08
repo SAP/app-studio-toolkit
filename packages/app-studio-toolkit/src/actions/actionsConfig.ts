@@ -1,5 +1,6 @@
 import { workspace, WorkspaceConfiguration } from "vscode";
 import { uniqWith, isEqual } from "lodash";
+import _ from "lodash";
 
 const key = "actions";
 
@@ -22,10 +23,15 @@ export const get = (): any[] => {
 
 export const clear = (): void => {
   workspace.workspaceFolders?.forEach((wsFolder) => {
-    void workspace
-      .getConfiguration(undefined, wsFolder.uri)
-      .update(key, undefined); // removes actions key
+    const configurations = workspace.getConfiguration(undefined, wsFolder.uri);
+
+    if (_.size(configurations["actions"]) > 0) {
+      void configurations.update(key, undefined); // removes actions key if they exist
+    }
   });
 
-  void workspace.getConfiguration().update(key, undefined);
+  const configurations = workspace.getConfiguration();
+  if (_.size(configurations["actions"]) > 0) {
+    void configurations.update(key, undefined);
+  }
 };
