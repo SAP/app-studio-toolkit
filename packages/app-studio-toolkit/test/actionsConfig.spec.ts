@@ -12,7 +12,7 @@ const wsConfig = {
     },
     "create",
   ],
-  update: (key: any, value: any) => {
+  update: () => {
     wasUpdateCalled = true;
   },
   actions: [
@@ -50,10 +50,17 @@ describe("actionsFactory test", () => {
 
   beforeEach(() => {
     workspaceMock = sandbox.mock(testVscode.workspace);
+    wasUpdateCalled = false;
   });
 
   it("test clear actions", () => {
     clear();
     expect(wasUpdateCalled).to.be.true;
+  });
+
+  it("test clear empty actions", () => {
+    wsConfig.actions = [];
+    clear();
+    expect(wasUpdateCalled).to.be.false;
   });
 });
