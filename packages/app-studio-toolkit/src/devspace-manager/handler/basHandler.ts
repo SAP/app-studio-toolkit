@@ -1,4 +1,4 @@
-import type { UriHandler } from "vscode";
+import { UriHandler, commands } from "vscode";
 import { Uri, window } from "vscode";
 import { getLogger } from "../../logger/logger";
 import { DevSpaceStatus } from "../devspace/devspace";
@@ -41,17 +41,21 @@ async function getLandscapeFromUrl(
     }
     return node;
   };
+  let isRefresh = false;
   const landscapes = await getLandscapes();
   const landscape = landscapes.find((el) => el.name === landscapeParam);
   if (!landscape) {
     await addLandscape(`https://${landscapeParam}`);
+    isRefresh = true;
   }
   let landscapeNode = await findLandscapeNode();
   if (!/log-in/g.test(landscapeNode.contextValue ?? "")) {
     await cmdLoginToLandscape(landscapeNode);
     await new Promise<void>((resolve) => setTimeout(() => resolve(), 1000));
     landscapeNode = await findLandscapeNode();
+    isRefresh = true;
   }
+  isRefresh && void commands.executeCommand("local-extension.tree.refresh");
   return landscapeNode;
 }
 
