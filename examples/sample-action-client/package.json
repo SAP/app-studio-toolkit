@@ -43,6 +43,10 @@
         "command": "lcap.enabled"
       },
       {
+        "title": "BAS Toolkit: has Fiori capabilities (hasFioriCapabilities)",
+        "command": "has.fiori.capabilities"
+      },
+      {
         "title": "BAS Toolkit: Is Opened For Action (isOpenedForAction)",
         "command": "is.opened.for.action"
       },
@@ -83,6 +87,7 @@
     "onCommand:get.extension.api",
     "onCommand:get.parameter",
     "onCommand:lcap.enabled",
+    "onCommand:has.fiori.capabilities",
     "onCommand:is.opened.for.action",
     "onCommand:fileaction.scheduled",
     "onCommand:executeaction.display.error",
