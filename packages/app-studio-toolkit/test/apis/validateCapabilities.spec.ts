@@ -11,7 +11,10 @@ mockVscode(testVscode, "dist/src/logger/logger.js");
 mockVscode(testVscode, "dist/src/apis/validateLCAP.js");
 mockVscode(testVscode, "dist/src/apis/validateFioriCapabilities.js");
 import { isLCAPEnabled, LACP_EXTENSION_ID } from "../../src/apis/validateLCAP";
-import { hasFioriCapabilities, FIORI_EXTENSION_ID } from "../../src/apis/validateFioriCapabilities";
+import {
+  hasFioriCapabilities,
+  FIORI_EXTENSION_ID,
+} from "../../src/apis/validateFioriCapabilities";
 
 describe("validate capabilities API", () => {
   it("should return false", async () => {
