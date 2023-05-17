@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.14.0](https://github.com/SAP/app-studio-toolkit/compare/v1.13.2...v1.14.0) (2023-05-17)
+
+### Bug Fixes
+
+- create empty settings file ([#232](https://github.com/SAP/app-studio-toolkit/issues/232)) ([331fe20](https://github.com/SAP/app-studio-toolkit/commit/331fe20f511ce01e1335ceeec19ca09cddfb6f0e))
+
+### Features
+
+- adding hasFioriCapabilities API ([#236](https://github.com/SAP/app-studio-toolkit/issues/236)) ([1adc204](https://github.com/SAP/app-studio-toolkit/commit/1adc2047b98012e374f79e8ae0906108278deee8))
+
 ## [1.13.2](https://github.com/SAP/app-studio-toolkit/compare/v1.13.1...v1.13.2) (2023-05-03)
 
 ### Bug Fixes
