@@ -106,6 +106,11 @@ export interface BasToolkit {
   isLCAPEnabledSync: () => boolean;
 
   /**
+   * Is environment Fiori or not
+   */
+  hasFioriCapabilities: () => Promise<boolean>;
+
+  /**
    * Determine whether BAS is opened for running action or editing a project
    *
    * @experimental may be removed without notice in future versions.
