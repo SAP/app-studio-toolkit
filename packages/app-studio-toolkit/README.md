@@ -39,7 +39,7 @@ How to connect your Visual Studio Code to your SAP Business Application Studio e
 
 ## Support
 
-Join the SAP Business [Application Studio Community](https://community.sap.com/topics/business-application-studio). Ask Questions, Read the Latest Blogs, Explore Content. Please assign tag: SAP Business Application Studio
+Join the SAP Business Application Studio [Community](https://community.sap.com/topics/business-application-studio). Ask Questions, Read the Latest Blogs, Explore Content. Please assign tag: SAP Business Application Studio
 
 To log an issue with SAP Business Application Studio, please see [Contact SAP Support](https://help.sap.com/docs/bas/sap-business-application-studio/contact-sap-support).
 
