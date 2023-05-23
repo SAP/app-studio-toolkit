@@ -47,7 +47,6 @@ describe("bas-utils unit test", () => {
   let sandbox: SinonSandbox;
   let mockExtension: SinonMock;
   let mockCommands: SinonMock;
-  let workspaceConfigurationSinonMock: SinonMock;
 
   before(() => {
     sandbox = createSandbox();
@@ -60,13 +59,11 @@ describe("bas-utils unit test", () => {
   beforeEach(() => {
     mockExtension = sandbox.mock(proxyExtension);
     mockCommands = sandbox.mock(proxyCommands);
-    workspaceConfigurationSinonMock = sandbox.mock(workspaceConfigurationMock);
   });
 
   afterEach(() => {
     mockExtension.verify();
     mockCommands.verify();
-    workspaceConfigurationSinonMock.verify();
   });
 
   const landscape = `https://my-landscape.test.com`;
@@ -95,10 +92,6 @@ describe("bas-utils unit test", () => {
           `ext.runPlatform`,
           ExtensionRunMode.basRemote
         )
-        .resolves();
-      workspaceConfigurationSinonMock
-        .expects("update")
-        .withExactArgs("workbench.startupEditor", "none", 1)
         .resolves();
       expect(isRunInBAS()).to.be.false;
     });

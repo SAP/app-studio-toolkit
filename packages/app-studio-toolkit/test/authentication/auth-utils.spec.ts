@@ -43,7 +43,7 @@ describe("auth-utils unit test", () => {
     use: () => {},
     options: () => {},
     post: (path: string, listener: (req: any, res: any) => void) => {
-      if (path === `/ext-login`) {
+      if (path === `/remote-login`) {
         extLoginListener = listener;
       }
     },
@@ -155,10 +155,12 @@ describe("auth-utils unit test", () => {
   });
 
   describe(`ext-login unit test`, () => {
+    const stubValue = `__value__`;
+    const htmlTemplate = `<html><script>window.parent.postMessage( ${stubValue} , "*");</script><body/></html>`;
     let status: any;
     const request = {
       body: {
-        jwt: ``,
+        workspace_jwt: ``,
       },
     };
     const response = {
@@ -169,20 +171,22 @@ describe("auth-utils unit test", () => {
 
     beforeEach(() => {
       status = {};
-      request.body.jwt = ``;
+      request.body.workspace_jwt = ``;
       stub(authUtilsProxy, "JWT_TIMEOUT").value(1000);
     });
 
     it("retrieveJwt, login suceedded", async () => {
       mockUri.expects("parse").returns({ psPath: landscape });
       mockEnv.expects("openExternal").resolves(true);
-      request.body.jwt = `token`;
+      request.body.workspace_jwt = `token`;
       setTimeout(() => {
         expect(extLoginListener).to.be.ok;
         extLoginListener!(request, response);
       }, 100);
       expect(await authUtilsProxy.retrieveJwt(landscape)).to.be.equal(`token`);
-      expect(status).to.be.deep.equal({ status: "ok" });
+      expect(status).to.be.equal(
+        htmlTemplate.replace(stubValue, JSON.stringify({ status: "ok" }))
+      );
     });
 
     it("retrieveJwt, empty jwt received", async () => {
@@ -197,7 +201,9 @@ describe("auth-utils unit test", () => {
         extLoginListener!(request, response);
       }, 100);
       expect(await authUtilsProxy.retrieveJwt(landscape)).to.be.undefined;
-      expect(status).to.be.deep.equal({ status: "error" });
+      expect(status).to.be.equal(
+        htmlTemplate.replace(stubValue, JSON.stringify({ status: "error" }))
+      );
     });
 
     it("retrieveJwt, wrong jwt received", async () => {
@@ -207,13 +213,15 @@ describe("auth-utils unit test", () => {
         .expects("showErrorMessage")
         .withExactArgs(messages.err_incorrect_jwt(landscape))
         .resolves();
-      request.body.jwt = `<html> wrong flow </html>`;
+      request.body.workspace_jwt = `<html> wrong flow </html>`;
       setTimeout(() => {
         expect(extLoginListener).to.be.ok;
         extLoginListener!(request, response);
       }, 100);
       expect(await authUtilsProxy.retrieveJwt(landscape)).to.be.undefined;
-      expect(status).to.be.deep.equal({ status: "error" });
+      expect(status).to.be.equal(
+        htmlTemplate.replace(stubValue, JSON.stringify({ status: "error" }))
+      );
     });
 
     it("retrieveJwt, on server error", async () => {

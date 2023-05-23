@@ -52,12 +52,5 @@ function getExtensionRunPlatform(): ExtensionRunMode {
   // view panel visibility expects that value is available
   void commands.executeCommand("setContext", `ext.runPlatform`, runPlatform);
 
-  // workaround for preventing the generic vscode welcome screen
-  if (runPlatform === ExtensionRunMode.basRemote) {
-    void workspace
-      .getConfiguration()
-      .update("workbench.startupEditor", "none", ConfigurationTarget.Global);
-  }
-
   return runPlatform;
 }
