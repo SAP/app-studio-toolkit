@@ -18,6 +18,12 @@ describe("basHandler scope", () => {
     },
   };
 
+  const proxyCommands = {
+    executeCommand: () => {
+      throw new Error("not implemented");
+    },
+  };
+
   const proxyUri = {
     parse: (urlStr: string): any => {},
   };
@@ -68,6 +74,7 @@ describe("basHandler scope", () => {
         vscode: {
           Uri: proxyUri,
           window: proxyWindow,
+          commands: proxyCommands,
           "@noCallThru": true,
         },
         "../landscape/landscape": proxyLandscape,
@@ -84,6 +91,7 @@ describe("basHandler scope", () => {
   let mockDevSpaceConnect: SinonMock;
   let mockLandscapeSet: SinonMock;
   let mockWindow: SinonMock;
+  let mockCommands: SinonMock;
 
   beforeEach(() => {
     mockLandscape = mock(proxyLandscape);
@@ -91,6 +99,7 @@ describe("basHandler scope", () => {
     mockDevSpaceConnect = mock(proxyDevspaceConnect);
     mockLandscapeSet = mock(proxyLandscapeSet);
     mockWindow = mock(proxyWindow);
+    mockCommands = mock(proxyCommands);
   });
 
   afterEach(() => {
@@ -99,6 +108,7 @@ describe("basHandler scope", () => {
     mockDevSpaceConnect.verify();
     mockLandscapeSet.verify();
     mockWindow.verify();
+    mockCommands.verify();
   });
 
   const landscapeUrl1 = `https://my.landscape-1.com`;
@@ -157,7 +167,7 @@ describe("basHandler scope", () => {
     },
   ];
 
-  it("hadleUri, ok", async () => {
+  it("handleUri, ok", async () => {
     mockLandscape.expects(`getLandscapes`).resolves(landscapes);
     mockDevSpaceProvider.expects(`getChildren`).resolves(nodes);
     const mockLandscapeNode = mock(nodes[0]);
@@ -170,7 +180,7 @@ describe("basHandler scope", () => {
     mockLandscapeNode.verify();
   });
 
-  it("hadleUri, uri path is unexpected", async () => {
+  it("handleUri, uri path is unexpected", async () => {
     const wrongUri = cloneDeep(uri);
     wrongUri.path = `/run`;
     mockWindow
@@ -183,7 +193,7 @@ describe("basHandler scope", () => {
     await handler.handleUri(wrongUri);
   });
 
-  it("hadleUri, url has wromg 'landscape' param", async () => {
+  it("handleUri, url has wromg 'landscape' param", async () => {
     const wrongParamUri = cloneDeep(uri);
     wrongParamUri.query = `landcape=some-landscape.com&devspaceid=someid`;
     mockWindow
@@ -196,7 +206,7 @@ describe("basHandler scope", () => {
     await handler.handleUri(wrongParamUri);
   });
 
-  it("hadleUri, url has wromg 'landscape' param format", async () => {
+  it("handleUri, url has wromg 'landscape' param format", async () => {
     const wrongParamUri = cloneDeep(uri);
     wrongParamUri.query = `landscape:some-landscape.com&devspaceid=someid`;
     mockWindow
@@ -209,7 +219,7 @@ describe("basHandler scope", () => {
     await handler.handleUri(wrongParamUri);
   });
 
-  it("hadleUri, url has wromg 'devspaceid' param", async () => {
+  it("handleUri, url has wromg 'devspaceid' param", async () => {
     mockLandscape.expects(`getLandscapes`).resolves(landscapes);
     mockDevSpaceProvider.expects(`getChildren`).resolves(nodes);
     const wrongParamUri = cloneDeep(uri);
@@ -226,7 +236,7 @@ describe("basHandler scope", () => {
     await handler.handleUri(wrongParamUri);
   });
 
-  it("hadleUri, landscape not exist, added", async () => {
+  it("handleUri, landscape not exist, added", async () => {
     const landscapeUrl = `https://my.landscape-other.com`;
     const landscapeParam = new URL(landscapeUrl).hostname;
     mockLandscape.expects(`getLandscapes`).resolves(landscapes);
@@ -263,11 +273,14 @@ describe("basHandler scope", () => {
       .split(`-`)
       .slice(1)
       .join(`-`)}`;
+    mockCommands
+      .expects("executeCommand")
+      .withExactArgs("local-extension.tree.refresh");
     await handler.handleUri(otherUri);
     mockLandscapeNode.verify();
   });
 
-  it("hadleUri, landscape node not found", async () => {
+  it("handleUri, landscape node not found", async () => {
     mockLandscape.expects(`getLandscapes`).resolves(landscapes);
     const missedNodes = slice(nodes, 1);
     mockDevSpaceProvider.expects(`getChildren`).resolves(missedNodes);
@@ -281,7 +294,7 @@ describe("basHandler scope", () => {
     await handler.handleUri(uri);
   });
 
-  it("hadleUri, landscape is not log in", async () => {
+  it("handleUri, landscape is not log in", async () => {
     mockLandscape.expects(`getLandscapes`).resolves(landscapes);
     const copyNodes = cloneDeep(nodes);
     copyNodes[0].contextValue = `log-out-node`;
@@ -296,11 +309,14 @@ describe("basHandler scope", () => {
       .expects(`cmdDevSpaceConnectNewWindow`)
       .withExactArgs(devspaces[0])
       .resolves();
+    mockCommands
+      .expects("executeCommand")
+      .withExactArgs("local-extension.tree.refresh");
     await handler.handleUri(uri);
     mockLandscapeNode.verify();
   });
 
-  it("hadleUri, landscape is not log in (contex value empty)", async () => {
+  it("handleUri, landscape is not log in (contex value empty)", async () => {
     mockLandscape.expects(`getLandscapes`).resolves(landscapes);
     const copyNodes = cloneDeep(nodes);
     delete copyNodes[0].contextValue;
@@ -315,11 +331,14 @@ describe("basHandler scope", () => {
       .expects(`cmdDevSpaceConnectNewWindow`)
       .withExactArgs(devspaces[0])
       .resolves();
+    mockCommands
+      .expects("executeCommand")
+      .withExactArgs("local-extension.tree.refresh");
     await handler.handleUri(uri);
     mockLandscapeNode.verify();
   });
 
-  it("hadleUri, landscape is empty (there are no devscapes)", async () => {
+  it("handleUri, landscape is empty (there are no devscapes)", async () => {
     mockLandscape.expects(`getLandscapes`).resolves(landscapes);
     mockDevSpaceProvider.expects(`getChildren`).resolves(nodes);
     const mockLandscapeNode = mock(nodes[0]);
@@ -335,7 +354,7 @@ describe("basHandler scope", () => {
     mockLandscapeNode.verify();
   });
 
-  it("hadleUri, devspace not found", async () => {
+  it("handleUri, devspace not found", async () => {
     mockLandscape.expects(`getLandscapes`).resolves(landscapes);
     mockDevSpaceProvider.expects(`getChildren`).resolves(nodes);
     const mockLandscapeNode = mock(nodes[0]);
@@ -353,7 +372,7 @@ describe("basHandler scope", () => {
     mockLandscapeNode.verify();
   });
 
-  it("hadleUri, ok", async () => {
+  it("handleUri, ok", async () => {
     mockLandscape.expects(`getLandscapes`).resolves(landscapes);
     mockDevSpaceProvider.expects(`getChildren`).resolves(nodes);
     const cloned = cloneDeep(devspaces);

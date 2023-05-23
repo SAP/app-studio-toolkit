@@ -1,5 +1,6 @@
 import { authentication, env, Uri, window } from "vscode";
 import express from "express";
+import cors from "cors";
 import * as bodyParser from "body-parser";
 import jwtDecode, { JwtPayload } from "jwt-decode";
 import { getLogger } from "../logger/logger";
@@ -12,13 +13,6 @@ export const JWT_TIMEOUT = 60 * 1000; // 60s
 const EXT_LOGIN_PORTNUM = 55532;
 
 const serverCache = new Map<string, HttpTerminator>();
-
-enum eHeaders {
-  "Access-Control-Allow-Origin" = "Access-Control-Allow-Origin",
-  "Access-Control-Allow-Methods" = "Access-Control-Allow-Methods",
-  "Access-Control-Allow-Headers" = "Access-Control-Allow-Headers",
-  "Access-Control-Allow-Credentials" = "Access-Control-Allow-Credentials",
-}
 
 function getJwtExpiration(jwt: string): number {
   const decodedJwt: JwtPayload = jwtDecode<JwtPayload>(jwt);
@@ -42,7 +36,9 @@ export function timeUntilJwtExpires(jwt: string): number {
 }
 
 async function loginToLandscape(landscapeUrl: string): Promise<boolean> {
-  return env.openExternal(Uri.parse(core.getExtLoginPath(landscapeUrl)));
+  return env.openExternal(
+    Uri.parse(`${core.getExtLoginPath(landscapeUrl)}&iframe=src`)
+  );
 }
 
 async function getJwtFromServer(landscapeUrl: string): Promise<string> {
@@ -50,50 +46,33 @@ async function getJwtFromServer(landscapeUrl: string): Promise<string> {
   return new Promise<string>((resolve, reject) => {
     const app = express();
 
-    app.use(function (req, res, next) {
-      res.setHeader(eHeaders["Access-Control-Allow-Origin"], `${landscapeUrl}`);
-      res.setHeader(
-        eHeaders["Access-Control-Allow-Methods"],
-        "GET, POST, OPTIONS, PUT, PATCH, DELETE"
-      );
-      res.setHeader(
-        eHeaders["Access-Control-Allow-Headers"],
-        "X-Requested-With,content-type"
-      );
-      res.setHeader(eHeaders["Access-Control-Allow-Credentials"], "true");
-      res.header(eHeaders["Access-Control-Allow-Origin"], "*");
-      next();
-    });
+    app.use(cors());
+
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
 
-    app.options("/ext-login", function (req, res, next) {
-      res.header(eHeaders["Access-Control-Allow-Origin"], "*");
-      res.header(
-        eHeaders["Access-Control-Allow-Methods"],
-        "GET,PUT,POST,DELETE,OPTIONS"
-      );
-      res.header(
-        eHeaders["Access-Control-Allow-Headers"],
-        "Content-Type, Authorization, Content-Length, X-Requested-With"
-      );
-      res.sendStatus(200);
-    });
-
-    app.post("/ext-login", function (request, response) {
-      const jwt: string | undefined = request?.body?.jwt;
+    app.post("/remote-login", function (request, response) {
+      const stubValue = `__value__`;
+      const htmlTemplate = `<html><script>window.parent.postMessage( ${stubValue} , "*");</script><body/></html>`;
+      const jwt: string | undefined = request?.body?.workspace_jwt;
       if (!jwt || jwt.startsWith("<html>")) {
-        response.send({ status: "error" });
+        response.send(
+          htmlTemplate.replace(stubValue, JSON.stringify({ status: "error" }))
+        );
         reject(new Error(messages.err_incorrect_jwt(landscapeUrl)));
       } else {
         getLogger().info(`jwt recieved from remote for ${landscapeUrl}`);
-        response.send({ status: "ok" });
+        response.send(
+          htmlTemplate.replace(stubValue, JSON.stringify({ status: "ok" }))
+        );
         resolve(jwt);
       }
     });
 
     const server = app.listen(EXT_LOGIN_PORTNUM, () => {
-      getLogger().info(`Listening to get jwt for ${landscapeUrl}`);
+      getLogger().info(
+        `CORS-enabled web server listening to get jwt for ${landscapeUrl}`
+      );
     });
 
     server.on("error", function (err) {
