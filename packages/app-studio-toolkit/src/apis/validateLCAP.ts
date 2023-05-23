@@ -1,7 +1,7 @@
 import { getLogger } from "@sap/artifact-management";
 import { extensions } from "vscode";
 
-export const LACP_EXTENSION_ID = "SAPSE.lcap-cockpit";
+export const LACP_EXTENSION_ID = "SAPSE.lcap-treeview-container";
 
 // eslint-disable-next-line @typescript-eslint/require-await -- the new implementation does not require await.
 export async function isLCAPEnabled(): Promise<boolean> {
