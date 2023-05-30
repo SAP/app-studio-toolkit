@@ -30,6 +30,11 @@ describe("extension unit test", () => {
           uiTheme: "vs-dark",
           path: "./src/themes/dark-fiori-horizon.json",
         },
+        {
+          label: "SAP Fiori Morning Horizon",
+          uiTheme: "vs",
+          path: "./src/themes/light-fiori-horizon.json",
+        },
       ]);
     });
   });
