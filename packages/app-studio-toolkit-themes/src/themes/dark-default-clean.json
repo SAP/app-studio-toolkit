@@ -358,7 +358,6 @@
     {
       "scope": ["source.regexp", "string.regexp"],
       "settings": {
-        "//***foreground": "#032f62",
         "foreground": "#91C8F6"
       }
     },
