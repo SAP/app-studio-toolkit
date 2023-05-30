@@ -90,7 +90,7 @@
     "statusBar.background": "#0854A0",
     "statusBar.border": "#3A4552",
     "statusBar.noFolderBackground": "#b995e0",
-    "statusBar.debuggingBackground": "#ABE2AB",
+    "statusBar.debuggingBackground": "#FFC847",
     "statusBar.debuggingForeground": "#5C666B",
     "statusBarItem.prominentBackground": "#29313A",
     "statusBarItem.remoteBackground": "#153C15",
