@@ -25,8 +25,6 @@ export const messages = {
 
   err_incorrect_jwt: (url: string) =>
     `Incorrect token recieved for ${url}. Login failed.`,
-  err_listening: (message: string, url: string) =>
-    `An error occurred while listening for the JWT: ${message} for ${url}`,
   err_get_jwt_timeout: (ms: number) => `Login time out in ${ms} ms.`,
   err_get_jwt_not_exists: `Personal Access Token does not exist.`,
   err_get_jwt_required: `Personal Access Token is required`,

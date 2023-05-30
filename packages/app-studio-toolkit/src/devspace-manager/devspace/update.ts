@@ -3,9 +3,9 @@ import { getLogger } from "../../logger/logger";
 import { DevSpaceNode } from "../tree/treeItems";
 import { messages } from "../common/messages";
 import { getJwt } from "../../authentication/auth-utils";
-import { devspace } from "@sap/bas-sdk";
+import * as sdk from "@sap/bas-sdk";
 import { autoRefresh } from "../landscape/landscape";
-import { DevSpaceStatus, getDevSpaces } from "./devspace";
+import { getDevSpaces } from "./devspace";
 
 const START = false;
 const STOP = true;
@@ -35,8 +35,8 @@ async function isItPossibleToStart(
   if (
     devSpaces.filter(
       (devspace) =>
-        devspace.status === DevSpaceStatus.RUNNING ||
-        devspace.status === DevSpaceStatus.STARTING
+        devspace.status === sdk.devspace.DevSpaceStatus.RUNNING ||
+        devspace.status === sdk.devspace.DevSpaceStatus.STARTING
     ).length < 2
   ) {
     return true;
@@ -63,7 +63,7 @@ async function updateDevSpace(
 ): Promise<void> {
   return getJwt(landscapeUrl)
     .then((jwt) => {
-      return devspace
+      return sdk.devspace
         .updateDevSpace(landscapeUrl, jwt, wsId, {
           Suspended: suspend,
           WorkspaceDisplayName: wsName,

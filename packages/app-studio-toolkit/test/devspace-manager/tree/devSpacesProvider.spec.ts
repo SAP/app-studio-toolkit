@@ -1,7 +1,6 @@
 import { expect } from "chai";
 import { SinonMock, mock } from "sinon";
 import proxyquire from "proxyquire";
-
 import * as devSpacesProviderModule from "../../../src/devspace-manager/tree/devSpacesProvider";
 import {
   DevSpaceNode,
@@ -9,7 +8,7 @@ import {
   getSvgIconPath,
 } from "../../../src/devspace-manager/tree/treeItems";
 import { messages } from "../../../src/devspace-manager/common/messages";
-import { DevSpaceStatus } from "../../../src/devspace-manager/devspace/devspace";
+import * as sdk from "@sap/bas-sdk";
 
 describe("devSpacesProvider unit test", () => {
   let devSpacesProviderProxy: typeof devSpacesProviderModule.DevSpaceDataProvider;
@@ -167,7 +166,7 @@ describe("devSpacesProvider unit test", () => {
       `landscapeUrl`,
       `wsUrl`,
       `ws-id`,
-      DevSpaceStatus.STOPPED
+      sdk.devspace.DevSpaceStatus.STOPPED
     );
     expect(await instance.getChildren(node)).to.be.deep.equal([]);
   });

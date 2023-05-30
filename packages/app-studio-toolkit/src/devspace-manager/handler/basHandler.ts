@@ -1,7 +1,7 @@
-import { UriHandler, commands } from "vscode";
-import { Uri, window } from "vscode";
+import { EventEmitter, Uri, window, commands } from "vscode";
+import type { UriHandler } from "vscode";
 import { getLogger } from "../../logger/logger";
-import { DevSpaceStatus } from "../devspace/devspace";
+import * as sdk from "@sap/bas-sdk";
 import { cmdLoginToLandscape, getLandscapes } from "../landscape/landscape";
 import { isEmpty } from "lodash";
 import { addLandscape } from "../landscape/set";
@@ -22,7 +22,9 @@ async function getDevspaceFromUrl(
   if (!devspace) {
     throw new Error(messages.err_devspace_missing(devspaceidParam));
   }
-  if ((devspace as DevSpaceNode).status !== DevSpaceStatus.RUNNING) {
+  if (
+    (devspace as DevSpaceNode).status !== sdk.devspace.DevSpaceStatus.RUNNING
+  ) {
     throw new Error(messages.err_devspace_must_be_started);
   }
   return devspace;
@@ -70,28 +72,53 @@ function getParamFromUrl(query: string, name: string): string {
   return param;
 }
 
+export interface LoginEvent {
+  jwt?: string;
+}
+
+// Create an instance of EventEmitter
+export const eventEmitter = new EventEmitter<LoginEvent>();
+
+async function handleLogin(uri: Uri): Promise<void> {
+  // expected URL format :
+  // vscode://SAPOSS.app-studio-toolkit/login?jwt=`value`
+  return Promise.resolve().then(() => {
+    eventEmitter.fire({ jwt: getParamFromUrl(uri.query, "jwt") });
+  });
+}
+
+async function handleOpen(
+  uri: Uri,
+  devSpacesProvider: DevSpaceDataProvider
+): Promise<void> {
+  // expected URL format :
+  // vscode://SAPOSS.app-studio-toolkit/open?landscape=bas-extensions.stg10cf.int.applicationstudio.cloud.sap&devspaceid=ws-62qpt
+  const landscape = await getLandscapeFromUrl(
+    devSpacesProvider,
+    getParamFromUrl(uri.query, `landscape`)
+  );
+  const devspace = await getDevspaceFromUrl(
+    landscape,
+    getParamFromUrl(uri.query, `devspaceid`)
+  );
+  void cmdDevSpaceConnectNewWindow(devspace as DevSpaceNode);
+}
+
 export function getBasUriHandler(
   devSpacesProvider: DevSpaceDataProvider
 ): UriHandler {
   return {
     handleUri: async (uri: Uri): Promise<void> => {
-      // expected URL format :
-      // vscode://SAPOSS.app-studio-toolkit/open?landscape=bas-extensions.stg10cf.int.applicationstudio.cloud.sap&devspaceid=ws-62qpt
       try {
-        if (uri.path !== "/open") {
+        if (uri.path === "/open") {
+          await handleOpen(uri, devSpacesProvider);
+        } else if (uri.path === "/login") {
+          await handleLogin(uri);
+        } else {
           throw new Error(
             messages.err_url_has_incorrect_format(uri.toString())
           );
         }
-        const landscape = await getLandscapeFromUrl(
-          devSpacesProvider,
-          getParamFromUrl(uri.query, `landscape`)
-        );
-        const devspace = await getDevspaceFromUrl(
-          landscape,
-          getParamFromUrl(uri.query, `devspaceid`)
-        );
-        void cmdDevSpaceConnectNewWindow(devspace as DevSpaceNode);
       } catch (err) {
         getLogger().error(messages.err_open_devspace_in_code(err.message));
         void window.showErrorMessage(

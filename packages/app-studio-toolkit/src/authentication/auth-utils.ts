@@ -1,18 +1,15 @@
 import { authentication, env, Uri, window } from "vscode";
-import express from "express";
-import cors from "cors";
-import * as bodyParser from "body-parser";
 import jwtDecode, { JwtPayload } from "jwt-decode";
 import { getLogger } from "../logger/logger";
-import { createHttpTerminator, HttpTerminator } from "http-terminator";
 import { BasRemoteAuthenticationProvider } from "./authProvider";
 import { core } from "@sap/bas-sdk";
 import { messages } from "../../src/devspace-manager/common/messages";
+import {
+  eventEmitter,
+  LoginEvent,
+} from "../../src/devspace-manager/handler/basHandler";
 
 export const JWT_TIMEOUT = 60 * 1000; // 60s
-const EXT_LOGIN_PORTNUM = 55532;
-
-const serverCache = new Map<string, HttpTerminator>();
 
 function getJwtExpiration(jwt: string): number {
   const decodedJwt: JwtPayload = jwtDecode<JwtPayload>(jwt);
@@ -36,50 +33,24 @@ export function timeUntilJwtExpires(jwt: string): number {
 }
 
 async function loginToLandscape(landscapeUrl: string): Promise<boolean> {
-  return env.openExternal(
-    Uri.parse(`${core.getExtLoginPath(landscapeUrl)}&iframe=src`)
-  );
+  return env.openExternal(Uri.parse(core.getExtLoginPath(landscapeUrl)));
 }
 
 async function getJwtFromServer(landscapeUrl: string): Promise<string> {
-  /* istanbul ignore next */
   return new Promise<string>((resolve, reject) => {
-    const app = express();
+    // Subscribe the listener to the event
+    const listener = eventEmitter.event(handleEvent);
 
-    app.use(cors());
-
-    app.use(bodyParser.urlencoded({ extended: false }));
-    app.use(bodyParser.json());
-
-    app.post("/remote-login", function (request, response) {
-      const stubValue = `__value__`;
-      const htmlTemplate = `<html><script>window.parent.postMessage( ${stubValue} , "*");</script><body/></html>`;
-      const jwt: string | undefined = request?.body?.workspace_jwt;
-      if (!jwt || jwt.startsWith("<html>")) {
-        response.send(
-          htmlTemplate.replace(stubValue, JSON.stringify({ status: "error" }))
-        );
+    // Listener function to resolve the promise when the event is received
+    function handleEvent(event: LoginEvent): void {
+      if (event.jwt?.toLocaleLowerCase().startsWith("<html>")) {
         reject(new Error(messages.err_incorrect_jwt(landscapeUrl)));
       } else {
-        getLogger().info(`jwt recieved from remote for ${landscapeUrl}`);
-        response.send(
-          htmlTemplate.replace(stubValue, JSON.stringify({ status: "ok" }))
-        );
-        resolve(jwt);
+        resolve(event.jwt ?? "");
       }
-    });
-
-    const server = app.listen(EXT_LOGIN_PORTNUM, () => {
-      getLogger().info(
-        `CORS-enabled web server listening to get jwt for ${landscapeUrl}`
-      );
-    });
-
-    server.on("error", function (err) {
-      reject(new Error(messages.err_listening(err.message, landscapeUrl)));
-    });
-
-    serverCache.set(landscapeUrl, createHttpTerminator({ server }));
+      // Remove the listener after resolving the promise
+      listener.dispose();
+    }
   });
 }
 
@@ -108,19 +79,30 @@ async function retrieveJwtFromRemote(
   );
 
   const accepted = await loginToLandscape(landscapeUrl);
-  // browser open failed
+  // browser open not accepted
   if (!accepted) {
-    void closeServer(landscapeUrl);
-    return;
+    void closeListener(Promise.reject(new Error("canceled")));
   }
-  return jwtPromise.finally(() => void closeServer(landscapeUrl));
+  return jwtPromise.finally(() => void closeListener(jwtPromise));
 }
 
-/* istanbul ignore next */
-async function closeServer(landscapeUrl: string): Promise<void> {
-  await serverCache.get(landscapeUrl)?.terminate();
-  serverCache.delete(landscapeUrl);
-  getLogger().info(`closing server for ${landscapeUrl}`);
+async function closeListener(promise: Promise<string>): Promise<void> {
+  // dispose the login event listener in case of :
+  //   1. open browser is canceled or disallowed
+  //   2. login timeout occured
+  if (
+    // confirm promise is rejected
+    await promise
+      .then(() => false)
+      .catch((e) => {
+        return !e.message.startsWith(
+          messages.err_incorrect_jwt("").split(" ").slice(0, 3).join(" ")
+        );
+      })
+  ) {
+    eventEmitter.fire({});
+  }
+  getLogger().info(`closing listener`);
 }
 
 export function retrieveJwt(landscapeUrl: string): Promise<string | void> {

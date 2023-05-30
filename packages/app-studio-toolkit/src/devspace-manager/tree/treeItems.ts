@@ -2,7 +2,8 @@ import { TreeItemCollapsibleState, TreeItem } from "vscode";
 import type { Command } from "vscode";
 import * as path from "path";
 import { messages } from "../common/messages";
-import { DevSpaceStatus, getDevSpaces, PackName } from "../devspace/devspace";
+import * as sdk from "@sap/bas-sdk";
+import { getDevSpaces } from "../devspace/devspace";
 import type { DevSpaceInfo } from "../devspace/devspace";
 import { $enum } from "ts-enum-util";
 import { compact, get, isEmpty, map } from "lodash";
@@ -111,7 +112,7 @@ export class DevSpaceNode extends TreeNode {
   public readonly landscapeUrl: string;
   public readonly wsUrl: string;
   public readonly id: string;
-  public readonly status: DevSpaceStatus;
+  public readonly status: sdk.devspace.DevSpaceStatus;
   constructor(
     label: string,
     collapsibleState: TreeItemCollapsibleState,
@@ -121,7 +122,7 @@ export class DevSpaceNode extends TreeNode {
     landscapeUrl: string,
     wsUrl: string,
     id: string,
-    status: DevSpaceStatus,
+    status: sdk.devspace.DevSpaceStatus,
     contextValue?: string,
     tooltip?: string,
     description?: string
@@ -177,13 +178,13 @@ export class LandscapeNode extends TreeNode {
 
   private getLabel(devSpace: DevSpaceInfo): string {
     switch (devSpace.status) {
-      case DevSpaceStatus.RUNNING:
-      case DevSpaceStatus.STOPPED:
+      case sdk.devspace.DevSpaceStatus.RUNNING:
+      case sdk.devspace.DevSpaceStatus.STOPPED:
         return devSpace.devspaceDisplayName;
-      case DevSpaceStatus.STARTING:
-      case DevSpaceStatus.STOPPING:
-      case DevSpaceStatus.SAFE_MODE:
-      case DevSpaceStatus.ERROR:
+      case sdk.devspace.DevSpaceStatus.STARTING:
+      case sdk.devspace.DevSpaceStatus.STOPPING:
+      case sdk.devspace.DevSpaceStatus.SAFE_MODE:
+      case sdk.devspace.DevSpaceStatus.ERROR:
         return `${
           devSpace.devspaceDisplayName
         } (${devSpace.status.toLowerCase()})`;
@@ -198,31 +199,31 @@ export class LandscapeNode extends TreeNode {
   }
 
   private getIconPath(devSpace: DevSpaceInfo): IconPath {
-    const packName: string = $enum(PackName)
+    const packName: string = $enum(sdk.devspace.PackName)
       .getKeyOrDefault(devSpace.pack, `BASIC`)
       .toLowerCase();
     switch (devSpace.status) {
-      case DevSpaceStatus.RUNNING: {
+      case sdk.devspace.DevSpaceStatus.RUNNING: {
         return getSvgIconPath(
           this.extensionPath,
           `${packName}_${messages.lbl_devspace_status_runnig}`
         );
       }
-      case DevSpaceStatus.STARTING:
-      case DevSpaceStatus.STOPPING: {
+      case sdk.devspace.DevSpaceStatus.STARTING:
+      case sdk.devspace.DevSpaceStatus.STOPPING: {
         return getSvgIconPath(
           this.extensionPath,
           `${packName}_${messages.lbl_devspace_status_transitioning}`
         );
       }
-      case DevSpaceStatus.STOPPED: {
+      case sdk.devspace.DevSpaceStatus.STOPPED: {
         return getSvgIconPath(
           this.extensionPath,
           `${packName}_${messages.lbl_devspace_status_not_runnig}`
         );
       }
-      case DevSpaceStatus.SAFE_MODE:
-      case DevSpaceStatus.ERROR:
+      case sdk.devspace.DevSpaceStatus.SAFE_MODE:
+      case sdk.devspace.DevSpaceStatus.ERROR:
         return getSvgIconPath(
           this.extensionPath,
           `${packName}_${messages.lbl_devspace_status_error}`
@@ -234,15 +235,15 @@ export class LandscapeNode extends TreeNode {
 
   private getContextView(devSpace: DevSpaceInfo): string {
     switch (devSpace.status) {
-      case DevSpaceStatus.RUNNING:
+      case sdk.devspace.DevSpaceStatus.RUNNING:
         return messages.lbl_devspace_context_runnig;
-      case DevSpaceStatus.STOPPED:
+      case sdk.devspace.DevSpaceStatus.STOPPED:
         return messages.lbl_devspace_context_stopped;
-      case DevSpaceStatus.STARTING:
-      case DevSpaceStatus.STOPPING:
+      case sdk.devspace.DevSpaceStatus.STARTING:
+      case sdk.devspace.DevSpaceStatus.STOPPING:
         return messages.lbl_devspace_context_transitioning;
-      case DevSpaceStatus.SAFE_MODE:
-      case DevSpaceStatus.ERROR:
+      case sdk.devspace.DevSpaceStatus.SAFE_MODE:
+      case sdk.devspace.DevSpaceStatus.ERROR:
         return messages.lbl_devspace_context_error;
       default:
         this.assertUnreachable(devSpace.status);
