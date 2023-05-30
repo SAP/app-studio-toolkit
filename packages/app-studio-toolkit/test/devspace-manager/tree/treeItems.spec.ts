@@ -5,13 +5,9 @@ import { SinonMock, mock } from "sinon";
 import proxyquire from "proxyquire";
 
 import * as treeItemsModule from "../../../src/devspace-manager/tree/treeItems";
-import {
-  DevSpaceStatus,
-  PackName,
-} from "../../../src/devspace-manager/devspace/devspace";
 import { messages } from "../../../src/devspace-manager/common/messages";
 import { cloneDeep } from "lodash";
-import { devspace } from "@sap/bas-sdk";
+import * as sdk from "@sap/bas-sdk";
 
 describe("devSpacesExplorer unit test", () => {
   let treeItemsProxy: typeof treeItemsModule;
@@ -27,11 +23,11 @@ describe("devSpacesExplorer unit test", () => {
   }
 
   const proxyDevspace = {
-    DevSpaceStatus,
+    DevSpaceStatus: sdk.devspace.DevSpaceStatus,
     getDevSpaces: () => {
       throw new Error(`not implemented`);
     },
-    PackName,
+    PackName: sdk.devspace.PackName,
   };
 
   before(() => {
@@ -127,7 +123,7 @@ describe("devSpacesExplorer unit test", () => {
         testLandscapeUrl,
         testWsUrl,
         testWsId,
-        DevSpaceStatus.RUNNING,
+        sdk.devspace.DevSpaceStatus.RUNNING,
         testContextValue,
         testTooltip,
         testDescription
@@ -145,7 +141,7 @@ describe("devSpacesExplorer unit test", () => {
       expect(node.landscapeUrl).to.be.equal(testLandscapeUrl);
       expect(node.wsUrl).to.be.equal(testWsUrl);
       expect(node.id).to.be.equal(testWsId);
-      expect(node.status).to.be.equal(DevSpaceStatus.RUNNING);
+      expect(node.status).to.be.equal(sdk.devspace.DevSpaceStatus.RUNNING);
       expect(node.contextValue).to.be.equal(testContextValue);
       expect(node.tooltip).to.be.equal(testTooltip);
       expect(node.description).to.be.equal(testDescription);
@@ -179,7 +175,7 @@ describe("devSpacesExplorer unit test", () => {
       mockDevspace.verify();
     });
 
-    const devspaces: devspace.DevspaceInfo[] = [
+    const devspaces: sdk.devspace.DevspaceInfo[] = [
       {
         devspaceDisplayName: `devspaceDisplayName-1`,
         devspaceOrigin: `devspaceOrigin`,
@@ -262,19 +258,19 @@ describe("devSpacesExplorer unit test", () => {
 
     it("getLabel, STOPPED", () => {
       const devspace = cloneDeep(devspaces[0]);
-      devspace.status = DevSpaceStatus.STOPPED;
+      devspace.status = sdk.devspace.DevSpaceStatus.STOPPED;
       expect(node.getLabel(devspace)).to.be.equal(devspace.devspaceDisplayName);
     });
 
     it("getLabel, RUNNING", () => {
       const devspace = cloneDeep(devspaces[0]);
-      devspace.status = DevSpaceStatus.RUNNING;
+      devspace.status = sdk.devspace.DevSpaceStatus.RUNNING;
       expect(node.getLabel(devspace)).to.be.equal(devspace.devspaceDisplayName);
     });
 
     it("getLabel, transition", () => {
       const devspace = cloneDeep(devspaces[0]);
-      devspace.status = DevSpaceStatus.SAFE_MODE;
+      devspace.status = sdk.devspace.DevSpaceStatus.SAFE_MODE;
       expect(node.getLabel(devspace)).to.be.equal(
         `${devspace.devspaceDisplayName} (${devspace.status.toLowerCase()})`
       );
@@ -294,7 +290,7 @@ describe("devSpacesExplorer unit test", () => {
     it("getIconPath, 'Basic', Running", () => {
       const devspace = cloneDeep(devspaces[0]);
       devspace.pack = `Basic`;
-      devspace.status = DevSpaceStatus.RUNNING;
+      devspace.status = sdk.devspace.DevSpaceStatus.RUNNING;
       const iconPath = node.getIconPath(devspace);
       expect(iconPath.hasOwnProperty(`dark`)).to.be.true;
       expect(iconPath.hasOwnProperty(`light`)).to.be.true;
@@ -304,7 +300,7 @@ describe("devSpacesExplorer unit test", () => {
     it("getIconPath, 'SAP Mobile Services', Stopped", () => {
       const devspace = cloneDeep(devspaces[0]);
       devspace.pack = `SAP Mobile Services`;
-      devspace.status = DevSpaceStatus.STOPPED;
+      devspace.status = sdk.devspace.DevSpaceStatus.STOPPED;
       const iconPath = node.getIconPath(devspace);
       expect(iconPath.hasOwnProperty(`dark`)).to.be.true;
       expect(iconPath.hasOwnProperty(`light`)).to.be.true;
@@ -315,7 +311,7 @@ describe("devSpacesExplorer unit test", () => {
     it("getIconPath, 'LCAP', Starting", () => {
       const devspace = cloneDeep(devspaces[0]);
       devspace.pack = `LCAP`;
-      devspace.status = DevSpaceStatus.STARTING;
+      devspace.status = sdk.devspace.DevSpaceStatus.STARTING;
       const iconPath = node.getIconPath(devspace);
       expect(iconPath.hasOwnProperty(`dark`)).to.be.true;
       expect(iconPath.hasOwnProperty(`light`)).to.be.true;
@@ -326,7 +322,7 @@ describe("devSpacesExplorer unit test", () => {
     it("getIconPath, 'SME', Starting", () => {
       const devspace = cloneDeep(devspaces[0]);
       devspace.pack = `SAP SME Business Application`;
-      devspace.status = DevSpaceStatus.ERROR;
+      devspace.status = sdk.devspace.DevSpaceStatus.ERROR;
       const iconPath = node.getIconPath(devspace);
       expect(iconPath.hasOwnProperty(`dark`)).to.be.true;
       expect(iconPath.hasOwnProperty(`light`)).to.be.true;
@@ -348,7 +344,7 @@ describe("devSpacesExplorer unit test", () => {
     it("getIconPath, 'Unknown', Running", () => {
       const devspace = cloneDeep(devspaces[0]);
       devspace.pack = `SAP Unknown`;
-      devspace.status = DevSpaceStatus.SAFE_MODE;
+      devspace.status = sdk.devspace.DevSpaceStatus.SAFE_MODE;
       const iconPath = node.getIconPath(devspace);
       expect(iconPath.hasOwnProperty(`dark`)).to.be.true;
       expect(iconPath.hasOwnProperty(`light`)).to.be.true;
@@ -372,19 +368,19 @@ describe("devSpacesExplorer unit test", () => {
 
     it("getContextView, Running", () => {
       const devspace = cloneDeep(devspaces[0]);
-      devspace.status = DevSpaceStatus.RUNNING;
+      devspace.status = sdk.devspace.DevSpaceStatus.RUNNING;
       expect(node.getContextView(devspace)).to.be.equal(`dev-space-running`);
     });
 
     it("getContextView, Stopped", () => {
       const devspace = cloneDeep(devspaces[0]);
-      devspace.status = DevSpaceStatus.STOPPED;
+      devspace.status = sdk.devspace.DevSpaceStatus.STOPPED;
       expect(node.getContextView(devspace)).to.be.equal(`dev-space-stopped`);
     });
 
     it("getContextView, Starting/Stopping", () => {
       const devspace = cloneDeep(devspaces[0]);
-      devspace.status = DevSpaceStatus.STOPPING;
+      devspace.status = sdk.devspace.DevSpaceStatus.STOPPING;
       expect(node.getContextView(devspace)).to.be.equal(
         `dev-space-transitioning`
       );
@@ -392,7 +388,7 @@ describe("devSpacesExplorer unit test", () => {
 
     it("getContextView, Safe/Error", () => {
       const devspace = cloneDeep(devspaces[0]);
-      devspace.status = DevSpaceStatus.ERROR;
+      devspace.status = sdk.devspace.DevSpaceStatus.ERROR;
       expect(node.getContextView(devspace)).to.be.equal(`dev-space-error`);
     });
   });

@@ -75,6 +75,7 @@ async function createTunnelAndGetHostName(
   );
 }
 
+// export async function cmdDevSpaceConnectNewWindow(this: ExtensionContext,
 export async function cmdDevSpaceConnectNewWindow(
   devSpace: DevSpaceNode
 ): Promise<void> {

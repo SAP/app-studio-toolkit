@@ -21,6 +21,8 @@ describe("getDevSpaces unit test", () => {
       getDevSpaces: () => {
         throw new Error("not implemented");
       },
+      DevSpaceStatus: devspace.DevSpaceStatus,
+      PackName: devspace.PackName,
     },
   };
 
@@ -104,7 +106,7 @@ describe("getDevSpaces unit test", () => {
         id: devspaces[0].id,
         optionalExtensions: devspaces[0].optionalExtensions,
         technicalExtensions: devspaces[0].technicalExtensions,
-        status: devspaceProxy.DevSpaceStatus.STOPPED,
+        status: devspace.DevSpaceStatus.STOPPED,
       },
       {
         devspaceDisplayName: devspaces[1].devspaceDisplayName,
@@ -115,7 +117,7 @@ describe("getDevSpaces unit test", () => {
         id: devspaces[1].id,
         optionalExtensions: devspaces[1].optionalExtensions,
         technicalExtensions: devspaces[1].technicalExtensions,
-        status: devspaceProxy.DevSpaceStatus.RUNNING,
+        status: devspace.DevSpaceStatus.RUNNING,
       },
     ]);
   });
@@ -131,7 +133,7 @@ describe("getDevSpaces unit test", () => {
     const expected = (await devspaceProxy.getDevSpaces(
       landscape
     )) as devspaceModule.DevSpaceInfo[];
-    expect(expected[0].pack).to.be.equal(devspaceModule.PackName.HANA);
+    expect(expected[0].pack).to.be.equal(devspace.PackName.HANA);
   });
 
   it("getDevSpaces, failed", async () => {

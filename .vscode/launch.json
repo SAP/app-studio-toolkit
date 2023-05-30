@@ -68,6 +68,23 @@
         "${workspaceFolder}/packages/vscode-dependencies-validation/dist/**/*.js",
         "${workspaceFolder}/packages/vscode-deps-upgrade-tool/dist/**/*.js"
       ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "backend tests",
+      "program": "${workspaceFolder}/node_modules/mocha/bin/mocha",
+      "args": [
+        "-r",
+        "ts-node/register",
+        "--timeout",
+        "999999",
+        "--colors",
+        "${workspaceFolder}/packages/app-studio-toolkit/test/**/*.spec.ts"
+      ],
+      "cwd": "${workspaceFolder}/packages/app-studio-toolkit/",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
     }
   ]
 }

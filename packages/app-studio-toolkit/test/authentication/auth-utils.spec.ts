@@ -1,5 +1,43 @@
 import { expect } from "chai";
 import { SinonMock, mock, stub } from "sinon";
+import { mockVscode } from "../mockUtil";
+
+const vscodeProxy = {
+  authentication: {
+    getSession: () => {
+      throw new Error(`not implemented`);
+    },
+  },
+  env: {
+    openExternal: () => {
+      throw new Error(`not implemented`);
+    },
+  },
+  Uri: {
+    parse: () => {
+      throw new Error(`not implemented`);
+    },
+  },
+  window: {
+    showErrorMessage: (m: string) => {
+      throw new Error(`not implemented`);
+    },
+  },
+  commands: {
+    executeCommand: () => {
+      throw new Error(`not implemented`);
+    },
+  },
+  EventEmitter: class ProxyEventEmitter<T> {
+    constructor() {}
+    fire() {
+      throw new Error("not implemented");
+    }
+  },
+};
+
+mockVscode(vscodeProxy, "dist/src/devspace-manager/handler/basHandler.js");
+
 import * as auth from "../../src/authentication/auth-utils";
 import { BasRemoteAuthenticationProvider } from "../../src/authentication/authProvider";
 import { fail } from "assert";
@@ -7,60 +45,40 @@ import proxyquire from "proxyquire";
 import { messages } from "../../src/devspace-manager/common/messages";
 
 describe("auth-utils unit test", () => {
-  const vscodeProxy = {
-    authentication: {
-      getSession: () => {
-        throw new Error(`not implemented`);
-      },
-    },
-    env: {
-      openExternal: () => {
-        throw new Error(`not implemented`);
-      },
-    },
-    Uri: {
-      parse: () => {
-        throw new Error(`not implemented`);
-      },
-    },
-    window: {
-      showErrorMessage: (m: string) => {
-        throw new Error(`not implemented`);
-      },
-    },
-  };
-
-  let extLoginListener: ((req: any, res: any) => void) | undefined;
-  let cbOnServerError: ((e: Error) => void) | undefined;
-  const server = {
-    on: (path: string, listener: () => void) => {
-      if (path === `error`) {
-        cbOnServerError = listener;
-      }
-    },
-  };
-  const appProxy = {
-    use: () => {},
-    options: () => {},
-    post: (path: string, listener: (req: any, res: any) => void) => {
-      if (path === `/remote-login`) {
-        extLoginListener = listener;
-      }
-    },
-    listen: (port: number, cb: () => void) => {
-      expect(port).to.be.equal(55532);
-      return server;
-    },
-  };
-  const expressProxy = () => appProxy;
-
   let mockWindow: SinonMock;
   let mockUri: SinonMock;
   let mockAuth: SinonMock;
   let mockEnv: SinonMock;
   let authUtilsProxy: typeof auth;
+  let handlerProxy: any;
+
+  const listenerProxy = {
+    dispose: () => {},
+  };
+  const proxyEmitter = {
+    event: (handler: any) => {
+      handlerProxy = handler;
+      return listenerProxy;
+    },
+    fire: (event: any) => {
+      handlerProxy(event);
+    },
+  };
 
   before(() => {
+    const basHandlerModule = proxyquire(
+      "../../src/devspace-manager/handler/basHandler",
+      {
+        vscode: {
+          Uri: vscodeProxy.Uri,
+          window: vscodeProxy.window,
+          commands: vscodeProxy.commands,
+          EventEmitter: vscodeProxy.EventEmitter,
+          "@noCallThru": true,
+        },
+      }
+    );
+    basHandlerModule.eventEmitter = proxyEmitter;
     authUtilsProxy = proxyquire("../../src/authentication/auth-utils", {
       vscode: {
         window: vscodeProxy.window,
@@ -69,13 +87,11 @@ describe("auth-utils unit test", () => {
         Uri: vscodeProxy.Uri,
         "@noCallThru": true,
       },
-      express: expressProxy,
+      "../../src/devspace-manager/handler/basHandler": basHandlerModule,
     });
   });
 
   beforeEach(() => {
-    extLoginListener = undefined;
-    cbOnServerError = undefined;
     mockWindow = mock(vscodeProxy.window);
     mockUri = mock(vscodeProxy.Uri);
     mockAuth = mock(vscodeProxy.authentication);
@@ -155,86 +171,37 @@ describe("auth-utils unit test", () => {
   });
 
   describe(`ext-login unit test`, () => {
-    const stubValue = `__value__`;
-    const htmlTemplate = `<html><script>window.parent.postMessage( ${stubValue} , "*");</script><body/></html>`;
-    let status: any;
-    const request = {
-      body: {
-        workspace_jwt: ``,
-      },
-    };
-    const response = {
-      send: (s: any) => {
-        status = s;
-      },
-    };
+    let mockListener: SinonMock;
 
     beforeEach(() => {
-      status = {};
-      request.body.workspace_jwt = ``;
+      mockListener = mock(listenerProxy);
       stub(authUtilsProxy, "JWT_TIMEOUT").value(1000);
+    });
+
+    afterEach(() => {
+      mockListener.verify();
     });
 
     it("retrieveJwt, login suceedded", async () => {
       mockUri.expects("parse").returns({ psPath: landscape });
       mockEnv.expects("openExternal").resolves(true);
-      request.body.workspace_jwt = `token`;
+      mockListener.expects("dispose").returns({});
       setTimeout(() => {
-        expect(extLoginListener).to.be.ok;
-        extLoginListener!(request, response);
+        handlerProxy({ jwt: "token" });
       }, 100);
       expect(await authUtilsProxy.retrieveJwt(landscape)).to.be.equal(`token`);
-      expect(status).to.be.equal(
-        htmlTemplate.replace(stubValue, JSON.stringify({ status: "ok" }))
-      );
-    });
-
-    it("retrieveJwt, empty jwt received", async () => {
-      mockUri.expects("parse").returns({ psPath: landscape });
-      mockEnv.expects("openExternal").resolves(true);
-      mockWindow
-        .expects("showErrorMessage")
-        .withExactArgs(messages.err_incorrect_jwt(landscape))
-        .resolves();
-      setTimeout(() => {
-        expect(extLoginListener).to.be.ok;
-        extLoginListener!(request, response);
-      }, 100);
-      expect(await authUtilsProxy.retrieveJwt(landscape)).to.be.undefined;
-      expect(status).to.be.equal(
-        htmlTemplate.replace(stubValue, JSON.stringify({ status: "error" }))
-      );
     });
 
     it("retrieveJwt, wrong jwt received", async () => {
       mockUri.expects("parse").returns({ psPath: landscape });
       mockEnv.expects("openExternal").resolves(true);
+      mockListener.expects("dispose").returns({});
       mockWindow
         .expects("showErrorMessage")
         .withExactArgs(messages.err_incorrect_jwt(landscape))
         .resolves();
-      request.body.workspace_jwt = `<html> wrong flow </html>`;
       setTimeout(() => {
-        expect(extLoginListener).to.be.ok;
-        extLoginListener!(request, response);
-      }, 100);
-      expect(await authUtilsProxy.retrieveJwt(landscape)).to.be.undefined;
-      expect(status).to.be.equal(
-        htmlTemplate.replace(stubValue, JSON.stringify({ status: "error" }))
-      );
-    });
-
-    it("retrieveJwt, on server error", async () => {
-      mockUri.expects("parse").returns({ psPath: landscape });
-      mockEnv.expects("openExternal").resolves(true);
-      const err = new Error(`server error`);
-      mockWindow
-        .expects("showErrorMessage")
-        .withExactArgs(messages.err_listening(err.message, landscape))
-        .resolves();
-      setTimeout(() => {
-        expect(cbOnServerError).to.be.ok;
-        cbOnServerError!(err);
+        handlerProxy({ jwt: `<html> authentication wrong </html>` });
       }, 100);
       expect(await authUtilsProxy.retrieveJwt(landscape)).to.be.undefined;
     });
@@ -242,19 +209,18 @@ describe("auth-utils unit test", () => {
     it("retrieveJwt, browser not accepted", async () => {
       mockUri.expects("parse").returns({ psPath: landscape });
       mockEnv.expects("openExternal").resolves(false);
-      expect(await authUtilsProxy.retrieveJwt(landscape)).to.be.undefined;
+      mockListener.expects("dispose").returns({});
+      expect(await authUtilsProxy.retrieveJwt(landscape)).to.be.empty;
     });
 
     it("retrieveJwt, login timeout", async () => {
       mockUri.expects("parse").returns({ psPath: landscape });
       mockEnv.expects("openExternal").resolves(true);
+      mockListener.expects("dispose").returns({});
       mockWindow
         .expects("showErrorMessage")
         .withExactArgs(`Login time out in 1000 ms.`)
         .resolves();
-      setTimeout(() => {
-        expect(extLoginListener).to.be.ok;
-      }, 100);
       expect(await authUtilsProxy.retrieveJwt(landscape)).to.be.undefined;
     });
   });

@@ -4,10 +4,8 @@ import proxyquire from "proxyquire";
 import * as devspaceModule from "../../../src/devspace-manager/devspace/update";
 import { DevSpaceNode } from "../../../src/devspace-manager/tree/treeItems";
 import { messages } from "../../../src/devspace-manager/common/messages";
-import {
-  DevSpaceInfo,
-  DevSpaceStatus,
-} from "../../../src/devspace-manager/devspace/devspace";
+import * as sdk from "@sap/bas-sdk";
+import { DevSpaceInfo } from "../../../src/devspace-manager/devspace/devspace";
 import { cloneDeep } from "lodash";
 
 describe("devspace start/stop unit test", () => {
@@ -33,6 +31,8 @@ describe("devspace start/stop unit test", () => {
       updateDevSpace: () => {
         throw new Error("not implemented");
       },
+      DevSpaceStatus: sdk.devspace.DevSpaceStatus,
+      PackName: sdk.devspace.PackName,
     },
   };
 
@@ -49,7 +49,7 @@ describe("devspace start/stop unit test", () => {
   };
 
   const proxyDevspace = {
-    DevSpaceStatus,
+    DevSpaceStatus: sdk.devspace.DevSpaceStatus,
     getDevSpaces: (): void => {
       throw new Error(`not implemented`);
     },
@@ -114,7 +114,7 @@ describe("devspace start/stop unit test", () => {
       id: `id`,
       optionalExtensions: `optionalExtensions`,
       technicalExtensions: `technicalExtensions`,
-      status: DevSpaceStatus.STOPPED,
+      status: sdk.devspace.DevSpaceStatus.STOPPED,
     },
     {
       devspaceDisplayName: `devspaceDisplayName-2`,
@@ -125,7 +125,7 @@ describe("devspace start/stop unit test", () => {
       id: `id-2`,
       optionalExtensions: `optionalExtensions`,
       technicalExtensions: `technicalExtensions`,
-      status: DevSpaceStatus.RUNNING,
+      status: sdk.devspace.DevSpaceStatus.RUNNING,
     },
   ];
 
@@ -183,7 +183,7 @@ describe("devspace start/stop unit test", () => {
 
   it("cmdDevSpaceStart, failure by 2 running devspaces restriction", async () => {
     const localDevspaces = cloneDeep(devspaces);
-    localDevspaces[0].status = DevSpaceStatus.STARTING;
+    localDevspaces[0].status = sdk.devspace.DevSpaceStatus.STARTING;
     mockDevspace
       .expects(`getDevSpaces`)
       .withExactArgs(node.landscapeUrl)
