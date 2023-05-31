@@ -1,7 +1,7 @@
 {
   "name": "app-studio-toolkit-themes",
   "displayName": "SAP Business Application Studio themes",
-  "version": "1.13.0",
+  "version": "1.14.2",
   "private": true,
   "description": "Provides SAP Business Application Studio themes",
   "categories": [

@@ -1,7 +1,7 @@
 {
   "name": "app-studio-toolkit",
   "displayName": "SAP Business Application Studio toolkit",
-  "version": "1.14.1",
+  "version": "1.14.2",
   "private": true,
   "description": "Allows you to remotely control dev spaces that are hosted in SAP Business Application Studio from VS Code.",
   "categories": [
