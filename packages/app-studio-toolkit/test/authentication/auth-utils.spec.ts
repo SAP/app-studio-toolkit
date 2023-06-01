@@ -48,6 +48,7 @@ describe("auth-utils unit test", () => {
   let mockWindow: SinonMock;
   let mockUri: SinonMock;
   let mockAuth: SinonMock;
+  let mockOs: SinonMock;
   let mockEnv: SinonMock;
   let authUtilsProxy: typeof auth;
   let handlerProxy: any;
@@ -62,6 +63,12 @@ describe("auth-utils unit test", () => {
     },
     fire: (event: any) => {
       handlerProxy(event);
+    },
+  };
+
+  const proxyOs = {
+    platform: () => {
+      throw new Error("not implemented");
     },
   };
 
@@ -87,6 +94,7 @@ describe("auth-utils unit test", () => {
         Uri: vscodeProxy.Uri,
         "@noCallThru": true,
       },
+      os: proxyOs,
       "../../src/devspace-manager/handler/basHandler": basHandlerModule,
     });
   });
@@ -96,6 +104,7 @@ describe("auth-utils unit test", () => {
     mockUri = mock(vscodeProxy.Uri);
     mockAuth = mock(vscodeProxy.authentication);
     mockEnv = mock(vscodeProxy.env);
+    mockOs = mock(proxyOs);
   });
 
   afterEach(() => {
@@ -103,6 +112,7 @@ describe("auth-utils unit test", () => {
     mockUri.verify();
     mockAuth.verify();
     mockEnv.verify();
+    mockOs.verify();
   });
 
   const landscape = `https://my.landscape-1.com`;
@@ -170,12 +180,69 @@ describe("auth-utils unit test", () => {
     expect(await authUtilsProxy.hasJwt(landscape)).to.be.false;
   });
 
-  describe(`ext-login unit test`, () => {
+  describe(`ext-login unit test for "darwin"`, () => {
     let mockListener: SinonMock;
 
     beforeEach(() => {
       mockListener = mock(listenerProxy);
       stub(authUtilsProxy, "JWT_TIMEOUT").value(1000);
+      mockOs.expects("platform").returns("daarwin");
+    });
+
+    afterEach(() => {
+      mockListener.verify();
+    });
+
+    it("retrieveJwt, login suceedded", async () => {
+      mockUri.expects("parse").returns({ psPath: landscape });
+      mockEnv.expects("openExternal").resolves(true);
+      mockListener.expects("dispose").returns({});
+      setTimeout(() => {
+        handlerProxy({ jwt: "token" });
+      }, 100);
+      expect(await authUtilsProxy.retrieveJwt(landscape)).to.be.equal(`token`);
+    });
+
+    it("retrieveJwt, wrong jwt received", async () => {
+      mockUri.expects("parse").returns({ psPath: landscape });
+      mockEnv.expects("openExternal").resolves(true);
+      mockListener.expects("dispose").returns({});
+      mockWindow
+        .expects("showErrorMessage")
+        .withExactArgs(messages.err_incorrect_jwt(landscape))
+        .resolves();
+      setTimeout(() => {
+        handlerProxy({ jwt: `<html> authentication wrong </html>` });
+      }, 100);
+      expect(await authUtilsProxy.retrieveJwt(landscape)).to.be.undefined;
+    });
+
+    it("retrieveJwt, browser not accepted", async () => {
+      mockUri.expects("parse").returns({ psPath: landscape });
+      mockEnv.expects("openExternal").resolves(false);
+      mockListener.expects("dispose").returns({});
+      expect(await authUtilsProxy.retrieveJwt(landscape)).to.be.empty;
+    });
+
+    it("retrieveJwt, login timeout", async () => {
+      mockUri.expects("parse").returns({ psPath: landscape });
+      mockEnv.expects("openExternal").resolves(true);
+      mockListener.expects("dispose").returns({});
+      mockWindow
+        .expects("showErrorMessage")
+        .withExactArgs(`Login time out in 1000 ms.`)
+        .resolves();
+      expect(await authUtilsProxy.retrieveJwt(landscape)).to.be.undefined;
+    });
+  });
+
+  describe(`ext-login unit test for "others"`, () => {
+    let mockListener: SinonMock;
+
+    beforeEach(() => {
+      mockListener = mock(listenerProxy);
+      stub(authUtilsProxy, "JWT_TIMEOUT").value(1000);
+      mockOs.expects("platform").returns("linux");
     });
 
     afterEach(() => {
