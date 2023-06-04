@@ -57,7 +57,7 @@
     "coveralls": "^3.1.1",
     "cz-conventional-changelog": "3.3.0",
     "deep-equal-in-any-order": "^1.1.15",
-    "eslint": "7.30.0",
+    "eslint": "8.42.0",
     "eslint-config-prettier": "8.3.0",
     "eslint-plugin-eslint-comments": "3.2.0",
     "glob": "^7.2.0",
