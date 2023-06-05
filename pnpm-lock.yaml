@@ -119,7 +119,7 @@ importers:
   examples/sample-action-client:
     devDependencies:
       '@sap-devx/app-studio-toolkit-types':
-        specifier: ^1.14.1
+        specifier: ^1.14.3
         version: link:../../packages/app-studio-toolkit-types
 
   examples/vscode-using-upgrade-tool: {}
@@ -127,7 +127,7 @@ importers:
   examples/vscode-using-workspace-api:
     devDependencies:
       '@sap-devx/app-studio-toolkit-types':
-        specifier: ^1.14.1
+        specifier: ^1.14.3
         version: link:../../packages/app-studio-toolkit-types
 
   packages/app-studio-toolkit:
@@ -170,7 +170,7 @@ importers:
         version: 1.0.34
     devDependencies:
       '@sap-devx/app-studio-toolkit-types':
-        specifier: ^1.14.1
+        specifier: ^1.14.3
         version: link:../app-studio-toolkit-types
       '@types/proxyquire':
         specifier: 1.3.28
@@ -316,7 +316,7 @@ importers:
         version: 3.0.0
     devDependencies:
       '@sap-devx/app-studio-toolkit-types':
-        specifier: ^1.14.1
+        specifier: ^1.14.3
         version: link:../app-studio-toolkit-types
       '@types/semver':
         specifier: ^7.3.12
@@ -4915,7 +4915,7 @@ packages:
     resolution: {integrity: sha512-yhlQgA6mnOJUKOsRUFsgJdQCvkKhcz8tlZG5HBQfReYZy46OwLcY+Zia0mtdHsOo9y/hP+CxMN0TU9QxoOtG4g==}
     engines: {node: '>=6 <7 || >=8'}
     dependencies:
-      graceful-fs: 4.2.8
+      graceful-fs: 4.2.11
       jsonfile: 4.0.0
       universalify: 0.1.2
 
@@ -4924,7 +4924,7 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       at-least-node: 1.0.0
-      graceful-fs: 4.2.8
+      graceful-fs: 4.2.11
       jsonfile: 6.1.0
       universalify: 2.0.0
 
@@ -5202,7 +5202,6 @@ packages:
 
   /graceful-fs@4.2.11:
     resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
-    dev: true
 
   /graceful-fs@4.2.8:
     resolution: {integrity: sha512-qkIilPUYcNhJpd33n0GBXTB1MMPp14TxEsEs0pTrsSVucApsYzW5V+Q8Qxhik6KU3evy+qkAAowTByymK0avdg==}
@@ -5802,7 +5801,7 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       '@babel/core': 7.16.0
-      '@babel/parser': 7.16.4
+      '@babel/parser': 7.22.4
       '@istanbuljs/schema': 0.1.3
       istanbul-lib-coverage: 3.2.0
       semver: 6.3.0
@@ -6257,7 +6256,7 @@ packages:
       '@babel/generator': 7.16.0
       '@babel/plugin-syntax-typescript': 7.21.4(@babel/core@7.16.0)
       '@babel/traverse': 7.16.3
-      '@babel/types': 7.16.0
+      '@babel/types': 7.22.4
       '@jest/transform': 27.5.1
       '@jest/types': 27.5.1
       '@types/babel__traverse': 7.20.1
@@ -6467,14 +6466,14 @@ packages:
   /jsonfile@4.0.0:
     resolution: {integrity: sha512-m6F1R3z8jjlf2imQHS2Qez5sjKWQzbuuhuJ/FKYFRZvPE3PuHcSMVZzfsLhGVOkfd20obL5SWEBew5ShlquNxg==}
     optionalDependencies:
-      graceful-fs: 4.2.8
+      graceful-fs: 4.2.11
 
   /jsonfile@6.1.0:
     resolution: {integrity: sha512-5dgndWOriYSm5cnYaJNhalLNDKOqFwyDB/rr1E9ZsGciGvKPs8R2xYGCacuf3z6K1YKDz182fd+fY3cn3pMqXQ==}
     dependencies:
       universalify: 2.0.0
     optionalDependencies:
-      graceful-fs: 4.2.8
+      graceful-fs: 4.2.11
 
   /jsonparse@1.3.1:
     resolution: {integrity: sha1-P02uSpH6wxX3EGL4UhzCOfE2YoA=}
@@ -6648,7 +6647,7 @@ packages:
     resolution: {integrity: sha1-L19Fq5HjMhYjT9U62rZo607AmTs=}
     engines: {node: '>=4'}
     dependencies:
-      graceful-fs: 4.2.8
+      graceful-fs: 4.2.11
       parse-json: 4.0.0
       pify: 3.0.0
       strip-bom: 3.0.0
@@ -6658,7 +6657,7 @@ packages:
     resolution: {integrity: sha512-gUD/epcRms75Cw8RT1pUdHugZYM5ce64ucs2GEISABwkRsOQr0q2wm/MV2TKThycIe5e0ytRweW2RZxclogCdQ==}
     engines: {node: '>=8'}
     dependencies:
-      graceful-fs: 4.2.8
+      graceful-fs: 4.2.11
       parse-json: 5.2.0
       strip-bom: 4.0.0
       type-fest: 0.6.0
@@ -7246,7 +7245,7 @@ packages:
     dependencies:
       env-paths: 2.2.1
       glob: 7.2.0
-      graceful-fs: 4.2.8
+      graceful-fs: 4.2.11
       mkdirp: 0.5.5
       nopt: 4.0.3
       npmlog: 4.1.2
@@ -7264,7 +7263,7 @@ packages:
     dependencies:
       env-paths: 2.2.1
       glob: 7.2.0
-      graceful-fs: 4.2.8
+      graceful-fs: 4.2.11
       nopt: 5.0.0
       npmlog: 4.1.2
       request: 2.88.2
@@ -7357,7 +7356,7 @@ packages:
     resolution: {integrity: sha512-lDLVkjfZmvmfvpvBzA4vzee9cn+Me4orq0QF8glbswJVEbIcSNWib7qGOffolysc3teCqbbPZZkzbr3GQZTL1g==}
     dependencies:
       byline: 5.0.0
-      graceful-fs: 4.2.8
+      graceful-fs: 4.2.11
       node-gyp: 5.1.1
       resolve-from: 4.0.0
       slide: 1.1.6
@@ -7739,7 +7738,7 @@ packages:
     resolution: {integrity: sha512-whdkPIooSu/bASggZ96BWVvZTRMOFxnyUG5PnTSGKoJE2gd5mbVNmR2Nj20QFzxYYgAXpoqC+AiXzl+UMRh7zQ==}
     engines: {node: '>=8'}
     dependencies:
-      graceful-fs: 4.2.8
+      graceful-fs: 4.2.11
       hasha: 5.2.2
       lodash.flattendeep: 4.4.0
       release-zalgo: 1.0.0
@@ -8215,7 +8214,7 @@ packages:
     dependencies:
       debuglog: 1.0.1
       dezalgo: 1.0.3
-      graceful-fs: 4.2.8
+      graceful-fs: 4.2.11
       once: 1.4.0
     dev: true
 
@@ -9075,7 +9074,7 @@ packages:
     resolution: {integrity: sha512-HIeWmj77uOOHb0QX7siN3OtwV3CTntquin6TNVg6SHOqCP3hYKmox90eeFOGaY1MqJ9WYDDjkyZrW6qS5AWpbw==}
     engines: {node: '>=8'}
     dependencies:
-      graceful-fs: 4.2.8
+      graceful-fs: 4.2.11
       is-stream: 2.0.1
       make-dir: 3.1.0
       temp-dir: 1.0.0
@@ -9667,7 +9666,7 @@ packages:
     engines: {node: '>=10.13.0'}
     dependencies:
       glob-to-regexp: 0.4.1
-      graceful-fs: 4.2.8
+      graceful-fs: 4.2.11
     dev: true
 
   /wcwidth@1.0.1:
@@ -9939,7 +9938,7 @@ packages:
   /write-file-atomic@2.4.3:
     resolution: {integrity: sha512-GaETH5wwsX+GcnzhPgKcKjJ6M2Cq3/iZp1WyY/X1CSqrW+jVNM9Y7D8EC2sM4ZG/V8wZlSniJnCKWPmBYAucRQ==}
     dependencies:
-      graceful-fs: 4.2.8
+      graceful-fs: 4.2.11
       imurmurhash: 0.1.4
       signal-exit: 3.0.6
     dev: true
@@ -9958,7 +9957,7 @@ packages:
     engines: {node: '>=6'}
     dependencies:
       detect-indent: 5.0.0
-      graceful-fs: 4.2.8
+      graceful-fs: 4.2.11
       make-dir: 2.1.0
       pify: 4.0.1
       sort-keys: 2.0.0
@@ -9970,7 +9969,7 @@ packages:
     engines: {node: '>=8.3'}
     dependencies:
       detect-indent: 6.1.0
-      graceful-fs: 4.2.8
+      graceful-fs: 4.2.11
       is-plain-obj: 2.1.0
       make-dir: 3.1.0
       sort-keys: 4.2.0

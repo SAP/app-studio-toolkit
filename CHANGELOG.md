@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.3](https://github.com/SAP/app-studio-toolkit/compare/v1.14.2...v1.14.3) (2023-06-05)
+
+### Reverts
+
+- Revert "chore: create dependabot.yml (#242)" (#248) ([105f219](https://github.com/SAP/app-studio-toolkit/commit/105f219512fb0291381b2ef06211f29951547e73)), closes [#242](https://github.com/SAP/app-studio-toolkit/issues/242) [#248](https://github.com/SAP/app-studio-toolkit/issues/248)
+
 ## [1.14.2](https://github.com/SAP/app-studio-toolkit/compare/v1.14.1...v1.14.2) (2023-05-31)
 
 ### Bug Fixes
