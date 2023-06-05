@@ -7,9 +7,9 @@ export const CAP_EXTENSION_ID = "SAPSE.vscode-cds";
 export async function hasCapCapabilities(): Promise<boolean> {
   const logger = getLogger().getChildLogger({ label: "hasCapCapabilities" });
 
-  // Cap mode is determined by the existence of the Fiori extension
-  const hasFioriCapabilities = !!extensions.getExtension(CAP_EXTENSION_ID);
-  logger.trace("Has Cap Capabilities", { hasFioriCapabilities });
+  // Cap mode is determined by the existence of the Cap extension
+  const hasCapCapabilities = !!extensions.getExtension(CAP_EXTENSION_ID);
+  logger.trace("Has Cap Capabilities", { hasCapCapabilities });
 
-  return hasFioriCapabilities;
+  return hasCapCapabilities;
 }
