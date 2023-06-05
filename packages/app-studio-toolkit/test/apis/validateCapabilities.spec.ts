@@ -10,6 +10,7 @@ const testVscode = {
 mockVscode(testVscode, "dist/src/logger/logger.js");
 mockVscode(testVscode, "dist/src/apis/validateLCAP.js");
 mockVscode(testVscode, "dist/src/apis/validateFioriCapabilities.js");
+mockVscode(testVscode, "dist/src/apis/validateCapCapabilities.js");
 import { isLCAPEnabled, LACP_EXTENSION_ID } from "../../src/apis/validateLCAP";
 import {
   hasFioriCapabilities,
