@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.15.0](https://github.com/SAP/app-studio-toolkit/compare/v1.14.3...v1.15.0) (2023-06-07)
+
+### Features
+
+- **add hascapcapabilities:** add hasCapCapabilities ([#249](https://github.com/SAP/app-studio-toolkit/issues/249)) ([f2948a2](https://github.com/SAP/app-studio-toolkit/commit/f2948a2570827c16f6f27deab281d10b163a2d80))
+
 ## [1.14.3](https://github.com/SAP/app-studio-toolkit/compare/v1.14.2...v1.14.3) (2023-06-05)
 
 **Note:** Version bump only for package sample-action-client
