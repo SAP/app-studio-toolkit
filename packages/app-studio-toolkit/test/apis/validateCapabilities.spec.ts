@@ -10,11 +10,16 @@ const testVscode = {
 mockVscode(testVscode, "dist/src/logger/logger.js");
 mockVscode(testVscode, "dist/src/apis/validateLCAP.js");
 mockVscode(testVscode, "dist/src/apis/validateFioriCapabilities.js");
+mockVscode(testVscode, "dist/src/apis/validateCapCapabilities.js");
 import { isLCAPEnabled, LACP_EXTENSION_ID } from "../../src/apis/validateLCAP";
 import {
   hasFioriCapabilities,
   FIORI_EXTENSION_ID,
 } from "../../src/apis/validateFioriCapabilities";
+import {
+  hasCapCapabilities,
+  CAP_EXTENSION_ID,
+} from "../../src/apis/validateCapCapabilities";
 
 describe("validate capabilities API", () => {
   it("should return false", async () => {
@@ -77,6 +82,24 @@ describe("validate capabilities API", () => {
         .withExactArgs(FIORI_EXTENSION_ID)
         .returns(extension);
       const parameterValue = await hasFioriCapabilities();
+      expect(parameterValue).to.be.true;
+    });
+    it("should return false when Cap extension does not exist", async () => {
+      extensionsMock
+        .expects("getExtension")
+        .withExactArgs(CAP_EXTENSION_ID)
+        .returns(undefined);
+      const parameterValue = await hasCapCapabilities();
+      expect(parameterValue).to.be.false;
+    });
+
+    it("should return true when Cap extension exists", async () => {
+      const extension = { id: CAP_EXTENSION_ID };
+      extensionsMock
+        .expects("getExtension")
+        .withExactArgs(CAP_EXTENSION_ID)
+        .returns(extension);
+      const parameterValue = await hasCapCapabilities();
       expect(parameterValue).to.be.true;
     });
   });

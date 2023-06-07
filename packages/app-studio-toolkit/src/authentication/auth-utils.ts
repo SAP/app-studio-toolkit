@@ -19,6 +19,15 @@ const EXT_LOGIN_PORTNUM = 55532;
 
 const serverCache = new Map<string, HttpTerminator>();
 
+/**
+ * Decides which method is used for the login procedure: `vscode` or `express (http)`
+ * @returns true in case of `vscode`
+ */
+function isVscode(): boolean {
+  // currently `vscode` is only used for `mac` platform
+  return platform() === "darwin";
+}
+
 async function expressGetJwtFromServer(landscapeUrl: string): Promise<string> {
   return new Promise<string>((resolve, reject) => {
     const app = express();
@@ -55,6 +64,13 @@ async function expressGetJwtFromServer(landscapeUrl: string): Promise<string> {
   });
 }
 
+/* istanbul ignore next */
+async function expressCloseListener(landscapeUrl: string): Promise<void> {
+  await serverCache.get(landscapeUrl)?.terminate();
+  serverCache.delete(landscapeUrl);
+  getLogger().info(`closing server for ${landscapeUrl}`);
+}
+
 async function vscodeCloseListener(promise?: Promise<string>): Promise<void> {
   promise = promise || Promise.reject(new Error("canceled"));
   // dispose the login event listener in case of :
@@ -73,17 +89,6 @@ async function vscodeCloseListener(promise?: Promise<string>): Promise<void> {
     eventEmitter.fire({});
   }
   getLogger().info(`closing listener`);
-}
-
-/* istanbul ignore next */
-async function expressCloseListener(landscapeUrl: string): Promise<void> {
-  await serverCache.get(landscapeUrl)?.terminate();
-  serverCache.delete(landscapeUrl);
-  getLogger().info(`closing server for ${landscapeUrl}`);
-}
-
-function isMac(): boolean {
-  return platform() === "darwin";
 }
 
 async function vscodeGetJwtFromServer(landscapeUrl: string): Promise<string> {
@@ -109,19 +114,19 @@ async function onJwtReceived(opt: {
   jwtPromise: Promise<string>;
   landscapeUrl: string;
 }): Promise<void> {
-  return isMac()
+  return isVscode()
     ? vscodeCloseListener(opt.jwtPromise)
     : expressCloseListener(opt.landscapeUrl);
 }
 
 async function loginToLandscape(landscapeUrl: string): Promise<boolean> {
   return env.openExternal(
-    Uri.parse(core.getExtLoginPath(landscapeUrl, isMac()))
+    Uri.parse(core.getExtLoginPath(landscapeUrl, isVscode()))
   );
 }
 
 async function getJwtFromServer(landscapeUrl: string): Promise<string> {
-  return isMac()
+  return isVscode()
     ? vscodeGetJwtFromServer(landscapeUrl)
     : expressGetJwtFromServer(landscapeUrl);
 }
@@ -185,7 +190,7 @@ async function receiveJwt(opt: {
 }): Promise<string | undefined> {
   // browser open not accepted
   if (!opt.accepted) {
-    if (isMac()) {
+    if (isVscode()) {
       void vscodeCloseListener();
     } else {
       void expressCloseListener(opt.landscapeUrl);
