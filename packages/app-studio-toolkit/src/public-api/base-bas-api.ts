@@ -11,6 +11,7 @@ import {
 import { getLogger } from "../logger/logger";
 import { isLCAPEnabled, isLCAPEnabledSync } from "../apis/validateLCAP";
 import { hasFioriCapabilities } from "../apis/validateFioriCapabilities";
+import { hasCapCapabilities } from "../apis/validateCapCapabilities";
 import { isOpenedForAction } from "../apis/isOpenedForAction";
 
 /**
@@ -48,6 +49,7 @@ export const baseBasToolkitAPI: Omit<BasToolkit, "workspaceAPI"> = {
   isLCAPEnabled,
   isLCAPEnabledSync,
   hasFioriCapabilities,
+  hasCapCapabilities,
   isOpenedForAction,
 
   actions: {

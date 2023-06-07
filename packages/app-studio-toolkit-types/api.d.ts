@@ -111,6 +111,11 @@ export interface BasToolkit {
   hasFioriCapabilities: () => Promise<boolean>;
 
   /**
+   * Is environment Cap or not
+   */
+  hasCapCapabilities: () => Promise<boolean>;
+
+  /**
    * Determine whether BAS is opened for running action or editing a project
    *
    * @experimental may be removed without notice in future versions.

@@ -155,6 +155,15 @@ export function activate(context: ExtensionContext) {
   );
 
   context.subscriptions.push(
+    commands.registerCommand("has.cap.capabilities", async () => {
+      const enabledValue = await basAPI.hasCapCapabilities();
+      void window.showInformationMessage(
+        `has Cap capabilities? ${enabledValue}`
+      );
+    })
+  );
+
+  context.subscriptions.push(
     commands.registerCommand("is.opened.for.action", async () => {
       const isOpenedForActionValue = await basAPI.isOpenedForAction();
       void window.showInformationMessage(
