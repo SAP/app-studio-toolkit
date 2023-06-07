@@ -19,8 +19,7 @@ const EXT_LOGIN_PORTNUM = 55532;
 
 const serverCache = new Map<string, HttpTerminator>();
 
-async function extGetJwtFromServer(landscapeUrl: string): Promise<string> {
-  /* istanbul ignore next */
+async function expressGetJwtFromServer(landscapeUrl: string): Promise<string> {
   return new Promise<string>((resolve, reject) => {
     const app = express();
 
@@ -29,30 +28,19 @@ async function extGetJwtFromServer(landscapeUrl: string): Promise<string> {
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
 
-    app.post(
-      "/ext-login",
-      function (
-        request: { body: { jwt: string | undefined } },
-        response: { send: (arg0: string) => void }
-      ) {
-        const stubValue = `__value__`;
-        const htmlTemplate = `<html><script>window.parent.postMessage( ${stubValue} , "*");</script><body/></html>`;
-        const jwt: string | undefined = request?.body?.jwt;
-        if (!jwt || jwt.startsWith("<html>")) {
-          response.send(
-            htmlTemplate.replace(stubValue, JSON.stringify({ status: "error" }))
-          );
-          reject(new Error(messages.err_incorrect_jwt(landscapeUrl)));
-        } else {
-          getLogger().info(`jwt recieved from remote for ${landscapeUrl}`);
-          response.send(
-            htmlTemplate.replace(stubValue, JSON.stringify({ status: "ok" }))
-          );
-          resolve(jwt);
-        }
+    app.post("/ext-login", function (request, response) {
+      const jwt: string | undefined = request?.body?.jwt;
+      if (!jwt || jwt.startsWith("<html>")) {
+        response.send({ status: "error" });
+        reject(new Error(messages.err_incorrect_jwt(landscapeUrl)));
+      } else {
+        getLogger().info(`jwt recieved from remote for ${landscapeUrl}`);
+        response.send({ status: "ok" });
+        resolve(jwt);
       }
-    );
+    });
 
+    /* istanbul ignore next */
     const server = app.listen(EXT_LOGIN_PORTNUM, () => {
       getLogger().info(
         `CORS-enabled web server listening to get jwt for ${landscapeUrl}`
@@ -67,35 +55,7 @@ async function extGetJwtFromServer(landscapeUrl: string): Promise<string> {
   });
 }
 
-async function extCloseListener(landscapeUrl: string): Promise<void> {
-  await serverCache.get(landscapeUrl)?.terminate();
-  serverCache.delete(landscapeUrl);
-  getLogger().info(`closing server for ${landscapeUrl}`);
-}
-
-function osDarwin(): boolean {
-  return platform() === "darwin";
-}
-
-async function darwinGetJwtFromServer(landscapeUrl: string): Promise<string> {
-  return new Promise<string>((resolve, reject) => {
-    // Subscribe the listener to the event
-    const listener = eventEmitter.event(handleEvent);
-
-    // Listener function to resolve the promise when the event is received
-    function handleEvent(event: LoginEvent): void {
-      if (event.jwt?.toLocaleLowerCase().startsWith("<html>")) {
-        reject(new Error(messages.err_incorrect_jwt(landscapeUrl)));
-      } else {
-        resolve(event.jwt ?? "");
-      }
-      // Remove the listener after resolving the promise
-      listener.dispose();
-    }
-  });
-}
-
-async function darwinCloseListener(promise?: Promise<string>): Promise<void> {
+async function vscodeCloseListener(promise?: Promise<string>): Promise<void> {
   promise = promise || Promise.reject(new Error("canceled"));
   // dispose the login event listener in case of :
   //   1. open browser is canceled or disallowed
@@ -115,37 +75,55 @@ async function darwinCloseListener(promise?: Promise<string>): Promise<void> {
   getLogger().info(`closing listener`);
 }
 
-function onBrowserCanceled(landscapeUrl: string): void {
-  if (osDarwin()) {
-    void darwinCloseListener();
-  } else {
-    void extCloseListener(landscapeUrl);
-    return;
-  }
+/* istanbul ignore next */
+async function expressCloseListener(landscapeUrl: string): Promise<void> {
+  await serverCache.get(landscapeUrl)?.terminate();
+  serverCache.delete(landscapeUrl);
+  getLogger().info(`closing server for ${landscapeUrl}`);
 }
 
-function onJwtReceived(opt: {
+function isMac(): boolean {
+  return platform() === "darwin";
+}
+
+async function vscodeGetJwtFromServer(landscapeUrl: string): Promise<string> {
+  return new Promise<string>((resolve, reject) => {
+    // Subscribe the listener to the event
+    const listener = eventEmitter.event(handleEvent);
+
+    // Listener function to resolve the promise when the event is received
+    function handleEvent(event: LoginEvent): void {
+      if (event.jwt?.toLocaleLowerCase().startsWith("<html>")) {
+        reject(new Error(messages.err_incorrect_jwt(landscapeUrl)));
+      } else {
+        resolve(event.jwt ?? "");
+      }
+      // Remove the listener after resolving the promise
+      listener.dispose();
+    }
+  });
+}
+
+async function onJwtReceived(opt: {
   accepted: boolean;
   jwtPromise: Promise<string>;
   landscapeUrl: string;
-}): void {
-  if (osDarwin()) {
-    void darwinCloseListener(opt.jwtPromise);
-  } else {
-    void extCloseListener(opt.landscapeUrl);
-  }
+}): Promise<void> {
+  return isMac()
+    ? vscodeCloseListener(opt.jwtPromise)
+    : expressCloseListener(opt.landscapeUrl);
 }
 
 async function loginToLandscape(landscapeUrl: string): Promise<boolean> {
   return env.openExternal(
-    Uri.parse(core.getExtLoginPath(landscapeUrl /*platform()*/))
+    Uri.parse(core.getExtLoginPath(landscapeUrl, isMac()))
   );
 }
 
 async function getJwtFromServer(landscapeUrl: string): Promise<string> {
-  return osDarwin()
-    ? darwinGetJwtFromServer(landscapeUrl)
-    : extGetJwtFromServer(landscapeUrl);
+  return isMac()
+    ? vscodeGetJwtFromServer(landscapeUrl)
+    : expressGetJwtFromServer(landscapeUrl);
 }
 
 function getJwtExpiration(jwt: string): number {
@@ -207,9 +185,14 @@ async function receiveJwt(opt: {
 }): Promise<string | undefined> {
   // browser open not accepted
   if (!opt.accepted) {
-    onBrowserCanceled(opt.landscapeUrl);
+    if (isMac()) {
+      void vscodeCloseListener();
+    } else {
+      void expressCloseListener(opt.landscapeUrl);
+      return; // not waiting for jwtPromise fulfilled
+    }
   }
-  return opt.jwtPromise.finally(() => onJwtReceived(opt));
+  return opt.jwtPromise.finally(() => void onJwtReceived(opt));
 }
 
 export function retrieveJwt(landscapeUrl: string): Promise<string | void> {
