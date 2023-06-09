@@ -12,6 +12,7 @@ import type {
 import { cloneDeep } from "lodash";
 
 describe("authProvider unit test", () => {
+  const patLabel = "Access Token";
   let authListeners: ((e: AuthenticationSessionsChangeEvent) => any)[] = [];
   const vscodeProxy = {
     authentication: {
@@ -130,7 +131,7 @@ describe("authProvider unit test", () => {
         {
           account: {
             id: BasRemoteAuthenticationProviderProxy.id,
-            label: "BAS Access Token",
+            label: patLabel,
           },
           id: BasRemoteAuthenticationProviderProxy.id,
           scopes: [],
@@ -152,7 +153,7 @@ describe("authProvider unit test", () => {
         {
           account: {
             id: BasRemoteAuthenticationProviderProxy.id,
-            label: "BAS Access Token",
+            label: patLabel,
           },
           id: BasRemoteAuthenticationProviderProxy.id,
           scopes: [landscape1],
@@ -197,7 +198,7 @@ describe("authProvider unit test", () => {
       expect(await instance[`createSession`]([landscape2])).to.be.deep.equal({
         account: {
           id: BasRemoteAuthenticationProviderProxy.id,
-          label: "BAS Access Token",
+          label: patLabel,
         },
         id: BasRemoteAuthenticationProviderProxy.id,
         scopes: [landscape2],
@@ -230,7 +231,7 @@ describe("authProvider unit test", () => {
       expect(await instance[`createSession`]([landscape2])).to.be.deep.equal({
         account: {
           id: BasRemoteAuthenticationProviderProxy.id,
-          label: "BAS Access Token",
+          label: patLabel,
         },
         id: BasRemoteAuthenticationProviderProxy.id,
         scopes: [landscape2],
@@ -265,7 +266,7 @@ describe("authProvider unit test", () => {
       expect(await instance[`createSession`]([landscape2])).to.be.deep.equal({
         account: {
           id: BasRemoteAuthenticationProviderProxy.id,
-          label: "BAS Access Token",
+          label: patLabel,
         },
         id: BasRemoteAuthenticationProviderProxy.id,
         scopes: [landscape2],
