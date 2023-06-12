@@ -16,7 +16,7 @@ For example, see [Action Emitter](https://github.com/SAP/app-studio-toolkit/blob
 
 ## Remote Connect
 
-Remotely connect to SAP Business Application Studio dev spaces directly from a local Visual Studio Code desktop application. See [Access SAP Business Application Studio from VS Code](https://help.sap.com/docs/bas/sap-business-application-studio/working-remotely).
+Remotely connect to SAP Business Application Studio dev spaces directly from a local Visual Studio Code desktop application. See [Access SAP Business Application Studio from VS Code](https://help.sap.com/docs/bas/sap-business-application-studio/working-remotely).<br>
 ![](https://github.com/SAP/app-studio-toolkit/blob/main/packages/app-studio-toolkit/assets/remote-con.png?raw=true)
 
 ## Authentication to SAP Business Application Studio
@@ -24,15 +24,12 @@ Remotely connect to SAP Business Application Studio dev spaces directly from a l
 This ensures the ability to leverage SAP Business Application Studio resources.
 For example, when working remotely using VS Code, it allows you to do the following:
 
-- Add landscapes to your VS Code installation.
-  ![](https://github.com/SAP/app-studio-toolkit/blob/main/packages/app-studio-toolkit/assets/connect-new-landscape.png?raw=true)
-- Log in to a landscape
-  ![](https://github.com/SAP/app-studio-toolkit/blob/main/packages/app-studio-toolkit/assets/login-to-bas.png?raw=true)
-- Access the dev spaces within the landscapes.
-  ![](https://github.com/SAP/app-studio-toolkit/blob/main/packages/app-studio-toolkit/assets/access-to-devspaces.png?raw=true)
+- Add landscapes to your VS Code installation.<br>![](https://github.com/SAP/app-studio-toolkit/blob/main/packages/app-studio-toolkit/assets/connect-new-landscape.png?raw=true)
+- Log in to a landscape.<br>![](https://github.com/SAP/app-studio-toolkit/blob/main/packages/app-studio-toolkit/assets/login-to-bas.png?raw=true)
+- Access the dev spaces within the landscapes.<br>![](https://github.com/SAP/app-studio-toolkit/blob/main/packages/app-studio-toolkit/assets/access-to-devspaces.png?raw=true)
 
 ## Dev Space Manager
 
-Allows you to create, delete, and edit your dev spaces.
+Allows you to create, delete, and edit your dev spaces.<br>
 
 ![](https://github.com/SAP/app-studio-toolkit/blob/main/packages/app-studio-toolkit/assets/browse-bas-landscape.png?raw=true)
