@@ -124,7 +124,7 @@ export function initBasRemoteExplorer(context: ExtensionContext): void {
   context.subscriptions.push(
     authentication.registerAuthenticationProvider(
       BasRemoteAuthenticationProvider.id,
-      "Business Application Studio", // TODO get official string
+      "SAP Business Application Studio",
       new BasRemoteAuthenticationProvider(context.secrets),
       { supportsMultipleAccounts: true }
     )

@@ -116,7 +116,7 @@ describe("extension unit test", () => {
         .expects(`registerAuthenticationProvider`)
         .withArgs(
           BasRemoteAuthenticationProvider.id,
-          "Business Application Studio"
+          "SAP Business Application Studio"
         )
         .returns({});
       instance.initBasRemoteExplorer(context);

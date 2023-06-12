@@ -163,7 +163,7 @@ export class BasRemoteAuthenticationProvider
 class BasRemoteSession implements AuthenticationSession {
   readonly account = {
     id: BasRemoteAuthenticationProvider.id,
-    label: "BAS Access Token",
+    label: "Access Token",
   };
   readonly id = BasRemoteAuthenticationProvider.id;
 
