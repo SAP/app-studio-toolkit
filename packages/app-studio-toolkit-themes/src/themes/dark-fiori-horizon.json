@@ -96,7 +96,7 @@
     "statusBarItem.remoteBackground": "#143E20",
     "editorGroupHeader.tabsBackground": "#1D232A",
     "editorGroupHeader.tabsBorder": "#12171C",
-    "editorGroup.border": "#12171C",
+    "editorGroup.border": "#1D2D3E",
     "tab.activeForeground": "#EAECEE",
     "tab.inactiveForeground": "#8396A8",
     "tab.activeBackground": "#12171C",
