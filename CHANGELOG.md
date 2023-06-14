@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.15.3](https://github.com/SAP/app-studio-toolkit/compare/v1.15.2...v1.15.3) (2023-06-14)
+
+### Bug Fixes
+
+- dark fiori editorGroup.border color ([d60c350](https://github.com/SAP/app-studio-toolkit/commit/d60c3509add8d285a74ebae1b1c61b85d4c2153e))
+
 ## [1.15.2](https://github.com/SAP/app-studio-toolkit/compare/v1.15.1...v1.15.2) (2023-06-12)
 
 **Note:** Version bump only for package root
