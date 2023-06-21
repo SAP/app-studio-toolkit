@@ -1,10 +1,8 @@
-import { workspace, ConfigurationTarget } from "vscode";
-import { getLogger } from "../../logger/logger";
+import { workspace, ConfigurationTarget, commands } from "vscode";
+import { getLogger } from "../logger/logger";
 import * as path from "path";
 import * as fs from "fs";
 import { homedir } from "os";
-import { DevSpaceNode } from "../tree/treeItems";
-import { getJwt } from "../../authentication/auth-utils";
 import { remotessh } from "@sap/bas-sdk";
 import { ssh } from "./ssh";
 import { URL } from "node:url";
@@ -14,6 +12,13 @@ const sshConfig = require("ssh-config");
 export const SSHD_SOCKET_PORT = 33765;
 export const SSH_SOCKET_PORT = 443;
 const KEY_SSH_REMOTE_PLATFORM = "remote.SSH.remotePlatform";
+
+export interface DevSpaceNode {
+  label: string;
+  id: string;
+  landscapeUrl: string;
+  wsUrl: string;
+}
 
 export interface SSHConfigInfo {
   name: string;
@@ -31,12 +36,20 @@ function getSshConfigFolderPath(): string {
   return path.parse(getSshConfigFilePath()).dir;
 }
 
+async function getJwt(landscape: string): Promise<string | undefined> {
+  try {
+    return commands.executeCommand("local-extension.get-jwt", landscape);
+  } catch (e) {
+    getLogger().error(`can not obtain jwt: ${e.toString()}`);
+  }
+}
+
 export async function getPK(
   landscapeUrl: string,
   wsId: string
 ): Promise<string> {
   return getJwt(landscapeUrl).then((jwt) => {
-    return remotessh.getKey(landscapeUrl, jwt, wsId);
+    return jwt ? remotessh.getKey(landscapeUrl, jwt, wsId) : "";
   });
 }
 
@@ -173,16 +186,19 @@ export async function runChannelClient(opt: {
   landscape: string;
   localPort: string;
 }): Promise<void> {
-  void ssh({
-    host: { url: opt.host, port: `${SSH_SOCKET_PORT}` },
-    client: { port: opt.localPort },
-    username: "user",
-    jwt: await getJwt(opt.landscape),
+  return getJwt(opt.landscape).then((jwt) => {
+    if (jwt) {
+      void ssh({
+        host: { url: opt.host, port: `${SSH_SOCKET_PORT}` },
+        client: { port: opt.localPort },
+        username: "user",
+        jwt,
+      });
+      getLogger().info(
+        `Start dev-channel client for ${opt.host} on port ${SSH_SOCKET_PORT}`
+      );
+    }
   });
-
-  getLogger().info(
-    `Start dev-channel client for ${opt.host} on port ${SSH_SOCKET_PORT}`
-  );
 }
 
 export function getRandomArbitrary(min?: number, max?: number): number {

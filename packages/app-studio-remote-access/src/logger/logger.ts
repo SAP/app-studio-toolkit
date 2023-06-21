@@ -2,9 +2,10 @@ import { ExtensionContext, window } from "vscode";
 import { IVSCodeExtLogger } from "@vscode-logging/types";
 import { configureLogger, NOOP_LOGGER } from "@vscode-logging/wrapper";
 
-export const LOGGING_LEVEL_CONFIG_PROP = "app-studio-toolkit.logging.level";
+export const LOGGING_LEVEL_CONFIG_PROP =
+  "app-studio-remote-access.logging.level";
 export const SOURCE_TRACKING_CONFIG_PROP =
-  "app-studio-toolkit.logging.sourceLocationTracking";
+  "app-studio-remote-access.logging.sourceLocationTracking";
 
 let logger: IVSCodeExtLogger = NOOP_LOGGER;
 
@@ -18,7 +19,7 @@ export function getLogger(): IVSCodeExtLogger {
 
 /* istanbul ignore next - ignoring "legacy" missing coverage to enforce all new code to be 100% */
 export function initLogger(context: ExtensionContext): void {
-  const extensionName = "app-studio-toolkit"; // If the extension name changes, change this too
+  const extensionName = "app-studio-remote-access"; // If the extension name changes, change this too
   try {
     logger = configureLogger({
       extName: extensionName,

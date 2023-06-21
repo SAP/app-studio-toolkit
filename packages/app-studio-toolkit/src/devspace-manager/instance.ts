@@ -1,10 +1,4 @@
-import {
-  authentication,
-  commands,
-  ConfigurationTarget,
-  window,
-  workspace,
-} from "vscode";
+import { authentication, commands, window } from "vscode";
 import type { ExtensionContext } from "vscode";
 import { DevSpacesExplorer } from "./tree/devSpacesExplorer";
 import { cmdLandscapeDelete } from "./landscape/delete";
@@ -20,10 +14,11 @@ import {
   cmdDevSpaceConnectNewWindow,
   cmdDevSpaceOpenInBAS,
 } from "./devspace/connect";
-import { BasRemoteAuthenticationProvider } from "../../src/authentication/authProvider";
+import { BasRemoteAuthenticationProvider } from "../authentication/authProvider";
 import { cmdLoginToLandscape } from "./landscape/landscape";
 import { getBasUriHandler } from "./handler/basHandler";
 import { cmdOpenInVSCode } from "./devspace/open";
+import { getJwt } from "../authentication/auth-utils";
 
 export function initBasRemoteExplorer(context: ExtensionContext): void {
   context.subscriptions.push(
@@ -115,6 +110,10 @@ export function initBasRemoteExplorer(context: ExtensionContext): void {
   );
 
   context.subscriptions.push(
+    commands.registerCommand("local-extension.get-jwt", getJwt)
+  );
+
+  context.subscriptions.push(
     commands.registerCommand(
       "local-extension.dev-space.open-in-code",
       cmdOpenInVSCode
@@ -139,5 +138,5 @@ export function initBasRemoteExplorer(context: ExtensionContext): void {
 
 export function deactivateBasRemoteExplorer(): void {
   // kill opened ssh channel if exists
-  closeTunnel();
+  void closeTunnel();
 }

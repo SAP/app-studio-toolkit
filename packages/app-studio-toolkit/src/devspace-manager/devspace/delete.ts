@@ -4,11 +4,6 @@ import { getLogger } from "../../logger/logger";
 import { messages } from "../common/messages";
 import { getJwt } from "../../authentication/auth-utils";
 import { devspace } from "@sap/bas-sdk";
-import {
-  cleanRemotePlatformSetting,
-  deletePK,
-  removeSSHConfig,
-} from "../tunnel/ssh-utils";
 
 export async function cmdDevSpaceDelete(devSpace: DevSpaceNode): Promise<void> {
   const selection = await window.showInformationMessage(
@@ -45,9 +40,10 @@ async function deleteDevSpace(
 
 async function cleanDevspaceConfig(devSpace: DevSpaceNode): Promise<void> {
   try {
-    deletePK(devSpace.wsUrl);
-    removeSSHConfig(devSpace);
-    await cleanRemotePlatformSetting(devSpace);
+    await commands.executeCommand(
+      "remote-access.dev-space.clean-devspace-config",
+      devSpace
+    );
     getLogger().info(`Devspace ssh config info cleaned`);
   } catch (e) {
     getLogger().error(

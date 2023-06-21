@@ -10,7 +10,7 @@ import {
   SshDisconnectReason,
 } from "@microsoft/dev-tunnels-ssh";
 import { PortForwardingService } from "@microsoft/dev-tunnels-ssh-tcp";
-import { getLogger } from "../../logger/logger";
+import { getLogger } from "../logger/logger";
 
 const sessionMap: Map<string, SshClientSession> = new Map();
 

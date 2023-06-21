@@ -2,15 +2,13 @@ import { expect } from "chai";
 import { fail } from "assert";
 import * as path from "path";
 import { SinonMock, mock, stub } from "sinon";
-import proxyquire from "proxyquire";
 import { URL } from "node:url";
 import { homedir } from "os";
-import * as sshutils from "../../../src/devspace-manager/tunnel/ssh-utils";
-import { DevSpaceNode } from "src/devspace-manager/tree/treeItems";
-import { assign } from "lodash";
+import * as sshutils from "../../src/tunnel/ssh-utils";
 const sshConfig = require("ssh-config");
+import proxyquire from "proxyquire";
 
-describe("ssh-utils unit test", () => {
+describe.only("ssh-utils unit test", () => {
   let SshUtilsProxy: typeof sshutils;
   enum localConfigurationTarget {
     Global = 1,
@@ -31,18 +29,18 @@ describe("ssh-utils unit test", () => {
 
   const workspaceProxy = {
     getConfiguration: () => configProxy,
-    commands: {
-      executeCommand: () => {
-        throw new Error(`not implemented`);
-      },
-    },
   };
-
-  const authUtilsProxy = {
-    getJwt: () => {
+  const commandsProxy = {
+    executeCommand: () => {
       throw new Error(`not implemented`);
     },
   };
+
+  //   const authUtilsProxy = {
+  //     getJwt: () => {
+  //       throw new Error(`not implemented`);
+  //     },
+  //   };
 
   const remoteSshProxy = {
     remotessh: {
@@ -82,33 +80,38 @@ describe("ssh-utils unit test", () => {
   };
 
   before(() => {
-    SshUtilsProxy = proxyquire(
-      "../../../src/devspace-manager/tunnel/ssh-utils",
-      {
-        "../../authentication/auth-utils": authUtilsProxy,
-        "@sap/bas-sdk": remoteSshProxy,
-        vscode: {
-          workspace: workspaceProxy,
-          ConfigurationTarget: localConfigurationTarget,
-          "@noCallThru": true,
+    SshUtilsProxy = proxyquire("../../src/tunnel/ssh-utils", {
+      "../logger/logger": {
+        getLogger: {
+          error: () => "",
         },
-        fs: fsProxy,
-        "./ssh": SshProxy,
+      },
+      "@sap/bas-sdk": remoteSshProxy,
+      vscode: {
+        workspace: workspaceProxy,
+        ConfigurationTarget: localConfigurationTarget,
+        commands: commandsProxy,
         "@noCallThru": true,
-      }
-    );
+      },
+      fs: fsProxy,
+      "./ssh": SshProxy,
+      "@noCallThru": true,
+    });
   });
 
   let mockWorkspaceConfig: SinonMock;
+  let mockCommands: SinonMock;
   let mockFs: SinonMock;
 
   beforeEach(() => {
     mockWorkspaceConfig = mock(configProxy);
+    mockCommands = mock(commandsProxy);
     mockFs = mock(fsProxy);
   });
 
   afterEach(() => {
     mockWorkspaceConfig.verify();
+    mockCommands.verify();
     mockFs.verify();
   });
 
@@ -116,28 +119,28 @@ describe("ssh-utils unit test", () => {
   const wsId = `ws-id`;
   const dummyJwt = `dummy-token`;
   const key = `pak-key`;
-  const node: DevSpaceNode = <DevSpaceNode>{
+  const node: sshutils.DevSpaceNode = <sshutils.DevSpaceNode>{
     id: `node-id`,
     landscapeUrl: landscape,
   };
 
   describe("getPK unit test", () => {
-    let mockAuthUtils: SinonMock;
+    // let mockAuthUtils: SinonMock;
     let mockRemoteSsh: SinonMock;
 
     beforeEach(() => {
-      mockAuthUtils = mock(authUtilsProxy);
+      //   mockAuthUtils = mock(authUtilsProxy);
       mockRemoteSsh = mock(remoteSshProxy.remotessh);
     });
 
     afterEach(() => {
-      mockAuthUtils.verify();
+      //   mockAuthUtils.verify();
       mockRemoteSsh.verify();
     });
 
     it("getPK, succedded", async () => {
-      mockAuthUtils
-        .expects("getJwt")
+      mockCommands
+        .expects("local-extension.get-jwt")
         .withExactArgs(landscape)
         .resolves(dummyJwt);
       mockRemoteSsh
@@ -149,7 +152,10 @@ describe("ssh-utils unit test", () => {
 
     it("getPK, exception thrown", async () => {
       const err = new Error(`error`);
-      mockAuthUtils.expects("getJwt").withExactArgs(landscape).rejects(err);
+      mockCommands
+        .expects("local-extension.get-jwt")
+        .withExactArgs(landscape)
+        .rejects(err);
       try {
         await SshUtilsProxy.getPK(landscape, wsId);
         fail(`should fail`);
@@ -499,16 +505,16 @@ Port ${1234}
   });
 
   describe("runChannelClient unit test", () => {
-    let mockAuthUtils: SinonMock;
+    // let mockAuthUtils: SinonMock;
     let mockSsh: SinonMock;
 
     beforeEach(() => {
-      mockAuthUtils = mock(authUtilsProxy);
+      //   mockAuthUtils = mock(authUtilsProxy);
       mockSsh = mock(SshProxy);
     });
 
     afterEach(() => {
-      mockAuthUtils.verify();
+      //   mockAuthUtils.verify();
       mockSsh.verify();
     });
 
@@ -519,8 +525,8 @@ Port ${1234}
     };
 
     it("runChannelClient, succedded", async () => {
-      mockAuthUtils
-        .expects("getJwt")
+      mockCommands
+        .expects("local-extension.get-jwt")
         .withExactArgs(landscape)
         .resolves(dummyJwt);
       mockSsh
@@ -542,7 +548,10 @@ Port ${1234}
 
     it("runChannelClient, exception thrown", async () => {
       const err = new Error(`get jwt error`);
-      mockAuthUtils.expects("getJwt").withExactArgs(landscape).rejects(err);
+      mockCommands
+        .expects("local-extension.get-jwt")
+        .withExactArgs(landscape)
+        .rejects(err);
       return SshUtilsProxy.runChannelClient(options)
         .then(() => fail(`should fail`))
         .catch((e) => {
