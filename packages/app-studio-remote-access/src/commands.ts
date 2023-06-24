@@ -1,4 +1,4 @@
-import { window, ProgressLocation, commands, env, Uri } from "vscode";
+import { window, ProgressLocation, commands } from "vscode";
 import type { Progress } from "vscode";
 
 import { ChildProcess } from "child_process";

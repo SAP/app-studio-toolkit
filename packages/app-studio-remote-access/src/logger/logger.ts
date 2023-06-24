@@ -1,4 +1,5 @@
-import { ExtensionContext, window } from "vscode";
+import { window } from "vscode";
+import type { ExtensionContext } from "vscode";
 import { IVSCodeExtLogger } from "@vscode-logging/types";
 import { configureLogger, NOOP_LOGGER } from "@vscode-logging/wrapper";
 

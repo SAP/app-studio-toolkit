@@ -1,3 +1,4 @@
+/* istanbul ignore next */
 export const messages = {
   info_obtaining_key: `Obtaining SSH key…`,
   info_save_pk_to_file: `Saving PK to file…`,

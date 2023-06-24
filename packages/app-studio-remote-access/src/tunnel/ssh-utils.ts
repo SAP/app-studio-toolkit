@@ -36,12 +36,11 @@ function getSshConfigFolderPath(): string {
   return path.parse(getSshConfigFilePath()).dir;
 }
 
-async function getJwt(landscape: string): Promise<string | undefined> {
-  try {
-    return commands.executeCommand("local-extension.get-jwt", landscape);
-  } catch (e) {
-    getLogger().error(`can not obtain jwt: ${e.toString()}`);
-  }
+async function getJwt(landscape: string): Promise<string> {
+  return commands.executeCommand(
+    "local-extension.get-jwt",
+    landscape
+  ) as Promise<string>;
 }
 
 export async function getPK(
@@ -49,7 +48,7 @@ export async function getPK(
   wsId: string
 ): Promise<string> {
   return getJwt(landscapeUrl).then((jwt) => {
-    return jwt ? remotessh.getKey(landscapeUrl, jwt, wsId) : "";
+    return remotessh.getKey(landscapeUrl, jwt, wsId);
   });
 }
 
@@ -187,17 +186,15 @@ export async function runChannelClient(opt: {
   localPort: string;
 }): Promise<void> {
   return getJwt(opt.landscape).then((jwt) => {
-    if (jwt) {
-      void ssh({
-        host: { url: opt.host, port: `${SSH_SOCKET_PORT}` },
-        client: { port: opt.localPort },
-        username: "user",
-        jwt,
-      });
-      getLogger().info(
-        `Start dev-channel client for ${opt.host} on port ${SSH_SOCKET_PORT}`
-      );
-    }
+    void ssh({
+      host: { url: opt.host, port: `${SSH_SOCKET_PORT}` },
+      client: { port: opt.localPort },
+      username: "user",
+      jwt,
+    });
+    getLogger().info(
+      `Start dev-channel client for ${opt.host} on port ${SSH_SOCKET_PORT}`
+    );
   });
 }
 
