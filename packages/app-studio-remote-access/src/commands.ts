@@ -87,9 +87,10 @@ export async function cmdDevSpaceConnectNewWindow(
       host: hostName,
     });
   } catch (err) {
-    const message = `Can't connect the devspace ${
-      devSpace.wsUrl
-    }: ${err.toString()}`;
+    const message = messages.err_devspace_connect_new_window(
+      devSpace.wsUrl,
+      err.toString()
+    );
     getLogger().error(message);
     void window.showErrorMessage(message);
   }

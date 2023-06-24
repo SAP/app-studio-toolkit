@@ -39,15 +39,9 @@ async function deleteDevSpace(
 }
 
 async function cleanDevspaceConfig(devSpace: DevSpaceNode): Promise<void> {
-  try {
-    await commands.executeCommand(
-      "remote-access.dev-space.clean-devspace-config",
-      devSpace
-    );
-    getLogger().info(`Devspace ssh config info cleaned`);
-  } catch (e) {
-    getLogger().error(
-      `Can't complete the devspace ssh config cleaning: ${e.toString()}`
-    );
-  }
+  return commands
+    .executeCommand("remote-access.dev-space.clean-devspace-config", devSpace)
+    .then(() => {
+      getLogger().info(`Devspace ssh config info cleaned`);
+    });
 }

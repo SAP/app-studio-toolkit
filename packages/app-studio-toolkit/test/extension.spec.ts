@@ -105,7 +105,7 @@ describe("extension unit test", () => {
           }[];
         };
       };
-      extensionDependencies: string[];
+      extensionPack: string[];
     };
 
     before(() => {
@@ -114,10 +114,7 @@ describe("extension unit test", () => {
 
     it("extension pack definition verifing", () => {
       expect(
-        xor(packageJson.extensionDependencies, [
-          "ms-vscode-remote.remote-ssh",
-          "ms-vscode-remote.remote-ssh-edit",
-        ])
+        xor(packageJson.extensionPack, ["SAPOSS.app-studio-remote-access"])
       ).to.be.empty;
     });
 

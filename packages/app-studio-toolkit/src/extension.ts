@@ -39,7 +39,7 @@ export function activate(context: ExtensionContext): BasToolkit {
   return basToolkitAPI;
 }
 
-export function deactivate() {
+export function deactivate(): void {
   closeBasctlServer();
-  deactivateBasRemoteExplorer();
+  void deactivateBasRemoteExplorer();
 }

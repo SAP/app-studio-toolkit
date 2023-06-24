@@ -136,7 +136,7 @@ export function initBasRemoteExplorer(context: ExtensionContext): void {
   );
 }
 
-export function deactivateBasRemoteExplorer(): void {
+export async function deactivateBasRemoteExplorer(): Promise<void> {
   // kill opened ssh channel if exists
-  void closeTunnel();
+  return closeTunnel();
 }

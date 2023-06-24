@@ -205,7 +205,7 @@ describe("devspace connect unit test", () => {
       mockWindow
         .expects(`showErrorMessage`)
         .withExactArgs(
-          `Can't connect the devspace ${node.wsUrl}: ${err.toString()}`
+          messages.err_devspace_connect_new_window(node.wsUrl, err.toString())
         )
         .resolves();
       await commandsProxy.cmdDevSpaceConnectNewWindow(node);

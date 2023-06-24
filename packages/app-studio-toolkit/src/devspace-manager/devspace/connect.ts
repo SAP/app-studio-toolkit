@@ -5,28 +5,16 @@ import { getLogger } from "../../../src/logger/logger";
 import { messages } from "../common/messages";
 
 export async function closeTunnel(): Promise<void> {
-  try {
-    await commands.executeCommand("remote-access.close-tunnel");
-  } catch (err) {
-    getLogger().error(`Can't communicate "remote-access": ${err.toString()}`);
-  }
+  return commands.executeCommand("remote-access.close-tunnel");
 }
 
 export async function cmdDevSpaceConnectNewWindow(
   devSpace: DevSpaceNode
 ): Promise<void> {
-  try {
-    await commands.executeCommand(
-      "remote-access.dev-space.connect-new-window",
-      devSpace
-    );
-  } catch (err) {
-    const message = `Can't connect the devspace ${
-      devSpace.wsUrl
-    }: ${err.toString()}`;
-    getLogger().error(message);
-    void window.showErrorMessage(message);
-  }
+  return commands.executeCommand(
+    "remote-access.dev-space.connect-new-window",
+    devSpace
+  );
 }
 
 export async function cmdDevSpaceOpenInBAS(
