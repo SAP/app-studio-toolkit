@@ -140,5 +140,29 @@ describe("bas-utils unit test", () => {
         .resolves();
       expect(isRunInBAS()).to.be.false;
     });
+
+    it("isRunInBAS, running locally through WSL, extension undefined", () => {
+      sandbox.stub(process, `env`).value({});
+      sandbox.stub(proxyEnv, `remoteName`).value("wsl");
+      mockCommands
+        .expects(`executeCommand`)
+        .withExactArgs(`setContext`, `ext.runPlatform`, ExtensionRunMode.wsl)
+        .resolves();
+      expect(isRunInBAS()).to.be.false;
+    });
+
+    it("isRunInBAS, running locally through SSH, extension undefined", () => {
+      sandbox.stub(process, `env`).value({});
+      sandbox.stub(proxyEnv, `remoteName`).value("ssh-remote");
+      mockCommands
+        .expects(`executeCommand`)
+        .withExactArgs(
+          `setContext`,
+          `ext.runPlatform`,
+          ExtensionRunMode.unexpected
+        )
+        .resolves();
+      expect(isRunInBAS()).to.be.false;
+    });
   });
 });
