@@ -37,18 +37,6 @@ describe("cmdDevSpaceDelete unit test", () => {
     },
   };
 
-  const proxySshUtils = {
-    deletePK: () => {
-      throw new Error("not implemented");
-    },
-    cleanRemotePlatformSetting: () => {
-      throw new Error("not implemented");
-    },
-    removeSSHConfig: () => {
-      throw new Error("not implemented");
-    },
-  };
-
   before(() => {
     devspaceDeleteProxy = proxyquire(
       "../../../src/devspace-manager/devspace/delete",
@@ -60,19 +48,16 @@ describe("cmdDevSpaceDelete unit test", () => {
         },
         "@sap/bas-sdk": proxyDevSpace,
         "../../authentication/auth-utils": proxyAuthUtils,
-        "../tunnel/ssh-utils": proxySshUtils,
       }
     ).cmdDevSpaceDelete;
   });
 
-  let mockSshUtils: SinonMock;
   let mockAuthUtils: SinonMock;
   let mockDevspace: SinonMock;
   let mockCommands: SinonMock;
   let mockWindow: SinonMock;
 
   beforeEach(() => {
-    mockSshUtils = mock(proxySshUtils);
     mockAuthUtils = mock(proxyAuthUtils);
     mockDevspace = mock(proxyDevSpace.devspace);
     mockCommands = mock(proxyCommands);
@@ -80,7 +65,6 @@ describe("cmdDevSpaceDelete unit test", () => {
   });
 
   afterEach(() => {
-    mockSshUtils.verify();
     mockAuthUtils.verify();
     mockDevspace.verify();
     mockCommands.verify();
@@ -111,11 +95,9 @@ describe("cmdDevSpaceDelete unit test", () => {
       .expects(`deleteDevSpace`)
       .withExactArgs(node.landscapeUrl, jwt, node.id)
       .resolves();
-    mockSshUtils.expects(`deletePK`).withExactArgs(node.wsUrl).returns(true);
-    mockSshUtils.expects(`removeSSHConfig`).withExactArgs(node).returns(true);
-    mockSshUtils
-      .expects(`cleanRemotePlatformSetting`)
-      .withExactArgs(node)
+    mockCommands
+      .expects(`executeCommand`)
+      .withExactArgs("remote-access.dev-space.clean-devspace-config", node)
       .resolves();
     mockWindow
       .expects(`showInformationMessage`)
@@ -155,14 +137,14 @@ describe("cmdDevSpaceDelete unit test", () => {
       .expects(`deleteDevSpace`)
       .withExactArgs(node.landscapeUrl, jwt, node.id)
       .resolves();
-    mockSshUtils.expects(`deletePK`).withExactArgs(node.wsUrl).returns(true);
-    mockSshUtils
-      .expects(`removeSSHConfig`)
-      .withExactArgs(node)
-      .throws(new Error(`cleaning stage error`));
+    const err = new Error(`cleaning stage error`);
+    mockCommands
+      .expects(`executeCommand`)
+      .withExactArgs("remote-access.dev-space.clean-devspace-config", node)
+      .rejects(err);
     mockWindow
-      .expects(`showInformationMessage`)
-      .withExactArgs(messages.info_devspace_deleted(node.id))
+      .expects(`showErrorMessage`)
+      .withExactArgs(messages.err_devspace_delete(node.id, err.toString()))
       .resolves();
     mockCommands
       .expects(`executeCommand`)

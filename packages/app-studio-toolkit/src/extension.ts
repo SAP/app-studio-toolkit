@@ -18,6 +18,7 @@ import { isRunInBAS } from "./utils/bas-utils";
 export function activate(context: ExtensionContext): BasToolkit {
   initLogger(context);
 
+  // should be trigered earlier on acivating because the `isRunInBAS` method sets the context value of `ext.runPlatform`
   if (isRunInBAS()) {
     startBasctlServer();
   }
@@ -39,7 +40,7 @@ export function activate(context: ExtensionContext): BasToolkit {
   return basToolkitAPI;
 }
 
-export function deactivate() {
+export function deactivate(): void {
   closeBasctlServer();
-  deactivateBasRemoteExplorer();
+  void deactivateBasRemoteExplorer();
 }

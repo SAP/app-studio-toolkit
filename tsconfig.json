@@ -1,6 +1,9 @@
 {
   "references": [
     {
+      "path": "./packages/app-studio-remote-access"
+    },
+    {
       "path": "./packages/app-studio-toolkit"
     },
     {

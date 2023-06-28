@@ -1,11 +1,4 @@
-import {
-  ConfigurationTarget,
-  ExtensionKind,
-  commands,
-  env,
-  extensions,
-  workspace,
-} from "vscode";
+import { ExtensionKind, commands, env, extensions } from "vscode";
 import { join, split, tail } from "lodash";
 import { URL } from "node:url";
 
@@ -14,6 +7,7 @@ export enum ExtensionRunMode {
   basRemote = `bas-remote`,
   basWorkspace = `bas-workspace`,
   basUi = `bas-ui`,
+  wsl = `wsl`,
   unexpected = `unexpected`,
 }
 
@@ -44,6 +38,10 @@ function getExtensionRunPlatform(): ExtensionRunMode {
       }
     } else {
       runPlatform = ExtensionRunMode.basRemote;
+    }
+  } else if (typeof env.remoteName === "string") {
+    if (env.remoteName.toLowerCase().includes("wsl")) {
+      runPlatform = ExtensionRunMode.wsl;
     }
   } else {
     runPlatform = ExtensionRunMode.desktop;

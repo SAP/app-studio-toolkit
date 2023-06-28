@@ -14,11 +14,6 @@ For more information about Project API, see [Artifact Management](https://www.np
 This framework allows you to run commands, tasks, and launch configuration files. The action can be run immediately or according to previously specified times.
 For example, see [Action Emitter](https://github.com/SAP/app-studio-toolkit/blob/main/examples/sample-action-client/README.md) and [Scheduled Actions](https://github.com/SAP/app-studio-toolkit/tree/main/examples/scheduled-actions-workspace).
 
-## Remote Connect
-
-Remotely connect to SAP Business Application Studio dev spaces directly from a local Visual Studio Code desktop application. See [Access SAP Business Application Studio from VS Code](https://help.sap.com/docs/bas/sap-business-application-studio/working-remotely).<br>
-![](https://github.com/SAP/app-studio-toolkit/blob/main/packages/app-studio-toolkit/assets/remote-con.png?raw=true)
-
 ## Authentication to SAP Business Application Studio
 
 This ensures the ability to leverage SAP Business Application Studio resources.
