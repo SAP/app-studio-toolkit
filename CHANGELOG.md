@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.15.6](https://github.com/SAP/app-studio-toolkit/compare/v1.15.5...v1.15.6) (2023-07-03)
+
+### Bug Fixes
+
+- themes update fix DEVXBUGS-11227 ([#259](https://github.com/SAP/app-studio-toolkit/issues/259)) ([7d45e68](https://github.com/SAP/app-studio-toolkit/commit/7d45e6894070841ed5952e1cfcabe7da0a7aa62a))
+
 ## [1.15.5](https://github.com/SAP/app-studio-toolkit/compare/v1.15.4...v1.15.5) (2023-06-28)
 
 **Note:** Version bump only for package root

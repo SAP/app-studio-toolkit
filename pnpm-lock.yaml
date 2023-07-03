@@ -82,7 +82,7 @@ importers:
 
   examples/sample-action-client:
     specifiers:
-      '@sap-devx/app-studio-toolkit-types': ^1.15.4
+      '@sap-devx/app-studio-toolkit-types': ^1.15.6
     devDependencies:
       '@sap-devx/app-studio-toolkit-types': link:../../packages/app-studio-toolkit-types
 
@@ -91,7 +91,7 @@ importers:
 
   examples/vscode-using-workspace-api:
     specifiers:
-      '@sap-devx/app-studio-toolkit-types': ^1.15.4
+      '@sap-devx/app-studio-toolkit-types': ^1.15.6
     devDependencies:
       '@sap-devx/app-studio-toolkit-types': link:../../packages/app-studio-toolkit-types
 
@@ -136,7 +136,7 @@ importers:
 
   packages/app-studio-toolkit:
     specifiers:
-      '@sap-devx/app-studio-toolkit-types': ^1.15.4
+      '@sap-devx/app-studio-toolkit-types': ^1.15.6
       '@sap/artifact-management': 1.24.1
       '@sap/bas-sdk': 3.3.2
       '@types/body-parser': 1.19.2
@@ -262,7 +262,7 @@ importers:
 
   packages/vscode-deps-upgrade-tool:
     specifiers:
-      '@sap-devx/app-studio-toolkit-types': ^1.15.4
+      '@sap-devx/app-studio-toolkit-types': ^1.15.6
       '@types/fs-extra': ^9.0.13
       '@types/semver': ^7.3.12
       '@types/validate-npm-package-name': ^3.0.3
