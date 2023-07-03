@@ -247,7 +247,7 @@
     {
       "scope": "keyword",
       "settings": {
-        "foreground": "#d73a49"
+        "foreground": "#0070F2"
       }
     },
     {
@@ -273,7 +273,7 @@
         "string punctuation.section.embedded source"
       ],
       "settings": {
-        "foreground": "#4DB1FF"
+        "foreground": "#FF8F8F"
       }
     },
     {
@@ -297,7 +297,7 @@
     {
       "scope": "variable.other",
       "settings": {
-        "foreground": "#24292e"
+        "foreground": "#EAECEE"
       }
     },
     {
