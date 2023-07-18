@@ -1,6 +1,6 @@
 {
   "name": "app-studio-remote-access",
-  "displayName": "SAP Business Application Studio Remote Access",
+  "displayName": "remote access for SAP Business Application Studio",
   "version": "1.15.5",
   "private": true,
   "description": "Allows you to connect to SAP Business Application Studio dev spaces directly from a local Visual Studio Code desktop application.",
