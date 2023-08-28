@@ -28,8 +28,8 @@ describe("packageJsonFileWatcher unit test", () => {
   let eventUtilProxySinonMock: SinonMock;
 
   const fileSystemWatcherMock = <FileSystemWatcher>{};
-  fileSystemWatcherMock.onDidChange = () => <Disposable>{};
-  fileSystemWatcherMock.onDidCreate = () => <Disposable>{};
+  (fileSystemWatcherMock as any).onDidChange = () => <Disposable>{};
+  (fileSystemWatcherMock as any).onDidCreate = () => <Disposable>{};
 
   const workspaceMock = <VscodeWorkspace>{};
   workspaceMock.createFileSystemWatcher = () => fileSystemWatcherMock;
