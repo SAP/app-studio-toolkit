@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.15.13](https://github.com/SAP/app-studio-toolkit/compare/v1.15.12...v1.15.13) (2023-08-29)
+
+### Bug Fixes
+
+- upgrade @types/vscode devdependencies ([#277](https://github.com/SAP/app-studio-toolkit/issues/277)) ([ff01f17](https://github.com/SAP/app-studio-toolkit/commit/ff01f17f68035d30705e8fa54926b1bfcaf1357f))
+
 ## [1.15.12](https://github.com/SAP/app-studio-toolkit/compare/v1.15.11...v1.15.12) (2023-08-29)
 
 ### Bug Fixes
