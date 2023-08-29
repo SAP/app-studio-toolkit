@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.15.12](https://github.com/SAP/app-studio-toolkit/compare/v1.15.11...v1.15.12) (2023-08-29)
+
+### Bug Fixes
+
+- commitlint.config.js ([#276](https://github.com/SAP/app-studio-toolkit/issues/276)) ([0ab50cb](https://github.com/SAP/app-studio-toolkit/commit/0ab50cb665ccc51a628b28970afda11eb9ddf903))
+- ignore dependabot commit message length ([#275](https://github.com/SAP/app-studio-toolkit/issues/275)) ([7bc91bc](https://github.com/SAP/app-studio-toolkit/commit/7bc91bc85a5bd3bb8f98a941d554fed694b96ed6))
+
 ## [1.15.11](https://github.com/SAP/app-studio-toolkit/compare/v1.15.10...v1.15.11) (2023-08-09)
 
 **Note:** Version bump only for package root
