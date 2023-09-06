@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.15.14](https://github.com/SAP/app-studio-toolkit/compare/v1.15.13...v1.15.14) (2023-09-06)
+
+**Note:** Version bump only for package vscode-using-workspace-api
+
 ## [1.15.13](https://github.com/SAP/app-studio-toolkit/compare/v1.15.12...v1.15.13) (2023-08-29)
 
 **Note:** Version bump only for package vscode-using-workspace-api
