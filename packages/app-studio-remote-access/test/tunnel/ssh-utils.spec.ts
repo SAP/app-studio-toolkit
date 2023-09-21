@@ -35,6 +35,11 @@ describe("ssh-utils unit test", () => {
     workspace: {
       getConfiguration: () => configProxy,
     },
+    authentication: {
+      getSession: () => {
+        throw new Error(`not implemented`);
+      },
+    },
     ConfigurationTarget: localConfigurationTarget,
   };
 
@@ -85,9 +90,7 @@ describe("ssh-utils unit test", () => {
   before(() => {
     sshUtilsProxy = proxyquire("../../src/tunnel/ssh-utils", {
       vscode: {
-        workspace: testVscode.workspace,
-        ConfigurationTarget: testVscode.ConfigurationTarget,
-        commands: testVscode.commands,
+        ...testVscode,
         "@noCallThru": true,
       },
       "../logger/logger": {
@@ -101,26 +104,29 @@ describe("ssh-utils unit test", () => {
 
   let mockWorkspace: SinonMock;
   let mockWorkspaceConfig: SinonMock;
-  let mockCommands: SinonMock;
+  let mockAuthentication: SinonMock;
   let mockFs: SinonMock;
 
   beforeEach(() => {
     mockWorkspace = mock(testVscode.workspace);
     mockWorkspaceConfig = mock(configProxy);
-    mockCommands = mock(testVscode.commands);
+    mockAuthentication = mock(testVscode.authentication);
     mockFs = mock(fsProxy);
   });
 
   afterEach(() => {
     mockWorkspace.verify();
     mockWorkspaceConfig.verify();
-    mockCommands.verify();
+    mockAuthentication.verify();
     mockFs.verify();
   });
 
   const landscape = `https://my.landscape-1.com`;
   const wsId = `ws-id`;
   const dummyJwt = `dummy-token`;
+  const dummySession = {
+    accessToken: dummyJwt,
+  };
   const key = `pak-key`;
   const node: sshutils.DevSpaceNode = <sshutils.DevSpaceNode>{
     id: `node-id`,
@@ -139,10 +145,10 @@ describe("ssh-utils unit test", () => {
     });
 
     it("getPK, succedded", async () => {
-      mockCommands
-        .expects("executeCommand")
-        .withExactArgs("local-extension.get-jwt", landscape)
-        .resolves(dummyJwt);
+      mockAuthentication
+        .expects("getSession")
+        .withExactArgs("BASLandscapePAT", [landscape], { createIfNone: true })
+        .resolves(dummySession);
       mockRemoteSsh
         .expects("getKey")
         .withExactArgs(landscape, dummyJwt, wsId)
@@ -150,11 +156,35 @@ describe("ssh-utils unit test", () => {
       expect(await sshUtilsProxy.getPK(landscape, wsId)).to.be.equal(key);
     });
 
+    it("getPK, auth session not created or canceled", async () => {
+      mockAuthentication
+        .expects("getSession")
+        .withExactArgs("BASLandscapePAT", [landscape], { createIfNone: true })
+        .resolves();
+      mockRemoteSsh
+        .expects("getKey")
+        .withExactArgs(landscape, "", wsId)
+        .resolves("");
+      expect(await sshUtilsProxy.getPK(landscape, wsId)).to.be.empty;
+    });
+
+    it("getPK, auth session created, token empty", async () => {
+      mockAuthentication
+        .expects("getSession")
+        .withExactArgs("BASLandscapePAT", [landscape], { createIfNone: true })
+        .resolves({});
+      mockRemoteSsh
+        .expects("getKey")
+        .withExactArgs(landscape, "", wsId)
+        .resolves("");
+      expect(await sshUtilsProxy.getPK(landscape, wsId)).to.be.empty;
+    });
+
     it("getPK, exception thrown", async () => {
       const err = new Error(`command error`);
-      mockCommands
-        .expects("executeCommand")
-        .withExactArgs("local-extension.get-jwt", landscape)
+      mockAuthentication
+        .expects("getSession")
+        .withExactArgs("BASLandscapePAT", [landscape], { createIfNone: true })
         .rejects(err);
       try {
         await sshUtilsProxy.getPK(landscape, wsId);
@@ -562,10 +592,10 @@ Port ${1234}
     };
 
     it("runChannelClient, succedded", async () => {
-      mockCommands
-        .expects("executeCommand")
-        .withExactArgs("local-extension.get-jwt", landscape)
-        .resolves(dummyJwt);
+      mockAuthentication
+        .expects("getSession")
+        .withExactArgs("BASLandscapePAT", [landscape], { createIfNone: true })
+        .resolves(dummySession);
       mockSsh
         .expects("ssh")
         .withExactArgs({
@@ -585,9 +615,9 @@ Port ${1234}
 
     it("runChannelClient, exception thrown", async () => {
       const err = new Error(`get jwt error`);
-      mockCommands
-        .expects("executeCommand")
-        .withExactArgs("local-extension.get-jwt", landscape)
+      mockAuthentication
+        .expects("getSession")
+        .withExactArgs("BASLandscapePAT", [landscape], { createIfNone: true })
         .rejects(err);
       return sshUtilsProxy
         .runChannelClient(options)
