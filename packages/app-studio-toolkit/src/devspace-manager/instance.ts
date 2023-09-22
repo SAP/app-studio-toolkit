@@ -110,10 +110,6 @@ export function initBasRemoteExplorer(context: ExtensionContext): void {
   );
 
   context.subscriptions.push(
-    commands.registerCommand("local-extension.get-jwt", getJwt)
-  );
-
-  context.subscriptions.push(
     commands.registerCommand(
       "local-extension.dev-space.open-in-code",
       cmdOpenInVSCode
@@ -124,8 +120,7 @@ export function initBasRemoteExplorer(context: ExtensionContext): void {
     authentication.registerAuthenticationProvider(
       BasRemoteAuthenticationProvider.id,
       "SAP Business Application Studio",
-      new BasRemoteAuthenticationProvider(context.secrets),
-      { supportsMultipleAccounts: true }
+      new BasRemoteAuthenticationProvider(context.secrets)
     )
   );
 

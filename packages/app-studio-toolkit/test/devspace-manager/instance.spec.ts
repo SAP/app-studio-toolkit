@@ -108,7 +108,6 @@ describe("extension unit test", () => {
             `local-extension.landscape.delete`,
             `local-extension.landscape.set`,
             `local-extension.login`,
-            `local-extension.get-jwt`,
             `local-extension.dev-space.open-in-code`,
           ]
         )

@@ -1,4 +1,9 @@
-import { workspace, ConfigurationTarget, commands } from "vscode";
+import {
+  workspace,
+  ConfigurationTarget,
+  commands,
+  authentication,
+} from "vscode";
 import { getLogger } from "../logger/logger";
 import * as path from "path";
 import * as fs from "fs";
@@ -37,10 +42,9 @@ function getSshConfigFolderPath(): string {
 }
 
 async function getJwt(landscape: string): Promise<string> {
-  return commands.executeCommand(
-    "local-extension.get-jwt",
-    landscape
-  ) as Promise<string>;
+  return authentication
+    .getSession("BASLandscapePAT", [landscape], { createIfNone: true })
+    .then((session) => session?.accessToken ?? "");
 }
 
 export async function getPK(
