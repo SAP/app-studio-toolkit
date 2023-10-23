@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.15.16](https://github.com/SAP/app-studio-toolkit/compare/v1.15.15...v1.15.16) (2023-10-23)
+
+### Bug Fixes
+
+- dark themes ([#282](https://github.com/SAP/app-studio-toolkit/issues/282)) ([5bc540f](https://github.com/SAP/app-studio-toolkit/commit/5bc540fc3ea9eb3bd0e6e7e3a7b8f42c43d9ce58))
+
 ## [1.15.9](https://github.com/SAP/app-studio-toolkit/compare/v1.15.8...v1.15.9) (2023-07-30)
 
 **Note:** Version bump only for package app-studio-toolkit-themes
