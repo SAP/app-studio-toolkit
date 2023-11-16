@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.15.17](https://github.com/SAP/app-studio-toolkit/compare/v1.15.16...v1.15.17) (2023-11-16)
+
+**Note:** Version bump only for package @sap-devx/app-studio-toolkit-types
+
 ## [1.15.15](https://github.com/SAP/app-studio-toolkit/compare/v1.15.14...v1.15.15) (2023-09-27)
 
 **Note:** Version bump only for package @sap-devx/app-studio-toolkit-types
