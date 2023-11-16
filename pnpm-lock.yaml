@@ -188,8 +188,8 @@ importers:
   packages/app-studio-toolkit:
     dependencies:
       '@sap/artifact-management':
-        specifier: 1.27.0
-        version: 1.27.0
+        specifier: 1.28.0
+        version: 1.28.0
       '@sap/bas-sdk':
         specifier: 3.3.2
         version: 3.3.2
@@ -281,8 +281,8 @@ importers:
   packages/app-studio-toolkit-types:
     dependencies:
       '@sap/artifact-management-types':
-        specifier: 1.27.0
-        version: 1.27.0
+        specifier: 1.28.0
+        version: 1.28.0
       '@types/vscode':
         specifier: 1.75.0
         version: 1.75.0
@@ -1862,8 +1862,8 @@ packages:
       '@octokit/openapi-types': 11.2.0
     dev: true
 
-  /@sap/artifact-management-base-types@1.27.0:
-    resolution: {integrity: sha512-hd4yWP9Byo8GRuWJLFaCI5ZAl6D0UWtSS2yZe6TPLlFb4zQwQkhvNs1l7F4ZOg0+sT0X2Xc6nG/FkLy1r10I8A==}
+  /@sap/artifact-management-base-types@1.28.0:
+    resolution: {integrity: sha512-gDpbpOrIZryjOFRtnSJW8eh4YIyOwRl7r5u9/WttLGvFYW5tNLmmhKQwUzCvNWQwEYTsvVhiEPAtEv9TdKbU4g==}
     dependencies:
       '@types/node': 14.14.6
       '@types/vscode': 1.52.0
@@ -1871,8 +1871,8 @@ packages:
       vscode-languageserver-types: 3.16.0
     dev: false
 
-  /@sap/artifact-management-base@1.27.0:
-    resolution: {integrity: sha512-1UrNVX3BwwuQNkhcpwcIlYjBffh+MupKXpcfZA1IXIrfp4u8mf8unf+9iPM1nIitQBwOBT4g76wgYfD1jpteJw==}
+  /@sap/artifact-management-base@1.28.0:
+    resolution: {integrity: sha512-Z0WNwScjCeIhgCS6mWYnfHP0Y1N155C8qZpuOF8Z+rXDUpQryRjjv4Oj2pDm7vISepBsyECoJlUfIATEqPGp7A==}
     engines: {node: '>=14.14.0'}
     dependencies:
       ejs: 3.1.8
@@ -1880,28 +1880,27 @@ packages:
       ignore: 5.1.9
       js-yaml: 4.1.0
       lodash: 4.17.21
-      parse-gitignore: 1.0.1
       vscode-languageserver-types: 3.16.0
       winston: 3.3.3
       winston-daily-rotate-file: 4.5.5(winston@3.3.3)
       winston-transport: 4.5.0
     dev: false
 
-  /@sap/artifact-management-fioriplugin@1.27.0:
-    resolution: {integrity: sha512-l2LPfYC6pvSHOounZEpbdeVoCz4wDaWVSpCaN2wDNEtOoUfDmd1vZjybRkDsE15bjhREMPqq9MKM5S36A/3tkw==}
+  /@sap/artifact-management-fioriplugin@1.28.0:
+    resolution: {integrity: sha512-NmG5HSvGwCcWejhEN/OhJCmlwWHNzRZqKbmRes7AyrlnemxFlGHPorJry2Yn2iA/a7/x4lUCvuFGBlBcnRSaHg==}
     dependencies:
-      '@sap/artifact-management-base': 1.27.0
-      xml2js: 0.5.0
+      '@sap/artifact-management-base': 1.28.0
+      xml2js: 0.6.2
     dev: false
 
-  /@sap/artifact-management-hanaplugin@1.27.0:
-    resolution: {integrity: sha512-49rlamjuMgfF35K4XuEFTj/CQ54iFMtW0LZMV8NdJUX2MLMjsXCk40o3/uc+KDk0nvL6iL/3Om+n6YBOy2s9Aw==}
+  /@sap/artifact-management-hanaplugin@1.28.0:
+    resolution: {integrity: sha512-p01/Oh9NnVQbk3uE6YWG1/BTDSg1oIUPuWyS+oJUYKdaV/TFh+iRsWwAs4qhHVR2CHpFyAJmUDLxmFmTiXfxYA==}
     dependencies:
-      '@sap/artifact-management-base': 1.27.0
+      '@sap/artifact-management-base': 1.28.0
       fast-glob: 3.2.7
       glob: 7.2.0
       jsdom: 22.1.0
-      xml2js: 0.5.0
+      xml2js: 0.6.2
     transitivePeerDependencies:
       - bufferutil
       - canvas
@@ -1909,38 +1908,37 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@sap/artifact-management-mdkplugin@1.27.0:
-    resolution: {integrity: sha512-bgKNSD7ESm9m7KijPp8Wo047wbVL1QFuET+mzV5n6vNzhDGtMaGSnqJRkjZ8rysCS2I/FQ1vnDC5hvUwt2BrKw==}
+  /@sap/artifact-management-mdkplugin@1.28.0:
+    resolution: {integrity: sha512-khUGLSsblyu2QUg1lOUZUX8WwTVwmLnanFx9T4dBUq2FJtZkFFCK3Ai6DdAzvIJOW6k6nXeeNqHbg9EJEZZnfg==}
     dependencies:
-      '@sap/artifact-management-base': 1.27.0
+      '@sap/artifact-management-base': 1.28.0
     dev: false
 
-  /@sap/artifact-management-types@1.27.0:
-    resolution: {integrity: sha512-Z1trkvoZtyCBfSCxqeyHqh3OcUs1w/6s82ayr+K6ORkxecVQHIvEiT5qFWSkX76kVw1vcfASXQAAXe4Ew1j+lA==}
+  /@sap/artifact-management-types@1.28.0:
+    resolution: {integrity: sha512-5Qdqxc71Dtqnjv2PdU3K1zt/O0drvQbXaH1PUWOHkmtVlnJDW6QyXt1aSBb8DoQNjAeupY1cI+AYTG7nbaTb4w==}
     dependencies:
-      '@sap/artifact-management-base-types': 1.27.0
+      '@sap/artifact-management-base-types': 1.28.0
     dev: false
 
-  /@sap/artifact-management@1.27.0:
-    resolution: {integrity: sha512-xvt0OfvSVwsN5JkP4wgbqBUdkqCOHTzLjqY7MRwGBYtldOiWDaHaowDu8BVQMW7WZT77M9HUpFdbO/qymzqKTA==}
+  /@sap/artifact-management@1.28.0:
+    resolution: {integrity: sha512-RaQaDfAFI7T2MR0num2DjgBF9svMBCuH2s7aDPKbnkv25OSb9rnTBOo0x62b+0UiVTj+ycPiCZp48m0/mAtZ7Q==}
     hasBin: true
     dependencies:
-      '@sap/artifact-management-base': 1.27.0
-      '@sap/artifact-management-fioriplugin': 1.27.0
-      '@sap/artifact-management-hanaplugin': 1.27.0
-      '@sap/artifact-management-mdkplugin': 1.27.0
-      ajv: 8.8.1
-      chokidar: 3.5.2
+      '@sap/artifact-management-base': 1.28.0
+      '@sap/artifact-management-fioriplugin': 1.28.0
+      '@sap/artifact-management-hanaplugin': 1.28.0
+      '@sap/artifact-management-mdkplugin': 1.28.0
+      ajv: 8.12.0
+      chokidar: 3.5.3
       js-yaml: 4.1.0
       jsdom: 22.1.0
       lodash: 4.17.21
-      micromatch: 4.0.4
-      parse-gitignore: 1.0.1
-      simple-git: 3.16.1
-      uuid: 8.3.2
-      vscode-languageserver-types: 3.16.0
-      xml2js: 0.5.0
-      yargs: 17.2.1
+      micromatch: 4.0.5
+      simple-git: 3.19.1
+      uuid: 9.0.1
+      vscode-languageserver-types: 3.17.3
+      xml2js: 0.6.2
+      yargs: 17.7.2
     transitivePeerDependencies:
       - bufferutil
       - canvas
@@ -2631,16 +2629,6 @@ packages:
       json-schema-traverse: 1.0.0
       require-from-string: 2.0.2
       uri-js: 4.4.1
-    dev: true
-
-  /ajv@8.8.1:
-    resolution: {integrity: sha512-6CiMNDrzv0ZR916u2T+iRunnD60uWmNn8SkdB44/6stVORUg0aAkWO7PkOhpCmjmW8f2I/G/xnowD66fxGyQJg==}
-    dependencies:
-      fast-deep-equal: 3.1.3
-      json-schema-traverse: 1.0.0
-      require-from-string: 2.0.2
-      uri-js: 4.4.1
-    dev: false
 
   /ansi-colors@4.1.1:
     resolution: {integrity: sha512-JoX0apGbHaUJBNl6yF+p6JAFYZ666/hhCGKN5t9QFjbJQKUU/g8MNbFDbvfrgKXvI1QpZplPOnwIo99lX/AAmA==}
@@ -2696,7 +2684,7 @@ packages:
     engines: {node: '>= 8'}
     dependencies:
       normalize-path: 3.0.0
-      picomatch: 2.3.0
+      picomatch: 2.3.1
 
   /append-transform@2.0.0:
     resolution: {integrity: sha512-7yeyCEurROLQJFv5Xj4lEGTy0borxepjFv1g22oAdqFu//SrAlDl1O1Nxx15SH1RoliUml6p8dwJW9jvZughhg==}
@@ -3145,6 +3133,22 @@ packages:
       readdirp: 3.6.0
     optionalDependencies:
       fsevents: 2.3.2
+    dev: true
+
+  /chokidar@3.5.3:
+    resolution: {integrity: sha512-Dr3sfKRP6oTcjf2JmUmFJfeVMvXBdegxB0iVQ5eb2V10uFJUCAS8OByZdVAyVb8xXNz3GjjTgj9kLWsZTqE6kw==}
+    engines: {node: '>= 8.10.0'}
+    dependencies:
+      anymatch: 3.1.2
+      braces: 3.0.2
+      glob-parent: 5.1.2
+      is-binary-path: 2.1.0
+      is-glob: 4.0.3
+      normalize-path: 3.0.0
+      readdirp: 3.6.0
+    optionalDependencies:
+      fsevents: 2.3.2
+    dev: false
 
   /chownr@1.1.4:
     resolution: {integrity: sha512-jJ0bqzaylmJtVnNgzTeSOs8DPavpbYgEr/b0YL8/2GO3xJEhInFmhKMUnEJQjZumK7KXGFhUy89PrsJWlakBVg==}
@@ -3214,6 +3218,16 @@ packages:
       string-width: 4.2.3
       strip-ansi: 6.0.1
       wrap-ansi: 7.0.0
+    dev: true
+
+  /cliui@8.0.1:
+    resolution: {integrity: sha512-BSeNnyus75C4//NQ9gQt1/csTXyo/8Sb+afLAkzAptFuMsod9HFokGNudZpi/oQV73hnVK+sR+5PVRMd+Dr7YQ==}
+    engines: {node: '>=12'}
+    dependencies:
+      string-width: 4.2.3
+      strip-ansi: 6.0.1
+      wrap-ansi: 7.0.0
+    dev: false
 
   /clone-deep@4.0.1:
     resolution: {integrity: sha512-neHB9xuzh/wk0dIHweyAXv2aPGZIVk3pLMe+/RNzINf17fe0OG96QroktYAUm7SM1PBnzTabaLboqqxDyMU+SQ==}
@@ -4430,7 +4444,7 @@ packages:
       '@nodelib/fs.walk': 1.2.8
       glob-parent: 5.1.2
       merge2: 1.4.1
-      micromatch: 4.0.4
+      micromatch: 4.0.5
     dev: false
 
   /fast-json-stable-stringify@2.1.0:
@@ -4596,7 +4610,7 @@ packages:
     dependencies:
       detect-file: 1.0.0
       is-glob: 4.0.3
-      micromatch: 4.0.4
+      micromatch: 4.0.5
       resolve-dir: 1.0.1
     dev: true
 
@@ -6265,6 +6279,14 @@ packages:
     dependencies:
       braces: 3.0.2
       picomatch: 2.3.0
+    dev: true
+
+  /micromatch@4.0.5:
+    resolution: {integrity: sha512-DMy+ERcEW2q8Z2Po+WNXuw3c5YaUSFjAO5GsJqfEl7UjvtIuFKO6ZrKvcItdy98dwFI2N1tg3zNIdKaQT+aNdA==}
+    engines: {node: '>=8.6'}
+    dependencies:
+      braces: 3.0.2
+      picomatch: 2.3.1
 
   /miller-rabin@4.0.1:
     resolution: {integrity: sha512-115fLhvZVqWwHPbClyntxEVfVDfl9DLLTuJvq3g2O/Oxi8AiNouAHvDSzHS0viUJc+V5vm3eq91Xwqn9dp4jRA==}
@@ -7087,11 +7109,6 @@ packages:
       callsites: 3.1.0
     dev: true
 
-  /parse-gitignore@1.0.1:
-    resolution: {integrity: sha512-UGyowyjtx26n65kdAMWhm6/3uy5uSrpcuH7tt+QEVudiBoVS+eqHxD5kbi9oWVRwj7sCzXqwuM+rUGw7earl6A==}
-    engines: {node: '>=6'}
-    dev: false
-
   /parse-json@4.0.0:
     resolution: {integrity: sha1-vjX1Qlvh9/bHRxhPmKeIy5lHfuA=}
     engines: {node: '>=4'}
@@ -7228,6 +7245,11 @@ packages:
   /picomatch@2.3.0:
     resolution: {integrity: sha512-lY1Q/PiJGC2zOv/z391WOTD+Z02bCgsFfvxoXXf6h7kv9o+WmsmzYqrAwY63sNgOxE4xEdq0WyUnXfKeBrSvYw==}
     engines: {node: '>=8.6'}
+    dev: true
+
+  /picomatch@2.3.1:
+    resolution: {integrity: sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==}
+    engines: {node: '>=8.6'}
 
   /pidtree@0.3.1:
     resolution: {integrity: sha512-qQbW94hLHEqCg7nhby4yRC7G2+jYHY4Rguc2bjw7Uug4GIJuu1tvf2uHaZv5Q8zdt+WKJ6qK1FOI6amaWUo5FA==}
@@ -7347,10 +7369,6 @@ packages:
 
   /psl@1.8.0:
     resolution: {integrity: sha512-RIdOzyoavK+hA18OGGWDqUTsCLhtA7IcZ/6NCs4fFJaHBDab+pDDmDIByWFRQJq2Cd7r1OoQxBGKOaztq+hjIQ==}
-
-  /punycode@2.1.1:
-    resolution: {integrity: sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==}
-    engines: {node: '>=6'}
 
   /punycode@2.3.0:
     resolution: {integrity: sha512-rRV+zQD8tVFys26lAGR9WUuS4iUAngJScM+ZRSKtvl5tKeZ2t5bvdNFdNHBW9FWR4guGHlgmsZ1G7BSm2wTbuA==}
@@ -7548,7 +7566,7 @@ packages:
     resolution: {integrity: sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==}
     engines: {node: '>=8.10.0'}
     dependencies:
-      picomatch: 2.3.0
+      picomatch: 2.3.1
 
   /rechoir@0.6.2:
     resolution: {integrity: sha1-hSBLVNuoLVdC4oyWdW70OvUOM4Q=}
@@ -7924,8 +7942,8 @@ packages:
     resolution: {integrity: sha512-sDl4qMFpijcGw22U5w63KmD3cZJfBuFlVNbVMKje2keoKML7X2UzWbc4XrmEbDwg0NXJc3yv4/ox7b+JWb57kQ==}
     dev: true
 
-  /simple-git@3.16.1:
-    resolution: {integrity: sha512-xzRxMKiy1zEYeHGXgAzvuXffDS0xgsq07Oi4LWEEcVH29vLpcZ2tyQRWyK0NLLlCVaKysZeem5tC1qHEOxsKwA==}
+  /simple-git@3.19.1:
+    resolution: {integrity: sha512-Ck+rcjVaE1HotraRAS8u/+xgTvToTuoMkT9/l9lvuP5jftwnYUp6DwuJzsKErHgfyRk8IB8pqGHWEbM3tLgV1w==}
     dependencies:
       '@kwsites/file-exists': 1.1.1
       '@kwsites/promise-deferred': 1.1.1
@@ -8867,7 +8885,7 @@ packages:
   /uri-js@4.4.1:
     resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}
     dependencies:
-      punycode: 2.1.1
+      punycode: 2.3.0
 
   /url-join@1.1.0:
     resolution: {integrity: sha512-zz1wZk4Lb5PTVwZ3HWDmm8XnlPvmOof6/fjdDPA5yBrUcbtV64U6bV832Zf1BtU2WkBBWaUT46wCs+l0HP5nhg==}
@@ -8912,8 +8930,8 @@ packages:
     hasBin: true
     dev: true
 
-  /uuid@8.3.2:
-    resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
+  /uuid@9.0.1:
+    resolution: {integrity: sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==}
     hasBin: true
     dev: false
 
@@ -8994,6 +9012,10 @@ packages:
 
   /vscode-languageserver-types@3.16.0:
     resolution: {integrity: sha512-k8luDIWJWyenLc5ToFQQMaSrqCHiLwyKPHKPQZ5zz21vM+vIVUSvsRpcbiECH4WR88K2XZqc4ScRcZ7nk/jbeA==}
+    dev: false
+
+  /vscode-languageserver-types@3.17.3:
+    resolution: {integrity: sha512-SYU4z1dL0PyIMd4Vj8YOqFvHu7Hz/enbWtpfnVbJHU4Nd1YNYx8u0ennumc6h48GQNeOLxmwySmnADouT/AuZA==}
     dev: false
 
   /vscode-uri@3.0.3:
@@ -9367,8 +9389,8 @@ packages:
       xmlbuilder: 11.0.1
     dev: true
 
-  /xml2js@0.5.0:
-    resolution: {integrity: sha512-drPFnkQJik/O+uPKpqSgr22mpuFHqKdbS835iAQrUC73L2F5WkboIRd63ai/2Yg6I1jzifPFKH2NTK+cfglkIA==}
+  /xml2js@0.6.2:
+    resolution: {integrity: sha512-T4rieHaC1EXcES0Kxxj4JWgaUQHDk+qwHcYOCFHfiwKz7tOVPLq7Hjq9dM1WCMhylqMEfP7hMcOIChvotiZegA==}
     engines: {node: '>=4.0.0'}
     dependencies:
       sax: 1.2.4
@@ -9429,6 +9451,12 @@ packages:
   /yargs-parser@20.2.9:
     resolution: {integrity: sha512-y11nGElTIV+CT3Zv9t7VKl+Q3hTQoT9a1Qzezhhl6Rp21gJ/IVTW7Z3y9EWXhuUBC2Shnf+DX0antecpAwSP8w==}
     engines: {node: '>=10'}
+    dev: true
+
+  /yargs-parser@21.1.1:
+    resolution: {integrity: sha512-tVpsJW7DdjecAiFpbIB1e3qxIQsE6NoPc5/eTdrbbIC4h0LVsWhnoa3g+m2HclBIujHzsxZ4VJVA+GUuc2/LBw==}
+    engines: {node: '>=12'}
+    dev: false
 
   /yargs-unparser@2.0.0:
     resolution: {integrity: sha512-7pRTIA9Qc1caZ0bZ6RYRGbHJthJWuakf+WmHK0rVeLkNrrGhfoabBNdue6kdINI6r4if7ocq9aD/n7xwKOdzOA==}
@@ -9481,6 +9509,20 @@ packages:
       string-width: 4.2.3
       y18n: 5.0.8
       yargs-parser: 20.2.9
+    dev: true
+
+  /yargs@17.7.2:
+    resolution: {integrity: sha512-7dSzzRQ++CKnNI/krKnYRV7JKKPUXMEh61soaHKg9mrWEhzFWhFnxPxGl+69cD1Ou63C13NUPCnmIcrvqCuM6w==}
+    engines: {node: '>=12'}
+    dependencies:
+      cliui: 8.0.1
+      escalade: 3.1.1
+      get-caller-file: 2.0.5
+      require-directory: 2.1.1
+      string-width: 4.2.3
+      y18n: 5.0.8
+      yargs-parser: 21.1.1
+    dev: false
 
   /yauzl@2.10.0:
     resolution: {integrity: sha512-p4a9I6X6nu6IhoGmBqAcbJy1mlC4j27vEPZX9F4L4/vZT3Lyq1VkFHw/V/PUcB9Buo+DG3iHkT0x3Qya58zc3g==}
