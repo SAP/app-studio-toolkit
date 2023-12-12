@@ -1,6 +1,6 @@
 {
   "name": "sample-action-client",
-  "version": "1.15.18",
+  "version": "1.15.19",
   "private": true,
   "displayName": "Sample Action Client",
   "publisher": "SAPOSS",
@@ -23,7 +23,7 @@
     "package": "vsce package"
   },
   "devDependencies": {
-    "@sap-devx/app-studio-toolkit-types": "^1.15.18"
+    "@sap-devx/app-studio-toolkit-types": "^1.15.19"
   },
   "extensionDependencies": [
     "SAPOSS.app-studio-toolkit"
