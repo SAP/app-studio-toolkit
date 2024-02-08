@@ -276,7 +276,7 @@ export class LandscapeNode extends TreeNode {
                 devSpace.status,
                 this.getContextView(devSpace),
                 devSpace.id,
-                devSpace.pack
+                devSpace.packDisplayName
               );
             })
           );
