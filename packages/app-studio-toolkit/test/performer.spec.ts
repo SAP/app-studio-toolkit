@@ -14,6 +14,7 @@ import { mockVscode } from "./mockUtil";
 const testVscode = {
   commands: { executeCommand: () => "" },
   ViewColumn: {
+    One: 1,
     Two: 2,
   },
   window: {},
