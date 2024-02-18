@@ -16,8 +16,7 @@ const testVscode = {
   ViewColumn: {
     Two: 2,
   },
-  window: {
-  },
+  window: {},
   Uri: {
     parse: (path: string, strict?: boolean) => {
       const parts = path.split("://");
@@ -126,7 +125,7 @@ describe("performer test", () => {
 
     it("is rejected if executeCommand rejects", async () => {
       testVscode.window = {
-        activeTextEditor : { viewColumn: 1 }
+        activeTextEditor: { viewColumn: 1 },
       };
       const fileJson = {
         actionType: "FILE",

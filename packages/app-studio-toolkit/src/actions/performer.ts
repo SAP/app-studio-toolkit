@@ -32,7 +32,9 @@ export async function _performAction(action: BasAction): Promise<any> {
         const columnToShowIn = window.activeTextEditor
           ? window.activeTextEditor.viewColumn
           : undefined;
-        const openViewColumn = !columnToShowIn ? ViewColumn.One : ViewColumn.Two;
+        const openViewColumn = !columnToShowIn
+          ? ViewColumn.One
+          : ViewColumn.Two;
         return action.uri.scheme === "file"
           ? commands.executeCommand("vscode.open", action.uri, {
               viewColumn: openViewColumn,
