@@ -1,4 +1,4 @@
-import { commands, ViewColumn } from "vscode";
+import { commands, ViewColumn, window } from "vscode";
 import { get } from "lodash";
 import { getLogger } from "../logger/logger";
 import { BasAction } from "@sap-devx/app-studio-toolkit-types";
@@ -29,9 +29,13 @@ export async function _performAction(action: BasAction): Promise<any> {
         });
       }
       case FILE: {
+        const columnToShowIn = window.activeTextEditor
+          ? window.activeTextEditor.viewColumn
+          : undefined;
+        const openViewColumn = !columnToShowIn ? ViewColumn.One : ViewColumn.Two;
         return action.uri.scheme === "file"
           ? commands.executeCommand("vscode.open", action.uri, {
-              viewColumn: ViewColumn.Two,
+              viewColumn: openViewColumn,
             })
           : commands.executeCommand("vscode.open", action.uri);
       }
