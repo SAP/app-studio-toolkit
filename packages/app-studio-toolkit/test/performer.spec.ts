@@ -16,6 +16,8 @@ const testVscode = {
   ViewColumn: {
     Two: 2,
   },
+  window: {
+  },
   Uri: {
     parse: (path: string, strict?: boolean) => {
       const parts = path.split("://");
@@ -117,12 +119,15 @@ describe("performer test", () => {
       const fileAction = ActionsFactory.createAction(fileJson) as IFileAction;
       commandsMock
         .expects("executeCommand")
-        .withExactArgs("vscode.open", fileAction.uri, { viewColumn: 2 });
+        .withExactArgs("vscode.open", fileAction.uri, { viewColumn: 1 });
       // check that no error is thrown
       await _performAction(fileAction);
     });
 
     it("is rejected if executeCommand rejects", async () => {
+      testVscode.window = {
+        activeTextEditor : { viewColumn: 1 }
+      };
       const fileJson = {
         actionType: "FILE",
         uri: "file:///home/user/projects/myproj/sourcefile.js",
