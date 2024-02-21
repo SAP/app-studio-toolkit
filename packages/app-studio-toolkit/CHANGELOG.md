@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.15.22](https://github.com/SAP/app-studio-toolkit/compare/v1.15.21...v1.15.22) (2024-02-21)
+
+### Bug Fixes
+
+- bug in vscode.viewColumn ([#299](https://github.com/SAP/app-studio-toolkit/issues/299)) ([3e1f467](https://github.com/SAP/app-studio-toolkit/commit/3e1f467c0e8f4fe3f5b4f9468247f1f982ddf48a))
+- inconsistent dev space descriptions ([#297](https://github.com/SAP/app-studio-toolkit/issues/297)) ([aca83f6](https://github.com/SAP/app-studio-toolkit/commit/aca83f68ea64a1cad3f643f6931a66dc0e9edcba))
+
 ## [1.15.21](https://github.com/SAP/app-studio-toolkit/compare/v1.15.20...v1.15.21) (2024-01-23)
 
 **Note:** Version bump only for package app-studio-toolkit
