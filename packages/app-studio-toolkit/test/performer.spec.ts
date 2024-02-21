@@ -119,15 +119,13 @@ describe("performer test", () => {
       const fileAction = ActionsFactory.createAction(fileJson) as IFileAction;
       commandsMock
         .expects("executeCommand")
-        .withExactArgs("vscode.open", fileAction.uri, { viewColumn: 1 });
+        .withExactArgs("vscode.open", fileAction.uri, {});
       // check that no error is thrown
       await _performAction(fileAction);
     });
 
     it("is rejected if executeCommand rejects", async () => {
-      testVscode.window = {
-        activeTextEditor: { viewColumn: 1 },
-      };
+      sandbox.stub(testVscode, "window").value({ activeTextEditor: {} });
       const fileJson = {
         actionType: "FILE",
         uri: "file:///home/user/projects/myproj/sourcefile.js",
@@ -135,7 +133,7 @@ describe("performer test", () => {
       const fileAction = ActionsFactory.createAction(fileJson) as IFileAction;
       commandsMock
         .expects("executeCommand")
-        .withExactArgs("vscode.open", fileAction.uri, { viewColumn: 2 })
+        .withExactArgs("vscode.open", fileAction.uri, { viewColumn: undefined })
         .rejects(new Error("Something bad happened"));
       await expect(_performAction(fileAction)).to.be.rejectedWith(
         "Something bad happened"
