@@ -1,4 +1,4 @@
-import { commands, ViewColumn } from "vscode";
+import { commands, ViewColumn, window } from "vscode";
 import { get } from "lodash";
 import { getLogger } from "../logger/logger";
 import { BasAction } from "@sap-devx/app-studio-toolkit-types";
@@ -30,9 +30,11 @@ export async function _performAction(action: BasAction): Promise<any> {
       }
       case FILE: {
         return action.uri.scheme === "file"
-          ? commands.executeCommand("vscode.open", action.uri, {
-              viewColumn: ViewColumn.Two,
-            })
+          ? commands.executeCommand(
+              "vscode.open",
+              action.uri,
+              window.activeTextEditor ? { viewColumn: ViewColumn.Beside } : {}
+            )
           : commands.executeCommand("vscode.open", action.uri);
       }
       default:
