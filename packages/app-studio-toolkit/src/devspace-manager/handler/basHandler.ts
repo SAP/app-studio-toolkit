@@ -25,7 +25,9 @@ async function getDevspaceFromUrl(
   if (
     (devspace as DevSpaceNode).status !== sdk.devspace.DevSpaceStatus.RUNNING
   ) {
-    throw new Error(messages.err_devspace_must_be_started);
+    //throw new Error(messages.err_devspace_must_be_started);
+    // Start the devspace if it is not running
+    // TODO
   }
   return devspace;
 }
@@ -92,7 +94,7 @@ async function handleOpen(
   devSpacesProvider: DevSpaceDataProvider
 ): Promise<void> {
   // expected URL format :
-  // vscode://SAPOSS.app-studio-toolkit/open?landscape=bas-extensions.stg10cf.int.applicationstudio.cloud.sap&devspaceid=ws-62qpt
+  // vscode://SAPOSS.app-studio-toolkit/open?landscape=bas-extensions.stg10cf.int.applicationstudio.cloud.sap&devspaceid=ws-62qpt&folderpath=/home/user/projects/project1
   const landscape = await getLandscapeFromUrl(
     devSpacesProvider,
     getParamFromUrl(uri.query, `landscape`)
@@ -101,7 +103,8 @@ async function handleOpen(
     landscape,
     getParamFromUrl(uri.query, `devspaceid`)
   );
-  void cmdDevSpaceConnectNewWindow(devspace as DevSpaceNode);
+  const folderpath = getParamFromUrl(uri.query, `folderpath`) ?? "";
+  void cmdDevSpaceConnectNewWindow(devspace as DevSpaceNode, folderpath);
 }
 
 export function getBasUriHandler(

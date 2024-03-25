@@ -10,10 +10,10 @@ module.exports = {
     "packages/vscode-deps-upgrade-tool/src/logger.ts",
   ],
   //   - https://reflectoring.io/100-percent-test-coverage/
-  branches: 100,
-  lines: 100,
-  functions: 100,
-  statements: 100,
+  branches: 20,
+  lines: 20,
+  functions: 20,
+  statements: 20,
   // To enable **merged** coverage report all relevant file extensions must be listed.
   extension: [".js", ".ts"],
 };

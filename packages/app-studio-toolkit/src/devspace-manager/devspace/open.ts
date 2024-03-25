@@ -1,7 +1,10 @@
 import { URL } from "url";
-import { Uri, env } from "vscode";
+import { Uri, env, window } from "vscode";
 
-export function cmdOpenInVSCode(): void {
+export async function cmdOpenInVSCode(): Promise<void> {
+  const folderPath = await window.showInputBox({
+    placeHolder: "Enter folder path...",
+  });
   void env.openExternal(
     Uri.parse(
       `vscode://SAPOSS.app-studio-toolkit/open?landscape=${
@@ -9,7 +12,7 @@ export function cmdOpenInVSCode(): void {
       }&devspaceid=${(process.env.WORKSPACE_ID || ``)
         .split(`-`)
         .slice(1)
-        .join(`-`)}`
+        .join(`-`)}&folderpath=${folderPath}`
     )
   );
 }

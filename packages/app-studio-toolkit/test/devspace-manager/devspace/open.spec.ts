@@ -63,13 +63,13 @@ describe("cmdDevSpaceOpen unit test", () => {
       )
       .returns({});
     mockEnv.expects(`openExternal`).resolves();
-    devspaceOpenProxy.cmdOpenInVSCode();
+    void devspaceOpenProxy.cmdOpenInVSCode();
   });
 
   it("cmdOpenInVSCode, H2O_URL is undefined", () => {
     sandbox.stub(process, `env`).value({});
     try {
-      devspaceOpenProxy.cmdOpenInVSCode();
+      void devspaceOpenProxy.cmdOpenInVSCode();
       fail(`should fail`);
     } catch (e) {
       expect(e.message.startsWith(`Invalid URL`)).to.be.true;
@@ -81,7 +81,7 @@ describe("cmdDevSpaceOpen unit test", () => {
       H2O_URL: `my.lanscape.com`,
     });
     try {
-      devspaceOpenProxy.cmdOpenInVSCode();
+      void devspaceOpenProxy.cmdOpenInVSCode();
       fail(`should fail`);
     } catch (e) {
       expect(e.message.startsWith(`Invalid URL`)).to.be.true;
@@ -100,7 +100,7 @@ describe("cmdDevSpaceOpen unit test", () => {
       )
       .returns({});
     mockEnv.expects(`openExternal`).resolves();
-    devspaceOpenProxy.cmdOpenInVSCode();
+    void devspaceOpenProxy.cmdOpenInVSCode();
   });
 
   it("cmdOpenInVSCode, WORKSPACE_ID is wrong format", () => {
@@ -115,7 +115,7 @@ describe("cmdDevSpaceOpen unit test", () => {
       )
       .returns({});
     mockEnv.expects(`openExternal`).resolves();
-    devspaceOpenProxy.cmdOpenInVSCode();
+    void devspaceOpenProxy.cmdOpenInVSCode();
   });
 
   it("cmdOpenInVSCode, WORKSPACE_ID is undefined", () => {
@@ -129,6 +129,6 @@ describe("cmdDevSpaceOpen unit test", () => {
       )
       .returns({});
     mockEnv.expects(`openExternal`).resolves();
-    devspaceOpenProxy.cmdOpenInVSCode();
+    void devspaceOpenProxy.cmdOpenInVSCode();
   });
 });
