@@ -109,6 +109,7 @@ describe("extension unit test", () => {
             `local-extension.landscape.set`,
             `local-extension.login`,
             `local-extension.dev-space.open-in-code`,
+            `local-extension.dev-space.open-project-in-code`,
           ]
         )
       ).to.be.empty;

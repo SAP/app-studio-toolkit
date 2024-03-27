@@ -1,4 +1,4 @@
-import { window, ProgressLocation, commands } from "vscode";
+import { window, ProgressLocation, commands, Uri } from "vscode";
 import type { Progress } from "vscode";
 
 import { ChildProcess } from "child_process";
@@ -79,13 +79,26 @@ async function createTunnelAndGetHostName(
 }
 
 export async function cmdDevSpaceConnectNewWindow(
-  devSpace: DevSpaceNode
+  devSpace: DevSpaceNode,
+  folderPath: string
 ): Promise<void> {
   try {
     const hostName = await createTunnelAndGetHostName(devSpace);
-    await commands.executeCommand("opensshremotes.openEmptyWindow", {
-      host: hostName,
-    });
+    // Open the folder in a new window
+    if (folderPath) {
+      const uri = Uri.parse(
+        `vscode-remote://ssh-remote+${hostName}${folderPath}`
+      );
+      void commands.executeCommand("vscode.openFolder", uri, {
+        forceNewWindow: true,
+      });
+    }
+    // Open an empty window
+    else {
+      await commands.executeCommand("opensshremotes.openEmptyWindow", {
+        host: hostName,
+      });
+    }
   } catch (err) {
     const message = messages.err_devspace_connect_new_window(
       devSpace.wsUrl,

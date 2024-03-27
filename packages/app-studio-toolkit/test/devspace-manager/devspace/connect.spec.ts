@@ -110,19 +110,19 @@ describe("devspace connect unit test", () => {
     it("cmdDevSpaceConnectNewWindow, succedded", async () => {
       mockCommands
         .expects(`executeCommand`)
-        .withExactArgs(`remote-access.dev-space.connect-new-window`, node)
+        .withExactArgs(`remote-access.dev-space.connect-new-window`, node, "")
         .resolves();
-      await connectProxy.cmdDevSpaceConnectNewWindow(node);
+      await connectProxy.cmdDevSpaceConnectNewWindow(node, "");
     });
 
     it("cmdDevSpaceConnectNewWindow, failed", async () => {
       const err = new Error(`command execution error`);
       mockCommands
         .expects(`executeCommand`)
-        .withExactArgs(`remote-access.dev-space.connect-new-window`, node)
+        .withExactArgs(`remote-access.dev-space.connect-new-window`, node, "")
         .rejects(err);
       try {
-        await connectProxy.cmdDevSpaceConnectNewWindow(node);
+        await connectProxy.cmdDevSpaceConnectNewWindow(node, "");
         fail("should fail");
       } catch (e) {
         expect(e).to.be.deep.equal(err);

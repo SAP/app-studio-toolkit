@@ -19,6 +19,12 @@ describe("cmdDevSpaceOpen unit test", () => {
     },
   };
 
+  const proxyWindow = {
+    showInputBox: async () => {
+      return Promise.resolve("/home/user/projects/project1");
+    },
+  };
+
   let sandbox: SinonSandbox;
   before(() => {
     devspaceOpenProxy = proxyquire(
@@ -27,6 +33,7 @@ describe("cmdDevSpaceOpen unit test", () => {
         vscode: {
           env: proxyEnv,
           Uri: proxyUri,
+          window: proxyWindow,
           "@noCallThru": true,
         },
       }
@@ -130,5 +137,44 @@ describe("cmdDevSpaceOpen unit test", () => {
       .returns({});
     mockEnv.expects(`openExternal`).resolves();
     devspaceOpenProxy.cmdOpenInVSCode();
+  });
+
+  it("cmdOpenProjectInVSCode, succedded", async () => {
+    sandbox.stub(process, `env`).value({
+      H2O_URL: landscape,
+      WORKSPACE_ID: wsId,
+    });
+    mockUri
+      .expects(`parse`)
+      .withExactArgs(
+        `vscode://SAPOSS.app-studio-toolkit/open?landscape=my.test.landscape-1.com&devspaceid=abcd-id&folderpath=/home/user/projects/project1`
+      )
+      .returns({});
+    mockEnv.expects(`openExternal`).resolves();
+    await devspaceOpenProxy.cmdOpenProjectInVSCode();
+  });
+
+  it("cmdOpenProjectInVSCode, H2O_URL is undefined", async () => {
+    sandbox.stub(process, `env`).value({});
+    try {
+      await devspaceOpenProxy.cmdOpenProjectInVSCode();
+      fail(`should fail`);
+    } catch (e) {
+      expect(e.message.startsWith(`Invalid URL`)).to.be.true;
+    }
+  });
+
+  it("cmdOpenProjectInVSCode, WORKSPACE_ID is undefined", async () => {
+    sandbox.stub(process, `env`).value({
+      H2O_URL: landscape,
+    });
+    mockUri
+      .expects(`parse`)
+      .withExactArgs(
+        `vscode://SAPOSS.app-studio-toolkit/open?landscape=my.test.landscape-1.com&devspaceid=&folderpath=/home/user/projects/project1`
+      )
+      .returns({});
+    mockEnv.expects(`openExternal`).resolves();
+    await devspaceOpenProxy.cmdOpenProjectInVSCode();
   });
 });

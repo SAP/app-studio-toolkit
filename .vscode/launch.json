@@ -20,6 +20,20 @@
       ]
     },
     {
+      "name": "Run Toolkit with Remote Access",
+      "type": "extensionHost",
+      "request": "launch",
+      "runtimeExecutable": "${execPath}",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}/packages/app-studio-toolkit",
+        "--extensionDevelopmentPath=${workspaceFolder}/packages/app-studio-remote-access"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/packages/app-studio-toolkit/dist/**/*.js",
+        "${workspaceFolder}/packages/app-studio-remote-access/dist/**/*.js"
+      ]
+    },
+    {
       "name": "Run Toolkit using workspace api instance",
       "type": "extensionHost",
       "request": "launch",

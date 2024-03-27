@@ -9,6 +9,7 @@ import { DevSpaceNode, LandscapeNode, TreeNode } from "../tree/treeItems";
 import { DevSpaceDataProvider } from "../tree/devSpacesProvider";
 import { cmdDevSpaceConnectNewWindow } from "../devspace/connect";
 import { messages } from "../common/messages";
+import { cmdDevSpaceStart } from "../devspace/update";
 
 async function getDevspaceFromUrl(
   landscape: LandscapeNode,
@@ -22,10 +23,11 @@ async function getDevspaceFromUrl(
   if (!devspace) {
     throw new Error(messages.err_devspace_missing(devspaceidParam));
   }
+  // Start the dev space if it has not been started
   if (
     (devspace as DevSpaceNode).status !== sdk.devspace.DevSpaceStatus.RUNNING
   ) {
-    throw new Error(messages.err_devspace_must_be_started);
+    await cmdDevSpaceStart(devspace as DevSpaceNode);
   }
   return devspace;
 }
@@ -92,7 +94,7 @@ async function handleOpen(
   devSpacesProvider: DevSpaceDataProvider
 ): Promise<void> {
   // expected URL format :
-  // vscode://SAPOSS.app-studio-toolkit/open?landscape=bas-extensions.stg10cf.int.applicationstudio.cloud.sap&devspaceid=ws-62qpt
+  // vscode://SAPOSS.app-studio-toolkit/open?landscape=bas-extensions.stg10cf.int.applicationstudio.cloud.sap&devspaceid=ws-62qpt&projectpath=/home/user/projects/project1
   const landscape = await getLandscapeFromUrl(
     devSpacesProvider,
     getParamFromUrl(uri.query, `landscape`)
@@ -101,7 +103,14 @@ async function handleOpen(
     landscape,
     getParamFromUrl(uri.query, `devspaceid`)
   );
-  void cmdDevSpaceConnectNewWindow(devspace as DevSpaceNode);
+  let folderPath;
+  try {
+    // projectPath query param is optional. If not provided, it will be an empty string.
+    folderPath = getParamFromUrl(uri.query, `folderpath`);
+  } catch (err) {
+    folderPath = "";
+  }
+  void cmdDevSpaceConnectNewWindow(devspace as DevSpaceNode, folderPath);
 }
 
 export function getBasUriHandler(
