@@ -57,16 +57,16 @@ describe("devSpacesExplorer unit test", () => {
   const testDescription = `description`;
   let node: any;
 
-  // it("getSvgIconPath - supported icon", () => {
-  //   const iconPath = treeItemsProxy.getSvgIconPath(extPath, `basic_error`);
-  //   expect(iconPath.hasOwnProperty(`light`)).to.be.true;
-  //   expect(
-  //     (iconPath as { light: string; dark: string }).light.includes(extPath)
-  //   ).to.be.true;
-  //   expect(iconPath.hasOwnProperty(`dark`)).to.be.true;
-  //   expect((iconPath as { light: string; dark: string }).dark.includes(extPath))
-  //     .to.be.true;
-  // });
+  it("getSvgIconPath - supported icon", () => {
+    const iconPath = treeItemsProxy.getSvgIconPath(extPath, `basic_error`);
+    expect(iconPath.hasOwnProperty(`light`)).to.be.true;
+    expect(
+      (iconPath as { light: string; dark: string }).light.includes(extPath)
+    ).to.be.true;
+    expect(iconPath.hasOwnProperty(`dark`)).to.be.true;
+    expect((iconPath as { light: string; dark: string }).dark.includes(extPath))
+      .to.be.true;
+  });
 
   it("getSvgIconPath - missed icon", () => {
     expect(treeItemsProxy.getSvgIconPath(extPath, `unsupported`)).to.be.empty;
