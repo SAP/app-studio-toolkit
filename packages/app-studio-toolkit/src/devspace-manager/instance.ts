@@ -17,7 +17,7 @@ import {
 import { BasRemoteAuthenticationProvider } from "../authentication/authProvider";
 import { cmdLoginToLandscape } from "./landscape/landscape";
 import { getBasUriHandler } from "./handler/basHandler";
-import { cmdOpenInVSCode, cmdOpenProjectInVSCode } from "./devspace/open";
+import { cmdOpenInVSCode } from "./devspace/open";
 import { getJwt } from "../authentication/auth-utils";
 
 export function initBasRemoteExplorer(context: ExtensionContext): void {
@@ -113,13 +113,6 @@ export function initBasRemoteExplorer(context: ExtensionContext): void {
     commands.registerCommand(
       "local-extension.dev-space.open-in-code",
       cmdOpenInVSCode
-    )
-  );
-
-  context.subscriptions.push(
-    commands.registerCommand(
-      "local-extension.dev-space.open-project-in-code",
-      cmdOpenProjectInVSCode
     )
   );
 

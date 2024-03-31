@@ -181,18 +181,18 @@ describe("basHandler scope", () => {
       },
     ];
 
-    // it("handleUri, ok - no specific folder", async () => {
-    //   mockLandscape.expects(`getLandscapes`).resolves(landscapes);
-    //   mockDevSpaceProvider.expects(`getChildren`).resolves(nodes);
-    //   const mockLandscapeNode = mock(nodes[0]);
-    //   mockLandscapeNode.expects(`getChildren`).resolves(devspaces);
-    //   mockDevSpaceConnect
-    //     .expects(`cmdDevSpaceConnectNewWindow`)
-    //     .withExactArgs(devspaces[0])
-    //     .resolves();
-    //   await handler.handleUri(uri);
-    //   mockLandscapeNode.verify();
-    // });
+    it("handleUri, ok - no specific folder", async () => {
+      mockLandscape.expects(`getLandscapes`).resolves(landscapes);
+      mockDevSpaceProvider.expects(`getChildren`).resolves(nodes);
+      const mockLandscapeNode = mock(nodes[0]);
+      mockLandscapeNode.expects(`getChildren`).resolves(devspaces);
+      mockDevSpaceConnect
+        .expects(`cmdDevSpaceConnectNewWindow`)
+        .withExactArgs(devspaces[0], undefined)
+        .resolves();
+      await handler.handleUri(uri);
+      mockLandscapeNode.verify();
+    });
 
     it("handleUri, uri path is unexpected", async () => {
       const wrongUri = cloneDeep(uri);
@@ -280,7 +280,7 @@ describe("basHandler scope", () => {
       mockLandscapeNode.expects(`getChildren`).resolves(devspaces);
       mockDevSpaceConnect
         .expects(`cmdDevSpaceConnectNewWindow`)
-        .withExactArgs(devspaces[0], "")
+        .withExactArgs(devspaces[0], undefined)
         .resolves();
       const otherUri = cloneDeep(uri);
       otherUri.query = `landscape=${landscapeParam}&devspaceid=${workspaceid
@@ -321,7 +321,7 @@ describe("basHandler scope", () => {
       mockLandscapeNode.expects(`getChildren`).resolves(devspaces);
       mockDevSpaceConnect
         .expects(`cmdDevSpaceConnectNewWindow`)
-        .withExactArgs(devspaces[0], "")
+        .withExactArgs(devspaces[0], undefined)
         .resolves();
       mockCommands
         .expects("executeCommand")
@@ -343,7 +343,7 @@ describe("basHandler scope", () => {
       mockLandscapeNode.expects(`getChildren`).resolves(devspaces);
       mockDevSpaceConnect
         .expects(`cmdDevSpaceConnectNewWindow`)
-        .withExactArgs(devspaces[0], "")
+        .withExactArgs(devspaces[0], undefined)
         .resolves();
       mockCommands
         .expects("executeCommand")

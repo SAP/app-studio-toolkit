@@ -1,7 +1,7 @@
 {
   "name": "app-studio-toolkit",
   "displayName": "SAP Business Application Studio toolkit",
-  "version": "1.16.1",
+  "version": "1.15.23",
   "private": true,
   "description": "Includes essential capabilities that will improve your SAP Business Application Studio development experience, making it easier and faster.",
   "categories": [
@@ -22,7 +22,7 @@
   "main": "./dist/src/extension",
   "scripts": {
     "bundle": "webpack --mode production",
-    "ci": "npm-run-all clean compile bundle package",
+    "ci": "npm-run-all clean compile coverage bundle package",
     "clean": "rimraf ./dist *.vsix ./.nyc_output",
     "compile": "tsc -p ./",
     "coverage": "nyc mocha",
@@ -92,11 +92,6 @@
       {
         "command": "local-extension.dev-space.open-in-code",
         "title": "Open dev space in vscode",
-        "category": "SAP Business Application Studio"
-      },
-      {
-        "command": "local-extension.dev-space.open-project-in-code",
-        "title": "Open dev space in vscode on specific project",
         "category": "SAP Business Application Studio"
       },
       {
