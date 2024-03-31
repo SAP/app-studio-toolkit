@@ -19,12 +19,6 @@ describe("cmdDevSpaceOpen unit test", () => {
     },
   };
 
-  const proxyWindow = {
-    showInputBox: async () => {
-      return Promise.resolve("/home/user/projects/project1");
-    },
-  };
-
   let sandbox: SinonSandbox;
   before(() => {
     devspaceOpenProxy = proxyquire(
@@ -33,7 +27,6 @@ describe("cmdDevSpaceOpen unit test", () => {
         vscode: {
           env: proxyEnv,
           Uri: proxyUri,
-          window: proxyWindow,
           "@noCallThru": true,
         },
       }

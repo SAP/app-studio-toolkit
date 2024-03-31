@@ -231,10 +231,6 @@
           "command": "local-extension.dev-space.open-in-code"
         },
         {
-          "when": "isWeb",
-          "command": "local-extension.dev-space.open-project-in-code"
-        },
-        {
           "when": "false",
           "command": "local-extension.dev-space.copy-ws-id"
         },

@@ -1,5 +1,5 @@
 import { URL } from "url";
-import { Uri, env, window } from "vscode";
+import { Uri, env } from "vscode";
 
 export function cmdOpenInVSCode(): void {
   void env.openExternal(
