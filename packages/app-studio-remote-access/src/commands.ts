@@ -80,7 +80,7 @@ async function createTunnelAndGetHostName(
 
 export async function cmdDevSpaceConnectNewWindow(
   devSpace: DevSpaceNode,
-  folderPath: string
+  folderPath: string | undefined
 ): Promise<void> {
   try {
     const hostName = await createTunnelAndGetHostName(devSpace);

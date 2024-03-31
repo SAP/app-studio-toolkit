@@ -10,7 +10,7 @@ export async function closeTunnel(): Promise<void> {
 
 export async function cmdDevSpaceConnectNewWindow(
   devSpace: DevSpaceNode,
-  folderPath: string
+  folderPath: string | undefined
 ): Promise<void> {
   return commands.executeCommand(
     "remote-access.dev-space.connect-new-window",

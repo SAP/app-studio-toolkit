@@ -44,7 +44,7 @@ describe("devSpacesExplorer unit test", () => {
     );
   });
 
-  const extPath = `my/extension/path`;
+  const extPath = path.join("my", "extension", "path");
   const testLabel = `test-label`;
   const testName = `test-name`;
   const testParentName = `test-parent-name`;

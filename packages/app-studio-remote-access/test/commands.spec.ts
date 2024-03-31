@@ -194,10 +194,6 @@ describe("devspace connect unit test", () => {
     });
 
     it("cmdDevSpaceConnectNewWindow, succedded - opens new window with specific folder", async () => {
-      // const uri = testVscode.Uri(
-      //   `vscode-remote://ssh-remote+${hostName}${folderPath}`
-      // );
-
       mockProgress
         .expects(`report`)
         .withExactArgs({ message: `${messages.info_obtaining_key}` })
