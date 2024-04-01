@@ -20,6 +20,20 @@
       ]
     },
     {
+      "name": "Run Toolkit with Remote Access",
+      "type": "extensionHost",
+      "request": "launch",
+      "runtimeExecutable": "${execPath}",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}/packages/app-studio-toolkit",
+        "--extensionDevelopmentPath=${workspaceFolder}/packages/app-studio-remote-access"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/packages/app-studio-toolkit/dist/**/*.js",
+        "${workspaceFolder}/packages/app-studio-remote-access/dist/**/*.js"
+      ]
+    },
+    {
       "name": "Run Toolkit using workspace api instance",
       "type": "extensionHost",
       "request": "launch",
@@ -68,6 +82,21 @@
         "${workspaceFolder}/packages/vscode-dependencies-validation/dist/**/*.js",
         "${workspaceFolder}/packages/vscode-deps-upgrade-tool/dist/**/*.js"
       ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "backend app-studio-toolkit unit tests",
+      "program": "${workspaceFolder}/node_modules/mocha/bin/mocha",
+      "args": [
+        "--timeout",
+        "999999",
+        "--colors",
+        "${workspaceFolder}/packages/app-studio-toolkit/dist/test/**/*.spec.js"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "protocol": "inspector"
     }
   ]
 }

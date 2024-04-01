@@ -9,11 +9,13 @@ export async function closeTunnel(): Promise<void> {
 }
 
 export async function cmdDevSpaceConnectNewWindow(
-  devSpace: DevSpaceNode
+  devSpace: DevSpaceNode,
+  folderPath: string | undefined
 ): Promise<void> {
   return commands.executeCommand(
     "remote-access.dev-space.connect-new-window",
-    devSpace
+    devSpace,
+    folderPath
   );
 }
 

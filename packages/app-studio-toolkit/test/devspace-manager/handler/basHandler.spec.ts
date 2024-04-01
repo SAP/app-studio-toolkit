@@ -58,6 +58,11 @@ describe("basHandler scope", () => {
     },
   };
 
+  const proxyDevspaceUpdate = {
+    cmdDevSpaceStart: () => {
+      return;
+    },
+  };
   const proxyDevSpacesProvider: any = {
     getChildren: () => Promise.resolve([]),
   };
@@ -84,6 +89,7 @@ describe("basHandler scope", () => {
         "../landscape/landscape": proxyLandscape,
         "../landscape/set": proxyLandscapeSet,
         "../devspace/connect": proxyDevspaceConnect,
+        "../devspace/update": proxyDevspaceUpdate,
       }
     );
 
@@ -93,6 +99,7 @@ describe("basHandler scope", () => {
   let mockLandscape: SinonMock;
   let mockDevSpaceProvider: SinonMock;
   let mockDevSpaceConnect: SinonMock;
+  let mockDevSpaceUpdate: SinonMock;
   let mockLandscapeSet: SinonMock;
   let mockWindow: SinonMock;
   let mockCommands: SinonMock;
@@ -101,6 +108,7 @@ describe("basHandler scope", () => {
     mockLandscape = mock(proxyLandscape);
     mockDevSpaceProvider = mock(proxyDevSpacesProvider);
     mockDevSpaceConnect = mock(proxyDevspaceConnect);
+    mockDevSpaceUpdate = mock(proxyDevspaceUpdate);
     mockLandscapeSet = mock(proxyLandscapeSet);
     mockWindow = mock(vscodeProxy.window);
     mockCommands = mock(vscodeProxy.commands);
@@ -110,6 +118,7 @@ describe("basHandler scope", () => {
     mockLandscape.verify();
     mockDevSpaceProvider.verify();
     mockDevSpaceConnect.verify();
+    mockDevSpaceUpdate.verify();
     mockLandscapeSet.verify();
     mockWindow.verify();
     mockCommands.verify();
@@ -172,14 +181,14 @@ describe("basHandler scope", () => {
       },
     ];
 
-    it("handleUri, ok", async () => {
+    it("handleUri, ok - no specific folder", async () => {
       mockLandscape.expects(`getLandscapes`).resolves(landscapes);
       mockDevSpaceProvider.expects(`getChildren`).resolves(nodes);
       const mockLandscapeNode = mock(nodes[0]);
       mockLandscapeNode.expects(`getChildren`).resolves(devspaces);
       mockDevSpaceConnect
         .expects(`cmdDevSpaceConnectNewWindow`)
-        .withExactArgs(devspaces[0])
+        .withExactArgs(devspaces[0], undefined)
         .resolves();
       await handler.handleUri(uri);
       mockLandscapeNode.verify();
@@ -271,7 +280,7 @@ describe("basHandler scope", () => {
       mockLandscapeNode.expects(`getChildren`).resolves(devspaces);
       mockDevSpaceConnect
         .expects(`cmdDevSpaceConnectNewWindow`)
-        .withExactArgs(devspaces[0])
+        .withExactArgs(devspaces[0], undefined)
         .resolves();
       const otherUri = cloneDeep(uri);
       otherUri.query = `landscape=${landscapeParam}&devspaceid=${workspaceid
@@ -312,7 +321,7 @@ describe("basHandler scope", () => {
       mockLandscapeNode.expects(`getChildren`).resolves(devspaces);
       mockDevSpaceConnect
         .expects(`cmdDevSpaceConnectNewWindow`)
-        .withExactArgs(devspaces[0])
+        .withExactArgs(devspaces[0], undefined)
         .resolves();
       mockCommands
         .expects("executeCommand")
@@ -334,7 +343,7 @@ describe("basHandler scope", () => {
       mockLandscapeNode.expects(`getChildren`).resolves(devspaces);
       mockDevSpaceConnect
         .expects(`cmdDevSpaceConnectNewWindow`)
-        .withExactArgs(devspaces[0])
+        .withExactArgs(devspaces[0], undefined)
         .resolves();
       mockCommands
         .expects("executeCommand")
@@ -377,13 +386,36 @@ describe("basHandler scope", () => {
       mockLandscapeNode.verify();
     });
 
-    it("handleUri, devspace stopped", async () => {
+    it("handleUri, devspace stopped and starting it was successful", async () => {
       mockLandscape.expects(`getLandscapes`).resolves(landscapes);
       mockDevSpaceProvider.expects(`getChildren`).resolves(nodes);
-      const cloned = cloneDeep(devspaces);
-      cloned[0].status = devspace.DevSpaceStatus.STOPPED;
+      const clonedDevSpaces = cloneDeep(devspaces);
+      clonedDevSpaces[0].status = devspace.DevSpaceStatus.STOPPED;
+
       const mockLandscapeNode = mock(nodes[0]);
-      mockLandscapeNode.expects(`getChildren`).resolves(cloned);
+      mockLandscapeNode.expects(`getChildren`).resolves(clonedDevSpaces);
+      mockLandscapeNode.expects(`getChildren`).resolves(devspaces);
+      mockDevSpaceConnect
+        .expects(`cmdDevSpaceConnectNewWindow`)
+        .withExactArgs(devspaces[0], undefined)
+        .resolves();
+      mockDevSpaceUpdate
+        .expects(`cmdDevSpaceStart`)
+        .withExactArgs(clonedDevSpaces[0])
+        .resolves();
+      await handler.handleUri(uri);
+      mockLandscapeNode.verify();
+    });
+
+    it("handleUri, devspace stopped and starting it was not successful", async () => {
+      mockLandscape.expects(`getLandscapes`).resolves(landscapes);
+      mockDevSpaceProvider.expects(`getChildren`).resolves(nodes);
+      const clonedDevSpaces = cloneDeep(devspaces);
+      clonedDevSpaces[0].status = devspace.DevSpaceStatus.STOPPED;
+
+      const mockLandscapeNode = mock(nodes[0]);
+      mockLandscapeNode.expects(`getChildren`).resolves(clonedDevSpaces);
+      mockLandscapeNode.expects(`getChildren`).resolves(clonedDevSpaces);
       mockWindow
         .expects(`showErrorMessage`)
         .withExactArgs(
@@ -391,6 +423,10 @@ describe("basHandler scope", () => {
             messages.err_devspace_must_be_started
           )
         );
+      mockDevSpaceUpdate
+        .expects(`cmdDevSpaceStart`)
+        .withExactArgs(clonedDevSpaces[0])
+        .resolves();
       await handler.handleUri(uri);
       mockLandscapeNode.verify();
     });

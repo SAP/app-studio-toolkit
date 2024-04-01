@@ -35,6 +35,7 @@ const testVscode = {
     Window: 10,
     Notification: 15,
   },
+  Uri: { parse: () => "" },
 };
 
 mockVscode(testVscode, "dist/src/commands.js");
@@ -86,6 +87,7 @@ describe("devspace connect unit test", () => {
         ProgressLocation: testVscode.ProgressLocation,
         window: testVscode.window,
         commands: testVscode.commands,
+        Uri: testVscode.Uri,
         "@noCallThru": true,
       },
       "./tunnel/ssh-utils": proxySshUtils,
@@ -143,7 +145,7 @@ describe("devspace connect unit test", () => {
       localPort: config.port,
     };
 
-    it("cmdDevSpaceConnectNewWindow, succedded", async () => {
+    it("cmdDevSpaceConnectNewWindow, succedded - opens empty window", async () => {
       mockProgress
         .expects(`report`)
         .withExactArgs({ message: `${messages.info_obtaining_key}` })
@@ -188,7 +190,54 @@ describe("devspace connect unit test", () => {
         .withExactArgs(`opensshremotes.openEmptyWindow`, {
           host: config.name,
         });
-      await commandsProxy.cmdDevSpaceConnectNewWindow(node);
+      await commandsProxy.cmdDevSpaceConnectNewWindow(node, "");
+    });
+
+    it("cmdDevSpaceConnectNewWindow, succedded - opens new window with specific folder", async () => {
+      mockProgress
+        .expects(`report`)
+        .withExactArgs({ message: `${messages.info_obtaining_key}` })
+        .returns(true);
+      mockProgress
+        .expects(`report`)
+        .withExactArgs({ message: `${messages.info_save_pk_to_file}` })
+        .returns(true);
+      mockProgress
+        .expects(`report`)
+        .withExactArgs({
+          message: `${messages.info_update_config_file_with_ssh_connection}`,
+        })
+        .returns(true);
+      mockSshUtils
+        .expects("getPK")
+        .withExactArgs(node.landscapeUrl, node.id)
+        .resolves(key);
+      mockSshUtils
+        .expects("savePK")
+        .withExactArgs(key, node.wsUrl)
+        .returns(keyPath);
+      mockSshUtils
+        .expects("updateSSHConfig")
+        .withExactArgs(keyPath, node)
+        .resolves(config);
+      mockProgress
+        .expects(`report`)
+        .withExactArgs({ message: `${messages.info_closing_old_tunnel}` })
+        .returns(true);
+      mockProgress
+        .expects(`report`)
+        .withExactArgs({ message: `${messages.info_staring_new_tunnel}` })
+        .returns(true);
+      mockSshUtils.expects("runChannelClient").withExactArgs(opts).resolves();
+      mockSshUtils
+        .expects("updateRemotePlatformSetting")
+        .withExactArgs(config)
+        .resolves();
+      mockCommands.expects(`executeCommand`).withArgs(`vscode.openFolder`);
+      await commandsProxy.cmdDevSpaceConnectNewWindow(
+        node,
+        "/home/user/projects/project1"
+      );
     });
 
     it("cmdDevSpaceConnectNewWindow, failed", async () => {
@@ -208,7 +257,7 @@ describe("devspace connect unit test", () => {
           messages.err_devspace_connect_new_window(node.wsUrl, err.toString())
         )
         .resolves();
-      await commandsProxy.cmdDevSpaceConnectNewWindow(node);
+      await commandsProxy.cmdDevSpaceConnectNewWindow(node, "");
     });
   });
 
