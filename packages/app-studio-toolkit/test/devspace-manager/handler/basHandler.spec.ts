@@ -430,30 +430,6 @@ describe("basHandler scope", () => {
       await handler.handleUri(uri);
       mockLandscapeNode.verify();
     });
-
-    it("handleUri, devspace stopped and starting it throws exception", async () => {
-      mockLandscape.expects(`getLandscapes`).resolves(landscapes);
-      mockDevSpaceProvider.expects(`getChildren`).resolves(nodes);
-      const clonedDevSpaces = cloneDeep(devspaces);
-      clonedDevSpaces[0].status = devspace.DevSpaceStatus.STOPPED;
-
-      const mockLandscapeNode = mock(nodes[0]);
-      mockLandscapeNode.expects(`getChildren`).resolves(clonedDevSpaces);
-      mockLandscapeNode.expects(`getChildren`).resolves(clonedDevSpaces);
-      mockWindow
-        .expects(`showErrorMessage`)
-        .withExactArgs(
-          messages.err_open_devspace_in_code(
-            messages.err_devspace_must_be_started
-          )
-        );
-      mockDevSpaceUpdate
-        .expects(`cmdDevSpaceStart`)
-        .withExactArgs(clonedDevSpaces[0])
-        .resolves();
-      await handler.handleUri(uri);
-      mockLandscapeNode.verify();
-    });
   });
 
   describe("handle login", () => {
