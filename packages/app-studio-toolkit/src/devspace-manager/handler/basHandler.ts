@@ -11,10 +11,7 @@ import { cmdDevSpaceConnectNewWindow } from "../devspace/connect";
 import { messages } from "../common/messages";
 import { cmdDevSpaceStart } from "../devspace/update";
 
-async function getDevspaceFromUrl(
-  landscape: LandscapeNode,
-  devspaceidParam: string
-): Promise<TreeNode> {
+async function getDevSpace(landscape: LandscapeNode, devspaceidParam: string) {
   const devspaces = await landscape.getChildren(landscape);
   if (isEmpty(devspaces)) {
     throw new Error(messages.err_no_devspaces_in_landscape(landscape.name));
@@ -23,11 +20,26 @@ async function getDevspaceFromUrl(
   if (!devspace) {
     throw new Error(messages.err_devspace_missing(devspaceidParam));
   }
+  return devspace;
+}
+
+async function getDevspaceFromUrl(
+  landscape: LandscapeNode,
+  devspaceidParam: string
+): Promise<TreeNode> {
+  let devspace = await getDevSpace(landscape, devspaceidParam);
   // Start the dev space if it has not been started
   if (
     (devspace as DevSpaceNode).status !== sdk.devspace.DevSpaceStatus.RUNNING
   ) {
     await cmdDevSpaceStart(devspace as DevSpaceNode);
+    devspace = await getDevSpace(landscape, devspaceidParam);
+    // Verify the dev space has been started successfully
+    if (
+      (devspace as DevSpaceNode).status !== sdk.devspace.DevSpaceStatus.RUNNING
+    ) {
+      throw new Error(messages.err_devspace_must_be_started);
+    }
   }
   return devspace;
 }

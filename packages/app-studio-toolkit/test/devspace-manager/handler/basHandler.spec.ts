@@ -386,17 +386,70 @@ describe("basHandler scope", () => {
       mockLandscapeNode.verify();
     });
 
-    it("handleUri, devspace stopped", async () => {
+    it("handleUri, devspace stopped and starting it was successful", async () => {
       mockLandscape.expects(`getLandscapes`).resolves(landscapes);
       mockDevSpaceProvider.expects(`getChildren`).resolves(nodes);
-      const cloned = cloneDeep(devspaces);
-      cloned[0].status = devspace.DevSpaceStatus.STOPPED;
+      const clonedDevSpaces = cloneDeep(devspaces);
+      clonedDevSpaces[0].status = devspace.DevSpaceStatus.STOPPED;
+
       const mockLandscapeNode = mock(nodes[0]);
-      mockLandscapeNode.expects(`getChildren`).resolves(cloned);
-      mockWindow.expects(`showErrorMessage`).resolves();
+      mockLandscapeNode.expects(`getChildren`).resolves(clonedDevSpaces);
+      mockLandscapeNode.expects(`getChildren`).resolves(devspaces);
+      mockDevSpaceConnect
+        .expects(`cmdDevSpaceConnectNewWindow`)
+        .withExactArgs(devspaces[0], undefined)
+        .resolves();
       mockDevSpaceUpdate
         .expects(`cmdDevSpaceStart`)
-        .withExactArgs(cloned[0])
+        .withExactArgs(clonedDevSpaces[0])
+        .resolves();
+      await handler.handleUri(uri);
+      mockLandscapeNode.verify();
+    });
+
+    it("handleUri, devspace stopped and starting it was not successful", async () => {
+      mockLandscape.expects(`getLandscapes`).resolves(landscapes);
+      mockDevSpaceProvider.expects(`getChildren`).resolves(nodes);
+      const clonedDevSpaces = cloneDeep(devspaces);
+      clonedDevSpaces[0].status = devspace.DevSpaceStatus.STOPPED;
+
+      const mockLandscapeNode = mock(nodes[0]);
+      mockLandscapeNode.expects(`getChildren`).resolves(clonedDevSpaces);
+      mockLandscapeNode.expects(`getChildren`).resolves(clonedDevSpaces);
+      mockWindow
+        .expects(`showErrorMessage`)
+        .withExactArgs(
+          messages.err_open_devspace_in_code(
+            messages.err_devspace_must_be_started
+          )
+        );
+      mockDevSpaceUpdate
+        .expects(`cmdDevSpaceStart`)
+        .withExactArgs(clonedDevSpaces[0])
+        .resolves();
+      await handler.handleUri(uri);
+      mockLandscapeNode.verify();
+    });
+
+    it("handleUri, devspace stopped and starting it throws exception", async () => {
+      mockLandscape.expects(`getLandscapes`).resolves(landscapes);
+      mockDevSpaceProvider.expects(`getChildren`).resolves(nodes);
+      const clonedDevSpaces = cloneDeep(devspaces);
+      clonedDevSpaces[0].status = devspace.DevSpaceStatus.STOPPED;
+
+      const mockLandscapeNode = mock(nodes[0]);
+      mockLandscapeNode.expects(`getChildren`).resolves(clonedDevSpaces);
+      mockLandscapeNode.expects(`getChildren`).resolves(clonedDevSpaces);
+      mockWindow
+        .expects(`showErrorMessage`)
+        .withExactArgs(
+          messages.err_open_devspace_in_code(
+            messages.err_devspace_must_be_started
+          )
+        );
+      mockDevSpaceUpdate
+        .expects(`cmdDevSpaceStart`)
+        .withExactArgs(clonedDevSpaces[0])
         .resolves();
       await handler.handleUri(uri);
       mockLandscapeNode.verify();
