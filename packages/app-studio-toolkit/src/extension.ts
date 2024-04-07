@@ -13,13 +13,14 @@ import {
   deactivateBasRemoteExplorer,
   initBasRemoteExplorer,
 } from "./devspace-manager/instance";
-import { isRunInBAS } from "./utils/bas-utils";
+import { shouldRunCtlServer } from "./utils/bas-utils";
 
 export function activate(context: ExtensionContext): BasToolkit {
   initLogger(context);
 
-  // should be trigered earlier on acivating because the `isRunInBAS` method sets the context value of `ext.runPlatform`
-  if (isRunInBAS()) {
+  // should be trigered earlier on acivating because the `shouldRunCtlServer` method sets the context value of `ext.runPlatform`
+  if (shouldRunCtlServer()) {
+    getLogger().debug("starting basctl server");
     startBasctlServer();
   }
 

@@ -41,7 +41,11 @@ const testVscode = {
 };
 
 mockVscode(testVscode, "dist/src/utils/bas-utils.js");
-import { ExtensionRunMode, isRunInBAS } from "../../src/utils/bas-utils";
+import {
+  ExtensionRunMode,
+  shouldRunCtlServer,
+} from "../../src/utils/bas-utils";
+import { devspace } from "@sap/bas-sdk";
 
 describe("bas-utils unit test", () => {
   let sandbox: SinonSandbox;
@@ -52,7 +56,7 @@ describe("bas-utils unit test", () => {
     sandbox = createSandbox();
   });
 
-  after(() => {
+  afterEach(() => {
     sandbox.restore();
   });
 
@@ -68,8 +72,8 @@ describe("bas-utils unit test", () => {
 
   const landscape = `https://my-landscape.test.com`;
 
-  describe("isRunInBAS scope", () => {
-    it("isRunInBAS, running locally, process.env.WS_BASE_URL is undefined", () => {
+  describe("shouldRunCtlServer scope", () => {
+    it("shouldRunCtlServer, running locally, process.env.WS_BASE_URL is undefined", () => {
       sandbox.stub(process, `env`).value({});
       mockCommands
         .expects(`executeCommand`)
@@ -79,10 +83,10 @@ describe("bas-utils unit test", () => {
           ExtensionRunMode.desktop
         )
         .resolves();
-      expect(isRunInBAS()).to.be.false;
+      expect(shouldRunCtlServer()).to.be.false;
     });
 
-    it("isRunInBAS, running through ssh-remote, process.env.WS_BASE_URL is defined", () => {
+    it("shouldRunCtlServer, running through ssh-remote, process.env.WS_BASE_URL is defined", () => {
       sandbox.stub(process, `env`).value({ WS_BASE_URL: landscape });
       sandbox.stub(proxyEnv, `remoteName`).value(`ssh-remote`);
       mockCommands
@@ -93,10 +97,27 @@ describe("bas-utils unit test", () => {
           ExtensionRunMode.basRemote
         )
         .resolves();
-      expect(isRunInBAS()).to.be.false;
+      expect(shouldRunCtlServer()).to.be.true;
     });
 
-    it("isRunInBAS, running in BAS, extensionKind === 'Workspace'", () => {
+    it("shouldRunCtlServer, running personal-edition", () => {
+      const devspaceMock = sandbox.mock(devspace);
+      devspaceMock.expects(`getBasMode`).returns(`personal-edition`);
+      sandbox.stub(process, `env`).value({ WS_BASE_URL: landscape });
+      sandbox.stub(proxyEnv, `remoteName`).value(undefined);
+      mockCommands
+        .expects(`executeCommand`)
+        .withExactArgs(
+          `setContext`,
+          `ext.runPlatform`,
+          ExtensionRunMode.desktop
+        )
+        .resolves();
+      expect(shouldRunCtlServer()).to.be.true;
+      devspaceMock.verify();
+    });
+
+    it("shouldRunCtlServer, running in BAS, extensionKind === 'Workspace'", () => {
       sandbox.stub(process, `env`).value({ WS_BASE_URL: landscape });
       sandbox.stub(proxyEnv, `remoteName`).value(landscape);
       mockExtension
@@ -110,10 +131,10 @@ describe("bas-utils unit test", () => {
           ExtensionRunMode.basWorkspace
         )
         .resolves();
-      expect(isRunInBAS()).to.be.true;
+      expect(shouldRunCtlServer()).to.be.true;
     });
 
-    it("isRunInBAS, running in BAS, extensionKind === 'UI'", () => {
+    it("shouldRunCtlServer, running in BAS, extensionKind === 'UI'", () => {
       sandbox.stub(process, `env`).value({ WS_BASE_URL: landscape });
       sandbox.stub(proxyEnv, `remoteName`).value(landscape);
       mockExtension
@@ -123,10 +144,10 @@ describe("bas-utils unit test", () => {
         .expects(`executeCommand`)
         .withExactArgs(`setContext`, `ext.runPlatform`, ExtensionRunMode.basUi)
         .resolves();
-      expect(isRunInBAS()).to.be.false;
+      expect(shouldRunCtlServer()).to.be.false;
     });
 
-    it("isRunInBAS, running in BAS, extension undefined", () => {
+    it("shouldRunCtlServer, running in BAS, extension undefined", () => {
       sandbox.stub(process, `env`).value({ WS_BASE_URL: landscape });
       sandbox.stub(proxyEnv, `remoteName`).value(landscape);
       mockExtension.expects(`getExtension`).returns(undefined);
@@ -138,20 +159,20 @@ describe("bas-utils unit test", () => {
           ExtensionRunMode.unexpected
         )
         .resolves();
-      expect(isRunInBAS()).to.be.false;
+      expect(shouldRunCtlServer()).to.be.false;
     });
 
-    it("isRunInBAS, running locally through WSL, extension undefined", () => {
+    it("shouldRunCtlServer, running locally through WSL, extension undefined", () => {
       sandbox.stub(process, `env`).value({});
       sandbox.stub(proxyEnv, `remoteName`).value("wsl");
       mockCommands
         .expects(`executeCommand`)
         .withExactArgs(`setContext`, `ext.runPlatform`, ExtensionRunMode.wsl)
         .resolves();
-      expect(isRunInBAS()).to.be.false;
+      expect(shouldRunCtlServer()).to.be.false;
     });
 
-    it("isRunInBAS, running locally through SSH, extension undefined", () => {
+    it("shouldRunCtlServer, running locally through SSH, extension undefined", () => {
       sandbox.stub(process, `env`).value({});
       sandbox.stub(proxyEnv, `remoteName`).value("ssh-remote");
       mockCommands
@@ -162,7 +183,7 @@ describe("bas-utils unit test", () => {
           ExtensionRunMode.unexpected
         )
         .resolves();
-      expect(isRunInBAS()).to.be.false;
+      expect(shouldRunCtlServer()).to.be.false;
     });
   });
 });
