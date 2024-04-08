@@ -575,7 +575,7 @@ describe("authProvider unit test", () => {
       authListeners[0]({
         provider: { id: BasRemoteAuthenticationProvider.id, label: `label` },
       });
-      await new Promise((resolve) => setTimeout(() => resolve(true), 1000));
+      await new Promise((resolve) => setTimeout(() => resolve(true), 1100));
       expect(spyCheckup.called).to.be.true;
       expect(spyCheckup.args[0][0]).to.be.deep.equal([landscape2]);
     });

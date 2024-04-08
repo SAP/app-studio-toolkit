@@ -1,5 +1,6 @@
 import { ExtensionKind, commands, env, extensions } from "vscode";
 import { join, split, tail } from "lodash";
+import { devspace } from "@sap/bas-sdk";
 import { URL } from "node:url";
 
 export enum ExtensionRunMode {
@@ -11,8 +12,13 @@ export enum ExtensionRunMode {
   unexpected = `unexpected`,
 }
 
-export function isRunInBAS(): boolean {
-  return getExtensionRunPlatform() === ExtensionRunMode.basWorkspace;
+export function shouldRunCtlServer(): boolean {
+  const platform = getExtensionRunPlatform();
+  return (
+    platform === ExtensionRunMode.basWorkspace || // BAS
+    platform === ExtensionRunMode.basRemote || // hybrid (through ssh-remote)
+    devspace.getBasMode() === "personal-edition" // personal edition
+  );
 }
 
 function getExtensionRunPlatform(): ExtensionRunMode {

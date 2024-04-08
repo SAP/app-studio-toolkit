@@ -61,7 +61,7 @@ describe("extension unit test", () => {
   let sandbox: SinonSandbox;
   let workspaceMock: SinonMock;
   let basctlServerMock: SinonMock;
-  let isRunInBasMock: SinonMock;
+  let shouldRunCtlServerMock: SinonMock;
   let performerMock: SinonMock;
   let wsConfigMock: SinonMock;
   let loggerMock: SinonMock;
@@ -78,7 +78,7 @@ describe("extension unit test", () => {
   beforeEach(() => {
     workspaceMock = sandbox.mock(testVscode.workspace);
     basctlServerMock = sandbox.mock(basctlServer);
-    isRunInBasMock = sandbox.mock(runInBas);
+    shouldRunCtlServerMock = sandbox.mock(runInBas);
     performerMock = sandbox.mock(performer);
     wsConfigMock = sandbox.mock(wsConfig);
     loggerMock = sandbox.mock(logger);
@@ -88,7 +88,7 @@ describe("extension unit test", () => {
   afterEach(() => {
     workspaceMock.verify();
     basctlServerMock.verify();
-    isRunInBasMock.verify();
+    shouldRunCtlServerMock.verify();
     performerMock.verify();
     wsConfigMock.verify();
     loggerMock.verify();
@@ -139,7 +139,7 @@ describe("extension unit test", () => {
         .expects("initBasRemoteExplorer")
         .withExactArgs(context);
       loggerMock.expects("initLogger").withExactArgs(context);
-      isRunInBasMock.expects("isRunInBAS").returns(true);
+      shouldRunCtlServerMock.expects("shouldRunCtlServer").returns(true);
       basctlServerMock.expects("startBasctlServer");
       const scheduledAction = {
         name: "actName",
@@ -163,7 +163,7 @@ describe("extension unit test", () => {
       };
 
       loggerMock.expects("initLogger").withExactArgs(context);
-      isRunInBasMock.expects("isRunInBAS").returns(false);
+      shouldRunCtlServerMock.expects("shouldRunCtlServer").returns(false);
       performerMock.expects("_performAction").never();
 
       wsConfigMock.expects("get").withExactArgs("actions", []).returns([]);
@@ -181,7 +181,7 @@ describe("extension unit test", () => {
       const testError = new Error("Socket failure");
 
       loggerMock.expects("initLogger").withExactArgs(context);
-      isRunInBasMock.expects("isRunInBAS").returns(true);
+      shouldRunCtlServerMock.expects("shouldRunCtlServer").returns(true);
       basctlServerMock.expects("startBasctlServer").throws(testError);
 
       try {
