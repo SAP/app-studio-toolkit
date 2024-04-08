@@ -192,8 +192,8 @@ importers:
   packages/app-studio-toolkit:
     dependencies:
       '@sap/artifact-management':
-        specifier: 1.32.0
-        version: 1.32.0
+        specifier: 1.33.0
+        version: 1.33.0
       '@sap/bas-sdk':
         specifier: 3.8.1
         version: 3.8.1
@@ -285,8 +285,8 @@ importers:
   packages/app-studio-toolkit-types:
     dependencies:
       '@sap/artifact-management-types':
-        specifier: 1.32.0
-        version: 1.32.0
+        specifier: 1.33.0
+        version: 1.33.0
       '@types/vscode':
         specifier: 1.75.0
         version: 1.75.0
@@ -1866,8 +1866,8 @@ packages:
       '@octokit/openapi-types': 11.2.0
     dev: true
 
-  /@sap/artifact-management-base-types@1.32.0:
-    resolution: {integrity: sha512-JyERMMHOol7WTz2c6aEPc4lMjBnMLMatTX0bX7HvNHoOgJr9layLuaZLaTnO4k78uXHWxQTINKvfomLxcFJNhQ==}
+  /@sap/artifact-management-base-types@1.33.0:
+    resolution: {integrity: sha512-3qmDE2IFILFDA2h8vTFSM/aVDjJqpiUurkKQHNQqI2vlUzmyA4R7h2q9DBftQuYjeh7StfVgk6h2V/fwEGeAGA==}
     dependencies:
       '@types/node': 14.14.6
       '@types/vscode': 1.52.0
@@ -1875,8 +1875,8 @@ packages:
       vscode-languageserver-types: 3.16.0
     dev: false
 
-  /@sap/artifact-management-base@1.32.0:
-    resolution: {integrity: sha512-U0pTDQ1eWUdB/BVs8TcUMXYwfjrenK4wQlYq9aCI7QCxWWlRyarAQBG67l2N6z2kEu9xOcKr5bnlETjP4Sx/mQ==}
+  /@sap/artifact-management-base@1.33.0:
+    resolution: {integrity: sha512-FoDq1ig1yR5nacsAT7/jjX/lufslDLnRP8M7Idsiprp8gFME0gwQK52U5Vp4u4ltuce/LZvlUSMQbWIBfWPHDQ==}
     engines: {node: '>=14.14.0'}
     dependencies:
       ejs: 3.1.8
@@ -1890,17 +1890,17 @@ packages:
       winston-transport: 4.5.0
     dev: false
 
-  /@sap/artifact-management-fioriplugin@1.32.0:
-    resolution: {integrity: sha512-D5XXBe3uq9Y/VZjBgUwuaIbICqQNPOR98hHERVNAqrtb2DVZk3WBdrKNKsVK0ulNFzpb78maVMn5EN480mIZFQ==}
+  /@sap/artifact-management-fioriplugin@1.33.0:
+    resolution: {integrity: sha512-D1eDyaBpwh+9++zcSlf+IzQHQ8hJZfdxJ6IhyzaqKWzZN7LbgGjTxXvIk7CadTepgUHRIhRoYhrBjBMNTIjDkQ==}
     dependencies:
-      '@sap/artifact-management-base': 1.32.0
+      '@sap/artifact-management-base': 1.33.0
       xml2js: 0.6.2
     dev: false
 
-  /@sap/artifact-management-hanaplugin@1.32.0:
-    resolution: {integrity: sha512-N/JJ5JrTmblLwKXTkuAjs4t5P2l5yNaBnkbr+ySEgQqM7kNhoIB9hrjCqPJbCDx/IX5S0Sf/Toi/a4Q1DiLQgA==}
+  /@sap/artifact-management-hanaplugin@1.33.0:
+    resolution: {integrity: sha512-5TsKJJeRFVgZs3qSDdBPZ8Se8QL1W52UUwnO6J/XySMHFodSCQe4HdFZ5y26vzl7ScNLWefcIvq3MpHNxdhJ9g==}
     dependencies:
-      '@sap/artifact-management-base': 1.32.0
+      '@sap/artifact-management-base': 1.33.0
       fast-glob: 3.2.7
       glob: 7.2.0
       jsdom: 22.1.0
@@ -1912,26 +1912,26 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@sap/artifact-management-mdkplugin@1.32.0:
-    resolution: {integrity: sha512-CTVXTL3+J5Rgf5OpkS9grSwjRxKVZNv7Kqfurhq6GIlW8dkxQfbFsYjw3OZuyPyZnBRPY22zY8o2AzE6vDn5LQ==}
+  /@sap/artifact-management-mdkplugin@1.33.0:
+    resolution: {integrity: sha512-hvSIcuR0mq0yOikAiDXJJy4pI9JCnCL3nHG6wknlWoJGav8QdrfTTixb2zpquDRLUU4/MG8tfH7iWxPvq0SW0A==}
     dependencies:
-      '@sap/artifact-management-base': 1.32.0
+      '@sap/artifact-management-base': 1.33.0
     dev: false
 
-  /@sap/artifact-management-types@1.32.0:
-    resolution: {integrity: sha512-wFSAz3KDfPE4FRztdChso+8ayqCuaW22Ni+VbwrZ+Q+wldoXTf570HFnWaS587HFErVS4+FtqHO/tmjMwHAPmg==}
+  /@sap/artifact-management-types@1.33.0:
+    resolution: {integrity: sha512-U+C3q/Tp19yaFTk0OMxS81CG4BQm1JP/xTzq+SYMyWxkyieR7dp7acFdJ6jva7IOAxmXNEPFl94gsbrPnA8e/w==}
     dependencies:
-      '@sap/artifact-management-base-types': 1.32.0
+      '@sap/artifact-management-base-types': 1.33.0
     dev: false
 
-  /@sap/artifact-management@1.32.0:
-    resolution: {integrity: sha512-znjZrRBP0OcnkzrA+alS1EiRZyyU6iitC46SkCksUtfNuD/NmGIOOx39JU2vq5nkr7Z8JzYhFr/VeuNgiYAedg==}
+  /@sap/artifact-management@1.33.0:
+    resolution: {integrity: sha512-uLaLhoitv73dzOK+WnYkeLGmIDTrwL3cZgp3jEzqAIQXCJXipQIZX9WL7N2rkoQH9ZYpkA2HhRaMgozpd0e3Og==}
     hasBin: true
     dependencies:
-      '@sap/artifact-management-base': 1.32.0
-      '@sap/artifact-management-fioriplugin': 1.32.0
-      '@sap/artifact-management-hanaplugin': 1.32.0
-      '@sap/artifact-management-mdkplugin': 1.32.0
+      '@sap/artifact-management-base': 1.33.0
+      '@sap/artifact-management-fioriplugin': 1.33.0
+      '@sap/artifact-management-hanaplugin': 1.33.0
+      '@sap/artifact-management-mdkplugin': 1.33.0
       ajv: 8.12.0
       chokidar: 3.5.3
       js-yaml: 4.1.0
