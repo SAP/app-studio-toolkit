@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.16.1](https://github.com/SAP/app-studio-toolkit/compare/v1.16.0...v1.16.1) (2024-04-09)
+
+### Bug Fixes
+
+- extend running of `basctl` server in `ssh-remote` mode ([#307](https://github.com/SAP/app-studio-toolkit/issues/307)) ([83f5b5f](https://github.com/SAP/app-studio-toolkit/commit/83f5b5fd09c2f09d2fd4ac533b2f637e1023d7f5))
+
 # [1.16.0](https://github.com/SAP/app-studio-toolkit/compare/v1.15.23...v1.16.0) (2024-04-01)
 
 ### Features
