@@ -119,7 +119,7 @@ importers:
   examples/sample-action-client:
     devDependencies:
       '@sap-devx/app-studio-toolkit-types':
-        specifier: ^1.16.1
+        specifier: ^1.16.2
         version: link:../../packages/app-studio-toolkit-types
 
   examples/vscode-using-upgrade-tool: {}
@@ -127,7 +127,7 @@ importers:
   examples/vscode-using-workspace-api:
     devDependencies:
       '@sap-devx/app-studio-toolkit-types':
-        specifier: ^1.16.1
+        specifier: ^1.16.2
         version: link:../../packages/app-studio-toolkit-types
 
   packages/app-studio-remote-access:
@@ -231,7 +231,7 @@ importers:
         version: 1.0.34
     devDependencies:
       '@sap-devx/app-studio-toolkit-types':
-        specifier: ^1.16.1
+        specifier: ^1.16.2
         version: link:../app-studio-toolkit-types
       '@types/body-parser':
         specifier: 1.19.2
@@ -386,7 +386,7 @@ importers:
         version: 3.0.0
     devDependencies:
       '@sap-devx/app-studio-toolkit-types':
-        specifier: ^1.16.1
+        specifier: ^1.16.2
         version: link:../app-studio-toolkit-types
       '@types/semver':
         specifier: ^7.3.12
