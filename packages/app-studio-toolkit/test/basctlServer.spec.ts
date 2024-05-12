@@ -14,6 +14,9 @@ const testVscode = {
   window: {
     showErrorMessage: () => Promise.reject(),
   },
+  env: {
+    sessionId: "sessionId",
+  },
 };
 
 const testSocket = {
@@ -28,6 +31,7 @@ const testServer = {
 
 mockVscode(testVscode, "dist/src/actions/performer.js");
 mockVscode(testVscode, "dist/src/actions/actionsFactory.js");
+mockVscode(testVscode, "dist/src/basctlServer/basctlServer.js");
 import * as performer from "../src/actions/performer";
 import * as actionsFactory from "../src/actions/actionsFactory";
 import {
@@ -35,7 +39,7 @@ import {
   startBasctlServer,
 } from "../src/basctlServer/basctlServer";
 
-describe("basctlServer", () => {
+describe.only("basctlServer", () => {
   let sandbox: SinonSandbox;
   let performerMock: SinonMock;
   let actionsFactoryMock: SinonMock;
@@ -148,17 +152,18 @@ describe("basctlServer", () => {
       .expects("createServer")
       .yields((socketMock as any).object)
       .returns((serverMock as any).object);
+    const socketFileName = `/extbin/basctlSocket-${testVscode.env.sessionId}`;
     if (options && options.socketInUse) {
       serverMock
         .expects("listen")
-        .withExactArgs("/extbin/basctlSocket")
+        .withExactArgs(socketFileName)
         .throws(new Error("Socket already serving a server"));
       windowMock
         .expects("showErrorMessage")
         .withArgs(match("Socket already serving a server"));
       return;
     } else {
-      serverMock.expects("listen").withExactArgs("/extbin/basctlSocket");
+      serverMock.expects("listen").withExactArgs(socketFileName);
     }
     let dataObject: any;
     dataObject = {

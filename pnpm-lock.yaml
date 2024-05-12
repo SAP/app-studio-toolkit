@@ -124,7 +124,7 @@ importers:
     devDependencies:
       '@sap-devx/app-studio-toolkit-types':
         specifier: ^1.16.1
-        version: link:../../packages/app-studio-toolkit-types
+        version: 1.16.2
 
   examples/vscode-using-upgrade-tool: {}
 
@@ -132,7 +132,7 @@ importers:
     devDependencies:
       '@sap-devx/app-studio-toolkit-types':
         specifier: ^1.16.1
-        version: link:../../packages/app-studio-toolkit-types
+        version: 1.16.2
 
   packages/app-studio-remote-access:
     dependencies:
@@ -236,7 +236,7 @@ importers:
     devDependencies:
       '@sap-devx/app-studio-toolkit-types':
         specifier: ^1.16.1
-        version: link:../app-studio-toolkit-types
+        version: 1.16.2
       '@types/body-parser':
         specifier: 1.19.2
         version: 1.19.2
@@ -391,7 +391,7 @@ importers:
     devDependencies:
       '@sap-devx/app-studio-toolkit-types':
         specifier: ^1.16.1
-        version: link:../app-studio-toolkit-types
+        version: 1.16.2
       '@types/semver':
         specifier: ^7.3.12
         version: 7.3.12
@@ -1866,6 +1866,15 @@ packages:
       '@octokit/openapi-types': 11.2.0
     dev: true
 
+  /@sap-devx/app-studio-toolkit-types@1.16.2:
+    resolution: {integrity: sha512-+R4QJ2kOUldlr7iE5FwS6FlraMSYUrofH8E+ZpUnQ6xAiU/LMBX2uWJegqrbIpOw+2sWrkEMM3oNw9Z7ymB/Tw==}
+    dependencies:
+      '@sap/artifact-management-types': 1.34.0
+      '@types/vscode': 1.75.0
+      '@vscode-logging/types': 0.1.4
+      type-fest: 2.11.1
+    dev: true
+
   /@sap/artifact-management-base-types@1.33.0:
     resolution: {integrity: sha512-3qmDE2IFILFDA2h8vTFSM/aVDjJqpiUurkKQHNQqI2vlUzmyA4R7h2q9DBftQuYjeh7StfVgk6h2V/fwEGeAGA==}
     dependencies:
@@ -1874,6 +1883,15 @@ packages:
       '@vscode-logging/types': 0.1.3
       vscode-languageserver-types: 3.16.0
     dev: false
+
+  /@sap/artifact-management-base-types@1.34.0:
+    resolution: {integrity: sha512-F5Weq1sx5jRxXTypP3wgCthb78xDikJhYWDt8Q+mMzDhi4sC/aKfOyiiWCwQT9rVnNW8fGlEhGd7L1z+aP9mRA==}
+    dependencies:
+      '@types/node': 14.14.6
+      '@types/vscode': 1.52.0
+      '@vscode-logging/types': 0.1.3
+      vscode-languageserver-types: 3.16.0
+    dev: true
 
   /@sap/artifact-management-base@1.33.0:
     resolution: {integrity: sha512-FoDq1ig1yR5nacsAT7/jjX/lufslDLnRP8M7Idsiprp8gFME0gwQK52U5Vp4u4ltuce/LZvlUSMQbWIBfWPHDQ==}
@@ -1923,6 +1941,12 @@ packages:
     dependencies:
       '@sap/artifact-management-base-types': 1.33.0
     dev: false
+
+  /@sap/artifact-management-types@1.34.0:
+    resolution: {integrity: sha512-wmVYsHENvOt9s0qz2hnzA/kRgrdrotdF5dGqR6YSn572bhE1ZFvUo2mKbTl7SyZnLqdHmb2zRyZqsPacAMznvg==}
+    dependencies:
+      '@sap/artifact-management-base-types': 1.34.0
+    dev: true
 
   /@sap/artifact-management@1.33.0:
     resolution: {integrity: sha512-uLaLhoitv73dzOK+WnYkeLGmIDTrwL3cZgp3jEzqAIQXCJXipQIZX9WL7N2rkoQH9ZYpkA2HhRaMgozpd0e3Og==}
@@ -2148,7 +2172,6 @@ packages:
 
   /@types/node@14.14.6:
     resolution: {integrity: sha512-6QlRuqsQ/Ox/aJEQWBEJG7A9+u7oSYl3mem/K8IzxXG/kAGbV1YPD9Bg9Zw3vyxC/YP+zONKwy8hGkSt1jxFMw==}
-    dev: false
 
   /@types/node@16.11.10:
     resolution: {integrity: sha512-3aRnHa1KlOEEhJ6+CvyHKK5vE9BcLGjtUpwvqYLRvYNQKMfabu3BwfJaA/SLW8dxe28LsNDjtHwePTuzn3gmOA==}
@@ -2211,7 +2234,6 @@ packages:
 
   /@types/vscode@1.52.0:
     resolution: {integrity: sha512-Kt3bvWzAvvF/WH9YEcrCICDp0Z7aHhJGhLJ1BxeyNP6yRjonWqWnAIh35/pXAjswAnWOABrYlF7SwXR9+1nnLA==}
-    dev: false
 
   /@types/vscode@1.75.0:
     resolution: {integrity: sha512-SAr0PoOhJS6FUq5LjNr8C/StBKALZwDVm3+U4pjF/3iYkt3GioJOPV/oB1Sf1l7lROe4TgrMyL5N1yaEgTWycw==}
@@ -2350,7 +2372,6 @@ packages:
 
   /@vscode-logging/types@0.1.3:
     resolution: {integrity: sha512-1mV/aMVXpm50PyJ4XYD0qPUREv6QcmPwuDtzdMcKeiXN5Tt/WmnyEHfUxENQr1Aes8Hr+EVtNK4tvrUXXco/5A==}
-    dev: false
 
   /@vscode-logging/types@0.1.4:
     resolution: {integrity: sha512-uxuHQfpX9RbkgSj5unJFmciXRczyFSaAI2aA829MYYkE8jxlhZLRLoiJLymTNiojNVdV7fFE3CILF5Q6M+EBsA==}
@@ -5606,7 +5627,7 @@ packages:
     dev: true
 
   /isarray@1.0.0:
-    resolution: {integrity: sha1-u5NdSFgsuhaMBoNJV6VKPgcSTxE=}
+    resolution: {integrity: sha512-VLghIWNM6ELQzo7zwmcg0NmTVyWKYjvIeM83yjp0wRDTmUnrM678fQbcKBo6n2CJEF0szoG//ytg+TKla89ALQ==}
 
   /isexe@2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
@@ -8626,6 +8647,11 @@ packages:
     resolution: {integrity: sha512-XrHUvV5HpdLmIj4uVMxHggLbFSZYIn7HEWsqePZcI50pco+MPqJ50wMGY794X7AOOhxOBAjbkqfAbEe/QMp2Lw==}
     dev: false
 
+  /triple-beam@1.4.1:
+    resolution: {integrity: sha512-aZbgViZrg1QNcG+LULa7nhZpJTZSLm/mXnHXnbAbjmN5aSa0y7V+wvv6+4WaBtpISJzThKy+PIPxc1Nq1EJ9mg==}
+    engines: {node: '>= 14.0.0'}
+    dev: false
+
   /ts-enum-util@4.0.2:
     resolution: {integrity: sha512-BB5qjvHYgYgOB/CaoA1Cy/B2QNnZ+nVBrJ15VV/AXGWx+AO83k5wgeLOJvkSLoKKavvH/M8Wj4ZbgROjsuYwzw==}
     dev: false
@@ -9033,7 +9059,6 @@ packages:
 
   /vscode-languageserver-types@3.16.0:
     resolution: {integrity: sha512-k8luDIWJWyenLc5ToFQQMaSrqCHiLwyKPHKPQZ5zz21vM+vIVUSvsRpcbiECH4WR88K2XZqc4ScRcZ7nk/jbeA==}
-    dev: false
 
   /vscode-languageserver-types@3.17.3:
     resolution: {integrity: sha512-SYU4z1dL0PyIMd4Vj8YOqFvHu7Hz/enbWtpfnVbJHU4Nd1YNYx8u0ennumc6h48GQNeOLxmwySmnADouT/AuZA==}
@@ -9274,7 +9299,7 @@ packages:
     dependencies:
       logform: 2.4.2
       readable-stream: 2.3.7
-      triple-beam: 1.3.0
+      triple-beam: 1.4.1
     dev: false
 
   /winston-transport@4.5.0:

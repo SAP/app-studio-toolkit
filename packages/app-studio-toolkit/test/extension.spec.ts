@@ -38,6 +38,9 @@ const testVscode = {
       this.label = label || "";
     }
   },
+  env: {
+    sessionId: "sessionId",
+  },
 };
 
 mockVscode(testVscode, "dist/src/extension.js");

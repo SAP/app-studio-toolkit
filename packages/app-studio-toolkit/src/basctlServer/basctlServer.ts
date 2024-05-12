@@ -6,7 +6,7 @@ import { _performAction } from "../actions/performer";
 import { ActionsFactory } from "../actions/actionsFactory";
 import { getLogger } from "../logger/logger";
 
-const SOCKETFILE = "/extbin/basctlSocket";
+let SOCKETFILE = `/extbin/basctlSocket-${vscode.env.sessionId}`;
 
 const logger = getLogger().getChildLogger({ label: "client" });
 
@@ -66,17 +66,10 @@ function createBasctlServer() {
 
 export function startBasctlServer() {
   fs.stat(SOCKETFILE, (err) => {
-    if (err) {
-      createBasctlServer();
-    } else {
-      fs.unlink(SOCKETFILE, (err) => {
-        if (err) {
-          throw new Error(
-            `Failed to unlink socket ${SOCKETFILE}:\n${err.message}:\n${err.stack}`
-          );
-        }
-        createBasctlServer();
-      });
+    if (!err) {
+      // if the file exists, create a new file with a unique name
+      SOCKETFILE = `${SOCKETFILE}-${Date.now()}`;
     }
+    createBasctlServer();
   });
 }
