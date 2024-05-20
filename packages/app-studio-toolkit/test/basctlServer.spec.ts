@@ -44,6 +44,13 @@ describe("basctlServer", () => {
   let netMock: SinonMock;
   let socketMock: SinonMock;
   let serverMock: SinonMock;
+  let envVarCollectionMock: SinonMock;
+
+  const context: any = {
+    environmentVariableCollection: {
+      replace: () => {},
+    },
+  };
 
   beforeEach(() => {
     sandbox = createSandbox();
@@ -54,6 +61,7 @@ describe("basctlServer", () => {
     netMock = sandbox.mock(net);
     socketMock = sandbox.mock(testSocket);
     serverMock = sandbox.mock(testServer);
+    envVarCollectionMock = sandbox.mock(context.environmentVariableCollection);
   });
 
   afterEach(() => {
@@ -67,6 +75,7 @@ describe("basctlServer", () => {
       serverMock.verify();
       performerMock.verify();
       actionsFactoryMock.verify();
+      envVarCollectionMock.verify();
     }, 100);
     sandbox.restore();
   });
@@ -78,7 +87,7 @@ describe("basctlServer", () => {
         create action successful,
         perform action successful`, () => {
     mockIpc();
-    startBasctlServer();
+    startBasctlServer(context);
   });
 
   it(`startBasctlServer socket exists, 
@@ -88,7 +97,7 @@ describe("basctlServer", () => {
         create action successful,
         perform action fails`, () => {
     mockIpc({ performFails: true });
-    startBasctlServer();
+    startBasctlServer(context);
   });
 
   it(`startBasctlServer socket exists, 
@@ -98,27 +107,27 @@ describe("basctlServer", () => {
         create action successful,
         perform action successful`, () => {
     mockIpc({ invalidJsonInBuffer: true });
-    startBasctlServer();
+    startBasctlServer(context);
   });
 
   it(`startBasctlServer socket exists, 
         unlink successfull, 
         listen fails`, () => {
     mockIpc({ socketInUse: true });
-    startBasctlServer();
+    startBasctlServer(context);
   });
 
   it(`startBasctlServer socket doesn't exist, 
         listen successful`, () => {
     mockIpc({ socketDoesNotExist: true });
-    startBasctlServer();
+    startBasctlServer(context);
   });
 
   it(`startBasctlServer socket exists, 
         unlink fails`, () => {
     mockIpc({ unlinkFails: true });
-    expect(() => startBasctlServer()).to.throw(
-      "Failed to unlink socket /extbin/basctlSocket:"
+    expect(() => startBasctlServer(context)).to.throw(
+      /Failed to unlink socket \/extbin\/basctl/
     );
   });
 
@@ -133,6 +142,12 @@ describe("basctlServer", () => {
     performFails?: boolean;
     invalidJsonInBuffer?: boolean;
   }) {
+    envVarCollectionMock
+      .expects("replace")
+      .withExactArgs(
+        "BASCTL_SOCKET",
+        match.string.and(match(/^\/extbin\/basctl.?/))
+      );
     if (options && options.socketDoesNotExist) {
       fsMock.expects("stat").yields(new Error("Socket does not exist"));
     } else {
@@ -151,14 +166,16 @@ describe("basctlServer", () => {
     if (options && options.socketInUse) {
       serverMock
         .expects("listen")
-        .withExactArgs("/extbin/basctlSocket")
-        .throws(new Error("Socket already serving a server"));
+        .throws(new Error("Socket already serving a server"))
+        .calledWithMatch(match.string.and(match(/^\/extbin\/basctl.?/)));
       windowMock
         .expects("showErrorMessage")
         .withArgs(match("Socket already serving a server"));
       return;
     } else {
-      serverMock.expects("listen").withExactArgs("/extbin/basctlSocket");
+      serverMock
+        .expects("listen")
+        .calledWithMatch(match.string.and(match(/^\/extbin\/basctl.?/)));
     }
     let dataObject: any;
     dataObject = {
