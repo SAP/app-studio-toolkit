@@ -128,7 +128,7 @@ describe("extension unit test", () => {
   });
 
   describe("activate", () => {
-    it("performs defined actions", () => {
+    it("performs defined actions", async () => {
       const context: any = {
         subscriptions: {
           push: () => {},
@@ -153,9 +153,10 @@ describe("extension unit test", () => {
       performerMock.expects("_performAction").withExactArgs(action).resolves();
 
       extension.activate(context);
+      await new Promise((resolve) => setTimeout(resolve, 200)); // wait for actions to be performed
     });
 
-    it("does nothing with no actions", () => {
+    it("does nothing with no actions", async () => {
       const context: any = {
         subscriptions: {
           push: () => {},
@@ -172,6 +173,7 @@ describe("extension unit test", () => {
         .withExactArgs(context);
 
       const result = extension.activate(context);
+      await new Promise((resolve) => setTimeout(resolve, 200)); // wait for actions to be performed
       expect(result).to.haveOwnProperty("getExtensionAPI");
       expect(result).to.haveOwnProperty("actions");
     });
