@@ -24,11 +24,12 @@ export function activate(context: ExtensionContext): BasToolkit {
     startBasctlServer(context);
   }
 
-  ActionsController.loadContributedActions();
-
-  ActionsController.performScheduledActions();
-
-  void ActionsController.performActionsFromURL();
+  // performance: run the actions after the extension is activated
+  setTimeout(() => {
+    ActionsController.loadContributedActions();
+    ActionsController.performScheduledActions();
+    void ActionsController.performActionsFromURL();
+  });
 
   const workspaceAPI = initWorkspaceAPI(context);
   const basToolkitAPI = createBasToolkitAPI(workspaceAPI, baseBasToolkitAPI);

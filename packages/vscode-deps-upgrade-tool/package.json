@@ -19,7 +19,7 @@
   },
   "main": "./dist/src/extension",
   "activationEvents": [
-    "*"
+    "onStartupFinished"
   ],
   "contributes": {
     "configuration": {
