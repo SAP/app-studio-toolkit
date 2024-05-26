@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: false
+  excludeLinksFromLockfile: false
+
 importers:
 
   .:
@@ -168,7 +172,7 @@ importers:
         version: 0.1.4
       copy-webpack-plugin:
         specifier: 11.0.0
-        version: 11.0.0
+        version: 11.0.0(webpack@5.61.0)
       fs-extra:
         specifier: 11.1.1
         version: 11.1.1
@@ -180,10 +184,10 @@ importers:
         version: 3.0.0
       string-replace-loader:
         specifier: 3.1.0
-        version: 3.1.0
+        version: 3.1.0(webpack@5.61.0)
       ts-loader:
         specifier: 9.4.2
-        version: 9.4.2
+        version: 9.4.2(typescript@4.5.2)(webpack@5.61.0)
 
   packages/app-studio-toolkit:
     dependencies:
@@ -226,6 +230,9 @@ importers:
       url-join:
         specifier: 4.0.1
         version: 4.0.1
+      uuid:
+        specifier: 9.0.1
+        version: 9.0.1
       websocket:
         specifier: 1.0.34
         version: 1.0.34
@@ -251,6 +258,9 @@ importers:
       '@types/url-join':
         specifier: 4.0.1
         version: 4.0.1
+      '@types/uuid':
+        specifier: ^9.0.8
+        version: 9.0.8
       '@types/websocket':
         specifier: 1.0.5
         version: 1.0.5
@@ -259,7 +269,7 @@ importers:
         version: 0.1.4
       copy-webpack-plugin:
         specifier: 11.0.0
-        version: 11.0.0
+        version: 11.0.0(webpack@5.61.0)
       fs-extra:
         specifier: 11.1.1
         version: 11.1.1
@@ -271,10 +281,10 @@ importers:
         version: 3.0.0
       string-replace-loader:
         specifier: 3.1.0
-        version: 3.1.0
+        version: 3.1.0(webpack@5.61.0)
       ts-loader:
         specifier: 9.4.2
-        version: 9.4.2
+        version: 9.4.2(typescript@4.5.2)(webpack@5.61.0)
 
   packages/app-studio-toolkit-themes: {}
 
@@ -334,7 +344,7 @@ importers:
         version: 4.17.21
       ts-essentials:
         specifier: 9.1.2
-        version: 9.1.2
+        version: 9.1.2(typescript@4.5.2)
       vscode-languageserver-textdocument:
         specifier: 1.0.4
         version: 1.0.4
@@ -2201,6 +2211,10 @@ packages:
     resolution: {integrity: sha512-wDXw9LEEUHyV+7UWy7U315nrJGJ7p1BzaCxDpEoLr789Dk1WDVMMlf3iBfbG2F8NdWnYyFbtTxUn2ZNbm1Q4LQ==}
     dev: true
 
+  /@types/uuid@9.0.8:
+    resolution: {integrity: sha512-jg+97EGIcY9AGHJJRaaPVgetKDsrTgbRjQ5Msgjh/DQKEFl0DtyRr/VCOyD1T2R1MNeWPK/u7JoGhlDZnKBAfA==}
+    dev: true
+
   /@types/validate-npm-package-name@3.0.3:
     resolution: {integrity: sha512-dLhCHEIjf9++/vHaHCo/ngJzGqGGbPh/f7HKwznEk3WFL64t/VKuRiVpyQH4afX93YkCV94I9M0Cx+DBLk1Dsg==}
     dev: true
@@ -2232,7 +2246,7 @@ packages:
       '@typescript-eslint/experimental-utils': 4.33.0(eslint@7.30.0)(typescript@4.5.2)
       '@typescript-eslint/parser': 4.33.0(eslint@7.30.0)(typescript@4.5.2)
       '@typescript-eslint/scope-manager': 4.33.0
-      debug: 4.3.2
+      debug: 4.3.2(supports-color@8.1.1)
       eslint: 7.30.0
       functional-red-black-tree: 1.0.1
       ignore: 5.1.9
@@ -2275,7 +2289,7 @@ packages:
       '@typescript-eslint/scope-manager': 4.33.0
       '@typescript-eslint/types': 4.33.0
       '@typescript-eslint/typescript-estree': 4.33.0(typescript@4.5.2)
-      debug: 4.3.2
+      debug: 4.3.2(supports-color@8.1.1)
       eslint: 7.30.0
       typescript: 4.5.2
     transitivePeerDependencies:
@@ -2606,9 +2620,6 @@ packages:
 
   /ajv-formats@2.1.1:
     resolution: {integrity: sha512-Wx0Kx52hxE7C18hkMEggYlEifqWZtYaRgouJor+WMdPnQyEK13vgEWyVNup7SoeeoLMsr4kf5h6dOW11I15MUA==}
-    peerDependenciesMeta:
-      ajv:
-        optional: true
     dependencies:
       ajv: 8.12.0
     dev: true
@@ -3543,7 +3554,7 @@ packages:
     engines: {node: '>= 0.6'}
     dev: false
 
-  /copy-webpack-plugin@11.0.0:
+  /copy-webpack-plugin@11.0.0(webpack@5.61.0):
     resolution: {integrity: sha512-fX2MWpamkW0hZxMEg0+mYnA40LTosOSa5TqZ9GYIBzyJa9C3QUaMPSE2xAi/buNr8u89SfD9wHSQVBzrRa/SOQ==}
     engines: {node: '>= 14.15.0'}
     peerDependencies:
@@ -3555,6 +3566,7 @@ packages:
       normalize-path: 3.0.0
       schema-utils: 4.0.0
       serialize-javascript: 6.0.0
+      webpack: 5.61.0(webpack-cli@4.9.1)
     dev: true
 
   /core-util-is@1.0.2:
@@ -3751,18 +3763,6 @@ packages:
     dependencies:
       ms: 2.0.0
     dev: false
-
-  /debug@4.3.2:
-    resolution: {integrity: sha512-mOp8wKcvj7XxC78zLgw/ZA+6TSgkoE2C/ienthhRD298T7UNwAg9diBpLRxC0mOezLl4B0xV7M0cCO6P/O0Xhw==}
-    engines: {node: '>=6.0'}
-    peerDependencies:
-      supports-color: '*'
-    peerDependenciesMeta:
-      supports-color:
-        optional: true
-    dependencies:
-      ms: 2.1.2
-    dev: true
 
   /debug@4.3.2(supports-color@8.1.1):
     resolution: {integrity: sha512-mOp8wKcvj7XxC78zLgw/ZA+6TSgkoE2C/ienthhRD298T7UNwAg9diBpLRxC0mOezLl4B0xV7M0cCO6P/O0Xhw==}
@@ -4268,7 +4268,7 @@ packages:
       ajv: 6.12.6
       chalk: 4.1.2
       cross-spawn: 7.0.3
-      debug: 4.3.2
+      debug: 4.3.2(supports-color@8.1.1)
       doctrine: 3.0.0
       enquirer: 2.3.6
       escape-string-regexp: 4.0.0
@@ -8248,13 +8248,14 @@ packages:
     engines: {node: '>=0.6.19'}
     dev: true
 
-  /string-replace-loader@3.1.0:
+  /string-replace-loader@3.1.0(webpack@5.61.0):
     resolution: {integrity: sha512-5AOMUZeX5HE/ylKDnEa/KKBqvlnFmRZudSOjVJHxhoJg9QYTwl1rECx7SLR8BBH7tfxb4Rp7EM2XVfQFxIhsbQ==}
     peerDependencies:
       webpack: ^5
     dependencies:
       loader-utils: 2.0.4
       schema-utils: 3.1.1
+      webpack: 5.61.0(webpack-cli@4.9.1)
     dev: true
 
   /string-similarity@4.0.4:
@@ -8639,13 +8640,15 @@ packages:
     resolution: {integrity: sha512-BB5qjvHYgYgOB/CaoA1Cy/B2QNnZ+nVBrJ15VV/AXGWx+AO83k5wgeLOJvkSLoKKavvH/M8Wj4ZbgROjsuYwzw==}
     dev: false
 
-  /ts-essentials@9.1.2:
+  /ts-essentials@9.1.2(typescript@4.5.2):
     resolution: {integrity: sha512-EaSmXsAhEiirrTY1Oaa7TSpei9dzuCuFPmjKRJRPamERYtfaGS8/KpOSbjergLz/Y76/aZlV9i/krgzsuWEBbg==}
     peerDependencies:
       typescript: '>=4.1.0'
+    dependencies:
+      typescript: 4.5.2
     dev: false
 
-  /ts-loader@9.4.2:
+  /ts-loader@9.4.2(typescript@4.5.2)(webpack@5.61.0):
     resolution: {integrity: sha512-OmlC4WVmFv5I0PpaxYb+qGeGOdm5giHU7HwDDUjw59emP2UYMHy9fFSDcYgSNoH8sXcj4hGCSEhlDZ9ULeDraA==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
@@ -8656,6 +8659,8 @@ packages:
       enhanced-resolve: 5.8.3
       micromatch: 4.0.4
       semver: 7.3.5
+      typescript: 4.5.2
+      webpack: 5.61.0(webpack-cli@4.9.1)
     dev: true
 
   /ts-node@10.9.1(@types/node@16.11.10)(typescript@4.9.5):
@@ -8827,7 +8832,6 @@ packages:
     resolution: {integrity: sha512-5BlMof9H1yGt0P8/WF+wPNw6GfctgGjXp5hkblpyT+8rkASSmkUKMXrxR0Xg8ThVCi/JnHQiKXeBaEwCeQwMFw==}
     engines: {node: '>=4.2.0'}
     hasBin: true
-    dev: true
 
   /typescript@4.9.5:
     resolution: {integrity: sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==}
@@ -9573,7 +9577,3 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
     dev: true
-
-settings:
-  autoInstallPeers: false
-  excludeLinksFromLockfile: false

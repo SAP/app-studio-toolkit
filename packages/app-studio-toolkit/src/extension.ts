@@ -21,7 +21,7 @@ export function activate(context: ExtensionContext): BasToolkit {
   // should be trigered earlier on acivating because the `shouldRunCtlServer` method sets the context value of `ext.runPlatform`
   if (shouldRunCtlServer()) {
     getLogger().debug("starting basctl server");
-    startBasctlServer();
+    startBasctlServer(context);
   }
 
   ActionsController.loadContributedActions();

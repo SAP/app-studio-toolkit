@@ -5,8 +5,10 @@ import * as _ from "lodash";
 import { _performAction } from "../actions/performer";
 import { ActionsFactory } from "../actions/actionsFactory";
 import { getLogger } from "../logger/logger";
+import { v4 as uuidv4 } from "uuid";
 
-const SOCKETFILE = "/extbin/basctlSocket";
+// generate a unique socket file name on each run
+const SOCKETFILE = `/extbin/basctl-${uuidv4()}.sock`;
 
 const logger = getLogger().getChildLogger({ label: "client" });
 
@@ -64,7 +66,9 @@ function createBasctlServer() {
   }
 }
 
-export function startBasctlServer() {
+export function startBasctlServer(context: vscode.ExtensionContext) {
+  // add the socket file name to the environment variables so that the basctl client can use it
+  context.environmentVariableCollection.replace("BASCTL_SOCKET", SOCKETFILE);
   fs.stat(SOCKETFILE, (err) => {
     if (err) {
       createBasctlServer();
