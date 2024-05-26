@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.17.0](https://github.com/SAP/app-studio-toolkit/compare/v1.16.2...v1.17.0) (2024-05-26)
+
+### Features
+
+- create a unique `basctl` server socket for each extension host ([#313](https://github.com/SAP/app-studio-toolkit/issues/313)) ([3eed3fa](https://github.com/SAP/app-studio-toolkit/commit/3eed3fa2c96895142c5c8bbf4cb9801969820617))
+
 ## [1.16.2](https://github.com/SAP/app-studio-toolkit/compare/v1.16.1...v1.16.2) (2024-05-06)
 
 **Note:** Version bump only for package app-studio-toolkit
