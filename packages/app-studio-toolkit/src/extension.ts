@@ -13,13 +13,14 @@ import {
   deactivateBasRemoteExplorer,
   initBasRemoteExplorer,
 } from "./devspace-manager/instance";
-import { shouldRunCtlServer } from "./utils/bas-utils";
+import { isBAS, reportProjectTypesToUsageAnalytics } from "./utils/bas-utils";
+import { AnalyticsWrapper } from "./usage-report/usage-analytics-wrapper";
 
 export function activate(context: ExtensionContext): BasToolkit {
   initLogger(context);
 
-  // should be trigered earlier on acivating because the `shouldRunCtlServer` method sets the context value of `ext.runPlatform`
-  if (shouldRunCtlServer()) {
+  // should be trigered earlier on acivating because the `isBAS` method sets the context value of `ext.runPlatform`
+  if (isBAS()) {
     getLogger().debug("starting basctl server");
     startBasctlServer();
   }
@@ -34,6 +35,11 @@ export function activate(context: ExtensionContext): BasToolkit {
   const basToolkitAPI = createBasToolkitAPI(workspaceAPI, baseBasToolkitAPI);
 
   initBasRemoteExplorer(context);
+
+  if (isBAS()) {
+    AnalyticsWrapper.createTracker(context.extensionPath);
+    void reportProjectTypesToUsageAnalytics(basToolkitAPI);
+  }
 
   const logger = getLogger().getChildLogger({ label: "activate" });
   logger.info("The App-Studio-Toolkit Extension is active.");

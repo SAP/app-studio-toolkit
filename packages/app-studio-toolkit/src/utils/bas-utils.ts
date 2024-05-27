@@ -1,7 +1,13 @@
 import { ExtensionKind, commands, env, extensions } from "vscode";
-import { join, split, tail } from "lodash";
+import { join, split, tail, countBy } from "lodash";
 import { devspace } from "@sap/bas-sdk";
 import { URL } from "node:url";
+import { ProjectData } from "@sap/artifact-management";
+import { homedir } from "os";
+import { BasToolkit, sam } from "@sap-devx/app-studio-toolkit-types";
+import { AnalyticsWrapper } from "../usage-report/usage-analytics-wrapper";
+import { join as joinPath } from 'path';
+import { getLogger } from "../logger/logger";
 
 export enum ExtensionRunMode {
   desktop = `desktop`,
@@ -12,7 +18,7 @@ export enum ExtensionRunMode {
   unexpected = `unexpected`,
 }
 
-export function shouldRunCtlServer(): boolean {
+export function isBAS(): boolean {
   const platform = getExtensionRunPlatform();
   return (
     platform === ExtensionRunMode.basWorkspace || // BAS
@@ -57,4 +63,25 @@ function getExtensionRunPlatform(): ExtensionRunMode {
   void commands.executeCommand("setContext", `ext.runPlatform`, runPlatform);
 
   return runPlatform;
+}
+
+export async function reportProjectTypesToUsageAnalytics(basToolkitAPI: BasToolkit) {
+	const devspaceInfo = await devspace.getDevspaceInfo();
+  const projects = await getProjectsInfo(basToolkitAPI);
+	void AnalyticsWrapper.traceProjectTypesStatus(devspaceInfo?.packDisplayName ?? "", projects ?? {});
+}
+
+async function getProjectsInfo(basToolkitAPI: BasToolkit) {
+  try {
+      const workspaceAPI = basToolkitAPI.workspaceAPI;
+      const homedirProjects: string = joinPath(homedir(), "projects");
+      const projects: sam.ProjectApi[] = await workspaceAPI.getProjects(undefined, homedirProjects);
+      const projectInfoList: (ProjectData | undefined)[] = await Promise.all(projects.map(
+          async (project: sam.ProjectApi) => await project.getProjectInfo()
+      ));
+      const projectTypeList = countBy(projectInfoList, "type");
+      return projectTypeList;
+  } catch (error) {
+    getLogger().error(`Failed to get project list`);
+  }
 }
