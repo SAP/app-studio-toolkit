@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: false
+  excludeLinksFromLockfile: false
+
 importers:
 
   .:
@@ -183,7 +187,7 @@ importers:
         version: 3.1.0(webpack@5.61.0)
       ts-loader:
         specifier: 9.4.2
-        version: 9.4.2(typescript@4.4.3)(webpack@5.61.0)
+        version: 9.4.2(typescript@4.5.2)(webpack@5.61.0)
 
   packages/app-studio-toolkit:
     dependencies:
@@ -229,6 +233,9 @@ importers:
       url-join:
         specifier: 4.0.1
         version: 4.0.1
+      uuid:
+        specifier: 9.0.1
+        version: 9.0.1
       websocket:
         specifier: 1.0.34
         version: 1.0.34
@@ -254,6 +261,9 @@ importers:
       '@types/url-join':
         specifier: 4.0.1
         version: 4.0.1
+      '@types/uuid':
+        specifier: ^9.0.8
+        version: 9.0.8
       '@types/websocket':
         specifier: 1.0.5
         version: 1.0.5
@@ -277,7 +287,7 @@ importers:
         version: 3.1.0(webpack@5.61.0)
       ts-loader:
         specifier: 9.4.2
-        version: 9.4.2(typescript@4.4.3)(webpack@5.61.0)
+        version: 9.4.2(typescript@4.5.2)(webpack@5.61.0)
 
   packages/app-studio-toolkit-themes: {}
 
@@ -337,7 +347,7 @@ importers:
         version: 4.17.21
       ts-essentials:
         specifier: 9.1.2
-        version: 9.1.2(typescript@4.4.3)
+        version: 9.1.2(typescript@4.5.2)
       vscode-languageserver-textdocument:
         specifier: 1.0.4
         version: 1.0.4
@@ -2428,6 +2438,10 @@ packages:
     resolution: {integrity: sha512-wDXw9LEEUHyV+7UWy7U315nrJGJ7p1BzaCxDpEoLr789Dk1WDVMMlf3iBfbG2F8NdWnYyFbtTxUn2ZNbm1Q4LQ==}
     dev: true
 
+  /@types/uuid@9.0.8:
+    resolution: {integrity: sha512-jg+97EGIcY9AGHJJRaaPVgetKDsrTgbRjQ5Msgjh/DQKEFl0DtyRr/VCOyD1T2R1MNeWPK/u7JoGhlDZnKBAfA==}
+    dev: true
+
   /@types/validate-npm-package-name@3.0.3:
     resolution: {integrity: sha512-dLhCHEIjf9++/vHaHCo/ngJzGqGGbPh/f7HKwznEk3WFL64t/VKuRiVpyQH4afX93YkCV94I9M0Cx+DBLk1Dsg==}
     dev: true
@@ -2812,9 +2826,6 @@ packages:
 
   /ajv-formats@2.1.1:
     resolution: {integrity: sha512-Wx0Kx52hxE7C18hkMEggYlEifqWZtYaRgouJor+WMdPnQyEK13vgEWyVNup7SoeeoLMsr4kf5h6dOW11I15MUA==}
-    peerDependenciesMeta:
-      ajv:
-        optional: true
     dependencies:
       ajv: 8.14.0
     dev: true
@@ -9285,15 +9296,15 @@ packages:
     resolution: {integrity: sha512-BB5qjvHYgYgOB/CaoA1Cy/B2QNnZ+nVBrJ15VV/AXGWx+AO83k5wgeLOJvkSLoKKavvH/M8Wj4ZbgROjsuYwzw==}
     dev: false
 
-  /ts-essentials@9.1.2(typescript@4.4.3):
+  /ts-essentials@9.1.2(typescript@4.5.2):
     resolution: {integrity: sha512-EaSmXsAhEiirrTY1Oaa7TSpei9dzuCuFPmjKRJRPamERYtfaGS8/KpOSbjergLz/Y76/aZlV9i/krgzsuWEBbg==}
     peerDependencies:
       typescript: '>=4.1.0'
     dependencies:
-      typescript: 4.4.3
+      typescript: 4.5.2
     dev: false
 
-  /ts-loader@9.4.2(typescript@4.4.3)(webpack@5.61.0):
+  /ts-loader@9.4.2(typescript@4.5.2)(webpack@5.61.0):
     resolution: {integrity: sha512-OmlC4WVmFv5I0PpaxYb+qGeGOdm5giHU7HwDDUjw59emP2UYMHy9fFSDcYgSNoH8sXcj4hGCSEhlDZ9ULeDraA==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
@@ -9304,7 +9315,7 @@ packages:
       enhanced-resolve: 5.16.1
       micromatch: 4.0.7
       semver: 7.3.5
-      typescript: 4.4.3
+      typescript: 4.5.2
       webpack: 5.61.0(webpack-cli@4.9.1)
     dev: true
 
@@ -9472,8 +9483,13 @@ packages:
       is-typedarray: 1.0.0
 
   /typedarray@0.0.6:
-    resolution: {integrity: sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==}
+    resolution: {integrity: sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=}
     dev: true
+
+  /typescript@4.5.2:
+    resolution: {integrity: sha512-5BlMof9H1yGt0P8/WF+wPNw6GfctgGjXp5hkblpyT+8rkASSmkUKMXrxR0Xg8ThVCi/JnHQiKXeBaEwCeQwMFw==}
+    engines: {node: '>=4.2.0'}
+    hasBin: true
 
   /typescript@4.4.3:
     resolution: {integrity: sha512-4xfscpisVgqqDfPaJo5vkd+Qd/ItkoagnHpufr+i2QCHBsNYp+G7UAoyFl8aPtx879u38wPV65rZ8qbGZijalA==}

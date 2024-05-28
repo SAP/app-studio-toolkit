@@ -22,14 +22,15 @@ export function activate(context: ExtensionContext): BasToolkit {
   // should be trigered earlier on acivating because the `isBAS` method sets the context value of `ext.runPlatform`
   if (isBAS()) {
     getLogger().debug("starting basctl server");
-    startBasctlServer();
+    startBasctlServer(context);
   }
 
-  ActionsController.loadContributedActions();
-
-  ActionsController.performScheduledActions();
-
-  void ActionsController.performActionsFromURL();
+  // performance: run the actions after the extension is activated
+  setTimeout(() => {
+    ActionsController.loadContributedActions();
+    ActionsController.performScheduledActions();
+    void ActionsController.performActionsFromURL();
+  });
 
   const workspaceAPI = initWorkspaceAPI(context);
   const basToolkitAPI = createBasToolkitAPI(workspaceAPI, baseBasToolkitAPI);

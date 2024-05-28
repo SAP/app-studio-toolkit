@@ -1,7 +1,7 @@
 {
   "name": "app-studio-toolkit",
   "displayName": "SAP Business Application Studio toolkit",
-  "version": "1.16.2",
+  "version": "1.17.0",
   "private": true,
   "description": "Includes essential capabilities that will improve your SAP Business Application Studio development experience, making it easier and faster.",
   "categories": [
@@ -350,6 +350,7 @@
     "ssh-config": "4.2.1",
     "ts-enum-util": "4.0.2",
     "url-join": "4.0.1",
+    "uuid": "9.0.1",
     "websocket": "1.0.34"
   },
   "devDependencies": {
@@ -360,6 +361,7 @@
     "@types/http-terminator": "2.0.2",
     "@types/proxyquire": "1.3.28",
     "@types/url-join": "4.0.1",
+    "@types/uuid": "^9.0.8",
     "@types/websocket": "1.0.5",
     "@vscode-logging/types": "0.1.4",
     "copy-webpack-plugin": "11.0.0",
