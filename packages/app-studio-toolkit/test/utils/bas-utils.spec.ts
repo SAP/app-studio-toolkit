@@ -228,10 +228,7 @@ describe("bas-utils unit test", () => {
 
       mockAnalyticsWrapper
         .expects(`traceProjectTypesStatus`)
-        .withExactArgs(
-          "",
-          {}
-        )
+        .withExactArgs("", {})
         .resolves();
 
       await reportProjectTypesToUsageAnalytics(basToolkit);
@@ -261,17 +258,27 @@ describe("bas-utils unit test", () => {
 
       mockAnalyticsWrapper
         .expects(`traceProjectTypesStatus`)
-        .withExactArgs(
-          "",
-          {}
-        )
+        .withExactArgs("", {})
         .resolves();
 
       await reportProjectTypesToUsageAnalytics(basToolkit);
     });
 
     it("devspaceInfo works, a project exists", async () => {
-      const projectsMap = [{ name: "testProject", getProjectInfo: () => { return { type: "testType", path: "testPath" } } }, { name: "testProject2", getProjectInfo: () => { return { type: "testType2", path: "testPath2" } } }]
+      const projectsMap = [
+        {
+          name: "testProject",
+          getProjectInfo: () => {
+            return { type: "testType", path: "testPath" };
+          },
+        },
+        {
+          name: "testProject2",
+          getProjectInfo: () => {
+            return { type: "testType2", path: "testPath2" };
+          },
+        },
+      ];
       /* eslint-disable @typescript-eslint/no-unsafe-return -- test dummy mock */
       const dummyReturnArgsWorkspaceImpl = {
         getProjects() {
@@ -291,18 +298,16 @@ describe("bas-utils unit test", () => {
       );
 
       const devspaceMock = sandbox.mock(devspace);
-      devspaceMock.expects(`getDevspaceInfo`).returns({ packDisplayName: "testDisplayName" });
+      devspaceMock
+        .expects(`getDevspaceInfo`)
+        .returns({ packDisplayName: "testDisplayName" });
 
       mockAnalyticsWrapper
         .expects(`traceProjectTypesStatus`)
-        .withExactArgs(
-          `testDisplayName`,
-          { testType: 1, testType2: 1 }
-        )
+        .withExactArgs(`testDisplayName`, { testType: 1, testType2: 1 })
         .resolves();
 
       await reportProjectTypesToUsageAnalytics(basToolkit);
     });
-
   });
 });
