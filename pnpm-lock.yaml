@@ -192,8 +192,8 @@ importers:
   packages/app-studio-toolkit:
     dependencies:
       '@sap/artifact-management':
-        specifier: 1.34.0
-        version: 1.34.0
+        specifier: 1.35.0
+        version: 1.35.0
       '@sap/bas-sdk':
         specifier: 3.8.1
         version: 3.8.1
@@ -291,8 +291,8 @@ importers:
   packages/app-studio-toolkit-types:
     dependencies:
       '@sap/artifact-management-types':
-        specifier: 1.34.0
-        version: 1.34.0
+        specifier: 1.35.0
+        version: 1.35.0
       '@types/vscode':
         specifier: 1.75.0
         version: 1.75.0
@@ -1872,8 +1872,8 @@ packages:
       '@octokit/openapi-types': 11.2.0
     dev: true
 
-  /@sap/artifact-management-base-types@1.34.0:
-    resolution: {integrity: sha512-F5Weq1sx5jRxXTypP3wgCthb78xDikJhYWDt8Q+mMzDhi4sC/aKfOyiiWCwQT9rVnNW8fGlEhGd7L1z+aP9mRA==}
+  /@sap/artifact-management-base-types@1.35.0:
+    resolution: {integrity: sha512-Lxmgo+bTPDWrAfHWp0npmUhb+19/Br0z1xP7EgbB/dwQ26eE0vUOiR0Xm23iMY4INMFbSNdu+7U0TR9bt2mLVw==}
     dependencies:
       '@types/node': 14.14.6
       '@types/vscode': 1.52.0
@@ -1881,12 +1881,12 @@ packages:
       vscode-languageserver-types: 3.16.0
     dev: false
 
-  /@sap/artifact-management-base@1.34.0:
-    resolution: {integrity: sha512-nlhypF1EwOR7m/fcNxCvWoGIkFWaDTik7cwKWjtezgoNzxNjSvJ8Mcv5VMxFB2AQTj9NjquUWPuwv7M6jrxK1A==}
+  /@sap/artifact-management-base@1.35.0:
+    resolution: {integrity: sha512-a5XBsUErhCxSQkMBpOEmSPGA91yap37UtLUYnahq11ZRkbKF+fOlkKCnYb+ip0jyb887M82fAzmnkVqJp7tRcg==}
     engines: {node: '>=14.14.0'}
     dependencies:
-      ejs: 3.1.8
-      fast-glob: 3.2.7
+      ejs: 3.1.10
+      fast-glob: 3.3.2
       ignore: 5.1.9
       js-yaml: 4.1.0
       lodash: 4.17.21
@@ -1896,18 +1896,18 @@ packages:
       winston-transport: 4.5.0
     dev: false
 
-  /@sap/artifact-management-fioriplugin@1.34.0:
-    resolution: {integrity: sha512-nTRZ1aHZ02uWmDCSlFjxxrrA+RS6gpxoUHV3PdM3nD0b83fvMl34MzhDn9IbQXEOXiJ3jm5lXR/4xRcSY+uZXQ==}
+  /@sap/artifact-management-fioriplugin@1.35.0:
+    resolution: {integrity: sha512-pLjJDDR2ZsdTjiz1FnhkoTHmzbQAPi6M7J0wnKG9WVLwp1kiTZWl8FmnkRavDp628jx1MmoUi5PJOyL6erT4Hw==}
     dependencies:
-      '@sap/artifact-management-base': 1.34.0
+      '@sap/artifact-management-base': 1.35.0
       xml2js: 0.6.2
     dev: false
 
-  /@sap/artifact-management-hanaplugin@1.34.0:
-    resolution: {integrity: sha512-RtGz8ujMTkiXqubMa/Gebwx8fUdf4ZoPHC6iTBi1faKhMUsZkutat3oS3X1IE3nMscUaFKfpZXBOkLbc+xCPfA==}
+  /@sap/artifact-management-hanaplugin@1.35.0:
+    resolution: {integrity: sha512-Om6SMm3RYERSzmb1PRvBBm8EFocDD3BDvIgaPki8UwbcOuLWgAMZyeDOO6xVK17KKcYzWp+hVnvXA5qK5nEfKw==}
     dependencies:
-      '@sap/artifact-management-base': 1.34.0
-      fast-glob: 3.2.7
+      '@sap/artifact-management-base': 1.35.0
+      fast-glob: 3.3.2
       glob: 7.2.0
       jsdom: 22.1.0
       xml2js: 0.6.2
@@ -1918,32 +1918,32 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@sap/artifact-management-mdkplugin@1.34.0:
-    resolution: {integrity: sha512-RfGKdQyu3YJ8S3NcQiyB0HvFp0w+8Ul4zFo7+gG2Dbl1OOHrTG0gu8It/xRMlSbHaEFUwLXjlqbSw/N9WwCRZA==}
+  /@sap/artifact-management-mdkplugin@1.35.0:
+    resolution: {integrity: sha512-g0JSL8GHWJm0X8SRFxbiWHblWactfNFFSCn8z3ENUxTImvtwpAsAqviq2+jaeSHpfftwFizt4HvajH/m1fa4Lw==}
     dependencies:
-      '@sap/artifact-management-base': 1.34.0
+      '@sap/artifact-management-base': 1.35.0
     dev: false
 
-  /@sap/artifact-management-types@1.34.0:
-    resolution: {integrity: sha512-wmVYsHENvOt9s0qz2hnzA/kRgrdrotdF5dGqR6YSn572bhE1ZFvUo2mKbTl7SyZnLqdHmb2zRyZqsPacAMznvg==}
+  /@sap/artifact-management-types@1.35.0:
+    resolution: {integrity: sha512-vhRFIwdzOnIHYbO1Mi93h0n+FdJzQE+S4jeLD9wZhLlr2iHeBL/Grp/3zxU8GVd1a11PpuTAUM77ygq3V2sTYA==}
     dependencies:
-      '@sap/artifact-management-base-types': 1.34.0
+      '@sap/artifact-management-base-types': 1.35.0
     dev: false
 
-  /@sap/artifact-management@1.34.0:
-    resolution: {integrity: sha512-ePY48udvruajBhECkue806E5GXhpS0s/mr51Ok2NbqU8KBFXcprbarvDPzx/NCKJMw5rx4+ROYlE8mJ7xAsV9w==}
+  /@sap/artifact-management@1.35.0:
+    resolution: {integrity: sha512-BrJmIpcWtno1WXQoc1N80JkN7yX9d4XFJ2fDPaikDTL323P/+vxOaGGiKYA/edg87QHnDUELRr1wmzDTS0w7/A==}
     hasBin: true
     dependencies:
-      '@sap/artifact-management-base': 1.34.0
-      '@sap/artifact-management-fioriplugin': 1.34.0
-      '@sap/artifact-management-hanaplugin': 1.34.0
-      '@sap/artifact-management-mdkplugin': 1.34.0
+      '@sap/artifact-management-base': 1.35.0
+      '@sap/artifact-management-fioriplugin': 1.35.0
+      '@sap/artifact-management-hanaplugin': 1.35.0
+      '@sap/artifact-management-mdkplugin': 1.35.0
       ajv: 8.12.0
-      chokidar: 3.5.3
+      chokidar: 3.6.0
       js-yaml: 4.1.0
       jsdom: 22.1.0
       lodash: 4.17.21
-      micromatch: 4.0.5
+      micromatch: 4.0.6
       simple-git: 3.19.1
       uuid: 9.0.1
       vscode-languageserver-types: 3.17.3
@@ -2949,6 +2949,13 @@ packages:
     dependencies:
       fill-range: 7.0.1
 
+  /braces@3.0.3:
+    resolution: {integrity: sha512-yQbXgO/OSZVD2IsiLlro+7Hf6Q18EJrKSEsdoMzKePKXct3gvD8oLcOQdIzGupr5Fj+EDe8gO/lxc1BzfMpxvA==}
+    engines: {node: '>=8'}
+    dependencies:
+      fill-range: 7.1.1
+    dev: false
+
   /brorand@1.1.0:
     resolution: {integrity: sha512-cKV8tMCEpQs4hK/ik71d6LrPOnpkpGBR0wzxqr68g2m/LB2GxVYQroAjMJZRVM1Y4BCjCKc3vAamxSzOY2RP+w==}
     dev: false
@@ -3172,8 +3179,8 @@ packages:
       fsevents: 2.3.2
     dev: true
 
-  /chokidar@3.5.3:
-    resolution: {integrity: sha512-Dr3sfKRP6oTcjf2JmUmFJfeVMvXBdegxB0iVQ5eb2V10uFJUCAS8OByZdVAyVb8xXNz3GjjTgj9kLWsZTqE6kw==}
+  /chokidar@3.6.0:
+    resolution: {integrity: sha512-7VT13fmjotKpGipCW9JEQAusEPE+Ei8nl6/g4FBAmIm0GOOLMua9NDDo/DWp0ZAxCr3cPq5ZpBqmPAQgDda2Pw==}
     engines: {node: '>= 8.10.0'}
     dependencies:
       anymatch: 3.1.2
@@ -4024,8 +4031,8 @@ packages:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
     dev: false
 
-  /ejs@3.1.8:
-    resolution: {integrity: sha512-/sXZeMlhS0ArkfX2Aw780gJzXSMPnKjtspYZv+f3NiKLlubezAHDU5+9xz6gd3/NhG3txQCo6xlglmTS+oTGEQ==}
+  /ejs@3.1.10:
+    resolution: {integrity: sha512-UeJmFfOrAQS8OJWPZ4qtgHyWExa088/MtK5UEyoJGFH67cDEXkZSviOiKRCZ4Xij0zxI3JECgYs3oKx+AizQBA==}
     engines: {node: '>=0.10.0'}
     hasBin: true
     dependencies:
@@ -4463,15 +4470,15 @@ packages:
       micromatch: 4.0.4
     dev: true
 
-  /fast-glob@3.2.7:
-    resolution: {integrity: sha512-rYGMRwip6lUMvYD3BTScMwT1HtAs2d71SMv66Vrxs0IekGZEjhM0pcMfjQPnknBt2zeCwQMEupiN02ZP4DiT1Q==}
-    engines: {node: '>=8'}
+  /fast-glob@3.3.2:
+    resolution: {integrity: sha512-oX2ruAFQwf/Orj8m737Y5adxDQO0LAB7/S5MnxCdTNDd4p6BsyIVsv9JQsATbTSq8KHRpLwIHbVlUNatxd+1Ow==}
+    engines: {node: '>=8.6.0'}
     dependencies:
       '@nodelib/fs.stat': 2.0.5
       '@nodelib/fs.walk': 1.2.8
       glob-parent: 5.1.2
       merge2: 1.4.1
-      micromatch: 4.0.5
+      micromatch: 4.0.6
     dev: false
 
   /fast-json-stable-stringify@2.1.0:
@@ -4567,6 +4574,13 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       to-regex-range: 5.0.1
+
+  /fill-range@7.1.1:
+    resolution: {integrity: sha512-YsGpe3WHLK8ZYi4tWDg2Jy3ebRz2rXowDxnld4bkQB00cc/1Zw9AWnC0i9ztDJitivtQvaI9KaLyKrc+hBW0yg==}
+    engines: {node: '>=8'}
+    dependencies:
+      to-regex-range: 5.0.1
+    dev: false
 
   /filter-obj@1.1.0:
     resolution: {integrity: sha1-mzERErxsYSehbgFsbF1/GeCAXFs=}
@@ -6314,6 +6328,15 @@ packages:
     dependencies:
       braces: 3.0.2
       picomatch: 2.3.1
+    dev: true
+
+  /micromatch@4.0.6:
+    resolution: {integrity: sha512-Y4Ypn3oujJYxJcMacVgcs92wofTHxp9FzfDpQON4msDefoC0lb3ETvQLOdLcbhSwU1bz8HrL/1sygfBIHudrkQ==}
+    engines: {node: '>=8.6'}
+    dependencies:
+      braces: 3.0.3
+      picomatch: 4.0.2
+    dev: false
 
   /miller-rabin@4.0.1:
     resolution: {integrity: sha512-115fLhvZVqWwHPbClyntxEVfVDfl9DLLTuJvq3g2O/Oxi8AiNouAHvDSzHS0viUJc+V5vm3eq91Xwqn9dp4jRA==}
@@ -7277,6 +7300,11 @@ packages:
   /picomatch@2.3.1:
     resolution: {integrity: sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==}
     engines: {node: '>=8.6'}
+
+  /picomatch@4.0.2:
+    resolution: {integrity: sha512-M7BAV6Rlcy5u+m6oPhAPFgJTzAioX/6B0DxyvDlo9l8+T3nLKbrczg2WLUyzd45L8RqfUMyGPzekbMvX2Ldkwg==}
+    engines: {node: '>=12'}
+    dev: false
 
   /pidtree@0.3.1:
     resolution: {integrity: sha512-qQbW94hLHEqCg7nhby4yRC7G2+jYHY4Rguc2bjw7Uug4GIJuu1tvf2uHaZv5Q8zdt+WKJ6qK1FOI6amaWUo5FA==}
