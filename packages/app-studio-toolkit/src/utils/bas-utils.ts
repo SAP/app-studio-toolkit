@@ -1,12 +1,10 @@
 import { ExtensionKind, commands, env, extensions } from "vscode";
-import { join, split, tail, countBy } from "lodash";
+import { join, split, tail, countBy, compact } from "lodash";
 import { devspace } from "@sap/bas-sdk";
 import { URL } from "node:url";
 import { ProjectData } from "@sap/artifact-management";
-import { homedir } from "os";
 import { BasToolkit, sam } from "@sap-devx/app-studio-toolkit-types";
 import { AnalyticsWrapper } from "../usage-report/usage-analytics-wrapper";
-import { join as joinPath } from "path";
 import { getLogger } from "../logger/logger";
 
 export enum ExtensionRunMode {
@@ -18,7 +16,9 @@ export enum ExtensionRunMode {
   unexpected = `unexpected`,
 }
 
-export function isBAS(): boolean {
+type ProjectTypeMap = { [type: string]: number } | undefined;
+
+export function isRunOnBAS(): boolean {
   const platform = getExtensionRunPlatform();
   return (
     platform === ExtensionRunMode.basWorkspace || // BAS
@@ -67,30 +67,34 @@ function getExtensionRunPlatform(): ExtensionRunMode {
 
 export async function reportProjectTypesToUsageAnalytics(
   basToolkitAPI: BasToolkit
-) {
-  const devspaceInfo = await devspace.getDevspaceInfo();
-  const projects = await getProjectsInfo(basToolkitAPI);
-  void AnalyticsWrapper.traceProjectTypesStatus(
-    devspaceInfo?.packDisplayName ?? "",
-    projects ?? {}
-  );
+): Promise<void> {
+  const [devspaceInfo, projects] = await Promise.all([
+    devspace.getDevspaceInfo(),
+    getProjectsInfo(basToolkitAPI),
+  ]);
+  if (devspaceInfo?.packDisplayName && projects) {
+    void AnalyticsWrapper.traceProjectTypesStatus(
+      devspaceInfo.packDisplayName,
+      projects
+    );
+  }
 }
 
-async function getProjectsInfo(basToolkitAPI: BasToolkit) {
+/*
+There are 2 issues that should be fixes before merging this PR:
+1. getProjectInfo API should return all projects under all structure. including deep nested projects.
+2. the projects found are not cached in the WorksapceApi object. The new ProjectApi objects will be re-calculated out every time the WorkspaceApi.getProjects method is called.
+*/
+async function getProjectsInfo(basToolkitAPI: BasToolkit): Promise<ProjectTypeMap> {
   try {
     const workspaceAPI = basToolkitAPI.workspaceAPI;
-    const homedirProjects: string = joinPath(homedir(), "projects");
-    const projects: sam.ProjectApi[] = await workspaceAPI.getProjects(
-      undefined,
-      homedirProjects
-    );
-    const projectInfoList: (ProjectData | undefined)[] = await Promise.all(
+    const projects: sam.ProjectApi[] = await workspaceAPI.getProjects();
+    const folderProjectInfoList: ProjectData[] = compact(await Promise.all(
       projects.map(
-        async (project: sam.ProjectApi) => await project.getProjectInfo()
+        async (project: sam.ProjectApi) => project.getProjectInfo()
       )
-    );
-    const projectTypeList = countBy(projectInfoList, "type");
-    return projectTypeList;
+    ));
+    return countBy(folderProjectInfoList, "typeName");
   } catch (error) {
     getLogger().error(`Failed to get project list`);
   }

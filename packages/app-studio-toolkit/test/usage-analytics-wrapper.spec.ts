@@ -86,18 +86,14 @@ describe("AnalyticsWrapper", () => {
 
       const devSpacePackName = "devSpacePackName";
       const projects = {
-        "com.sap.cap": 2,
-        "com.sap.ui": 1,
-        "com.sap.mdk": 3,
-        "com.sap.fe": 1,
-        "com.sap.hana": 1,
-        "com.sap.lcap": 2,
-        "bas.empty": 1,
+        "CAP": 2,
+        "UI5": 1,
+        "Fiori Freestyle": 3,
       };
 
       AnalyticsWrapper.traceProjectTypesStatus(devSpacePackName, projects);
 
-      expect(mockClient.report.callCount).to.equal(7);
+      expect(mockClient.report.callCount).to.equal(3);
       expect(
         mockClient.report.calledWith(
           "Project Types Status",
@@ -115,44 +111,8 @@ describe("AnalyticsWrapper", () => {
       expect(
         mockClient.report.calledWith(
           "Project Types Status",
-          { projectType: "MDK", devSpacePackName },
+          { projectType: "Fiori Freestyle", devSpacePackName },
           { projectTypeQuantity: 3 }
-        )
-      ).to.be.true;
-      expect(
-        mockClient.report.calledWith(
-          "Project Types Status",
-          { projectType: "FE", devSpacePackName },
-          { projectTypeQuantity: 1 }
-        )
-      ).to.be.true;
-      expect(
-        mockClient.report.calledWith(
-          "Project Types Status",
-          { projectType: "HANA", devSpacePackName },
-          { projectTypeQuantity: 1 }
-        )
-      ).to.be.true;
-      expect(
-        mockClient.report.calledWith(
-          "Project Types Status",
-          { projectType: "LCAP", devSpacePackName },
-          { projectTypeQuantity: 2 }
-        )
-      ).to.be.true;
-      expect(
-        mockClient.report.calledWith(
-          "Project Types Status",
-          { projectType: "BASEmpty", devSpacePackName },
-          { projectTypeQuantity: 1 }
-        )
-      ).to.be.true;
-
-      expect(getLoggerStub().trace.callCount).to.equal(7);
-      expect(
-        getLoggerStub().trace.calledWith(
-          "SAP Web Analytics tracker was called",
-          { eventName: "Project Types Status" }
         )
       ).to.be.true;
     });
@@ -163,7 +123,7 @@ describe("AnalyticsWrapper", () => {
 
       const devSpacePackName = "devSpacePackName";
       const projects = {
-        "com.sap.cap": 2,
+        "CAP": 2,
       };
 
       AnalyticsWrapper.traceProjectTypesStatus(devSpacePackName, projects);

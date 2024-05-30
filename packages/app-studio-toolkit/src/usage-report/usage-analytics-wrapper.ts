@@ -9,7 +9,7 @@ import { getLogger } from "../logger/logger";
 
 type Properties = { [key: string]: string | boolean };
 type Measurements = { [key: string]: number };
-type ProjectData = { [type: string]: number };
+type ProjectData = { [typeName: string]: number };
 
 /**
  * A Simple Wrapper for reporting usage analytics
@@ -61,34 +61,11 @@ export class AnalyticsWrapper {
   ): void {
     try {
       const eventName = AnalyticsWrapper.EVENT_TYPES.PROJECT_TYPES_STATUS;
-      for (const type in projects) {
-        let projectType;
-        switch (type) {
-          case "com.sap.cap":
-            projectType = "CAP";
-            break;
-          case "com.sap.ui":
-            projectType = "UI5";
-            break;
-          case "com.sap.mdk":
-            projectType = "MDK";
-            break;
-          case "com.sap.fe":
-            projectType = "FE";
-            break;
-          case "com.sap.hana":
-            projectType = "HANA";
-            break;
-          case "com.sap.lcap":
-            projectType = "LCAP";
-            break;
-          default:
-            projectType = "BASEmpty";
-        }
+      for (const projectType in projects) {
         AnalyticsWrapper.report({
           eventName,
-          properties: { projectType, devSpacePackName },
-          measurements: { projectTypeQuantity: projects[type] },
+          properties: { projectType , devSpacePackName },
+          measurements: { projectTypeQuantity: projects[projectType] },
         });
       }
     } catch (error: any) {
