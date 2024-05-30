@@ -1,7 +1,11 @@
 import { ExtensionKind, commands, env, extensions } from "vscode";
-import { join, split, tail } from "lodash";
+import { join, split, tail, countBy, compact } from "lodash";
 import { devspace } from "@sap/bas-sdk";
 import { URL } from "node:url";
+import { ProjectData } from "@sap/artifact-management";
+import { BasToolkit, sam } from "@sap-devx/app-studio-toolkit-types";
+import { AnalyticsWrapper } from "../usage-report/usage-analytics-wrapper";
+import { getLogger } from "../logger/logger";
 
 export enum ExtensionRunMode {
   desktop = `desktop`,
@@ -12,7 +16,9 @@ export enum ExtensionRunMode {
   unexpected = `unexpected`,
 }
 
-export function shouldRunCtlServer(): boolean {
+type ProjectTypeMap = { [type: string]: number } | undefined;
+
+export function isRunOnBAS(): boolean {
   const platform = getExtensionRunPlatform();
   return (
     platform === ExtensionRunMode.basWorkspace || // BAS
@@ -57,4 +63,39 @@ function getExtensionRunPlatform(): ExtensionRunMode {
   void commands.executeCommand("setContext", `ext.runPlatform`, runPlatform);
 
   return runPlatform;
+}
+
+export async function reportProjectTypesToUsageAnalytics(
+  basToolkitAPI: BasToolkit
+): Promise<void> {
+  const [devspaceInfo, projects] = await Promise.all([
+    devspace.getDevspaceInfo(),
+    getProjectsInfo(basToolkitAPI),
+  ]);
+  if (devspaceInfo?.packDisplayName && projects) {
+    void AnalyticsWrapper.traceProjectTypesStatus(
+      devspaceInfo.packDisplayName,
+      projects
+    );
+  }
+}
+
+/*
+There are 2 issues that should be fixes before merging this PR:
+1. getProjectInfo API should return all projects under all structure. including deep nested projects.
+2. the projects found are not cached in the WorksapceApi object. The new ProjectApi objects will be re-calculated out every time the WorkspaceApi.getProjects method is called.
+*/
+async function getProjectsInfo(basToolkitAPI: BasToolkit): Promise<ProjectTypeMap> {
+  try {
+    const workspaceAPI = basToolkitAPI.workspaceAPI;
+    const projects: sam.ProjectApi[] = await workspaceAPI.getProjects();
+    const folderProjectInfoList: ProjectData[] = compact(await Promise.all(
+      projects.map(
+        async (project: sam.ProjectApi) => project.getProjectInfo()
+      )
+    ));
+    return countBy(folderProjectInfoList, "typeName");
+  } catch (error) {
+    getLogger().error(`Failed to get project list`);
+  }
 }
