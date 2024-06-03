@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.17.1](https://github.com/SAP/app-studio-toolkit/compare/v1.17.0...v1.17.1) (2024-06-03)
+
+**Note:** Version bump only for package sample-action-client
+
 ## [1.16.2](https://github.com/SAP/app-studio-toolkit/compare/v1.16.1...v1.16.2) (2024-05-06)
 
 **Note:** Version bump only for package sample-action-client
