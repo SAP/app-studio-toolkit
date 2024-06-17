@@ -18,7 +18,10 @@ import { BasRemoteAuthenticationProvider } from "../authentication/authProvider"
 import { cmdLoginToLandscape } from "./landscape/landscape";
 import { getBasUriHandler } from "./handler/basHandler";
 import { cmdOpenInVSCode } from "./devspace/open";
-import { getJwt } from "../authentication/auth-utils";
+import {
+  sendRequest,
+  setLandscapeForAiPurpose,
+} from "../public-api/outbound-connectivity";
 
 export function initBasRemoteExplorer(context: ExtensionContext): void {
   context.subscriptions.push(
@@ -30,6 +33,20 @@ export function initBasRemoteExplorer(context: ExtensionContext): void {
   const devSpaceExplorer = new DevSpacesExplorer(context.extensionPath);
 
   /* istanbul ignore next */
+  context.subscriptions.push(
+    commands.registerCommand(
+      "local-extension.landscape.set-ai-purpose",
+      setLandscapeForAiPurpose
+    )
+  );
+
+  context.subscriptions.push(
+    commands.registerCommand(
+      "local-extension.send-outbound-request",
+      sendRequest
+    )
+  );
+
   context.subscriptions.push(
     commands.registerCommand("local-extension.tree.refresh", () =>
       devSpaceExplorer.refreshTree()

@@ -60,6 +60,14 @@
         "icon": "$(add)"
       },
       {
+        "command": "local-extension.landscape.set-ai-purpose",
+        "title": "Set landscape for AI purpose"
+      },
+      {
+        "command": "local-extension.send-outbound-request",
+        "title": "Send outbound request"
+      },
+      {
         "command": "local-extension.landscape.delete",
         "title": "Remove landscape"
       },
@@ -182,6 +190,14 @@
         }
       ],
       "commandPalette": [
+        {
+          "when": "true",
+          "command": "local-extension.landscape.set-ai-purpose"
+        },
+        {
+          "when": "true",
+          "command": "local-extension.send-outbound-request"
+        },
         {
           "when": "false",
           "command": "local-extension.landscape.add"

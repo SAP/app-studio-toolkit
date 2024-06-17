@@ -5,7 +5,7 @@ import {
   commands,
   workspace,
 } from "vscode";
-import { compact, isEmpty, size, trim, uniq } from "lodash";
+import { compact, isEmpty, size, trim, uniqBy } from "lodash";
 import { hasJwt, timeUntilJwtExpires } from "../../authentication/auth-utils";
 import { URL } from "node:url";
 import { getLogger } from "../../../src/logger/logger";
@@ -40,44 +40,61 @@ export interface LandscapeInfo {
   isLoggedIn: boolean;
 }
 
+export type LandscapeConfig = { url: string; ai?: boolean };
+
 function isLandscapeLoggedIn(url: string): Promise<boolean> {
   return hasJwt(url);
 }
 
-export function getLanscapesConfig(): string[] {
-  return uniq(
+export function getLanscapesConfig(): LandscapeConfig[] {
+  let config =
+    workspace.getConfiguration().get<string>("sap-remote.landscape-name") ?? "";
+  // check if it is an old format - replace `,` with `|` - TODO: remove this in future (backward compatibility)
+  if (!/.*\{.+\}.*/.test(config)) {
+    config = config.replace(/,/g, "|");
+  }
+  // split by | and parse each landscape
+  return uniqBy(
     compact(
-      (
-        workspace.getConfiguration().get<string>("sap-remote.landscape-name") ??
-        ""
-      )
-        .split(",")
-        .map((value) => (value ? new URL(trim(value)).toString() : value))
-    )
+      config.split("|").map((landscape) => {
+        try {
+          const item: LandscapeConfig = JSON.parse(landscape);
+          return Object.assign(
+            { url: item.url },
+            item.ai ? { ai: item.ai } : {}
+          );
+        } catch (e) {
+          // if not a valid JSON - consider it as a URL - TODO: remove this in future (backward compatibility)
+          if (trim(landscape).length > 0) {
+            return { url: landscape };
+          }
+        }
+      })
+    ),
+    "url"
   );
 }
 
-export async function updateLandscapesConfig(value: string[]): Promise<void> {
+export async function updateLandscapesConfig(
+  values: LandscapeConfig[]
+): Promise<void> {
+  const value = values.map((item) => JSON.stringify(item)).join("|");
   return workspace
     .getConfiguration()
-    .update(
-      "sap-remote.landscape-name",
-      value.join(","),
-      ConfigurationTarget.Global
-    )
+    .update("sap-remote.landscape-name", value, ConfigurationTarget.Global)
     .then(() => {
-      getLogger().debug(`Landscapes config updated: ${value.toString()}`);
+      getLogger().debug(`Landscapes config updated: ${value}`);
     });
 }
 
 export async function getLandscapes(): Promise<LandscapeInfo[]> {
   const lands: LandscapeInfo[] = [];
   for (const landscape of getLanscapesConfig()) {
-    const url = new URL(landscape);
+    const url = new URL(landscape.url);
     lands.push({
       name: url.hostname,
       url: url.toString(),
-      isLoggedIn: await isLandscapeLoggedIn(landscape),
+      isLoggedIn: await isLandscapeLoggedIn(landscape.url),
     });
   }
   return lands;
@@ -88,7 +105,7 @@ export async function removeLandscape(landscapeName: string): Promise<void> {
   if (size(config) > 0) {
     const toRemove = new URL(landscapeName).toString();
     const updated = config.filter(
-      (landscape) => new URL(landscape).toString() !== toRemove
+      (landscape) => new URL(landscape.url).toString() !== toRemove
     );
     if (size(updated) !== size(config)) {
       return updateLandscapesConfig(updated);
