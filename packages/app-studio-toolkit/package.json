@@ -60,10 +60,6 @@
         "icon": "$(add)"
       },
       {
-        "command": "local-extension.landscape.set-ai-purpose",
-        "title": "Set landscape for AI purpose"
-      },
-      {
         "command": "local-extension.send-outbound-request",
         "title": "Send outbound request"
       },
@@ -127,6 +123,16 @@
           "light": "resources/devspace/login.svg",
           "dark": "resources/devspace/login.svg"
         }
+      },
+      {
+        "command": "local-extension.landscape.enable-ai",
+        "title": "Make this the default landscape for Joule",
+        "icon": "$(sparkle)"
+      },
+      {
+        "command": "local-extension.landscape.disable-ai",
+        "title": "Remove this landscape as the default for Joule",
+        "icon": "$(sparkle-filled)"
       }
     ],
     "configuration": [
@@ -191,8 +197,12 @@
       ],
       "commandPalette": [
         {
-          "when": "true",
-          "command": "local-extension.landscape.set-ai-purpose"
+          "when": "false",
+          "command": "local-extension.landscape.enable-ai"
+        },
+        {
+          "when": "false",
+          "command": "local-extension.landscape.disable-ai"
         },
         {
           "when": "true",
@@ -318,7 +328,17 @@
         },
         {
           "command": "local-extension.login",
-          "when": "view == dev-spaces && viewItem =~ /.*log-out.*/",
+          "when": "view == dev-spaces && viewItem =~ /.*landscape-log-out.*/",
+          "group": "inline"
+        },
+        {
+          "command": "local-extension.landscape.enable-ai",
+          "when": "view == dev-spaces && viewItem =~ /.*landscape-.*-ai-disabled.*/",
+          "group": "inline"
+        },
+        {
+          "command": "local-extension.landscape.disable-ai",
+          "when": "view == dev-spaces && viewItem =~ /.*landscape-.*-ai-enabled.*/",
           "group": "inline"
         }
       ]

@@ -53,18 +53,25 @@ export class DevSpaceDataProvider implements TreeDataProvider<TreeItem> {
     const landscapes = await getLandscapes();
 
     const rootNodes = map(landscapes, (landscape) => {
+      let tooltip = landscape.isLoggedIn
+        ? messages.lbl_logged_in
+        : messages.lbl_not_logged_in;
+      if (landscape.ai) {
+        tooltip += `, ${messages.lbl_ai_enabled}`;
+      }
       return new LandscapeNode(
         this.extensionPath,
         landscape.name,
         TreeItemCollapsibleState.Expanded,
         iconPath,
         "",
-        landscape.isLoggedIn
-          ? messages.lbl_logged_in
-          : messages.lbl_not_logged_in,
+        tooltip,
         landscape.name,
         landscape.url,
-        messages.lbl_landscape_context_status(landscape.isLoggedIn)
+        messages.lbl_landscape_context_status(
+          landscape.isLoggedIn,
+          landscape.ai
+        )
       );
     });
 

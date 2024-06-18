@@ -19,9 +19,11 @@ import { cmdLoginToLandscape } from "./landscape/landscape";
 import { getBasUriHandler } from "./handler/basHandler";
 import { cmdOpenInVSCode } from "./devspace/open";
 import {
+  clearAiLandscape,
   sendRequest,
   setLandscapeForAiPurpose,
 } from "../public-api/outbound-connectivity";
+import { LandscapeNode } from "./tree/treeItems";
 
 export function initBasRemoteExplorer(context: ExtensionContext): void {
   context.subscriptions.push(
@@ -35,8 +37,20 @@ export function initBasRemoteExplorer(context: ExtensionContext): void {
   /* istanbul ignore next */
   context.subscriptions.push(
     commands.registerCommand(
-      "local-extension.landscape.set-ai-purpose",
-      setLandscapeForAiPurpose
+      "local-extension.landscape.enable-ai",
+      async (node: LandscapeNode): Promise<boolean> => {
+        return setLandscapeForAiPurpose(node.url);
+      }
+    )
+  );
+
+  context.subscriptions.push(
+    commands.registerCommand(
+      "local-extension.landscape.disable-ai",
+      async (node: LandscapeNode): Promise<void> => {
+        await clearAiLandscape();
+        void commands.executeCommand("local-extension.tree.refresh");
+      }
     )
   );
 

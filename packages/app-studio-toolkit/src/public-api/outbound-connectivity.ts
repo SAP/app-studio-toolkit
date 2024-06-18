@@ -7,6 +7,7 @@ import {
   window,
 } from "vscode";
 import {
+  LandscapeConfig,
   LandscapeInfo,
   getLandscapes,
   getLanscapesConfig,
@@ -17,28 +18,39 @@ import { BasRemoteAuthenticationProvider } from "../authentication/authProvider"
 import { hasJwt } from "../authentication/auth-utils";
 import { isEmpty } from "lodash";
 
-const LBL_ADD_LANDSCAPE = "Add landscape";
+const LBL_ADD_LANDSCAPE = "Add another landscape";
 
 function getAiLandscape(): string {
   return getLanscapesConfig().find((landscape) => landscape.ai)?.url ?? "";
 }
 
-async function setAiLandscape(value: string): Promise<void> {
+export async function clearAiLandscape(
+  update = true
+): Promise<LandscapeConfig[]> {
   const configs = getLanscapesConfig();
   // reset ai flag for all landscapes if exists
   configs.forEach((landscape) => {
     delete landscape.ai;
   });
+  update && (await updateLandscapesConfig(configs));
+  return configs;
+}
+
+async function setAiLandscape(landscapeUrl: string): Promise<void> {
+  const configs = await clearAiLandscape(false);
   // update landscape if it exists in the list or add it
-  const index = configs.findIndex((landscape) => landscape.url === value);
+  const index = configs.findIndex(
+    (landscape) => landscape.url === landscapeUrl
+  );
   if (index != -1) {
     // exists
     configs[index].ai = true;
   } else {
     // not exists : add the landscape to the list
-    configs.push({ url: value, ai: true });
+    configs.push({ url: landscapeUrl, ai: true });
   }
-  return updateLandscapesConfig(configs);
+  await updateLandscapesConfig(configs);
+  void commands.executeCommand("local-extension.tree.refresh");
 }
 
 function selectLandscape(
@@ -52,26 +64,31 @@ function selectLandscape(
   items.push({ label: "Initiate", kind: QuickPickItemKind.Separator }); // action section separator
   items.push({ label: LBL_ADD_LANDSCAPE });
   return window.showQuickPick(items, {
-    placeHolder: "Choose the landscape to use for AI purposes",
+    placeHolder: "Select the landscape in which you want to use Joule",
     ignoreFocusOut: true,
   }) as Promise<QuickPickItem | undefined>;
 }
 
-export async function setLandscapeForAiPurpose(): Promise<boolean> {
-  const outboundLandscape = getAiLandscape();
+export async function setLandscapeForAiPurpose(
+  landscape?: string
+): Promise<boolean> {
   // select landscape for outbound connectivity
   let selectedLandscape: QuickPickItem | undefined;
-  do {
-    // remove selected ai landscape from the list
-    const landscapes = (await getLandscapes()).filter(
-      (item) => item.url !== outboundLandscape
-    );
-    selectedLandscape = await selectLandscape(landscapes);
-    if (selectedLandscape?.label === LBL_ADD_LANDSCAPE) {
-      await commands.executeCommand("local-extension.landscape.add");
-    }
-  } while (selectedLandscape?.label === LBL_ADD_LANDSCAPE);
-
+  if (landscape) {
+    selectedLandscape = { url: landscape } as any;
+  } else {
+    const outboundLandscape = getAiLandscape();
+    do {
+      // remove selected ai landscape from the list
+      const landscapes = (await getLandscapes()).filter(
+        (item) => item.url !== outboundLandscape
+      );
+      selectedLandscape = await selectLandscape(landscapes);
+      if (selectedLandscape?.label === LBL_ADD_LANDSCAPE) {
+        await commands.executeCommand("local-extension.landscape.add");
+      }
+    } while (selectedLandscape?.label === LBL_ADD_LANDSCAPE);
+  }
   if (selectedLandscape) {
     await setAiLandscape((selectedLandscape as any).url);
   }

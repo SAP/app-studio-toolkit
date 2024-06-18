@@ -38,6 +38,7 @@ export interface LandscapeInfo {
   name: string;
   url: string;
   isLoggedIn: boolean;
+  ai?: boolean;
 }
 
 export type LandscapeConfig = { url: string; ai?: boolean };
@@ -91,11 +92,16 @@ export async function getLandscapes(): Promise<LandscapeInfo[]> {
   const lands: LandscapeInfo[] = [];
   for (const landscape of getLanscapesConfig()) {
     const url = new URL(landscape.url);
-    lands.push({
-      name: url.hostname,
-      url: url.toString(),
-      isLoggedIn: await isLandscapeLoggedIn(landscape.url),
-    });
+    lands.push(
+      Object.assign(
+        {
+          name: url.hostname,
+          url: url.toString(),
+          isLoggedIn: await isLandscapeLoggedIn(landscape.url),
+        },
+        landscape.ai ? { ai: landscape.ai } : {}
+      )
+    );
   }
   return lands;
 }
