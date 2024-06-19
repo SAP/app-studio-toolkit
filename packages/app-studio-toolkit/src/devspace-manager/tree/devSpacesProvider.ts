@@ -49,7 +49,6 @@ export class DevSpaceDataProvider implements TreeDataProvider<TreeItem> {
   }
 
   private async getTreeTopLevelChildren(): Promise<Thenable<TreeNode[]>> {
-    const iconPath = getSvgIconPath(this.extensionPath, "landscape");
     const landscapes = await getLandscapes();
 
     const rootNodes = map(landscapes, (landscape) => {
@@ -63,7 +62,10 @@ export class DevSpaceDataProvider implements TreeDataProvider<TreeItem> {
         this.extensionPath,
         landscape.name,
         TreeItemCollapsibleState.Expanded,
-        iconPath,
+        getSvgIconPath(
+          this.extensionPath,
+          `landscape${landscape.ai ? "_ai" : ""}`
+        ),
         "",
         tooltip,
         landscape.name,

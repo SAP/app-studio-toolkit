@@ -329,17 +329,17 @@
         {
           "command": "local-extension.login",
           "when": "view == dev-spaces && viewItem =~ /.*landscape-log-out.*/",
-          "group": "inline"
+          "group": "inline@2"
         },
         {
           "command": "local-extension.landscape.enable-ai",
           "when": "view == dev-spaces && viewItem =~ /.*landscape-.*-ai-disabled.*/",
-          "group": "inline"
+          "group": "inline@1"
         },
         {
           "command": "local-extension.landscape.disable-ai",
           "when": "view == dev-spaces && viewItem =~ /.*landscape-.*-ai-enabled.*/",
-          "group": "inline"
+          "group": "inline@1"
         }
       ]
     },
