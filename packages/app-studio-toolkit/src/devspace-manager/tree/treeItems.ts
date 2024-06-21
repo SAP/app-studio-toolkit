@@ -17,6 +17,7 @@ export function getSvgIconPath(
 ): IconPath {
   const icons = {
     landscape: { path: "common", name: "land.svg" },
+    landscape_ai: { path: "common", name: "land-ai.svg" },
     basic_error: { path: "devspace", name: "basic_error.svg" },
     basic_running: { path: "devspace", name: "basic_running.svg" },
     basic_not_running: { path: "devspace", name: "basic_not_running.svg" },
