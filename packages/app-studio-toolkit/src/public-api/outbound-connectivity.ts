@@ -60,8 +60,8 @@ function selectLandscape(
     url: landscape.url,
     label: landscape.name,
   }));
-  items.unshift({ label: "Available", kind: QuickPickItemKind.Separator }); // existing items section separator
-  items.push({ label: "Initiate", kind: QuickPickItemKind.Separator }); // action section separator
+  items.unshift({ label: "", kind: QuickPickItemKind.Separator }); // existing items section separator
+  items.push({ label: "", kind: QuickPickItemKind.Separator }); // action section separator
   items.push({ label: LBL_ADD_LANDSCAPE });
   return window.showQuickPick(items, {
     placeHolder: "Select the landscape in which you want to use Joule",

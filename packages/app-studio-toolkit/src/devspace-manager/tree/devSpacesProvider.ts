@@ -52,12 +52,10 @@ export class DevSpaceDataProvider implements TreeDataProvider<TreeItem> {
     const landscapes = await getLandscapes();
 
     const rootNodes = map(landscapes, (landscape) => {
-      let tooltip = landscape.isLoggedIn
+      const tooltip = landscape.isLoggedIn
         ? messages.lbl_logged_in
         : messages.lbl_not_logged_in;
-      if (landscape.ai) {
-        tooltip += `, ${messages.lbl_ai_enabled}`;
-      }
+
       return new LandscapeNode(
         this.extensionPath,
         landscape.name,
@@ -67,7 +65,7 @@ export class DevSpaceDataProvider implements TreeDataProvider<TreeItem> {
           `landscape${landscape.ai ? "_ai" : ""}`
         ),
         "",
-        tooltip,
+        landscape.ai ? `${tooltip} ${messages.lbl_ai_enabled}` : tooltip,
         landscape.name,
         landscape.url,
         messages.lbl_landscape_context_status(
