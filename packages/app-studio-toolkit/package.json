@@ -127,12 +127,18 @@
       {
         "command": "local-extension.landscape.enable-ai",
         "title": "Make this the default landscape for Joule",
-        "icon": "$(sparkle)"
+        "icon": {
+          "light": "resources/common/joule.svg",
+          "dark": "resources/common/joule.svg"
+        }
       },
       {
         "command": "local-extension.landscape.disable-ai",
         "title": "Remove this landscape as the default for Joule",
-        "icon": "$(sparkle-filled)"
+        "icon": {
+          "light": "resources/common/joule-full.svg",
+          "dark": "resources/common/joule-full.svg"
+        }
       }
     ],
     "configuration": [
