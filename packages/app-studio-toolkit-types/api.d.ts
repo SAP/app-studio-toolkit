@@ -116,6 +116,11 @@ export interface BasToolkit {
   hasCapCapabilities: () => Promise<boolean>;
 
   /**
+   * Is environment Hana or not
+   */
+  hasHanaCapabilities: () => Promise<boolean>;
+
+  /**
    * Determine whether BAS is opened for running action or editing a project
    *
    * @experimental may be removed without notice in future versions.
