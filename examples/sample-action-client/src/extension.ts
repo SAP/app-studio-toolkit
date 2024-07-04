@@ -164,12 +164,15 @@ export function activate(context: ExtensionContext) {
   );
 
   context.subscriptions.push(
-    commands.registerCommand("has.hana.capabilities", async () => {
-      const enabledValue = await basAPI.hasHanaCapabilities();
-      void window.showInformationMessage(
-        `has Hana capabilities? ${enabledValue}`
-      );
-    })
+    commands.registerCommand(
+      "has.hanacalcviewCapabilities.capabilities",
+      async () => {
+        const enabledValue = await basAPI.hasHanacalcviewCapabilities();
+        void window.showInformationMessage(
+          `has Hana calc view capabilities? ${enabledValue}`
+        );
+      }
+    )
   );
 
   context.subscriptions.push(
