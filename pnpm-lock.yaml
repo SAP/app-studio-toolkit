@@ -1,9 +1,5 @@
 lockfileVersion: '6.0'
 
-settings:
-  autoInstallPeers: false
-  excludeLinksFromLockfile: false
-
 importers:
 
   .:
@@ -172,7 +168,7 @@ importers:
         version: 0.1.4
       copy-webpack-plugin:
         specifier: 11.0.0
-        version: 11.0.0(webpack@5.61.0)
+        version: 11.0.0
       fs-extra:
         specifier: 11.1.1
         version: 11.1.1
@@ -184,16 +180,16 @@ importers:
         version: 3.0.0
       string-replace-loader:
         specifier: 3.1.0
-        version: 3.1.0(webpack@5.61.0)
+        version: 3.1.0
       ts-loader:
         specifier: 9.4.2
-        version: 9.4.2(typescript@4.5.2)(webpack@5.61.0)
+        version: 9.4.2
 
   packages/app-studio-toolkit:
     dependencies:
       '@sap/artifact-management':
-        specifier: 1.35.0
-        version: 1.35.0
+        specifier: 1.36.0
+        version: 1.36.0
       '@sap/bas-sdk':
         specifier: 3.8.1
         version: 3.8.1
@@ -269,7 +265,7 @@ importers:
         version: 0.1.4
       copy-webpack-plugin:
         specifier: 11.0.0
-        version: 11.0.0(webpack@5.61.0)
+        version: 11.0.0
       fs-extra:
         specifier: 11.1.1
         version: 11.1.1
@@ -281,18 +277,18 @@ importers:
         version: 3.0.0
       string-replace-loader:
         specifier: 3.1.0
-        version: 3.1.0(webpack@5.61.0)
+        version: 3.1.0
       ts-loader:
         specifier: 9.4.2
-        version: 9.4.2(typescript@4.5.2)(webpack@5.61.0)
+        version: 9.4.2
 
   packages/app-studio-toolkit-themes: {}
 
   packages/app-studio-toolkit-types:
     dependencies:
       '@sap/artifact-management-types':
-        specifier: 1.35.0
-        version: 1.35.0
+        specifier: 1.36.0
+        version: 1.36.0
       '@types/vscode':
         specifier: 1.75.0
         version: 1.75.0
@@ -344,7 +340,7 @@ importers:
         version: 4.17.21
       ts-essentials:
         specifier: 9.1.2
-        version: 9.1.2(typescript@4.5.2)
+        version: 9.1.2
       vscode-languageserver-textdocument:
         specifier: 1.0.4
         version: 1.0.4
@@ -638,7 +634,7 @@ packages:
     dev: true
 
   /@colors/colors@1.5.0:
-    resolution: {integrity: sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==}
+    resolution: {integrity: sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/@colors/colors/-/colors-1.5.0.tgz}
     engines: {node: '>=0.1.90'}
     dev: false
 
@@ -737,7 +733,7 @@ packages:
     dev: true
 
   /@commitlint/load@17.5.0:
-    resolution: {integrity: sha512-l+4W8Sx4CD5rYFsrhHH8HP01/8jEP7kKf33Xlx2Uk2out/UKoKPYMOIRcDH5ppT8UXLMV+x6Wm5osdRKKgaD1Q==}
+    resolution: {integrity: sha512-l+4W8Sx4CD5rYFsrhHH8HP01/8jEP7kKf33Xlx2Uk2out/UKoKPYMOIRcDH5ppT8UXLMV+x6Wm5osdRKKgaD1Q==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/@commitlint/load/-/load-17.5.0.tgz}
     engines: {node: '>=v14'}
     requiresBuild: true
     dependencies:
@@ -858,7 +854,7 @@ packages:
     optional: true
 
   /@dabh/diagnostics@2.0.2:
-    resolution: {integrity: sha512-+A1YivoVDNNVCdfozHSR8v/jyuuLTMXwjWuxPFlFlUapXoGc+Gj9mDlTDDfrwl7rXCl2tNZ0kE8sIBO6YOn96Q==}
+    resolution: {integrity: sha512-+A1YivoVDNNVCdfozHSR8v/jyuuLTMXwjWuxPFlFlUapXoGc+Gj9mDlTDDfrwl7rXCl2tNZ0kE8sIBO6YOn96Q==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/@dabh/diagnostics/-/diagnostics-2.0.2.tgz}
     dependencies:
       colorspace: 1.1.4
       enabled: 2.0.0
@@ -965,7 +961,7 @@ packages:
     optional: true
 
   /@kwsites/file-exists@1.1.1:
-    resolution: {integrity: sha512-m9/5YGR18lIwxSFDwfE3oA7bWuq9kdau6ugN4H2rJeyhFQZcG9AgSHkQtSD15a8WvTgfz9aikZMrKPHvbpqFiw==}
+    resolution: {integrity: sha512-m9/5YGR18lIwxSFDwfE3oA7bWuq9kdau6ugN4H2rJeyhFQZcG9AgSHkQtSD15a8WvTgfz9aikZMrKPHvbpqFiw==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/@kwsites/file-exists/-/file-exists-1.1.1.tgz}
     dependencies:
       debug: 4.3.4
     transitivePeerDependencies:
@@ -973,7 +969,7 @@ packages:
     dev: false
 
   /@kwsites/promise-deferred@1.1.1:
-    resolution: {integrity: sha512-GaHYm+c0O9MjZRu0ongGBRbinu8gVAMd2UZjji6jVmqKtZluZnptXGWhz1E8j8D2HJ3f/yMxKAUC0b+57wncIw==}
+    resolution: {integrity: sha512-GaHYm+c0O9MjZRu0ongGBRbinu8gVAMd2UZjji6jVmqKtZluZnptXGWhz1E8j8D2HJ3f/yMxKAUC0b+57wncIw==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/@kwsites/promise-deferred/-/promise-deferred-1.1.1.tgz}
     dev: false
 
   /@lerna/add@4.0.0:
@@ -1690,18 +1686,18 @@ packages:
     dev: false
 
   /@nodelib/fs.scandir@2.1.5:
-    resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
+    resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz}
     engines: {node: '>= 8'}
     dependencies:
       '@nodelib/fs.stat': 2.0.5
       run-parallel: 1.2.0
 
   /@nodelib/fs.stat@2.0.5:
-    resolution: {integrity: sha512-RkhPPp2zrqDAQA/2jNhnztcPAlv64XdhIp7a7454A5ovI7Bukxgt7MX7udwAu3zg1DcpPU0rz3VV1SeaqvY4+A==}
+    resolution: {integrity: sha512-RkhPPp2zrqDAQA/2jNhnztcPAlv64XdhIp7a7454A5ovI7Bukxgt7MX7udwAu3zg1DcpPU0rz3VV1SeaqvY4+A==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/@nodelib/fs.stat/-/fs.stat-2.0.5.tgz}
     engines: {node: '>= 8'}
 
   /@nodelib/fs.walk@1.2.8:
-    resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
+    resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/@nodelib/fs.walk/-/fs.walk-1.2.8.tgz}
     engines: {node: '>= 8'}
     dependencies:
       '@nodelib/fs.scandir': 2.1.5
@@ -1872,8 +1868,8 @@ packages:
       '@octokit/openapi-types': 11.2.0
     dev: true
 
-  /@sap/artifact-management-base-types@1.35.0:
-    resolution: {integrity: sha512-Lxmgo+bTPDWrAfHWp0npmUhb+19/Br0z1xP7EgbB/dwQ26eE0vUOiR0Xm23iMY4INMFbSNdu+7U0TR9bt2mLVw==}
+  /@sap/artifact-management-base-types@1.36.0:
+    resolution: {integrity: sha512-Di1+gLUqfJ3ptGEnv48wTiIyC4fPFZUcYCFV7fMdN+DD6WPlYEZ0SQKr87hc1ngmTpjGbyyst1qa5WQqCLJDYQ==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/@sap/artifact-management-base-types/-/artifact-management-base-types-1.36.0.tgz}
     dependencies:
       '@types/node': 14.14.6
       '@types/vscode': 1.52.0
@@ -1881,8 +1877,8 @@ packages:
       vscode-languageserver-types: 3.16.0
     dev: false
 
-  /@sap/artifact-management-base@1.35.0:
-    resolution: {integrity: sha512-a5XBsUErhCxSQkMBpOEmSPGA91yap37UtLUYnahq11ZRkbKF+fOlkKCnYb+ip0jyb887M82fAzmnkVqJp7tRcg==}
+  /@sap/artifact-management-base@1.36.0:
+    resolution: {integrity: sha512-RmtvkaL5OvIUBQeTeUxISXCOJk2J6hVXQuvBmlyM488FUISXUllLurrPk2jPhaScVzsuS3tQVgm+gxslgJam4A==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/@sap/artifact-management-base/-/artifact-management-base-1.36.0.tgz}
     engines: {node: '>=14.14.0'}
     dependencies:
       ejs: 3.1.10
@@ -1896,17 +1892,17 @@ packages:
       winston-transport: 4.5.0
     dev: false
 
-  /@sap/artifact-management-fioriplugin@1.35.0:
-    resolution: {integrity: sha512-pLjJDDR2ZsdTjiz1FnhkoTHmzbQAPi6M7J0wnKG9WVLwp1kiTZWl8FmnkRavDp628jx1MmoUi5PJOyL6erT4Hw==}
+  /@sap/artifact-management-fioriplugin@1.36.0:
+    resolution: {integrity: sha512-ijejjywGzwt09fljX0ExCXyyglEeiDevCeFSuai/SUzbjUkpLPTHmPxFMD84AtzBm7CAfwakVnim+lcDY4gE/w==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/@sap/artifact-management-fioriplugin/-/artifact-management-fioriplugin-1.36.0.tgz}
     dependencies:
-      '@sap/artifact-management-base': 1.35.0
+      '@sap/artifact-management-base': 1.36.0
       xml2js: 0.6.2
     dev: false
 
-  /@sap/artifact-management-hanaplugin@1.35.0:
-    resolution: {integrity: sha512-Om6SMm3RYERSzmb1PRvBBm8EFocDD3BDvIgaPki8UwbcOuLWgAMZyeDOO6xVK17KKcYzWp+hVnvXA5qK5nEfKw==}
+  /@sap/artifact-management-hanaplugin@1.36.0:
+    resolution: {integrity: sha512-onwWNoZN8zFW0Z3TbswQCp+ZukZsP+8cfjc4pUftOw7nWYTZcI+xXOPWsiTCjarI9f28dRVxxTySL4QeBK8nRQ==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/@sap/artifact-management-hanaplugin/-/artifact-management-hanaplugin-1.36.0.tgz}
     dependencies:
-      '@sap/artifact-management-base': 1.35.0
+      '@sap/artifact-management-base': 1.36.0
       fast-glob: 3.3.2
       glob: 7.2.0
       jsdom: 22.1.0
@@ -1918,26 +1914,26 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@sap/artifact-management-mdkplugin@1.35.0:
-    resolution: {integrity: sha512-g0JSL8GHWJm0X8SRFxbiWHblWactfNFFSCn8z3ENUxTImvtwpAsAqviq2+jaeSHpfftwFizt4HvajH/m1fa4Lw==}
+  /@sap/artifact-management-mdkplugin@1.36.0:
+    resolution: {integrity: sha512-+yAS0HJfLwMg9qUh/4JzgeuFTurQBzAJWpVI/5hm/yBrQumWyfQfsLLH7geg56u9jbOKxm9wzMk22779ymey+A==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/@sap/artifact-management-mdkplugin/-/artifact-management-mdkplugin-1.36.0.tgz}
     dependencies:
-      '@sap/artifact-management-base': 1.35.0
+      '@sap/artifact-management-base': 1.36.0
     dev: false
 
-  /@sap/artifact-management-types@1.35.0:
-    resolution: {integrity: sha512-vhRFIwdzOnIHYbO1Mi93h0n+FdJzQE+S4jeLD9wZhLlr2iHeBL/Grp/3zxU8GVd1a11PpuTAUM77ygq3V2sTYA==}
+  /@sap/artifact-management-types@1.36.0:
+    resolution: {integrity: sha512-pP9TKoAp+iy4yEeaW/YCruVGZ7caSuZZbMDUdydPnZFW/Ljd49CLNe9dfD/rQ+8+UGq2INdz2NgghnQ3ilrcdQ==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/@sap/artifact-management-types/-/artifact-management-types-1.36.0.tgz}
     dependencies:
-      '@sap/artifact-management-base-types': 1.35.0
+      '@sap/artifact-management-base-types': 1.36.0
     dev: false
 
-  /@sap/artifact-management@1.35.0:
-    resolution: {integrity: sha512-BrJmIpcWtno1WXQoc1N80JkN7yX9d4XFJ2fDPaikDTL323P/+vxOaGGiKYA/edg87QHnDUELRr1wmzDTS0w7/A==}
+  /@sap/artifact-management@1.36.0:
+    resolution: {integrity: sha512-D6jfnJ9+YdPNB2eAv8t1fhlXS26XUKEFL5VkwJBenbFszVDWT1NvS+R2nSyqpHoumi4goZWHFA1NH8/X1kWydQ==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/@sap/artifact-management/-/artifact-management-1.36.0.tgz}
     hasBin: true
     dependencies:
-      '@sap/artifact-management-base': 1.35.0
-      '@sap/artifact-management-fioriplugin': 1.35.0
-      '@sap/artifact-management-hanaplugin': 1.35.0
-      '@sap/artifact-management-mdkplugin': 1.35.0
+      '@sap/artifact-management-base': 1.36.0
+      '@sap/artifact-management-fioriplugin': 1.36.0
+      '@sap/artifact-management-hanaplugin': 1.36.0
+      '@sap/artifact-management-mdkplugin': 1.36.0
       ajv: 8.12.0
       chokidar: 3.6.0
       js-yaml: 4.1.0
@@ -2011,12 +2007,12 @@ packages:
     dev: true
 
   /@tootallnate/once@1.1.2:
-    resolution: {integrity: sha512-RbzJvlNzmRq5c3O09UipeuXno4tA1FE6ikOjxZK0tuxVv3412l64l5t1W5pj4+rJq9vpkm/kwiR07aZXnsKPxw==}
+    resolution: {integrity: sha512-RbzJvlNzmRq5c3O09UipeuXno4tA1FE6ikOjxZK0tuxVv3412l64l5t1W5pj4+rJq9vpkm/kwiR07aZXnsKPxw==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/@tootallnate/once/-/once-1.1.2.tgz}
     engines: {node: '>= 6'}
     dev: true
 
   /@tootallnate/once@2.0.0:
-    resolution: {integrity: sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==}
+    resolution: {integrity: sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/@tootallnate/once/-/once-2.0.0.tgz}
     engines: {node: '>= 10'}
     dev: false
 
@@ -2153,7 +2149,7 @@ packages:
     dev: true
 
   /@types/node@14.14.6:
-    resolution: {integrity: sha512-6QlRuqsQ/Ox/aJEQWBEJG7A9+u7oSYl3mem/K8IzxXG/kAGbV1YPD9Bg9Zw3vyxC/YP+zONKwy8hGkSt1jxFMw==}
+    resolution: {integrity: sha512-6QlRuqsQ/Ox/aJEQWBEJG7A9+u7oSYl3mem/K8IzxXG/kAGbV1YPD9Bg9Zw3vyxC/YP+zONKwy8hGkSt1jxFMw==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/@types/node/-/node-14.14.6.tgz}
     dev: false
 
   /@types/node@16.11.10:
@@ -2220,7 +2216,7 @@ packages:
     dev: true
 
   /@types/vscode@1.52.0:
-    resolution: {integrity: sha512-Kt3bvWzAvvF/WH9YEcrCICDp0Z7aHhJGhLJ1BxeyNP6yRjonWqWnAIh35/pXAjswAnWOABrYlF7SwXR9+1nnLA==}
+    resolution: {integrity: sha512-Kt3bvWzAvvF/WH9YEcrCICDp0Z7aHhJGhLJ1BxeyNP6yRjonWqWnAIh35/pXAjswAnWOABrYlF7SwXR9+1nnLA==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/@types/vscode/-/vscode-1.52.0.tgz}
     dev: false
 
   /@types/vscode@1.75.0:
@@ -2246,7 +2242,7 @@ packages:
       '@typescript-eslint/experimental-utils': 4.33.0(eslint@7.30.0)(typescript@4.5.2)
       '@typescript-eslint/parser': 4.33.0(eslint@7.30.0)(typescript@4.5.2)
       '@typescript-eslint/scope-manager': 4.33.0
-      debug: 4.3.2(supports-color@8.1.1)
+      debug: 4.3.2
       eslint: 7.30.0
       functional-red-black-tree: 1.0.1
       ignore: 5.1.9
@@ -2289,7 +2285,7 @@ packages:
       '@typescript-eslint/scope-manager': 4.33.0
       '@typescript-eslint/types': 4.33.0
       '@typescript-eslint/typescript-estree': 4.33.0(typescript@4.5.2)
-      debug: 4.3.2(supports-color@8.1.1)
+      debug: 4.3.2
       eslint: 7.30.0
       typescript: 4.5.2
     transitivePeerDependencies:
@@ -2359,7 +2355,7 @@ packages:
     dev: false
 
   /@vscode-logging/types@0.1.3:
-    resolution: {integrity: sha512-1mV/aMVXpm50PyJ4XYD0qPUREv6QcmPwuDtzdMcKeiXN5Tt/WmnyEHfUxENQr1Aes8Hr+EVtNK4tvrUXXco/5A==}
+    resolution: {integrity: sha512-1mV/aMVXpm50PyJ4XYD0qPUREv6QcmPwuDtzdMcKeiXN5Tt/WmnyEHfUxENQr1Aes8Hr+EVtNK4tvrUXXco/5A==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/@vscode-logging/types/-/types-0.1.3.tgz}
     dev: false
 
   /@vscode-logging/types@0.1.4:
@@ -2528,7 +2524,7 @@ packages:
     dev: true
 
   /abab@2.0.6:
-    resolution: {integrity: sha512-j2afSsaIENvHZN2B8GOpF566vZ5WVk5opAiMTvWgaQT8DkbOqsTfvNAvHoRGU2zzP8cPoqys+xHTRDWW8L+/BA==}
+    resolution: {integrity: sha512-j2afSsaIENvHZN2B8GOpF566vZ5WVk5opAiMTvWgaQT8DkbOqsTfvNAvHoRGU2zzP8cPoqys+xHTRDWW8L+/BA==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/abab/-/abab-2.0.6.tgz}
     deprecated: Use your platform's native atob() and btoa() methods instead
     dev: false
 
@@ -2592,7 +2588,7 @@ packages:
     dev: true
 
   /agent-base@6.0.2:
-    resolution: {integrity: sha512-RZNwNclF7+MS/8bDg70amg32dyeZGZxiDuQmZxKLAlQjr3jGyLx+4Kkk58UO7D2QdgFIQCovuSuZESne6RG6XQ==}
+    resolution: {integrity: sha512-RZNwNclF7+MS/8bDg70amg32dyeZGZxiDuQmZxKLAlQjr3jGyLx+4Kkk58UO7D2QdgFIQCovuSuZESne6RG6XQ==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/agent-base/-/agent-base-6.0.2.tgz}
     engines: {node: '>= 6.0.0'}
     dependencies:
       debug: 4.3.4
@@ -2620,6 +2616,9 @@ packages:
 
   /ajv-formats@2.1.1:
     resolution: {integrity: sha512-Wx0Kx52hxE7C18hkMEggYlEifqWZtYaRgouJor+WMdPnQyEK13vgEWyVNup7SoeeoLMsr4kf5h6dOW11I15MUA==}
+    peerDependenciesMeta:
+      ajv:
+        optional: true
     dependencies:
       ajv: 8.12.0
     dev: true
@@ -2650,7 +2649,7 @@ packages:
       uri-js: 4.4.1
 
   /ajv@8.12.0:
-    resolution: {integrity: sha512-sRu1kpcO9yLtYxBKvqfTeh9KzZEwO3STyX1HT+4CaDzC6HpTGYhIhPIzj9XuKU7KYDwnaeh5hcOwjy1QuJzBPA==}
+    resolution: {integrity: sha512-sRu1kpcO9yLtYxBKvqfTeh9KzZEwO3STyX1HT+4CaDzC6HpTGYhIhPIzj9XuKU7KYDwnaeh5hcOwjy1QuJzBPA==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/ajv/-/ajv-8.12.0.tgz}
     dependencies:
       fast-deep-equal: 3.1.3
       json-schema-traverse: 1.0.0
@@ -2701,13 +2700,13 @@ packages:
     dev: true
 
   /ansi-styles@4.3.0:
-    resolution: {integrity: sha512-zbB9rCJAT1rbjiVDb2hqKFHNYLxgtk8NURxZ3IZwD3F6NtxbXZQCnnSi1Lkx+IDohdPlFp222wVALIheZJQSEg==}
+    resolution: {integrity: sha512-zbB9rCJAT1rbjiVDb2hqKFHNYLxgtk8NURxZ3IZwD3F6NtxbXZQCnnSi1Lkx+IDohdPlFp222wVALIheZJQSEg==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/ansi-styles/-/ansi-styles-4.3.0.tgz}
     engines: {node: '>=8'}
     dependencies:
       color-convert: 2.0.1
 
   /anymatch@3.1.2:
-    resolution: {integrity: sha512-P43ePfOAIupkguHUycrc4qJ9kz8ZiuOUijaETwX7THt0Y/GNK7v0aa8rY816xWjZ7rJdA5XdMcpVFTKMq+RvWg==}
+    resolution: {integrity: sha512-P43ePfOAIupkguHUycrc4qJ9kz8ZiuOUijaETwX7THt0Y/GNK7v0aa8rY816xWjZ7rJdA5XdMcpVFTKMq+RvWg==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/anymatch/-/anymatch-3.1.2.tgz}
     engines: {node: '>= 8'}
     dependencies:
       normalize-path: 3.0.0
@@ -2744,13 +2743,13 @@ packages:
     dev: true
 
   /argparse@1.0.10:
-    resolution: {integrity: sha512-o5Roy6tNG4SL/FOkCAN6RzjiakZS25RLYFrcMttJqbdd8BWrnA+fGz57iN5Pb06pvBGvl5gQ0B48dJlslXvoTg==}
+    resolution: {integrity: sha512-o5Roy6tNG4SL/FOkCAN6RzjiakZS25RLYFrcMttJqbdd8BWrnA+fGz57iN5Pb06pvBGvl5gQ0B48dJlslXvoTg==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/argparse/-/argparse-1.0.10.tgz}
     dependencies:
       sprintf-js: 1.0.3
     dev: true
 
   /argparse@2.0.1:
-    resolution: {integrity: sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==}
+    resolution: {integrity: sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/argparse/-/argparse-2.0.1.tgz}
 
   /array-differ@3.0.0:
     resolution: {integrity: sha512-THtfYS6KtME/yIAhKjZ2ul7XI96lQGHRputJQHO80LAWQnuGP4iCIN8vdMRboGbIEYBwU33q8Tch1os2+X0kMg==}
@@ -2805,7 +2804,7 @@ packages:
     dev: true
 
   /async@3.2.4:
-    resolution: {integrity: sha512-iAB+JbDEGXhyIUavoDl9WP/Jj106Kz9DEn1DPgYw5ruDn0e3Wgi3sKFm55sASdGBNOQB8F59d9qQ7deqrHA8wQ==}
+    resolution: {integrity: sha512-iAB+JbDEGXhyIUavoDl9WP/Jj106Kz9DEn1DPgYw5ruDn0e3Wgi3sKFm55sASdGBNOQB8F59d9qQ7deqrHA8wQ==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/async/-/async-3.2.4.tgz}
     dev: false
 
   /asynckit@0.4.0:
@@ -2861,7 +2860,7 @@ packages:
     dev: true
 
   /balanced-match@1.0.2:
-    resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
+    resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/balanced-match/-/balanced-match-1.0.2.tgz}
 
   /base64-js@1.5.1:
     resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
@@ -2882,7 +2881,7 @@ packages:
     dev: true
 
   /binary-extensions@2.2.0:
-    resolution: {integrity: sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==}
+    resolution: {integrity: sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/binary-extensions/-/binary-extensions-2.2.0.tgz}
     engines: {node: '>=8'}
 
   /bn.js@4.12.0:
@@ -2938,7 +2937,7 @@ packages:
     dev: false
 
   /brace-expansion@1.1.11:
-    resolution: {integrity: sha512-iCuPHDFgrHX7H2vEI/5xpz07zSHB00TpugqhmYtVmMO6518mCuRMoOYFldEBl0g187ufozdaHgWKcYFb61qGiA==}
+    resolution: {integrity: sha512-iCuPHDFgrHX7H2vEI/5xpz07zSHB00TpugqhmYtVmMO6518mCuRMoOYFldEBl0g187ufozdaHgWKcYFb61qGiA==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/brace-expansion/-/brace-expansion-1.1.11.tgz}
     dependencies:
       balanced-match: 1.0.2
       concat-map: 0.0.1
@@ -2947,14 +2946,14 @@ packages:
     resolution: {integrity: sha512-b8um+L1RzM3WDSzvhm6gIz1yfTbBt6YTlcEKAvsmqCZZFw46z626lVj9j1yEPW33H5H+lBQpZMP1k8l+78Ha0A==}
     engines: {node: '>=8'}
     dependencies:
-      fill-range: 7.0.1
+      fill-range: 7.1.1
+    dev: true
 
   /braces@3.0.3:
-    resolution: {integrity: sha512-yQbXgO/OSZVD2IsiLlro+7Hf6Q18EJrKSEsdoMzKePKXct3gvD8oLcOQdIzGupr5Fj+EDe8gO/lxc1BzfMpxvA==}
+    resolution: {integrity: sha512-yQbXgO/OSZVD2IsiLlro+7Hf6Q18EJrKSEsdoMzKePKXct3gvD8oLcOQdIzGupr5Fj+EDe8gO/lxc1BzfMpxvA==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/braces/-/braces-3.0.3.tgz}
     engines: {node: '>=8'}
     dependencies:
       fill-range: 7.1.1
-    dev: false
 
   /brorand@1.1.0:
     resolution: {integrity: sha512-cKV8tMCEpQs4hK/ik71d6LrPOnpkpGBR0wzxqr68g2m/LB2GxVYQroAjMJZRVM1Y4BCjCKc3vAamxSzOY2RP+w==}
@@ -3180,11 +3179,11 @@ packages:
     dev: true
 
   /chokidar@3.6.0:
-    resolution: {integrity: sha512-7VT13fmjotKpGipCW9JEQAusEPE+Ei8nl6/g4FBAmIm0GOOLMua9NDDo/DWp0ZAxCr3cPq5ZpBqmPAQgDda2Pw==}
+    resolution: {integrity: sha512-7VT13fmjotKpGipCW9JEQAusEPE+Ei8nl6/g4FBAmIm0GOOLMua9NDDo/DWp0ZAxCr3cPq5ZpBqmPAQgDda2Pw==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/chokidar/-/chokidar-3.6.0.tgz}
     engines: {node: '>= 8.10.0'}
     dependencies:
       anymatch: 3.1.2
-      braces: 3.0.2
+      braces: 3.0.3
       glob-parent: 5.1.2
       is-binary-path: 2.1.0
       is-glob: 4.0.3
@@ -3265,7 +3264,7 @@ packages:
     dev: true
 
   /cliui@8.0.1:
-    resolution: {integrity: sha512-BSeNnyus75C4//NQ9gQt1/csTXyo/8Sb+afLAkzAptFuMsod9HFokGNudZpi/oQV73hnVK+sR+5PVRMd+Dr7YQ==}
+    resolution: {integrity: sha512-BSeNnyus75C4//NQ9gQt1/csTXyo/8Sb+afLAkzAptFuMsod9HFokGNudZpi/oQV73hnVK+sR+5PVRMd+Dr7YQ==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/cliui/-/cliui-8.0.1.tgz}
     engines: {node: '>=12'}
     dependencies:
       string-width: 4.2.3
@@ -3300,31 +3299,31 @@ packages:
     dev: true
 
   /color-convert@1.9.3:
-    resolution: {integrity: sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==}
+    resolution: {integrity: sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/color-convert/-/color-convert-1.9.3.tgz}
     dependencies:
       color-name: 1.1.3
 
   /color-convert@2.0.1:
-    resolution: {integrity: sha512-RRECPsj7iu/xb5oKYcsFHSppFNnsj/52OVTRKb4zP5onXwVF3zVmmToNcOfGC+CRDpfK/U584fMg38ZHCaElKQ==}
+    resolution: {integrity: sha512-RRECPsj7iu/xb5oKYcsFHSppFNnsj/52OVTRKb4zP5onXwVF3zVmmToNcOfGC+CRDpfK/U584fMg38ZHCaElKQ==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/color-convert/-/color-convert-2.0.1.tgz}
     engines: {node: '>=7.0.0'}
     dependencies:
       color-name: 1.1.4
 
   /color-name@1.1.3:
-    resolution: {integrity: sha512-72fSenhMw2HZMTVHeCA9KCmpEIbzWiQsjN+BHcBbS9vr1mtt+vJjPdksIBNUmKAW8TFUDPJK5SUU3QhE9NEXDw==}
+    resolution: {integrity: sha512-72fSenhMw2HZMTVHeCA9KCmpEIbzWiQsjN+BHcBbS9vr1mtt+vJjPdksIBNUmKAW8TFUDPJK5SUU3QhE9NEXDw==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/color-name/-/color-name-1.1.3.tgz}
 
   /color-name@1.1.4:
-    resolution: {integrity: sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==}
+    resolution: {integrity: sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/color-name/-/color-name-1.1.4.tgz}
 
   /color-string@1.6.0:
-    resolution: {integrity: sha512-c/hGS+kRWJutUBEngKKmk4iH3sD59MBkoxVapS/0wgpCz2u7XsNloxknyvBhzwEs1IbV36D9PwqLPJ2DTu3vMA==}
+    resolution: {integrity: sha512-c/hGS+kRWJutUBEngKKmk4iH3sD59MBkoxVapS/0wgpCz2u7XsNloxknyvBhzwEs1IbV36D9PwqLPJ2DTu3vMA==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/color-string/-/color-string-1.6.0.tgz}
     dependencies:
       color-name: 1.1.4
       simple-swizzle: 0.2.2
     dev: false
 
   /color@3.2.1:
-    resolution: {integrity: sha512-aBl7dZI9ENN6fUGC7mWpMTPNHmWUSNan9tuWN6ahh5ZLNk9baLJOnSMlrQkHcrfFgz2/RigjUVAjdx36VcemKA==}
+    resolution: {integrity: sha512-aBl7dZI9ENN6fUGC7mWpMTPNHmWUSNan9tuWN6ahh5ZLNk9baLJOnSMlrQkHcrfFgz2/RigjUVAjdx36VcemKA==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/color/-/color-3.2.1.tgz}
     dependencies:
       color-convert: 1.9.3
       color-string: 1.6.0
@@ -3339,7 +3338,7 @@ packages:
     dev: true
 
   /colorspace@1.1.4:
-    resolution: {integrity: sha512-BgvKJiuVu1igBUF2kEjRCZXol6wiiGbY5ipL/oVPwm0BL9sIpMIzM8IK7vwuxIIzOXMV3Ey5w+vxhm0rR/TN8w==}
+    resolution: {integrity: sha512-BgvKJiuVu1igBUF2kEjRCZXol6wiiGbY5ipL/oVPwm0BL9sIpMIzM8IK7vwuxIIzOXMV3Ey5w+vxhm0rR/TN8w==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/colorspace/-/colorspace-1.1.4.tgz}
     dependencies:
       color: 3.2.1
       text-hex: 1.0.0
@@ -3413,7 +3412,7 @@ packages:
     dev: true
 
   /concat-map@0.0.1:
-    resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
+    resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/concat-map/-/concat-map-0.0.1.tgz}
 
   /concat-stream@2.0.0:
     resolution: {integrity: sha512-MWufYdFw53ccGjCA+Ol7XJYpAlW6/prSMzuPOTRnJGcGzuhLn4Scrz7qf6o8bROZ514ltazcIFJZevcfbo0x7A==}
@@ -3561,7 +3560,7 @@ packages:
     engines: {node: '>= 0.6'}
     dev: false
 
-  /copy-webpack-plugin@11.0.0(webpack@5.61.0):
+  /copy-webpack-plugin@11.0.0:
     resolution: {integrity: sha512-fX2MWpamkW0hZxMEg0+mYnA40LTosOSa5TqZ9GYIBzyJa9C3QUaMPSE2xAi/buNr8u89SfD9wHSQVBzrRa/SOQ==}
     engines: {node: '>= 14.15.0'}
     peerDependencies:
@@ -3573,7 +3572,6 @@ packages:
       normalize-path: 3.0.0
       schema-utils: 4.0.0
       serialize-javascript: 6.0.0
-      webpack: 5.61.0(webpack-cli@4.9.1)
     dev: true
 
   /core-util-is@1.0.2:
@@ -3682,7 +3680,7 @@ packages:
     dev: true
 
   /cssstyle@3.0.0:
-    resolution: {integrity: sha512-N4u2ABATi3Qplzf0hWbVCdjenim8F3ojEXpBDF5hBpjzW182MjNGLqfmQ0SkSPeQ+V86ZXgeH8aXj6kayd4jgg==}
+    resolution: {integrity: sha512-N4u2ABATi3Qplzf0hWbVCdjenim8F3ojEXpBDF5hBpjzW182MjNGLqfmQ0SkSPeQ+V86ZXgeH8aXj6kayd4jgg==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/cssstyle/-/cssstyle-3.0.0.tgz}
     engines: {node: '>=14'}
     dependencies:
       rrweb-cssom: 0.6.0
@@ -3742,7 +3740,7 @@ packages:
     dev: true
 
   /data-urls@4.0.0:
-    resolution: {integrity: sha512-/mMTei/JXPqvFqQtfyTowxmJVwr2PVAeCcDxyFf6LhoOu/09TX2OX3kb2wzi4DMXcfj4OItwDOnhl5oziPnT6g==}
+    resolution: {integrity: sha512-/mMTei/JXPqvFqQtfyTowxmJVwr2PVAeCcDxyFf6LhoOu/09TX2OX3kb2wzi4DMXcfj4OItwDOnhl5oziPnT6g==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/data-urls/-/data-urls-4.0.0.tgz}
     engines: {node: '>=14'}
     dependencies:
       abab: 2.0.6
@@ -3770,6 +3768,18 @@ packages:
     dependencies:
       ms: 2.0.0
     dev: false
+
+  /debug@4.3.2:
+    resolution: {integrity: sha512-mOp8wKcvj7XxC78zLgw/ZA+6TSgkoE2C/ienthhRD298T7UNwAg9diBpLRxC0mOezLl4B0xV7M0cCO6P/O0Xhw==}
+    engines: {node: '>=6.0'}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
+    dependencies:
+      ms: 2.1.2
+    dev: true
 
   /debug@4.3.2(supports-color@8.1.1):
     resolution: {integrity: sha512-mOp8wKcvj7XxC78zLgw/ZA+6TSgkoE2C/ienthhRD298T7UNwAg9diBpLRxC0mOezLl4B0xV7M0cCO6P/O0Xhw==}
@@ -3818,7 +3828,7 @@ packages:
     dev: true
 
   /decimal.js@10.4.3:
-    resolution: {integrity: sha512-VBBaLc1MgL5XpzgIP7ny5Z6Nx3UrRkIViUkPUdtl9aya5amy3De1gsUUSB1g3+3sExYNjCAsAznmukyxCb1GRA==}
+    resolution: {integrity: sha512-VBBaLc1MgL5XpzgIP7ny5Z6Nx3UrRkIViUkPUdtl9aya5amy3De1gsUUSB1g3+3sExYNjCAsAznmukyxCb1GRA==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/decimal.js/-/decimal.js-10.4.3.tgz}
     dev: false
 
   /decode-uri-component@0.2.2:
@@ -3980,7 +3990,7 @@ packages:
     dev: true
 
   /domexception@4.0.0:
-    resolution: {integrity: sha512-A2is4PLG+eeSfoTMA95/s4pvAoSo2mKtiM5jlHkAVewmiO8ISFTFKZjH7UAM1Atli/OT/7JHOrJRJiMKUZKYBw==}
+    resolution: {integrity: sha512-A2is4PLG+eeSfoTMA95/s4pvAoSo2mKtiM5jlHkAVewmiO8ISFTFKZjH7UAM1Atli/OT/7JHOrJRJiMKUZKYBw==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/domexception/-/domexception-4.0.0.tgz}
     engines: {node: '>=12'}
     deprecated: Use your platform's native DOMException instead
     dependencies:
@@ -4032,7 +4042,7 @@ packages:
     dev: false
 
   /ejs@3.1.10:
-    resolution: {integrity: sha512-UeJmFfOrAQS8OJWPZ4qtgHyWExa088/MtK5UEyoJGFH67cDEXkZSviOiKRCZ4Xij0zxI3JECgYs3oKx+AizQBA==}
+    resolution: {integrity: sha512-UeJmFfOrAQS8OJWPZ4qtgHyWExa088/MtK5UEyoJGFH67cDEXkZSviOiKRCZ4Xij0zxI3JECgYs3oKx+AizQBA==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/ejs/-/ejs-3.1.10.tgz}
     engines: {node: '>=0.10.0'}
     hasBin: true
     dependencies:
@@ -4044,7 +4054,7 @@ packages:
     dev: true
 
   /emoji-regex@8.0.0:
-    resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
+    resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/emoji-regex/-/emoji-regex-8.0.0.tgz}
 
   /emojis-list@3.0.0:
     resolution: {integrity: sha512-/kyM18EfinwXZbno9FyUGeFh87KC8HRQBQGildHZbEuRyWFOmv1U10o9BBp8XVZDVNNuQKyIGIu5ZYAAXJ0V2Q==}
@@ -4052,7 +4062,7 @@ packages:
     dev: true
 
   /enabled@2.0.0:
-    resolution: {integrity: sha512-AKrN98kuwOzMIdAizXGI86UFBoo26CL21UM763y1h/GMSJ4/OHU9k2YlsmBpyScFo/wbLzWQJBMCW4+IO3/+OQ==}
+    resolution: {integrity: sha512-AKrN98kuwOzMIdAizXGI86UFBoo26CL21UM763y1h/GMSJ4/OHU9k2YlsmBpyScFo/wbLzWQJBMCW4+IO3/+OQ==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/enabled/-/enabled-2.0.0.tgz}
     dev: false
 
   /encodeurl@1.0.2:
@@ -4061,7 +4071,7 @@ packages:
     dev: false
 
   /encoding@0.1.13:
-    resolution: {integrity: sha512-ETBauow1T35Y/WZMkio9jiM0Z5xjHHmJ4XmjZOq1l/dXz3lr2sRn87nJy20RupqSh1F2m3HHPSp8ShIPQJrJ3A==}
+    resolution: {integrity: sha512-ETBauow1T35Y/WZMkio9jiM0Z5xjHHmJ4XmjZOq1l/dXz3lr2sRn87nJy20RupqSh1F2m3HHPSp8ShIPQJrJ3A==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/encoding/-/encoding-0.1.13.tgz}
     requiresBuild: true
     dependencies:
       iconv-lite: 0.6.3
@@ -4084,15 +4094,15 @@ packages:
     dev: true
 
   /entities@2.0.3:
-    resolution: {integrity: sha512-MyoZ0jgnLvB2X3Lg5HqpFmn1kybDiIfEQmKzTb5apr51Rb+T3KdmMiqa70T+bhGnyv7bQ6WMj2QMHpGMmlrUYQ==}
+    resolution: {integrity: sha512-MyoZ0jgnLvB2X3Lg5HqpFmn1kybDiIfEQmKzTb5apr51Rb+T3KdmMiqa70T+bhGnyv7bQ6WMj2QMHpGMmlrUYQ==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/entities/-/entities-2.0.3.tgz}
     dev: true
 
   /entities@2.2.0:
-    resolution: {integrity: sha512-p92if5Nz619I0w+akJrLZH0MX0Pb5DX39XOwQTtXSdQQOaYH03S1uIQp4mhOZtAXrxq4ViO67YTiLBo2638o9A==}
+    resolution: {integrity: sha512-p92if5Nz619I0w+akJrLZH0MX0Pb5DX39XOwQTtXSdQQOaYH03S1uIQp4mhOZtAXrxq4ViO67YTiLBo2638o9A==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/entities/-/entities-2.2.0.tgz}
     dev: true
 
   /entities@4.5.0:
-    resolution: {integrity: sha512-V0hjH4dGPh9Ao5p0MoRY6BVqtwCjhz6vI5LT8AJ55H+4g9/4vbHx1I54fS0XuclLhDHArPQCiMjDxjaL8fPxhw==}
+    resolution: {integrity: sha512-V0hjH4dGPh9Ao5p0MoRY6BVqtwCjhz6vI5LT8AJ55H+4g9/4vbHx1I54fS0XuclLhDHArPQCiMjDxjaL8fPxhw==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/entities/-/entities-4.5.0.tgz}
     engines: {node: '>=0.12'}
     dev: false
 
@@ -4192,7 +4202,7 @@ packages:
     dev: false
 
   /escalade@3.1.1:
-    resolution: {integrity: sha512-k0er2gUkLf8O0zKJiAhmkTnJlTvINGv7ygDNPbeIsX/TJjGJZHuh9B2UxbsaEkmlEo9MfhrSzmhIlhRlI2GXnw==}
+    resolution: {integrity: sha512-k0er2gUkLf8O0zKJiAhmkTnJlTvINGv7ygDNPbeIsX/TJjGJZHuh9B2UxbsaEkmlEo9MfhrSzmhIlhRlI2GXnw==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/escalade/-/escalade-3.1.1.tgz}
     engines: {node: '>=6'}
 
   /escape-html@1.0.3:
@@ -4275,7 +4285,7 @@ packages:
       ajv: 6.12.6
       chalk: 4.1.2
       cross-spawn: 7.0.3
-      debug: 4.3.2(supports-color@8.1.1)
+      debug: 4.3.2
       doctrine: 3.0.0
       enquirer: 2.3.6
       escape-string-regexp: 4.0.0
@@ -4471,7 +4481,7 @@ packages:
     dev: true
 
   /fast-glob@3.3.2:
-    resolution: {integrity: sha512-oX2ruAFQwf/Orj8m737Y5adxDQO0LAB7/S5MnxCdTNDd4p6BsyIVsv9JQsATbTSq8KHRpLwIHbVlUNatxd+1Ow==}
+    resolution: {integrity: sha512-oX2ruAFQwf/Orj8m737Y5adxDQO0LAB7/S5MnxCdTNDd4p6BsyIVsv9JQsATbTSq8KHRpLwIHbVlUNatxd+1Ow==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/fast-glob/-/fast-glob-3.3.2.tgz}
     engines: {node: '>=8.6.0'}
     dependencies:
       '@nodelib/fs.stat': 2.0.5
@@ -4479,7 +4489,6 @@ packages:
       glob-parent: 5.1.2
       merge2: 1.4.1
       micromatch: 4.0.6
-    dev: false
 
   /fast-json-stable-stringify@2.1.0:
     resolution: {integrity: sha512-lhd/wF+Lk98HZoTCtlVraHtfh5XYijIjalXck7saUtuanSDyLMxnHhSXEDJqHxD7msR8D0uCmqlkwjCV8xvwHw==}
@@ -4514,7 +4523,7 @@ packages:
     dev: true
 
   /fastq@1.13.0:
-    resolution: {integrity: sha512-YpkpUnK8od0o1hmeSc7UUs/eB/vIPWJYjKck2QKIzAf71Vm1AAQ3EbuZB3g2JIy+pg+ERD0vqI79KyZiB2e2Nw==}
+    resolution: {integrity: sha512-YpkpUnK8od0o1hmeSc7UUs/eB/vIPWJYjKck2QKIzAf71Vm1AAQ3EbuZB3g2JIy+pg+ERD0vqI79KyZiB2e2Nw==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/fastq/-/fastq-1.13.0.tgz}
     dependencies:
       reusify: 1.0.4
 
@@ -4525,7 +4534,7 @@ packages:
     dev: true
 
   /fecha@4.2.1:
-    resolution: {integrity: sha512-MMMQ0ludy/nBs1/o0zVOiKTpG7qMbonKUzjJgQFEuvq6INZ1OraKPRAWkBq5vlKLOUMpmNYG1JoN3oDPUQ9m3Q==}
+    resolution: {integrity: sha512-MMMQ0ludy/nBs1/o0zVOiKTpG7qMbonKUzjJgQFEuvq6INZ1OraKPRAWkBq5vlKLOUMpmNYG1JoN3oDPUQ9m3Q==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/fecha/-/fecha-4.2.1.tgz}
     dev: false
 
   /figures@2.0.0:
@@ -4550,13 +4559,13 @@ packages:
     dev: true
 
   /file-stream-rotator@0.5.7:
-    resolution: {integrity: sha512-VYb3HZ/GiAGUCrfeakO8Mp54YGswNUHvL7P09WQcXAJNSj3iQ5QraYSp3cIn1MUyw6uzfgN/EFOarCNa4JvUHQ==}
+    resolution: {integrity: sha512-VYb3HZ/GiAGUCrfeakO8Mp54YGswNUHvL7P09WQcXAJNSj3iQ5QraYSp3cIn1MUyw6uzfgN/EFOarCNa4JvUHQ==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/file-stream-rotator/-/file-stream-rotator-0.5.7.tgz}
     dependencies:
       moment: 2.29.1
     dev: false
 
   /filelist@1.0.2:
-    resolution: {integrity: sha512-z7O0IS8Plc39rTCq6i6iHxk43duYOn8uFJiWSewIq0Bww1RNybVHSCjahmcC87ZqAm4OTvFzlzeGu3XAzG1ctQ==}
+    resolution: {integrity: sha512-z7O0IS8Plc39rTCq6i6iHxk43duYOn8uFJiWSewIq0Bww1RNybVHSCjahmcC87ZqAm4OTvFzlzeGu3XAzG1ctQ==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/filelist/-/filelist-1.0.2.tgz}
     dependencies:
       minimatch: 3.1.2
     dev: false
@@ -4569,18 +4578,11 @@ packages:
       merge-descriptors: 1.0.1
     dev: true
 
-  /fill-range@7.0.1:
-    resolution: {integrity: sha512-qOo9F+dMUmC2Lcb4BbVvnKJxTPjCm+RRpe4gDuGrzkL7mEVl/djYSu2OdQ2Pa302N4oqkSg9ir6jaLWJ2USVpQ==}
-    engines: {node: '>=8'}
-    dependencies:
-      to-regex-range: 5.0.1
-
   /fill-range@7.1.1:
-    resolution: {integrity: sha512-YsGpe3WHLK8ZYi4tWDg2Jy3ebRz2rXowDxnld4bkQB00cc/1Zw9AWnC0i9ztDJitivtQvaI9KaLyKrc+hBW0yg==}
+    resolution: {integrity: sha512-YsGpe3WHLK8ZYi4tWDg2Jy3ebRz2rXowDxnld4bkQB00cc/1Zw9AWnC0i9ztDJitivtQvaI9KaLyKrc+hBW0yg==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/fill-range/-/fill-range-7.1.1.tgz}
     engines: {node: '>=8'}
     dependencies:
       to-regex-range: 5.0.1
-    dev: false
 
   /filter-obj@1.1.0:
     resolution: {integrity: sha1-mzERErxsYSehbgFsbF1/GeCAXFs=}
@@ -4651,7 +4653,7 @@ packages:
     dependencies:
       detect-file: 1.0.0
       is-glob: 4.0.3
-      micromatch: 4.0.5
+      micromatch: 4.0.6
       resolve-dir: 1.0.1
     dev: true
 
@@ -4673,7 +4675,7 @@ packages:
     dev: true
 
   /fn.name@1.1.0:
-    resolution: {integrity: sha512-GRnmB5gPyJpAhTQdSZTSp9uaPSvl09KoYcMQtsB9rQoOmzs9dH6ffeccH+Z+cv6P68Hu5bC6JjRh4Ah/mHSNRw==}
+    resolution: {integrity: sha512-GRnmB5gPyJpAhTQdSZTSp9uaPSvl09KoYcMQtsB9rQoOmzs9dH6ffeccH+Z+cv6P68Hu5bC6JjRh4Ah/mHSNRw==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/fn.name/-/fn.name-1.1.0.tgz}
     dev: false
 
   /follow-redirects@1.15.2:
@@ -4789,7 +4791,7 @@ packages:
     resolution: {integrity: sha1-FQStJSMVjKpA20onh8sBQRmU6k8=}
 
   /fsevents@2.3.2:
-    resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
+    resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/fsevents/-/fsevents-2.3.2.tgz}
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
     requiresBuild: true
@@ -4825,7 +4827,7 @@ packages:
     dev: true
 
   /get-caller-file@2.0.5:
-    resolution: {integrity: sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==}
+    resolution: {integrity: sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/get-caller-file/-/get-caller-file-2.0.5.tgz}
     engines: {node: 6.* || 8.* || >= 10.*}
 
   /get-func-name@2.0.0:
@@ -5032,7 +5034,7 @@ packages:
     dependencies:
       array-union: 2.1.0
       dir-glob: 3.0.1
-      fast-glob: 3.2.12
+      fast-glob: 3.3.2
       ignore: 5.2.4
       merge2: 1.4.1
       slash: 3.0.0
@@ -5155,7 +5157,7 @@ packages:
     dev: true
 
   /html-encoding-sniffer@3.0.0:
-    resolution: {integrity: sha512-oWv4T4yJ52iKrufjnyZPkrN0CH3QnrUqdB6In1g5Fe1mia8GmF36gnfNySxoZtxD5+NmYw1EElVXiBk93UeskA==}
+    resolution: {integrity: sha512-oWv4T4yJ52iKrufjnyZPkrN0CH3QnrUqdB6In1g5Fe1mia8GmF36gnfNySxoZtxD5+NmYw1EElVXiBk93UeskA==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/html-encoding-sniffer/-/html-encoding-sniffer-3.0.0.tgz}
     engines: {node: '>=12'}
     dependencies:
       whatwg-encoding: 2.0.0
@@ -5190,7 +5192,7 @@ packages:
     dev: false
 
   /http-proxy-agent@4.0.1:
-    resolution: {integrity: sha512-k0zdNgqWTGA6aeIRVpvfVob4fL52dTfaehylg0Y4UvSySvOq/Y+BOyPrgpUrA7HylqvU8vIZGsRuXmspskV0Tg==}
+    resolution: {integrity: sha512-k0zdNgqWTGA6aeIRVpvfVob4fL52dTfaehylg0Y4UvSySvOq/Y+BOyPrgpUrA7HylqvU8vIZGsRuXmspskV0Tg==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/http-proxy-agent/-/http-proxy-agent-4.0.1.tgz}
     engines: {node: '>= 6'}
     dependencies:
       '@tootallnate/once': 1.1.2
@@ -5201,7 +5203,7 @@ packages:
     dev: true
 
   /http-proxy-agent@5.0.0:
-    resolution: {integrity: sha512-n2hY8YdoRE1i7r6M0w9DIw5GgZN0G25P8zLCRQ8rjXtTU3vsNFBI/vWK/UIeE6g5MUUz6avwAPXmL6Fy9D/90w==}
+    resolution: {integrity: sha512-n2hY8YdoRE1i7r6M0w9DIw5GgZN0G25P8zLCRQ8rjXtTU3vsNFBI/vWK/UIeE6g5MUUz6avwAPXmL6Fy9D/90w==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/http-proxy-agent/-/http-proxy-agent-5.0.0.tgz}
     engines: {node: '>= 6'}
     dependencies:
       '@tootallnate/once': 2.0.0
@@ -5231,7 +5233,7 @@ packages:
     dev: false
 
   /https-proxy-agent@5.0.1:
-    resolution: {integrity: sha512-dFcAjpTQFgoLMzC2VwU+C/CbS7uRL0lWmxDITmqm7C+7F0Odmj6s9l6alZc6AELXhrnggM2CeWSXHGOdX2YtwA==}
+    resolution: {integrity: sha512-dFcAjpTQFgoLMzC2VwU+C/CbS7uRL0lWmxDITmqm7C+7F0Odmj6s9l6alZc6AELXhrnggM2CeWSXHGOdX2YtwA==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/https-proxy-agent/-/https-proxy-agent-5.0.1.tgz}
     engines: {node: '>= 6'}
     dependencies:
       agent-base: 6.0.2
@@ -5263,7 +5265,7 @@ packages:
       safer-buffer: 2.1.2
 
   /iconv-lite@0.6.3:
-    resolution: {integrity: sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==}
+    resolution: {integrity: sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/iconv-lite/-/iconv-lite-0.6.3.tgz}
     engines: {node: '>=0.10.0'}
     dependencies:
       safer-buffer: 2.1.2
@@ -5416,11 +5418,11 @@ packages:
     dev: false
 
   /is-arrayish@0.2.1:
-    resolution: {integrity: sha512-zz06S8t0ozoDXMG+ube26zeCTNXcKIPJZJi8hBrF4idCLms4CG9QtK7qBl1boi5ODzFpjswb5JPmHCbMpjaYzg==}
+    resolution: {integrity: sha512-zz06S8t0ozoDXMG+ube26zeCTNXcKIPJZJi8hBrF4idCLms4CG9QtK7qBl1boi5ODzFpjswb5JPmHCbMpjaYzg==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/is-arrayish/-/is-arrayish-0.2.1.tgz}
     dev: true
 
   /is-arrayish@0.3.2:
-    resolution: {integrity: sha512-eVRqCvVlZbuw3GrM63ovNSNAeA1K16kaR/LRY/92w0zxQ5/1YzwblUX652i4Xs9RwAGjW9d9y6X88t8OaAJfWQ==}
+    resolution: {integrity: sha512-eVRqCvVlZbuw3GrM63ovNSNAeA1K16kaR/LRY/92w0zxQ5/1YzwblUX652i4Xs9RwAGjW9d9y6X88t8OaAJfWQ==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/is-arrayish/-/is-arrayish-0.3.2.tgz}
     dev: false
 
   /is-bigint@1.0.4:
@@ -5430,7 +5432,7 @@ packages:
     dev: true
 
   /is-binary-path@2.1.0:
-    resolution: {integrity: sha512-ZMERYes6pDydyuGidse7OsHxtbI7WVeUEozgR/g7rd0xUimYNlvZRE/K2MgZTjWy725IfelLeVcEM97mmtRGXw==}
+    resolution: {integrity: sha512-ZMERYes6pDydyuGidse7OsHxtbI7WVeUEozgR/g7rd0xUimYNlvZRE/K2MgZTjWy725IfelLeVcEM97mmtRGXw==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/is-binary-path/-/is-binary-path-2.1.0.tgz}
     engines: {node: '>=8'}
     dependencies:
       binary-extensions: 2.2.0
@@ -5473,19 +5475,19 @@ packages:
     engines: {node: '>=0.10.0'}
 
   /is-fullwidth-code-point@1.0.0:
-    resolution: {integrity: sha512-1pqUqRjkhPJ9miNq9SwMfdvi6lBJcd6eFxvfaivQhaH3SgisfiuudvFntdKOmxuee/77l+FPjKrQjWvmPjWrRw==}
+    resolution: {integrity: sha512-1pqUqRjkhPJ9miNq9SwMfdvi6lBJcd6eFxvfaivQhaH3SgisfiuudvFntdKOmxuee/77l+FPjKrQjWvmPjWrRw==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/is-fullwidth-code-point/-/is-fullwidth-code-point-1.0.0.tgz}
     engines: {node: '>=0.10.0'}
     dependencies:
       number-is-nan: 1.0.1
     dev: true
 
   /is-fullwidth-code-point@2.0.0:
-    resolution: {integrity: sha512-VHskAKYM8RfSFXwee5t5cbN5PZeq1Wrh6qd5bkyiXIf6UQcN6w/A0eXM9r6t8d+GYOh+o6ZhiEnb88LN/Y8m2w==}
+    resolution: {integrity: sha512-VHskAKYM8RfSFXwee5t5cbN5PZeq1Wrh6qd5bkyiXIf6UQcN6w/A0eXM9r6t8d+GYOh+o6ZhiEnb88LN/Y8m2w==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/is-fullwidth-code-point/-/is-fullwidth-code-point-2.0.0.tgz}
     engines: {node: '>=4'}
     dev: true
 
   /is-fullwidth-code-point@3.0.0:
-    resolution: {integrity: sha512-zymm5+u+sCsSWyD9qNaejV3DFvhCKclKdizYaJUuHA83RLjb7nSuGnddCHGv0hk+KY7BMAlsWeK4Ueg6EV6XQg==}
+    resolution: {integrity: sha512-zymm5+u+sCsSWyD9qNaejV3DFvhCKclKdizYaJUuHA83RLjb7nSuGnddCHGv0hk+KY7BMAlsWeK4Ueg6EV6XQg==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/is-fullwidth-code-point/-/is-fullwidth-code-point-3.0.0.tgz}
     engines: {node: '>=8'}
 
   /is-glob@4.0.3:
@@ -5511,7 +5513,7 @@ packages:
     dev: true
 
   /is-number@7.0.0:
-    resolution: {integrity: sha512-41Cifkg6e8TylSpdtTpeLVMqvSBEVzTttHvERD741+pnZ8ANv0004MRL43QKPDlK9cGvNp6NZWZUBlbGXYxxng==}
+    resolution: {integrity: sha512-41Cifkg6e8TylSpdtTpeLVMqvSBEVzTttHvERD741+pnZ8ANv0004MRL43QKPDlK9cGvNp6NZWZUBlbGXYxxng==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/is-number/-/is-number-7.0.0.tgz}
     engines: {node: '>=0.12.0'}
 
   /is-obj@1.0.1:
@@ -5551,7 +5553,7 @@ packages:
     dev: true
 
   /is-potential-custom-element-name@1.0.1:
-    resolution: {integrity: sha512-bCYeRA2rVibKZd+s2625gGnGF/t7DSqDs4dP7CrLA1m7jKWz6pps0LpYLJN8Q64HtmPKJ1hrN3nzPNKFEKOUiQ==}
+    resolution: {integrity: sha512-bCYeRA2rVibKZd+s2625gGnGF/t7DSqDs4dP7CrLA1m7jKWz6pps0LpYLJN8Q64HtmPKJ1hrN3nzPNKFEKOUiQ==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/is-potential-custom-element-name/-/is-potential-custom-element-name-1.0.1.tgz}
     dev: false
 
   /is-regex@1.1.4:
@@ -5578,7 +5580,7 @@ packages:
     dev: true
 
   /is-stream@2.0.1:
-    resolution: {integrity: sha512-hFoiJiTl63nn+kstHGBtewWSKnQLpyb155KHheA1l39uvtO9nWIop1p3udqPcUd/xbF1VLMO4n7OI6p7RbngDg==}
+    resolution: {integrity: sha512-hFoiJiTl63nn+kstHGBtewWSKnQLpyb155KHheA1l39uvtO9nWIop1p3udqPcUd/xbF1VLMO4n7OI6p7RbngDg==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/is-stream/-/is-stream-2.0.1.tgz}
     engines: {node: '>=8'}
 
   /is-string@1.0.7:
@@ -5710,7 +5712,7 @@ packages:
     dev: true
 
   /jake@10.8.5:
-    resolution: {integrity: sha512-sVpxYeuAhWt0OTWITwT98oyV0GsXyMlXCF+3L1SuafBVUIr/uILGRB+NqwkzhgXKvoJpDIpQvqkUALgdmQsQxw==}
+    resolution: {integrity: sha512-sVpxYeuAhWt0OTWITwT98oyV0GsXyMlXCF+3L1SuafBVUIr/uILGRB+NqwkzhgXKvoJpDIpQvqkUALgdmQsQxw==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/jake/-/jake-10.8.5.tgz}
     engines: {node: '>=10'}
     hasBin: true
     dependencies:
@@ -5750,7 +5752,7 @@ packages:
     dev: true
 
   /js-yaml@4.1.0:
-    resolution: {integrity: sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==}
+    resolution: {integrity: sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/js-yaml/-/js-yaml-4.1.0.tgz}
     hasBin: true
     dependencies:
       argparse: 2.0.1
@@ -5760,7 +5762,7 @@ packages:
     dev: true
 
   /jsdom@22.1.0:
-    resolution: {integrity: sha512-/9AVW7xNbsBv6GfWho4TTNjEo9fe6Zhf9O7s0Fhhr3u+awPwAJMKwAMXnkk5vBxflqLW9hTHX/0cs+P3gW+cQw==}
+    resolution: {integrity: sha512-/9AVW7xNbsBv6GfWho4TTNjEo9fe6Zhf9O7s0Fhhr3u+awPwAJMKwAMXnkk5vBxflqLW9hTHX/0cs+P3gW+cQw==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/jsdom/-/jsdom-22.1.0.tgz}
     engines: {node: '>=16'}
     peerDependencies:
       canvas: ^2.5.0
@@ -5815,7 +5817,7 @@ packages:
     resolution: {integrity: sha512-xbbCH5dCYU5T8LcEhhuh7HJ88HXuW3qsI3Y0zOZFKfZEHcpWiHU/Jxzk629Brsab/mMiHQti9wMP+845RPe3Vg==}
 
   /json-schema-traverse@1.0.0:
-    resolution: {integrity: sha512-NM8/P9n3XjXhIZn1lLhkFaACTOURQXjWhV4BA/RnOv8xvgqtqpAX9IO4mRQxSx1Rlo4tqzeqb0sOlruaOy3dug==}
+    resolution: {integrity: sha512-NM8/P9n3XjXhIZn1lLhkFaACTOURQXjWhV4BA/RnOv8xvgqtqpAX9IO4mRQxSx1Rlo4tqzeqb0sOlruaOy3dug==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/json-schema-traverse/-/json-schema-traverse-1.0.0.tgz}
 
   /json-schema@0.2.3:
     resolution: {integrity: sha1-tIDIkuWaLwWVTOcnvT8qTogvnhM=}
@@ -5882,7 +5884,7 @@ packages:
     dev: true
 
   /kuler@2.0.0:
-    resolution: {integrity: sha512-Xq9nH7KlWZmXAtodXDDRE7vs6DU1gTU8zYDHDiWLSip45Egwq3plLHzPn27NgvzL2r1LMPC1vdqh98sQxtqj4A==}
+    resolution: {integrity: sha512-Xq9nH7KlWZmXAtodXDDRE7vs6DU1gTU8zYDHDiWLSip45Egwq3plLHzPn27NgvzL2r1LMPC1vdqh98sQxtqj4A==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/kuler/-/kuler-2.0.0.tgz}
     dev: false
 
   /lcov-parse@1.0.0:
@@ -6154,7 +6156,7 @@ packages:
     dev: true
 
   /logform@2.4.2:
-    resolution: {integrity: sha512-W4c9himeAwXEdZ05dQNerhFz2XG80P9Oj0loPUMV23VC2it0orMHQhJm4hdnnor3rd1HsGf6a2lPwBM1zeXHGw==}
+    resolution: {integrity: sha512-W4c9himeAwXEdZ05dQNerhFz2XG80P9Oj0loPUMV23VC2it0orMHQhJm4hdnnor3rd1HsGf6a2lPwBM1zeXHGw==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/logform/-/logform-2.4.2.tgz}
     dependencies:
       '@colors/colors': 1.5.0
       fecha: 4.2.1
@@ -6302,7 +6304,7 @@ packages:
     dev: true
 
   /merge2@1.4.1:
-    resolution: {integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==}
+    resolution: {integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/merge2/-/merge2-1.4.1.tgz}
     engines: {node: '>= 8'}
 
   /merge@2.1.1:
@@ -6322,21 +6324,12 @@ packages:
       picomatch: 2.3.0
     dev: true
 
-  /micromatch@4.0.5:
-    resolution: {integrity: sha512-DMy+ERcEW2q8Z2Po+WNXuw3c5YaUSFjAO5GsJqfEl7UjvtIuFKO6ZrKvcItdy98dwFI2N1tg3zNIdKaQT+aNdA==}
-    engines: {node: '>=8.6'}
-    dependencies:
-      braces: 3.0.2
-      picomatch: 2.3.1
-    dev: true
-
   /micromatch@4.0.6:
-    resolution: {integrity: sha512-Y4Ypn3oujJYxJcMacVgcs92wofTHxp9FzfDpQON4msDefoC0lb3ETvQLOdLcbhSwU1bz8HrL/1sygfBIHudrkQ==}
+    resolution: {integrity: sha512-Y4Ypn3oujJYxJcMacVgcs92wofTHxp9FzfDpQON4msDefoC0lb3ETvQLOdLcbhSwU1bz8HrL/1sygfBIHudrkQ==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/micromatch/-/micromatch-4.0.6.tgz}
     engines: {node: '>=8.6'}
     dependencies:
       braces: 3.0.3
       picomatch: 4.0.2
-    dev: false
 
   /miller-rabin@4.0.1:
     resolution: {integrity: sha512-115fLhvZVqWwHPbClyntxEVfVDfl9DLLTuJvq3g2O/Oxi8AiNouAHvDSzHS0viUJc+V5vm3eq91Xwqn9dp4jRA==}
@@ -6382,7 +6375,7 @@ packages:
       brace-expansion: 1.1.11
 
   /minimatch@3.1.2:
-    resolution: {integrity: sha512-J7p63hRiAjw1NDEww1W7i37+ByIrOWO5XQQAzZ3VOcL0PNybwpfmV/N05zFAzwQ9USyEcX6t3UO+K5aqBQOIHw==}
+    resolution: {integrity: sha512-J7p63hRiAjw1NDEww1W7i37+ByIrOWO5XQQAzZ3VOcL0PNybwpfmV/N05zFAzwQ9USyEcX6t3UO+K5aqBQOIHw==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/minimatch/-/minimatch-3.1.2.tgz}
     dependencies:
       brace-expansion: 1.1.11
 
@@ -6544,7 +6537,7 @@ packages:
     dev: true
 
   /moment@2.29.1:
-    resolution: {integrity: sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==}
+    resolution: {integrity: sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/moment/-/moment-2.29.1.tgz}
     dev: false
 
   /ms@2.0.0:
@@ -6856,7 +6849,7 @@ packages:
     dev: true
 
   /nwsapi@2.2.7:
-    resolution: {integrity: sha512-ub5E4+FBPKwAZx0UwIQOjYWGHTEq5sPqHQNRN8Z9e4A7u3Tj1weLJsL59yH9vmvqEtBHaOmT6cYQKIZOxp35FQ==}
+    resolution: {integrity: sha512-ub5E4+FBPKwAZx0UwIQOjYWGHTEq5sPqHQNRN8Z9e4A7u3Tj1weLJsL59yH9vmvqEtBHaOmT6cYQKIZOxp35FQ==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/nwsapi/-/nwsapi-2.2.7.tgz}
     dev: false
 
   /nyc@15.1.0:
@@ -6904,7 +6897,7 @@ packages:
     engines: {node: '>=0.10.0'}
 
   /object-hash@2.2.0:
-    resolution: {integrity: sha512-gScRMn0bS5fH+IuwyIFgnh9zBdo4DV+6GhygmWM9HyNJSgS0hScp1f5vjtm7oIIOiT9trXrShAkLFSc2IqKNgw==}
+    resolution: {integrity: sha512-gScRMn0bS5fH+IuwyIFgnh9zBdo4DV+6GhygmWM9HyNJSgS0hScp1f5vjtm7oIIOiT9trXrShAkLFSc2IqKNgw==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/object-hash/-/object-hash-2.2.0.tgz}
     engines: {node: '>= 6'}
     dev: false
 
@@ -6947,7 +6940,7 @@ packages:
       wrappy: 1.0.2
 
   /one-time@1.0.0:
-    resolution: {integrity: sha512-5DXOiRKwuSEcQ/l0kGCF6Q3jcADFv5tSmRaJck/OqkVFcOzutB134KRSfF0xDrL39MNnqxbHBbUUcjZIhTgb2g==}
+    resolution: {integrity: sha512-5DXOiRKwuSEcQ/l0kGCF6Q3jcADFv5tSmRaJck/OqkVFcOzutB134KRSfF0xDrL39MNnqxbHBbUUcjZIhTgb2g==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/one-time/-/one-time-1.0.0.tgz}
     dependencies:
       fn.name: 1.1.0
     dev: false
@@ -7213,11 +7206,11 @@ packages:
     dev: true
 
   /parse5@6.0.1:
-    resolution: {integrity: sha512-Ofn/CTFzRGTTxwpNEs9PP93gXShHcTq255nzRYSKe8AkVpZY7e1fpmTfOyoIvjP5HG7Z2ZM7VS9PPhQGW2pOpw==}
+    resolution: {integrity: sha512-Ofn/CTFzRGTTxwpNEs9PP93gXShHcTq255nzRYSKe8AkVpZY7e1fpmTfOyoIvjP5HG7Z2ZM7VS9PPhQGW2pOpw==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/parse5/-/parse5-6.0.1.tgz}
     dev: true
 
   /parse5@7.1.2:
-    resolution: {integrity: sha512-Czj1WaSVpaoj0wbhMzLmWD69anp2WH7FXMB9n1Sy8/ZFF9jolSQVMu1Ij5WIyGmcBmhk7EOndpO4mIpihVqAXw==}
+    resolution: {integrity: sha512-Czj1WaSVpaoj0wbhMzLmWD69anp2WH7FXMB9n1Sy8/ZFF9jolSQVMu1Ij5WIyGmcBmhk7EOndpO4mIpihVqAXw==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/parse5/-/parse5-7.1.2.tgz}
     dependencies:
       entities: 4.5.0
     dev: false
@@ -7298,13 +7291,12 @@ packages:
     dev: true
 
   /picomatch@2.3.1:
-    resolution: {integrity: sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==}
+    resolution: {integrity: sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/picomatch/-/picomatch-2.3.1.tgz}
     engines: {node: '>=8.6'}
 
   /picomatch@4.0.2:
-    resolution: {integrity: sha512-M7BAV6Rlcy5u+m6oPhAPFgJTzAioX/6B0DxyvDlo9l8+T3nLKbrczg2WLUyzd45L8RqfUMyGPzekbMvX2Ldkwg==}
+    resolution: {integrity: sha512-M7BAV6Rlcy5u+m6oPhAPFgJTzAioX/6B0DxyvDlo9l8+T3nLKbrczg2WLUyzd45L8RqfUMyGPzekbMvX2Ldkwg==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/picomatch/-/picomatch-4.0.2.tgz}
     engines: {node: '>=12'}
-    dev: false
 
   /pidtree@0.3.1:
     resolution: {integrity: sha512-qQbW94hLHEqCg7nhby4yRC7G2+jYHY4Rguc2bjw7Uug4GIJuu1tvf2uHaZv5Q8zdt+WKJ6qK1FOI6amaWUo5FA==}
@@ -7423,10 +7415,10 @@ packages:
     dev: true
 
   /psl@1.8.0:
-    resolution: {integrity: sha512-RIdOzyoavK+hA18OGGWDqUTsCLhtA7IcZ/6NCs4fFJaHBDab+pDDmDIByWFRQJq2Cd7r1OoQxBGKOaztq+hjIQ==}
+    resolution: {integrity: sha512-RIdOzyoavK+hA18OGGWDqUTsCLhtA7IcZ/6NCs4fFJaHBDab+pDDmDIByWFRQJq2Cd7r1OoQxBGKOaztq+hjIQ==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/psl/-/psl-1.8.0.tgz}
 
   /punycode@2.3.0:
-    resolution: {integrity: sha512-rRV+zQD8tVFys26lAGR9WUuS4iUAngJScM+ZRSKtvl5tKeZ2t5bvdNFdNHBW9FWR4guGHlgmsZ1G7BSm2wTbuA==}
+    resolution: {integrity: sha512-rRV+zQD8tVFys26lAGR9WUuS4iUAngJScM+ZRSKtvl5tKeZ2t5bvdNFdNHBW9FWR4guGHlgmsZ1G7BSm2wTbuA==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/punycode/-/punycode-2.3.0.tgz}
     engines: {node: '>=6'}
 
   /q@1.5.1:
@@ -7456,11 +7448,11 @@ packages:
     dev: true
 
   /querystringify@2.2.0:
-    resolution: {integrity: sha512-FIqgj2EUvTa7R50u0rGsyTftzjYmv/a3hO345bZNrqabNqjtgiDMgmo4mkUjd+nzU5oF3dClKqFIPUKybUyqoQ==}
+    resolution: {integrity: sha512-FIqgj2EUvTa7R50u0rGsyTftzjYmv/a3hO345bZNrqabNqjtgiDMgmo4mkUjd+nzU5oF3dClKqFIPUKybUyqoQ==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/querystringify/-/querystringify-2.2.0.tgz}
     dev: false
 
   /queue-microtask@1.2.3:
-    resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
+    resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/queue-microtask/-/queue-microtask-1.2.3.tgz}
 
   /quick-lru@4.0.1:
     resolution: {integrity: sha512-ARhCpm70fzdcvNQfPoy49IaanKkTlRWF2JMzqhcJbhSFRZv7nPTvZJdcY7301IPmvW+/p0RgIWnQDLJxifsQ7g==}
@@ -7590,7 +7582,7 @@ packages:
     dev: true
 
   /readable-stream@2.3.7:
-    resolution: {integrity: sha512-Ebho8K4jIbHAxnuxi7o42OrZgF/ZTNcsZj6nRKyUmkhLFq8CHItp/fy6hQZuZmP/n3yZ9VBUbp4zz/mX8hmYPw==}
+    resolution: {integrity: sha512-Ebho8K4jIbHAxnuxi7o42OrZgF/ZTNcsZj6nRKyUmkhLFq8CHItp/fy6hQZuZmP/n3yZ9VBUbp4zz/mX8hmYPw==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/readable-stream/-/readable-stream-2.3.7.tgz}
     dependencies:
       core-util-is: 1.0.3
       inherits: 2.0.4
@@ -7601,7 +7593,7 @@ packages:
       util-deprecate: 1.0.2
 
   /readable-stream@3.6.0:
-    resolution: {integrity: sha512-BViHy7LKeTz4oNnkcLJ+lVSL6vpiFeX6/d3oSH8zCW7UxP2onchk+vTGB143xuFjHS3deTgkKoXXymXqymiIdA==}
+    resolution: {integrity: sha512-BViHy7LKeTz4oNnkcLJ+lVSL6vpiFeX6/d3oSH8zCW7UxP2onchk+vTGB143xuFjHS3deTgkKoXXymXqymiIdA==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/readable-stream/-/readable-stream-3.6.0.tgz}
     engines: {node: '>= 6'}
     dependencies:
       inherits: 2.0.4
@@ -7618,7 +7610,7 @@ packages:
     dev: true
 
   /readdirp@3.6.0:
-    resolution: {integrity: sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==}
+    resolution: {integrity: sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/readdirp/-/readdirp-3.6.0.tgz}
     engines: {node: '>=8.10.0'}
     dependencies:
       picomatch: 2.3.1
@@ -7689,11 +7681,11 @@ packages:
     dev: true
 
   /require-directory@2.1.1:
-    resolution: {integrity: sha512-fGxEI7+wsG9xrvdjsrlmL22OMTTiHRwAMroiEeMgq8gzoLC/PQr7RsRDSTLUg/bZAZtF+TVIkHc6/4RIKrui+Q==}
+    resolution: {integrity: sha512-fGxEI7+wsG9xrvdjsrlmL22OMTTiHRwAMroiEeMgq8gzoLC/PQr7RsRDSTLUg/bZAZtF+TVIkHc6/4RIKrui+Q==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/require-directory/-/require-directory-2.1.1.tgz}
     engines: {node: '>=0.10.0'}
 
   /require-from-string@2.0.2:
-    resolution: {integrity: sha512-Xf0nWe6RseziFMu+Ap9biiUbmplq6S9/p+7w7YXP/JBHhrUDDUhwa+vANyubuqfZWTveU//DYVGsDG7RKL/vEw==}
+    resolution: {integrity: sha512-Xf0nWe6RseziFMu+Ap9biiUbmplq6S9/p+7w7YXP/JBHhrUDDUhwa+vANyubuqfZWTveU//DYVGsDG7RKL/vEw==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/require-from-string/-/require-from-string-2.0.2.tgz}
     engines: {node: '>=0.10.0'}
 
   /require-main-filename@2.0.0:
@@ -7701,7 +7693,7 @@ packages:
     dev: true
 
   /requires-port@1.0.0:
-    resolution: {integrity: sha512-KigOCHcocU3XODJxsu8i/j8T9tzT4adHiecwORRQ0ZZFcp7ahwXuRU1m+yuO90C5ZUyGeGfocHDI14M3L3yDAQ==}
+    resolution: {integrity: sha512-KigOCHcocU3XODJxsu8i/j8T9tzT4adHiecwORRQ0ZZFcp7ahwXuRU1m+yuO90C5ZUyGeGfocHDI14M3L3yDAQ==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/requires-port/-/requires-port-1.0.0.tgz}
     dev: false
 
   /resolve-cwd@3.0.0:
@@ -7765,7 +7757,7 @@ packages:
     dev: true
 
   /reusify@1.0.4:
-    resolution: {integrity: sha512-U9nH88a3fc/ekCF1l0/UP1IosiuIjyTh7hBvXVMHYgVcfGvt897Xguj2UOLDeI5BG2m7/uwyaLVT6fbtCwTyzw==}
+    resolution: {integrity: sha512-U9nH88a3fc/ekCF1l0/UP1IosiuIjyTh7hBvXVMHYgVcfGvt897Xguj2UOLDeI5BG2m7/uwyaLVT6fbtCwTyzw==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/reusify/-/reusify-1.0.4.tgz}
     engines: {iojs: '>=1.0.0', node: '>=0.10.0'}
 
   /rfdc@1.3.0:
@@ -7798,7 +7790,7 @@ packages:
     dev: false
 
   /rrweb-cssom@0.6.0:
-    resolution: {integrity: sha512-APM0Gt1KoXBz0iIkkdB/kfvGOwC4UuJFeG/c+yV7wSc7q96cG/kJ0HiYCnzivD9SB53cLV1MlHFNfOuPaadYSw==}
+    resolution: {integrity: sha512-APM0Gt1KoXBz0iIkkdB/kfvGOwC4UuJFeG/c+yV7wSc7q96cG/kJ0HiYCnzivD9SB53cLV1MlHFNfOuPaadYSw==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/rrweb-cssom/-/rrweb-cssom-0.6.0.tgz}
     dev: false
 
   /run-async@2.4.1:
@@ -7807,7 +7799,7 @@ packages:
     dev: true
 
   /run-parallel@1.2.0:
-    resolution: {integrity: sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA==}
+    resolution: {integrity: sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/run-parallel/-/run-parallel-1.2.0.tgz}
     dependencies:
       queue-microtask: 1.2.3
 
@@ -7825,24 +7817,24 @@ packages:
     dev: true
 
   /safe-buffer@5.1.2:
-    resolution: {integrity: sha512-Gd2UZBJDkXlY7GbJxfsE8/nvKkUEU1G38c1siN6QP6a9PT9MmHB8GnpscSmMJSoF8LOIrt8ud/wPtojys4G6+g==}
+    resolution: {integrity: sha512-Gd2UZBJDkXlY7GbJxfsE8/nvKkUEU1G38c1siN6QP6a9PT9MmHB8GnpscSmMJSoF8LOIrt8ud/wPtojys4G6+g==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/safe-buffer/-/safe-buffer-5.1.2.tgz}
 
   /safe-buffer@5.2.1:
     resolution: {integrity: sha512-rp3So07KcdmmKbGvgaNxQSJr7bGVSVk5S9Eq1F+ppbRo70+YeaDxkw5Dd8NPN+GD6bjnYm2VuPuCXmpuYvmCXQ==}
 
   /safe-stable-stringify@2.4.2:
-    resolution: {integrity: sha512-gMxvPJYhP0O9n2pvcfYfIuYgbledAOJFcqRThtPRmjscaipiwcwPPKLytpVzMkG2HAN87Qmo2d4PtGiri1dSLA==}
+    resolution: {integrity: sha512-gMxvPJYhP0O9n2pvcfYfIuYgbledAOJFcqRThtPRmjscaipiwcwPPKLytpVzMkG2HAN87Qmo2d4PtGiri1dSLA==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/safe-stable-stringify/-/safe-stable-stringify-2.4.2.tgz}
     engines: {node: '>=10'}
     dev: false
 
   /safer-buffer@2.1.2:
-    resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
+    resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/safer-buffer/-/safer-buffer-2.1.2.tgz}
 
   /sax@1.2.4:
-    resolution: {integrity: sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==}
+    resolution: {integrity: sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/sax/-/sax-1.2.4.tgz}
 
   /saxes@6.0.0:
-    resolution: {integrity: sha512-xAg7SOnEhrm5zI3puOOKyy1OMcMlIJZYNJY7xLBwSze0UjhPLnWfj2GF2EpT0jmzaJKIWKHLsaSSajf35bcYnA==}
+    resolution: {integrity: sha512-xAg7SOnEhrm5zI3puOOKyy1OMcMlIJZYNJY7xLBwSze0UjhPLnWfj2GF2EpT0jmzaJKIWKHLsaSSajf35bcYnA==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/saxes/-/saxes-6.0.0.tgz}
     engines: {node: '>=v12.22.7'}
     dependencies:
       xmlchars: 2.2.0
@@ -7998,7 +7990,7 @@ packages:
     dev: true
 
   /simple-git@3.19.1:
-    resolution: {integrity: sha512-Ck+rcjVaE1HotraRAS8u/+xgTvToTuoMkT9/l9lvuP5jftwnYUp6DwuJzsKErHgfyRk8IB8pqGHWEbM3tLgV1w==}
+    resolution: {integrity: sha512-Ck+rcjVaE1HotraRAS8u/+xgTvToTuoMkT9/l9lvuP5jftwnYUp6DwuJzsKErHgfyRk8IB8pqGHWEbM3tLgV1w==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/simple-git/-/simple-git-3.19.1.tgz}
     dependencies:
       '@kwsites/file-exists': 1.1.1
       '@kwsites/promise-deferred': 1.1.1
@@ -8008,7 +8000,7 @@ packages:
     dev: false
 
   /simple-swizzle@0.2.2:
-    resolution: {integrity: sha512-JA//kQgZtbuY83m+xT+tXJkmJncGMTFT+C+g2h2R9uxkYIrE2yy9sgmcLhCnw57/WSD+Eh3J97FPEDFnbXnDUg==}
+    resolution: {integrity: sha512-JA//kQgZtbuY83m+xT+tXJkmJncGMTFT+C+g2h2R9uxkYIrE2yy9sgmcLhCnw57/WSD+Eh3J97FPEDFnbXnDUg==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/simple-swizzle/-/simple-swizzle-0.2.2.tgz}
     dependencies:
       is-arrayish: 0.3.2
     dev: false
@@ -8227,7 +8219,7 @@ packages:
     dev: false
 
   /stack-trace@0.0.10:
-    resolution: {integrity: sha512-KGzahc7puUKkzyMt+IqAep+TVNbKP+k2Lmwhub39m1AsTSkaDutx56aDCo+HLDzf/D26BIHTJWNiTG1KAJiQCg==}
+    resolution: {integrity: sha512-KGzahc7puUKkzyMt+IqAep+TVNbKP+k2Lmwhub39m1AsTSkaDutx56aDCo+HLDzf/D26BIHTJWNiTG1KAJiQCg==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/stack-trace/-/stack-trace-0.0.10.tgz}
     dev: false
 
   /stackframe@1.2.0:
@@ -8276,14 +8268,13 @@ packages:
     engines: {node: '>=0.6.19'}
     dev: true
 
-  /string-replace-loader@3.1.0(webpack@5.61.0):
+  /string-replace-loader@3.1.0:
     resolution: {integrity: sha512-5AOMUZeX5HE/ylKDnEa/KKBqvlnFmRZudSOjVJHxhoJg9QYTwl1rECx7SLR8BBH7tfxb4Rp7EM2XVfQFxIhsbQ==}
     peerDependencies:
       webpack: ^5
     dependencies:
       loader-utils: 2.0.4
       schema-utils: 3.1.1
-      webpack: 5.61.0(webpack-cli@4.9.1)
     dev: true
 
   /string-similarity@4.0.4:
@@ -8292,7 +8283,7 @@ packages:
     dev: false
 
   /string-width@1.0.2:
-    resolution: {integrity: sha512-0XsVpQLnVCXHJfyEs8tC0zpTVIr5PKKsQtkT29IwupnPTjtPmQ3xT/4yCREF9hYkV/3M3kzcUTSAZT6a6h81tw==}
+    resolution: {integrity: sha512-0XsVpQLnVCXHJfyEs8tC0zpTVIr5PKKsQtkT29IwupnPTjtPmQ3xT/4yCREF9hYkV/3M3kzcUTSAZT6a6h81tw==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/string-width/-/string-width-1.0.2.tgz}
     engines: {node: '>=0.10.0'}
     dependencies:
       code-point-at: 1.1.0
@@ -8301,7 +8292,7 @@ packages:
     dev: true
 
   /string-width@2.1.1:
-    resolution: {integrity: sha512-nOqH59deCq9SRHlxq1Aw85Jnt4w6KvLKqWVik6oA9ZklXLNIOlqg4F2yrT1MVaTjAqvVwdfeZ7w7aCvJD7ugkw==}
+    resolution: {integrity: sha512-nOqH59deCq9SRHlxq1Aw85Jnt4w6KvLKqWVik6oA9ZklXLNIOlqg4F2yrT1MVaTjAqvVwdfeZ7w7aCvJD7ugkw==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/string-width/-/string-width-2.1.1.tgz}
     engines: {node: '>=4'}
     dependencies:
       is-fullwidth-code-point: 2.0.0
@@ -8309,7 +8300,7 @@ packages:
     dev: true
 
   /string-width@4.2.3:
-    resolution: {integrity: sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==}
+    resolution: {integrity: sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/string-width/-/string-width-4.2.3.tgz}
     engines: {node: '>=8'}
     dependencies:
       emoji-regex: 8.0.0
@@ -8340,12 +8331,12 @@ packages:
     dev: true
 
   /string_decoder@1.1.1:
-    resolution: {integrity: sha512-n/ShnvDi6FHbbVfviro+WojiFzv+s8MPMHBczVePfUpDJLwoLT0ht1l4YwBCbi8pJAveEEdnkHyPyTP/mzRfwg==}
+    resolution: {integrity: sha512-n/ShnvDi6FHbbVfviro+WojiFzv+s8MPMHBczVePfUpDJLwoLT0ht1l4YwBCbi8pJAveEEdnkHyPyTP/mzRfwg==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/string_decoder/-/string_decoder-1.1.1.tgz}
     dependencies:
       safe-buffer: 5.1.2
 
   /string_decoder@1.3.0:
-    resolution: {integrity: sha512-hkRX8U1WjJFd8LsDJ2yQ/wWWxaopEsABU1XfkM8A+j0+85JAGppt16cr1Whg6KIbb4okU6Mql6BOj+uup/wKeA==}
+    resolution: {integrity: sha512-hkRX8U1WjJFd8LsDJ2yQ/wWWxaopEsABU1XfkM8A+j0+85JAGppt16cr1Whg6KIbb4okU6Mql6BOj+uup/wKeA==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/string_decoder/-/string_decoder-1.3.0.tgz}
     dependencies:
       safe-buffer: 5.2.1
 
@@ -8359,21 +8350,21 @@ packages:
     dev: true
 
   /strip-ansi@3.0.1:
-    resolution: {integrity: sha512-VhumSSbBqDTP8p2ZLKj40UjBCV4+v8bUSEpUb4KjRgWk9pbqGF4REFj6KEagidb2f/M6AzC0EmFyDNGaw9OCzg==}
+    resolution: {integrity: sha512-VhumSSbBqDTP8p2ZLKj40UjBCV4+v8bUSEpUb4KjRgWk9pbqGF4REFj6KEagidb2f/M6AzC0EmFyDNGaw9OCzg==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/strip-ansi/-/strip-ansi-3.0.1.tgz}
     engines: {node: '>=0.10.0'}
     dependencies:
       ansi-regex: 2.1.1
     dev: true
 
   /strip-ansi@4.0.0:
-    resolution: {integrity: sha512-4XaJ2zQdCzROZDivEVIDPkcQn8LMFSa8kj8Gxb/Lnwzv9A8VctNZ+lfivC/sV3ivW8ElJTERXZoPBRrZKkNKow==}
+    resolution: {integrity: sha512-4XaJ2zQdCzROZDivEVIDPkcQn8LMFSa8kj8Gxb/Lnwzv9A8VctNZ+lfivC/sV3ivW8ElJTERXZoPBRrZKkNKow==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/strip-ansi/-/strip-ansi-4.0.0.tgz}
     engines: {node: '>=4'}
     dependencies:
       ansi-regex: 3.0.0
     dev: true
 
   /strip-ansi@5.2.0:
-    resolution: {integrity: sha512-DuRs1gKbBqsMKIZlrffwlug8MHkcnpjs5VPmL1PAh+mA30U0DTotfDZ0d2UUsXpPmPmMMJ6W773MaA3J+lbiWA==}
+    resolution: {integrity: sha512-DuRs1gKbBqsMKIZlrffwlug8MHkcnpjs5VPmL1PAh+mA30U0DTotfDZ0d2UUsXpPmPmMMJ6W773MaA3J+lbiWA==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/strip-ansi/-/strip-ansi-5.2.0.tgz}
     engines: {node: '>=6'}
     dependencies:
       ansi-regex: 4.1.0
@@ -8448,7 +8439,7 @@ packages:
     dev: true
 
   /symbol-tree@3.2.4:
-    resolution: {integrity: sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==}
+    resolution: {integrity: sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/symbol-tree/-/symbol-tree-3.2.4.tgz}
     dev: false
 
   /table@6.7.3:
@@ -8565,7 +8556,7 @@ packages:
     dev: true
 
   /text-hex@1.0.0:
-    resolution: {integrity: sha512-uuVGNWzgJ4yhRaNSiubPY7OjISw4sw4E5Uv0wbjp+OzcbmVU/rsT8ujgcXJhn9ypzsgr5vlzpPqP+MBBKcGvbg==}
+    resolution: {integrity: sha512-uuVGNWzgJ4yhRaNSiubPY7OjISw4sw4E5Uv0wbjp+OzcbmVU/rsT8ujgcXJhn9ypzsgr5vlzpPqP+MBBKcGvbg==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/text-hex/-/text-hex-1.0.0.tgz}
     dev: false
 
   /text-table@0.2.0:
@@ -8609,7 +8600,7 @@ packages:
     dev: true
 
   /to-regex-range@5.0.1:
-    resolution: {integrity: sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==}
+    resolution: {integrity: sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/to-regex-range/-/to-regex-range-5.0.1.tgz}
     engines: {node: '>=8.0'}
     dependencies:
       is-number: 7.0.0
@@ -8628,7 +8619,7 @@ packages:
     dev: true
 
   /tough-cookie@4.1.3:
-    resolution: {integrity: sha512-aX/y5pVRkfRnfmuX+OdbSdXvPe6ieKX/G2s7e98f4poJHnqH3281gDPm/metm6E/WRamfx7WC4HUqkWHfQHprw==}
+    resolution: {integrity: sha512-aX/y5pVRkfRnfmuX+OdbSdXvPe6ieKX/G2s7e98f4poJHnqH3281gDPm/metm6E/WRamfx7WC4HUqkWHfQHprw==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/tough-cookie/-/tough-cookie-4.1.3.tgz}
     engines: {node: '>=6'}
     dependencies:
       psl: 1.8.0
@@ -8638,18 +8629,18 @@ packages:
     dev: false
 
   /tr46@0.0.3:
-    resolution: {integrity: sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==}
+    resolution: {integrity: sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/tr46/-/tr46-0.0.3.tgz}
     dev: true
 
   /tr46@2.1.0:
-    resolution: {integrity: sha512-15Ih7phfcdP5YxqiB+iDtLoaTz4Nd35+IiAv0kQ5FNKHzXgdWqPoTIqEDDJmXceQt4JZk6lVPT8lnDlPpGDppw==}
+    resolution: {integrity: sha512-15Ih7phfcdP5YxqiB+iDtLoaTz4Nd35+IiAv0kQ5FNKHzXgdWqPoTIqEDDJmXceQt4JZk6lVPT8lnDlPpGDppw==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/tr46/-/tr46-2.1.0.tgz}
     engines: {node: '>=8'}
     dependencies:
       punycode: 2.3.0
     dev: true
 
   /tr46@4.1.1:
-    resolution: {integrity: sha512-2lv/66T7e5yNyhAAC4NaKe5nVavzuGJQVVtRYLyQ2OI8tsJ61PMLlelehb0wi2Hx6+hT/OJUWZcw8MjlSRnxvw==}
+    resolution: {integrity: sha512-2lv/66T7e5yNyhAAC4NaKe5nVavzuGJQVVtRYLyQ2OI8tsJ61PMLlelehb0wi2Hx6+hT/OJUWZcw8MjlSRnxvw==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/tr46/-/tr46-4.1.1.tgz}
     engines: {node: '>=14'}
     dependencies:
       punycode: 2.3.0
@@ -8661,22 +8652,20 @@ packages:
     dev: true
 
   /triple-beam@1.3.0:
-    resolution: {integrity: sha512-XrHUvV5HpdLmIj4uVMxHggLbFSZYIn7HEWsqePZcI50pco+MPqJ50wMGY794X7AOOhxOBAjbkqfAbEe/QMp2Lw==}
+    resolution: {integrity: sha512-XrHUvV5HpdLmIj4uVMxHggLbFSZYIn7HEWsqePZcI50pco+MPqJ50wMGY794X7AOOhxOBAjbkqfAbEe/QMp2Lw==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/triple-beam/-/triple-beam-1.3.0.tgz}
     dev: false
 
   /ts-enum-util@4.0.2:
     resolution: {integrity: sha512-BB5qjvHYgYgOB/CaoA1Cy/B2QNnZ+nVBrJ15VV/AXGWx+AO83k5wgeLOJvkSLoKKavvH/M8Wj4ZbgROjsuYwzw==}
     dev: false
 
-  /ts-essentials@9.1.2(typescript@4.5.2):
+  /ts-essentials@9.1.2:
     resolution: {integrity: sha512-EaSmXsAhEiirrTY1Oaa7TSpei9dzuCuFPmjKRJRPamERYtfaGS8/KpOSbjergLz/Y76/aZlV9i/krgzsuWEBbg==}
     peerDependencies:
       typescript: '>=4.1.0'
-    dependencies:
-      typescript: 4.5.2
     dev: false
 
-  /ts-loader@9.4.2(typescript@4.5.2)(webpack@5.61.0):
+  /ts-loader@9.4.2:
     resolution: {integrity: sha512-OmlC4WVmFv5I0PpaxYb+qGeGOdm5giHU7HwDDUjw59emP2UYMHy9fFSDcYgSNoH8sXcj4hGCSEhlDZ9ULeDraA==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
@@ -8687,8 +8676,6 @@ packages:
       enhanced-resolve: 5.8.3
       micromatch: 4.0.4
       semver: 7.3.5
-      typescript: 4.5.2
-      webpack: 5.61.0(webpack-cli@4.9.1)
     dev: true
 
   /ts-node@10.9.1(@types/node@16.11.10)(typescript@4.9.5):
@@ -8860,6 +8847,7 @@ packages:
     resolution: {integrity: sha512-5BlMof9H1yGt0P8/WF+wPNw6GfctgGjXp5hkblpyT+8rkASSmkUKMXrxR0Xg8ThVCi/JnHQiKXeBaEwCeQwMFw==}
     engines: {node: '>=4.2.0'}
     hasBin: true
+    dev: true
 
   /typescript@4.9.5:
     resolution: {integrity: sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==}
@@ -8874,7 +8862,7 @@ packages:
     dev: true
 
   /uglify-js@3.17.4:
-    resolution: {integrity: sha512-T9q82TJI9e/C1TAxYvfb16xO120tMVFZrGA3f9/P4424DNu6ypK103y0GPFVa17yotwSyZW5iYXgjYHkGrJW/g==}
+    resolution: {integrity: sha512-T9q82TJI9e/C1TAxYvfb16xO120tMVFZrGA3f9/P4424DNu6ypK103y0GPFVa17yotwSyZW5iYXgjYHkGrJW/g==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/uglify-js/-/uglify-js-3.17.4.tgz}
     engines: {node: '>=0.8.0'}
     hasBin: true
     requiresBuild: true
@@ -8919,11 +8907,11 @@ packages:
     dev: true
 
   /universalify@0.1.2:
-    resolution: {integrity: sha512-rBJeI5CXAlmy1pV+617WB9J63U6XcazHHF2f2dbJix4XzpUF0RS3Zbj0FGIOCAva5P/d/GBOYaACQ1w+0azUkg==}
+    resolution: {integrity: sha512-rBJeI5CXAlmy1pV+617WB9J63U6XcazHHF2f2dbJix4XzpUF0RS3Zbj0FGIOCAva5P/d/GBOYaACQ1w+0azUkg==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/universalify/-/universalify-0.1.2.tgz}
     engines: {node: '>= 4.0.0'}
 
   /universalify@0.2.0:
-    resolution: {integrity: sha512-CJ1QgKmNg3CwvAv/kOFmtnEN05f0D/cn9QntgNOQlQF9dgvVTHj3t+8JPdjqawCHk7V/KA+fbUqzZ9XWhcqPUg==}
+    resolution: {integrity: sha512-CJ1QgKmNg3CwvAv/kOFmtnEN05f0D/cn9QntgNOQlQF9dgvVTHj3t+8JPdjqawCHk7V/KA+fbUqzZ9XWhcqPUg==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/universalify/-/universalify-0.2.0.tgz}
     engines: {node: '>= 4.0.0'}
     dev: false
 
@@ -8942,7 +8930,7 @@ packages:
     dev: true
 
   /uri-js@4.4.1:
-    resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}
+    resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/uri-js/-/uri-js-4.4.1.tgz}
     dependencies:
       punycode: 2.3.0
 
@@ -8955,7 +8943,7 @@ packages:
     dev: false
 
   /url-parse@1.5.10:
-    resolution: {integrity: sha512-WypcfiRhfeUP9vvF0j6rw0J3hrWrw6iZv3+22h6iRMJ/8z1Tj6XfLP4DsUix5MhMPnXpiHDoKyoZ/bdCkwBCiQ==}
+    resolution: {integrity: sha512-WypcfiRhfeUP9vvF0j6rw0J3hrWrw6iZv3+22h6iRMJ/8z1Tj6XfLP4DsUix5MhMPnXpiHDoKyoZ/bdCkwBCiQ==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/url-parse/-/url-parse-1.5.10.tgz}
     dependencies:
       querystringify: 2.2.0
       requires-port: 1.0.0
@@ -8970,7 +8958,7 @@ packages:
     dev: false
 
   /util-deprecate@1.0.2:
-    resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
+    resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/util-deprecate/-/util-deprecate-1.0.2.tgz}
 
   /util-promisify@2.1.0:
     resolution: {integrity: sha1-PCI2R2xNMsX/PEcAKt18E7moKlM=}
@@ -8984,7 +8972,7 @@ packages:
     dev: false
 
   /uuid@3.4.0:
-    resolution: {integrity: sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==}
+    resolution: {integrity: sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/uuid/-/uuid-3.4.0.tgz}
     deprecated: Please upgrade  to version 7 or higher.  Older versions may use Math.random() in certain circumstances, which is known to be problematic.  See https://v8.dev/blog/math-random for details.
     hasBin: true
     dev: true
@@ -9070,11 +9058,11 @@ packages:
     dev: false
 
   /vscode-languageserver-types@3.16.0:
-    resolution: {integrity: sha512-k8luDIWJWyenLc5ToFQQMaSrqCHiLwyKPHKPQZ5zz21vM+vIVUSvsRpcbiECH4WR88K2XZqc4ScRcZ7nk/jbeA==}
+    resolution: {integrity: sha512-k8luDIWJWyenLc5ToFQQMaSrqCHiLwyKPHKPQZ5zz21vM+vIVUSvsRpcbiECH4WR88K2XZqc4ScRcZ7nk/jbeA==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/vscode-languageserver-types/-/vscode-languageserver-types-3.16.0.tgz}
     dev: false
 
   /vscode-languageserver-types@3.17.3:
-    resolution: {integrity: sha512-SYU4z1dL0PyIMd4Vj8YOqFvHu7Hz/enbWtpfnVbJHU4Nd1YNYx8u0ennumc6h48GQNeOLxmwySmnADouT/AuZA==}
+    resolution: {integrity: sha512-SYU4z1dL0PyIMd4Vj8YOqFvHu7Hz/enbWtpfnVbJHU4Nd1YNYx8u0ennumc6h48GQNeOLxmwySmnADouT/AuZA==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/vscode-languageserver-types/-/vscode-languageserver-types-3.17.3.tgz}
     dev: false
 
   /vscode-uri@3.0.3:
@@ -9082,7 +9070,7 @@ packages:
     dev: true
 
   /w3c-xmlserializer@4.0.0:
-    resolution: {integrity: sha512-d+BFHzbiCx6zGfz0HyQ6Rg69w9k19nviJspaj4yNscGjrHu94sVP+aRm75yEbCh+r2/yR+7q6hux9LVtbuTGBw==}
+    resolution: {integrity: sha512-d+BFHzbiCx6zGfz0HyQ6Rg69w9k19nviJspaj4yNscGjrHu94sVP+aRm75yEbCh+r2/yR+7q6hux9LVtbuTGBw==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/w3c-xmlserializer/-/w3c-xmlserializer-4.0.0.tgz}
     engines: {node: '>=14'}
     dependencies:
       xml-name-validator: 4.0.0
@@ -9103,16 +9091,16 @@ packages:
     dev: true
 
   /webidl-conversions@3.0.1:
-    resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==}
+    resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/webidl-conversions/-/webidl-conversions-3.0.1.tgz}
     dev: true
 
   /webidl-conversions@6.1.0:
-    resolution: {integrity: sha512-qBIvFLGiBpLjfwmYAaHPXsn+ho5xZnGvyGvsarywGNc8VyQJUMHJ8OBKGGrPER0okBeMDaan4mNBlgBROxuI8w==}
+    resolution: {integrity: sha512-qBIvFLGiBpLjfwmYAaHPXsn+ho5xZnGvyGvsarywGNc8VyQJUMHJ8OBKGGrPER0okBeMDaan4mNBlgBROxuI8w==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/webidl-conversions/-/webidl-conversions-6.1.0.tgz}
     engines: {node: '>=10.4'}
     dev: true
 
   /webidl-conversions@7.0.0:
-    resolution: {integrity: sha512-VwddBukDzu71offAQR975unBIGqfKZpM+8ZX6ySk8nYhVoo5CYaZyzt3YBvYtRtO+aoGlqxPg/B87NGVZ/fu6g==}
+    resolution: {integrity: sha512-VwddBukDzu71offAQR975unBIGqfKZpM+8ZX6ySk8nYhVoo5CYaZyzt3YBvYtRtO+aoGlqxPg/B87NGVZ/fu6g==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/webidl-conversions/-/webidl-conversions-7.0.0.tgz}
     engines: {node: '>=12'}
     dev: false
 
@@ -9220,19 +9208,19 @@ packages:
     dev: false
 
   /whatwg-encoding@2.0.0:
-    resolution: {integrity: sha512-p41ogyeMUrw3jWclHWTQg1k05DSVXPLcVxRTYsXUk+ZooOCZLcoYgPZ/HL/D/N+uQPOtcp1me1WhBEaX02mhWg==}
+    resolution: {integrity: sha512-p41ogyeMUrw3jWclHWTQg1k05DSVXPLcVxRTYsXUk+ZooOCZLcoYgPZ/HL/D/N+uQPOtcp1me1WhBEaX02mhWg==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/whatwg-encoding/-/whatwg-encoding-2.0.0.tgz}
     engines: {node: '>=12'}
     dependencies:
       iconv-lite: 0.6.3
     dev: false
 
   /whatwg-mimetype@3.0.0:
-    resolution: {integrity: sha512-nt+N2dzIutVRxARx1nghPKGv1xHikU7HKdfafKkLNLindmPU/ch3U31NOCGGA/dmPcmb1VlofO0vnKAcsm0o/Q==}
+    resolution: {integrity: sha512-nt+N2dzIutVRxARx1nghPKGv1xHikU7HKdfafKkLNLindmPU/ch3U31NOCGGA/dmPcmb1VlofO0vnKAcsm0o/Q==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/whatwg-mimetype/-/whatwg-mimetype-3.0.0.tgz}
     engines: {node: '>=12'}
     dev: false
 
   /whatwg-url@12.0.1:
-    resolution: {integrity: sha512-Ed/LrqB8EPlGxjS+TrsXcpUond1mhccS3pchLhzSgPCnTimUCKj3IZE75pAs5m6heB2U2TMerKFUXheyHY+VDQ==}
+    resolution: {integrity: sha512-Ed/LrqB8EPlGxjS+TrsXcpUond1mhccS3pchLhzSgPCnTimUCKj3IZE75pAs5m6heB2U2TMerKFUXheyHY+VDQ==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/whatwg-url/-/whatwg-url-12.0.1.tgz}
     engines: {node: '>=14'}
     dependencies:
       tr46: 4.1.1
@@ -9240,7 +9228,7 @@ packages:
     dev: false
 
   /whatwg-url@5.0.0:
-    resolution: {integrity: sha512-saE57nupxk6v3HY35+jzBwYa0rKSy0XR8JSxZPwgLr7ys0IBzhGviA1/TUGJLmSVqs8pb9AnvICXEuOHLprYTw==}
+    resolution: {integrity: sha512-saE57nupxk6v3HY35+jzBwYa0rKSy0XR8JSxZPwgLr7ys0IBzhGviA1/TUGJLmSVqs8pb9AnvICXEuOHLprYTw==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/whatwg-url/-/whatwg-url-5.0.0.tgz}
     dependencies:
       tr46: 0.0.3
       webidl-conversions: 3.0.1
@@ -9294,7 +9282,7 @@ packages:
     dev: true
 
   /winston-daily-rotate-file@4.5.5(winston@3.3.3):
-    resolution: {integrity: sha512-ds0WahIjiDhKCiMXmY799pDBW+58ByqIBtUcsqr4oDoXrAI3Zn+hbgFdUxzMfqA93OG0mPLYVMiotqTgE/WeWQ==}
+    resolution: {integrity: sha512-ds0WahIjiDhKCiMXmY799pDBW+58ByqIBtUcsqr4oDoXrAI3Zn+hbgFdUxzMfqA93OG0mPLYVMiotqTgE/WeWQ==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/winston-daily-rotate-file/-/winston-daily-rotate-file-4.5.5.tgz}
     engines: {node: '>=8'}
     peerDependencies:
       winston: ^3
@@ -9316,7 +9304,7 @@ packages:
     dev: false
 
   /winston-transport@4.5.0:
-    resolution: {integrity: sha512-YpZzcUzBedhlTAfJg6vJDlyEai/IFMIVcaEZZyl3UXIl4gmqRpU7AE89AHLkbzLUsv0NVmw7ts+iztqKxxPW1Q==}
+    resolution: {integrity: sha512-YpZzcUzBedhlTAfJg6vJDlyEai/IFMIVcaEZZyl3UXIl4gmqRpU7AE89AHLkbzLUsv0NVmw7ts+iztqKxxPW1Q==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/winston-transport/-/winston-transport-4.5.0.tgz}
     engines: {node: '>= 6.4.0'}
     dependencies:
       logform: 2.4.2
@@ -9325,7 +9313,7 @@ packages:
     dev: false
 
   /winston@3.3.3:
-    resolution: {integrity: sha512-oEXTISQnC8VlSAKf1KYSSd7J6IWuRPQqDdo8eoRNaYKLvwSb5+79Z3Yi1lrl6KDpU6/VWaxpakDAtb1oQ4n9aw==}
+    resolution: {integrity: sha512-oEXTISQnC8VlSAKf1KYSSd7J6IWuRPQqDdo8eoRNaYKLvwSb5+79Z3Yi1lrl6KDpU6/VWaxpakDAtb1oQ4n9aw==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/winston/-/winston-3.3.3.tgz}
     engines: {node: '>= 6.4.0'}
     dependencies:
       '@dabh/diagnostics': 2.0.2
@@ -9353,7 +9341,7 @@ packages:
     dev: true
 
   /wrap-ansi@6.2.0:
-    resolution: {integrity: sha512-r6lPcBGxZXlIcymEu7InxDMhdW0KDxpLgoFLcguasxCaJ/SOIZwINatK9KY/tf+ZrlywOKU0UDj3ATXUBfxJXA==}
+    resolution: {integrity: sha512-r6lPcBGxZXlIcymEu7InxDMhdW0KDxpLgoFLcguasxCaJ/SOIZwINatK9KY/tf+ZrlywOKU0UDj3ATXUBfxJXA==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/wrap-ansi/-/wrap-ansi-6.2.0.tgz}
     engines: {node: '>=8'}
     dependencies:
       ansi-styles: 4.3.0
@@ -9362,7 +9350,7 @@ packages:
     dev: true
 
   /wrap-ansi@7.0.0:
-    resolution: {integrity: sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==}
+    resolution: {integrity: sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/wrap-ansi/-/wrap-ansi-7.0.0.tgz}
     engines: {node: '>=10'}
     dependencies:
       ansi-styles: 4.3.0
@@ -9436,7 +9424,7 @@ packages:
     dev: false
 
   /xml-name-validator@4.0.0:
-    resolution: {integrity: sha512-ICP2e+jsHvAj2E2lIHxa5tjXRlKDJo4IdvPvCXbXQGdzSfmSpNVyIKMvoZHjDY9DP0zV17iI85o90vRFXNccRw==}
+    resolution: {integrity: sha512-ICP2e+jsHvAj2E2lIHxa5tjXRlKDJo4IdvPvCXbXQGdzSfmSpNVyIKMvoZHjDY9DP0zV17iI85o90vRFXNccRw==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/xml-name-validator/-/xml-name-validator-4.0.0.tgz}
     engines: {node: '>=12'}
     dev: false
 
@@ -9449,7 +9437,7 @@ packages:
     dev: true
 
   /xml2js@0.6.2:
-    resolution: {integrity: sha512-T4rieHaC1EXcES0Kxxj4JWgaUQHDk+qwHcYOCFHfiwKz7tOVPLq7Hjq9dM1WCMhylqMEfP7hMcOIChvotiZegA==}
+    resolution: {integrity: sha512-T4rieHaC1EXcES0Kxxj4JWgaUQHDk+qwHcYOCFHfiwKz7tOVPLq7Hjq9dM1WCMhylqMEfP7hMcOIChvotiZegA==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/xml2js/-/xml2js-0.6.2.tgz}
     engines: {node: '>=4.0.0'}
     dependencies:
       sax: 1.2.4
@@ -9457,11 +9445,11 @@ packages:
     dev: false
 
   /xmlbuilder@11.0.1:
-    resolution: {integrity: sha512-fDlsI/kFEx7gLvbecc0/ohLG50fugQp8ryHzMTuW9vSa1GJ0XYWKnhsUx7oie3G98+r56aTQIUB4kht42R3JvA==}
+    resolution: {integrity: sha512-fDlsI/kFEx7gLvbecc0/ohLG50fugQp8ryHzMTuW9vSa1GJ0XYWKnhsUx7oie3G98+r56aTQIUB4kht42R3JvA==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/xmlbuilder/-/xmlbuilder-11.0.1.tgz}
     engines: {node: '>=4.0'}
 
   /xmlchars@2.2.0:
-    resolution: {integrity: sha512-JZnDKK8B0RCDw84FNdDAIpZK+JuJw+s7Lz8nksI7SIuU3UXJJslUthsi+uWBUYOwPFwW7W7PRLRfUKpxjtjFCw==}
+    resolution: {integrity: sha512-JZnDKK8B0RCDw84FNdDAIpZK+JuJw+s7Lz8nksI7SIuU3UXJJslUthsi+uWBUYOwPFwW7W7PRLRfUKpxjtjFCw==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/xmlchars/-/xmlchars-2.2.0.tgz}
     dev: false
 
   /xtend@4.0.2:
@@ -9474,7 +9462,7 @@ packages:
     dev: true
 
   /y18n@5.0.8:
-    resolution: {integrity: sha512-0pfFzegeDWJHJIAmTLRP2DwHjdF5s7jo9tuztdQxAhINCdvS+3nGINqPd00AphqJR/0LhANUS6/+7SCb98YOfA==}
+    resolution: {integrity: sha512-0pfFzegeDWJHJIAmTLRP2DwHjdF5s7jo9tuztdQxAhINCdvS+3nGINqPd00AphqJR/0LhANUS6/+7SCb98YOfA==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/y18n/-/y18n-5.0.8.tgz}
     engines: {node: '>=10'}
 
   /yaeti@0.0.6:
@@ -9513,7 +9501,7 @@ packages:
     dev: true
 
   /yargs-parser@21.1.1:
-    resolution: {integrity: sha512-tVpsJW7DdjecAiFpbIB1e3qxIQsE6NoPc5/eTdrbbIC4h0LVsWhnoa3g+m2HclBIujHzsxZ4VJVA+GUuc2/LBw==}
+    resolution: {integrity: sha512-tVpsJW7DdjecAiFpbIB1e3qxIQsE6NoPc5/eTdrbbIC4h0LVsWhnoa3g+m2HclBIujHzsxZ4VJVA+GUuc2/LBw==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/yargs-parser/-/yargs-parser-21.1.1.tgz}
     engines: {node: '>=12'}
     dev: false
 
@@ -9571,7 +9559,7 @@ packages:
     dev: true
 
   /yargs@17.7.2:
-    resolution: {integrity: sha512-7dSzzRQ++CKnNI/krKnYRV7JKKPUXMEh61soaHKg9mrWEhzFWhFnxPxGl+69cD1Ou63C13NUPCnmIcrvqCuM6w==}
+    resolution: {integrity: sha512-7dSzzRQ++CKnNI/krKnYRV7JKKPUXMEh61soaHKg9mrWEhzFWhFnxPxGl+69cD1Ou63C13NUPCnmIcrvqCuM6w==, tarball: https://int.repositories.cloud.sap:443/artifactory/api/npm/build-releases-npm/yargs/-/yargs-17.7.2.tgz}
     engines: {node: '>=12'}
     dependencies:
       cliui: 8.0.1
@@ -9605,3 +9593,7 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
     dev: true
+
+settings:
+  autoInstallPeers: false
+  excludeLinksFromLockfile: false

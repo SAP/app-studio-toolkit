@@ -20,7 +20,7 @@
     "compile": "tsc -p ."
   },
   "dependencies": {
-    "@sap/artifact-management-types": "1.35.0",
+    "@sap/artifact-management-types": "1.36.0",
     "@types/vscode": "1.75.0",
     "@vscode-logging/types": "0.1.4",
     "type-fest": "2.11.1"
