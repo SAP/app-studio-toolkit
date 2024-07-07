@@ -3,16 +3,6 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [1.18.0](https://github.com/SAP/app-studio-toolkit/compare/v1.17.1...v1.18.0) (2024-07-07)
-
-### Bug Fixes
-
-- build ([#322](https://github.com/SAP/app-studio-toolkit/issues/322)) ([84f4bd0](https://github.com/SAP/app-studio-toolkit/commit/84f4bd01990eb545fd42f55d76927f7f78b0d142))
-
-### Features
-
-- add hasHanaCapabilities ([#321](https://github.com/SAP/app-studio-toolkit/issues/321)) ([77e17ee](https://github.com/SAP/app-studio-toolkit/commit/77e17ee16ff592cc97695b03ace79a9615f39be2))
-
 ## [1.17.1](https://github.com/SAP/app-studio-toolkit/compare/v1.17.0...v1.17.1) (2024-06-03)
 
 **Note:** Version bump only for package root
