@@ -51,6 +51,10 @@
         "command": "has.cap.capabilities"
       },
       {
+        "title": "BAS Toolkit: has Hana calc view capabilities (hasHanacalcviewCapabilities)",
+        "command": "has.hana.calcview.capabilities"
+      },
+      {
         "title": "BAS Toolkit: Is Opened For Action (isOpenedForAction)",
         "command": "is.opened.for.action"
       },
@@ -93,6 +97,7 @@
     "onCommand:lcap.enabled",
     "onCommand:has.fiori.capabilities",
     "onCommand:has.cap.capabilities",
+    "onCommand:has.hana.calcview.capabilities",
     "onCommand:is.opened.for.action",
     "onCommand:fileaction.scheduled",
     "onCommand:executeaction.display.error",
