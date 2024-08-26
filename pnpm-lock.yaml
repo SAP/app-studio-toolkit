@@ -192,8 +192,8 @@ importers:
   packages/app-studio-toolkit:
     dependencies:
       '@sap/artifact-management':
-        specifier: 1.36.2
-        version: 1.36.2
+        specifier: 1.37.0
+        version: 1.37.0
       '@sap/bas-sdk':
         specifier: ^3.8.9
         version: 3.8.9
@@ -291,8 +291,8 @@ importers:
   packages/app-studio-toolkit-types:
     dependencies:
       '@sap/artifact-management-types':
-        specifier: 1.36.2
-        version: 1.36.2
+        specifier: 1.37.0
+        version: 1.37.0
       '@types/vscode':
         specifier: 1.75.0
         version: 1.75.0
@@ -1011,7 +1011,7 @@ packages:
   /@kwsites/file-exists@1.1.1:
     resolution: {integrity: sha512-m9/5YGR18lIwxSFDwfE3oA7bWuq9kdau6ugN4H2rJeyhFQZcG9AgSHkQtSD15a8WvTgfz9aikZMrKPHvbpqFiw==}
     dependencies:
-      debug: 4.3.4
+      debug: 4.3.6(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -1916,8 +1916,8 @@ packages:
       '@octokit/openapi-types': 11.2.0
     dev: true
 
-  /@sap/artifact-management-base-types@1.36.2:
-    resolution: {integrity: sha512-fDyIFKAHM4cTlrxbQXUsLvcm243DNVjUy4gYUqJ6O1F7JSclGveaiesa1qUMz0/DEbPRN8BgXw5+P5Z1cZVzSA==}
+  /@sap/artifact-management-base-types@1.37.0:
+    resolution: {integrity: sha512-pZVMVMx9Vz5B4WcE3kqwn3nJmulbg8As2ZL6dMQu7dKlwU40AwbPgawwfPhEqImXSpWG+oC4B+N7QahiHMH2jg==}
     dependencies:
       '@types/node': 14.14.6
       '@types/vscode': 1.52.0
@@ -1925,8 +1925,8 @@ packages:
       vscode-languageserver-types: 3.16.0
     dev: false
 
-  /@sap/artifact-management-base@1.36.2:
-    resolution: {integrity: sha512-jEWtBcMZbLQCBL7FcQCzsaVTWuIljBMJqwvrG+1dODeVyONswtxSp49mh8XvaRi6HxA5N9VAziayRMmCwlu3Hg==}
+  /@sap/artifact-management-base@1.37.0:
+    resolution: {integrity: sha512-aBDaeSRZZmTMYSOAIazgJMp/DaCbHyX28ElxK9ZdOIs4MNAkH/UCgJm9hRlrHPusQlBPBez0Q2ko/29sBiyfYA==}
     engines: {node: '>=14.14.0'}
     dependencies:
       ejs: 3.1.10
@@ -1940,17 +1940,17 @@ packages:
       winston-transport: 4.5.0
     dev: false
 
-  /@sap/artifact-management-fioriplugin@1.36.2:
-    resolution: {integrity: sha512-ozwFATmY3/Iwn3o8J+88q0o+bs5eHyBRj1CHs5n+IWQN0Q8w9CbsBic8iMsrHQ1UKHZFG5j+rpGNpDEQKHbGRw==}
+  /@sap/artifact-management-fioriplugin@1.37.0:
+    resolution: {integrity: sha512-rqRjRvbP7p8c02J/9xEzFmDNIG27Uvwh9RV4dmoFV6gu3um2QMVe1hAIOTCXoiLOJvjWKBWvKaPE8O9rgqANOg==}
     dependencies:
-      '@sap/artifact-management-base': 1.36.2
+      '@sap/artifact-management-base': 1.37.0
       xml2js: 0.6.2
     dev: false
 
-  /@sap/artifact-management-hanaplugin@1.36.2:
-    resolution: {integrity: sha512-+vpvf4nMkaIu9fYNMAcczPf9nNJB8o5GsnK26Go8izjKvul1YGPQIEqeFyJC1azoiJkvydTZWAfhcHf0r9yReg==}
+  /@sap/artifact-management-hanaplugin@1.37.0:
+    resolution: {integrity: sha512-CmV4z/y3Bd9fGzIdyQQ1vxwrLR3QlmHFYDFNHTpj9fLE9Tov4teyTX6HXvYu+uo3KjNStZwfvbNhuTYe4KYZkA==}
     dependencies:
-      '@sap/artifact-management-base': 1.36.2
+      '@sap/artifact-management-base': 1.37.0
       fast-glob: 3.3.2
       glob: 7.2.0
       jsdom: 22.1.0
@@ -1962,26 +1962,26 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@sap/artifact-management-mdkplugin@1.36.2:
-    resolution: {integrity: sha512-nT67bI76VchGCQNELODPQ95d0+kwCuuPkjaQmER2+ZVv6s7r2gYaE7B1em/kUdItzccETIyC/umVremsS+uyHg==}
+  /@sap/artifact-management-mdkplugin@1.37.0:
+    resolution: {integrity: sha512-9yAxZ4+OUqT0Fumf/lAX6+lJ0iDngA3B6rw7bCGNWmdITWaieAkUFGdYkN5sDLEFVQPPE6/dfSy2VceE23KKgw==}
     dependencies:
-      '@sap/artifact-management-base': 1.36.2
+      '@sap/artifact-management-base': 1.37.0
     dev: false
 
-  /@sap/artifact-management-types@1.36.2:
-    resolution: {integrity: sha512-wvkco2gcAj4XnuA9JPEPwSU6t9VIy7orTx6Da7b8dfFG/n7dZP4TMXMxGVs01f2qmoTrX+mYgQsNI4IRKKUElQ==}
+  /@sap/artifact-management-types@1.37.0:
+    resolution: {integrity: sha512-fpWSq1BRHiHLIANGlVUu17z7Fori1lhWyrNYLpgSF5VpDQraEna7rMVY41wo2vIJcfSc8AlO61/n31dub6CN2A==}
     dependencies:
-      '@sap/artifact-management-base-types': 1.36.2
+      '@sap/artifact-management-base-types': 1.37.0
     dev: false
 
-  /@sap/artifact-management@1.36.2:
-    resolution: {integrity: sha512-wQD//ebuFwDn7QTrfWcnN95mFCtwDLuUY6QaJ4H4ytUa+ItzErMFwPUf3AkdQcjfeoXp89byJ/4Zc9ZBJd0K5g==}
+  /@sap/artifact-management@1.37.0:
+    resolution: {integrity: sha512-UBAO8UMiZYLdEIAiWOqRk7L44qzQ9TjCciaV+qQr521cy82b9YUjwAi1NwvhurGbekCGJsTinfF9ANwEdJrrzg==}
     hasBin: true
     dependencies:
-      '@sap/artifact-management-base': 1.36.2
-      '@sap/artifact-management-fioriplugin': 1.36.2
-      '@sap/artifact-management-hanaplugin': 1.36.2
-      '@sap/artifact-management-mdkplugin': 1.36.2
+      '@sap/artifact-management-base': 1.37.0
+      '@sap/artifact-management-fioriplugin': 1.37.0
+      '@sap/artifact-management-hanaplugin': 1.37.0
+      '@sap/artifact-management-mdkplugin': 1.37.0
       ajv: 8.12.0
       chokidar: 3.6.0
       js-yaml: 4.1.0
@@ -3833,7 +3833,6 @@ packages:
     dependencies:
       ms: 2.1.2
       supports-color: 8.1.1
-    dev: true
 
   /debuglog@1.0.1:
     resolution: {integrity: sha1-qiT/uaw9+aI1GDfPstJ5NgzXhJI=}
@@ -4241,11 +4240,11 @@ packages:
   /escalade@3.1.1:
     resolution: {integrity: sha512-k0er2gUkLf8O0zKJiAhmkTnJlTvINGv7ygDNPbeIsX/TJjGJZHuh9B2UxbsaEkmlEo9MfhrSzmhIlhRlI2GXnw==}
     engines: {node: '>=6'}
+    dev: true
 
   /escalade@3.1.2:
     resolution: {integrity: sha512-ErCHMCae19vR8vQGe50xIsVomy19rg6gFu3+r3jkEO46suLMWBksvVyoGgQV+jOfl84ZSOSlmv6Gxa89PmTGmA==}
     engines: {node: '>=6'}
-    dev: true
 
   /escape-html@1.0.3:
     resolution: {integrity: sha512-NiSupZ4OeuGwr68lGIeym/ksIZMJodUGOSCZ/FSnTxcrekbvqrgdUxlJOMpijaKZVjAJrWrGs/6Jy8OMuyj9ow==}
@@ -5303,7 +5302,7 @@ packages:
     dependencies:
       '@tootallnate/once': 2.0.0
       agent-base: 6.0.2
-      debug: 4.3.4
+      debug: 4.3.6(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -5913,7 +5912,7 @@ packages:
       whatwg-encoding: 2.0.0
       whatwg-mimetype: 3.0.0
       whatwg-url: 12.0.1
-      ws: 8.13.0
+      ws: 8.17.1
       xml-name-validator: 4.0.0
     transitivePeerDependencies:
       - bufferutil
@@ -8209,7 +8208,7 @@ packages:
     dependencies:
       '@kwsites/file-exists': 1.1.1
       '@kwsites/promise-deferred': 1.1.1
-      debug: 4.3.4
+      debug: 4.3.6(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -8668,7 +8667,6 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       has-flag: 4.0.0
-    dev: true
 
   /symbol-tree@3.2.4:
     resolution: {integrity: sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==}
@@ -9480,9 +9478,9 @@ packages:
     dependencies:
       file-stream-rotator: 0.5.7
       object-hash: 2.2.0
-      triple-beam: 1.3.0
+      triple-beam: 1.4.1
       winston: 3.3.3
-      winston-transport: 4.5.0
+      winston-transport: 4.6.0
     dev: false
 
   /winston-transport@4.3.0:
@@ -9500,7 +9498,7 @@ packages:
     dependencies:
       logform: 2.4.2
       readable-stream: 3.6.0
-      triple-beam: 1.3.0
+      triple-beam: 1.4.1
     dev: false
 
   /winston-transport@4.6.0:
@@ -9540,8 +9538,8 @@ packages:
       one-time: 1.0.0
       readable-stream: 3.6.0
       stack-trace: 0.0.10
-      triple-beam: 1.3.0
-      winston-transport: 4.5.0
+      triple-beam: 1.4.1
+      winston-transport: 4.6.0
     dev: false
 
   /word-wrap@1.2.5:
@@ -9626,19 +9624,6 @@ packages:
       type-fest: 0.4.1
       write-json-file: 3.2.0
     dev: true
-
-  /ws@8.13.0:
-    resolution: {integrity: sha512-x9vcZYTrFPC7aSIbj7sRCYo7L/Xb8Iy+pW0ng0wt2vCJv7M9HOMy0UoN3rr+IFC7hb7vXoqS+P9ktyLLLhO+LA==}
-    engines: {node: '>=10.0.0'}
-    peerDependencies:
-      bufferutil: ^4.0.1
-      utf-8-validate: '>=5.0.2'
-    peerDependenciesMeta:
-      bufferutil:
-        optional: true
-      utf-8-validate:
-        optional: true
-    dev: false
 
   /ws@8.17.1:
     resolution: {integrity: sha512-6XQFvXTkbfUOZOKKILFG1PDK2NDQs4azKQl26T0YS5CxqWLgXajbPZ+h4gZekJyRqFU8pvnbAbbs/3TgRPy+GQ==}
@@ -9779,7 +9764,7 @@ packages:
     engines: {node: '>=12'}
     dependencies:
       cliui: 8.0.1
-      escalade: 3.1.1
+      escalade: 3.1.2
       get-caller-file: 2.0.5
       require-directory: 2.1.1
       string-width: 4.2.3
