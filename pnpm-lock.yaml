@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: false
+  excludeLinksFromLockfile: false
+
 importers:
 
   .:
@@ -168,7 +172,7 @@ importers:
         version: 0.1.4
       copy-webpack-plugin:
         specifier: 11.0.0
-        version: 11.0.0
+        version: 11.0.0(webpack@5.61.0)
       fs-extra:
         specifier: 11.1.1
         version: 11.1.1
@@ -180,16 +184,16 @@ importers:
         version: 3.0.0
       string-replace-loader:
         specifier: 3.1.0
-        version: 3.1.0
+        version: 3.1.0(webpack@5.61.0)
       ts-loader:
         specifier: 9.4.2
-        version: 9.4.2
+        version: 9.4.2(typescript@4.5.2)(webpack@5.61.0)
 
   packages/app-studio-toolkit:
     dependencies:
       '@sap/artifact-management':
-        specifier: 1.36.2
-        version: 1.36.2
+        specifier: 1.37.0
+        version: 1.37.0
       '@sap/bas-sdk':
         specifier: 3.8.1
         version: 3.8.1
@@ -265,7 +269,7 @@ importers:
         version: 0.1.4
       copy-webpack-plugin:
         specifier: 11.0.0
-        version: 11.0.0
+        version: 11.0.0(webpack@5.61.0)
       fs-extra:
         specifier: 11.1.1
         version: 11.1.1
@@ -277,18 +281,18 @@ importers:
         version: 3.0.0
       string-replace-loader:
         specifier: 3.1.0
-        version: 3.1.0
+        version: 3.1.0(webpack@5.61.0)
       ts-loader:
         specifier: 9.4.2
-        version: 9.4.2
+        version: 9.4.2(typescript@4.5.2)(webpack@5.61.0)
 
   packages/app-studio-toolkit-themes: {}
 
   packages/app-studio-toolkit-types:
     dependencies:
       '@sap/artifact-management-types':
-        specifier: 1.36.2
-        version: 1.36.2
+        specifier: 1.37.0
+        version: 1.37.0
       '@types/vscode':
         specifier: 1.75.0
         version: 1.75.0
@@ -340,7 +344,7 @@ importers:
         version: 4.17.21
       ts-essentials:
         specifier: 9.1.2
-        version: 9.1.2
+        version: 9.1.2(typescript@4.5.2)
       vscode-languageserver-textdocument:
         specifier: 1.0.4
         version: 1.0.4
@@ -1955,8 +1959,8 @@ packages:
       '@octokit/openapi-types': 11.2.0
     dev: true
 
-  /@sap/artifact-management-base-types@1.36.2:
-    resolution: {integrity: sha512-fDyIFKAHM4cTlrxbQXUsLvcm243DNVjUy4gYUqJ6O1F7JSclGveaiesa1qUMz0/DEbPRN8BgXw5+P5Z1cZVzSA==}
+  /@sap/artifact-management-base-types@1.37.0:
+    resolution: {integrity: sha512-pZVMVMx9Vz5B4WcE3kqwn3nJmulbg8As2ZL6dMQu7dKlwU40AwbPgawwfPhEqImXSpWG+oC4B+N7QahiHMH2jg==}
     dependencies:
       '@types/node': 14.14.6
       '@types/vscode': 1.52.0
@@ -1964,8 +1968,8 @@ packages:
       vscode-languageserver-types: 3.16.0
     dev: false
 
-  /@sap/artifact-management-base@1.36.2:
-    resolution: {integrity: sha512-jEWtBcMZbLQCBL7FcQCzsaVTWuIljBMJqwvrG+1dODeVyONswtxSp49mh8XvaRi6HxA5N9VAziayRMmCwlu3Hg==}
+  /@sap/artifact-management-base@1.37.0:
+    resolution: {integrity: sha512-aBDaeSRZZmTMYSOAIazgJMp/DaCbHyX28ElxK9ZdOIs4MNAkH/UCgJm9hRlrHPusQlBPBez0Q2ko/29sBiyfYA==}
     engines: {node: '>=14.14.0'}
     dependencies:
       ejs: 3.1.10
@@ -1979,17 +1983,17 @@ packages:
       winston-transport: 4.5.0
     dev: false
 
-  /@sap/artifact-management-fioriplugin@1.36.2:
-    resolution: {integrity: sha512-ozwFATmY3/Iwn3o8J+88q0o+bs5eHyBRj1CHs5n+IWQN0Q8w9CbsBic8iMsrHQ1UKHZFG5j+rpGNpDEQKHbGRw==}
+  /@sap/artifact-management-fioriplugin@1.37.0:
+    resolution: {integrity: sha512-rqRjRvbP7p8c02J/9xEzFmDNIG27Uvwh9RV4dmoFV6gu3um2QMVe1hAIOTCXoiLOJvjWKBWvKaPE8O9rgqANOg==}
     dependencies:
-      '@sap/artifact-management-base': 1.36.2
+      '@sap/artifact-management-base': 1.37.0
       xml2js: 0.6.2
     dev: false
 
-  /@sap/artifact-management-hanaplugin@1.36.2:
-    resolution: {integrity: sha512-+vpvf4nMkaIu9fYNMAcczPf9nNJB8o5GsnK26Go8izjKvul1YGPQIEqeFyJC1azoiJkvydTZWAfhcHf0r9yReg==}
+  /@sap/artifact-management-hanaplugin@1.37.0:
+    resolution: {integrity: sha512-CmV4z/y3Bd9fGzIdyQQ1vxwrLR3QlmHFYDFNHTpj9fLE9Tov4teyTX6HXvYu+uo3KjNStZwfvbNhuTYe4KYZkA==}
     dependencies:
-      '@sap/artifact-management-base': 1.36.2
+      '@sap/artifact-management-base': 1.37.0
       fast-glob: 3.3.2
       glob: 7.2.0
       jsdom: 22.1.0
@@ -2001,26 +2005,26 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@sap/artifact-management-mdkplugin@1.36.2:
-    resolution: {integrity: sha512-nT67bI76VchGCQNELODPQ95d0+kwCuuPkjaQmER2+ZVv6s7r2gYaE7B1em/kUdItzccETIyC/umVremsS+uyHg==}
+  /@sap/artifact-management-mdkplugin@1.37.0:
+    resolution: {integrity: sha512-9yAxZ4+OUqT0Fumf/lAX6+lJ0iDngA3B6rw7bCGNWmdITWaieAkUFGdYkN5sDLEFVQPPE6/dfSy2VceE23KKgw==}
     dependencies:
-      '@sap/artifact-management-base': 1.36.2
+      '@sap/artifact-management-base': 1.37.0
     dev: false
 
-  /@sap/artifact-management-types@1.36.2:
-    resolution: {integrity: sha512-wvkco2gcAj4XnuA9JPEPwSU6t9VIy7orTx6Da7b8dfFG/n7dZP4TMXMxGVs01f2qmoTrX+mYgQsNI4IRKKUElQ==}
+  /@sap/artifact-management-types@1.37.0:
+    resolution: {integrity: sha512-fpWSq1BRHiHLIANGlVUu17z7Fori1lhWyrNYLpgSF5VpDQraEna7rMVY41wo2vIJcfSc8AlO61/n31dub6CN2A==}
     dependencies:
-      '@sap/artifact-management-base-types': 1.36.2
+      '@sap/artifact-management-base-types': 1.37.0
     dev: false
 
-  /@sap/artifact-management@1.36.2:
-    resolution: {integrity: sha512-wQD//ebuFwDn7QTrfWcnN95mFCtwDLuUY6QaJ4H4ytUa+ItzErMFwPUf3AkdQcjfeoXp89byJ/4Zc9ZBJd0K5g==}
+  /@sap/artifact-management@1.37.0:
+    resolution: {integrity: sha512-UBAO8UMiZYLdEIAiWOqRk7L44qzQ9TjCciaV+qQr521cy82b9YUjwAi1NwvhurGbekCGJsTinfF9ANwEdJrrzg==}
     hasBin: true
     dependencies:
-      '@sap/artifact-management-base': 1.36.2
-      '@sap/artifact-management-fioriplugin': 1.36.2
-      '@sap/artifact-management-hanaplugin': 1.36.2
-      '@sap/artifact-management-mdkplugin': 1.36.2
+      '@sap/artifact-management-base': 1.37.0
+      '@sap/artifact-management-fioriplugin': 1.37.0
+      '@sap/artifact-management-hanaplugin': 1.37.0
+      '@sap/artifact-management-mdkplugin': 1.37.0
       ajv: 8.12.0
       chokidar: 3.6.0
       js-yaml: 4.1.0
@@ -2329,7 +2333,7 @@ packages:
       '@typescript-eslint/experimental-utils': 4.33.0(eslint@7.30.0)(typescript@4.5.2)
       '@typescript-eslint/parser': 4.33.0(eslint@7.30.0)(typescript@4.5.2)
       '@typescript-eslint/scope-manager': 4.33.0
-      debug: 4.3.2
+      debug: 4.3.2(supports-color@8.1.1)
       eslint: 7.30.0
       functional-red-black-tree: 1.0.1
       ignore: 5.1.9
@@ -2372,7 +2376,7 @@ packages:
       '@typescript-eslint/scope-manager': 4.33.0
       '@typescript-eslint/types': 4.33.0
       '@typescript-eslint/typescript-estree': 4.33.0(typescript@4.5.2)
-      debug: 4.3.2
+      debug: 4.3.2(supports-color@8.1.1)
       eslint: 7.30.0
       typescript: 4.5.2
     transitivePeerDependencies:
@@ -2703,9 +2707,6 @@ packages:
 
   /ajv-formats@2.1.1:
     resolution: {integrity: sha512-Wx0Kx52hxE7C18hkMEggYlEifqWZtYaRgouJor+WMdPnQyEK13vgEWyVNup7SoeeoLMsr4kf5h6dOW11I15MUA==}
-    peerDependenciesMeta:
-      ajv:
-        optional: true
     dependencies:
       ajv: 8.12.0
     dev: true
@@ -3620,7 +3621,7 @@ packages:
     engines: {node: '>= 0.6'}
     dev: false
 
-  /copy-webpack-plugin@11.0.0:
+  /copy-webpack-plugin@11.0.0(webpack@5.61.0):
     resolution: {integrity: sha512-fX2MWpamkW0hZxMEg0+mYnA40LTosOSa5TqZ9GYIBzyJa9C3QUaMPSE2xAi/buNr8u89SfD9wHSQVBzrRa/SOQ==}
     engines: {node: '>= 14.15.0'}
     peerDependencies:
@@ -3632,6 +3633,7 @@ packages:
       normalize-path: 3.0.0
       schema-utils: 4.0.0
       serialize-javascript: 6.0.0
+      webpack: 5.61.0(webpack-cli@4.9.1)
     dev: true
 
   /core-util-is@1.0.2:
@@ -3828,18 +3830,6 @@ packages:
     dependencies:
       ms: 2.0.0
     dev: false
-
-  /debug@4.3.2:
-    resolution: {integrity: sha512-mOp8wKcvj7XxC78zLgw/ZA+6TSgkoE2C/ienthhRD298T7UNwAg9diBpLRxC0mOezLl4B0xV7M0cCO6P/O0Xhw==}
-    engines: {node: '>=6.0'}
-    peerDependencies:
-      supports-color: '*'
-    peerDependenciesMeta:
-      supports-color:
-        optional: true
-    dependencies:
-      ms: 2.1.2
-    dev: true
 
   /debug@4.3.2(supports-color@8.1.1):
     resolution: {integrity: sha512-mOp8wKcvj7XxC78zLgw/ZA+6TSgkoE2C/ienthhRD298T7UNwAg9diBpLRxC0mOezLl4B0xV7M0cCO6P/O0Xhw==}
@@ -4345,7 +4335,7 @@ packages:
       ajv: 6.12.6
       chalk: 4.1.2
       cross-spawn: 7.0.3
-      debug: 4.3.2
+      debug: 4.3.2(supports-color@8.1.1)
       doctrine: 3.0.0
       enquirer: 2.3.6
       escape-string-regexp: 4.0.0
@@ -8321,13 +8311,14 @@ packages:
     engines: {node: '>=0.6.19'}
     dev: true
 
-  /string-replace-loader@3.1.0:
+  /string-replace-loader@3.1.0(webpack@5.61.0):
     resolution: {integrity: sha512-5AOMUZeX5HE/ylKDnEa/KKBqvlnFmRZudSOjVJHxhoJg9QYTwl1rECx7SLR8BBH7tfxb4Rp7EM2XVfQFxIhsbQ==}
     peerDependencies:
       webpack: ^5
     dependencies:
       loader-utils: 2.0.4
       schema-utils: 3.1.1
+      webpack: 5.61.0(webpack-cli@4.9.1)
     dev: true
 
   /string-similarity@4.0.4:
@@ -8712,13 +8703,15 @@ packages:
     resolution: {integrity: sha512-BB5qjvHYgYgOB/CaoA1Cy/B2QNnZ+nVBrJ15VV/AXGWx+AO83k5wgeLOJvkSLoKKavvH/M8Wj4ZbgROjsuYwzw==}
     dev: false
 
-  /ts-essentials@9.1.2:
+  /ts-essentials@9.1.2(typescript@4.5.2):
     resolution: {integrity: sha512-EaSmXsAhEiirrTY1Oaa7TSpei9dzuCuFPmjKRJRPamERYtfaGS8/KpOSbjergLz/Y76/aZlV9i/krgzsuWEBbg==}
     peerDependencies:
       typescript: '>=4.1.0'
+    dependencies:
+      typescript: 4.5.2
     dev: false
 
-  /ts-loader@9.4.2:
+  /ts-loader@9.4.2(typescript@4.5.2)(webpack@5.61.0):
     resolution: {integrity: sha512-OmlC4WVmFv5I0PpaxYb+qGeGOdm5giHU7HwDDUjw59emP2UYMHy9fFSDcYgSNoH8sXcj4hGCSEhlDZ9ULeDraA==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
@@ -8729,6 +8722,8 @@ packages:
       enhanced-resolve: 5.8.3
       micromatch: 4.0.4
       semver: 7.3.5
+      typescript: 4.5.2
+      webpack: 5.61.0(webpack-cli@4.9.1)
     dev: true
 
   /ts-node@10.9.1(@types/node@16.11.10)(typescript@4.9.5):
@@ -8900,7 +8895,6 @@ packages:
     resolution: {integrity: sha512-5BlMof9H1yGt0P8/WF+wPNw6GfctgGjXp5hkblpyT+8rkASSmkUKMXrxR0Xg8ThVCi/JnHQiKXeBaEwCeQwMFw==}
     engines: {node: '>=4.2.0'}
     hasBin: true
-    dev: true
 
   /typescript@4.9.5:
     resolution: {integrity: sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==}
@@ -9646,7 +9640,3 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
     dev: true
-
-settings:
-  autoInstallPeers: false
-  excludeLinksFromLockfile: false
