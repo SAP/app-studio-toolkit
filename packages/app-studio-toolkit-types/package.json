@@ -22,7 +22,7 @@
   "dependencies": {
     "@sap/artifact-management-types": "1.37.0",
     "@types/vscode": "1.75.0",
-    "@vscode-logging/types": "0.1.4",
+    "@vscode-logging/types": "2.0.0",
     "type-fest": "2.11.1"
   }
 }
