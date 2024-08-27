@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.18.4](https://github.com/SAP/app-studio-toolkit/compare/v1.18.3...v1.18.4) (2024-08-27)
+
+### Bug Fixes
+
+- [DEVXBUGS-11871] support for URI object as parameters for `basctl` command ([#336](https://github.com/SAP/app-studio-toolkit/issues/336)) ([4ba3c3e](https://github.com/SAP/app-studio-toolkit/commit/4ba3c3ea1e4ee25dce14d00981f26bc172451ea6))
+
 ## [1.18.3](https://github.com/SAP/app-studio-toolkit/compare/v1.18.2...v1.18.3) (2024-08-26)
 
 **Note:** Version bump only for package root
