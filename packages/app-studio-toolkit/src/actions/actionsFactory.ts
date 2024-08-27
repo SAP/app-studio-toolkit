@@ -62,7 +62,15 @@ export class ActionsFactory {
     const paramsProp = getParamsProp(fromSettings);
     const commandParams = jsonAction[paramsProp];
     if (commandParams) {
-      commandAction.params = commandParams;
+      commandAction.params = commandParams.map((param: string) => {
+        try {
+          // convert string to Uri if schema is present
+          return Uri.parse(param, true);
+        } catch (error) {
+          // if not possible, return the origin string
+          return param;
+        }
+      });
     }
     return commandAction;
   }
