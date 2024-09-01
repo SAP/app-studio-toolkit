@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.18.5](https://github.com/SAP/app-studio-toolkit/compare/v1.18.4...v1.18.5) (2024-09-01)
+
+### Bug Fixes
+
+- [DEVXBUGS-11661] error is shown if disttags are used in package.json ([#337](https://github.com/SAP/app-studio-toolkit/issues/337)) ([16c974d](https://github.com/SAP/app-studio-toolkit/commit/16c974dff78fd21116556a69789352e2185fe3fd))
+
 ## [1.18.4](https://github.com/SAP/app-studio-toolkit/compare/v1.18.3...v1.18.4) (2024-08-27)
 
 ### Bug Fixes

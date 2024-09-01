@@ -328,7 +328,7 @@ importers:
   packages/vscode-dependencies-validation:
     dependencies:
       '@sap-devx/npm-dependencies-validation':
-        specifier: ^1.8.3
+        specifier: ^1.18.5
         version: link:../npm-dependencies-validation
       '@vscode-logging/wrapper':
         specifier: 2.0.0
