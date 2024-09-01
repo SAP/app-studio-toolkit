@@ -3,7 +3,11 @@ import { resolve } from "path";
 import { noop } from "lodash";
 import { createSandbox, SinonSpy } from "sinon";
 import { OutputChannel } from "../../src/types";
-import { getNPM, invokeNPMCommand } from "../../src/utils/npmUtil";
+import {
+  getNPM,
+  invokeNPMCommand,
+  retrieveDistTags,
+} from "../../src/utils/npmUtil";
 import { npmSpawnTestTimeout } from "../config";
 
 describe("npmUtil unit test", () => {
@@ -65,6 +69,38 @@ describe("npmUtil unit test", () => {
         value: "linux",
       });
       expect(getNPM()).to.be.equal("npm");
+    });
+  });
+
+  describe("retrieveDistTags", () => {
+    it("not cached, disttags found", async () => {
+      expect(
+        await retrieveDistTags({
+          depPkgJsonPath: __dirname,
+          depName: "webpack",
+          expectedVerRange: "legacy",
+        })
+      ).be.equal("1.15.0");
+    });
+
+    it("cached, disttags not found", async () => {
+      expect(
+        await retrieveDistTags({
+          depPkgJsonPath: __dirname,
+          depName: "webpack",
+          expectedVerRange: "webpack-1",
+        })
+      ).be.equal("webpack-1");
+    });
+
+    it("not existed, disttags not found", async () => {
+      expect(
+        await retrieveDistTags({
+          depPkgJsonPath: __dirname,
+          depName: "not-existing",
+          expectedVerRange: "next",
+        })
+      ).be.equal("next");
     });
   });
 });
