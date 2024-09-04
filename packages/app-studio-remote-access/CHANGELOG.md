@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.18.3](https://github.com/SAP/app-studio-toolkit/compare/v1.18.2...v1.18.3) (2024-08-26)
+
+**Note:** Version bump only for package app-studio-remote-access
+
 # [1.16.0](https://github.com/SAP/app-studio-toolkit/compare/v1.15.23...v1.16.0) (2024-04-01)
 
 ### Features

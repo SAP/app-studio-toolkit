@@ -10,6 +10,7 @@ import {
   PackageJsonDeps,
   SemVerRange,
 } from "./types";
+import { retrieveDistTags } from "./utils/npmUtil";
 
 const NO_ISSUES = undefined;
 const PKG_JSON_DEFAULT_DEPS: PackageJsonDeps = {
@@ -136,11 +137,23 @@ async function validateMismatchDep(opts: {
     return NO_ISSUES;
   }
 
-  if (!satisfies(actualVersion, opts.expectedVerRange)) {
+  let expectedVerRange = opts.expectedVerRange;
+  let isIssie = false;
+  if (!satisfies(actualVersion, expectedVerRange)) {
+    // assume it's a disttag, attempt to get the referenced version
+    expectedVerRange = await retrieveDistTags(opts);
+    if (
+      expectedVerRange === opts.expectedVerRange ||
+      !satisfies(actualVersion, expectedVerRange)
+    ) {
+      isIssie = true;
+    }
+  }
+  if (isIssie) {
     return {
       type: "mismatch" as "mismatch",
       name: opts.depName,
-      expected: opts.expectedVerRange,
+      expected: expectedVerRange,
       actual: actualVersion,
       isDev: opts.isDev,
     };

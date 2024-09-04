@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.18.3](https://github.com/SAP/app-studio-toolkit/compare/v1.18.2...v1.18.3) (2024-08-26)
+
+**Note:** Version bump only for package vscode-deps-upgrade-tool
+
+## [1.18.2](https://github.com/SAP/app-studio-toolkit/compare/v1.18.1...v1.18.2) (2024-08-20)
+
+**Note:** Version bump only for package vscode-deps-upgrade-tool
+
+## [1.18.1](https://github.com/SAP/app-studio-toolkit/compare/v1.18.0...v1.18.1) (2024-07-17)
+
+**Note:** Version bump only for package vscode-deps-upgrade-tool
+
+# [1.18.0](https://github.com/SAP/app-studio-toolkit/compare/v1.17.1...v1.18.0) (2024-07-07)
+
+### Bug Fixes
+
+- revert release v1.18.0 ([#329](https://github.com/SAP/app-studio-toolkit/issues/329)) ([15f24aa](https://github.com/SAP/app-studio-toolkit/commit/15f24aa0bd1b7c9a387e21d4fb255f8a5d24a9be))
+
 ## [1.17.1](https://github.com/SAP/app-studio-toolkit/compare/v1.17.0...v1.17.1) (2024-06-03)
 
 **Note:** Version bump only for package vscode-deps-upgrade-tool

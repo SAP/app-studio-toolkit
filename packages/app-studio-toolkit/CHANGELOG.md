@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.18.4](https://github.com/SAP/app-studio-toolkit/compare/v1.18.3...v1.18.4) (2024-08-27)
+
+### Bug Fixes
+
+- [DEVXBUGS-11871] support for URI object as parameters for `basctl` command ([#336](https://github.com/SAP/app-studio-toolkit/issues/336)) ([4ba3c3e](https://github.com/SAP/app-studio-toolkit/commit/4ba3c3ea1e4ee25dce14d00981f26bc172451ea6))
+
+## [1.18.3](https://github.com/SAP/app-studio-toolkit/compare/v1.18.2...v1.18.3) (2024-08-26)
+
+**Note:** Version bump only for package app-studio-toolkit
+
+## [1.18.2](https://github.com/SAP/app-studio-toolkit/compare/v1.18.1...v1.18.2) (2024-08-20)
+
+**Note:** Version bump only for package app-studio-toolkit
+
+## [1.18.1](https://github.com/SAP/app-studio-toolkit/compare/v1.18.0...v1.18.1) (2024-07-17)
+
+**Note:** Version bump only for package app-studio-toolkit
+
+# [1.18.0](https://github.com/SAP/app-studio-toolkit/compare/v1.17.1...v1.18.0) (2024-07-07)
+
+### Bug Fixes
+
+- revert release v1.18.0 ([#329](https://github.com/SAP/app-studio-toolkit/issues/329)) ([15f24aa](https://github.com/SAP/app-studio-toolkit/commit/15f24aa0bd1b7c9a387e21d4fb255f8a5d24a9be))
+
+### Features
+
+- add hasHanaCapabilities ([#321](https://github.com/SAP/app-studio-toolkit/issues/321)) ([77e17ee](https://github.com/SAP/app-studio-toolkit/commit/77e17ee16ff592cc97695b03ace79a9615f39be2))
+
 ## [1.17.1](https://github.com/SAP/app-studio-toolkit/compare/v1.17.0...v1.17.1) (2024-06-03)
 
 **Note:** Version bump only for package app-studio-toolkit

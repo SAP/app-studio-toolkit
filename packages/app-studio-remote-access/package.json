@@ -1,7 +1,7 @@
 {
   "name": "app-studio-remote-access",
   "displayName": "Remote Access for SAP Business Application Studio",
-  "version": "1.16.0",
+  "version": "1.18.3",
   "private": true,
   "description": "Allows you to connect to SAP Business Application Studio dev spaces directly from a local Visual Studio Code desktop application.",
   "categories": [
@@ -95,8 +95,8 @@
     "@microsoft/dev-tunnels-ssh": "3.11.2",
     "@microsoft/dev-tunnels-ssh-keys": "3.11.2",
     "@microsoft/dev-tunnels-ssh-tcp": "3.11.2",
-    "@sap/bas-sdk": "3.3.2",
-    "@vscode-logging/wrapper": "1.0.1",
+    "@sap/bas-sdk": "^3.8.9",
+    "@vscode-logging/wrapper": "2.0.0",
     "lodash": "4.17.21",
     "ssh-config": "4.2.1",
     "websocket": "1.0.34"

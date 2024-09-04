@@ -17,7 +17,7 @@ jobs:
     strategy:
       matrix:
         node_version:
-          - 18.x
+          - 20.x
       # https://stackoverflow.com/questions/61070925/github-actions-disable-auto-cancel-when-job-fails
       fail-fast: false
 
@@ -28,7 +28,7 @@ jobs:
         with:
           node-version: ${{ matrix.node_version }}
 
-      - uses: pnpm/action-setup@v2.2.2
+      - uses: pnpm/action-setup@v2
         with:
           version: 7
 

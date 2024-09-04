@@ -1,9 +1,10 @@
 import { expect } from "chai";
 import * as sinon from "sinon";
 import { mockVscode } from "./mockUtil";
+import { URL } from "node:url";
 
 const testVscode = {
-  Uri: { parse: () => "" },
+  Uri: { parse: (v: string) => (v ? new URL(v) : "") },
 };
 
 mockVscode(testVscode, "dist/src/actions/actionsFactory.js");
@@ -32,13 +33,13 @@ describe("actionsFactory test", () => {
       const actionJson = {
         actionType: "COMMAND",
         commandName: "myCommand",
-        commandParams: ["param1", "param2"],
+        commandParams: ["param1", "file:///home/path/param2.txt"],
       };
       const action = ActionsFactory.createAction(actionJson);
       expect((action as ICommandAction).name).to.be.equal("myCommand");
       expect((action as ICommandAction).params).to.deep.equal([
         "param1",
-        "param2",
+        new URL(actionJson.commandParams[1]),
       ]);
     });
 
