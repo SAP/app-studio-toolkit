@@ -1,9 +1,5 @@
 lockfileVersion: '6.0'
 
-settings:
-  autoInstallPeers: false
-  excludeLinksFromLockfile: false
-
 importers:
 
   .:
@@ -123,7 +119,7 @@ importers:
   examples/sample-action-client:
     devDependencies:
       '@sap-devx/app-studio-toolkit-types':
-        specifier: ^1.18.3
+        specifier: ^1.18.6
         version: link:../../packages/app-studio-toolkit-types
 
   examples/vscode-using-upgrade-tool: {}
@@ -131,7 +127,7 @@ importers:
   examples/vscode-using-workspace-api:
     devDependencies:
       '@sap-devx/app-studio-toolkit-types':
-        specifier: ^1.18.3
+        specifier: ^1.18.6
         version: link:../../packages/app-studio-toolkit-types
 
   packages/app-studio-remote-access:
@@ -172,7 +168,7 @@ importers:
         version: 0.1.4
       copy-webpack-plugin:
         specifier: 11.0.0
-        version: 11.0.0(webpack@5.94.0)
+        version: 11.0.0
       fs-extra:
         specifier: 11.1.1
         version: 11.1.1
@@ -184,16 +180,16 @@ importers:
         version: 3.0.0
       string-replace-loader:
         specifier: 3.1.0
-        version: 3.1.0(webpack@5.94.0)
+        version: 3.1.0
       ts-loader:
         specifier: 9.4.2
-        version: 9.4.2(typescript@4.5.2)(webpack@5.94.0)
+        version: 9.4.2
 
   packages/app-studio-toolkit:
     dependencies:
       '@sap/artifact-management':
-        specifier: 1.37.0
-        version: 1.37.0
+        specifier: 1.38.0
+        version: 1.38.0
       '@sap/bas-sdk':
         specifier: ^3.8.9
         version: 3.8.9
@@ -238,7 +234,7 @@ importers:
         version: 1.0.34
     devDependencies:
       '@sap-devx/app-studio-toolkit-types':
-        specifier: ^1.18.3
+        specifier: ^1.18.6
         version: link:../app-studio-toolkit-types
       '@types/body-parser':
         specifier: 1.19.2
@@ -269,7 +265,7 @@ importers:
         version: 0.1.4
       copy-webpack-plugin:
         specifier: 11.0.0
-        version: 11.0.0(webpack@5.94.0)
+        version: 11.0.0
       fs-extra:
         specifier: 11.1.1
         version: 11.1.1
@@ -281,18 +277,18 @@ importers:
         version: 3.0.0
       string-replace-loader:
         specifier: 3.1.0
-        version: 3.1.0(webpack@5.94.0)
+        version: 3.1.0
       ts-loader:
         specifier: 9.4.2
-        version: 9.4.2(typescript@4.5.2)(webpack@5.94.0)
+        version: 9.4.2
 
   packages/app-studio-toolkit-themes: {}
 
   packages/app-studio-toolkit-types:
     dependencies:
       '@sap/artifact-management-types':
-        specifier: 1.37.0
-        version: 1.37.0
+        specifier: 1.38.0
+        version: 1.38.0
       '@types/vscode':
         specifier: 1.75.0
         version: 1.75.0
@@ -344,7 +340,7 @@ importers:
         version: 4.17.21
       ts-essentials:
         specifier: 9.1.2
-        version: 9.1.2(typescript@4.5.2)
+        version: 9.1.2
       vscode-languageserver-textdocument:
         specifier: 1.0.4
         version: 1.0.4
@@ -396,7 +392,7 @@ importers:
         version: 3.0.0
     devDependencies:
       '@sap-devx/app-studio-toolkit-types':
-        specifier: ^1.18.3
+        specifier: ^1.18.6
         version: link:../app-studio-toolkit-types
       '@types/semver':
         specifier: ^7.3.12
@@ -456,7 +452,7 @@ packages:
       '@babel/traverse': 7.23.6
       '@babel/types': 7.16.0
       convert-source-map: 1.8.0
-      debug: 4.3.6(supports-color@8.1.1)
+      debug: 4.3.6
       gensync: 1.0.0-beta.2
       json5: 2.2.0
       semver: 6.3.0
@@ -682,7 +678,7 @@ packages:
       '@babel/helper-split-export-declaration': 7.22.6
       '@babel/parser': 7.23.6
       '@babel/types': 7.23.6
-      debug: 4.3.6(supports-color@8.1.1)
+      debug: 4.3.6
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
@@ -899,7 +895,7 @@ packages:
     engines: {node: ^10.12.0 || >=12.0.0}
     dependencies:
       ajv: 6.12.6
-      debug: 4.3.4
+      debug: 4.3.6
       espree: 7.3.1
       globals: 13.12.0
       ignore: 4.0.6
@@ -920,7 +916,7 @@ packages:
     engines: {node: '>=10.10.0'}
     dependencies:
       '@humanwhocodes/object-schema': 1.2.1
-      debug: 4.3.4
+      debug: 4.3.6
       minimatch: 3.1.2
     transitivePeerDependencies:
       - supports-color
@@ -1014,7 +1010,7 @@ packages:
   /@kwsites/file-exists@1.1.1:
     resolution: {integrity: sha512-m9/5YGR18lIwxSFDwfE3oA7bWuq9kdau6ugN4H2rJeyhFQZcG9AgSHkQtSD15a8WvTgfz9aikZMrKPHvbpqFiw==}
     dependencies:
-      debug: 4.3.6(supports-color@8.1.1)
+      debug: 4.3.6
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -1919,8 +1915,8 @@ packages:
       '@octokit/openapi-types': 11.2.0
     dev: true
 
-  /@sap/artifact-management-base-types@1.37.0:
-    resolution: {integrity: sha512-pZVMVMx9Vz5B4WcE3kqwn3nJmulbg8As2ZL6dMQu7dKlwU40AwbPgawwfPhEqImXSpWG+oC4B+N7QahiHMH2jg==}
+  /@sap/artifact-management-base-types@1.38.0:
+    resolution: {integrity: sha512-YUB482G6S4e5Ww/UFmEF5nmTKt4PS5OksS3mT7NqigLaS5eGzfbAxjjzc4kXNVti+FZRobuE1Gh7yiYKHG26Tw==}
     dependencies:
       '@types/node': 14.14.6
       '@types/vscode': 1.52.0
@@ -1928,8 +1924,8 @@ packages:
       vscode-languageserver-types: 3.16.0
     dev: false
 
-  /@sap/artifact-management-base@1.37.0:
-    resolution: {integrity: sha512-aBDaeSRZZmTMYSOAIazgJMp/DaCbHyX28ElxK9ZdOIs4MNAkH/UCgJm9hRlrHPusQlBPBez0Q2ko/29sBiyfYA==}
+  /@sap/artifact-management-base@1.38.0:
+    resolution: {integrity: sha512-HilQ7rfkvjT1elOXWJn2frKcBO48523bF/Bbq7HyZoa/WaUezwjYsxk4tRYY3i8fYcqMgoRLbCxS0FuIuBzqlA==}
     engines: {node: '>=14.14.0'}
     dependencies:
       ejs: 3.1.10
@@ -1943,17 +1939,17 @@ packages:
       winston-transport: 4.5.0
     dev: false
 
-  /@sap/artifact-management-fioriplugin@1.37.0:
-    resolution: {integrity: sha512-rqRjRvbP7p8c02J/9xEzFmDNIG27Uvwh9RV4dmoFV6gu3um2QMVe1hAIOTCXoiLOJvjWKBWvKaPE8O9rgqANOg==}
+  /@sap/artifact-management-fioriplugin@1.38.0:
+    resolution: {integrity: sha512-ZA6liIne2ByutuTjr4WeYCg8kYdCrd1ytvlO51TFf1JlAkR4AKGUvBgStvex8OXg6NIRgJxFahUhQAxUrTS7pw==}
     dependencies:
-      '@sap/artifact-management-base': 1.37.0
+      '@sap/artifact-management-base': 1.38.0
       xml2js: 0.6.2
     dev: false
 
-  /@sap/artifact-management-hanaplugin@1.37.0:
-    resolution: {integrity: sha512-CmV4z/y3Bd9fGzIdyQQ1vxwrLR3QlmHFYDFNHTpj9fLE9Tov4teyTX6HXvYu+uo3KjNStZwfvbNhuTYe4KYZkA==}
+  /@sap/artifact-management-hanaplugin@1.38.0:
+    resolution: {integrity: sha512-khPuBC8A1W/cnL+y3qtA2zlf8eWgZe5+yce7iF2edENN9kr+3uQH+gbY/Oyps1qxPfhg0caew5kiy7Dux4KAug==}
     dependencies:
-      '@sap/artifact-management-base': 1.37.0
+      '@sap/artifact-management-base': 1.38.0
       fast-glob: 3.3.2
       glob: 7.2.0
       jsdom: 22.1.0
@@ -1965,32 +1961,32 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@sap/artifact-management-mdkplugin@1.37.0:
-    resolution: {integrity: sha512-9yAxZ4+OUqT0Fumf/lAX6+lJ0iDngA3B6rw7bCGNWmdITWaieAkUFGdYkN5sDLEFVQPPE6/dfSy2VceE23KKgw==}
+  /@sap/artifact-management-mdkplugin@1.38.0:
+    resolution: {integrity: sha512-x3xC5u9FyooMHffQBY4jYDY17Cnkh8Z1P8S9xzJDDclbAmqLXZmVQVKeO/w0RMwQwSB5oVRcetB4x/kSSVD8YQ==}
     dependencies:
-      '@sap/artifact-management-base': 1.37.0
+      '@sap/artifact-management-base': 1.38.0
     dev: false
 
-  /@sap/artifact-management-types@1.37.0:
-    resolution: {integrity: sha512-fpWSq1BRHiHLIANGlVUu17z7Fori1lhWyrNYLpgSF5VpDQraEna7rMVY41wo2vIJcfSc8AlO61/n31dub6CN2A==}
+  /@sap/artifact-management-types@1.38.0:
+    resolution: {integrity: sha512-YSAtv21LZLNoaGFoezbpbTifsO+aqzPIc2iTmEg2CCzKEqh+9fv23VO6bMN6i7ikUEboYhckOFDYVSFG84kiiQ==}
     dependencies:
-      '@sap/artifact-management-base-types': 1.37.0
+      '@sap/artifact-management-base-types': 1.38.0
     dev: false
 
-  /@sap/artifact-management@1.37.0:
-    resolution: {integrity: sha512-UBAO8UMiZYLdEIAiWOqRk7L44qzQ9TjCciaV+qQr521cy82b9YUjwAi1NwvhurGbekCGJsTinfF9ANwEdJrrzg==}
+  /@sap/artifact-management@1.38.0:
+    resolution: {integrity: sha512-HuRzdS+inv2rUa5l4kRhy5SP6MZhx5C0KNyqvfPhCyIEb+ZlDWzGjBHZ/Of3vmn8C1jYmQoFE9aYPHvNr+DISg==}
     hasBin: true
     dependencies:
-      '@sap/artifact-management-base': 1.37.0
-      '@sap/artifact-management-fioriplugin': 1.37.0
-      '@sap/artifact-management-hanaplugin': 1.37.0
-      '@sap/artifact-management-mdkplugin': 1.37.0
+      '@sap/artifact-management-base': 1.38.0
+      '@sap/artifact-management-fioriplugin': 1.38.0
+      '@sap/artifact-management-hanaplugin': 1.38.0
+      '@sap/artifact-management-mdkplugin': 1.38.0
       ajv: 8.12.0
       chokidar: 3.6.0
       js-yaml: 4.1.0
       jsdom: 22.1.0
       lodash: 4.17.21
-      micromatch: 4.0.6
+      micromatch: 4.0.8
       simple-git: 3.19.1
       uuid: 9.0.1
       vscode-languageserver-types: 3.17.3
@@ -2256,7 +2252,7 @@ packages:
       '@typescript-eslint/experimental-utils': 4.33.0(eslint@7.30.0)(typescript@4.5.2)
       '@typescript-eslint/parser': 4.33.0(eslint@7.30.0)(typescript@4.5.2)
       '@typescript-eslint/scope-manager': 4.33.0
-      debug: 4.3.2(supports-color@8.1.1)
+      debug: 4.3.2
       eslint: 7.30.0
       functional-red-black-tree: 1.0.1
       ignore: 5.1.9
@@ -2299,7 +2295,7 @@ packages:
       '@typescript-eslint/scope-manager': 4.33.0
       '@typescript-eslint/types': 4.33.0
       '@typescript-eslint/typescript-estree': 4.33.0(typescript@4.5.2)
-      debug: 4.3.2(supports-color@8.1.1)
+      debug: 4.3.2
       eslint: 7.30.0
       typescript: 4.5.2
     transitivePeerDependencies:
@@ -2330,7 +2326,7 @@ packages:
     dependencies:
       '@typescript-eslint/types': 4.33.0
       '@typescript-eslint/visitor-keys': 4.33.0
-      debug: 4.3.4
+      debug: 4.3.6
       globby: 11.0.4
       is-glob: 4.0.3
       semver: 7.6.3
@@ -2621,7 +2617,7 @@ packages:
     resolution: {integrity: sha512-RZNwNclF7+MS/8bDg70amg32dyeZGZxiDuQmZxKLAlQjr3jGyLx+4Kkk58UO7D2QdgFIQCovuSuZESne6RG6XQ==}
     engines: {node: '>= 6.0.0'}
     dependencies:
-      debug: 4.3.6(supports-color@8.1.1)
+      debug: 4.3.6
     transitivePeerDependencies:
       - supports-color
 
@@ -2629,7 +2625,7 @@ packages:
     resolution: {integrity: sha512-+V/rGa3EuU74H6wR04plBb7Ks10FbtUQgRj/FQOG7uUIEuaINI+AiqJR1k6t3SVNs7o7ZjIdus6706qqzVq8jQ==}
     engines: {node: '>= 8.0.0'}
     dependencies:
-      debug: 4.3.6(supports-color@8.1.1)
+      debug: 4.3.6
       depd: 1.1.2
       humanize-ms: 1.2.1
     transitivePeerDependencies:
@@ -2646,6 +2642,9 @@ packages:
 
   /ajv-formats@2.1.1:
     resolution: {integrity: sha512-Wx0Kx52hxE7C18hkMEggYlEifqWZtYaRgouJor+WMdPnQyEK13vgEWyVNup7SoeeoLMsr4kf5h6dOW11I15MUA==}
+    peerDependenciesMeta:
+      ajv:
+        optional: true
     dependencies:
       ajv: 8.12.0
     dev: true
@@ -2967,7 +2966,7 @@ packages:
     dependencies:
       caniuse-lite: 1.0.30001472
       electron-to-chromium: 1.4.1
-      escalade: 3.1.1
+      escalade: 3.1.2
       node-releases: 2.0.1
       picocolors: 1.0.0
     dev: true
@@ -3583,7 +3582,7 @@ packages:
     engines: {node: '>= 0.6'}
     dev: false
 
-  /copy-webpack-plugin@11.0.0(webpack@5.94.0):
+  /copy-webpack-plugin@11.0.0:
     resolution: {integrity: sha512-fX2MWpamkW0hZxMEg0+mYnA40LTosOSa5TqZ9GYIBzyJa9C3QUaMPSE2xAi/buNr8u89SfD9wHSQVBzrRa/SOQ==}
     engines: {node: '>= 14.15.0'}
     peerDependencies:
@@ -3595,7 +3594,6 @@ packages:
       normalize-path: 3.0.0
       schema-utils: 4.0.0
       serialize-javascript: 6.0.0
-      webpack: 5.94.0(webpack-cli@5.1.4)
     dev: true
 
   /core-util-is@1.0.2:
@@ -3802,6 +3800,18 @@ packages:
       ms: 2.0.0
     dev: false
 
+  /debug@4.3.2:
+    resolution: {integrity: sha512-mOp8wKcvj7XxC78zLgw/ZA+6TSgkoE2C/ienthhRD298T7UNwAg9diBpLRxC0mOezLl4B0xV7M0cCO6P/O0Xhw==}
+    engines: {node: '>=6.0'}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
+    dependencies:
+      ms: 2.1.2
+    dev: true
+
   /debug@4.3.2(supports-color@8.1.1):
     resolution: {integrity: sha512-mOp8wKcvj7XxC78zLgw/ZA+6TSgkoE2C/ienthhRD298T7UNwAg9diBpLRxC0mOezLl4B0xV7M0cCO6P/O0Xhw==}
     engines: {node: '>=6.0'}
@@ -3825,6 +3835,18 @@ packages:
         optional: true
     dependencies:
       ms: 2.1.2
+    dev: false
+
+  /debug@4.3.6:
+    resolution: {integrity: sha512-O/09Bd4Z1fBrU4VzkhFqVgpPzaGbw6Sm9FEkBT1A/YBXQFGuuSxa1dN2nxgxS34JmKXqYx8CZAwEVoJFImUXIg==}
+    engines: {node: '>=6.0'}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
+    dependencies:
+      ms: 2.1.2
 
   /debug@4.3.6(supports-color@8.1.1):
     resolution: {integrity: sha512-O/09Bd4Z1fBrU4VzkhFqVgpPzaGbw6Sm9FEkBT1A/YBXQFGuuSxa1dN2nxgxS34JmKXqYx8CZAwEVoJFImUXIg==}
@@ -3837,6 +3859,7 @@ packages:
     dependencies:
       ms: 2.1.2
       supports-color: 8.1.1
+    dev: true
 
   /debuglog@1.0.1:
     resolution: {integrity: sha1-qiT/uaw9+aI1GDfPstJ5NgzXhJI=}
@@ -4241,11 +4264,6 @@ packages:
       ext: 1.7.0
     dev: false
 
-  /escalade@3.1.1:
-    resolution: {integrity: sha512-k0er2gUkLf8O0zKJiAhmkTnJlTvINGv7ygDNPbeIsX/TJjGJZHuh9B2UxbsaEkmlEo9MfhrSzmhIlhRlI2GXnw==}
-    engines: {node: '>=6'}
-    dev: true
-
   /escalade@3.1.2:
     resolution: {integrity: sha512-ErCHMCae19vR8vQGe50xIsVomy19rg6gFu3+r3jkEO46suLMWBksvVyoGgQV+jOfl84ZSOSlmv6Gxa89PmTGmA==}
     engines: {node: '>=6'}
@@ -4330,7 +4348,7 @@ packages:
       ajv: 6.12.6
       chalk: 4.1.2
       cross-spawn: 7.0.3
-      debug: 4.3.2(supports-color@8.1.1)
+      debug: 4.3.2
       doctrine: 3.0.0
       enquirer: 2.3.6
       escape-string-regexp: 4.0.0
@@ -4548,7 +4566,7 @@ packages:
       '@nodelib/fs.walk': 1.2.8
       glob-parent: 5.1.2
       merge2: 1.4.1
-      micromatch: 4.0.6
+      micromatch: 4.0.8
 
   /fast-json-stable-stringify@2.1.0:
     resolution: {integrity: sha512-lhd/wF+Lk98HZoTCtlVraHtfh5XYijIjalXck7saUtuanSDyLMxnHhSXEDJqHxD7msR8D0uCmqlkwjCV8xvwHw==}
@@ -4726,7 +4744,7 @@ packages:
     dependencies:
       detect-file: 1.0.0
       is-glob: 4.0.3
-      micromatch: 4.0.6
+      micromatch: 4.0.8
       resolve-dir: 1.0.1
     dev: true
 
@@ -5296,7 +5314,7 @@ packages:
     dependencies:
       '@tootallnate/once': 1.1.2
       agent-base: 6.0.2
-      debug: 4.3.6(supports-color@8.1.1)
+      debug: 4.3.6
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -5307,7 +5325,7 @@ packages:
     dependencies:
       '@tootallnate/once': 2.0.0
       agent-base: 6.0.2
-      debug: 4.3.6(supports-color@8.1.1)
+      debug: 4.3.6
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -5336,7 +5354,7 @@ packages:
     engines: {node: '>= 6'}
     dependencies:
       agent-base: 6.0.2
-      debug: 4.3.6(supports-color@8.1.1)
+      debug: 4.3.6
     transitivePeerDependencies:
       - supports-color
 
@@ -5819,7 +5837,7 @@ packages:
     resolution: {integrity: sha512-n3s8EwkdFIJCG3BPKBYvskgXGoy88ARzvegkitk60NxRdwltLOTaH7CUiMRXvwYorl0Q712iEjcWB+fK/MrWVw==}
     engines: {node: '>=10'}
     dependencies:
-      debug: 4.3.4
+      debug: 4.3.6
       istanbul-lib-coverage: 3.2.0
       source-map: 0.6.1
     transitivePeerDependencies:
@@ -6490,6 +6508,14 @@ packages:
     dependencies:
       braces: 3.0.3
       picomatch: 4.0.2
+    dev: true
+
+  /micromatch@4.0.8:
+    resolution: {integrity: sha512-PXwfBhYu0hBCPw8Dn0E+WDYb7af3dSLVWKi3HGv84IdF4TyFoC0ysxFd0Goxw7nSv4T/PzEJQxsYsEiFCKo2BA==}
+    engines: {node: '>=8.6'}
+    dependencies:
+      braces: 3.0.3
+      picomatch: 2.3.1
 
   /miller-rabin@4.0.1:
     resolution: {integrity: sha512-115fLhvZVqWwHPbClyntxEVfVDfl9DLLTuJvq3g2O/Oxi8AiNouAHvDSzHS0viUJc+V5vm3eq91Xwqn9dp4jRA==}
@@ -7503,6 +7529,7 @@ packages:
   /picomatch@4.0.2:
     resolution: {integrity: sha512-M7BAV6Rlcy5u+m6oPhAPFgJTzAioX/6B0DxyvDlo9l8+T3nLKbrczg2WLUyzd45L8RqfUMyGPzekbMvX2Ldkwg==}
     engines: {node: '>=12'}
+    dev: true
 
   /pidtree@0.3.1:
     resolution: {integrity: sha512-qQbW94hLHEqCg7nhby4yRC7G2+jYHY4Rguc2bjw7Uug4GIJuu1tvf2uHaZv5Q8zdt+WKJ6qK1FOI6amaWUo5FA==}
@@ -8217,7 +8244,7 @@ packages:
     dependencies:
       '@kwsites/file-exists': 1.1.1
       '@kwsites/promise-deferred': 1.1.1
-      debug: 4.3.6(supports-color@8.1.1)
+      debug: 4.3.6
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -8281,7 +8308,7 @@ packages:
     engines: {node: '>= 6'}
     dependencies:
       agent-base: 6.0.2
-      debug: 4.3.6(supports-color@8.1.1)
+      debug: 4.3.6
       socks: 2.6.1
     transitivePeerDependencies:
       - supports-color
@@ -8292,7 +8319,7 @@ packages:
     engines: {node: '>= 10'}
     dependencies:
       agent-base: 6.0.2
-      debug: 4.3.6(supports-color@8.1.1)
+      debug: 4.3.6
       socks: 2.6.1
     transitivePeerDependencies:
       - supports-color
@@ -8475,7 +8502,7 @@ packages:
     deprecated: 2.x is no longer supported. Please upgrade to 3.x or higher.
     dependencies:
       date-format: 2.1.0
-      debug: 4.3.6(supports-color@8.1.1)
+      debug: 4.3.6
       fs-extra: 8.1.0
     transitivePeerDependencies:
       - supports-color
@@ -8486,7 +8513,7 @@ packages:
     engines: {node: '>=8.0'}
     dependencies:
       date-format: 4.0.14
-      debug: 4.3.6(supports-color@8.1.1)
+      debug: 4.3.6
       fs-extra: 8.1.0
     transitivePeerDependencies:
       - supports-color
@@ -8502,14 +8529,13 @@ packages:
     engines: {node: '>=0.6.19'}
     dev: true
 
-  /string-replace-loader@3.1.0(webpack@5.94.0):
+  /string-replace-loader@3.1.0:
     resolution: {integrity: sha512-5AOMUZeX5HE/ylKDnEa/KKBqvlnFmRZudSOjVJHxhoJg9QYTwl1rECx7SLR8BBH7tfxb4Rp7EM2XVfQFxIhsbQ==}
     peerDependencies:
       webpack: ^5
     dependencies:
       loader-utils: 2.0.4
       schema-utils: 3.1.1
-      webpack: 5.94.0(webpack-cli@5.1.4)
     dev: true
 
   /string-similarity@4.0.4:
@@ -8676,6 +8702,7 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       has-flag: 4.0.0
+    dev: true
 
   /symbol-tree@3.2.4:
     resolution: {integrity: sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==}
@@ -8899,15 +8926,13 @@ packages:
     resolution: {integrity: sha512-BB5qjvHYgYgOB/CaoA1Cy/B2QNnZ+nVBrJ15VV/AXGWx+AO83k5wgeLOJvkSLoKKavvH/M8Wj4ZbgROjsuYwzw==}
     dev: false
 
-  /ts-essentials@9.1.2(typescript@4.5.2):
+  /ts-essentials@9.1.2:
     resolution: {integrity: sha512-EaSmXsAhEiirrTY1Oaa7TSpei9dzuCuFPmjKRJRPamERYtfaGS8/KpOSbjergLz/Y76/aZlV9i/krgzsuWEBbg==}
     peerDependencies:
       typescript: '>=4.1.0'
-    dependencies:
-      typescript: 4.5.2
     dev: false
 
-  /ts-loader@9.4.2(typescript@4.5.2)(webpack@5.94.0):
+  /ts-loader@9.4.2:
     resolution: {integrity: sha512-OmlC4WVmFv5I0PpaxYb+qGeGOdm5giHU7HwDDUjw59emP2UYMHy9fFSDcYgSNoH8sXcj4hGCSEhlDZ9ULeDraA==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
@@ -8918,8 +8943,6 @@ packages:
       enhanced-resolve: 5.8.3
       micromatch: 4.0.4
       semver: 7.3.5
-      typescript: 4.5.2
-      webpack: 5.94.0(webpack-cli@5.1.4)
     dev: true
 
   /tslib@1.14.1:
@@ -9047,6 +9070,7 @@ packages:
     resolution: {integrity: sha512-5BlMof9H1yGt0P8/WF+wPNw6GfctgGjXp5hkblpyT+8rkASSmkUKMXrxR0Xg8ThVCi/JnHQiKXeBaEwCeQwMFw==}
     engines: {node: '>=4.2.0'}
     hasBin: true
+    dev: true
 
   /uc.micro@1.0.6:
     resolution: {integrity: sha512-8Y75pvTYkLJW2hWQHXxoqRgV7qb9B+9vFEtidML+7koHUFapnVJAZ6cKs+Qjz5Aw3aZWHMC6u0wJE3At+nSGwA==}
@@ -9760,7 +9784,7 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       cliui: 7.0.4
-      escalade: 3.1.1
+      escalade: 3.1.2
       get-caller-file: 2.0.5
       require-directory: 2.1.1
       string-width: 4.2.3
@@ -9802,3 +9826,7 @@ packages:
     resolution: {integrity: sha512-b4JR1PFR10y1mKjhHY9LaGo6tmrgjit7hxVIeAmyMw3jegXR4dhYqLaQF5zMXZxY7tLpMyJeLjr1C4rLmkVe8g==}
     engines: {node: '>=12.20'}
     dev: true
+
+settings:
+  autoInstallPeers: false
+  excludeLinksFromLockfile: false
