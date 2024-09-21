@@ -15,10 +15,20 @@ import {
 } from "../devspace-manager/landscape/landscape";
 import { getLogger } from "../logger/logger";
 import { BasRemoteAuthenticationProvider } from "../authentication/authProvider";
-import { hasJwt } from "../authentication/auth-utils";
+import { getJwt, hasJwt } from "../authentication/auth-utils";
 import { isEmpty } from "lodash";
+import express from "express";
+import axios from "axios";
+import cors from "cors";
+import * as bodyParser from "body-parser";
+import { createHttpTerminator } from "http-terminator";
+import { Server } from "node:http";
+import { devspace } from "@sap/bas-sdk";
+import { URL } from "node:url";
 
 const LBL_ADD_LANDSCAPE = "Add another landscape";
+
+const OUTBOUND_PROXY = "43213";
 
 function getAiLandscape(): string {
   return getLanscapesConfig().find((landscape) => landscape.ai)?.url ?? "";
@@ -95,42 +105,114 @@ export async function setLandscapeForAiPurpose(
   return !!selectedLandscape;
 }
 
-export async function sendRequest(request: any): Promise<any> {
-  async function verifyLandscape(): Promise<boolean> {
-    try {
-      let outboundLandscape = getAiLandscape();
-      if (!outboundLandscape) {
-        // if landscape is not set - it means that user has not selected any landscape
-        if (!(await setLandscapeForAiPurpose())) {
-          throw new Error("AI landscape is not set");
-        }
-        outboundLandscape = getAiLandscape();
+async function verifyLandscape(): Promise<{
+  status: "ok" | "error";
+  jwt?: string;
+  landscape?: string;
+}> {
+  try {
+    let outboundLandscape = getAiLandscape();
+    if (!outboundLandscape) {
+      // if landscape is not set - it means that user has not selected any landscape
+      if (!(await setLandscapeForAiPurpose())) {
+        throw new Error("AI landscape is not set");
       }
-      const found = (await getLandscapes()).filter(
-        (item) => item.url === outboundLandscape
-      );
-      if (isEmpty(found)) {
-        throw new Error("invalid landscape");
-      }
-      if (found[0].isLoggedIn) {
-        return true;
-      }
-      // landscape is set - log in to it
-      await authentication.getSession(
-        BasRemoteAuthenticationProvider.id,
-        [outboundLandscape],
-        { forceNewSession: true } as AuthenticationGetSessionOptions
-      );
-      return hasJwt(outboundLandscape);
-    } catch (error) {
-      getLogger().error(error);
-      return false;
+      outboundLandscape = getAiLandscape();
     }
-  }
-
-  if (await verifyLandscape()) {
-    void window.showInformationMessage(
-      `Sending request to ${getAiLandscape()}`
+    const found = (await getLandscapes()).filter(
+      (item) => item.url === outboundLandscape
     );
+    if (isEmpty(found)) {
+      throw new Error("invalid landscape");
+    }
+    if (found[0].isLoggedIn) {
+      return {
+        status: "ok",
+        jwt: await getJwt(outboundLandscape),
+        landscape: outboundLandscape,
+      };
+    }
+    // landscape is set - log in to it
+    await authentication.getSession(
+      BasRemoteAuthenticationProvider.id,
+      [outboundLandscape],
+      { forceNewSession: true } as AuthenticationGetSessionOptions
+    );
+
+    return (await hasJwt(outboundLandscape))
+      ? {
+          status: "ok",
+          jwt: await getJwt(outboundLandscape),
+          landscape: outboundLandscape,
+        }
+      : { status: "error" };
+  } catch (error) {
+    getLogger().error(error);
+    return { status: "error" };
   }
+}
+
+let server: Server;
+
+export function activateOutboundConnectivityServer(): void {
+  const app = express();
+
+  app.use(cors());
+  app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(bodyParser.json());
+
+  app.all("/secure-outbound-connectivity/llm/*", async (req, res) => {
+    function makeUrl(landscape: string, pathName: string): string {
+      // compose the url to avoid wrong manually construction (e.g. missing slashes)
+      const url = new URL(landscape);
+      url.pathname = pathName;
+      return url.toString();
+    }
+
+    try {
+      const { status, jwt, landscape } = await verifyLandscape();
+      if (status === "error" || !jwt || !landscape) {
+        res.status(401).send("Unauthorized");
+        return;
+      }
+      const tenantUrl = (await devspace.getTenantUrl({ landscape, jwt })) ?? "";
+      const modifiedHeaders = {
+        // ...req.headers,
+        "X-Approuter-Authorization": `bearer ${jwt}`,
+        "Al-Resource-Group": "default",
+      };
+
+      // Forward request to another URL with modified headers
+      const response = await axios({
+        method: req.method,
+        url: makeUrl(`https://${tenantUrl}`, req.originalUrl),
+        headers: modifiedHeaders,
+        data: req.body,
+      });
+
+      // Send the response back to the original client
+      res.status(response.status).send(response.data);
+    } catch (err) {
+      const status = err.response?.status ?? 500;
+      const error = err.response?.data ?? err.toString();
+      getLogger().error(
+        `outbound-connectivity request failed:: status: ${status}, error: ${error}`
+      );
+      res.status(status).send(error);
+    }
+  });
+
+  /* istanbul ignore next */
+  server = app.listen(OUTBOUND_PROXY, () => {
+    getLogger().info(`CORS-enabled outbound-connectivity server listening ...`);
+  });
+
+  server.on("error", function (err: { message: string }) {
+    getLogger().error(`outbound-connectivity server error: ${err.message}`);
+  });
+}
+
+export function deactivateOutboundConnectivityServerServer(): void {
+  void createHttpTerminator({ server }).terminate();
+  getLogger().info("The outbound-connectivity server is deactivated.");
 }

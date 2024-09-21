@@ -19,11 +19,13 @@ import { cmdLoginToLandscape } from "./landscape/landscape";
 import { getBasUriHandler } from "./handler/basHandler";
 import { cmdOpenInVSCode } from "./devspace/open";
 import {
+  activateOutboundConnectivityServer,
   clearAiLandscape,
-  sendRequest,
+  deactivateOutboundConnectivityServerServer,
   setLandscapeForAiPurpose,
 } from "../public-api/outbound-connectivity";
 import { LandscapeNode } from "./tree/treeItems";
+import { shouldRunOutboundServer } from "../utils/bas-utils";
 
 export function initBasRemoteExplorer(context: ExtensionContext): void {
   context.subscriptions.push(
@@ -51,13 +53,6 @@ export function initBasRemoteExplorer(context: ExtensionContext): void {
         await clearAiLandscape();
         void commands.executeCommand("local-extension.tree.refresh");
       }
-    )
-  );
-
-  context.subscriptions.push(
-    commands.registerCommand(
-      "local-extension.send-outbound-request",
-      sendRequest
     )
   );
 
@@ -160,9 +155,14 @@ export function initBasRemoteExplorer(context: ExtensionContext): void {
       getBasUriHandler(devSpaceExplorer.getDevSpacesExplorerProvider())
     )
   );
+
+  if (shouldRunOutboundServer()) {
+    activateOutboundConnectivityServer();
+  }
 }
 
 export async function deactivateBasRemoteExplorer(): Promise<void> {
+  deactivateOutboundConnectivityServerServer();
   // kill opened ssh channel if exists
   return closeTunnel();
 }

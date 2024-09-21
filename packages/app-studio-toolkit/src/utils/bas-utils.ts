@@ -12,6 +12,12 @@ export enum ExtensionRunMode {
   unexpected = `unexpected`,
 }
 
+export function shouldRunOutboundServer(): boolean {
+  const platform = getExtensionRunPlatform();
+  // outbound server should run only in local mode
+  return platform === ExtensionRunMode.desktop;
+}
+
 export function shouldRunCtlServer(): boolean {
   const platform = getExtensionRunPlatform();
   return (
