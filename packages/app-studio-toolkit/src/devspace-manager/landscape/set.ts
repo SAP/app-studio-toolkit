@@ -20,17 +20,9 @@ export async function cmdLandscapeSet(): Promise<void> {
   });
 
   if (landscape) {
-    // const isDefault = await window.showQuickPick(["set as default"], {
-    //   placeHolder: "Whether to set this landscape as the default for outbound connectivity",
-    //   canPickMany: true,
-    //   ignoreFocusOut: true
-    // });
-    // if(isDefault) {
-    // continue if user not cancelled
     return addLandscape(landscape).finally(
       () => void commands.executeCommand("local-extension.tree.refresh")
     );
-    // }
   }
 }
 

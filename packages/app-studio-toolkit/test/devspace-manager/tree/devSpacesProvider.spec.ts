@@ -75,6 +75,7 @@ describe("devSpacesProvider unit test", () => {
       name: `http://test-domain.landscape-2.com`,
       url: `http://test-domain.landscape-2.com/`,
       isLoggedIn: true,
+      default: true,
     },
   ];
 
@@ -127,19 +128,20 @@ describe("devSpacesProvider unit test", () => {
     expect(item.collapsibleState).to.be.equal(
       proxyTreeItemCollapsibleState.Expanded
     );
-    expect(item.tooltip).to.be.equal(`Not logged in`);
+    expect(item.tooltip).to.be.equal(`Not logged in.`);
     expect(item.name).to.be.equal(landscapes[0].name);
     expect(item.url).to.be.equal(landscapes[0].url);
-    expect(item.contextValue).to.be.equal(`landscape-log-out`);
+    expect(item.contextValue).to.be.equal(`landscape-log-out-default-off`);
     item = <LandscapeNode>childrens[1];
     expect(item.label).to.be.equal(landscapes[1].name);
     expect(item.collapsibleState).to.be.equal(
       proxyTreeItemCollapsibleState.Expanded
     );
-    expect(item.tooltip).to.be.equal(`Logged in`);
+    expect(item.tooltip).to.contain(`Logged in.`);
+    expect(item.tooltip).to.contain(`Default landscape is enabled.`);
     expect(item.name).to.be.equal(landscapes[1].name);
     expect(item.url).to.be.equal(landscapes[1].url);
-    expect(item.contextValue).to.be.equal(`landscape-log-in`);
+    expect(item.contextValue).to.be.equal(`landscape-log-in-default-on`);
   });
 
   it("getChildren, element not specified, loading mode is turned on", async () => {

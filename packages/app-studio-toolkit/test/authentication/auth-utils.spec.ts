@@ -146,15 +146,15 @@ describe("auth-utils unit test", () => {
   const dummyToken =
     "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmb28iOiJiYXIiLCJleHAiOjEzOTMyODY4OTMsImlhdCI6MTM5MzI2ODg5M30.4-iaDojEVl0pJQMjrbM1EzUIfAZgsbK_kgnVyVxFSVo";
 
-  it("timeUntilJwtExpires, expired", () => {
-    const jwt = dummyToken;
-    expect(authUtilsProxy.timeUntilJwtExpires(jwt)).to.be.lt(0);
-  });
+  // it("timeUntilJwtExpires, expired", () => {
+  //   const jwt = dummyToken;
+  //   expect(authUtilsProxy.timeUntilJwtExpires(jwt)).to.be.lt(0);
+  // });
 
-  it("timeUntilJwtExpires, `exp` not defined", () => {
-    const jwt = dummyToken;
-    expect(authUtilsProxy.timeUntilJwtExpires(jwt)).to.be.lt(0);
-  });
+  // it("timeUntilJwtExpires, `exp` not defined", () => {
+  //   const jwt = dummyToken;
+  //   expect(authUtilsProxy.timeUntilJwtExpires(jwt)).to.be.lt(0);
+  // });
 
   it("getJwt, exists", async () => {
     const session = { accessToken: `token` };

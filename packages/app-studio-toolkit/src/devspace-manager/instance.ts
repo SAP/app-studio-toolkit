@@ -15,17 +15,15 @@ import {
   cmdDevSpaceOpenInBAS,
 } from "./devspace/connect";
 import { BasRemoteAuthenticationProvider } from "../authentication/authProvider";
-import { cmdLoginToLandscape } from "./landscape/landscape";
+import {
+  clearDefaultLandscape,
+  cmdLoginToLandscape,
+  getDefaultLandscape,
+  setDefaultLandscape,
+} from "./landscape/landscape";
 import { getBasUriHandler } from "./handler/basHandler";
 import { cmdOpenInVSCode } from "./devspace/open";
-import {
-  activateOutboundConnectivityServer,
-  clearAiLandscape,
-  deactivateOutboundConnectivityServerServer,
-  setLandscapeForAiPurpose,
-} from "../public-api/outbound-connectivity";
 import { LandscapeNode } from "./tree/treeItems";
-import { shouldRunOutboundServer } from "../utils/bas-utils";
 
 export function initBasRemoteExplorer(context: ExtensionContext): void {
   context.subscriptions.push(
@@ -39,19 +37,28 @@ export function initBasRemoteExplorer(context: ExtensionContext): void {
   /* istanbul ignore next */
   context.subscriptions.push(
     commands.registerCommand(
-      "local-extension.landscape.enable-ai",
-      async (node: LandscapeNode): Promise<boolean> => {
-        return setLandscapeForAiPurpose(node.url);
+      "local-extension.landscape.default-on",
+      async (node?: LandscapeNode): Promise<boolean> => {
+        return setDefaultLandscape(node?.url);
       }
     )
   );
 
   context.subscriptions.push(
     commands.registerCommand(
-      "local-extension.landscape.disable-ai",
+      "local-extension.landscape.default-off",
       async (node: LandscapeNode): Promise<void> => {
-        await clearAiLandscape();
+        await clearDefaultLandscape();
         void commands.executeCommand("local-extension.tree.refresh");
+      }
+    )
+  );
+
+  context.subscriptions.push(
+    commands.registerCommand(
+      "local-extension.landscape.get-default-landscape",
+      () => {
+        return getDefaultLandscape();
       }
     )
   );
@@ -155,14 +162,9 @@ export function initBasRemoteExplorer(context: ExtensionContext): void {
       getBasUriHandler(devSpaceExplorer.getDevSpacesExplorerProvider())
     )
   );
-
-  if (shouldRunOutboundServer()) {
-    activateOutboundConnectivityServer();
-  }
 }
 
 export async function deactivateBasRemoteExplorer(): Promise<void> {
-  deactivateOutboundConnectivityServerServer();
   // kill opened ssh channel if exists
   return closeTunnel();
 }

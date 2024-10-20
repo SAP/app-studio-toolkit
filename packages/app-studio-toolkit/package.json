@@ -60,10 +60,6 @@
         "icon": "$(add)"
       },
       {
-        "command": "local-extension.send-outbound-request",
-        "title": "Send outbound request"
-      },
-      {
         "command": "local-extension.landscape.delete",
         "title": "Remove landscape"
       },
@@ -125,20 +121,24 @@
         }
       },
       {
-        "command": "local-extension.landscape.enable-ai",
-        "title": "Make this the default landscape for Joule",
+        "command": "local-extension.landscape.default-on",
+        "title": "Make this the landscape as the default",
         "icon": {
           "light": "resources/common/joule.svg",
           "dark": "resources/common/joule.svg"
         }
       },
       {
-        "command": "local-extension.landscape.disable-ai",
-        "title": "Remove this landscape as the default for Joule",
+        "command": "local-extension.landscape.default-off",
+        "title": "Remove this landscape as the default",
         "icon": {
           "light": "resources/common/joule-full.svg",
           "dark": "resources/common/joule-full.svg"
         }
+      },
+      {
+        "command": "local-extension.landscape.get-default-landscape",
+        "title": "Returns the landscape marked as the default"
       }
     ],
     "configuration": [
@@ -204,15 +204,15 @@
       "commandPalette": [
         {
           "when": "false",
-          "command": "local-extension.landscape.enable-ai"
+          "command": "local-extension.landscape.get-default-landscape"
         },
         {
           "when": "false",
-          "command": "local-extension.landscape.disable-ai"
+          "command": "local-extension.landscape.default-on"
         },
         {
-          "when": "true",
-          "command": "local-extension.send-outbound-request"
+          "when": "false",
+          "command": "local-extension.landscape.default-off"
         },
         {
           "when": "false",
@@ -338,13 +338,13 @@
           "group": "inline@2"
         },
         {
-          "command": "local-extension.landscape.enable-ai",
-          "when": "view == dev-spaces && viewItem =~ /.*landscape-.*-ai-disabled.*/",
+          "command": "local-extension.landscape.default-on",
+          "when": "view == dev-spaces && viewItem =~ /.*landscape-.*default-off.*/",
           "group": "inline@1"
         },
         {
-          "command": "local-extension.landscape.disable-ai",
-          "when": "view == dev-spaces && viewItem =~ /.*landscape-.*-ai-enabled.*/",
+          "command": "local-extension.landscape.default-off",
+          "when": "view == dev-spaces && viewItem =~ /.*landscape-.*default-on.*/",
           "group": "inline@1"
         }
       ]
@@ -379,14 +379,13 @@
   ],
   "dependencies": {
     "@sap/artifact-management": "1.38.0",
-    "@sap/bas-sdk": "^3.8.9",
+    "@sap/bas-sdk": "file:../../../bas-sdk/packages-sdk/bas-sdk",
     "@vscode-logging/wrapper": "2.0.0",
     "axios": "^1.7.4",
     "body-parser": "1.20.2",
     "cors": "2.8.5",
     "express": "4.19.2",
     "http-terminator": "3.2.0",
-    "jwt-decode": "3.1.2",
     "lodash": "4.17.21",
     "ssh-config": "4.2.1",
     "ts-enum-util": "4.0.2",

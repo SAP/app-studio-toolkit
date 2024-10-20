@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { mockVscode } from "../../test/mockUtil";
-import { SinonSandbox, SinonMock, createSandbox } from "sinon";
+import { SinonSandbox, SinonMock, createSandbox, stub } from "sinon";
 
 enum ConfigurationTargetProxy {
   Global = 1,
@@ -12,8 +12,8 @@ const vscodeProxy = {
   workspace: {
     getConfiguration: () => {
       return {
-        get: () => "",
-        update: () => "",
+        get: stub().returns(undefined),
+        update: stub().resolves(),
       };
     },
     onDidChangeWorkspaceFolders: () => {},
@@ -44,12 +44,14 @@ const vscodeProxy = {
     registerAuthenticationProvider: () => {},
   },
   EventEmitter: class EventEmitterMock {
+    fire: () => void = stub().returns(void 0);
     constructor() {}
   },
 };
 
 mockVscode(vscodeProxy, "dist/src/authentication/authProvider.js");
 mockVscode(vscodeProxy, "dist/src/devspace-manager/devspace/connect.js");
+mockVscode(vscodeProxy, "dist/src/devspace-manager/landscape/landscape.js");
 mockVscode(vscodeProxy, "dist/src/devspace-manager/instance.js");
 
 import * as instance from "../../src/devspace-manager/instance";
@@ -60,6 +62,7 @@ describe("extension unit test", () => {
   let sandbox: SinonSandbox;
   let authenticationMock: SinonMock;
   let commandsMock: SinonMock;
+  // let configurationMock: SinonMock;
 
   before(() => {
     sandbox = createSandbox();
@@ -73,11 +76,13 @@ describe("extension unit test", () => {
     registry = new Map<string, () => void>();
     authenticationMock = sandbox.mock(vscodeProxy.authentication);
     commandsMock = sandbox.mock(vscodeProxy.commands);
+    // configurationMock = sandbox.mock(vscodeProxy.workspace.getConfiguration());
   });
 
   afterEach(() => {
     authenticationMock.verify();
     commandsMock.verify();
+    // configurationMock.verify();
   });
 
   const context: any = {
@@ -109,6 +114,9 @@ describe("extension unit test", () => {
             `local-extension.landscape.set`,
             `local-extension.login`,
             `local-extension.dev-space.open-in-code`,
+            `local-extension.landscape.default-on`,
+            `local-extension.landscape.default-off`,
+            `local-extension.landscape.get-default-landscape`,
           ]
         )
       ).to.be.empty;
@@ -123,6 +131,30 @@ describe("extension unit test", () => {
         )
         .returns({});
       instance.initBasRemoteExplorer(context);
+    });
+
+    it("command `local-extension.landscape.default-off`", async () => {
+      commandsMock
+        .expects(`executeCommand`)
+        .withExactArgs(`local-extension.tree.refresh`)
+        .resolves();
+      instance.initBasRemoteExplorer(context);
+      // eslint-disable-next-line @typescript-eslint/await-thenable -- ignore
+      expect(await registry.get(`local-extension.landscape.default-off`)!()).be
+        .undefined;
+    });
+
+    it("command `local-extension.landscape.get-default-landscape`", () => {
+      instance.initBasRemoteExplorer(context);
+      // eslint-disable-next-line @typescript-eslint/await-thenable -- ignore
+      expect(registry.get(`local-extension.landscape.get-default-landscape`)!())
+        .be.empty;
+    });
+
+    it("command `local-extension.tree.refresh`", () => {
+      instance.initBasRemoteExplorer(context);
+      // eslint-disable-next-line @typescript-eslint/await-thenable -- ignore
+      expect(registry.get(`local-extension.tree.refresh`)!()).be.undefined;
     });
 
     it("command `local-extension.tree.settings`", () => {
