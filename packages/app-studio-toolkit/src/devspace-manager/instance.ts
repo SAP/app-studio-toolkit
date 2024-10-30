@@ -37,16 +37,15 @@ export function initBasRemoteExplorer(context: ExtensionContext): void {
   /* istanbul ignore next */
   context.subscriptions.push(
     commands.registerCommand(
-      "local-extension.landscape.default-on",
-      async (node?: LandscapeNode): Promise<boolean> => {
-        return setDefaultLandscape(node?.url);
-      }
+      "app-studio-toolkit.devspace-manager.landscape.default-on",
+      async (node?: LandscapeNode): Promise<boolean> =>
+        setDefaultLandscape(node?.url)
     )
   );
 
   context.subscriptions.push(
     commands.registerCommand(
-      "local-extension.landscape.default-off",
+      "app-studio-toolkit.devspace-manager.landscape.default-off",
       async (node: LandscapeNode): Promise<void> => {
         await clearDefaultLandscape();
         void commands.executeCommand("local-extension.tree.refresh");
@@ -56,10 +55,8 @@ export function initBasRemoteExplorer(context: ExtensionContext): void {
 
   context.subscriptions.push(
     commands.registerCommand(
-      "local-extension.landscape.get-default-landscape",
-      () => {
-        return getDefaultLandscape();
-      }
+      "app-studio-toolkit.devspace-manager.get-default-landscape",
+      getDefaultLandscape
     )
   );
 

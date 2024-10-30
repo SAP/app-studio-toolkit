@@ -114,9 +114,9 @@ describe("extension unit test", () => {
             `local-extension.landscape.set`,
             `local-extension.login`,
             `local-extension.dev-space.open-in-code`,
-            `local-extension.landscape.default-on`,
-            `local-extension.landscape.default-off`,
-            `local-extension.landscape.get-default-landscape`,
+            `app-studio-toolkit.devspace-manager.landscape.default-on`,
+            `app-studio-toolkit.devspace-manager.landscape.default-off`,
+            `app-studio-toolkit.devspace-manager.get-default-landscape`,
           ]
         )
       ).to.be.empty;
@@ -133,27 +133,31 @@ describe("extension unit test", () => {
       instance.initBasRemoteExplorer(context);
     });
 
-    it("command `local-extension.landscape.default-off`", async () => {
+    it("command `app-studio-toolkit.devspace-manager.landscape.default-off`", async () => {
       commandsMock
         .expects(`executeCommand`)
         .withExactArgs(`local-extension.tree.refresh`)
         .resolves();
       instance.initBasRemoteExplorer(context);
-      // eslint-disable-next-line @typescript-eslint/await-thenable -- ignore
-      expect(await registry.get(`local-extension.landscape.default-off`)!()).be
-        .undefined;
+      expect(
+        // eslint-disable-next-line @typescript-eslint/await-thenable -- ignore
+        await registry.get(
+          `app-studio-toolkit.devspace-manager.landscape.default-off`
+        )!()
+      ).be.undefined;
     });
 
-    it("command `local-extension.landscape.get-default-landscape`", () => {
+    it("command `app-studio-toolkit.devspace-manager.get-default-landscape`", () => {
       instance.initBasRemoteExplorer(context);
-      // eslint-disable-next-line @typescript-eslint/await-thenable -- ignore
-      expect(registry.get(`local-extension.landscape.get-default-landscape`)!())
-        .be.empty;
+      expect(
+        registry.get(
+          `app-studio-toolkit.devspace-manager.get-default-landscape`
+        )!()
+      ).be.empty;
     });
 
     it("command `local-extension.tree.refresh`", () => {
       instance.initBasRemoteExplorer(context);
-      // eslint-disable-next-line @typescript-eslint/await-thenable -- ignore
       expect(registry.get(`local-extension.tree.refresh`)!()).be.undefined;
     });
 

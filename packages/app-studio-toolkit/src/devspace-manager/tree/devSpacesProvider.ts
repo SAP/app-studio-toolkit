@@ -60,10 +60,7 @@ export class DevSpaceDataProvider implements TreeDataProvider<TreeItem> {
         this.extensionPath,
         landscape.name,
         TreeItemCollapsibleState.Expanded,
-        getSvgIconPath(
-          this.extensionPath,
-          `landscape${landscape.default ? "_ai" : ""}`
-        ),
+        getSvgIconPath(this.extensionPath, `landscape`),
         "",
         landscape.default ? `${tooltip} ${messages.lbl_ai_enabled}` : tooltip,
         landscape.name,

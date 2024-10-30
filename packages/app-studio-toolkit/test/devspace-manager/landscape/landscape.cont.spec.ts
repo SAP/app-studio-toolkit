@@ -185,6 +185,7 @@ describe("Landscape Module Tests", function () {
   });
 
   describe("setDefaultLandscape", function () {
+    const placeHolderText = "Select a landscape for AI metering";
     let mockCommands: SinonMock;
     let mockWindow: SinonMock;
 
@@ -217,8 +218,7 @@ describe("Landscape Module Tests", function () {
       mockWindow
         .expects("showQuickPick")
         .withExactArgs(items, {
-          placeHolder:
-            "Select the landscape in which you want to use as default",
+          placeHolder: placeHolderText,
           ignoreFocusOut: true,
         })
         .resolves(items[1]);
@@ -269,8 +269,7 @@ describe("Landscape Module Tests", function () {
       mockWindow
         .expects("showQuickPick")
         .withExactArgs(items, {
-          placeHolder:
-            "Select the landscape in which you want to use as default",
+          placeHolder: placeHolderText,
           ignoreFocusOut: true,
         })
         .resolves(undefined);
@@ -336,8 +335,7 @@ describe("Landscape Module Tests", function () {
       mockWindow
         .expects("showQuickPick")
         .withExactArgs(items, {
-          placeHolder:
-            "Select the landscape in which you want to use as default",
+          placeHolder: placeHolderText,
           ignoreFocusOut: true,
         })
         .resolves(items[items.length - 1]);
@@ -362,8 +360,7 @@ describe("Landscape Module Tests", function () {
       mockWindow
         .expects("showQuickPick")
         .withExactArgs(modifiedItems, {
-          placeHolder:
-            "Select the landscape in which you want to use as default",
+          placeHolder: placeHolderText,
           ignoreFocusOut: true,
         })
         .resolves(modifiedItems[2]);

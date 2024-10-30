@@ -8,7 +8,7 @@ import {
   window,
   workspace,
 } from "vscode";
-import { helpers } from "@sap/bas-sdk";
+import { core } from "@sap/bas-sdk";
 import { compact, isEmpty, size, trim, uniqBy } from "lodash";
 import { hasJwt } from "../../authentication/auth-utils";
 import { URL } from "node:url";
@@ -138,7 +138,7 @@ export async function cmdLoginToLandscape(node: LandscapeNode): Promise<void> {
     );
     if (session?.accessToken) {
       // auto refresh util jwt expired
-      autoRefresh(30 * 1000, helpers.timeUntilJwtExpires(session.accessToken));
+      autoRefresh(30 * 1000, core.timeUntilJwtExpires(session.accessToken));
     }
   } finally {
     void commands.executeCommand("local-extension.tree.refresh");
@@ -190,7 +190,7 @@ function selectLandscape(
   items.push({ label: "", kind: QuickPickItemKind.Separator }); // action section separator
   items.push({ label: LBL_ADD_LANDSCAPE });
   return window.showQuickPick(items, {
-    placeHolder: "Select the landscape in which you want to use as default",
+    placeHolder: "Select a landscape for AI metering",
     ignoreFocusOut: true,
   }) as Promise<QuickPickLandscape | undefined>;
 }

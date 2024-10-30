@@ -6,7 +6,7 @@ import { createHttpTerminator, HttpTerminator } from "http-terminator";
 import { platform } from "os";
 import { getLogger } from "../logger/logger";
 import { BasRemoteAuthenticationProvider } from "./authProvider";
-import { core, helpers } from "@sap/bas-sdk";
+import { core } from "@sap/bas-sdk";
 import { messages } from "../../src/devspace-manager/common/messages";
 import {
   eventEmitter,
@@ -200,6 +200,6 @@ export async function getJwt(landscapeUrl: string): Promise<string> {
 
 export async function hasJwt(landscapeUrl: string): Promise<boolean> {
   return getJwt(landscapeUrl)
-    .then((jwt) => !helpers.isJwtExpired(jwt))
+    .then((jwt) => !core.isJwtExpired(jwt))
     .catch((_) => false);
 }
