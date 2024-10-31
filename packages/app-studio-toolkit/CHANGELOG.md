@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.19.0](https://github.com/SAP/app-studio-toolkit/compare/v1.18.7...v1.19.0) (2024-10-31)
+
+### Features
+
+- allow access `Joule` from VS Code ([#319](https://github.com/SAP/app-studio-toolkit/issues/319)) ([c36696f](https://github.com/SAP/app-studio-toolkit/commit/c36696f7a11c5ba4a0ce64a654076cadbf5ef14f))
+
 ## [1.18.7](https://github.com/SAP/app-studio-toolkit/compare/v1.18.6...v1.18.7) (2024-10-21)
 
 **Note:** Version bump only for package app-studio-toolkit
