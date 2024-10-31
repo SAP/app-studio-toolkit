@@ -2,9 +2,11 @@ import { expect } from "chai";
 import { SinonMock, mock } from "sinon";
 import proxyquire from "proxyquire";
 import * as land from "../../../src/devspace-manager/landscape/set";
+import { URL } from "node:url";
+import { LandscapeConfig } from "src/devspace-manager/landscape/landscape";
 
 describe("landscapes set unit test", () => {
-  let lands: string[] = [];
+  let lands: LandscapeConfig[] = [];
   let cmdLandscapeSetProxy: typeof land.cmdLandscapeSet;
   const proxyWindow = {
     showInputBox: () => {
@@ -17,10 +19,10 @@ describe("landscapes set unit test", () => {
     },
   };
   const landscapeProxy = {
-    getLanscapesConfig: () => {
+    getLanscapesConfig: (): LandscapeConfig[] => {
       return lands;
     },
-    updateLandscapesConfig: (other: string[]) => {
+    updateLandscapesConfig: (other: LandscapeConfig[]) => {
       lands = other;
     },
   };
@@ -52,28 +54,27 @@ describe("landscapes set unit test", () => {
     lands = [];
   });
 
-  const landscape = `https://my.landscape-1.com`;
+  const landscape = { url: new URL(`https://my.landscape-1.com`).toString() };
 
   it("cmdLandscapeSet, confirmed added", async () => {
-    mockWindow.expects("showInputBox").returns(landscape);
+    mockWindow.expects("showInputBox").returns(landscape.url);
     mockCommands
       .expects("executeCommand")
       .withExactArgs("local-extension.tree.refresh")
       .resolves();
     await cmdLandscapeSetProxy();
-    expect(lands.includes(landscape)).to.be.true;
-    expect(lands.length).to.be.equal(1);
+    expect(lands.find((l) => l.url === landscape.url)).be.deep.equal(landscape);
   });
 
   it("cmdLandscapeSet, confirmed, existed", async () => {
     lands.push(landscape);
-    mockWindow.expects("showInputBox").returns(landscape);
+    mockWindow.expects("showInputBox").returns(landscape.url);
     mockCommands
       .expects("executeCommand")
       .withExactArgs("local-extension.tree.refresh")
       .resolves();
     await cmdLandscapeSetProxy();
-    expect(lands.includes(landscape)).to.be.true;
+    expect(lands.find((l) => l.url === landscape.url)).be.deep.equal(landscape);
     expect(lands.length).to.be.equal(1);
   });
 
@@ -81,6 +82,6 @@ describe("landscapes set unit test", () => {
     mockWindow.expects("showInputBox").returns(undefined);
     mockCommands.expects("executeCommand").never();
     await cmdLandscapeSetProxy();
-    expect(lands.includes(landscape)).to.be.false;
+    expect(lands.find((l) => l.url === landscape.url)).be.undefined;
   });
 });

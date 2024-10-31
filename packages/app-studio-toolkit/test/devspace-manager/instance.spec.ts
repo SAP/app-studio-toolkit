@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { mockVscode } from "../../test/mockUtil";
-import { SinonSandbox, SinonMock, createSandbox } from "sinon";
+import { SinonSandbox, SinonMock, createSandbox, stub } from "sinon";
 
 enum ConfigurationTargetProxy {
   Global = 1,
@@ -12,8 +12,8 @@ const vscodeProxy = {
   workspace: {
     getConfiguration: () => {
       return {
-        get: () => "",
-        update: () => "",
+        get: stub().returns(undefined),
+        update: stub().resolves(),
       };
     },
     onDidChangeWorkspaceFolders: () => {},
@@ -44,12 +44,14 @@ const vscodeProxy = {
     registerAuthenticationProvider: () => {},
   },
   EventEmitter: class EventEmitterMock {
+    fire: () => void = stub().returns(void 0);
     constructor() {}
   },
 };
 
 mockVscode(vscodeProxy, "dist/src/authentication/authProvider.js");
 mockVscode(vscodeProxy, "dist/src/devspace-manager/devspace/connect.js");
+mockVscode(vscodeProxy, "dist/src/devspace-manager/landscape/landscape.js");
 mockVscode(vscodeProxy, "dist/src/devspace-manager/instance.js");
 
 import * as instance from "../../src/devspace-manager/instance";
@@ -109,6 +111,9 @@ describe("extension unit test", () => {
             `local-extension.landscape.set`,
             `local-extension.login`,
             `local-extension.dev-space.open-in-code`,
+            `app-studio-toolkit.devspace-manager.landscape.default-on`,
+            `app-studio-toolkit.devspace-manager.landscape.default-off`,
+            `app-studio-toolkit.devspace-manager.get-default-landscape`,
           ]
         )
       ).to.be.empty;
@@ -123,6 +128,34 @@ describe("extension unit test", () => {
         )
         .returns({});
       instance.initBasRemoteExplorer(context);
+    });
+
+    it("command `app-studio-toolkit.devspace-manager.landscape.default-off`", async () => {
+      commandsMock
+        .expects(`executeCommand`)
+        .withExactArgs(`local-extension.tree.refresh`)
+        .resolves();
+      instance.initBasRemoteExplorer(context);
+      expect(
+        // eslint-disable-next-line @typescript-eslint/await-thenable -- ignore
+        await registry.get(
+          `app-studio-toolkit.devspace-manager.landscape.default-off`
+        )!()
+      ).be.undefined;
+    });
+
+    it("command `app-studio-toolkit.devspace-manager.get-default-landscape`", () => {
+      instance.initBasRemoteExplorer(context);
+      expect(
+        registry.get(
+          `app-studio-toolkit.devspace-manager.get-default-landscape`
+        )!()
+      ).be.empty;
+    });
+
+    it("command `local-extension.tree.refresh`", () => {
+      instance.initBasRemoteExplorer(context);
+      expect(registry.get(`local-extension.tree.refresh`)!()).be.undefined;
     });
 
     it("command `local-extension.tree.settings`", () => {

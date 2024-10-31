@@ -15,10 +15,15 @@ import {
   cmdDevSpaceOpenInBAS,
 } from "./devspace/connect";
 import { BasRemoteAuthenticationProvider } from "../authentication/authProvider";
-import { cmdLoginToLandscape } from "./landscape/landscape";
+import {
+  clearDefaultLandscape,
+  cmdLoginToLandscape,
+  getDefaultLandscape,
+  setDefaultLandscape,
+} from "./landscape/landscape";
 import { getBasUriHandler } from "./handler/basHandler";
 import { cmdOpenInVSCode } from "./devspace/open";
-import { getJwt } from "../authentication/auth-utils";
+import { LandscapeNode } from "./tree/treeItems";
 
 export function initBasRemoteExplorer(context: ExtensionContext): void {
   context.subscriptions.push(
@@ -30,6 +35,31 @@ export function initBasRemoteExplorer(context: ExtensionContext): void {
   const devSpaceExplorer = new DevSpacesExplorer(context.extensionPath);
 
   /* istanbul ignore next */
+  context.subscriptions.push(
+    commands.registerCommand(
+      "app-studio-toolkit.devspace-manager.landscape.default-on",
+      async (node?: LandscapeNode): Promise<boolean> =>
+        setDefaultLandscape(node?.url)
+    )
+  );
+
+  context.subscriptions.push(
+    commands.registerCommand(
+      "app-studio-toolkit.devspace-manager.landscape.default-off",
+      async (node: LandscapeNode): Promise<void> => {
+        await clearDefaultLandscape();
+        void commands.executeCommand("local-extension.tree.refresh");
+      }
+    )
+  );
+
+  context.subscriptions.push(
+    commands.registerCommand(
+      "app-studio-toolkit.devspace-manager.get-default-landscape",
+      getDefaultLandscape
+    )
+  );
+
   context.subscriptions.push(
     commands.registerCommand("local-extension.tree.refresh", () =>
       devSpaceExplorer.refreshTree()

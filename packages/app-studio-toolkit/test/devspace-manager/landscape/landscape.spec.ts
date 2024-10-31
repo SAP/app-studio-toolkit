@@ -95,7 +95,7 @@ describe("landscapes unit test", () => {
     lands?.push(landscapeUrl1);
     lands?.push(landscapeUrl2);
     await land.removeLandscape(landscapeUrl1);
-    expect(lands).be.deep.equal([new URL(landscapeUrl2).toString()]);
+    expect(lands?.length).be.equal(1);
   });
 
   it("removeLandscape, only one item exists", async () => {

@@ -9,7 +9,10 @@ export async function cmdLandscapeSet(): Promise<void> {
     ignoreFocusOut: true,
     validateInput: (value: string) => {
       try {
-        new URL(value);
+        const url = new URL(value);
+        if (url.pathname.length > 1 || url.search || url.hash) {
+          return "Enter the URL origin without any paths or parameters";
+        }
       } catch (e) {
         return (e as Error).toString();
       }
@@ -27,9 +30,9 @@ export async function addLandscape(landscapeName: string): Promise<void> {
   const toAdd = new URL(landscapeName).toString();
   const landscapes = getLanscapesConfig();
   if (
-    !landscapes.find((landscape) => new URL(landscape).toString() === toAdd)
+    !landscapes.find((landscape) => new URL(landscape.url).toString() === toAdd)
   ) {
-    landscapes.push(landscapeName);
+    landscapes.push({ url: toAdd });
     return updateLandscapesConfig(landscapes);
   }
 }

@@ -49,22 +49,26 @@ export class DevSpaceDataProvider implements TreeDataProvider<TreeItem> {
   }
 
   private async getTreeTopLevelChildren(): Promise<Thenable<TreeNode[]>> {
-    const iconPath = getSvgIconPath(this.extensionPath, "landscape");
     const landscapes = await getLandscapes();
 
     const rootNodes = map(landscapes, (landscape) => {
+      const tooltip = landscape.isLoggedIn
+        ? messages.lbl_logged_in
+        : messages.lbl_not_logged_in;
+
       return new LandscapeNode(
         this.extensionPath,
         landscape.name,
         TreeItemCollapsibleState.Expanded,
-        iconPath,
+        getSvgIconPath(this.extensionPath, `landscape`),
         "",
-        landscape.isLoggedIn
-          ? messages.lbl_logged_in
-          : messages.lbl_not_logged_in,
+        landscape.default ? `${tooltip} ${messages.lbl_ai_enabled}` : tooltip,
         landscape.name,
         landscape.url,
-        messages.lbl_landscape_context_status(landscape.isLoggedIn)
+        messages.lbl_landscape_context_status(
+          landscape.isLoggedIn,
+          landscape.default
+        )
       );
     });
 

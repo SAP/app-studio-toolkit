@@ -119,6 +119,20 @@
           "light": "resources/devspace/login.svg",
           "dark": "resources/devspace/login.svg"
         }
+      },
+      {
+        "command": "app-studio-toolkit.devspace-manager.landscape.default-on",
+        "title": "Set as default landscape",
+        "icon": "$(vm-outline)"
+      },
+      {
+        "command": "app-studio-toolkit.devspace-manager.landscape.default-off",
+        "title": "Remove as default landscape",
+        "icon": "$(vm-active)"
+      },
+      {
+        "command": "app-studio-toolkit.devspace-manager.get-default-landscape",
+        "title": "Returns the landscape marked as the default"
       }
     ],
     "configuration": [
@@ -182,6 +196,18 @@
         }
       ],
       "commandPalette": [
+        {
+          "when": "false",
+          "command": "app-studio-toolkit.devspace-manager.get-default-landscape"
+        },
+        {
+          "when": "false",
+          "command": "app-studio-toolkit.devspace-manager.landscape.default-on"
+        },
+        {
+          "when": "false",
+          "command": "app-studio-toolkit.devspace-manager.landscape.default-off"
+        },
         {
           "when": "false",
           "command": "local-extension.landscape.add"
@@ -302,8 +328,18 @@
         },
         {
           "command": "local-extension.login",
-          "when": "view == dev-spaces && viewItem =~ /.*log-out.*/",
-          "group": "inline"
+          "when": "view == dev-spaces && viewItem =~ /.*landscape-log-out.*/",
+          "group": "inline@2"
+        },
+        {
+          "command": "app-studio-toolkit.devspace-manager.landscape.default-on",
+          "when": "view == dev-spaces && viewItem =~ /.*landscape-.*default-off.*/",
+          "group": "inline@1"
+        },
+        {
+          "command": "app-studio-toolkit.devspace-manager.landscape.default-off",
+          "when": "view == dev-spaces && viewItem =~ /.*landscape-.*default-on.*/",
+          "group": "inline@1"
         }
       ]
     },
@@ -337,14 +373,13 @@
   ],
   "dependencies": {
     "@sap/artifact-management": "1.39.0",
-    "@sap/bas-sdk": "^3.8.9",
+    "@sap/bas-sdk": "^3.9.0",
     "@vscode-logging/wrapper": "2.0.0",
     "axios": "^1.7.4",
     "body-parser": "1.20.2",
     "cors": "2.8.5",
     "express": "4.19.2",
     "http-terminator": "3.2.0",
-    "jwt-decode": "3.1.2",
     "lodash": "4.17.21",
     "ssh-config": "4.2.1",
     "ts-enum-util": "4.0.2",

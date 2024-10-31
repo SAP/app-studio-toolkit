@@ -3,7 +3,6 @@ import express from "express";
 import cors from "cors";
 import * as bodyParser from "body-parser";
 import { createHttpTerminator, HttpTerminator } from "http-terminator";
-import jwtDecode, { JwtPayload } from "jwt-decode";
 import { platform } from "os";
 import { getLogger } from "../logger/logger";
 import { BasRemoteAuthenticationProvider } from "./authProvider";
@@ -131,27 +130,6 @@ async function getJwtFromServer(landscapeUrl: string): Promise<string> {
     : expressGetJwtFromServer(landscapeUrl);
 }
 
-function getJwtExpiration(jwt: string): number {
-  const decodedJwt: JwtPayload = jwtDecode<JwtPayload>(jwt);
-  return (
-    (decodedJwt.exp ??
-      /* istanbul ignore next: test's dummy jwt always has 'exp' attribute */ 0) *
-    1000
-  );
-}
-
-function isJwtExpired(jwt: string): boolean {
-  const expired = getJwtExpiration(jwt);
-  getLogger().info(`jwt expires at ${new Date(expired).toString()}`);
-  return Date.now() >= expired;
-}
-
-export function timeUntilJwtExpires(jwt: string): number {
-  const untilExpired = getJwtExpiration(jwt) - Date.now();
-  getLogger().info(`jwt expires in ${untilExpired / 1000} seconds`);
-  return untilExpired;
-}
-
 async function getJwtFromServerWithTimeout(
   ms: number,
   promise: Promise<string>
@@ -222,6 +200,6 @@ export async function getJwt(landscapeUrl: string): Promise<string> {
 
 export async function hasJwt(landscapeUrl: string): Promise<boolean> {
   return getJwt(landscapeUrl)
-    .then((jwt) => !isJwtExpired(jwt))
+    .then((jwt) => !core.isJwtExpired(jwt))
     .catch((_) => false);
 }

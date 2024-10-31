@@ -4,10 +4,12 @@ export const messages = {
   lbl_dev_space_explorer_loading: `Loading...`,
   lbl_icon_missing: (iconName: string): string =>
     `Could not find an icon named '${iconName}'. Make sure you imported the matching file.`,
-  lbl_logged_in: `Logged in`,
-  lbl_not_logged_in: `Not logged in`,
-  lbl_landscape_context_status: (isLoggedIn: boolean) =>
-    `landscape-${isLoggedIn ? "log-in" : "log-out"}`,
+  lbl_logged_in: `Logged in.`,
+  lbl_not_logged_in: `Not logged in.`,
+  lbl_landscape_context_status: (isLoggedIn: boolean, isDefaultOn?: boolean) =>
+    `landscape-log-${isLoggedIn ? "in" : "out"}-default-${
+      isDefaultOn ? "on" : "off"
+    }`,
   lbl_devspace_status_runnig: `running`,
   lbl_devspace_status_not_runnig: `not_running`,
   lbl_devspace_status_error: `error`,
@@ -22,6 +24,7 @@ export const messages = {
     ` Are you sure you want to delete the '${label}' (${id}) dev space?`,
   lbl_yes: `Yes`,
   lbl_no: `No`,
+  lbl_ai_enabled: `Default landscape is enabled.`,
 
   err_incorrect_jwt: (url: string) =>
     `Incorrect token recieved for ${url}. Login failed.`,
