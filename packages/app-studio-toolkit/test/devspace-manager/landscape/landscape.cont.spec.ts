@@ -45,6 +45,9 @@ describe("Landscape Module Tests", function () {
         showQuickPick: (): never => {
           throw new Error("not implemented");
         },
+        showInformationMessage: (): never => {
+          throw new Error("not implemented");
+        },
       },
       authentication: {
         getSession: (): never => {
@@ -185,7 +188,7 @@ describe("Landscape Module Tests", function () {
   });
 
   describe("setDefaultLandscape", function () {
-    const placeHolderText = "Select a landscape for AI metering";
+    const placeHolderText = "Select the landscape you want to use as default";
     let mockCommands: SinonMock;
     let mockWindow: SinonMock;
 
@@ -283,7 +286,7 @@ describe("Landscape Module Tests", function () {
       mockGetConfiguration
         .expects("get")
         .withExactArgs("sap-remote.landscape-name")
-        .once()
+        .twice()
         .returns(mockConfig());
       const c = { url: "https://new.com/" };
       const added = cloneDeep(config);
@@ -300,6 +303,7 @@ describe("Landscape Module Tests", function () {
           return con;
         });
       const value = modified.map((item) => JSON.stringify(item)).join("|");
+      mockWindow.expects("showInformationMessage").resolves("Yes");
       mockGetConfiguration
         .expects("update")
         .withExactArgs(
@@ -314,6 +318,53 @@ describe("Landscape Module Tests", function () {
         .once();
 
       expect(await landscapeModule.setDefaultLandscape(c.url)).to.be.true;
+    });
+
+    it("should set a new default landscape when landscape name provided, no default was defined", async function () {
+      const copyConfig = cloneDeep(config).map((con: LandscapeConfig) => {
+        delete con.default;
+        return con;
+      });
+      mockGetConfiguration
+        .expects("get")
+        .withExactArgs("sap-remote.landscape-name")
+        .twice()
+        .returns(mockConfig(copyConfig));
+      const c = { url: "https://new.com/" };
+      copyConfig.push(c);
+      const modified = cloneDeep(copyConfig).map((con: LandscapeConfig) => {
+        if (con.url === c.url) {
+          con.default = true;
+        }
+        return con;
+      });
+      const value = modified.map((item) => JSON.stringify(item)).join("|");
+      mockGetConfiguration
+        .expects("update")
+        .withExactArgs(
+          "sap-remote.landscape-name",
+          value,
+          vscodeMocks.ConfigurationTarget.Global
+        )
+        .resolves();
+      mockCommands
+        .expects("executeCommand")
+        .withExactArgs("local-extension.tree.refresh")
+        .once();
+
+      expect(await landscapeModule.setDefaultLandscape(c.url)).to.be.true;
+    });
+
+    it("should set a new default landscape when landscape name provided, operation canceled", async function () {
+      mockGetConfiguration
+        .expects("get")
+        .withExactArgs("sap-remote.landscape-name")
+        .once()
+        .returns(mockConfig());
+      const c = { url: "https://new.com/" };
+      mockWindow.expects("showInformationMessage").resolves(undefined);
+
+      expect(await landscapeModule.setDefaultLandscape(c.url)).to.be.false;
     });
 
     it("should set a new default landscape when user added a not existed item", async function () {

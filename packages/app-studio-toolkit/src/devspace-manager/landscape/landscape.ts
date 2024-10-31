@@ -58,6 +58,9 @@ function isLandscapeLoggedIn(url: string): Promise<boolean> {
 }
 
 export function getLanscapesConfig(): LandscapeConfig[] {
+  // example:
+  //  - new format:  {"url":"https://example.com","default":true}|{"url":"https://example2.com"}
+  //  - old format:  https://example.com,https://example2.com
   let config =
     workspace.getConfiguration().get<string>("sap-remote.landscape-name") ?? "";
   // check if it is an old format - replace `,` with `|` - TODO: remove this in future (backward compatibility)
@@ -150,14 +153,14 @@ export function getDefaultLandscape(): string {
 }
 
 export async function clearDefaultLandscape(
-  update = true
+  updateLandsConfig = true
 ): Promise<LandscapeConfig[]> {
   const configs = getLanscapesConfig();
   // reset 'default' flag for all landscapes if exists
   configs.forEach((landscape) => {
     delete landscape.default;
   });
-  update && (await updateLandscapesConfig(configs));
+  updateLandsConfig && (await updateLandscapesConfig(configs));
   return configs;
 }
 
@@ -190,7 +193,7 @@ function selectLandscape(
   items.push({ label: "", kind: QuickPickItemKind.Separator }); // action section separator
   items.push({ label: LBL_ADD_LANDSCAPE });
   return window.showQuickPick(items, {
-    placeHolder: "Select a landscape for AI metering",
+    placeHolder: "Select the landscape you want to use as default",
     ignoreFocusOut: true,
   }) as Promise<QuickPickLandscape | undefined>;
 }
@@ -200,14 +203,24 @@ export async function setDefaultLandscape(
 ): Promise<boolean> {
   // select landscape as the 'default' one
   let selectedLandscape: QuickPickLandscape | undefined;
+  const defaultLandscape = getDefaultLandscape();
   if (landscape) {
+    if (defaultLandscape) {
+      const isContinue = await window.showInformationMessage(
+        `The ${defaultLandscape} landscape is currently defined as the default landscape.\nDo you want to make the ${landscape} landscape the default instead?`,
+        { modal: true },
+        "Yes"
+      );
+      if (!isContinue) {
+        return false;
+      }
+    }
     selectedLandscape = { url: landscape } as any;
   } else {
-    const outboundLandscape = getDefaultLandscape();
     do {
       // remove selected default landscape from the list
       const landscapes = (await getLandscapes()).filter(
-        (item) => item.url !== outboundLandscape
+        (item) => item.url !== defaultLandscape
       );
       selectedLandscape = await selectLandscape(landscapes);
       if (selectedLandscape?.label === LBL_ADD_LANDSCAPE) {

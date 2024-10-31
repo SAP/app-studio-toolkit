@@ -62,7 +62,6 @@ describe("extension unit test", () => {
   let sandbox: SinonSandbox;
   let authenticationMock: SinonMock;
   let commandsMock: SinonMock;
-  // let configurationMock: SinonMock;
 
   before(() => {
     sandbox = createSandbox();
@@ -76,13 +75,11 @@ describe("extension unit test", () => {
     registry = new Map<string, () => void>();
     authenticationMock = sandbox.mock(vscodeProxy.authentication);
     commandsMock = sandbox.mock(vscodeProxy.commands);
-    // configurationMock = sandbox.mock(vscodeProxy.workspace.getConfiguration());
   });
 
   afterEach(() => {
     authenticationMock.verify();
     commandsMock.verify();
-    // configurationMock.verify();
   });
 
   const context: any = {
