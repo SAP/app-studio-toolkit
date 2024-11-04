@@ -376,7 +376,7 @@
     "@sap/bas-sdk": "^3.9.0",
     "@vscode-logging/wrapper": "2.0.0",
     "axios": "^1.7.4",
-    "body-parser": "1.20.2",
+    "body-parser": "1.20.3",
     "cors": "2.8.5",
     "express": "4.19.2",
     "http-terminator": "3.2.0",
