@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.19.1](https://github.com/SAP/app-studio-toolkit/compare/v1.19.0...v1.19.1) (2024-11-04)
+
+**Note:** Version bump only for package vscode-deps-upgrade-tool
+
 ## [1.18.7](https://github.com/SAP/app-studio-toolkit/compare/v1.18.6...v1.18.7) (2024-10-21)
 
 **Note:** Version bump only for package vscode-deps-upgrade-tool

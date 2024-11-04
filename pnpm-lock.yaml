@@ -123,7 +123,7 @@ importers:
   examples/sample-action-client:
     devDependencies:
       '@sap-devx/app-studio-toolkit-types':
-        specifier: ^1.18.7
+        specifier: ^1.19.1
         version: link:../../packages/app-studio-toolkit-types
 
   examples/vscode-using-upgrade-tool: {}
@@ -131,7 +131,7 @@ importers:
   examples/vscode-using-workspace-api:
     devDependencies:
       '@sap-devx/app-studio-toolkit-types':
-        specifier: ^1.18.7
+        specifier: ^1.19.1
         version: link:../../packages/app-studio-toolkit-types
 
   packages/app-studio-remote-access:
@@ -235,7 +235,7 @@ importers:
         version: 1.0.34
     devDependencies:
       '@sap-devx/app-studio-toolkit-types':
-        specifier: ^1.18.7
+        specifier: ^1.19.1
         version: link:../app-studio-toolkit-types
       '@types/body-parser':
         specifier: 1.19.5
@@ -393,7 +393,7 @@ importers:
         version: 3.0.0
     devDependencies:
       '@sap-devx/app-studio-toolkit-types':
-        specifier: ^1.18.7
+        specifier: ^1.19.1
         version: link:../app-studio-toolkit-types
       '@types/semver':
         specifier: ^7.3.12
@@ -728,6 +728,7 @@ packages:
   /@commitlint/config-validator@19.5.0:
     resolution: {integrity: sha512-CHtj92H5rdhKt17RmgALhfQt95VayrUo2tSqY9g2w+laAXyk7K/Ef6uPm9tn5qSIwSmrLjKaXK9eiNuxmQrDBw==}
     engines: {node: '>=v18'}
+    requiresBuild: true
     dependencies:
       '@commitlint/types': 19.5.0
       ajv: 8.17.1
@@ -748,6 +749,7 @@ packages:
   /@commitlint/execute-rule@19.5.0:
     resolution: {integrity: sha512-aqyGgytXhl2ejlk+/rfgtwpPexYyri4t8/n4ku6rRJoRhGZpLFMqrZ+YaubeGysCP6oz4mMA34YSTaSOKEeNrg==}
     engines: {node: '>=v18'}
+    requiresBuild: true
     dev: true
 
   /@commitlint/format@19.5.0:
@@ -823,6 +825,7 @@ packages:
   /@commitlint/resolve-extends@19.5.0:
     resolution: {integrity: sha512-CU/GscZhCUsJwcKTJS9Ndh3AKGZTNFIOoQB2n8CmFnizE0VnEuJoum+COW+C1lNABEeqk6ssfc1Kkalm4bDklA==}
     engines: {node: '>=v18'}
+    requiresBuild: true
     dependencies:
       '@commitlint/config-validator': 19.5.0
       '@commitlint/types': 19.5.0

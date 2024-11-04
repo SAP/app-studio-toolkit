@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.19.1](https://github.com/SAP/app-studio-toolkit/compare/v1.19.0...v1.19.1) (2024-11-04)
+
+### Reverts
+
+- Revert "chore(release): release v1.19.2" ([044c189](https://github.com/SAP/app-studio-toolkit/commit/044c189aa948b468035a01d580f9a05d5354095b))
+
 # [1.19.0](https://github.com/SAP/app-studio-toolkit/compare/v1.18.7...v1.19.0) (2024-10-31)
 
 ### Features
