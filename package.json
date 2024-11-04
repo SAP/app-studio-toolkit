@@ -40,8 +40,8 @@
     ]
   },
   "devDependencies": {
-    "@commitlint/cli": "19.4.0",
-    "@commitlint/config-conventional": "19.2.2",
+    "@commitlint/cli": "19.5.0",
+    "@commitlint/config-conventional": "19.5.0",
     "@types/chai": "^4.3.17",
     "@types/chai-as-promised": "^7.1.4",
     "@types/deep-equal-in-any-order": "^1.0.1",
