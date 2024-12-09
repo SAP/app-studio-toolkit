@@ -1,7 +1,7 @@
 {
   "name": "app-studio-toolkit",
   "displayName": "SAP Business Application Studio toolkit",
-  "version": "1.19.2",
+  "version": "1.19.3",
   "private": true,
   "description": "Includes essential capabilities that will improve your SAP Business Application Studio development experience, making it easier and faster.",
   "categories": [
@@ -388,7 +388,7 @@
     "websocket": "^1.0.34"
   },
   "devDependencies": {
-    "@sap-devx/app-studio-toolkit-types": "^1.19.2",
+    "@sap-devx/app-studio-toolkit-types": "^1.19.3",
     "@types/body-parser": "1.19.5",
     "@types/cors": "^2.8.13",
     "@types/express": "4.17.17",
