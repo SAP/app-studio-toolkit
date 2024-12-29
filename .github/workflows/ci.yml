@@ -24,13 +24,13 @@ jobs:
     steps:
       # using `v1` because of: https://github.com/actions/checkout/issues/246
       - uses: actions/checkout@v1
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node_version }}
 
-      - uses: pnpm/action-setup@v3
-        with:
-          version: 7
+      - name: Setup pnpm
+        # pnpm version from package.json `packageManager` field is used
+        uses: pnpm/action-setup@v4
 
       - name: Install dependencies
         run: pnpm install
