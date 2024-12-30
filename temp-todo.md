@@ -1,0 +1,7 @@
+- [x] remove lerna
+- [x] update release scripts
+- [x] update release actions
+  - [x] identify vsix producing packages and corresponding tags
+- [ ] update readmes/guides
+- [ ] test compatability with old changelog format - [ ] maybe just use changelog.old.md?
+- [ ] test release - maybe update some version numbers first?

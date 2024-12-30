@@ -9,11 +9,10 @@
   },
   "packageManager": "pnpm@9.15.2",
   "scripts": {
-    "version": "pnpm install && git add pnpm-lock.yaml",
-    "preinstall": "npx only-allow pnpm",
     "prepare": "husky install",
-    "release:version": "lerna version",
-    "release:publish": "lerna publish from-git --yes --no-verify-access",
+    "preinstall": "npx only-allow pnpm",
+    "ci:version": "pnpm changeset version && pnpm i --lockfile-only",
+    "ci:release": "pnpm run build && pnpm changeset publish",
     "ci": "npm-run-all legal:* format:validate lint:validate ci:subpackages coverage:merge",
     "ci:subpackages": "pnpm -r run ci",
     "compile": "pnpm -r run clean && tsc --build",
@@ -53,17 +52,16 @@
     "@types/vscode": "1.75.0",
     "@typescript-eslint/eslint-plugin": "4.33.0",
     "@typescript-eslint/parser": "4.33.0",
+    "@changesets/cli": "2.27.11",
     "chai": "^4.3.4",
     "chai-as-promised": "^7.1.1",
     "coveralls": "^3.1.1",
-    "cz-conventional-changelog": "3.3.0",
     "deep-equal-in-any-order": "^1.1.15",
     "eslint": "7.30.0",
     "eslint-config-prettier": "8.3.0",
     "eslint-plugin-eslint-comments": "3.2.0",
     "glob": "^7.2.0",
     "husky": "7.0.4",
-    "lerna": "4.0.0",
     "lint-staged": "11.2.0",
     "make-dir": "^3.1.0",
     "mocha": "^10.7.3",
@@ -80,7 +78,6 @@
     "webpack-cli": "5.1.4"
   },
   "engines": {
-    "node": ">=18",
-    "pnpm": ">=7"
+    "node": ">=20"
   }
 }
