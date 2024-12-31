@@ -47,6 +47,7 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Create Release Pull Request
+        id: create_or_update_release_pr
         uses: changesets/action@v1
         with:
           title: "chore: version packages"
@@ -56,3 +57,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Docs on Release Pull Request
+        uses: thollander/actions-comment-pull-request@v3
+        with:
+          # using the `comment-tag` to avoid duplicate comments
+          comment-tag: 'pr-release-docs'
+          message: |
+            To trigger the build for this PR, **close and re-open it**.
+            This is necessary because the PR is created by github-actions[bot]
+            which is a technical user which does not trigger actions workflows on push events.
+            In Addition, this approach reduce load on the CI/CD system (fewer builds).
+          pr-number: ${{steps.create_or_update_release_pr.outputs.pullRequestNumber}}
