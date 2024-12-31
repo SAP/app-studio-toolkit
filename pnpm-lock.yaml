@@ -232,7 +232,7 @@ importers:
         version: 1.0.34
     devDependencies:
       '@sap-devx/app-studio-toolkit-types':
-        specifier: workspace:1.19.3
+        specifier: workspace:*
         version: link:../app-studio-toolkit-types
       '@types/body-parser':
         specifier: 1.19.5
@@ -322,7 +322,7 @@ importers:
   packages/vscode-dependencies-validation:
     dependencies:
       '@sap-devx/npm-dependencies-validation':
-        specifier: workspace:1.18.5
+        specifier: workspace:*
         version: link:../npm-dependencies-validation
       '@vscode-logging/wrapper':
         specifier: 2.0.0
@@ -390,7 +390,7 @@ importers:
         version: 3.0.0
     devDependencies:
       '@sap-devx/app-studio-toolkit-types':
-        specifier: workspace:1.19.3
+        specifier: workspace:*
         version: link:../app-studio-toolkit-types
       '@types/semver':
         specifier: ^7.3.12

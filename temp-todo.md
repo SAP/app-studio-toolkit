@@ -3,5 +3,6 @@
 - [x] update release actions
   - [x] identify vsix producing packages and corresponding tags
 - [x] update readmes/guides
+- [x] solve compatability problem with workspace: protocol - https://github.com/changesets/changesets/issues/598#issuecomment-1399005644
 - [ ] test compatability with old changelog format - [ ] maybe just use changelog.old.md?
 - [ ] test release - maybe update some version numbers first?
