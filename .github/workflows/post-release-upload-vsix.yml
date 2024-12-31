@@ -1,4 +1,8 @@
 # Post release step which appends the relevant VSIX to each release (per tag).
+# This can probably be optimized to reduce the number of builds (one per tag).
+# If we use a dynamic "loop" matrix in `ci.yml` github actions
+#  - https://stackoverflow.com/questions/59180385/using-an-array-of-values-to-repeat-a-step-in-github-actions-workflow
+#  - array to loop on should be `<changesetActionId>.outputs.publishedPackages`
 name: post-release-upload-vsix
 on:
   push:

@@ -60,6 +60,7 @@ jobs:
 
       - name: Docs on Release Pull Request
         uses: thollander/actions-comment-pull-request@v3
+        if: steps.create_or_update_release_pr.outputs.hasChangesets == true
         with:
           # using the `comment-tag` to avoid duplicate comments
           comment-tag: 'pr-release-docs'
