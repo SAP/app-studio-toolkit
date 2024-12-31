@@ -1,8 +1,0 @@
-- [x] remove lerna
-- [x] update release scripts
-- [x] update release actions
-  - [x] identify vsix producing packages and corresponding tags
-- [x] update readmes/guides
-- [x] solve compatability problem with workspace: protocol - https://github.com/changesets/changesets/issues/598#issuecomment-1399005644
-- [x] test compatability with old changelog format
-- [ ] test release - maybe update some version numbers first?
