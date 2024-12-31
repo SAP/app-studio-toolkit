@@ -12,7 +12,7 @@
     "prepare": "husky install",
     "preinstall": "npx only-allow pnpm",
     "ci:version": "pnpm changeset version && pnpm i --lockfile-only",
-    "ci:release": "pnpm run build && pnpm changeset publish",
+    "ci:release": "pnpm run ci && pnpm changeset publish",
     "ci": "npm-run-all legal:* format:validate lint:validate ci:subpackages coverage:merge",
     "ci:subpackages": "pnpm -r run ci",
     "compile": "pnpm -r run clean && tsc --build",
