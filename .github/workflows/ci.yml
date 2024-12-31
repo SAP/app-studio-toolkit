@@ -66,6 +66,6 @@ jobs:
           message: |
             To trigger the build for this PR, **close and re-open it**.
             This is necessary because the PR is created by github-actions[bot]
-            which is a technical user which does not trigger actions workflows on push events.
-            In Addition, this approach reduce load on the CI/CD system (fewer builds).
+            This is a technical user which does not trigger actions workflows on push events.
+            Additionally, this approach reduce load on the CI/CD system (fewer builds).
           pr-number: ${{steps.create_or_update_release_pr.outputs.pullRequestNumber}}
