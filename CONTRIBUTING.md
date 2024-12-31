@@ -115,17 +115,33 @@ To run the full **C**ontinuous **I**ntegration build run `pnpm ci` in either the
 
 ### Release Life-Cycle.
 
-This monorepo uses Lerna's [Fixed/Locked][lerna-mode] which means all the sub-packages share the same version number.
+This monorepo uses [ChangeSets][changesets] to manage lifecycle and versioning.
+Each sub-package has its own versioning and release cycle.
 
-[lerna-mode]: https://github.com/lerna/lerna#fixedlocked-mode-default
+See the introduction to [ChangeSets][changesets] for a starter how to use guide.
+
+[changesets]: https://github.com/changesets/changesets?tab=readme-ov-file#readme
+[intro_changesets]: https://github.com/changesets/changesets/blob/main/docs/intro-to-using-changesets.md
 
 ### Release Process
 
-Performing a release requires push permissions to the repository.
+Performing a release requires write permissions to the repository.
 
-- Ensure you are on the default branch and synced with origin.
-- `pnpm run release:version`
-- Follow the lerna CLI instructions.
-- Track the newly pushed **tag** (`/^v[0-9]+(\.[0-9]+)*/`) build in the build system
-  until successful completion.
-- Inspect the newly artifacts published on npmjs.com / Github Releases / other relevant release targets.
+1. Find the ["Version Packages"][version_packages_search] pull-request on GitHub.
+2. Review the PR to:
+   - Identify which packages are being versioned and to what version.
+   - Identify the upcoming changes and their impact (patch/minor/major).
+   - Find mistakes in the descriptions of the upcoming changes.
+3. Fix all issues found in the PR by modifying the changesets metadata in `./changesets` directory.
+   - separate PR...
+4. Merge the "Version Packages" PR.
+5. Wait for the ["Release"][release_gh_action] GitHub Action to complete.
+   - This will release (non-private) packages to npm.
+   - And create new github releases for each packages.
+6. Wait for the ["Post Release Upload VSIX"][post-release-upload-vsix-action] GitHub Action to complete.
+
+- This will upload the VSIX files to the GitHub releases created in the previous step.
+
+[version_packages_search]: https://github.com/SAP/app-studio-toolkit/pulls?q=is%3Apr+author%3Aapp%2Fgithub-actions+version+packages
+[release_gh_action]: https://github.com/SAP/app-studio-toolkit/actions/workflows/release.yml
+[post-release-upload-vsix-action]: https://github.com/SAP/app-studio-toolkit/actions/workflows/post-release-upload-vsix.yml

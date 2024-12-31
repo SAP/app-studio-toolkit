@@ -1,8 +1,12 @@
 name: Release
 on:
   push:
-    tags:
-      - "v*.*.*"
+    branches:
+      - main
+
+# https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/control-the-concurrency-of-workflows-and-jobs
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -24,9 +28,6 @@ jobs:
         run: pnpm run ci
 
       - name: npm auth setup
-        # we are using `lerna` to publish which does not use `pnpm`
-        # so the auth setup is done with `npm` commands instead of `pnpm`
-        # note we are using `>` instead of `>>` and replace the whole `.npmrc` contents
         run: |
           npm logout || true
           echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
@@ -34,14 +35,11 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: ignore lerna error on modified .npmrc
-        run:           git update-index --assume-unchanged .npmrc
-
-      - name: Publish to NPM
-        run: pnpm run release:publish
-
-      - name: Create Github Release
-        uses: softprops/action-gh-release@v1
+      - name: Create Release Pull Request
+        uses: changesets/action@v1
         with:
-          files: packages/*/*.vsix
-          fail_on_unmatched_files: true
+          version: pnpm run ci:version
+          publish: pnpm run ci:release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
