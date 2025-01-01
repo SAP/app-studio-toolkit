@@ -1,16 +1,5 @@
 # Change Log
 
-## 2.0.0
-
-### Major Changes
-
-- 61c08ae: bump major version as part of lcm update
-
-### Patch Changes
-
-- Updated dependencies [61c08ae]
-  - @sap-devx/npm-dependencies-validation@2.0.0
-
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 

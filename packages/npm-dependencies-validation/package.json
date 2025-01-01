@@ -17,6 +17,7 @@
     "LICENSES",
     "README.md",
     "CHANGELOG.md",
+    "CHANGELOG.old.md",
     "dist/src/**/*.js",
     "dist/src/**/*.js.map",
     "src/**/*.ts"
