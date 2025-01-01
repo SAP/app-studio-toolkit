@@ -24,6 +24,10 @@ jobs:
     steps:
       # using `v1` because of: https://github.com/actions/checkout/issues/246
       - uses: actions/checkout@v1
+        with:
+          # See: https://github.com/changesets/action/issues/187#issuecomment-1228413850
+          token: ${{ secrets.BOT_GITHUB_TOKEN }}
+
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node_version }}
@@ -60,7 +64,8 @@ jobs:
           version: pnpm run ci:version
           publish: pnpm run ci:release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # See: https://github.com/changesets/action/issues/187#issuecomment-1228413850
+          GITHUB_TOKEN: ${{ secrets.BOT_GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Docs on Release Pull Request
