@@ -128,8 +128,8 @@ importers:
   examples/vscode-using-workspace-api:
     devDependencies:
       '@sap-devx/app-studio-toolkit-types':
-        specifier: ^1.19.3
-        version: 1.19.3
+        specifier: workspace:*
+        version: link:../../packages/app-studio-toolkit-types
 
   packages/app-studio-remote-access:
     dependencies:
@@ -748,9 +748,6 @@ packages:
   '@nodelib/fs.walk@1.2.8':
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
-
-  '@sap-devx/app-studio-toolkit-types@1.19.3':
-    resolution: {integrity: sha512-5iJLWUG1GXAqKTSJQ+hU9fnbC8uvGarY9BTz8VGzj7PlrK9mmUEzWLsvRGpNz0jjjuO96VDhkQTDrNnjsfpR4Q==}
 
   '@sap/artifact-management-base-types@1.40.1':
     resolution: {integrity: sha512-kQIDpDX3dd2GVc0pnMj2kam0Ej9b94v1tvOF4EKkBCh1oHQ5nhm7EEbQERSzTlPVxx0fvEwK8yk/2Rm8r+N1lA==}
@@ -4744,13 +4741,6 @@ snapshots:
     dependencies:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.13.0
-
-  '@sap-devx/app-studio-toolkit-types@1.19.3':
-    dependencies:
-      '@sap/artifact-management-types': 1.40.1
-      '@types/vscode': 1.75.0
-      '@vscode-logging/types': 2.0.0
-      type-fest: 2.11.1
 
   '@sap/artifact-management-base-types@1.40.1':
     dependencies:
