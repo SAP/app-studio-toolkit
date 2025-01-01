@@ -9,6 +9,9 @@
     "url": "https://github.com/SAP/app-studio-toolkit",
     "directory": "packages/types"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "types": "./api.d.ts",
   "files": [
     ".reuse",
