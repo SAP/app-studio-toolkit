@@ -18,7 +18,7 @@
     "package": "vsce package"
   },
   "devDependencies": {
-    "@sap-devx/app-studio-toolkit-types": "^1.19.3"
+    "@sap-devx/app-studio-toolkit-types": "workspace:*"
   },
   "categories": [
     "Other"
