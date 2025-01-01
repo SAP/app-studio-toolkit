@@ -139,8 +139,7 @@ Performing a release requires write permissions to the repository.
    - This will release (non-private) packages to npm.
    - And create new github releases for each packages.
 6. Wait for the ["Post Release Upload VSIX"][post-release-upload-vsix-action] GitHub Action to complete.
-
-- This will upload the VSIX files to the GitHub releases created in the previous step.
+   - This will upload the VSIX files to the GitHub releases created in the previous step.
 
 [version_packages_search]: https://github.com/SAP/app-studio-toolkit/pulls?q=is%3Apr+author%3Aapp%2Fgithub-actions+version+packages
 [release_gh_action]: https://github.com/SAP/app-studio-toolkit/actions/workflows/release.yml

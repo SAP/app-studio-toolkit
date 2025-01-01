@@ -120,8 +120,8 @@ importers:
   examples/sample-action-client:
     devDependencies:
       '@sap-devx/app-studio-toolkit-types':
-        specifier: ^1.19.3
-        version: 1.19.3
+        specifier: workspace:*
+        version: link:../../packages/app-studio-toolkit-types
 
   examples/vscode-using-upgrade-tool: {}
 

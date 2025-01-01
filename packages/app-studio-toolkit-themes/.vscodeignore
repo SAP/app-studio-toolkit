@@ -6,6 +6,8 @@
 !LICENSE
 !.reuse
 !README.md
+!CHANGELOG.md
+!CHANGELOG.old.md
 !package.json
 !icon.png
 # bundled sources
