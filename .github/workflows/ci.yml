@@ -49,6 +49,11 @@ jobs:
       - name: Create Release Pull Request
         id: create_or_update_release_pr
         uses: changesets/action@v1
+        # Changesets + `apps` may automatically create tags for 'apps' during PR builds, but this should only happen
+        # after merge to master
+        # - https://github.com/changesets/changesets/blob/main/docs/versioning-apps.md
+        # - Our `private:true` packages (mainly VSIX) are treated as `apps` by changesets
+        if: github.event_name != 'pull_request'
         with:
           title: "chore: version packages"
           commit: "chore: version packages"

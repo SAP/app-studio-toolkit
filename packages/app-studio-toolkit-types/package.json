@@ -13,6 +13,8 @@
   "files": [
     ".reuse",
     "LICENSES",
+    "CHANGELOG.md",
+    "CHANGELOG.old.md",
     "api.d.ts"
   ],
   "scripts": {
