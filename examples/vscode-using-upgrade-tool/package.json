@@ -1,7 +1,7 @@
 {
   "name": "vscode-using-upgrade-tool",
   "private": "true",
-  "version": "1.8.3",
+  "version": "4.0.0",
   "publisher": "SAPOSS",
   "engines": {
     "vscode": "^1.32.0"
