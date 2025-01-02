@@ -68,14 +68,15 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.BOT_GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+      # To avoid race condition errors in the upload vsix step
       - name: Wait for GH Releases to be published
-        if: ${{steps.changesets_release_or_pr.outputs.published}}
+        if: steps.create_or_update_release_pr.outputs.published == 'true'
         run: sleep 10s
         shell: bash
 
       - name:
         run: node scripts/upload-vsix-to-releases.mjs
-        if: ${{steps.changesets_release_or_pr.outputs.published}}
+        if: steps.create_or_update_release_pr.outputs.published == 'true'
         env:
           PKG_LIST: ${{steps.changesets_release_or_pr.outputs.publishedPackages}}
           # because this is a **secret** it is not automatically passed in the env,
