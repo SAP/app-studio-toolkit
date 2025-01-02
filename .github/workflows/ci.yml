@@ -50,8 +50,8 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Create Release Pull Request
-        id: create_or_update_release_pr
+      - name: ChangeSets Release or PR creation
+        id: changesets_release_or_pr
         uses: changesets/action@v1
         # Changesets + `apps` may automatically create tags for 'apps' during PR builds, but this should only happen
         # after merge to master
@@ -68,15 +68,16 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.BOT_GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Docs on Release Pull Request
-        uses: thollander/actions-comment-pull-request@v3
-        if: steps.create_or_update_release_pr.outputs.hasChangesets == true
-        with:
-          # using the `comment-tag` to avoid duplicate comments
-          comment-tag: 'pr-release-docs'
-          message: |
-            To trigger the build for this PR, **close and re-open it**.
-            This is necessary because the PR is created by github-actions[bot]
-            This is a technical user which does not trigger actions workflows on push events.
-            Additionally, this approach reduce load on the CI/CD system (fewer builds).
-          pr-number: ${{steps.create_or_update_release_pr.outputs.pullRequestNumber}}
+      - name: Wait for GH Releases to be published
+        if: ${{steps.changesets_release_or_pr.outputs.hasChangesets}}
+        run: sleep 10s
+        shell: bash
+
+      - name:
+        run: node scripts/upload-vsix-to-releases.mjs
+        if: ${{steps.changesets_release_or_pr.outputs.hasChangesets}}
+        env:
+          PKG_LIST: ${{steps.changesets_release_or_pr.outputs.publishedPackages}}
+          # because this is a **secret** it is not automatically passed in the env,
+          # unless explicitly defined...
+          GITHUB_TOKEN: ${{ secrets.BOT_GITHUB_TOKEN }}
