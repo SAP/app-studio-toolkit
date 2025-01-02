@@ -69,13 +69,13 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Wait for GH Releases to be published
-        if: ${{steps.changesets_release_or_pr.outputs.hasChangesets}}
+        if: ${{steps.changesets_release_or_pr.outputs.published}}
         run: sleep 10s
         shell: bash
 
       - name:
         run: node scripts/upload-vsix-to-releases.mjs
-        if: ${{steps.changesets_release_or_pr.outputs.hasChangesets}}
+        if: ${{steps.changesets_release_or_pr.outputs.published}}
         env:
           PKG_LIST: ${{steps.changesets_release_or_pr.outputs.publishedPackages}}
           # because this is a **secret** it is not automatically passed in the env,
