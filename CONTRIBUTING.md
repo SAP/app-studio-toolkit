@@ -127,7 +127,7 @@ See the introduction to [ChangeSets][changesets] for a starter how to use guide.
 
 Performing a release requires write permissions to the repository.
 
-1. Find the ["Version Packages"][version_packages_search] pull-request on GitHub.
+1. Find the ["Chore: Version Packages"][version_packages_search] pull-request on GitHub.
 2. Review the PR to:
    - Identify which packages are being versioned and to what version.
    - Identify the upcoming changes and their impact (patch/minor/major).
@@ -137,10 +137,7 @@ Performing a release requires write permissions to the repository.
 4. Merge the "Version Packages" PR.
 5. Wait for the ["Release"][release_gh_action] GitHub Action to complete.
    - This will release (non-private) packages to npm.
-   - And create new github releases for each packages.
-6. Wait for the ["Post Release Upload VSIX"][post-release-upload-vsix-action] GitHub Action to complete.
-   - This will upload the VSIX files to the GitHub releases created in the previous step.
+   - And will also create new github releases / tags for each packages.
 
 [version_packages_search]: https://github.com/SAP/app-studio-toolkit/pulls?q=is%3Apr+author%3Aapp%2Fgithub-actions+version+packages
 [release_gh_action]: https://github.com/SAP/app-studio-toolkit/actions/workflows/release.yml
-[post-release-upload-vsix-action]: https://github.com/SAP/app-studio-toolkit/actions/workflows/post-release-upload-vsix.yml
