@@ -82,3 +82,11 @@ jobs:
           # because this is a **secret** it is not automatically passed in the env,
           # unless explicitly defined...
           GITHUB_TOKEN: ${{ secrets.BOT_GITHUB_TOKEN }}
+
+      - name: upload vsix artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: all-vsix
+          path: packages/*/*.vsix
+          # default is 90 days, however we avoiding excessive storage usage...
+          retention-days: 14
