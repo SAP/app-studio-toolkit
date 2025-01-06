@@ -10,6 +10,10 @@ on:
     branches:
       - main*
 
+env:
+  artifact-retention-days: 14
+  retention-comment: This comment will be **updated** with the data of the **last successful** build of this PR.
+
 jobs:
   build:
     name: Full Build (node ${{ matrix.node_version }})
@@ -83,10 +87,49 @@ jobs:
           # unless explicitly defined...
           GITHUB_TOKEN: ${{ secrets.BOT_GITHUB_TOKEN }}
 
-      - name: upload vsix artifacts
+      - name: upload build artifacts
         uses: actions/upload-artifact@v4
+        id: upload_build_artifacts
         with:
           name: all-vsix
           path: packages/*/*.vsix
-          # default is 90 days, however we avoiding excessive storage usage...
-          retention-days: 14
+          # default is 90 days; however, we want to avoid excessive storage usage...
+          retention-days: ${{ env.artifact-retention-days }}
+
+      - name: Find PR Comment
+        uses: peter-evans/find-comment@v3
+        if: github.event_name == 'pull_request'
+        id: find-pr-comment
+        with:
+          issue-number: ${{ github.event.number }}
+          comment-author: "github-actions[bot]"
+          body-includes: ${{ env.retention-comment }}
+
+      - name: Create / Update PR Comment
+        uses: peter-evans/create-or-update-comment@v4
+        if: github.event_name == 'pull_request'
+        env:
+          HEAD_SHA: ${{ github.sha }}
+          JOB_PATH: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          ARTIFACT_ID: ${{ steps.upload_build_artifacts.outputs.artifact-id }}
+        with:
+          edit-mode: replace
+          issue-number: ${{ github.event.number }}
+          comment-id: ${{ steps.find-pr-comment.outputs.comment-id }}
+          body: |
+            ## Build Report
+
+            [![badge]]($JOB_PATH)
+                  
+            Please note:
+
+            1. Files only stay for around ${{ env.artifact-retention-days }} days!
+            2. ${{ env.retention-comment }}
+
+            | Name       | Link                                                   |
+            |------------|--------------------------------------------------------|
+            | Commit     | ${{ env.HEAD_SHA }}                                    |
+            | Logs       | ${{ env.JOB_PATH }}                                    |
+            | VSIX Files | ${{ env.JOB_PATH }}/artifacts/${{ env.ARTIFACT_ID }}   |
+
+            [badge]: https://img.shields.io/badge/Build-Success!-3fb950?logo=github&style=for-the-badge
