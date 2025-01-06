@@ -5,7 +5,12 @@
   "fixed": [
     ["vscode-deps-upgrade-tool", "vscode-using-upgrade-tool"],
     ["@sap-devx/npm-dependencies-validation", "vscode-dependencies-validation"],
-    ["app-studio-toolkit", "sample-action-client", "vscode-using-workspace-api"]
+    [
+      "app-studio-toolkit",
+      "@sap-devx/app-studio-toolkit-types",
+      "sample-action-client",
+      "vscode-using-workspace-api"
+    ]
   ],
   "linked": [],
   "access": "restricted",
