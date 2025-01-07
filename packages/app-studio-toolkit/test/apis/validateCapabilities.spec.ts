@@ -12,7 +12,7 @@ mockVscode(testVscode, "dist/src/apis/validateLCAP.js");
 mockVscode(testVscode, "dist/src/apis/validateFioriCapabilities.js");
 mockVscode(testVscode, "dist/src/apis/validateCapCapabilities.js");
 mockVscode(testVscode, "dist/src/apis/validateHanacalcviewCapabilities.js");
-import { isLCAPEnabled, LACP_EXTENSION_ID } from "../../src/apis/validateLCAP";
+import { isLCAPEnabled, LCAP_EXTENSION_ID } from "../../src/apis/validateLCAP";
 import {
   hasFioriCapabilities,
   FIORI_EXTENSION_ID,
@@ -55,17 +55,17 @@ describe("validate capabilities API", () => {
     it("should return false when LCAP extension does not exist", async () => {
       extensionsMock
         .expects("getExtension")
-        .withExactArgs(LACP_EXTENSION_ID)
+        .withExactArgs(LCAP_EXTENSION_ID)
         .returns(undefined);
       const parameterValue = await isLCAPEnabled();
       expect(parameterValue).to.be.false;
     });
 
     it("should return true when LCAP extension exists", async () => {
-      const extension = { id: LACP_EXTENSION_ID };
+      const extension = { id: LCAP_EXTENSION_ID };
       extensionsMock
         .expects("getExtension")
-        .withExactArgs(LACP_EXTENSION_ID)
+        .withExactArgs(LCAP_EXTENSION_ID)
         .returns(extension);
       const parameterValue = await isLCAPEnabled();
       expect(parameterValue).to.be.true;
