@@ -372,7 +372,7 @@
     "*"
   ],
   "dependencies": {
-    "@sap/artifact-management": "1.40.1",
+    "@sap/artifact-management": "1.41.0",
     "@sap/bas-sdk": "^3.9.0",
     "@vscode-logging/wrapper": "2.0.0",
     "axios": "^1.7.4",
