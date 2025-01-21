@@ -129,12 +129,12 @@
     "editor.inactiveSelectionBackground": "#242e38",
     "editor.selectionBackground": "#242e38",
     "editor.selectionHighlightBackground": "#242e38",
-    "editor.selectionHighlightBorder": "#C8E3FA",
-    "editor.wordHighlightBackground": "#CEBCE1",
-    "editor.wordHighlightBorder": "#CEBCE1",
-    "editor.wordHighlightStrongBackground": "#CAE3B3",
-    "editor.wordHighlightStrongBorder": "#CAE3B3",
-    "editorBracketMatch.background": "#CAE3B3",
+    "editor.selectionHighlightBorder": "#354A5F",
+    "editor.wordHighlightBackground": "#354A5F",
+    "editor.wordHighlightBorder": "#354A5F",
+    "editor.wordHighlightStrongBackground": "#354A5F",
+    "editor.wordHighlightStrongBorder": "#354A5F",
+    "editorBracketMatch.background": "#354A5F",
     "editorBracketMatch.border": "#CAE3B3",
     "editorGutter.modifiedBackground": "#FFDF72",
     "editorGutter.addedBackground": "#BDE986",
@@ -205,7 +205,7 @@
         "entity"
       ],
       "settings": {
-        "foreground": "#4DB1FF"
+        "foreground": "#EAECEE"
       }
     },
     {
@@ -235,7 +235,7 @@
     {
       "scope": "entity.name.function",
       "settings": {
-        "foreground": "#6f42c1"
+        "foreground": "#EAECEE"
       }
     },
     {
@@ -247,13 +247,13 @@
     {
       "scope": "keyword",
       "settings": {
-        "foreground": "#0070F2"
+        "foreground": "#4DB1FF"
       }
     },
     {
       "scope": ["storage"],
       "settings": {
-        "foreground": "#d73a49"
+        "foreground": "#4DB1FF"
       }
     },
     {
@@ -263,7 +263,7 @@
         "storage.type.java"
       ],
       "settings": {
-        "foreground": "#24292e"
+        "foreground": "#EAECEE"
       }
     },
     {
