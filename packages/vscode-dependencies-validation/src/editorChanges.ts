@@ -4,14 +4,11 @@ import type {
   TextDocumentChangeEvent,
   TextEditor,
 } from "vscode";
-import { isEmpty } from "lodash";
 import { clearDiagnostics } from "./util";
 import { VscodePackageJsonChangesConfig } from "./vscodeTypes";
 import { getOptimizedRefreshDiagnostics } from "./diagnostics/debounce";
 import { shouldBeChecked } from "./diagnostics/shouldBeChecked";
-
-// TODO: when node_modules deleted or changed diagnostics are not refreshed and errors are not shown for an opened package.json
-// the package.json file should be closed and opened again to trigger diagnostic refresh
+import { isNewPersistedFileVersion } from "./diagnostics/isNewPersistedFileVersion";
 
 export function subscribeToPackageJsonChanges(
   vscodeConfig: VscodePackageJsonChangesConfig
@@ -50,7 +47,11 @@ function executeRefreshDiagnosticsOnEditorChange(
   diagnosticCollection: DiagnosticCollection
 ) {
   return (editor: TextEditor | undefined) => {
-    if (editor && shouldBeChecked(editor.document.uri.path)) {
+    if (
+      editor &&
+      shouldBeChecked(editor.document.uri.path) &&
+      !editor.document.isDirty
+    ) {
       {
         const uri = editor.document.uri;
         const optimizedRefreshDiag = getOptimizedRefreshDiagnostics(uri);
@@ -64,13 +65,14 @@ function executeRefreshDiagnosticsOnDocumentChangeEvent(
   diagnosticCollection: DiagnosticCollection
 ) {
   return (event: TextDocumentChangeEvent) => {
-    const uri = event.document.uri;
+    const document = event.document;
+    const uri = document.uri;
 
     if (
-      // this event gets called multiple (four) times for each text change
-      // but only once for "true" text changes
-      !isEmpty(event.contentChanges) &&
-      shouldBeChecked(uri.path)
+      shouldBeChecked(uri.path) &&
+      !document.isDirty &&
+      // this check should be last as it may modify global state (path -> version cache)
+      isNewPersistedFileVersion(uri.path, document.version)
     ) {
       const optimizedRefreshDiag = getOptimizedRefreshDiagnostics(uri);
       void optimizedRefreshDiag(uri, diagnosticCollection);
