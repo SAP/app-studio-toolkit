@@ -1,5 +1,11 @@
 # app-studio-toolkit-themes
 
+## 6.0.1
+
+### Patch Changes
+
+- eddbfac: enhancing fiori dark theme
+
 ## 6.0.0
 
 ### Major Changes
