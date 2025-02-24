@@ -30,10 +30,10 @@ describe("the optionalRequire utility", () => {
   });
 
   it("returns the module if it exist", () => {
-    // `crypto` is built-in in nodejs and should always be available
-    const cryptoBubble = optionalRequire("crypto");
-    expect(cryptoBubble).to.exist;
+    // `fs` is built-in in nodejs and should always be available
+    const fsModule = optionalRequire("fs");
+    expect(fsModule).to.exist;
     // @ts-expect-error -- dynamic import
-    expect(cryptoBubble.Cipher).to.exist;
+    expect(fsModule.readFile).to.exist;
   });
 });

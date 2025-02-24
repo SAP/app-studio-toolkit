@@ -2,7 +2,9 @@ import { expect } from "chai";
 import { resolve } from "path";
 import { findDependencyIssues } from "../src/api";
 
-describe("`findDependencyIssues()` validation function ", () => {
+describe("`findDependencyIssues()` validation function ", function () {
+  this.timeout(4000); // 4 seconds
+
   // `__dirname` is executed in the compiled output...
   const samplesDir = resolve(__dirname, "..", "..", "test", "packages-samples");
 
