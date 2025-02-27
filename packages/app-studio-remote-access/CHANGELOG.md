@@ -1,5 +1,11 @@
 # app-studio-remote-access
 
+## 4.0.1
+
+### Patch Changes
+
+- 60d2d8e: consume @sap/bas-sdk with fixed `getKey` call
+
 ## 4.0.0
 
 ### Major Changes
