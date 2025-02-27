@@ -13,10 +13,16 @@ import {
   deactivateBasRemoteExplorer,
   initBasRemoteExplorer,
 } from "./devspace-manager/instance";
-import { shouldRunCtlServer } from "./utils/bas-utils";
+import {
+  startBasKeepAlive,
+  shouldRunCtlServer,
+  cleanKeepAliveInterval,
+} from "./utils/bas-utils";
 
 export function activate(context: ExtensionContext): BasToolkit {
   initLogger(context);
+
+  startBasKeepAlive();
 
   // should be trigered earlier on acivating because the `shouldRunCtlServer` method sets the context value of `ext.runPlatform`
   if (shouldRunCtlServer()) {
@@ -45,4 +51,5 @@ export function activate(context: ExtensionContext): BasToolkit {
 export function deactivate(): void {
   closeBasctlServer();
   void deactivateBasRemoteExplorer();
+  cleanKeepAliveInterval();
 }

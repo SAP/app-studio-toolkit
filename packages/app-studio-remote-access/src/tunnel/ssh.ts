@@ -14,6 +14,16 @@ import { getLogger } from "../logger/logger";
 
 const sessionMap: Map<string, SshClientSession> = new Map();
 
+export function closeSessions(sessions?: string[]): void {
+  Array.from(sessionMap.entries()).forEach(([key, session]) => {
+    if (sessions && !sessions.includes(key)) {
+      return;
+    }
+    void session.close(SshDisconnectReason.byApplication);
+    sessionMap.delete(key);
+  });
+}
+
 /* istanbul ignore next */
 class WebSocketClientStream extends BaseStream {
   public constructor(private readonly websocket: WebSocket) {
@@ -123,38 +133,30 @@ export async function ssh(opts: {
     });
   });
 
-  return new Promise((resolve, reject) => {
-    const session = new SshClientSession(config);
+  const session = new SshClientSession(config);
+  try {
+    await session.connect(stream);
+    void session.onAuthenticating((e) => {
+      // there is no authentication in this solution
+      e.authenticationPromise = Promise.resolve({});
+    });
+
+    // authorise client by name 'user'
+    void session.authenticateClient({
+      username: opts.username,
+      publicKeys: [],
+    });
+
+    const pfs = session.activateService(PortForwardingService);
+    await pfs.forwardToRemotePort(
+      "127.0.0.1",
+      parseInt(opts.client.port, 10),
+      "127.0.0.1",
+      2222
+    );
+    getLogger().debug(`ssh session connected`);
     sessionMap.set(serverUri, session);
-    void session
-      .connect(stream)
-      .then(() => {
-        void session.onAuthenticating((e) => {
-          // there is no authentication in this solution
-          e.authenticationPromise = Promise.resolve({});
-        });
-
-        // authorise client by name 'user'
-        void session.authenticateClient({
-          username: opts.username,
-          publicKeys: [],
-        });
-
-        const pfs = session.activateService(PortForwardingService);
-        void pfs
-          .forwardToRemotePort(
-            "127.0.0.1",
-            parseInt(opts.client.port, 10),
-            "127.0.0.1",
-            2222
-          )
-          .then(() => {
-            getLogger().debug(`ssh session connected`);
-          });
-      })
-      .catch((e) => {
-        getLogger().error(`ssh session droped : ${e.message}`);
-        reject(e);
-      });
-  });
+  } catch (e) {
+    getLogger().error(`ssh session droped : ${e.message}`);
+  }
 }

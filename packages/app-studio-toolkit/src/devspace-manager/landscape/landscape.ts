@@ -17,27 +17,44 @@ import { LandscapeNode } from "../tree/treeItems";
 import { BasRemoteAuthenticationProvider } from "../../authentication/authProvider";
 
 const LBL_ADD_LANDSCAPE = "Add another landscape";
+const DEFAULT_REFRESH_RATE = 10 * 1000; // 10 sec default
+const DEFAULT_TIMEOUT = 2 * 60 * 1000; // 2 min default
 
-export function autoRefresh(refreshRate?: number, timeOut?: number): void {
-  refreshRate = refreshRate ?? 10 * 1000; // 10 sec default
-  timeOut = timeOut ?? 2 * 60 * 1000; // 2 min default
+const autoRefreshTimerArray: NodeJS.Timer[] = [];
+
+export function clearAutoRefreshTimers(): void {
+  autoRefreshTimerArray.forEach((interval) => {
+    clearInterval(interval);
+  });
+  autoRefreshTimerArray.splice(0, autoRefreshTimerArray.length);
+}
+
+export function autoRefresh(
+  refreshRate = DEFAULT_REFRESH_RATE,
+  timeOut = DEFAULT_TIMEOUT
+): void {
   let refreshedTime = 0;
   const refreshInterval: NodeJS.Timer = setInterval(() => {
     getLandscapes()
       .then((landscapes) => {
-        if (refreshedTime < timeOut! && !isEmpty(landscapes)) {
-          refreshedTime += refreshRate!;
+        if (refreshedTime < timeOut && !isEmpty(landscapes)) {
+          refreshedTime += refreshRate;
           getLogger().info(`Auto refresh ${refreshedTime} out of ${timeOut}`);
           void commands.executeCommand("local-extension.tree.refresh");
         } else {
           getLogger().info(`Auto refresh completed`);
           clearInterval(refreshInterval);
+          const index = autoRefreshTimerArray.indexOf(refreshInterval);
+          if (index !== -1) {
+            autoRefreshTimerArray.splice(index, 1); // Remove one item at the found index
+          }
         }
       })
       .catch((e) => {
         getLogger().error(`getLandscapes error: ${e.toString()}`);
       });
   }, refreshRate);
+  autoRefreshTimerArray.push(refreshInterval);
 }
 
 interface QuickPickLandscape extends QuickPickItem {
@@ -233,3 +250,8 @@ export async function setDefaultLandscape(
   }
   return !!selectedLandscape;
 }
+
+// for testing
+export const internal = {
+  autoRefreshTimerArray,
+};

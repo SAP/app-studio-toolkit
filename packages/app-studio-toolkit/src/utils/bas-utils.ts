@@ -1,4 +1,14 @@
-import { ExtensionKind, commands, env, extensions } from "vscode";
+import {
+  CancellationToken,
+  ExtensionKind,
+  ProgressLocation,
+  Uri,
+  commands,
+  env,
+  extensions,
+  window,
+  workspace,
+} from "vscode";
 import { join, split, tail } from "lodash";
 import { devspace } from "@sap/bas-sdk";
 import { URL } from "node:url";
@@ -57,4 +67,107 @@ function getExtensionRunPlatform(): ExtensionRunMode {
   void commands.executeCommand("setContext", `ext.runPlatform`, runPlatform);
 
   return runPlatform;
+}
+
+// Constants for keep alive
+const KEEP_ALIVE_TIMEOUT = 16 * 60 * 1000; // 16 minutes (in milliseconds)
+const EXTEND_SESSION_TIMEOUT = 15 * 60; // 15 minutes (in seconds)
+const MAX_SESSION_TIME = 2 * 60 * 60 * 1000; // 2 hours (in milliseconds)
+const BAS_KEEP_ALIVE_FILE = "/home/user/tmp/.keep-alive";
+
+let keepAliveInterval: NodeJS.Timeout | undefined;
+
+async function touchFile(filePath: string): Promise<void> {
+  try {
+    await workspace.fs.writeFile(Uri.file(filePath), new Uint8Array(0));
+  } catch (error) {
+    console.error(`Error while touching file: ${error}`);
+  }
+}
+
+export function startBasKeepAlive(): void {
+  // Only proceed if in BAS Remote mode (Hybrid)
+  if (getExtensionRunPlatform() !== ExtensionRunMode.basRemote) {
+    return;
+  }
+
+  // Clear any existing interval first to prevent duplicates
+  cleanKeepAliveInterval();
+
+  async function executeKeepAlive(): Promise<void> {
+    await touchFile(BAS_KEEP_ALIVE_FILE);
+  }
+
+  function formatTimeRemaining(seconds: number): string {
+    const minutes: number = Math.floor(seconds / 60);
+    const remainingSeconds: number = seconds % 60;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
+  }
+
+  async function askToSessionExtend(): Promise<boolean> {
+    return window.withProgress(
+      {
+        location: ProgressLocation.Notification,
+        title:
+          "VS Code will close. To continue working remotely, please press 'Cancel'",
+        cancellable: true,
+      },
+      async (progress, token: CancellationToken) => {
+        const increment = 100 / EXTEND_SESSION_TIMEOUT;
+        let secondsLeft = EXTEND_SESSION_TIMEOUT;
+
+        return new Promise<boolean>((resolve) => {
+          const interval = setInterval(() => {
+            secondsLeft--;
+            progress.report({
+              message: `Time remaining: ${formatTimeRemaining(secondsLeft)}`,
+              increment,
+            });
+
+            if (secondsLeft === 0) {
+              clearInterval(interval);
+              resolve(false); // Close window
+            }
+          }, 1000);
+
+          token.onCancellationRequested(() => {
+            clearInterval(interval);
+            resolve(true); // Extend session
+          });
+        });
+      }
+    );
+  }
+
+  let sessionStartTime = Date.now();
+
+  // Execute immediately once
+  void executeKeepAlive();
+
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises -- no need to handle promise rejection
+  keepAliveInterval = setInterval(async () => {
+    await executeKeepAlive();
+
+    const timeSinceStart = Date.now() - sessionStartTime;
+    if (timeSinceStart > MAX_SESSION_TIME - KEEP_ALIVE_TIMEOUT) {
+      const shouldExtend = await askToSessionExtend();
+
+      if (!shouldExtend) {
+        // Stop keep alive interval before closing VS Code altrough it will be executed on extension deactivation
+        // because 'closeWindow' not sure closing VS Code (e.g. there are unsaved changes)
+        cleanKeepAliveInterval();
+        void commands.executeCommand("workbench.action.closeWindow");
+      } else {
+        // Extend session for another MAX_SESSION_TIME cycle
+        sessionStartTime = Date.now();
+      }
+    }
+  }, KEEP_ALIVE_TIMEOUT);
+}
+
+export function cleanKeepAliveInterval(): void {
+  if (keepAliveInterval) {
+    clearInterval(keepAliveInterval);
+    keepAliveInterval = undefined;
+  }
 }

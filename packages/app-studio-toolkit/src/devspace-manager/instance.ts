@@ -10,12 +10,13 @@ import { cmdDevSpaceAdd } from "./devspace/add";
 import { cmdDevSpaceEdit } from "./devspace/edit";
 import { cmdCopyWsId } from "./devspace/copy";
 import {
-  closeTunnel,
+  closeTunnels,
   cmdDevSpaceConnectNewWindow,
   cmdDevSpaceOpenInBAS,
 } from "./devspace/connect";
 import { BasRemoteAuthenticationProvider } from "../authentication/authProvider";
 import {
+  clearAutoRefreshTimers,
   clearDefaultLandscape,
   cmdLoginToLandscape,
   getDefaultLandscape,
@@ -159,9 +160,29 @@ export function initBasRemoteExplorer(context: ExtensionContext): void {
       getBasUriHandler(devSpaceExplorer.getDevSpacesExplorerProvider())
     )
   );
+
+  // Add the event listener to subscriptions for cleanup
+  context.subscriptions.push(
+    authentication.onDidChangeSessions((e) => {
+      // Check if this was a sign out event
+      if (e.provider.id === BasRemoteAuthenticationProvider.id) {
+        // Get current sessions
+        void authentication
+          .getSession(BasRemoteAuthenticationProvider.id, [], { silent: true })
+          .then((session) => {
+            // If session is null or undefined, user has signed out
+            if (!session) {
+              clearAutoRefreshTimers();
+              void closeTunnels();
+            }
+          });
+      }
+    })
+  );
 }
 
-export async function deactivateBasRemoteExplorer(): Promise<void> {
+export function deactivateBasRemoteExplorer(): Promise<void> {
+  clearAutoRefreshTimers();
   // kill opened ssh channel if exists
-  return closeTunnel();
+  return closeTunnels();
 }

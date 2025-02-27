@@ -72,7 +72,7 @@ describe("devspace connect unit test", () => {
       .expects("executeCommand")
       .withExactArgs("remote-access.close-tunnel")
       .resolves();
-    await connectProxy.closeTunnel();
+    await connectProxy.closeTunnels();
   });
 
   describe(`cmdDevSpaceOpenInBAS scope unit tests set`, () => {

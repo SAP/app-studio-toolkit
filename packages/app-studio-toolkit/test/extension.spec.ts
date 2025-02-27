@@ -50,7 +50,7 @@ mockVscode(testVscode, "dist/src/devspace-manager/instance.js");
 import * as extension from "../src/extension";
 import * as performer from "../src/actions/performer";
 import * as basctlServer from "../src/basctlServer/basctlServer";
-import * as runInBas from "../src/utils/bas-utils";
+import * as basUtils from "../src/utils/bas-utils";
 import * as logger from "../src/logger/logger";
 import { fail } from "assert";
 import { ActionsFactory } from "../src/actions/actionsFactory";
@@ -61,7 +61,7 @@ describe("extension unit test", () => {
   let sandbox: SinonSandbox;
   let workspaceMock: SinonMock;
   let basctlServerMock: SinonMock;
-  let shouldRunCtlServerMock: SinonMock;
+  let basUtilsMock: SinonMock;
   let performerMock: SinonMock;
   let wsConfigMock: SinonMock;
   let loggerMock: SinonMock;
@@ -78,7 +78,7 @@ describe("extension unit test", () => {
   beforeEach(() => {
     workspaceMock = sandbox.mock(testVscode.workspace);
     basctlServerMock = sandbox.mock(basctlServer);
-    shouldRunCtlServerMock = sandbox.mock(runInBas);
+    basUtilsMock = sandbox.mock(basUtils);
     performerMock = sandbox.mock(performer);
     wsConfigMock = sandbox.mock(wsConfig);
     loggerMock = sandbox.mock(logger);
@@ -88,7 +88,7 @@ describe("extension unit test", () => {
   afterEach(() => {
     workspaceMock.verify();
     basctlServerMock.verify();
-    shouldRunCtlServerMock.verify();
+    basUtilsMock.verify();
     performerMock.verify();
     wsConfigMock.verify();
     loggerMock.verify();
@@ -139,7 +139,8 @@ describe("extension unit test", () => {
         .expects("initBasRemoteExplorer")
         .withExactArgs(context);
       loggerMock.expects("initLogger").withExactArgs(context);
-      shouldRunCtlServerMock.expects("shouldRunCtlServer").returns(true);
+      basUtilsMock.expects("startBasKeepAlive").returns(void 0);
+      basUtilsMock.expects("shouldRunCtlServer").returns(true);
       basctlServerMock.expects("startBasctlServer");
       const scheduledAction = {
         name: "actName",
@@ -164,7 +165,8 @@ describe("extension unit test", () => {
       };
 
       loggerMock.expects("initLogger").withExactArgs(context);
-      shouldRunCtlServerMock.expects("shouldRunCtlServer").returns(false);
+      basUtilsMock.expects("startBasKeepAlive").returns(void 0);
+      basUtilsMock.expects("shouldRunCtlServer").returns(false);
       performerMock.expects("_performAction").never();
 
       wsConfigMock.expects("get").withExactArgs("actions", []).returns([]);
@@ -183,7 +185,8 @@ describe("extension unit test", () => {
       const testError = new Error("Socket failure");
 
       loggerMock.expects("initLogger").withExactArgs(context);
-      shouldRunCtlServerMock.expects("shouldRunCtlServer").returns(true);
+      basUtilsMock.expects("startBasKeepAlive").returns(void 0);
+      basUtilsMock.expects("shouldRunCtlServer").returns(true);
       basctlServerMock.expects("startBasctlServer").throws(testError);
 
       try {
@@ -197,6 +200,8 @@ describe("extension unit test", () => {
 
   it("deactivate", () => {
     basctlServerMock.expects("closeBasctlServer");
+    basRemoteExplorerMock.expects("deactivateBasRemoteExplorer").resolves();
+    basUtilsMock.expects("cleanKeepAliveInterval");
     extension.deactivate();
   });
 });

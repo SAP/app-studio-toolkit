@@ -119,7 +119,7 @@ describe("devspace connect unit test", () => {
   };
 
   it("closeTunnel", () => {
-    expect(commandsProxy.closeTunnel()).to.be.false;
+    expect(commandsProxy.closeTunnels()).to.be.false;
   });
 
   describe(`cmdDevSpaceConnectNewWindow scope unit tests set`, () => {
