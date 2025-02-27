@@ -1,5 +1,12 @@
 # vscode-dependencies-validation
 
+## 3.0.1
+
+### Patch Changes
+
+- Updated dependencies [d654e14]
+  - @sap-devx/npm-dependencies-validation@3.0.1
+
 ## 3.0.0
 
 ### Major Changes

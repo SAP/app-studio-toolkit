@@ -1,5 +1,13 @@
 # app-studio-toolkit
 
+## 2.2.2
+
+### Patch Changes
+
+- d654e14: the reliability of tests has been increased
+- ca5d41d: bumping @sap/artifact-management dependency to 1.43.1
+- 60d2d8e: consume @sap/bas-sdk with fixed `getKey` call
+
 ## 2.2.1
 
 ### Patch Changes

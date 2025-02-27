@@ -1,5 +1,11 @@
 # @sap-devx/npm-dependencies-validation
 
+## 3.0.1
+
+### Patch Changes
+
+- d654e14: the reliability of tests has been increased
+
 ## 3.0.0
 
 ### Major Changes

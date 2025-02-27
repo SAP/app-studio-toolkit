@@ -1,5 +1,11 @@
 # @sap-devx/app-studio-toolkit-types
 
+## 2.2.2
+
+### Patch Changes
+
+- ca5d41d: bumping @sap/artifact-management dependency to 1.43.1
+
 ## 2.2.1
 
 ### Patch Changes
