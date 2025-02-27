@@ -375,7 +375,7 @@
     "@sap/artifact-management": "1.43.1",
     "@sap/bas-sdk": "3.11.4",
     "@vscode-logging/wrapper": "2.0.0",
-    "axios": "^1.7.4",
+    "axios": "^1.8.1",
     "body-parser": "1.20.3",
     "cors": "2.8.5",
     "express": "4.19.2",
