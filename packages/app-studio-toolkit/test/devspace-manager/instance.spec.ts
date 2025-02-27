@@ -42,6 +42,7 @@ const vscodeProxy = {
   authentication: {
     getSession: () => {},
     registerAuthenticationProvider: () => {},
+    onDidChangeSessions: () => {},
   },
   EventEmitter: class EventEmitterMock {
     fire: () => void = stub().returns(void 0);
@@ -127,6 +128,7 @@ describe("extension unit test", () => {
           "SAP Business Application Studio"
         )
         .returns({});
+      authenticationMock.expects(`onDidChangeSessions`).returns({});
       instance.initBasRemoteExplorer(context);
     });
 
@@ -165,6 +167,77 @@ describe("extension unit test", () => {
         .returns({});
       instance.initBasRemoteExplorer(context);
       registry.get(`local-extension.tree.settings`)?.();
+    });
+
+    it("authentication.onDidChangeSessions registered", () => {
+      const onDidChangeSessionsStub = sandbox.stub();
+      vscodeProxy.authentication.onDidChangeSessions = onDidChangeSessionsStub;
+      instance.initBasRemoteExplorer(context);
+      expect(onDidChangeSessionsStub.calledOnce).to.be.true;
+    });
+
+    it("authentication.onDidChangeSessions callback", async () => {
+      const onDidChangeSessionsStub = sandbox.stub();
+      vscodeProxy.authentication.onDidChangeSessions = onDidChangeSessionsStub;
+      instance.initBasRemoteExplorer(context);
+
+      const callback = onDidChangeSessionsStub.getCall(0).args[0];
+      expect(callback).to.be.a("function");
+
+      // Simulate session change
+      authenticationMock
+        .expects(`getSession`)
+        .withExactArgs(BasRemoteAuthenticationProvider.id, [], { silent: true })
+        .resolves();
+      const sessionChangeEvent = {
+        provider: { id: BasRemoteAuthenticationProvider.id },
+      };
+      commandsMock
+        .expects(`executeCommand`)
+        .withExactArgs(`remote-access.close-tunnel`)
+        .resolves();
+      callback(sessionChangeEvent);
+      await new Promise((resolve) => setTimeout(resolve, 200)); // wait for actions to be performed
+    });
+
+    it("authentication.onDidChangeSessions callback with unexpected provider", () => {
+      const onDidChangeSessionsStub = sandbox.stub();
+      vscodeProxy.authentication.onDidChangeSessions = onDidChangeSessionsStub;
+      instance.initBasRemoteExplorer(context);
+
+      const callback = onDidChangeSessionsStub.getCall(0).args[0];
+      expect(callback).to.be.a("function");
+
+      // Simulate session change
+      const sessionChangeEvent = { provider: { id: "id" } };
+      commandsMock
+        .expects(`executeCommand`)
+        .withExactArgs(`remote-access.close-tunnel`)
+        .never();
+      callback(sessionChangeEvent);
+    });
+
+    it("authentication.onDidChangeSessions callback - some session exists (not fully logged out)", () => {
+      const onDidChangeSessionsStub = sandbox.stub();
+      vscodeProxy.authentication.onDidChangeSessions = onDidChangeSessionsStub;
+      instance.initBasRemoteExplorer(context);
+
+      const callback = onDidChangeSessionsStub.getCall(0).args[0];
+      expect(callback).to.be.a("function");
+
+      // Simulate session change
+      authenticationMock
+        .expects(`getSession`)
+        .withExactArgs(BasRemoteAuthenticationProvider.id, [], { silent: true })
+        .resolves({});
+      const sessionChangeEvent = {
+        provider: { id: BasRemoteAuthenticationProvider.id },
+      };
+      commandsMock
+        .expects(`executeCommand`)
+        .withExactArgs(`remote-access.close-tunnel`)
+        .never();
+      callback(sessionChangeEvent);
     });
   });
 
