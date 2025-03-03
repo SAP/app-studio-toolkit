@@ -1,5 +1,6 @@
 import { extensions } from "vscode";
 import { BasToolkit } from "@sap-devx/app-studio-toolkit-types";
+import { ITelemetryReporter } from "@sap-devx/app-studio-toolkit-types";
 import { performAction } from "../actions/client";
 import { ActionsController } from "../actions/controller";
 import {
@@ -14,6 +15,7 @@ import { hasFioriCapabilities } from "../apis/validateFioriCapabilities";
 import { hasCapCapabilities } from "../apis/validateCapCapabilities";
 import { hasHanacalcviewCapabilities } from "../apis/validateHanacalcviewCapabilities";
 import { isOpenedForAction } from "../apis/isOpenedForAction";
+import { BASClientFactory } from "../telemetry/basClientFactory";
 
 /**
  * The BasToolkit API without the **dynamically** initialized
@@ -53,6 +55,8 @@ export const baseBasToolkitAPI: Omit<BasToolkit, "workspaceAPI"> = {
   hasCapCapabilities,
   hasHanacalcviewCapabilities,
   isOpenedForAction,
+  getTelemetryReporter: (extensionId: string, extensionVersion: string) =>
+    BASClientFactory.getBASTelemetryClient(extensionId, extensionVersion),
 
   actions: {
     performAction,

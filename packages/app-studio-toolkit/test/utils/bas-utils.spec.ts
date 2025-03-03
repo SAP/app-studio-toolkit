@@ -43,6 +43,7 @@ const testVscode = {
 mockVscode(testVscode, "dist/src/utils/bas-utils.js");
 import {
   ExtensionRunMode,
+  getExtensionRunPlatform,
   shouldRunCtlServer,
 } from "../../src/utils/bas-utils";
 import { devspace } from "@sap/bas-sdk";
@@ -184,6 +185,22 @@ describe("bas-utils unit test", () => {
         )
         .resolves();
       expect(shouldRunCtlServer()).to.be.false;
+    });
+  });
+
+  describe("getExtensionRunPlatform scope", () => {
+    it("getExtensionRunPlatform, extensionId provided", () => {
+      const extensionId = `testExtensionId`;
+
+      sandbox.stub(process, `env`).value({ WS_BASE_URL: landscape });
+      sandbox.stub(proxyEnv, `remoteName`).value(landscape);
+      mockExtension
+        .expects(`getExtension`)
+        .returns({ extensionKind: proxyExtensionKind.UI })
+        .calledWith(extensionId);
+      expect(getExtensionRunPlatform(extensionId)).to.equal(
+        ExtensionRunMode.basUi
+      );
     });
   });
 });

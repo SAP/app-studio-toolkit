@@ -4,6 +4,12 @@ The SAP Business Application Studio toolkit includes essential capabilities that
 
 This toolkit is a prerequisite for other extensions that require its SAP capabilities.
 
+## Telemetry and Data Collection
+
+This extension collects usage data to help improve SAP products and enhance the user experience. The collected data is sent to SAP in accordance with our [Privacy Statement](https://www.sap.com/about/legal/privacy.html).
+
+If you prefer not to share usage data, you can disable telemetry by setting `sapbas.telemetryEnabled` to false in your VS Code settings.
+
 ## Project API
 
 Provides the SAP project structure (for example SAP HANA, SAP Fiori, CAP, MDK, etc.), project type, metadata and details. See [Example VSCode Extension using workspace instance](https://github.com/SAP/app-studio-toolkit/blob/main/examples/vscode-using-workspace-api/README.md#example-vscode-extension-using-workspace-instance).

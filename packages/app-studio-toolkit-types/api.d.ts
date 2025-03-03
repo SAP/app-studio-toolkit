@@ -188,6 +188,17 @@ export interface BasToolkit {
      */
     FileAction: { new (): IFileAction };
   };
+
+  /**
+   * Returns a Telemetry Reporter for reporting to the BAS telemetry service in Azure Application Insights.
+   * @param extensionId
+   * @param extensionVersion
+   * @returns
+   */
+  getTelemetryReporter: (
+    extensionId: string,
+    extensionVersion: string
+  ) => ITelemetryReporter;
 }
 
 declare const bas: BasToolkit;
@@ -244,4 +255,22 @@ export interface IFileAction extends IAction {
 export interface IUriAction extends IAction {
   actionType: "URI";
   uri: Uri;
+}
+
+export interface TelemetryProperties {
+  [key: string]: string | boolean;
+}
+
+export interface TelemetryMeasurements {
+  [key: string]: number;
+}
+
+export interface ITelemetryReporter {
+  getExtensionName(): string;
+  getExtensionVersion(): string;
+  report(
+    eventName: string,
+    properties?: TelemetryProperties,
+    measurements?: TelemetryMeasurements
+  ): Promise<void>;
 }
