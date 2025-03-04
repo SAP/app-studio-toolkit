@@ -1,14 +1,17 @@
 import { expect } from "chai";
 import sinon from "sinon";
 import * as appInsights from "applicationinsights";
-import { initializeTelemetry } from "../../src/telemetry/telemetryInit";
+import {
+  getTelemetryClient,
+  setTelemetryClient,
+} from "../../src/telemetry/telemetryInit";
 
-describe("initializeTelemetry", function () {
+describe("getTelemetryClient", function () {
   let addTelemetryProcessorStub: sinon.SinonStub;
   let configStub: { samplingPercentage: number };
 
   beforeEach(function () {
-    configStub = { samplingPercentage: 0 };
+    configStub = { samplingPercentage: 50 };
     addTelemetryProcessorStub = sinon.stub();
 
     // @ts-expect-error - test only
@@ -20,13 +23,14 @@ describe("initializeTelemetry", function () {
     sinon.restore();
   });
 
-  it("should set sampling percentage to 100", function () {
-    const client = initializeTelemetry();
-    expect(client.config.samplingPercentage).to.equal(100);
+  it("should set sampling percentage to 50 (existing telemetry default client settings)", function () {
+    const client = getTelemetryClient();
+    expect(client.config.samplingPercentage).to.equal(50);
   });
 
-  it("should add a telemetry processor that masks sensitive data", function () {
-    initializeTelemetry();
+  it("should add a telemetry processor that masks sensitive data (new telemetry default client settings)", function () {
+    setTelemetryClient(null);
+    getTelemetryClient();
 
     expect(addTelemetryProcessorStub.calledOnce).to.be.true;
 

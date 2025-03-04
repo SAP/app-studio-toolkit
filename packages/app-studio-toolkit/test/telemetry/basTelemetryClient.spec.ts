@@ -26,7 +26,7 @@ describe("BASTelemetryClient", function () {
     sinon.stub(utils, "getBASMode").returns("standard");
     sinon.stub(utils, "getHashedUser").returns("mockHashedUser");
     sinon
-      .stub(telemetryInit, "initializeTelemetry")
+      .stub(telemetryInit, "getTelemetryClient")
       .returns(mockAppInsightsClient);
 
     sinon

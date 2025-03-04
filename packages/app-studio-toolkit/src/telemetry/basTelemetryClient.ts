@@ -1,6 +1,6 @@
 import * as appInsights from "applicationinsights";
 import { EventHeader } from "./eventHeader";
-import { initializeTelemetry } from "./telemetryInit";
+import { getTelemetryClient } from "./telemetryInit";
 import {
   isTelemetryEnabled,
   isSAPUser,
@@ -27,7 +27,7 @@ export class BASTelemetryClient {
   private appInsightsClient: appInsights.TelemetryClient;
 
   constructor(extensionName: string, extensionVersion: string) {
-    this.appInsightsClient = initializeTelemetry();
+    this.appInsightsClient = getTelemetryClient();
     this.extensionName = extensionName;
     this.extensionVersion = extensionVersion;
   }
