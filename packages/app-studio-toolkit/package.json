@@ -1,7 +1,7 @@
 {
   "name": "app-studio-toolkit",
   "displayName": "SAP Business Application Studio toolkit",
-  "version": "2.2.2",
+  "version": "2.2.4",
   "private": true,
   "description": "Includes essential capabilities that will improve your SAP Business Application Studio development experience, making it easier and faster.",
   "categories": [
@@ -380,7 +380,7 @@
     "@sap/artifact-management": "1.43.1",
     "@sap/bas-sdk": "3.11.4",
     "@vscode-logging/wrapper": "2.0.0",
-    "applicationinsights": "3.5.0",
+    "applicationinsights": "2.9.6",
     "axios": "^1.7.4",
     "body-parser": "1.20.3",
     "cors": "2.8.5",

@@ -42,6 +42,7 @@ describe("getTelemetryClient", function () {
     expect(envelope.tags).to.deep.equal({
       "ai.location.ip": "0.0.0.0",
       "ai.cloud.roleInstance": "masked",
+      "ai.cloud.roleVer": "masked",
       "ai.cloud.role": "masked",
       "ai.device.type": "masked",
     });

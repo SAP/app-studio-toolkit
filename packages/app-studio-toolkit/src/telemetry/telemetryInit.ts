@@ -16,7 +16,9 @@ export function getTelemetryClient() {
       envelope.tags["ai.location.ip"] = "0.0.0.0";
       envelope.tags["ai.cloud.roleInstance"] = "masked";
       envelope.tags["ai.cloud.role"] = "masked";
+      envelope.tags["ai.cloud.roleVer"] = "masked";
       envelope.tags["ai.device.type"] = "masked";
+
       return true;
     });
     telemetryClient = defaultClient;

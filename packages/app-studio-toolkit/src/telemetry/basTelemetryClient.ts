@@ -10,13 +10,10 @@ import {
   getHashedUser,
 } from "./utils";
 import { getExtensionRunPlatform } from "../utils/bas-utils";
-interface TelemetryProperties {
-  [key: string]: string | boolean;
-}
-
-interface TelemetryMeasurements {
-  [key: string]: number;
-}
+import {
+  TelemetryProperties,
+  TelemetryMeasurements,
+} from "@sap-devx/app-studio-toolkit-types";
 
 /**
  * Singelton class to send telemetry events to Azure Application Insights.
