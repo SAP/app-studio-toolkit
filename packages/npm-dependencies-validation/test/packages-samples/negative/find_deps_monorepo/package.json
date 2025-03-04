@@ -1,0 +1,11 @@
+{
+  "name": "missing_deps_monorepo",
+  "version": "1.0.0",
+  "workspaces": [
+    "packages/*"
+  ],
+  "dependencies": {
+    "yeoman-env": "4.4.0"
+  },
+  "devDependencies": {}
+}

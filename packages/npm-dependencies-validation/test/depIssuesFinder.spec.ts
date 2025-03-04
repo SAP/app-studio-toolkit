@@ -41,7 +41,7 @@ describe("`findDependencyIssues()` validation function ", function () {
       expect(problems).to.deep.equalInAnyOrder([
         {
           type: "missing",
-          name: "typescript",
+          name: "go",
           isDev: true,
         },
       ]);
@@ -87,15 +87,6 @@ describe("`findDependencyIssues()` validation function ", function () {
       expect(result).to.be.empty;
     });
 
-    it("will not detect any issues when, project type is not supported", async () => {
-      const samplePackage = resolve(
-        negativeSampleDir,
-        "not_supported/package.json"
-      );
-      const result = await findDependencyIssues(samplePackage);
-      expect(result).to.be.empty;
-    });
-
     it("will not detect any issues for a package without any dependencies", async () => {
       const samplePackage = resolve(
         negativeSampleDir,
@@ -109,6 +100,15 @@ describe("`findDependencyIssues()` validation function ", function () {
       const samplePackage = resolve(
         negativeSampleDir,
         "no_version_for_dep/package.json"
+      );
+      const result = await findDependencyIssues(samplePackage);
+      expect(result).to.be.empty;
+    });
+
+    it("will detect deps in monorepo", async () => {
+      const samplePackage = resolve(
+        negativeSampleDir,
+        "find_deps_monorepo/prj1/package.json"
       );
       const result = await findDependencyIssues(samplePackage);
       expect(result).to.be.empty;
