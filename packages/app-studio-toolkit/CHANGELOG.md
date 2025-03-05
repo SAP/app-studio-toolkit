@@ -1,5 +1,11 @@
 # app-studio-toolkit
 
+## 2.3.0
+
+### Minor Changes
+
+- d84c574: Expose Telemetry reporter API which allows to report to Azure Application Insights for BAS
+
 ## 2.2.2
 
 ### Patch Changes
