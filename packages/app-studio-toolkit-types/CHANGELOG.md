@@ -1,5 +1,7 @@
 # @sap-devx/app-studio-toolkit-types
 
+## 2.3.0
+
 ## 2.2.2
 
 ### Patch Changes
