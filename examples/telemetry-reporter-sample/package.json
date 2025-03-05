@@ -3,6 +3,7 @@
   "displayName": "telemetry-reporter-sample",
   "description": "This is a sample VSCode extension which consumes BAS telemetry report API",
   "version": "0.0.1",
+  "private": true,
   "engines": {
     "vscode": "^1.96.0"
   },
