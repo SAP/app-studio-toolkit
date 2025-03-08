@@ -138,6 +138,23 @@ describe("landscapes unit test", () => {
     setTimeout(() => done(), 500);
   });
 
+  describe("clearAutoRefreshTimers", () => {
+    it("should clear all timers when no timers exist", () => {
+      land.clearAutoRefreshTimers();
+      expect(land.internal.autoRefreshTimerArray).to.be.empty;
+    });
+
+    it("should clear all timers when multiple timers exist", () => {
+      const timer1 = setInterval(() => {}, 1000);
+      const timer2 = setInterval(() => {}, 1000);
+      land.internal.autoRefreshTimerArray.push(timer1, timer2);
+
+      land.clearAutoRefreshTimers();
+
+      expect(land.internal.autoRefreshTimerArray).to.be.empty;
+    });
+  });
+
   describe("cmdLoginToLandscape scope", () => {
     const landscape = `http://my.landscape.test`;
     const node = {

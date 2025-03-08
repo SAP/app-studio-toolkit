@@ -1,7 +1,6 @@
 import { window, ProgressLocation, commands, Uri } from "vscode";
 import type { Progress } from "vscode";
 
-import { ChildProcess } from "child_process";
 import { URL } from "node:url";
 import {
   cleanRemotePlatformSetting,
@@ -18,8 +17,7 @@ import {
 } from "./tunnel/ssh-utils";
 import { getLogger } from "./logger/logger";
 import { messages } from "./messages";
-
-let tunnel: ChildProcess | void;
+import { closeSessions } from "./tunnel/ssh";
 
 async function getTunnelConfigurations(
   devSpace: DevSpaceNode,
@@ -37,8 +35,8 @@ async function getTunnelConfigurations(
   return updateSSHConfig(pkFilePath, devSpace);
 }
 
-export function closeTunnel(): boolean {
-  return /* istanbul ignore next */ tunnel?.kill() || false;
+export function closeTunnels(): void {
+  closeSessions();
 }
 
 async function createTunnel(
@@ -47,10 +45,9 @@ async function createTunnel(
   progress: Progress<{ message?: string; increment?: number }>
 ): Promise<any> {
   progress.report({ message: messages.info_closing_old_tunnel });
-  closeTunnel();
 
   progress.report({ message: messages.info_staring_new_tunnel });
-  tunnel = await runChannelClient({
+  return runChannelClient({
     host: `port${SSHD_SOCKET_PORT}-${new URL(devSpace.wsUrl).hostname}`,
     landscape: devSpace.landscapeUrl,
     localPort: config.port,

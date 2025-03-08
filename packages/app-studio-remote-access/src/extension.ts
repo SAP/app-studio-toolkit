@@ -3,7 +3,7 @@ import type { ExtensionContext } from "vscode";
 import { initLogger, getLogger } from "./logger/logger";
 import {
   cleanDevspaceConfig,
-  closeTunnel,
+  closeTunnels,
   cmdDevSpaceConnectNewWindow,
 } from "./commands";
 
@@ -25,7 +25,7 @@ export function activate(context: ExtensionContext): void {
   );
 
   context.subscriptions.push(
-    commands.registerCommand("remote-access.close-tunnel", closeTunnel)
+    commands.registerCommand("remote-access.close-tunnel", closeTunnels)
   );
 
   const logger = getLogger().getChildLogger({ label: "activate" });
@@ -34,5 +34,5 @@ export function activate(context: ExtensionContext): void {
 
 export function deactivate() {
   // kill opened ssh channel if exists
-  closeTunnel();
+  closeTunnels();
 }
