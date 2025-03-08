@@ -1,7 +1,7 @@
 {
   "name": "app-studio-toolkit",
   "displayName": "SAP Business Application Studio toolkit",
-  "version": "2.2.2",
+  "version": "2.3.0",
   "private": true,
   "description": "Includes essential capabilities that will improve your SAP Business Application Studio development experience, making it easier and faster.",
   "categories": [
@@ -162,6 +162,11 @@
             "default": false,
             "description": "Should Source Code Location Info be added to log entries, DANGER - May be very slow, only use in debugging scenarios",
             "scope": "window"
+          },
+          "sapbas.telemetryEnabled": {
+            "type": "boolean",
+            "default": true,
+            "description": "Enable collecting usage analytics data of SAP Business Application Studio related extensions. If enabled, non-personally identifiable information is used to help understand the product usage and improve the tool."
           }
         }
       },
@@ -375,6 +380,7 @@
     "@sap/artifact-management": "1.43.1",
     "@sap/bas-sdk": "3.11.4",
     "@vscode-logging/wrapper": "2.0.0",
+    "applicationinsights": "2.9.6",
     "axios": "^1.7.4",
     "body-parser": "1.20.3",
     "cors": "2.8.5",

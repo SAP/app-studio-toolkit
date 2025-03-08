@@ -1,0 +1,33 @@
+{
+  "name": "telemetry-reporter-sample",
+  "displayName": "telemetry-reporter-sample",
+  "description": "This is a sample VSCode extension which consumes BAS telemetry report API",
+  "version": "0.0.1",
+  "private": true,
+  "engines": {
+    "vscode": "^1.96.0"
+  },
+  "publisher": "sample",
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./dist/src/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "telemetry-reporter-sample.triggerTelemetryReport",
+        "title": "Trigger report telemetry API"
+      }
+    ]
+  },
+  "scripts": {
+    "ci": "npm-run-all clean compile",
+    "clean": "rimraf dist *.vsix",
+    "compile": "tsc -p ./",
+    "vscode:prepublish": "npm run compile"
+  },
+  "devDependencies": {
+    "@sap-devx/app-studio-toolkit-types": "workspace:*"
+  }
+}

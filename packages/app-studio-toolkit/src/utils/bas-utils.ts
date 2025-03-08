@@ -24,6 +24,10 @@ export enum ExtensionRunMode {
 
 export function shouldRunCtlServer(): boolean {
   const platform = getExtensionRunPlatform();
+
+  // view panel visibility expects that value is available
+  void commands.executeCommand("setContext", `ext.runPlatform`, platform);
+
   return (
     platform === ExtensionRunMode.basWorkspace || // BAS
     platform === ExtensionRunMode.basRemote || // hybrid (through ssh-remote)
@@ -31,7 +35,9 @@ export function shouldRunCtlServer(): boolean {
   );
 }
 
-function getExtensionRunPlatform(): ExtensionRunMode {
+export function getExtensionRunPlatform(
+  extensionName?: string
+): ExtensionRunMode {
   let runPlatform: ExtensionRunMode = ExtensionRunMode.unexpected;
   const serverUri = process.env.WS_BASE_URL;
   // see example: https://github.com/microsoft/vscode/issues/74188
@@ -41,7 +47,9 @@ function getExtensionRunPlatform(): ExtensionRunMode {
     const host = join(tail(split(new URL(serverUri).hostname, ".")), ".");
     if (host === remote) {
       // see for reference: https://code.visualstudio.com/api/references/vscode-api#Extension
-      const ext = extensions.getExtension("SAPOSS.app-studio-toolkit");
+      const ext = extensions.getExtension(
+        extensionName ? extensionName : "SAPOSS.app-studio-toolkit"
+      );
       if (ext) {
         switch (ext.extensionKind) {
           case ExtensionKind.Workspace:
@@ -62,9 +70,6 @@ function getExtensionRunPlatform(): ExtensionRunMode {
   } else {
     runPlatform = ExtensionRunMode.desktop;
   }
-
-  // view panel visibility expects that value is available
-  void commands.executeCommand("setContext", `ext.runPlatform`, runPlatform);
 
   return runPlatform;
 }
