@@ -7,7 +7,7 @@
       "examples/*"
     ]
   },
-  "packageManager": "pnpm@9.15.2",
+  "packageManager": "pnpm@9.15.8",
   "scripts": {
     "prepare": "husky install",
     "preinstall": "npx only-allow pnpm",
