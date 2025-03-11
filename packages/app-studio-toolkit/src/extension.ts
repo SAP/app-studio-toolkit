@@ -22,8 +22,6 @@ import {
 export function activate(context: ExtensionContext): BasToolkit {
   initLogger(context);
 
-  startBasKeepAlive();
-
   // should be trigered earlier on acivating because the `shouldRunCtlServer` method sets the context value of `ext.runPlatform`
   if (shouldRunCtlServer()) {
     getLogger().debug("starting basctl server");
@@ -35,6 +33,7 @@ export function activate(context: ExtensionContext): BasToolkit {
     ActionsController.loadContributedActions();
     ActionsController.performScheduledActions();
     void ActionsController.performActionsFromURL();
+    startBasKeepAlive();
   });
 
   const workspaceAPI = initWorkspaceAPI(context);

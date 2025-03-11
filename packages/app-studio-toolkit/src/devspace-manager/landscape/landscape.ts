@@ -45,6 +45,7 @@ export function autoRefresh(
           getLogger().info(`Auto refresh completed`);
           clearInterval(refreshInterval);
           const index = autoRefreshTimerArray.indexOf(refreshInterval);
+          /* istanbul ignore else */
           if (index !== -1) {
             autoRefreshTimerArray.splice(index, 1); // Remove one item at the found index
           }

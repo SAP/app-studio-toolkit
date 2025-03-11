@@ -185,7 +185,6 @@ describe("extension unit test", () => {
       const testError = new Error("Socket failure");
 
       loggerMock.expects("initLogger").withExactArgs(context);
-      basUtilsMock.expects("startBasKeepAlive").returns(void 0);
       basUtilsMock.expects("shouldRunCtlServer").returns(true);
       basctlServerMock.expects("startBasctlServer").throws(testError);
 
