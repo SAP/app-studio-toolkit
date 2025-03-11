@@ -102,7 +102,7 @@ async function askToSessionExtend(): Promise<boolean> {
     {
       location: ProgressLocation.Notification,
       title:
-        "VS Code will close. To continue working remotely, please press 'Cancel'",
+        "Your SAP Business Application Studio remote session is about to expire. To prevent session expiration, click 'Cancel'",
       cancellable: true,
     },
     async (progress, token: CancellationToken) => {

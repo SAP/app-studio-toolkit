@@ -160,3 +160,8 @@ export async function ssh(opts: {
     getLogger().error(`ssh session droped : ${e.message}`);
   }
 }
+
+// for testing
+export const internal = {
+  sessionMap,
+};
