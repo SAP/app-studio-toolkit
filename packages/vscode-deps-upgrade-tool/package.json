@@ -75,10 +75,10 @@
     "package": "node ./scripts/package-vsix.js"
   },
   "dependencies": {
-    "@types/fs-extra": "^9.0.13",
+    "@types/fs-extra": "9.0.13",
     "@vscode-logging/wrapper": "1.0.1",
     "delay": "5.0.0",
-    "fs-extra": "^10.0.1",
+    "fs-extra": "10.0.1",
     "jsonc-parser": "3.0.0",
     "lodash": "4.17.21",
     "semver": "7.5.2",
@@ -86,10 +86,10 @@
   },
   "devDependencies": {
     "@sap-devx/app-studio-toolkit-types": "workspace:*",
-    "@types/semver": "^7.3.12",
-    "@types/validate-npm-package-name": "^3.0.3",
-    "@vscode-logging/types": "^0.1.4",
+    "@types/semver": "7.3.12",
+    "@types/validate-npm-package-name": "3.0.3",
+    "@vscode-logging/types": "0.1.4",
     "type-fest": "2.11.1",
-    "vscode-uri": "^3.0.3"
+    "vscode-uri": "3.0.3"
   }
 }
