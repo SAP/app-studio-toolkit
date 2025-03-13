@@ -3,6 +3,6 @@
   "version": "1.0.0",
   "dependencies": {},
   "devDependencies": {
-    "typescript": "^4.4.4"
+    "go": "3.0.1"
   }
 }
