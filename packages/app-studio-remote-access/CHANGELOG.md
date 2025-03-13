@@ -1,5 +1,11 @@
 # app-studio-remote-access
 
+## 4.1.0
+
+### Minor Changes
+
+- e0c72ac: fix: BAS is disconnected during user's activity
+
 ## 4.0.1
 
 ### Patch Changes

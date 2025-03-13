@@ -1,5 +1,12 @@
 # app-studio-toolkit
 
+## 2.4.0
+
+### Minor Changes
+
+- 34d5a2b: bumping @sap/artifact-management dependency to 1.44.1
+- e0c72ac: fix: BAS is disconnected during user's activity
+
 ## 2.3.0
 
 ### Minor Changes
