@@ -384,7 +384,7 @@
     "axios": "^1.7.4",
     "body-parser": "1.20.3",
     "cors": "2.8.5",
-    "express": "4.19.2",
+    "express": "4.20.0",
     "http-terminator": "3.2.0",
     "lodash": "4.17.21",
     "ssh-config": "4.2.1",
