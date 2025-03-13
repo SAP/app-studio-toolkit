@@ -27,12 +27,12 @@ jobs:
 
     steps:
       # using `v1` because of: https://github.com/actions/checkout/issues/246
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@50fbc622fc4ef5163becd7fab6573eac35f8462e # v1
         with:
           # See: https://github.com/changesets/action/issues/187#issuecomment-1228413850
           token: ${{ secrets.BOT_GITHUB_TOKEN }}
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44821de2a # v4
         with:
           node-version: ${{ matrix.node_version }}
 
@@ -88,7 +88,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.BOT_GITHUB_TOKEN }}
 
       - name: upload build artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4
         id: upload_build_artifacts
         with:
           name: all-vsix
@@ -97,7 +97,7 @@ jobs:
           retention-days: ${{ env.artifact-retention-days }}
 
       - name: Find PR Comment
-        uses: peter-evans/find-comment@v3
+        uses: peter-evans/find-comment@3eae4d37986fb5a8592848f6a574fdf654e61f9e # v3
         if: github.event_name == 'pull_request'
         id: find-pr-comment
         with:
@@ -106,7 +106,7 @@ jobs:
           body-includes: ${{ env.retention-comment }}
 
       - name: Create / Update PR Comment
-        uses: peter-evans/create-or-update-comment@v4
+        uses: peter-evans/create-or-update-comment@71345be0265236311c031f5c7866368bd1eff043 # v4
         if: github.event_name == 'pull_request'
         env:
           HEAD_SHA: ${{ github.sha }}
