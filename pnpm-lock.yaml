@@ -118,7 +118,7 @@ importers:
         version: 1.100.1
       webpack:
         specifier: 5.96.1
-        version: 5.96.1(webpack-cli@5.1.4(webpack@5.96.1))
+        version: 5.96.1(webpack-cli@5.1.4)
       webpack-cli:
         specifier: 5.1.4
         version: 5.1.4(webpack@5.96.1)
@@ -181,7 +181,7 @@ importers:
         version: 0.1.4
       copy-webpack-plugin:
         specifier: 11.0.0
-        version: 11.0.0(webpack@5.96.1(webpack-cli@5.1.4(webpack@5.96.1)))
+        version: 11.0.0(webpack@5.96.1(webpack-cli@5.1.4))
       fs-extra:
         specifier: 11.1.1
         version: 11.1.1
@@ -193,10 +193,10 @@ importers:
         version: 3.0.0
       string-replace-loader:
         specifier: 3.1.0
-        version: 3.1.0(webpack@5.96.1(webpack-cli@5.1.4(webpack@5.96.1)))
+        version: 3.1.0(webpack@5.96.1(webpack-cli@5.1.4))
       ts-loader:
         specifier: 9.4.2
-        version: 9.4.2(typescript@4.5.2)(webpack@5.96.1(webpack-cli@5.1.4(webpack@5.96.1)))
+        version: 9.4.2(typescript@4.5.2)(webpack@5.96.1(webpack-cli@5.1.4))
 
   packages/app-studio-toolkit:
     dependencies:
@@ -213,8 +213,8 @@ importers:
         specifier: 2.9.6
         version: 2.9.6
       axios:
-        specifier: ^1.7.4
-        version: 1.7.5
+        specifier: ^1.8.3
+        version: 1.8.3
       body-parser:
         specifier: 1.20.3
         version: 1.20.3
@@ -278,7 +278,7 @@ importers:
         version: 0.1.4
       copy-webpack-plugin:
         specifier: 11.0.0
-        version: 11.0.0(webpack@5.96.1(webpack-cli@5.1.4(webpack@5.96.1)))
+        version: 11.0.0(webpack@5.96.1(webpack-cli@5.1.4))
       fs-extra:
         specifier: 11.1.1
         version: 11.1.1
@@ -290,10 +290,10 @@ importers:
         version: 3.0.0
       string-replace-loader:
         specifier: 3.1.0
-        version: 3.1.0(webpack@5.96.1(webpack-cli@5.1.4(webpack@5.96.1)))
+        version: 3.1.0(webpack@5.96.1(webpack-cli@5.1.4))
       ts-loader:
         specifier: 9.4.2
-        version: 9.4.2(typescript@4.5.2)(webpack@5.96.1(webpack-cli@5.1.4(webpack@5.96.1)))
+        version: 9.4.2(typescript@4.5.2)(webpack@5.96.1(webpack-cli@5.1.4))
 
   packages/app-studio-toolkit-themes: {}
 
@@ -1417,11 +1417,11 @@ packages:
   aws4@1.11.0:
     resolution: {integrity: sha512-xh1Rl34h6Fi1DC2WWKfxUTVqRsNnr6LsKz2+hfwDxQJWmrx8+c7ylaqBMcHfl1U1r2dsifOvKX3LQuLNZ+XSvA==}
 
-  axios@1.7.5:
-    resolution: {integrity: sha512-fZu86yCo+svH3uqJ/yTdQ0QHpQu5oL+/QE+QPSv6BZSkDAoky9vytxp7u5qk83OJFS3kEBcesWni9WTZAv3tSw==}
-
   axios@1.7.7:
     resolution: {integrity: sha512-S4kL7XrjgBmvdGut0sN3yJxqYzrDOnivkBiN0OFs6hLiUam3UPvswUo0kqGyhqUZGEOytHyumEdXsAkgCOUf3Q==}
+
+  axios@1.8.3:
+    resolution: {integrity: sha512-iP4DebzoNlP/YN2dpwCgb8zoCmhtkajzS48JvwmkSkXvPI3DHc7m+XYL5tGnSlJtR6nImXZmdCuN5aP8dh1d8A==}
 
   azure-devops-node-api@11.2.0:
     resolution: {integrity: sha512-XdiGPhrpaT5J8wdERRKs5g8E0Zy1pvOYTli7z9E8nmOn3YGp4FhtjhrOyFmX/8veWCwdI69mCHKJw6l+4J/bHA==}
@@ -4437,6 +4437,7 @@ packages:
   yaeti@0.0.6:
     resolution: {integrity: sha512-MvQa//+KcZCUkBTIC9blM+CU9J2GzuTytsOUwf2lidtvkx/6gnEp1QvJv34t9vdjhFmha/mUiNDbN0D0mJWdug==}
     engines: {node: '>=0.10.32'}
+    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
 
   yallist@4.0.0:
     resolution: {integrity: sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==}
@@ -5707,19 +5708,19 @@ snapshots:
       '@webassemblyjs/ast': 1.12.1
       '@xtuc/long': 4.2.2
 
-  '@webpack-cli/configtest@2.1.1(webpack-cli@5.1.4(webpack@5.96.1))(webpack@5.96.1)':
+  '@webpack-cli/configtest@2.1.1(webpack-cli@5.1.4)(webpack@5.96.1)':
     dependencies:
-      webpack: 5.96.1(webpack-cli@5.1.4(webpack@5.96.1))
+      webpack: 5.96.1(webpack-cli@5.1.4)
       webpack-cli: 5.1.4(webpack@5.96.1)
 
-  '@webpack-cli/info@2.0.2(webpack-cli@5.1.4(webpack@5.96.1))(webpack@5.96.1)':
+  '@webpack-cli/info@2.0.2(webpack-cli@5.1.4)(webpack@5.96.1)':
     dependencies:
-      webpack: 5.96.1(webpack-cli@5.1.4(webpack@5.96.1))
+      webpack: 5.96.1(webpack-cli@5.1.4)
       webpack-cli: 5.1.4(webpack@5.96.1)
 
-  '@webpack-cli/serve@2.0.5(webpack-cli@5.1.4(webpack@5.96.1))(webpack@5.96.1)':
+  '@webpack-cli/serve@2.0.5(webpack-cli@5.1.4)(webpack@5.96.1)':
     dependencies:
-      webpack: 5.96.1(webpack-cli@5.1.4(webpack@5.96.1))
+      webpack: 5.96.1(webpack-cli@5.1.4)
       webpack-cli: 5.1.4(webpack@5.96.1)
 
   '@xtuc/ieee754@1.2.0': {}
@@ -5884,7 +5885,7 @@ snapshots:
 
   aws4@1.11.0: {}
 
-  axios@1.7.5:
+  axios@1.7.7:
     dependencies:
       follow-redirects: 1.15.6
       form-data: 4.0.0
@@ -5892,7 +5893,7 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  axios@1.7.7:
+  axios@1.8.3:
     dependencies:
       follow-redirects: 1.15.6
       form-data: 4.0.0
@@ -6249,7 +6250,7 @@ snapshots:
 
   cookie@0.6.0: {}
 
-  copy-webpack-plugin@11.0.0(webpack@5.96.1(webpack-cli@5.1.4(webpack@5.96.1))):
+  copy-webpack-plugin@11.0.0(webpack@5.96.1(webpack-cli@5.1.4)):
     dependencies:
       fast-glob: 3.2.12
       glob-parent: 6.0.2
@@ -6257,7 +6258,7 @@ snapshots:
       normalize-path: 3.0.0
       schema-utils: 4.0.0
       serialize-javascript: 6.0.0
-      webpack: 5.96.1(webpack-cli@5.1.4(webpack@5.96.1))
+      webpack: 5.96.1(webpack-cli@5.1.4)
 
   core-util-is@1.0.2: {}
 
@@ -8536,11 +8537,11 @@ snapshots:
 
   string-argv@0.3.1: {}
 
-  string-replace-loader@3.1.0(webpack@5.96.1(webpack-cli@5.1.4(webpack@5.96.1))):
+  string-replace-loader@3.1.0(webpack@5.96.1(webpack-cli@5.1.4)):
     dependencies:
       loader-utils: 2.0.4
       schema-utils: 3.1.1
-      webpack: 5.96.1(webpack-cli@5.1.4(webpack@5.96.1))
+      webpack: 5.96.1(webpack-cli@5.1.4)
 
   string-similarity@4.0.4: {}
 
@@ -8620,14 +8621,14 @@ snapshots:
 
   term-size@2.2.1: {}
 
-  terser-webpack-plugin@5.3.10(webpack@5.96.1(webpack-cli@5.1.4(webpack@5.96.1))):
+  terser-webpack-plugin@5.3.10(webpack@5.96.1):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
       jest-worker: 27.5.1
       schema-utils: 3.3.0
       serialize-javascript: 6.0.2
       terser: 5.31.6
-      webpack: 5.96.1(webpack-cli@5.1.4(webpack@5.96.1))
+      webpack: 5.96.1(webpack-cli@5.1.4)
 
   terser@5.31.6:
     dependencies:
@@ -8697,14 +8698,14 @@ snapshots:
     dependencies:
       typescript: 4.5.2
 
-  ts-loader@9.4.2(typescript@4.5.2)(webpack@5.96.1(webpack-cli@5.1.4(webpack@5.96.1))):
+  ts-loader@9.4.2(typescript@4.5.2)(webpack@5.96.1(webpack-cli@5.1.4)):
     dependencies:
       chalk: 4.1.2
       enhanced-resolve: 5.8.3
       micromatch: 4.0.4
       semver: 7.3.5
       typescript: 4.5.2
-      webpack: 5.96.1(webpack-cli@5.1.4(webpack@5.96.1))
+      webpack: 5.96.1(webpack-cli@5.1.4)
 
   tslib@1.14.1: {}
 
@@ -8885,9 +8886,9 @@ snapshots:
   webpack-cli@5.1.4(webpack@5.96.1):
     dependencies:
       '@discoveryjs/json-ext': 0.5.5
-      '@webpack-cli/configtest': 2.1.1(webpack-cli@5.1.4(webpack@5.96.1))(webpack@5.96.1)
-      '@webpack-cli/info': 2.0.2(webpack-cli@5.1.4(webpack@5.96.1))(webpack@5.96.1)
-      '@webpack-cli/serve': 2.0.5(webpack-cli@5.1.4(webpack@5.96.1))(webpack@5.96.1)
+      '@webpack-cli/configtest': 2.1.1(webpack-cli@5.1.4)(webpack@5.96.1)
+      '@webpack-cli/info': 2.0.2(webpack-cli@5.1.4)(webpack@5.96.1)
+      '@webpack-cli/serve': 2.0.5(webpack-cli@5.1.4)(webpack@5.96.1)
       colorette: 2.0.16
       commander: 10.0.1
       cross-spawn: 7.0.3
@@ -8896,7 +8897,7 @@ snapshots:
       import-local: 3.0.3
       interpret: 3.1.1
       rechoir: 0.8.0
-      webpack: 5.96.1(webpack-cli@5.1.4(webpack@5.96.1))
+      webpack: 5.96.1(webpack-cli@5.1.4)
       webpack-merge: 5.8.0
 
   webpack-merge@5.8.0:
@@ -8906,7 +8907,7 @@ snapshots:
 
   webpack-sources@3.2.3: {}
 
-  webpack@5.96.1(webpack-cli@5.1.4(webpack@5.96.1)):
+  webpack@5.96.1(webpack-cli@5.1.4):
     dependencies:
       '@types/eslint-scope': 3.7.7
       '@types/estree': 1.0.6
@@ -8928,7 +8929,7 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 3.3.0
       tapable: 2.2.1
-      terser-webpack-plugin: 5.3.10(webpack@5.96.1(webpack-cli@5.1.4(webpack@5.96.1)))
+      terser-webpack-plugin: 5.3.10(webpack@5.96.1)
       watchpack: 2.4.2
       webpack-sources: 3.2.3
     optionalDependencies:
