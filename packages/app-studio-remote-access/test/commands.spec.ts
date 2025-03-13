@@ -76,6 +76,12 @@ describe("devspace connect unit test", () => {
     },
   };
 
+  const proxySsh = {
+    closeSessions: () => {
+      throw new Error("not implemented");
+    },
+  };
+
   const dummyLogger = {
     info: () => "",
     error: () => "",
@@ -94,22 +100,26 @@ describe("devspace connect unit test", () => {
       "./logger/logger": {
         getLogger: () => dummyLogger,
       },
+      "./tunnel/ssh": proxySsh,
     });
   });
 
   let mockCommands: SinonMock;
   let mockWindow: SinonMock;
   let mockSshUtils: SinonMock;
+  let mockSsh: SinonMock;
   beforeEach(() => {
     mockCommands = mock(testVscode.commands);
     mockWindow = mock(testVscode.window);
     mockSshUtils = mock(proxySshUtils);
+    mockSsh = mock(proxySsh);
   });
 
   afterEach(() => {
     mockCommands.verify();
     mockWindow.verify();
     mockSshUtils.verify();
+    mockSsh.verify();
   });
 
   const node: DevSpaceNode = <DevSpaceNode>{
@@ -119,7 +129,8 @@ describe("devspace connect unit test", () => {
   };
 
   it("closeTunnel", () => {
-    expect(commandsProxy.closeTunnel()).to.be.false;
+    mockSsh.expects("closeSessions").once();
+    commandsProxy.closeTunnels();
   });
 
   describe(`cmdDevSpaceConnectNewWindow scope unit tests set`, () => {

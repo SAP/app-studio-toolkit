@@ -1,7 +1,24 @@
-import { ExtensionKind, commands, env, extensions } from "vscode";
+import {
+  CancellationToken,
+  ExtensionKind,
+  ProgressLocation,
+  Uri,
+  commands,
+  env,
+  extensions,
+  window,
+  workspace,
+} from "vscode";
 import { join, split, tail } from "lodash";
 import { devspace } from "@sap/bas-sdk";
 import { URL } from "node:url";
+import { getLogger } from "../logger/logger";
+import {
+  BAS_KEEP_ALIVE_FILE,
+  EXTEND_SESSION_TIMEOUT,
+  KEEP_ALIVE_TIMEOUT,
+  MAX_SESSION_TIME,
+} from "../constants";
 
 export enum ExtensionRunMode {
   desktop = `desktop`,
@@ -63,3 +80,113 @@ export function getExtensionRunPlatform(
 
   return runPlatform;
 }
+
+let keepAliveInterval: NodeJS.Timeout | undefined;
+
+async function touchFile(filePath: string): Promise<void> {
+  try {
+    await workspace.fs.writeFile(Uri.file(filePath), new Uint8Array(0));
+  } catch (error) {
+    getLogger().error(`Error while touching file: ${error}`);
+  }
+}
+
+function formatTimeRemaining(seconds: number): string {
+  const minutes: number = Math.floor(seconds / 60);
+  const remainingSeconds: number = seconds % 60;
+  return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
+}
+
+async function askToSessionExtend(): Promise<boolean> {
+  return window.withProgress(
+    {
+      location: ProgressLocation.Notification,
+      title:
+        "Your SAP Business Application Studio remote session is about to expire. To prevent session expiration, click 'Cancel'",
+      cancellable: true,
+    },
+    async (progress, token: CancellationToken) => {
+      const increment = 100 / EXTEND_SESSION_TIMEOUT;
+      let secondsLeft = EXTEND_SESSION_TIMEOUT;
+
+      return new Promise<boolean>((resolve) => {
+        /* istanbul ignore next */
+        const interval = setInterval(() => {
+          secondsLeft--;
+          progress.report({
+            message: `time remaining: ${formatTimeRemaining(secondsLeft)}`,
+            increment,
+          });
+
+          if (secondsLeft === 0) {
+            clearInterval(interval);
+            resolve(false); // Close window
+          }
+        }, 1000);
+
+        token.onCancellationRequested(() => {
+          clearInterval(interval);
+          resolve(true); // Extend session
+        });
+      });
+    }
+  );
+}
+
+export function startBasKeepAlive(): void {
+  // Only proceed if in hybrid mode
+  if (getExtensionRunPlatform() !== ExtensionRunMode.basRemote) {
+    return;
+  }
+
+  // Clear any existing interval first to prevent duplicates
+  cleanKeepAliveInterval();
+
+  async function executeKeepAlive(): Promise<void> {
+    await touchFile(BAS_KEEP_ALIVE_FILE);
+  }
+
+  let shouldExtendPromise: Promise<boolean> | undefined;
+  let sessionStartTime = Date.now();
+
+  // Execute immediately once
+  void executeKeepAlive();
+
+  /* istanbul ignore next */
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises -- no need to handle promise rejection
+  keepAliveInterval = setInterval(async () => {
+    void executeKeepAlive();
+
+    const timeSinceStart = Date.now() - sessionStartTime;
+    if (timeSinceStart > MAX_SESSION_TIME - KEEP_ALIVE_TIMEOUT) {
+      if (shouldExtendPromise === undefined) {
+        // Only ask once
+        shouldExtendPromise = askToSessionExtend();
+
+        if (!(await shouldExtendPromise)) {
+          // Stop keep alive interval before closing VS Code altrough it will be executed on extension deactivation
+          // because 'closeWindow' not sure closing VS Code (e.g. there are unsaved changes)
+          cleanKeepAliveInterval();
+          void commands.executeCommand("workbench.action.closeWindow");
+        } else {
+          // Extend session for another MAX_SESSION_TIME cycle
+          sessionStartTime = Date.now();
+        }
+        shouldExtendPromise = undefined;
+      }
+    }
+  }, KEEP_ALIVE_TIMEOUT);
+}
+
+export function cleanKeepAliveInterval(): void {
+  if (keepAliveInterval) {
+    clearInterval(keepAliveInterval);
+    keepAliveInterval = undefined;
+  }
+}
+
+// fot testing
+export const internal = {
+  askToSessionExtend,
+  formatTimeRemaining,
+};

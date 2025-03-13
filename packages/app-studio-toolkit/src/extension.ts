@@ -13,7 +13,11 @@ import {
   deactivateBasRemoteExplorer,
   initBasRemoteExplorer,
 } from "./devspace-manager/instance";
-import { shouldRunCtlServer } from "./utils/bas-utils";
+import {
+  startBasKeepAlive,
+  shouldRunCtlServer,
+  cleanKeepAliveInterval,
+} from "./utils/bas-utils";
 
 export function activate(context: ExtensionContext): BasToolkit {
   initLogger(context);
@@ -29,6 +33,7 @@ export function activate(context: ExtensionContext): BasToolkit {
     ActionsController.loadContributedActions();
     ActionsController.performScheduledActions();
     void ActionsController.performActionsFromURL();
+    startBasKeepAlive();
   });
 
   const workspaceAPI = initWorkspaceAPI(context);
@@ -45,4 +50,5 @@ export function activate(context: ExtensionContext): BasToolkit {
 export function deactivate(): void {
   closeBasctlServer();
   void deactivateBasRemoteExplorer();
+  cleanKeepAliveInterval();
 }

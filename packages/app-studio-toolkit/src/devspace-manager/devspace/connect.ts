@@ -4,8 +4,8 @@ import urljoin from "url-join";
 import { getLogger } from "../../../src/logger/logger";
 import { messages } from "../common/messages";
 
-export async function closeTunnel(): Promise<void> {
-  return commands.executeCommand("remote-access.close-tunnel");
+export async function closeTunnels(): Promise<void> {
+  await commands.executeCommand("remote-access.close-tunnel");
 }
 
 export async function cmdDevSpaceConnectNewWindow(
