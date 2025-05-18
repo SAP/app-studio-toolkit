@@ -1,0 +1,16 @@
+{
+  "ui5version": "1.108.7",
+  "ui5theme": "sap_horizon",
+  "terminal": "bash",
+  "type": "com.sap.cap",
+  "path": "/home/user/projects/vscode-wing-storyboard/packages/storyboard_backend/test/unit/resources/capActionFunction",
+  "prefix": "cap",
+  "version": "1.0.0",
+  "cloudService": "lcap.cap",
+  "name": "cap",
+  "tags": [
+    "project",
+    "cap"
+  ],
+  "typeName": "CAP"
+}

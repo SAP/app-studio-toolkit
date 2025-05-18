@@ -13,20 +13,31 @@ async function activate(): Promise<void> {
     "vscode-using-workspace-api"
   );
 
-  // note the usage of the `sam` "types namespace"
-  const projects: sam.ProjectApi[] = await workspaceAPI.getProjects();
-
-  if (projects.length > 0) {
-    // naively only print the **first** project found...
-    const rootProjectDs = await projects[0].readItems();
-    const rootProjectText = JSON.stringify(rootProjectDs, null, "\t");
-    outputChannel.appendLine("Found `@sap/artifact-manager` Project:");
-    outputChannel.appendLine(rootProjectText);
-  } else {
+  // delay the benchmark to allow vscode to finish loading and
+  // have more consistent results
+  const initalDelay = 1000 * 10; // 10 seconds
+  setTimeout(async () => {
+    const projects: sam.ProjectApi[] = await workspaceAPI.getProjects();
     outputChannel.appendLine(
-      "No `@sap/artifact-manager` Projects found in the workspace"
+      `found <${projects.length}> projects in the workspace`
     );
-  }
+    const start = new Date();
+    for (const project of projects) {
+      // The API's list:
+      // getProjectInfo()
+      // readDetailItems()
+      const projectInfo = await project.getProjectInfo();
+      const projectDetailed = await project.readDetailItems();
+      const x = 5;
+    }
+    const end = new Date();
+    const total = end.getTime() - start.getTime();
+    outputChannel.appendLine(
+      `Time taken to read all project details: ${total}ms`
+    );
+  }, initalDelay);
+
+
 }
 
 module.exports = {

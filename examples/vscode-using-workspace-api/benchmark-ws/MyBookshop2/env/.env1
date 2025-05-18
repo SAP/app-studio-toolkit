@@ -1,0 +1,1 @@
+cds_requires='{"auth":{"strategy":"dummy","kind":"dummy"},"messaging":{"kind":"local-messaging"}}'

@@ -1,0 +1,130 @@
+[
+  {
+    "type": "com.sap.cds/Namespace",
+    "name": "cap",
+    "ref": "cap",
+    "path": "db/schema.cds",
+    "external": false,
+    "tags": [
+      "item",
+      "cap",
+      "db"
+    ],
+    "links": [
+      {
+        "linkType": "DEPENDS_ON",
+        "type": "com.sap.cds/Entity",
+        "ref": "cap.Entity1"
+      }
+    ]
+  },
+  {
+    "type": "com.sap.cds/Entity",
+    "name": "Entity1",
+    "ref": "cap.Entity1",
+    "namespace": "cap",
+    "path": "db/schema.cds",
+    "external": false,
+    "tags": [
+      "item",
+      "cap",
+      "db"
+    ],
+    "info": {
+      "attributes": {
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        }
+      }
+    },
+    "links": [
+      {
+        "linkType": "HAS_DEPENDENCY",
+        "type": "com.sap.cds/Namespace",
+        "ref": "cap"
+      }
+    ]
+  },
+  {
+    "type": "com.sap.cap/Service",
+    "name": "capsrv",
+    "ref": "/service/capsrv",
+    "path": "srv/service.cds",
+    "external": false,
+    "tags": [
+      "item",
+      "cap",
+      "srv"
+    ],
+    "links": [
+      {
+        "linkType": "DEPENDS_ON",
+        "type": "com.sap.security/Role",
+        "ref": "authenticated-user"
+      },
+      {
+        "linkType": "DEPENDS_ON",
+        "type": "com.sap.cap/Function",
+        "ref": "/service/capsrv/Function1"
+      },
+      {
+        "linkType": "DEPENDS_ON",
+        "type": "com.sap.cap/Action",
+        "ref": "/service/capsrv/Action1"
+      }
+    ]
+  },
+  {
+    "type": "com.sap.cap/Function",
+    "name": "Function1",
+    "ref": "/service/capsrv/Function1",
+    "path": "srv/service.cds",
+    "namespace": "capsrv",
+    "tags": [
+      "item",
+      "cap",
+      "srv"
+    ],
+    "info": {
+      "isBound": false,
+      "returns": {
+        "type": "cds.String"
+      }
+    },
+    "links": [
+      {
+        "linkType": "HAS_DEPENDENCY",
+        "type": "com.sap.cap/Service",
+        "ref": "/service/capsrv"
+      },
+      {
+        "linkType": "DEPENDS_ON",
+        "type": "com.sap.security/Role",
+        "ref": "Manager"
+      }
+    ]
+  },
+  {
+    "type": "com.sap.cap/Action",
+    "name": "Action1",
+    "ref": "/service/capsrv/Action1",
+    "path": "srv/service.cds",
+    "namespace": "capsrv",
+    "tags": [
+      "item",
+      "cap",
+      "srv"
+    ],
+    "info": {
+      "isBound": false
+    },
+    "links": [
+      {
+        "linkType": "HAS_DEPENDENCY",
+        "type": "com.sap.cap/Service",
+        "ref": "/service/capsrv"
+      }
+    ]
+  }
+]

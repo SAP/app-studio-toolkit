@@ -18,6 +18,7 @@
     "package": "vsce package"
   },
   "devDependencies": {
+    "@vscode/vsce": "3.4.1",
     "@sap-devx/app-studio-toolkit-types": "workspace:*"
   },
   "categories": [
@@ -29,5 +30,8 @@
   "extensionDependencies": [
     "SAPOSS.app-studio-toolkit"
   ],
-  "contributes": {}
+  "contributes": {},
+  "vsce": {
+    "dependencies": false
+  }
 }

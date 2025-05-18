@@ -1,0 +1,680 @@
+[
+  {
+    "type": "com.sap.cds/Namespace",
+    "name": "bookshop",
+    "ref": "bookshop",
+    "path": "db/schema.cds",
+    "external": false,
+    "tags": [
+      "item",
+      "cap",
+      "db"
+    ],
+    "links": [
+      {
+        "linkType": "DEPENDS_ON",
+        "type": "com.sap.cds/Entity",
+        "ref": "bookshop.Books"
+      },
+      {
+        "linkType": "DEPENDS_ON",
+        "type": "com.sap.cds/Entity",
+        "ref": "bookshop.Authors"
+      }
+    ]
+  },
+  {
+    "type": "com.sap.cds/Entity",
+    "name": "Books",
+    "ref": "bookshop.Books",
+    "namespace": "bookshop",
+    "path": "db/schema.cds",
+    "external": false,
+    "tags": [
+      "item",
+      "cap",
+      "db"
+    ],
+    "info": {
+      "attributes": {
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "title": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "price": {
+          "type": "cds.Decimal"
+        },
+        "stock": {
+          "type": "cds.Integer"
+        },
+        "author": {
+          "type": "cds.Association",
+          "cardinality": {
+            "max": 1
+          },
+          "target": "bookshop.Authors"
+        }
+      }
+    },
+    "links": [
+      {
+        "linkType": "ASSOCIATES_TO_ONE",
+        "type": "com.sap.cds/Entity",
+        "ref": "bookshop.Authors"
+      },
+      {
+        "linkType": "HAS_DEPENDENCY",
+        "type": "com.sap.cds/Namespace",
+        "ref": "bookshop"
+      },
+      {
+        "linkType": "HAS_DEPENDENCY",
+        "type": "com.sap.hana/CalculationView",
+        "ref": "db/src/view.hdbcalculationview"
+      },
+      {
+        "linkType": "HAS_TRANSITIVE_DEPENDENCY",
+        "type": "com.sap.cap/Service",
+        "ref": "/service/MyBookshop"
+      },
+      {
+        "linkType": "HAS_DEPENDENCY",
+        "type": "org.oasis-open.odata/Entity",
+        "ref": "/service/MyBookshop/Books"
+      }
+    ]
+  },
+  {
+    "type": "com.sap.cds/Entity",
+    "name": "Authors",
+    "ref": "bookshop.Authors",
+    "namespace": "bookshop",
+    "path": "db/schema.cds",
+    "external": false,
+    "tags": [
+      "item",
+      "cap",
+      "db"
+    ],
+    "info": {
+      "attributes": {
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "name": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "books": {
+          "type": "cds.Association",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "bookshop.Books",
+          "on": [
+            {
+              "ref": [
+                "books",
+                "author"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$self"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "links": [
+      {
+        "linkType": "HAS_ASSOCIATION_WITH_MANY",
+        "type": "com.sap.cds/Entity",
+        "ref": "bookshop.Books"
+      },
+      {
+        "linkType": "HAS_DEPENDENCY",
+        "type": "com.sap.cds/Namespace",
+        "ref": "bookshop"
+      },
+      {
+        "linkType": "HAS_TRANSITIVE_DEPENDENCY",
+        "type": "com.sap.cap/Service",
+        "ref": "/service/MyBookshop"
+      },
+      {
+        "linkType": "HAS_DEPENDENCY",
+        "type": "org.oasis-open.odata/Entity",
+        "ref": "/service/MyBookshop/Authors"
+      }
+    ]
+  },
+  {
+    "type": "com.sap.cds/Namespace",
+    "name": "orders",
+    "ref": "orders",
+    "path": "db/schema1.cds",
+    "external": false,
+    "tags": [
+      "item",
+      "cap",
+      "db"
+    ],
+    "links": [
+      {
+        "linkType": "DEPENDS_ON",
+        "type": "com.sap.cds/Entity",
+        "ref": "orders.Suppliers"
+      },
+      {
+        "linkType": "DEPENDS_ON",
+        "type": "com.sap.cds/Entity",
+        "ref": "orders.Orders"
+      },
+      {
+        "linkType": "DEPENDS_ON",
+        "type": "com.sap.cds/Entity",
+        "ref": "orders.Customers"
+      }
+    ]
+  },
+  {
+    "type": "com.sap.cds/Entity",
+    "name": "Suppliers",
+    "ref": "orders.Suppliers",
+    "namespace": "orders",
+    "path": "db/schema1.cds",
+    "external": false,
+    "tags": [
+      "item",
+      "cap",
+      "db"
+    ],
+    "info": {
+      "attributes": {
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "name": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "address": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "orders": {
+          "type": "cds.Association",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "orders.Orders",
+          "on": [
+            {
+              "ref": [
+                "orders",
+                "supplier"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$self"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "links": [
+      {
+        "linkType": "HAS_ASSOCIATION_WITH_MANY",
+        "type": "com.sap.cds/Entity",
+        "ref": "orders.Orders"
+      },
+      {
+        "linkType": "HAS_DEPENDENCY",
+        "type": "com.sap.cds/Namespace",
+        "ref": "orders"
+      }
+    ]
+  },
+  {
+    "type": "com.sap.cds/Entity",
+    "name": "Orders",
+    "ref": "orders.Orders",
+    "namespace": "orders",
+    "path": "db/schema1.cds",
+    "external": false,
+    "tags": [
+      "item",
+      "cap",
+      "db"
+    ],
+    "info": {
+      "attributes": {
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "books": {
+          "type": "cds.Association",
+          "cardinality": {
+            "max": 1
+          },
+          "target": "bookshop.Books"
+        },
+        "customer": {
+          "type": "cds.Association",
+          "cardinality": {
+            "max": 1
+          },
+          "target": "orders.Customers"
+        },
+        "supplier": {
+          "type": "cds.Association",
+          "cardinality": {
+            "max": 1
+          },
+          "target": "orders.Suppliers"
+        }
+      }
+    },
+    "links": [
+      {
+        "linkType": "ASSOCIATES_TO_ONE",
+        "type": "com.sap.cds/Entity",
+        "ref": "bookshop.Books"
+      },
+      {
+        "linkType": "ASSOCIATES_TO_ONE",
+        "type": "com.sap.cds/Entity",
+        "ref": "orders.Customers"
+      },
+      {
+        "linkType": "ASSOCIATES_TO_ONE",
+        "type": "com.sap.cds/Entity",
+        "ref": "orders.Suppliers"
+      },
+      {
+        "linkType": "HAS_DEPENDENCY",
+        "type": "com.sap.cds/Namespace",
+        "ref": "orders"
+      }
+    ]
+  },
+  {
+    "type": "com.sap.cds/Entity",
+    "name": "Customers",
+    "ref": "orders.Customers",
+    "namespace": "orders",
+    "path": "db/schema1.cds",
+    "external": false,
+    "tags": [
+      "item",
+      "cap",
+      "db"
+    ],
+    "info": {
+      "attributes": {
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "name": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "address": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "phone_number": {
+          "type": "cds.Integer"
+        },
+        "orders": {
+          "type": "cds.Association",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "orders.Orders",
+          "on": [
+            {
+              "ref": [
+                "orders",
+                "customer"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$self"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "links": [
+      {
+        "linkType": "HAS_ASSOCIATION_WITH_MANY",
+        "type": "com.sap.cds/Entity",
+        "ref": "orders.Orders"
+      },
+      {
+        "linkType": "HAS_DEPENDENCY",
+        "type": "com.sap.cds/Namespace",
+        "ref": "orders"
+      }
+    ]
+  },
+  {
+    "type": "com.sap.hana/CalculationView",
+    "name": "view",
+    "ref": "db/src/view.hdbcalculationview",
+    "path": "db/src/view.hdbcalculationview",
+    "tags": [
+      "item",
+      "calculationView"
+    ],
+    "links": [
+      {
+        "linkType": "DEPENDS_ON",
+        "ref": "bookshop.Books",
+        "type": "com.sap.cds/Entity"
+      }
+    ],
+    "info": {
+      "exposedColumns": [
+        "ID",
+        "TITLE",
+        "AUTHOR_ID",
+        "PRICE",
+        "STOCK"
+      ]
+    }
+  },
+  {
+    "type": "com.sap.hana/CalculationView",
+    "name": "",
+    "ref": "db/src/view1.hdbcalculationview",
+    "path": "db/src/view1.hdbcalculationview",
+    "tags": [
+      "item",
+      "calculationView"
+    ],
+    "links": [],
+    "info": {}
+  },
+  {
+    "type": "com.sap.cap/Service",
+    "name": "MyBookshop2",
+    "ref": "/service/MyBookshop",
+    "path": "srv/service.cds",
+    "external": false,
+    "tags": [
+      "item",
+      "cap",
+      "srv"
+    ],
+    "links": [
+      {
+        "linkType": "DEPENDS_ON",
+        "type": "com.sap.security/Role",
+        "ref": "authenticated-user"
+      },
+      {
+        "linkType": "TRANSITIVELY_DEPENDS_ON",
+        "type": "com.sap.cds/Entity",
+        "ref": "bookshop.Books"
+      },
+      {
+        "linkType": "TRANSITIVELY_DEPENDS_ON",
+        "type": "com.sap.cds/Entity",
+        "ref": "bookshop.Authors"
+      },
+      {
+        "linkType": "TRANSITIVELY_DEPENDS_ON",
+        "type": "com.sap.cds/Entity",
+        "ref": "bookshop.Books"
+      },
+      {
+        "linkType": "TRANSITIVELY_DEPENDS_ON",
+        "type": "com.sap.cds/Entity",
+        "ref": "bookshop.Authors"
+      },
+      {
+        "linkType": "DEPENDS_ON",
+        "type": "org.oasis-open.odata/Entity",
+        "ref": "/service/MyBookshop/Books"
+      },
+      {
+        "linkType": "DEPENDS_ON",
+        "type": "org.oasis-open.odata/Entity",
+        "ref": "/service/MyBookshop/Authors"
+      },
+      {
+        "linkType": "DEPENDS_ON",
+        "type": "com.sap.cap/Action",
+        "ref": "/service/MyBookshop/sellBook"
+      }
+    ]
+  },
+  {
+    "type": "org.oasis-open.odata/Entity",
+    "name": "Books",
+    "ref": "/service/MyBookshop/Books",
+    "namespace": "MyBookshop2",
+    "path": "srv/service.cds",
+    "external": false,
+    "tags": [
+      "item",
+      "cap",
+      "srv",
+      "projectionEntity"
+    ],
+    "info": {
+      "attributes": {
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "title": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "price": {
+          "type": "cds.Decimal"
+        },
+        "stock": {
+          "type": "cds.Integer"
+        },
+        "author": {
+          "type": "cds.Association",
+          "cardinality": {
+            "max": 1
+          },
+          "target": "bookshop.Authors"
+        }
+      },
+      "annotations": {
+        "@odata.draft.enabled": true
+      }
+    },
+    "links": [
+      {
+        "linkType": "HAS_DEPENDENCY",
+        "type": "com.sap.cap/Service",
+        "ref": "/service/MyBookshop"
+      },
+      {
+        "linkType": "DEPENDS_ON",
+        "type": "com.sap.cds/Entity",
+        "ref": "bookshop.Books"
+      }
+    ]
+  },
+  {
+    "type": "org.oasis-open.odata/Entity",
+    "name": "Authors",
+    "ref": "/service/MyBookshop/Authors",
+    "namespace": "MyBookshop2",
+    "path": "srv/service.cds",
+    "external": false,
+    "tags": [
+      "item",
+      "cap",
+      "srv",
+      "projectionEntity"
+    ],
+    "info": {
+      "attributes": {
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "name": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "books": {
+          "type": "cds.Association",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "bookshop.Books",
+          "on": [
+            {
+              "ref": [
+                "books",
+                "author"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$self"
+              ]
+            }
+          ]
+        }
+      },
+      "annotations": {
+        "@odata.draft.enabled": true
+      }
+    },
+    "links": [
+      {
+        "linkType": "HAS_DEPENDENCY",
+        "type": "com.sap.cap/Service",
+        "ref": "/service/MyBookshop"
+      },
+      {
+        "linkType": "DEPENDS_ON",
+        "type": "com.sap.cds/Entity",
+        "ref": "bookshop.Authors"
+      }
+    ]
+  },
+  {
+    "type": "com.sap.cap/Action",
+    "name": "sellBook",
+    "ref": "/service/MyBookshop/sellBook",
+    "path": "srv/service.cds",
+    "namespace": "MyBookshop2",
+    "tags": [
+      "item",
+      "cap",
+      "srv"
+    ],
+    "info": {
+      "isBound": false,
+      "params": {
+        "book_title": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "copies": {
+          "type": "cds.Integer"
+        }
+      },
+      "returns": {
+        "type": "cds.Integer"
+      }
+    },
+    "links": [
+      {
+        "linkType": "HAS_DEPENDENCY",
+        "type": "com.sap.cap/Service",
+        "ref": "/service/MyBookshop"
+      }
+    ]
+  },
+  {
+    "type": "com.sap.security/Role",
+    "name": "any",
+    "ref": "any",
+    "path": "roles.roledefault",
+    "tags": [
+      "item",
+      "xsuaa"
+    ],
+    "info": {
+      "description": "any users"
+    }
+  },
+  {
+    "type": "com.sap.security/Role",
+    "name": "authenticated-user",
+    "ref": "authenticated-user",
+    "path": "roles.roledefault",
+    "tags": [
+      "item",
+      "xsuaa"
+    ],
+    "info": {
+      "description": "authenticated users"
+    },
+    "links": [
+      {
+        "linkType": "HAS_DEPENDENCY",
+        "type": "com.sap.cap/Service",
+        "ref": "/service/MyBookshop"
+      }
+    ]
+  },
+  {
+    "type": "com.sap.security/Role",
+    "name": "system-user",
+    "ref": "system-user",
+    "path": "roles.roledefault",
+    "tags": [
+      "item",
+      "xsuaa"
+    ],
+    "info": {
+      "description": "any users"
+    }
+  },
+  {
+    "type": "com.sap.security/Role",
+    "name": "Manager",
+    "ref": "Manager",
+    "path": "roles.roledefault",
+    "tags": [
+      "item",
+      "xsuaa"
+    ],
+    "info": {
+      "description": ""
+    }
+  }
+]

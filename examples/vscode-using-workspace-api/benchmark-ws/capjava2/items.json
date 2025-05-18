@@ -1,0 +1,156 @@
+[
+  {
+    "type": "com.sap.cds/Namespace",
+    "name": "my.bookshop",
+    "ref": "my.bookshop",
+    "path": "db/data-model.cds",
+    "external": false,
+    "tags": [
+      "item",
+      "cap",
+      "db"
+    ],
+    "links": [
+      {
+        "linkType": "DEPENDS_ON",
+        "type": "com.sap.cds/Entity",
+        "ref": "my.bookshop.Books"
+      }
+    ]
+  },
+  {
+    "type": "com.sap.cds/Entity",
+    "name": "Books",
+    "ref": "my.bookshop.Books",
+    "namespace": "my.bookshop",
+    "path": "db/data-model.cds",
+    "external": false,
+    "tags": [
+      "item",
+      "cap",
+      "db"
+    ],
+    "info": {
+      "attributes": {
+        "ID": {
+          "key": true,
+          "type": "cds.Integer"
+        },
+        "title": {
+          "type": "cds.String"
+        },
+        "stock": {
+          "type": "cds.Integer"
+        }
+      }
+    },
+    "links": [
+      {
+        "linkType": "HAS_DEPENDENCY",
+        "type": "com.sap.cds/Namespace",
+        "ref": "my.bookshop"
+      },
+      {
+        "linkType": "HAS_DEPENDENCY",
+        "type": "mimetype/csv",
+        "ref": "db/data/my.bookshop-Books.csv"
+      },
+      {
+        "linkType": "HAS_TRANSITIVE_DEPENDENCY",
+        "type": "com.sap.cap/Service",
+        "ref": "/catalog"
+      },
+      {
+        "linkType": "HAS_DEPENDENCY",
+        "type": "org.oasis-open.odata/Entity",
+        "ref": "/catalog/Books"
+      }
+    ]
+  },
+  {
+    "type": "mimetype/csv",
+    "name": "Books",
+    "ref": "db/data/my.bookshop-Books.csv",
+    "path": "db/data/my.bookshop-Books.csv",
+    "external": false,
+    "tags": [
+      "item",
+      "cap",
+      "db"
+    ],
+    "links": [
+      {
+        "linkType": "DEPENDS_ON",
+        "type": "com.sap.cds/Entity",
+        "ref": "my.bookshop.Books"
+      }
+    ]
+  },
+  {
+    "type": "com.sap.cap/Service",
+    "name": "CatalogService",
+    "ref": "/catalog",
+    "path": "srv/cat-service.cds",
+    "external": false,
+    "tags": [
+      "item",
+      "cap",
+      "srv"
+    ],
+    "links": [
+      {
+        "linkType": "TRANSITIVELY_DEPENDS_ON",
+        "type": "com.sap.cds/Entity",
+        "ref": "my.bookshop.Books"
+      },
+      {
+        "linkType": "DEPENDS_ON",
+        "type": "org.oasis-open.odata/Entity",
+        "ref": "/catalog/Books"
+      }
+    ]
+  },
+  {
+    "type": "org.oasis-open.odata/Entity",
+    "name": "Books",
+    "ref": "/catalog/Books",
+    "namespace": "CatalogService",
+    "path": "srv/cat-service.cds",
+    "external": false,
+    "tags": [
+      "item",
+      "cap",
+      "srv",
+      "projectionEntity"
+    ],
+    "info": {
+      "attributes": {
+        "ID": {
+          "key": true,
+          "type": "cds.Integer"
+        },
+        "title": {
+          "type": "cds.String"
+        },
+        "stock": {
+          "type": "cds.Integer"
+        }
+      },
+      "annotations": {
+        "@readonly": true
+      }
+    },
+    "links": [
+      {
+        "linkType": "HAS_DEPENDENCY",
+        "type": "com.sap.cap/Service",
+        "ref": "/catalog"
+      },
+      {
+        "linkType": "DEPENDS_ON",
+        "type": "com.sap.cds/Entity",
+        "ref": "my.bookshop.Books"
+      }
+    ]
+  }
+]

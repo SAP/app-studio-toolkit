@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="view" applyPrivilegeType="NONE" dataCategory="CUBE" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Aggregation" application="BAS" cacheInvalidationPeriod="NONE" enforceSqlExecution="true">
+<descriptions defaultDescription="view.hdbcalculationview"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="BOOKSHOP_BOOKS">
+    <resourceUri>BOOKSHOP_BOOKS</resourceUri>
+  </DataSource>
+</dataSources>
+<snapshotProcedures/>
+<calculationViews/>
+<logicalModel id="BOOKSHOP_BOOKS">
+  <attributes>
+    <attribute id="ID" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ID"/>
+      <keyMapping columnObjectName="BOOKSHOP_BOOKS" columnName="ID"/>
+    </attribute>
+    <attribute id="TITLE" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="TITLE"/>
+      <keyMapping columnObjectName="BOOKSHOP_BOOKS" columnName="TITLE"/>
+    </attribute>
+    <attribute id="AUTHOR_ID" order="5" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="AUTHOR_ID"/>
+      <keyMapping columnObjectName="BOOKSHOP_BOOKS" columnName="AUTHOR_ID"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures>
+    <measure id="PRICE" order="3" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="PRICE"/>
+      <measureMapping columnObjectName="BOOKSHOP_BOOKS" columnName="PRICE"/>
+      <exceptionAggregationMetadata/>
+    </measure>
+    <measure id="STOCK" order="4" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="STOCK"/>
+      <measureMapping columnObjectName="BOOKSHOP_BOOKS" columnName="STOCK"/>
+      <exceptionAggregationMetadata/>
+    </measure>
+  </baseMeasures>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+  <localDimensions/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="40" y="85"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

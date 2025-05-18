@@ -1,0 +1,34 @@
+[
+	{
+		"Name": "any",
+		"Description": "any users",
+		"defaultPrivilege": {
+			"IsSimple": true,
+			"SimplePrivilege": 2
+		}
+	},
+	{
+		"Name": "authenticated-user",
+		"Description": "authenticated users",
+		"defaultPrivilege": {
+			"IsSimple": true,
+			"SimplePrivilege": 2
+		}
+	},
+	{
+		"Name": "system-user",
+		"Description": "any users",
+		"defaultPrivilege": {
+			"IsSimple": true,
+			"SimplePrivilege": 2
+		}
+	},
+	{
+		"Name": "Manager",
+		"Description": "",
+		"defaultPrivilege": {
+			"IsSimple": true,
+			"SimplePrivilege": 2
+		}
+	}
+]
