@@ -274,3 +274,8 @@ export interface ITelemetryReporter {
     measurements?: TelemetryMeasurements
   ): Promise<void>;
 }
+
+export interface JwtPayload {
+  jwt: string;
+  iasjwt: string;
+}
