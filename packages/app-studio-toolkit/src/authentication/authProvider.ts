@@ -67,14 +67,34 @@ export class BasRemoteAuthenticationProvider
     const removed: AuthenticationSession[] = [];
     const changed: AuthenticationSession[] = [];
 
-    const previousToken = this.getTokenByScope(await this.currentToken, scopes);
+    const previousToken: JwtPayload | undefined = this.getTokenByScope(
+      await this.currentToken,
+      scopes
+    );
     const session = (await this.getSessions(scopes))[0];
 
-    if (session?.accessToken && !previousToken) {
+    // Added: session exists but previousToken does not
+    if (
+      session &&
+      (!previousToken || (!previousToken.jwt && !previousToken.iasjwt))
+    ) {
       added.push(session);
-    } else if (!session?.accessToken && previousToken) {
+    }
+    // Removed: previousToken exists but session does not
+    else if (
+      !session &&
+      previousToken &&
+      (previousToken.jwt || previousToken.iasjwt)
+    ) {
       removed.push(new BasRemoteSession(scopes, previousToken));
-    } else if (session?.accessToken !== previousToken?.jwt) {
+    }
+    // Changed: both exist, but at least one token value differs
+    else if (
+      session &&
+      previousToken &&
+      (session.accessToken !== previousToken.jwt ||
+        (session as BasRemoteSession).iasToken !== previousToken.iasjwt)
+    ) {
       changed.push(session);
     } else {
       return;
@@ -82,9 +102,9 @@ export class BasRemoteAuthenticationProvider
 
     void this.cacheTokenFromStorage();
     this._onDidChangeSessions.fire({
-      added: added,
-      removed: removed,
-      changed: changed,
+      added,
+      removed,
+      changed,
     });
   }
 

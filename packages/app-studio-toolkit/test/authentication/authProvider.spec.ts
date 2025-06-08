@@ -501,6 +501,65 @@ describe("authProvider unit test", () => {
         landscapeToken[landscape2].jwt
       );
     });
+
+    it("checkForUpdates, previousToken exists but both jwt and iasjwt are falsy, should add session", async () => {
+      const instance = new BasRemoteAuthenticationProviderProxy(
+        proxySecretSorage
+      );
+
+      // Simulate previousToken with both jwt and iasjwt falsy
+      const previousToken = { jwt: "", iasjwt: "" };
+      instance["getTokenByScope"] = () => previousToken;
+
+      // Simulate a valid session
+      const session = {
+        id: BasRemoteAuthenticationProviderProxy.id,
+        account: {
+          id: BasRemoteAuthenticationProviderProxy.id,
+          label: patLabel,
+        },
+        scopes: [],
+        accessToken: "some-token",
+        iasToken: undefined,
+      };
+      // eslint-disable-next-line @typescript-eslint/require-await -- this is a mock
+      instance["getSessions"] = async () => [session];
+
+      instance[`_onDidChangeSessions`] = proxyEmitter;
+      const stubEmitter = sandbox.stub(proxyEmitter, "fire");
+
+      expect(await instance["checkForUpdates"]([])).to.be.undefined;
+      const args = stubEmitter.args[0][0];
+      expect(args.added.length).to.equal(1);
+      expect(args.added[0].accessToken).to.equal("some-token");
+      expect(args.removed.length).to.equal(0);
+      expect(args.changed.length).to.equal(0);
+    });
+
+    it("checkForUpdates, previousToken exists with iasjwt, but session does not exist (should remove)", async () => {
+      const instance = new BasRemoteAuthenticationProviderProxy(
+        proxySecretSorage
+      );
+
+      // Simulate previousToken with iasjwt set
+      const previousToken = { jwt: "", iasjwt: "some-iasjwt" };
+      instance["getTokenByScope"] = () => previousToken;
+
+      // Simulate no session returned
+      // eslint-disable-next-line @typescript-eslint/require-await -- this is a mock
+      instance.getSessions = async () => [];
+
+      instance["_onDidChangeSessions"] = proxyEmitter;
+      const stubEmitter = sandbox.stub(proxyEmitter, "fire");
+
+      expect(await instance["checkForUpdates"]([])).to.be.undefined;
+      const args = stubEmitter.args[0][0];
+      expect(args.added.length).to.equal(0);
+      expect(args.removed.length).to.equal(1);
+      expect(args.removed[0].accessToken).to.equal(""); // jwt is empty string
+      expect(args.removed[0].iasToken).to.equal("some-iasjwt");
+      expect(args.changed.length).to.equal(0);
+    });
   });
 
   describe("dispose method", () => {

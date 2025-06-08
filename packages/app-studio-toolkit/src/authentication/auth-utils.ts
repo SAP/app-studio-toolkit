@@ -200,13 +200,19 @@ export async function getJwt(
     BasRemoteAuthenticationProvider.id,
     [landscapeUrl]
   );
-  if (session?.accessToken) {
-    return isIasjwt
-      ? (session as BasRemoteSession).iasToken
-      : session.accessToken;
+  const accessToken = session?.accessToken;
+  const iasToken = (session as BasRemoteSession)?.iasToken;
+
+  if (accessToken) {
+    if (isIasjwt && iasToken) {
+      return iasToken;
+    }
+    return accessToken;
   }
-  getLogger().debug(messages.err_get_jwt_not_exists);
-  throw new Error(messages.err_get_jwt_not_exists);
+
+  const msg = messages.err_get_jwt_not_exists;
+  getLogger().debug(msg);
+  throw new Error(msg);
 }
 
 export async function hasJwt(
