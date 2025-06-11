@@ -1,5 +1,11 @@
 # @sap-devx/app-studio-toolkit-types
 
+## 2.5.0
+
+### Minor Changes
+
+- e900d97: support for 'iasjwt' together with existing 'jwt'
+
 ## 2.4.0
 
 ### Minor Changes
