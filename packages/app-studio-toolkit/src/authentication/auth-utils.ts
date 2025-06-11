@@ -5,13 +5,17 @@ import * as bodyParser from "body-parser";
 import { createHttpTerminator, HttpTerminator } from "http-terminator";
 import { platform } from "os";
 import { getLogger } from "../logger/logger";
-import { BasRemoteAuthenticationProvider } from "./authProvider";
+import {
+  BasRemoteAuthenticationProvider,
+  BasRemoteSession,
+} from "./authProvider";
 import { core } from "@sap/bas-sdk";
 import { messages } from "../../src/devspace-manager/common/messages";
 import {
   eventEmitter,
   LoginEvent,
 } from "../../src/devspace-manager/handler/basHandler";
+import { JwtPayload } from "@sap-devx/app-studio-toolkit-types";
 
 export const JWT_TIMEOUT = 60 * 1000; // 60s
 const EXT_LOGIN_PORTNUM = 55532;
@@ -27,8 +31,10 @@ function isVscode(): boolean {
   return platform() === "darwin";
 }
 
-async function expressGetJwtFromServer(landscapeUrl: string): Promise<string> {
-  return new Promise<string>((resolve, reject) => {
+async function expressGetJwtFromServer(
+  landscapeUrl: string
+): Promise<JwtPayload> {
+  return new Promise<JwtPayload>((resolve, reject) => {
     const app = express();
 
     app.use(cors());
@@ -44,7 +50,7 @@ async function expressGetJwtFromServer(landscapeUrl: string): Promise<string> {
       } else {
         getLogger().info(`jwt recieved from remote for ${landscapeUrl}`);
         response.send({ status: "ok" });
-        resolve(jwt);
+        resolve({ jwt, iasjwt: request.body.iasjwt ?? "" });
       }
     });
 
@@ -70,7 +76,9 @@ async function expressCloseListener(landscapeUrl: string): Promise<void> {
   getLogger().info(`closing server for ${landscapeUrl}`);
 }
 
-async function vscodeCloseListener(promise?: Promise<string>): Promise<void> {
+async function vscodeCloseListener(
+  promise?: Promise<JwtPayload | string>
+): Promise<void> {
   promise = promise || Promise.reject(new Error("canceled"));
   // dispose the login event listener in case of :
   //   1. open browser is canceled or disallowed
@@ -90,8 +98,10 @@ async function vscodeCloseListener(promise?: Promise<string>): Promise<void> {
   getLogger().info(`closing listener`);
 }
 
-async function vscodeGetJwtFromServer(landscapeUrl: string): Promise<string> {
-  return new Promise<string>((resolve, reject) => {
+async function vscodeGetJwtFromServer(
+  landscapeUrl: string
+): Promise<JwtPayload> {
+  return new Promise<JwtPayload>((resolve, reject) => {
     // Subscribe the listener to the event
     const listener = eventEmitter.event(handleEvent);
 
@@ -100,7 +110,7 @@ async function vscodeGetJwtFromServer(landscapeUrl: string): Promise<string> {
       if (event.jwt?.toLocaleLowerCase().startsWith("<html>")) {
         reject(new Error(messages.err_incorrect_jwt(landscapeUrl)));
       } else {
-        resolve(event.jwt ?? "");
+        resolve({ jwt: event.jwt ?? "", iasjwt: event.iasjwt ?? "" });
       }
       // Remove the listener after resolving the promise
       listener.dispose();
@@ -110,7 +120,7 @@ async function vscodeGetJwtFromServer(landscapeUrl: string): Promise<string> {
 
 async function onJwtReceived(opt: {
   accepted: boolean;
-  jwtPromise: Promise<string>;
+  jwtPromise: Promise<JwtPayload | string>;
   landscapeUrl: string;
 }): Promise<void> {
   return isVscode()
@@ -124,7 +134,7 @@ async function loginToLandscape(landscapeUrl: string): Promise<boolean> {
   );
 }
 
-async function getJwtFromServer(landscapeUrl: string): Promise<string> {
+async function getJwtFromServer(landscapeUrl: string): Promise<JwtPayload> {
   return isVscode()
     ? vscodeGetJwtFromServer(landscapeUrl)
     : expressGetJwtFromServer(landscapeUrl);
@@ -132,23 +142,19 @@ async function getJwtFromServer(landscapeUrl: string): Promise<string> {
 
 async function getJwtFromServerWithTimeout(
   ms: number,
-  promise: Promise<string>
-): Promise<string> {
-  // Create a promise that rejects in <ms> milliseconds
-  const timeout = new Promise<string>((resolve, reject) => {
-    const delay = setTimeout(() => {
-      clearTimeout(delay);
-      reject(new Error(messages.err_get_jwt_timeout(ms)));
-    }, ms);
-  });
-
-  // Returns a race between our timeout and the passed in promise
-  return Promise.race([promise, timeout]);
+  promise: Promise<JwtPayload>
+): Promise<JwtPayload> {
+  return Promise.race([
+    promise,
+    new Promise<JwtPayload>((_, reject) =>
+      setTimeout(() => reject(new Error(messages.err_get_jwt_timeout(ms))), ms)
+    ),
+  ]);
 }
 
 async function retrieveJwtFromRemote(
   landscapeUrl: string
-): Promise<string | undefined> {
+): Promise<JwtPayload | undefined> {
   const jwtPromise = getJwtFromServerWithTimeout(
     JWT_TIMEOUT,
     getJwtFromServer(landscapeUrl)
@@ -163,9 +169,9 @@ async function retrieveJwtFromRemote(
 
 async function receiveJwt(opt: {
   accepted: boolean;
-  jwtPromise: Promise<string>;
+  jwtPromise: Promise<JwtPayload>;
   landscapeUrl: string;
-}): Promise<string | undefined> {
+}): Promise<JwtPayload | undefined> {
   // browser open not accepted
   if (!opt.accepted) {
     if (isVscode()) {
@@ -175,31 +181,48 @@ async function receiveJwt(opt: {
       return; // not waiting for jwtPromise fulfilled
     }
   }
+  // Always wait for the jwtPromise, then clean up
   return opt.jwtPromise.finally(() => void onJwtReceived(opt));
 }
 
-export function retrieveJwt(landscapeUrl: string): Promise<string | void> {
+export function retrieveJwt(landscapeUrl: string): Promise<JwtPayload | void> {
   return retrieveJwtFromRemote(landscapeUrl).catch((e) => {
     void window.showErrorMessage(e.message);
     getLogger().error(e.toString());
   });
 }
 
-export async function getJwt(landscapeUrl: string): Promise<string> {
+export async function getJwt(
+  landscapeUrl: string,
+  isIasjwt = false
+): Promise<string> {
   const session = await authentication.getSession(
     BasRemoteAuthenticationProvider.id,
     [landscapeUrl]
   );
-  if (session?.accessToken) {
-    return session.accessToken;
-  } else {
-    getLogger().debug(messages.err_get_jwt_not_exists);
-    throw new Error(messages.err_get_jwt_not_exists);
+  const accessToken = session?.accessToken;
+  const iasToken = (session as BasRemoteSession)?.iasToken;
+
+  if (accessToken) {
+    if (isIasjwt && iasToken) {
+      return iasToken;
+    }
+    return accessToken;
   }
+
+  const msg = messages.err_get_jwt_not_exists;
+  getLogger().debug(msg);
+  throw new Error(msg);
 }
 
-export async function hasJwt(landscapeUrl: string): Promise<boolean> {
-  return getJwt(landscapeUrl)
-    .then((jwt) => !core.isJwtExpired(jwt))
-    .catch((_) => false);
+export async function hasJwt(
+  landscapeUrl: string,
+  isIasjwt = false
+): Promise<boolean> {
+  try {
+    const jwt = await getJwt(landscapeUrl, isIasjwt);
+    return !core.isJwtExpired(jwt);
+  } catch {
+    return false;
+  }
 }

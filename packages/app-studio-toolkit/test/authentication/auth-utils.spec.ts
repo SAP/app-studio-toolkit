@@ -157,6 +157,17 @@ describe("auth-utils unit test", () => {
     );
   });
 
+  it("getJwt, iasjwt exists", async () => {
+    const session = { accessToken: `token`, iasToken: `ias-token` };
+    mockAuth
+      .expects(`getSession`)
+      .withExactArgs(BasRemoteAuthenticationProvider.id, [landscape])
+      .resolves(session);
+    expect(await authUtilsProxy.getJwt(landscape, true)).to.be.equal(
+      session.iasToken
+    );
+  });
+
   it("getJwt, not exists", async () => {
     mockAuth
       .expects(`getSession`)
@@ -217,7 +228,23 @@ describe("auth-utils unit test", () => {
       setTimeout(() => {
         handlerProxy({ jwt: "token" });
       }, 100);
-      expect(await authUtilsProxy.retrieveJwt(landscape)).to.be.equal(`token`);
+      expect(await authUtilsProxy.retrieveJwt(landscape)).to.be.deep.equal({
+        jwt: "token",
+        iasjwt: "",
+      });
+    });
+
+    it("retrieveJwt, login suceedded both jwts received", async () => {
+      mockUri.expects("parse").returns({ psPath: landscape });
+      mockEnv.expects("openExternal").resolves(true);
+      mockListener.expects("dispose").returns(undefined);
+      setTimeout(() => {
+        handlerProxy({ jwt: "token", iasjwt: "ias-token" });
+      }, 100);
+      expect(await authUtilsProxy.retrieveJwt(landscape)).to.be.deep.equal({
+        jwt: "token",
+        iasjwt: "ias-token",
+      });
     });
 
     it("retrieveJwt, wrong jwt received", async () => {
@@ -238,7 +265,10 @@ describe("auth-utils unit test", () => {
       mockUri.expects("parse").returns({ psPath: landscape });
       mockEnv.expects("openExternal").resolves(false);
       mockListener.expects("dispose").returns({});
-      expect(await authUtilsProxy.retrieveJwt(landscape)).to.be.empty;
+      expect(await authUtilsProxy.retrieveJwt(landscape)).to.be.deep.equal({
+        jwt: "",
+        iasjwt: "",
+      });
     });
 
     it("retrieveJwt, login timeout", async () => {
@@ -255,9 +285,10 @@ describe("auth-utils unit test", () => {
 
   describe(`ext-login unit test"`, () => {
     let status: any;
-    const request = {
+    const request: { body: { jwt: string; iasjwt?: string } } = {
       body: {
         jwt: ``,
+        iasjwt: ``,
       },
     };
     const response = {
@@ -268,7 +299,7 @@ describe("auth-utils unit test", () => {
 
     beforeEach(() => {
       status = {};
-      request.body.jwt = ``;
+      request.body = { jwt: ``, iasjwt: `` };
       stub(authUtilsProxy, "JWT_TIMEOUT").value(1000);
       mockOs.expects("platform").atMost(3).returns("win");
     });
@@ -276,12 +307,30 @@ describe("auth-utils unit test", () => {
     it("retrieveJwt, login suceedded", async () => {
       mockUri.expects("parse").returns({ psPath: landscape });
       mockEnv.expects("openExternal").resolves(true);
-      request.body.jwt = `token`;
+      request.body = { jwt: `token` };
       setTimeout(() => {
         expect(extLoginListener).to.be.ok;
         extLoginListener!(request, response);
       }, 100);
-      expect(await authUtilsProxy.retrieveJwt(landscape)).to.be.equal(`token`);
+      expect(await authUtilsProxy.retrieveJwt(landscape)).to.be.deep.equal({
+        jwt: "token",
+        iasjwt: "",
+      });
+      expect(status).to.be.deep.equal({ status: "ok" });
+    });
+
+    it("retrieveJwt, login suceedded, both jwt received", async () => {
+      mockUri.expects("parse").returns({ psPath: landscape });
+      mockEnv.expects("openExternal").resolves(true);
+      request.body = { jwt: `token`, iasjwt: `ias-token` };
+      setTimeout(() => {
+        expect(extLoginListener).to.be.ok;
+        extLoginListener!(request, response);
+      }, 100);
+      expect(await authUtilsProxy.retrieveJwt(landscape)).to.be.deep.equal({
+        jwt: "token",
+        iasjwt: "ias-token",
+      });
       expect(status).to.be.deep.equal({ status: "ok" });
     });
 
@@ -316,7 +365,22 @@ describe("auth-utils unit test", () => {
       expect(status).to.be.deep.equal({ status: "error" });
     });
 
-    it("retrieveJwt, wrong request bdoy received", async () => {
+    it("retrieveJwt, wrong request body received", async () => {
+      mockUri.expects("parse").returns({ psPath: landscape });
+      mockEnv.expects("openExternal").resolves(true);
+      mockWindow
+        .expects("showErrorMessage")
+        .withExactArgs(messages.err_incorrect_jwt(landscape))
+        .resolves();
+      setTimeout(() => {
+        expect(extLoginListener).to.be.ok;
+        extLoginListener!({}, response);
+      }, 100);
+      expect(await authUtilsProxy.retrieveJwt(landscape)).to.be.undefined;
+      expect(status).to.be.deep.equal({ status: "error" });
+    });
+
+    it("retrieveJwt, html request body received", async () => {
       mockUri.expects("parse").returns({ psPath: landscape });
       mockEnv.expects("openExternal").resolves(true);
       mockWindow

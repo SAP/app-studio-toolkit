@@ -10,6 +10,7 @@ import { retrieveJwt } from "./auth-utils";
 import { getLogger } from "../logger/logger";
 import { messages } from "../../src/devspace-manager/common/messages";
 import { debounce, isEmpty } from "lodash";
+import { JwtPayload } from "@sap-devx/app-studio-toolkit-types";
 
 export class BasRemoteAuthenticationProvider
   implements AuthenticationProvider, Disposable
@@ -66,14 +67,34 @@ export class BasRemoteAuthenticationProvider
     const removed: AuthenticationSession[] = [];
     const changed: AuthenticationSession[] = [];
 
-    const previousToken = this.getTokenByScope(await this.currentToken, scopes);
+    const previousToken: JwtPayload | undefined = this.getTokenByScope(
+      await this.currentToken,
+      scopes
+    );
     const session = (await this.getSessions(scopes))[0];
 
-    if (session?.accessToken && !previousToken) {
+    // Added: session exists but previousToken does not
+    if (
+      session &&
+      (!previousToken || (!previousToken.jwt && !previousToken.iasjwt))
+    ) {
       added.push(session);
-    } else if (!session?.accessToken && previousToken) {
+    }
+    // Removed: previousToken exists but session does not
+    else if (
+      !session &&
+      previousToken &&
+      (previousToken.jwt || previousToken.iasjwt)
+    ) {
       removed.push(new BasRemoteSession(scopes, previousToken));
-    } else if (session?.accessToken !== previousToken) {
+    }
+    // Changed: both exist, but at least one token value differs
+    else if (
+      session &&
+      previousToken &&
+      (session.accessToken !== previousToken.jwt ||
+        (session as BasRemoteSession).iasToken !== previousToken.iasjwt)
+    ) {
       changed.push(session);
     } else {
       return;
@@ -81,9 +102,9 @@ export class BasRemoteAuthenticationProvider
 
     void this.cacheTokenFromStorage();
     this._onDidChangeSessions.fire({
-      added: added,
-      removed: removed,
-      changed: changed,
+      added,
+      removed,
+      changed,
     });
   }
 
@@ -95,17 +116,19 @@ export class BasRemoteAuthenticationProvider
   private getTokenByScope(
     allScopes: string | undefined,
     _scopes: string[]
-  ): string | undefined {
+  ): JwtPayload | undefined {
     let objToken;
     if (allScopes) {
       objToken = JSON.parse(allScopes);
     }
 
-    let token: string | undefined;
+    let token: JwtPayload | undefined;
     if (objToken) {
       token = !isEmpty(_scopes)
         ? objToken[_scopes[0]]
-        : /* indicate user signed in some BAS landscape */ `dummy-token`;
+        : /* indicate user signed in some BAS landscape */ {
+            jwt: `dummy-token`,
+          };
     }
     return token;
   }
@@ -116,11 +139,11 @@ export class BasRemoteAuthenticationProvider
   ): Promise<readonly AuthenticationSession[]> {
     this.ensureInitialized(_scopes || []);
 
-    const token = this.getTokenByScope(
+    const payload = this.getTokenByScope(
       await this.cacheTokenFromStorage(),
       _scopes || []
     );
-    return token ? [new BasRemoteSession(_scopes || [], token)] : [];
+    return payload ? [new BasRemoteSession(_scopes || [], payload)] : [];
   }
 
   // This function is called after `this.getSessions` is called and only when:
@@ -130,17 +153,17 @@ export class BasRemoteAuthenticationProvider
   async createSession(_scopes: string[]): Promise<AuthenticationSession> {
     this.ensureInitialized(_scopes);
 
-    const token = await retrieveJwt(_scopes[0]);
+    const payload = await retrieveJwt(_scopes[0]);
 
     // Note: consider to do some validation of the token beyond making sure it's not empty.
-    if (!token) {
+    if (!payload) {
       getLogger().error(messages.err_get_jwt_required);
       throw new Error(messages.err_get_jwt_required);
     }
 
     const allScopes = await this.cacheTokenFromStorage();
     const landscapeToken: any = {};
-    landscapeToken[_scopes[0]] = token;
+    landscapeToken[_scopes[0]] = payload;
     // Don't set `currentToken` here, since we want to fire the proper events in the `checkForUpdates` call
     await this.secretStorage.store(
       this.secretKey,
@@ -150,7 +173,7 @@ export class BasRemoteAuthenticationProvider
     );
     getLogger().debug(`Jwt successfully stored for ${_scopes[0]} landscape`);
 
-    return new BasRemoteSession(_scopes, token);
+    return new BasRemoteSession(_scopes, payload);
   }
 
   // This function is called when the end user signs out of the account.
@@ -160,18 +183,20 @@ export class BasRemoteAuthenticationProvider
   }
 }
 
-class BasRemoteSession implements AuthenticationSession {
+export class BasRemoteSession implements AuthenticationSession {
   readonly account = {
     id: BasRemoteAuthenticationProvider.id,
     label: "Access Token",
   };
   readonly id = BasRemoteAuthenticationProvider.id;
+  public readonly iasToken: string;
+  public readonly accessToken: string;
 
   /**
    * @param accessToken The personal access token to use for authentication
    */
-  constructor(
-    public readonly scopes: string[],
-    public readonly accessToken: string
-  ) {}
+  constructor(public readonly scopes: string[], accessToken: JwtPayload) {
+    this.iasToken = accessToken.iasjwt;
+    this.accessToken = accessToken.jwt;
+  }
 }
