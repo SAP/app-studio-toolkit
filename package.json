@@ -81,5 +81,10 @@
   "packageManager": "pnpm@9.15.2",
   "engines": {
     "node": ">=20"
+  },
+  "pnpm": {
+    "overrides": {
+      "@types/vscode": "1.75.0"
+    }
   }
 }
