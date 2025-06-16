@@ -201,8 +201,8 @@ importers:
   packages/app-studio-toolkit:
     dependencies:
       '@sap/artifact-management':
-        specifier: 1.44.1
-        version: 1.44.1(bufferutil@4.0.7)(utf-8-validate@5.0.10)
+        specifier: 1.46.0
+        version: 1.46.0(bufferutil@4.0.7)(utf-8-validate@5.0.10)
       '@sap/bas-sdk':
         specifier: 3.11.4
         version: 3.11.4(bufferutil@4.0.7)(utf-8-validate@5.0.10)
@@ -300,8 +300,8 @@ importers:
   packages/app-studio-toolkit-types:
     dependencies:
       '@sap/artifact-management-types':
-        specifier: 1.44.1
-        version: 1.44.1
+        specifier: 1.46.0
+        version: 1.46.0
       '@types/vscode':
         specifier: 1.75.0
         version: 1.75.0
@@ -464,6 +464,10 @@ packages:
     resolution: {integrity: sha512-CgH3s1a96LipHCmSUmYFPwY7MNx8C3avkq7i4Wl3cfa662ldtUe4VM1TPXX70pfmrlWTb6jLqTYrZyT2ZTJBgA==}
     engines: {node: '>=6.9.0'}
 
+  '@babel/code-frame@7.27.1':
+    resolution: {integrity: sha512-cjQ7ZlQ0Mv3b47hABuTevyTuYN4i+loJKGeV9flcCgIK37cCXRh+L1bd3iBHlynerhQ7BhCkn2BPbQUL+rGqFg==}
+    engines: {node: '>=6.9.0'}
+
   '@babel/compat-data@7.16.4':
     resolution: {integrity: sha512-1o/jo7D+kC9ZjHX5v+EHrdjl3PhxMrLSOTGsOdHJ+KL8HCaEK6ehrVL2RS6oHDZp+L7xLirLrPmQtEng769J/Q==}
     engines: {node: '>=6.9.0'}
@@ -474,6 +478,10 @@ packages:
 
   '@babel/generator@7.23.6':
     resolution: {integrity: sha512-qrSfCYxYQB5owCmGLbl8XRpX1ytXlpueOb0N0UmQwA073KZxejgQTzAmJezxvpwQD9uGtK2shHdi55QT+MbjIw==}
+    engines: {node: '>=6.9.0'}
+
+  '@babel/generator@7.27.5':
+    resolution: {integrity: sha512-ZGhA37l0e/g2s1Cnzdix0O3aLYm66eF8aufiVteOgnwxgnRP8GoyMj7VWsgWnQbVKXyge7hqrFh2K2TQM6t1Hw==}
     engines: {node: '>=6.9.0'}
 
   '@babel/helper-compilation-targets@7.16.3':
@@ -526,8 +534,16 @@ packages:
     resolution: {integrity: sha512-803gmbQdqwdf4olxrX4AJyFBV/RTr3rSmOj0rKwesmzlfhYNDEs+/iOcznzpNWlJlIlTJC2QfPFcHB6DlzdVLQ==}
     engines: {node: '>=6.9.0'}
 
+  '@babel/helper-string-parser@7.27.1':
+    resolution: {integrity: sha512-qMlSxKbpRlAridDExk92nSobyDdpPijUq2DW6oDnUqd0iOGxmQjyqhMIihI9+zv4LPyZdRje2cavWPbCbWm3eA==}
+    engines: {node: '>=6.9.0'}
+
   '@babel/helper-validator-identifier@7.22.20':
     resolution: {integrity: sha512-Y4OZ+ytlatR8AI+8KZfKuL5urKp7qey08ha31L8b3BwewJAoJamTzyvxPR/5D+KkdJCGPq/+8TukHBlY10FX9A==}
+    engines: {node: '>=6.9.0'}
+
+  '@babel/helper-validator-identifier@7.27.1':
+    resolution: {integrity: sha512-D2hP9eA+Sqx1kBZgzxZh0y1trbuU+JoDkiEwqhQ36nodYqJwyEIhPSdMNd7lOm/4io72luTPWH20Yda0xOuUow==}
     engines: {node: '>=6.9.0'}
 
   '@babel/helper-validator-option@7.14.5':
@@ -551,6 +567,11 @@ packages:
     engines: {node: '>=6.0.0'}
     hasBin: true
 
+  '@babel/parser@7.27.5':
+    resolution: {integrity: sha512-OsQd175SxWkGlzbny8J3K8TnnDD0N3lrIUtB92xwyRpzaenGZhxDvxN/JgU00U3CDZNj9tPuDJ5H0WS4Nt3vKg==}
+    engines: {node: '>=6.0.0'}
+    hasBin: true
+
   '@babel/runtime@7.26.0':
     resolution: {integrity: sha512-FDSOghenHTiToteC/QRlv2q3DhPZ/oOXTBoirfWNx1Cx3TMVcGWQtMMmQcSvb/JjpNeGzx8Pq/b4fKEJuWm1sw==}
     engines: {node: '>=6.9.0'}
@@ -559,12 +580,24 @@ packages:
     resolution: {integrity: sha512-QPErUVm4uyJa60rkI73qneDacvdvzxshT3kksGqlGWYdOTIUOwJ7RDUL8sGqslY1uXWSL6xMFKEXDS3ox2uF0w==}
     engines: {node: '>=6.9.0'}
 
+  '@babel/template@7.27.2':
+    resolution: {integrity: sha512-LPDZ85aEJyYSd18/DkjNh4/y1ntkE5KwUHWTiqgRxruuZL2F1yuHligVHLvcHY2vMHXttKFpJn6LwfI7cw7ODw==}
+    engines: {node: '>=6.9.0'}
+
   '@babel/traverse@7.23.6':
     resolution: {integrity: sha512-czastdK1e8YByZqezMPFiZ8ahwVMh/ESl9vPgvgdB9AmFMGP5jfpFax74AQgl5zj4XHzqeYAg2l8PuUeRS1MgQ==}
     engines: {node: '>=6.9.0'}
 
+  '@babel/traverse@7.27.4':
+    resolution: {integrity: sha512-oNcu2QbHqts9BtOWJosOVJapWjBDSxGCpFvikNR5TGDYDQf3JwpIoMzIKrvfoti93cLfPJEG4tH9SPVeyCGgdA==}
+    engines: {node: '>=6.9.0'}
+
   '@babel/types@7.23.6':
     resolution: {integrity: sha512-+uarb83brBzPKN38NX1MkB6vb6+mwvR6amUulqAE7ccQw1pEl+bCia9TbdG1lsnFP7lZySvUn37CHyXQdfTwzg==}
+    engines: {node: '>=6.9.0'}
+
+  '@babel/types@7.27.6':
+    resolution: {integrity: sha512-ETyHEk2VHHvl9b9jZP5IHPavHYk57EhanlRRuae9XCpb/j5bDCbPPMOBfCWhnl/7EDJz0jEMCi/RhccCE8r1+Q==}
     engines: {node: '>=6.9.0'}
 
   '@changesets/apply-release-plan@7.0.7':
@@ -927,27 +960,27 @@ packages:
     resolution: {integrity: sha512-4VlGgo32k2EQ2wcCY3vEU28A0O13aOtHz3Xt2/2U5FAh9EfhD6t6DqL5Z6yAnRCntbTFDU4YfbpyzSlHNWycPw==}
     engines: {node: '>=14'}
 
-  '@sap/artifact-management-base-types@1.44.1':
-    resolution: {integrity: sha512-O8xlZ+hZl828OtpoCpVHPXBp8ygwiZlI4GrIaO6nGYn4AKcFPBswzqa20u32HFFpKErBbt8j77vj1OzcWGVuUg==}
+  '@sap/artifact-management-base-types@1.46.0':
+    resolution: {integrity: sha512-+Fn6IQEraMuhsj0DR2Y3UX5lH3f97S+4QAcGKYPgvbFv+KypO1AgDisxEBAAgLRv/FoNqIR5DD190CaFwyH/9Q==}
 
-  '@sap/artifact-management-base@1.44.1':
-    resolution: {integrity: sha512-9aEtbH6P2BB7Zvv4s9d4+v6ix/t0oAxZfyVdtls5oonbmdd+wCiiu4OdflGh5bz17cT1+IVG16u2MbRpRNW7JA==}
+  '@sap/artifact-management-base@1.46.0':
+    resolution: {integrity: sha512-YHzlGz6j6E6iD7xr6LIOfmRvDdvEYXs+Fn7UkfCJXI8WjXtnupg2F+Ydp/9G3vSrSR0WUrGFxrGfHhhN4Il2Vg==}
     engines: {node: '>=14.14.0'}
 
-  '@sap/artifact-management-fioriplugin@1.44.1':
-    resolution: {integrity: sha512-d5GZ42PqHGCXtaFgd5rHxZtHjYbD6AE5JsQnyNMWzGwGZnK4cuZIF38NPE13Ok9VLt1+hkzX3c01iCtSz7i4sg==}
+  '@sap/artifact-management-fioriplugin@1.46.0':
+    resolution: {integrity: sha512-ITTxo7PBbNrSFp32P4V6NrrTvOx8FC5xUks4uCmLkJrd1cU+TCjBT2Be3yF/tNKWQFluOKLBD4DiSESSzRTOwA==}
 
-  '@sap/artifact-management-hanaplugin@1.44.1':
-    resolution: {integrity: sha512-VvVNztGT6+CtlMeURbm/Z0ihLEfuIlI0yyAjIgdusLOixeFD9vYTlN7Chhg4tkOiOfP0OJhCnsCb/eWw6HAD1A==}
+  '@sap/artifact-management-hanaplugin@1.46.0':
+    resolution: {integrity: sha512-RSxUYkXnvEKgsXocrq/DhVDPRLu1VK6A0ayTrZi8TqLPwNP1YTEIUmWYGQGM2bzzG/3SxjSoWIm29CW/fDT+9A==}
 
-  '@sap/artifact-management-mdkplugin@1.44.1':
-    resolution: {integrity: sha512-plJHL/NNedUQWZJNR7VMW9+0zvdqrHN9q3Di+CH7s5ELunkGii89NQKYLnY3POj9Q5ggQZbactkihpZLLf9OHg==}
+  '@sap/artifact-management-mdkplugin@1.46.0':
+    resolution: {integrity: sha512-6Vxe/iIQotrenp5dhnAcOLrzfoDAiO9uV6gDfeNQe7TyE1HzdX4efXOf8/ijZUF+y79QWwjjbj6DnPfB1BQUyw==}
 
-  '@sap/artifact-management-types@1.44.1':
-    resolution: {integrity: sha512-GSp9X1yB0z/S6YTGXgWAepQoVv14avHAFuGRLHD3oYah1V3BYnUmtD+4U0qkKs0W9lLY1GNlcZCUhj7kmQL5EQ==}
+  '@sap/artifact-management-types@1.46.0':
+    resolution: {integrity: sha512-dD3vNJLB3FYMWf6/v46MYfON5mO8c4qdXXYSp77QPFoAbMYmTjXnl9esnWknyl9GfF3jpn30Dyfsqh2SWTS5vw==}
 
-  '@sap/artifact-management@1.44.1':
-    resolution: {integrity: sha512-RXVeXgpt1vOi2RvTbkgu1R8CaR4UMN1pqcsOFyjd8ljIO30+i1IKtdRlL9ozUr1sfdAU21AODfaZD/9Zr35MQw==}
+  '@sap/artifact-management@1.46.0':
+    resolution: {integrity: sha512-qiA5xjib4y84vKBW6eH0nUbiHcq0dpSFcl+DPTCDOteKJRq+AraJp7eIUjtJpoUziG5x0COQcnAZDzG8ldG2tg==}
     hasBin: true
 
   '@sap/bas-sdk@3.11.4':
@@ -1084,9 +1117,6 @@ packages:
 
   '@types/validate-npm-package-name@3.0.3':
     resolution: {integrity: sha512-dLhCHEIjf9++/vHaHCo/ngJzGqGGbPh/f7HKwznEk3WFL64t/VKuRiVpyQH4afX93YkCV94I9M0Cx+DBLk1Dsg==}
-
-  '@types/vscode@1.52.0':
-    resolution: {integrity: sha512-Kt3bvWzAvvF/WH9YEcrCICDp0Z7aHhJGhLJ1BxeyNP6yRjonWqWnAIh35/pXAjswAnWOABrYlF7SwXR9+1nnLA==}
 
   '@types/vscode@1.75.0':
     resolution: {integrity: sha512-SAr0PoOhJS6FUq5LjNr8C/StBKALZwDVm3+U4pjF/3iYkt3GioJOPV/oB1Sf1l7lROe4TgrMyL5N1yaEgTWycw==}
@@ -2863,6 +2893,11 @@ packages:
     engines: {node: '>=4'}
     hasBin: true
 
+  jsesc@3.1.0:
+    resolution: {integrity: sha512-/sM3dO2FOzXjKQhJuo0Q173wf2KOo8t4I8vHy6lF9poUp7bKT0/NHE8fPX23PwfhnykfqnC2xRxOnVw5XuGIaA==}
+    engines: {node: '>=6'}
+    hasBin: true
+
   json-parse-better-errors@1.0.2:
     resolution: {integrity: sha512-mrqyZKfX5EhL7hvqcV6WG1yYjnjeuYDzDhhcAAUrq8Po85NBQBJP+ZDUT75qZQ98IkUoBqdkExkukOU7Ts2wrw==}
 
@@ -4274,6 +4309,9 @@ packages:
   vscode-uri@3.0.3:
     resolution: {integrity: sha512-EcswR2S8bpR7fD0YPeS7r2xXExrScVMxg4MedACaWHEtx9ftCF/qHG1xGkolzTPcEmjTavCQgbVzHUIdTMzFGA==}
 
+  vscode-uri@3.1.0:
+    resolution: {integrity: sha512-/BpdSx+yCQGnCvecbyXdxHDkuk55/G3xwnC0GqY4gmQ3j+A+g8kzzgB4Nk/SINjqn6+waqw3EgbVF2QKExkRxQ==}
+
   w3c-xmlserializer@5.0.0:
     resolution: {integrity: sha512-o8qghlI8NZHU1lLPrpi2+Uq7abh4GGPpYANlalzWxyWteJOCsr/P+oPBA49TOLu5FTZO4d3F9MnWJfiMo4BkmA==}
     engines: {node: '>=18'}
@@ -4571,6 +4609,12 @@ snapshots:
       '@babel/highlight': 7.23.4
       chalk: 2.4.2
 
+  '@babel/code-frame@7.27.1':
+    dependencies:
+      '@babel/helper-validator-identifier': 7.27.1
+      js-tokens: 4.0.0
+      picocolors: 1.1.1
+
   '@babel/compat-data@7.16.4': {}
 
   '@babel/core@7.16.0':
@@ -4599,6 +4643,14 @@ snapshots:
       '@jridgewell/gen-mapping': 0.3.5
       '@jridgewell/trace-mapping': 0.3.25
       jsesc: 2.5.2
+
+  '@babel/generator@7.27.5':
+    dependencies:
+      '@babel/parser': 7.27.5
+      '@babel/types': 7.27.6
+      '@jridgewell/gen-mapping': 0.3.5
+      '@jridgewell/trace-mapping': 0.3.25
+      jsesc: 3.1.0
 
   '@babel/helper-compilation-targets@7.16.3(@babel/core@7.16.0)':
     dependencies:
@@ -4663,7 +4715,11 @@ snapshots:
 
   '@babel/helper-string-parser@7.23.4': {}
 
+  '@babel/helper-string-parser@7.27.1': {}
+
   '@babel/helper-validator-identifier@7.22.20': {}
+
+  '@babel/helper-validator-identifier@7.27.1': {}
 
   '@babel/helper-validator-option@7.14.5': {}
 
@@ -4691,6 +4747,10 @@ snapshots:
     dependencies:
       '@babel/types': 7.23.6
 
+  '@babel/parser@7.27.5':
+    dependencies:
+      '@babel/types': 7.27.6
+
   '@babel/runtime@7.26.0':
     dependencies:
       regenerator-runtime: 0.14.1
@@ -4700,6 +4760,12 @@ snapshots:
       '@babel/code-frame': 7.23.5
       '@babel/parser': 7.23.6
       '@babel/types': 7.23.6
+
+  '@babel/template@7.27.2':
+    dependencies:
+      '@babel/code-frame': 7.27.1
+      '@babel/parser': 7.27.5
+      '@babel/types': 7.27.6
 
   '@babel/traverse@7.23.6':
     dependencies:
@@ -4716,11 +4782,28 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@babel/traverse@7.27.4':
+    dependencies:
+      '@babel/code-frame': 7.27.1
+      '@babel/generator': 7.27.5
+      '@babel/parser': 7.27.5
+      '@babel/template': 7.27.2
+      '@babel/types': 7.27.6
+      debug: 4.3.6(supports-color@8.1.1)
+      globals: 11.12.0
+    transitivePeerDependencies:
+      - supports-color
+
   '@babel/types@7.23.6':
     dependencies:
       '@babel/helper-string-parser': 7.23.4
       '@babel/helper-validator-identifier': 7.22.20
       to-fast-properties: 2.0.0
+
+  '@babel/types@7.27.6':
+    dependencies:
+      '@babel/helper-string-parser': 7.27.1
+      '@babel/helper-validator-identifier': 7.27.1
 
   '@changesets/apply-release-plan@7.0.7':
     dependencies:
@@ -5286,14 +5369,14 @@ snapshots:
 
   '@opentelemetry/semantic-conventions@1.30.0': {}
 
-  '@sap/artifact-management-base-types@1.44.1':
+  '@sap/artifact-management-base-types@1.46.0':
     dependencies:
       '@types/node': 14.14.6
-      '@types/vscode': 1.52.0
+      '@types/vscode': 1.75.0
       '@vscode-logging/types': 0.1.3
       vscode-languageserver-types: 3.17.5
 
-  '@sap/artifact-management-base@1.44.1':
+  '@sap/artifact-management-base@1.46.0':
     dependencies:
       ejs: 3.1.10
       fast-glob: 3.3.2
@@ -5301,18 +5384,19 @@ snapshots:
       js-yaml: 4.1.0
       lodash: 4.17.21
       vscode-languageserver-types: 3.17.5
+      vscode-uri: 3.1.0
       winston: 3.15.0
       winston-daily-rotate-file: 5.0.0(winston@3.15.0)
       winston-transport: 4.8.0
 
-  '@sap/artifact-management-fioriplugin@1.44.1':
+  '@sap/artifact-management-fioriplugin@1.46.0':
     dependencies:
-      '@sap/artifact-management-base': 1.44.1
+      '@sap/artifact-management-base': 1.46.0
       xml2js: 0.6.2
 
-  '@sap/artifact-management-hanaplugin@1.44.1(bufferutil@4.0.7)(utf-8-validate@5.0.10)':
+  '@sap/artifact-management-hanaplugin@1.46.0(bufferutil@4.0.7)(utf-8-validate@5.0.10)':
     dependencies:
-      '@sap/artifact-management-base': 1.44.1
+      '@sap/artifact-management-base': 1.46.0
       fast-glob: 3.3.2
       jsdom: 25.0.1(bufferutil@4.0.7)(utf-8-validate@5.0.10)
       xml2js: 0.6.2
@@ -5322,20 +5406,23 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@sap/artifact-management-mdkplugin@1.44.1':
+  '@sap/artifact-management-mdkplugin@1.46.0':
     dependencies:
-      '@sap/artifact-management-base': 1.44.1
+      '@sap/artifact-management-base': 1.46.0
 
-  '@sap/artifact-management-types@1.44.1':
+  '@sap/artifact-management-types@1.46.0':
     dependencies:
-      '@sap/artifact-management-base-types': 1.44.1
+      '@sap/artifact-management-base-types': 1.46.0
 
-  '@sap/artifact-management@1.44.1(bufferutil@4.0.7)(utf-8-validate@5.0.10)':
+  '@sap/artifact-management@1.46.0(bufferutil@4.0.7)(utf-8-validate@5.0.10)':
     dependencies:
-      '@sap/artifact-management-base': 1.44.1
-      '@sap/artifact-management-fioriplugin': 1.44.1
-      '@sap/artifact-management-hanaplugin': 1.44.1(bufferutil@4.0.7)(utf-8-validate@5.0.10)
-      '@sap/artifact-management-mdkplugin': 1.44.1
+      '@babel/parser': 7.27.5
+      '@babel/traverse': 7.27.4
+      '@babel/types': 7.27.6
+      '@sap/artifact-management-base': 1.46.0
+      '@sap/artifact-management-fioriplugin': 1.46.0
+      '@sap/artifact-management-hanaplugin': 1.46.0(bufferutil@4.0.7)(utf-8-validate@5.0.10)
+      '@sap/artifact-management-mdkplugin': 1.46.0
       ajv: 8.17.1
       chokidar: 3.6.0
       js-yaml: 4.1.0
@@ -5345,6 +5432,7 @@ snapshots:
       simple-git: 3.24.0
       uuid: 11.0.0-0
       vscode-languageserver-types: 3.17.5
+      vscode-uri: 3.1.0
       xml2js: 0.6.2
       yargs: 17.7.2
     transitivePeerDependencies:
@@ -5503,8 +5591,6 @@ snapshots:
   '@types/uuid@9.0.8': {}
 
   '@types/validate-npm-package-name@3.0.3': {}
-
-  '@types/vscode@1.52.0': {}
 
   '@types/vscode@1.75.0': {}
 
@@ -7472,6 +7558,8 @@ snapshots:
 
   jsesc@2.5.2: {}
 
+  jsesc@3.1.0: {}
+
   json-parse-better-errors@1.0.2: {}
 
   json-parse-even-better-errors@2.3.1: {}
@@ -8912,6 +9000,8 @@ snapshots:
   vscode-languageserver-types@3.17.5: {}
 
   vscode-uri@3.0.3: {}
+
+  vscode-uri@3.1.0: {}
 
   w3c-xmlserializer@5.0.0:
     dependencies:
