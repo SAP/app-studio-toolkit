@@ -201,8 +201,8 @@ importers:
   packages/app-studio-toolkit:
     dependencies:
       '@sap/artifact-management':
-        specifier: 1.46.0
-        version: 1.46.0(bufferutil@4.0.7)(utf-8-validate@5.0.10)
+        specifier: 1.47.0
+        version: 1.47.0(bufferutil@4.0.7)(utf-8-validate@5.0.10)
       '@sap/bas-sdk':
         specifier: 3.11.4
         version: 3.11.4(bufferutil@4.0.7)(utf-8-validate@5.0.10)
@@ -300,8 +300,8 @@ importers:
   packages/app-studio-toolkit-types:
     dependencies:
       '@sap/artifact-management-types':
-        specifier: 1.46.0
-        version: 1.46.0
+        specifier: 1.47.0
+        version: 1.47.0
       '@types/vscode':
         specifier: 1.75.0
         version: 1.75.0
@@ -528,10 +528,6 @@ packages:
 
   '@babel/helper-split-export-declaration@7.22.6':
     resolution: {integrity: sha512-AsUnxuLhRYsisFiaJwvp1QF+I3KjD5FOxut14q/GzovUe6orHLesW2C7d754kRm53h5gqrz6sFl6sxc4BVtE/g==}
-    engines: {node: '>=6.9.0'}
-
-  '@babel/helper-string-parser@7.23.4':
-    resolution: {integrity: sha512-803gmbQdqwdf4olxrX4AJyFBV/RTr3rSmOj0rKwesmzlfhYNDEs+/iOcznzpNWlJlIlTJC2QfPFcHB6DlzdVLQ==}
     engines: {node: '>=6.9.0'}
 
   '@babel/helper-string-parser@7.27.1':
@@ -960,27 +956,27 @@ packages:
     resolution: {integrity: sha512-4VlGgo32k2EQ2wcCY3vEU28A0O13aOtHz3Xt2/2U5FAh9EfhD6t6DqL5Z6yAnRCntbTFDU4YfbpyzSlHNWycPw==}
     engines: {node: '>=14'}
 
-  '@sap/artifact-management-base-types@1.46.0':
-    resolution: {integrity: sha512-+Fn6IQEraMuhsj0DR2Y3UX5lH3f97S+4QAcGKYPgvbFv+KypO1AgDisxEBAAgLRv/FoNqIR5DD190CaFwyH/9Q==}
+  '@sap/artifact-management-base-types@1.47.0':
+    resolution: {integrity: sha512-eG2ElBl+GNOx+9cNGOAfC50OyCWYUzCpNdItWEWNSltI+EDyEp8BW6TIRzBRSjWAzosSjOIacRAP0wY4EWZwqQ==}
 
-  '@sap/artifact-management-base@1.46.0':
-    resolution: {integrity: sha512-YHzlGz6j6E6iD7xr6LIOfmRvDdvEYXs+Fn7UkfCJXI8WjXtnupg2F+Ydp/9G3vSrSR0WUrGFxrGfHhhN4Il2Vg==}
+  '@sap/artifact-management-base@1.47.0':
+    resolution: {integrity: sha512-mTXQsVDYq530n3U6S4PhziUBpKa1LFSxAXY/sNlA0RThXGRh8BCTEPMucy5y58+vSGuER9Iu9jenqBgazLOvvQ==}
     engines: {node: '>=14.14.0'}
 
-  '@sap/artifact-management-fioriplugin@1.46.0':
-    resolution: {integrity: sha512-ITTxo7PBbNrSFp32P4V6NrrTvOx8FC5xUks4uCmLkJrd1cU+TCjBT2Be3yF/tNKWQFluOKLBD4DiSESSzRTOwA==}
+  '@sap/artifact-management-fioriplugin@1.47.0':
+    resolution: {integrity: sha512-K/EISb/B890qMjNM97rADyALPF686YYUKkNeBu75RcvNXLWbPz4QAz5jfEcfa9j2Mx+a1m+kXGWl8+x/MamBjw==}
 
-  '@sap/artifact-management-hanaplugin@1.46.0':
-    resolution: {integrity: sha512-RSxUYkXnvEKgsXocrq/DhVDPRLu1VK6A0ayTrZi8TqLPwNP1YTEIUmWYGQGM2bzzG/3SxjSoWIm29CW/fDT+9A==}
+  '@sap/artifact-management-hanaplugin@1.47.0':
+    resolution: {integrity: sha512-9mivZsiNcU//GT9dYu65a9Ks6RkPLDa12pG7TtF5GrUMfNgmpCgB7KPn6McfdFNCnw7EUl1y2diD3zZtWmkB2w==}
 
-  '@sap/artifact-management-mdkplugin@1.46.0':
-    resolution: {integrity: sha512-6Vxe/iIQotrenp5dhnAcOLrzfoDAiO9uV6gDfeNQe7TyE1HzdX4efXOf8/ijZUF+y79QWwjjbj6DnPfB1BQUyw==}
+  '@sap/artifact-management-mdkplugin@1.47.0':
+    resolution: {integrity: sha512-z2xqOPcCrb98pz3qA9sI5EP2I3X16AQBuNU2kguDoNRFj9OcGm0Ww6/2FYO42HmGyiUv1R83xAHtvH6tVJglTQ==}
 
-  '@sap/artifact-management-types@1.46.0':
-    resolution: {integrity: sha512-dD3vNJLB3FYMWf6/v46MYfON5mO8c4qdXXYSp77QPFoAbMYmTjXnl9esnWknyl9GfF3jpn30Dyfsqh2SWTS5vw==}
+  '@sap/artifact-management-types@1.47.0':
+    resolution: {integrity: sha512-bQLC6MAThsW+8UnB2+YLERRhzowoUSD184OJ6gpk1auIzoNPPwXRmyhKJ5IgHVTCxATIbylBZtcdSXEE/Kl3Gw==}
 
-  '@sap/artifact-management@1.46.0':
-    resolution: {integrity: sha512-qiA5xjib4y84vKBW6eH0nUbiHcq0dpSFcl+DPTCDOteKJRq+AraJp7eIUjtJpoUziG5x0COQcnAZDzG8ldG2tg==}
+  '@sap/artifact-management@1.47.0':
+    resolution: {integrity: sha512-GR0pVkjrJNabU4HNbkr8lYQ25ErfmfHOqzO8ViNqGUjyOEoNyGGzj1tclJpgGgdGXmTbQBIErHAgJZcUeSMkQQ==}
     hasBin: true
 
   '@sap/bas-sdk@3.11.4':
@@ -4639,7 +4635,7 @@ snapshots:
 
   '@babel/generator@7.23.6':
     dependencies:
-      '@babel/types': 7.23.6
+      '@babel/types': 7.27.6
       '@jridgewell/gen-mapping': 0.3.5
       '@jridgewell/trace-mapping': 0.3.25
       jsesc: 2.5.2
@@ -4664,20 +4660,20 @@ snapshots:
 
   '@babel/helper-function-name@7.23.0':
     dependencies:
-      '@babel/template': 7.22.15
-      '@babel/types': 7.23.6
+      '@babel/template': 7.27.2
+      '@babel/types': 7.27.6
 
   '@babel/helper-hoist-variables@7.22.5':
     dependencies:
-      '@babel/types': 7.23.6
+      '@babel/types': 7.27.6
 
   '@babel/helper-member-expression-to-functions@7.16.0':
     dependencies:
-      '@babel/types': 7.23.6
+      '@babel/types': 7.27.6
 
   '@babel/helper-module-imports@7.16.0':
     dependencies:
-      '@babel/types': 7.23.6
+      '@babel/types': 7.27.6
 
   '@babel/helper-module-transforms@7.16.0':
     dependencies:
@@ -4685,35 +4681,33 @@ snapshots:
       '@babel/helper-replace-supers': 7.16.0
       '@babel/helper-simple-access': 7.16.0
       '@babel/helper-split-export-declaration': 7.22.6
-      '@babel/helper-validator-identifier': 7.22.20
-      '@babel/template': 7.22.15
-      '@babel/traverse': 7.23.6
-      '@babel/types': 7.23.6
+      '@babel/helper-validator-identifier': 7.27.1
+      '@babel/template': 7.27.2
+      '@babel/traverse': 7.27.4
+      '@babel/types': 7.27.6
     transitivePeerDependencies:
       - supports-color
 
   '@babel/helper-optimise-call-expression@7.16.0':
     dependencies:
-      '@babel/types': 7.23.6
+      '@babel/types': 7.27.6
 
   '@babel/helper-replace-supers@7.16.0':
     dependencies:
       '@babel/helper-member-expression-to-functions': 7.16.0
       '@babel/helper-optimise-call-expression': 7.16.0
-      '@babel/traverse': 7.23.6
-      '@babel/types': 7.23.6
+      '@babel/traverse': 7.27.4
+      '@babel/types': 7.27.6
     transitivePeerDependencies:
       - supports-color
 
   '@babel/helper-simple-access@7.16.0':
     dependencies:
-      '@babel/types': 7.23.6
+      '@babel/types': 7.27.6
 
   '@babel/helper-split-export-declaration@7.22.6':
     dependencies:
-      '@babel/types': 7.23.6
-
-  '@babel/helper-string-parser@7.23.4': {}
+      '@babel/types': 7.27.6
 
   '@babel/helper-string-parser@7.27.1': {}
 
@@ -4725,9 +4719,9 @@ snapshots:
 
   '@babel/helpers@7.16.3':
     dependencies:
-      '@babel/template': 7.22.15
-      '@babel/traverse': 7.23.6
-      '@babel/types': 7.23.6
+      '@babel/template': 7.27.2
+      '@babel/traverse': 7.27.4
+      '@babel/types': 7.27.6
     transitivePeerDependencies:
       - supports-color
 
@@ -4739,13 +4733,13 @@ snapshots:
 
   '@babel/highlight@7.23.4':
     dependencies:
-      '@babel/helper-validator-identifier': 7.22.20
+      '@babel/helper-validator-identifier': 7.27.1
       chalk: 2.4.2
       js-tokens: 4.0.0
 
   '@babel/parser@7.23.6':
     dependencies:
-      '@babel/types': 7.23.6
+      '@babel/types': 7.27.6
 
   '@babel/parser@7.27.5':
     dependencies:
@@ -4757,9 +4751,9 @@ snapshots:
 
   '@babel/template@7.22.15':
     dependencies:
-      '@babel/code-frame': 7.23.5
-      '@babel/parser': 7.23.6
-      '@babel/types': 7.23.6
+      '@babel/code-frame': 7.27.1
+      '@babel/parser': 7.27.5
+      '@babel/types': 7.27.6
 
   '@babel/template@7.27.2':
     dependencies:
@@ -4769,14 +4763,14 @@ snapshots:
 
   '@babel/traverse@7.23.6':
     dependencies:
-      '@babel/code-frame': 7.23.5
-      '@babel/generator': 7.23.6
+      '@babel/code-frame': 7.27.1
+      '@babel/generator': 7.27.5
       '@babel/helper-environment-visitor': 7.22.20
       '@babel/helper-function-name': 7.23.0
       '@babel/helper-hoist-variables': 7.22.5
       '@babel/helper-split-export-declaration': 7.22.6
-      '@babel/parser': 7.23.6
-      '@babel/types': 7.23.6
+      '@babel/parser': 7.27.5
+      '@babel/types': 7.27.6
       debug: 4.3.6(supports-color@8.1.1)
       globals: 11.12.0
     transitivePeerDependencies:
@@ -4796,8 +4790,8 @@ snapshots:
 
   '@babel/types@7.23.6':
     dependencies:
-      '@babel/helper-string-parser': 7.23.4
-      '@babel/helper-validator-identifier': 7.22.20
+      '@babel/helper-string-parser': 7.27.1
+      '@babel/helper-validator-identifier': 7.27.1
       to-fast-properties: 2.0.0
 
   '@babel/types@7.27.6':
@@ -5369,14 +5363,14 @@ snapshots:
 
   '@opentelemetry/semantic-conventions@1.30.0': {}
 
-  '@sap/artifact-management-base-types@1.46.0':
+  '@sap/artifact-management-base-types@1.47.0':
     dependencies:
       '@types/node': 14.14.6
       '@types/vscode': 1.75.0
       '@vscode-logging/types': 0.1.3
       vscode-languageserver-types: 3.17.5
 
-  '@sap/artifact-management-base@1.46.0':
+  '@sap/artifact-management-base@1.47.0':
     dependencies:
       ejs: 3.1.10
       fast-glob: 3.3.2
@@ -5389,14 +5383,14 @@ snapshots:
       winston-daily-rotate-file: 5.0.0(winston@3.15.0)
       winston-transport: 4.8.0
 
-  '@sap/artifact-management-fioriplugin@1.46.0':
+  '@sap/artifact-management-fioriplugin@1.47.0':
     dependencies:
-      '@sap/artifact-management-base': 1.46.0
+      '@sap/artifact-management-base': 1.47.0
       xml2js: 0.6.2
 
-  '@sap/artifact-management-hanaplugin@1.46.0(bufferutil@4.0.7)(utf-8-validate@5.0.10)':
+  '@sap/artifact-management-hanaplugin@1.47.0(bufferutil@4.0.7)(utf-8-validate@5.0.10)':
     dependencies:
-      '@sap/artifact-management-base': 1.46.0
+      '@sap/artifact-management-base': 1.47.0
       fast-glob: 3.3.2
       jsdom: 25.0.1(bufferutil@4.0.7)(utf-8-validate@5.0.10)
       xml2js: 0.6.2
@@ -5406,23 +5400,23 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@sap/artifact-management-mdkplugin@1.46.0':
+  '@sap/artifact-management-mdkplugin@1.47.0':
     dependencies:
-      '@sap/artifact-management-base': 1.46.0
+      '@sap/artifact-management-base': 1.47.0
 
-  '@sap/artifact-management-types@1.46.0':
+  '@sap/artifact-management-types@1.47.0':
     dependencies:
-      '@sap/artifact-management-base-types': 1.46.0
+      '@sap/artifact-management-base-types': 1.47.0
 
-  '@sap/artifact-management@1.46.0(bufferutil@4.0.7)(utf-8-validate@5.0.10)':
+  '@sap/artifact-management@1.47.0(bufferutil@4.0.7)(utf-8-validate@5.0.10)':
     dependencies:
       '@babel/parser': 7.27.5
       '@babel/traverse': 7.27.4
       '@babel/types': 7.27.6
-      '@sap/artifact-management-base': 1.46.0
-      '@sap/artifact-management-fioriplugin': 1.46.0
-      '@sap/artifact-management-hanaplugin': 1.46.0(bufferutil@4.0.7)(utf-8-validate@5.0.10)
-      '@sap/artifact-management-mdkplugin': 1.46.0
+      '@sap/artifact-management-base': 1.47.0
+      '@sap/artifact-management-fioriplugin': 1.47.0
+      '@sap/artifact-management-hanaplugin': 1.47.0(bufferutil@4.0.7)(utf-8-validate@5.0.10)
+      '@sap/artifact-management-mdkplugin': 1.47.0
       ajv: 8.17.1
       chokidar: 3.6.0
       js-yaml: 4.1.0
