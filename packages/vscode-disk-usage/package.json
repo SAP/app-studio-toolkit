@@ -1,0 +1,96 @@
+{
+  "name": "vscode-disk-usage",
+  "displayName": "BAS Disk Usage Logger",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "vscode": "^1.76.0"
+  },
+  "icon": "icon.png",
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "BAS"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/app-studio-toolkit",
+    "directory": "packages/vscode-disk-usage"
+  },
+  "license": "Apache-2.0",
+  "author": "SAP SE",
+  "publisher": "SAPSE",
+  "main": "./dist/extension",
+  "scripts": {
+    "ci": "npm-run-all clean compile bundle package",
+    "clean": "rimraf ./dist *.vsix LICENSE",
+    "compile": "tsc",
+    "bundle": "esbuild ./dist/src/extension.js --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node",
+    "package": "cp ../../LICENSE . && vsce package --allow-star-activation",
+    "package-temp": "vsce --help",
+    "watch": "tsc -watch -p ./"
+  },
+  "activationEvents": [
+    "*"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "disk-usage.log-disk-usage",
+        "title": "Log Disk Usage Report"
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "VSCodeDiskUsage",
+      "properties": {
+        "vscode-disk-usage.logging.level": {
+          "type": "string",
+          "enum": [
+            "off",
+            "fatal",
+            "error",
+            "warn",
+            "info",
+            "debug",
+            "trace"
+          ],
+          "default": "error",
+          "description": "The verbosity of logging according to the following order: trace > debug > info > warn > error > fatal > off.",
+          "scope": "resource"
+        },
+        "vscode-disk-usage.report.disable": {
+          "type": "boolean",
+          "default": false,
+          "description": "Prevent disk usage report from being run",
+          "scope": "window"
+        },
+        "vscode-disk-usage.report.initialDelay": {
+          "type": "number",
+          "default": 30,
+          "description": "Minimum Number of minutes after dev-space startup before running the disk usage report",
+          "scope": "window"
+        },
+        "vscode-disk-usage.report.DaysBetweenRun": {
+          "type": "number",
+          "default": 7,
+          "description": "Wait at least N days must pass before the disk usage report is run again",
+          "scope": "window"
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "@vscode-logging/wrapper": "2.0.0"
+  },
+  "devDependencies": {
+    "@vscode/vsce": "3.6.0",
+    "@vscode-logging/types": "2.0.0",
+    "esbuild": "0.25.5",
+    "shx": "0.4.0"
+  },
+  "vsce": {
+    "dependencies": false
+  }
+}
