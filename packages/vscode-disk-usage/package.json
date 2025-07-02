@@ -21,7 +21,7 @@
   "license": "Apache-2.0",
   "author": "SAP SE",
   "publisher": "SAPSE",
-  "main": "./dist/extension",
+  "main": "./dist/extension.js",
   "scripts": {
     "ci": "npm-run-all clean compile bundle package",
     "clean": "rimraf ./dist *.vsix LICENSE",
@@ -82,9 +82,11 @@
     }
   },
   "dependencies": {
-    "@vscode-logging/wrapper": "2.0.0"
+    "@vscode-logging/wrapper": "2.0.0",
+    "fs-extra": "11.3.0"
   },
   "devDependencies": {
+    "@types/fs-extra": "11.0.4",
     "@vscode/vsce": "3.6.0",
     "@vscode-logging/types": "2.0.0",
     "esbuild": "0.25.5",
