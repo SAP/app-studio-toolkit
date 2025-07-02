@@ -1,80 +1,48 @@
-import type { Uri } from "vscode";
-import { resolve } from "node:path";
-import { pathExists, readJson, writeJson, remove } from "fs-extra";
+import type { Memento } from "vscode";
 
 const internal = {
-  updateDiskUsageReportTimestamp,
+  randomPreviousReportTime,
 };
 
 export { isTimeToCreateNewReport, internal };
 
-// TODO: modify to accept number args
+const DISK_USAGE_TIMESTAMP = "bas-disk-usage-report-timestamp";
 async function isTimeToCreateNewReport(opts: {
-  globalStorageUri: Uri;
+  globalState: Memento;
   daysBetweenRuns: number;
 }): Promise<boolean> {
-  const extGlobalStoragePath = opts.globalStorageUri.fsPath;
-  const diskUsageTimeStampPath = resolve(
-    extGlobalStoragePath,
-    "disk-usage-report-timestamp.json"
-  );
-
   const nowInMs = Date.now();
-  if (!(await pathExists(diskUsageTimeStampPath))) {
-    await createInitialDiskUsageReportTimestamp({
+
+  const lateReportTime = opts.globalState.get(DISK_USAGE_TIMESTAMP);
+  if (lateReportTime === undefined || !Number.isInteger(lateReportTime)) {
+    // using a random previous report time enables statistic **rate limiting**
+    // to avoid every new dev-space from quickly creating a new report.
+    const madeUpPreviousReportTime = randomPreviousReportTime({
       nowInMs,
-      diskUsageTimeStampPath,
       daysBetweenRuns: opts.daysBetweenRuns,
     });
+    await opts.globalState.update(
+      DISK_USAGE_TIMESTAMP,
+      madeUpPreviousReportTime
+    );
   }
 
-  try {
-    const lastReportMsTime = (
-      (await readJson(diskUsageTimeStampPath)) as unknown as any
-    ).lastReportMsTime;
-    const oneWeekMs = 7 * 24 * 60 * 60 * 1000; // One week in milliseconds
-    const atLeastOneWeekPassed = nowInMs - lastReportMsTime >= oneWeekMs;
-    return atLeastOneWeekPassed;
-  } catch (error) {
-    // possible issue with reading the timestamp file
-    try {
-      await remove(diskUsageTimeStampPath);
-    } catch (removeError) {
-      // TODO: logging
-    }
-  }
-
-  await updateDiskUsageReportTimestamp(diskUsageTimeStampPath, nowInMs);
-  return true;
-}
-
-async function updateDiskUsageReportTimestamp(
-  diskUsageTimeStampPath: string,
-  lastReportMsTime: number
-): Promise<void> {
-  // TODO: verify this overwrites the file
-  await writeJson(diskUsageTimeStampPath, { lastReportMsTime });
+  const lastReportMsTime = opts.globalState.get(DISK_USAGE_TIMESTAMP) as number;
+  const oneWeekMs = 7 * 24 * 60 * 60 * 1000;
+  const atLeastOneWeekPassed = nowInMs - lastReportMsTime >= oneWeekMs;
+  return atLeastOneWeekPassed;
 }
 
 /**
- * first execution, no timestamp file exists
  * create a **random** made-up timestamp as if a previous report
  * happened sometime in between `now()` and `now() - daysBetweenRuns`
  */
-async function createInitialDiskUsageReportTimestamp(opts: {
+function randomPreviousReportTime(opts: {
   nowInMs: number;
-  diskUsageTimeStampPath: string;
   daysBetweenRuns: number;
-}): Promise<void> {
-  try {
-    const periodInMs = opts.daysBetweenRuns * 24 * 60 * 60 * 1000; // Convert days to milliseconds
-    const randomOffset = Math.floor(Math.random() * periodInMs);
-    const madeUpPreviousReportTime = opts.nowInMs - randomOffset;
-    await updateDiskUsageReportTimestamp(
-      opts.diskUsageTimeStampPath,
-      madeUpPreviousReportTime
-    );
-  } catch (err) {
-    //   TODO: logging
-  }
+}): number {
+  const periodInMs = opts.daysBetweenRuns * 24 * 60 * 60 * 1000; // Convert days to milliseconds
+  const randomOffset = Math.floor(Math.random() * periodInMs);
+  const madeUpPreviousReportTime = opts.nowInMs - randomOffset;
+  return madeUpPreviousReportTime;
 }

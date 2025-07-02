@@ -2,7 +2,13 @@ import { commands, ExtensionContext, window } from "vscode";
 import { getLogger, initLogger } from "./logger/logger";
 
 export function activate(context: ExtensionContext): void {
-  initLogger(context);
+  initLogger({
+    extensionName: context.extension.id,
+    logUri: context.logUri,
+    subscriptions: context.subscriptions,
+    createOutputChannel: window.createOutputChannel,
+  });
+
   getLogger().info(`Extension ${context.extension.id} activated`);
 
   context.subscriptions.push(

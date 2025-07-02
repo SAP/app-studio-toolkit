@@ -1,10 +1,9 @@
-import { ExtensionContext, window } from "vscode";
+import type { ExtensionContext, window } from "vscode";
 import { IVSCodeExtLogger } from "@vscode-logging/types";
 import { configureLogger, NOOP_LOGGER } from "@vscode-logging/wrapper";
 
 export { getLogger, initLogger };
 
-// TODO: can we use: "context.extension.id" instead of hardcoding the extension name?
 const LOGGING_LEVEL_CONFIG_PROP = "vscode-disk-usage.logging.level";
 // TODO: define this configuration property
 const SOURCE_TRACKING_CONFIG_PROP =
@@ -20,20 +19,24 @@ function getLogger(): IVSCodeExtLogger {
   return logger;
 }
 
-function initLogger(context: ExtensionContext): void {
-  const extensionName = context.extension.id;
+function initLogger(opts: {
+  extensionName: string;
+  subscriptions: ExtensionContext["subscriptions"];
+  logUri: ExtensionContext["logUri"];
+  createOutputChannel: typeof window.createOutputChannel;
+}): void {
   try {
     logger = configureLogger({
-      extName: extensionName,
-      logPath: context.logUri.fsPath,
-      logOutputChannel: window.createOutputChannel(extensionName),
+      extName: opts.extensionName,
+      logPath: opts.logUri.fsPath,
+      logOutputChannel: opts.createOutputChannel(opts.extensionName),
       loggingLevelProp: LOGGING_LEVEL_CONFIG_PROP,
       sourceLocationProp: SOURCE_TRACKING_CONFIG_PROP,
-      subscriptions: context.subscriptions,
+      subscriptions: opts.subscriptions,
     });
   } catch (error) /* istanbul ignore next -- this is complex to test and will give little value */ {
     console.error(
-      `Logs won't be available for the ${extensionName} extension: "`,
+      `Logs won't be available for the ${opts.extensionName} extension: "`,
       error
     );
   }
