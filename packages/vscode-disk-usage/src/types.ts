@@ -9,6 +9,7 @@ export type DiskUsageReport = {
   allNodeModules: number;
   allNoneHidden: number;
   allJavaRedHat: number;
+  // TODO: add home folder (whole)
   KnownTechnicalFolders: KnownTechnicalFoldersReport;
 };
 

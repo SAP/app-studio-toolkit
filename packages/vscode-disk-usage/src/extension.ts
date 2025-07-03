@@ -1,8 +1,7 @@
 import { commands, ExtensionContext, window, workspace } from "vscode";
 import { getLogger, initLogger } from "./logger/logger";
-import { hasPreviousReportExpired } from "./helper-logic/has-previous-report-expired";
 import { ExtConfig } from "./types";
-import { main } from "./flow/main";
+import { main } from "./flows/main";
 
 export { activate };
 
@@ -21,9 +20,9 @@ async function activate(context: ExtensionContext): Promise<void> {
     globalState: context.globalState,
   });
 
-  // TODO: delete temp code
   context.subscriptions.push(
     commands.registerCommand("disk-usage.log-disk-usage", async () => {
+      getLogger().info(`manual activation of disk-usage log/report command`);
       await window.showInformationMessage("hallo world");
     })
   );

@@ -10,11 +10,12 @@ export { main };
 async function main(
   opts: ExtConfig & {
     globalState: Memento;
+    force: boolean;
   }
 ): Promise<void> {
   if (opts.disable) {
     getLogger().info(
-      "DiskUsage Report Extension is disabled via workspace configuration setting"
+      "Automatic diskUsage Report is disabled via workspace configuration setting"
     );
   }
 
@@ -23,8 +24,11 @@ async function main(
     globalState: opts.globalState,
   });
 
-  if (shouldCreateNewReport) {
+  if (shouldCreateNewReport || opts.force) {
     const diskUsageReport = await runReports();
     logToContainer(diskUsageReport);
+    getLogger().debug(
+      `DiskUsage Report created: ${JSON.stringify(diskUsageReport, null, 2)}`
+    );
   }
 }
