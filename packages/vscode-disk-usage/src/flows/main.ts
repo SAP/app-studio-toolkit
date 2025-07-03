@@ -10,7 +10,7 @@ export { main };
 async function main(
   opts: ExtConfig & {
     globalState: Memento;
-    force: boolean;
+    force?: boolean;
   }
 ): Promise<void> {
   if (opts.disable) {
