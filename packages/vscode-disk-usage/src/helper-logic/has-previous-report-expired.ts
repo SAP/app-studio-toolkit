@@ -4,10 +4,10 @@ const internal = {
   randomPreviousReportTime,
 };
 
-export { isTimeToCreateNewReport, internal };
+export { hasPreviousReportExpired, internal };
 
 const DISK_USAGE_TIMESTAMP = "bas-disk-usage-report-timestamp";
-async function isTimeToCreateNewReport(opts: {
+async function hasPreviousReportExpired(opts: {
   globalState: Memento;
   daysBetweenRuns: number;
 }): Promise<boolean> {

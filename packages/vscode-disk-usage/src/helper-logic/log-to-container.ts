@@ -1,10 +1,10 @@
 import { execSync } from "node:child_process";
 import { WS_ID } from "./constants";
+import { DiskUsageReport } from "../types";
 
 export { logToContainer };
 
-// TODO: define report structure
-function logToContainer(report: any): void {
+function logToContainer(report: DiskUsageReport): void {
   const logEntry = {
     application: "basdiskusage",
     wsid: WS_ID,

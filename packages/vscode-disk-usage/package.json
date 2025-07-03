@@ -72,7 +72,7 @@
           "description": "Minimum Number of minutes after dev-space startup before running the disk usage report",
           "scope": "window"
         },
-        "vscode-disk-usage.report.DaysBetweenRun": {
+        "vscode-disk-usage.report.daysBetweenRuns": {
           "type": "number",
           "default": 7,
           "description": "Wait at least N days must pass before the disk usage report is run again",

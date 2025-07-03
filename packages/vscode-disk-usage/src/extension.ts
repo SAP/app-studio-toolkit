@@ -1,7 +1,12 @@
-import { commands, ExtensionContext, window } from "vscode";
+import { commands, ExtensionContext, window, workspace } from "vscode";
 import { getLogger, initLogger } from "./logger/logger";
+import { hasPreviousReportExpired } from "./helper-logic/has-previous-report-expired";
+import { ExtConfig } from "./types";
+import { main } from "./flow/main";
 
-export function activate(context: ExtensionContext): void {
+export { activate };
+
+async function activate(context: ExtensionContext): Promise<void> {
   initLogger({
     extensionName: context.extension.id,
     logUri: context.logUri,
@@ -10,10 +15,33 @@ export function activate(context: ExtensionContext): void {
   });
 
   getLogger().info(`Extension ${context.extension.id} activated`);
+  const extConfig = readExtConfig();
+  await main({
+    ...extConfig,
+    globalState: context.globalState,
+  });
 
+  // TODO: delete temp code
   context.subscriptions.push(
     commands.registerCommand("disk-usage.log-disk-usage", async () => {
       await window.showInformationMessage("hallo world");
     })
   );
+}
+
+function readExtConfig(): ExtConfig {
+  const wsConfig = workspace.getConfiguration("vscode-disk-usage");
+  const disable = wsConfig.get("disable", false);
+  const initialDelay = wsConfig.get("initialDelay", 30);
+  const daysBetweenRuns = wsConfig.get("daysBetweenRuns", 7);
+
+  const extConfig = {
+    disable,
+    initialDelay,
+    daysBetweenRuns,
+  };
+
+  getLogger().debug(`Extension config: ${JSON.stringify(extConfig, null, 2)}`);
+
+  return extConfig;
 }
