@@ -1,4 +1,5 @@
-import { commands, ExtensionContext, window, workspace } from "vscode";
+import { commands, ExtensionContext, Memento, window, workspace } from "vscode";
+import { isFeatureEnabled } from "@sap-devx/feature-toggle-node";
 import { getLogger, initLogger } from "./logger/logger";
 import { ExtConfig } from "./types";
 import { main } from "./flows/main";
@@ -14,18 +15,30 @@ async function activate(context: ExtensionContext): Promise<void> {
   });
 
   getLogger().info(`Extension ${context.extension.id} activated`);
-  const extConfig = readExtConfig();
-  await main({
-    ...extConfig,
-    globalState: context.globalState,
-  });
+
+  const isDiskUsageFeatureEnabled = await isFeatureEnabled(
+    "disk-usage",
+    "automatedReport"
+  );
+  // TODO: remove condition for testing before FT is released.
+  if (isDiskUsageFeatureEnabled) {
+    await runReport(context.globalState);
+  }
 
   context.subscriptions.push(
     commands.registerCommand("disk-usage.log-disk-usage", async () => {
       getLogger().info(`manual activation of disk-usage log/report command`);
-      await window.showInformationMessage("hallo world");
+      await runReport(context.globalState);
     })
   );
+}
+
+async function runReport(globalState: Memento): Promise<void> {
+  const extConfig = readExtConfig();
+  await main({
+    ...extConfig,
+    globalState,
+  });
 }
 
 function readExtConfig(): ExtConfig {

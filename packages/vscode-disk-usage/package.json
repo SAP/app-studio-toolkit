@@ -82,7 +82,8 @@
     }
   },
   "dependencies": {
-    "@vscode-logging/wrapper": "2.0.0"
+    "@vscode-logging/wrapper": "2.0.0",
+    "@sap-devx/feature-toggle-node": "2.0.3"
   },
   "devDependencies": {
     "@vscode/vsce": "3.6.0",

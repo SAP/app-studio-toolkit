@@ -425,6 +425,9 @@ importers:
 
   packages/vscode-disk-usage:
     dependencies:
+      '@sap-devx/feature-toggle-node':
+        specifier: 2.0.3
+        version: 2.0.3
       '@vscode-logging/wrapper':
         specifier: 2.0.0
         version: 2.0.0
@@ -1166,6 +1169,10 @@ packages:
   '@opentelemetry/semantic-conventions@1.30.0':
     resolution: {integrity: sha512-4VlGgo32k2EQ2wcCY3vEU28A0O13aOtHz3Xt2/2U5FAh9EfhD6t6DqL5Z6yAnRCntbTFDU4YfbpyzSlHNWycPw==}
     engines: {node: '>=14'}
+
+  '@sap-devx/feature-toggle-node@2.0.3':
+    resolution: {integrity: sha512-OxdJigAFybeZH9Uxm14EXp0NAb+pWzU4U0CvttJgmrRx+NL1loL0/o8gb/Vqk8wHAtNTqXjhz7GvLZ4tfDjUrA==}
+    engines: {node: '>=14.21.2'}
 
   '@sap/artifact-management-base-types@1.47.0':
     resolution: {integrity: sha512-eG2ElBl+GNOx+9cNGOAfC50OyCWYUzCpNdItWEWNSltI+EDyEp8BW6TIRzBRSjWAzosSjOIacRAP0wY4EWZwqQ==}
@@ -1994,6 +2001,10 @@ packages:
   clone-deep@4.0.1:
     resolution: {integrity: sha512-neHB9xuzh/wk0dIHweyAXv2aPGZIVk3pLMe+/RNzINf17fe0OG96QroktYAUm7SM1PBnzTabaLboqqxDyMU+SQ==}
     engines: {node: '>=6'}
+
+  clone@2.1.2:
+    resolution: {integrity: sha512-3Pe/CF1Nn94hyhIYpjtiLhdCoEoz0DqQ+988E9gmeEdQZlojxnOb74wctFyuwWQHzqyf9X7C7MG8juUpqBJT8w==}
+    engines: {node: '>=0.8'}
 
   cls-hooked@4.2.2:
     resolution: {integrity: sha512-J4Xj5f5wq/4jAvcdgoGsL3G103BtWpZrMo8NEinRltN+xpTZdI+M38pyQqhuFU/P792xkMFvnKSf+Lm81U1bxw==}
@@ -3810,6 +3821,10 @@ packages:
 
   node-addon-api@4.3.0:
     resolution: {integrity: sha512-73sE9+3UaLYYFmDsFZnqCInzPyh3MqIwZO9cw58yIqAZhONrrabrYyYe3TuIqtIiOuTXVhsGau8hcrhhwSsDIQ==}
+
+  node-cache@5.1.2:
+    resolution: {integrity: sha512-t1QzWwnk4sjLWaQAS8CHgOJ+RAfmHpxFWmc36IWTiWHQfs0w5JDMBS1b1ZxQteo0vVVuWJvIUKHDkkeK7vIGCg==}
+    engines: {node: '>= 8.0.0'}
 
   node-gyp-build@4.6.0:
     resolution: {integrity: sha512-NTZVKn9IylLwUzaKjkas1e4u2DLNcV4rdYagA4PWdPwW87Bi7z+BznyKSRwS/761tV/lzCGXplWsiaMjLqP2zQ==}
@@ -6266,6 +6281,10 @@ snapshots:
 
   '@opentelemetry/semantic-conventions@1.30.0': {}
 
+  '@sap-devx/feature-toggle-node@2.0.3':
+    dependencies:
+      node-cache: 5.1.2
+
   '@sap/artifact-management-base-types@1.47.0':
     dependencies:
       '@types/node': 14.14.6
@@ -7341,6 +7360,8 @@ snapshots:
       is-plain-object: 2.0.4
       kind-of: 6.0.3
       shallow-clone: 3.0.1
+
+  clone@2.1.2: {}
 
   cls-hooked@4.2.2:
     dependencies:
@@ -9248,6 +9269,10 @@ snapshots:
 
   node-addon-api@4.3.0:
     optional: true
+
+  node-cache@5.1.2:
+    dependencies:
+      clone: 2.1.2
 
   node-gyp-build@4.6.0: {}
 
