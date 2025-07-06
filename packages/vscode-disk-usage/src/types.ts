@@ -17,7 +17,7 @@ export type DiskUsageReport = {
   // - note `-580716d0` is variable
   allJavaRedHat: number;
   // TODO: add home folder (whole)
-  KnownTechnicalFolders: KnownTechnicalFoldersReport;
+  knownTechnicalFolders: KnownTechnicalFoldersReport;
 };
 
 // unless specified otherwise, these folders are in the home folder

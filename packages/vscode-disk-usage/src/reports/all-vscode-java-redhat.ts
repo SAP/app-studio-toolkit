@@ -1,25 +1,34 @@
 import { exec as execCb } from "node:child_process";
 import { promisify } from "node:util";
 const exec = promisify(execCb);
+import { resolve } from "node:path";
 import { exists } from "fs-extra";
 import { getLogger } from "../logger/logger";
 
-export { allNodeModulesReport };
+export { allVscodeJavaRedHatReport };
 
-async function allNodeModulesReport(targetFolder: string): Promise<number> {
+async function allVscodeJavaRedHatReport(
+  targetFolder: string
+): Promise<number> {
   let result = -1;
 
+  const workspaceStorageFolder = resolve(
+    targetFolder,
+    ".vscode",
+    "data",
+    "User",
+    "workspaceStorage"
+  );
+
   try {
-    if (await exists(targetFolder)) {
+    if (await exists(workspaceStorageFolder)) {
       const { stdout } = await exec(
-        "find ./ -type d -name 'node_modules' |" +
-          "grep -v 'node_modules/' |" + // exclude nested node_modules
-          "grep -v '\\./\\.' |" + // exclude hidden folders (e.g.: node_modules_global)
+        "find ./ -type d -name 'redhat.java' |" + // find all 'redhat.java' folders
           "xargs du -sm --total |" + // count size in mb
           "tail -n 1 |" + // get the total size (last line)
           "cut -f1", // get the first field (size in mb)
         {
-          cwd: targetFolder,
+          cwd: workspaceStorageFolder,
         }
       );
       result = parseInt(stdout, 10);
