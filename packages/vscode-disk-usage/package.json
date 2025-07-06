@@ -83,9 +83,11 @@
   },
   "dependencies": {
     "@vscode-logging/wrapper": "2.0.0",
-    "@sap-devx/feature-toggle-node": "2.0.3"
+    "@sap-devx/feature-toggle-node": "2.0.3",
+    "fs-extra": "11.3.0"
   },
   "devDependencies": {
+    "@types/fs-extra": "11.0.4",
     "@vscode/vsce": "3.6.0",
     "@vscode-logging/types": "2.0.0",
     "esbuild": "0.25.5",

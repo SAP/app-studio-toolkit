@@ -14,9 +14,9 @@ export type DiskUsageReport = {
 };
 
 export type KnownTechnicalFoldersReport = {
-  "~/.ui5": number;
-  "~/.continue": number;
-  "~/.m2": number;
-  "~/.node_modules_global": number;
-  "~/.asdf-inst": number;
+  ".ui5": number;
+  ".continue": number;
+  ".m2": number;
+  ".node_modules_global": number;
+  ".asdf-inst": number;
 };
