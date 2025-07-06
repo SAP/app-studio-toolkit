@@ -6,13 +6,21 @@ export type ExtConfig = {
 
 export type DiskUsageReport = {
   timestamp: number;
+  workspaceId: string;
+  // Size (recursive) of all `node_modules` folders in the home folder:
   allNodeModules: number;
+  // Size of none hidden (dot) folders in `home/user`
+  // The assumption is that this represents end user data size
   allNoneHidden: number;
+  // Size of all `redhat.java` folders inside `workspaceStorage`, e.g.:
+  // /home/user/.vscode/data/User/workspaceStorage/-580716d0/redhat.java/*
+  // - note `-580716d0` is variable
   allJavaRedHat: number;
   // TODO: add home folder (whole)
   KnownTechnicalFolders: KnownTechnicalFoldersReport;
 };
 
+// unless specified otherwise, these folders are in the home folder
 export type KnownTechnicalFoldersReport = {
   ".ui5": number;
   ".continue": number;
