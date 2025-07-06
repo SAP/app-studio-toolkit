@@ -20,7 +20,7 @@ async function activate(context: ExtensionContext): Promise<void> {
     "disk-usage",
     "automatedReport"
   );
-  // TODO: remove condition for testing before FT is released.
+  // TODO: remove condition for testing
   if (isDiskUsageFeatureEnabled) {
     await runReport(context.globalState);
   }

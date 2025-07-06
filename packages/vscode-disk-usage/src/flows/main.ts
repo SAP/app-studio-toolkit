@@ -4,6 +4,7 @@ import { hasPreviousReportExpired } from "../helper-logic/has-previous-report-ex
 import { runReports } from "./run-reports";
 import { getLogger } from "../logger/logger";
 import { logToContainer } from "../helper-logic/log-to-container";
+import { HOME_DIR } from "../helper-logic/constants";
 
 export { main };
 
@@ -25,7 +26,7 @@ async function main(
   });
 
   if (shouldCreateNewReport || opts.force) {
-    const diskUsageReport = await runReports();
+    const diskUsageReport = await runReports(HOME_DIR);
     logToContainer(diskUsageReport);
     getLogger().debug(
       `DiskUsage Report created: ${JSON.stringify(diskUsageReport, null, 2)}`
