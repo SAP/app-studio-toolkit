@@ -63,7 +63,7 @@
         "vscode-disk-usage.report.disable": {
           "type": "boolean",
           "default": false,
-          "description": "Prevent automated disk usage report from being run",
+          "description": "disable the automated disk usage report",
           "scope": "window"
         },
         "vscode-disk-usage.report.initialDelay": {
@@ -75,7 +75,7 @@
         "vscode-disk-usage.report.daysBetweenRuns": {
           "type": "number",
           "default": 7,
-          "description": "Wait at least N days must pass before the disk usage report is run again",
+          "description": "number of days between runs of the automated disk usage report",
           "scope": "window"
         }
       }
