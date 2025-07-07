@@ -1,7 +1,7 @@
 {
   "name": "vscode-disk-usage",
-  "displayName": "BAS Disk Usage Logger",
-  "version": "0.1.0",
+  "displayName": "BAS Disk Usage",
+  "version": "1.0.0",
   "private": true,
   "engines": {
     "vscode": "^1.76.0"
@@ -19,8 +19,7 @@
     "directory": "packages/vscode-disk-usage"
   },
   "license": "Apache-2.0",
-  "author": "SAP SE",
-  "publisher": "SAPSE",
+  "publisher": "SAPOSS",
   "main": "./dist/extension.js",
   "scripts": {
     "ci": "npm-run-all clean compile bundle package",
