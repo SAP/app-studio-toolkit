@@ -5,6 +5,7 @@ import { runReports } from "./run-reports";
 import { logToContainer } from "../helper-logic/log-to-container";
 import { getLogger } from "../logger/logger";
 import { performWithRandomDelay } from "../helper-logic/random-delay";
+import { DISK_USAGE_TIMESTAMP } from "../helper-logic/constants";
 
 export { automatedReport };
 
@@ -27,6 +28,11 @@ async function automatedReport(
       action: async () => {
         const diskUsageReport = await runReports(opts.homeFolder);
         logToContainer(diskUsageReport);
+        getLogger().info(`Saving disk usage timestamp to IDE global state`);
+        await opts.globalState.update(
+          DISK_USAGE_TIMESTAMP,
+          diskUsageReport.timestamp
+        );
         getLogger().info(
           `Automated disk usage report created: ${JSON.stringify(
             diskUsageReport,

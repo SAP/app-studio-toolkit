@@ -1,5 +1,6 @@
 import type { Memento } from "vscode";
 import { getLogger } from "../logger/logger";
+import { DISK_USAGE_TIMESTAMP } from "./constants";
 
 const internal = {
   randomPreviousReportTime,
@@ -7,14 +8,13 @@ const internal = {
 
 export { hasPreviousReportExpired, internal };
 
-const DISK_USAGE_TIMESTAMP = "bas-disk-usage-report-timestamp";
 async function hasPreviousReportExpired(opts: {
   globalState: Memento;
   daysBetweenRuns: number;
 }): Promise<boolean> {
   const nowInMs = Date.now();
 
-  const lateReportTime = opts.globalState.get(DISK_USAGE_TIMESTAMP) ;
+  const lateReportTime = opts.globalState.get(DISK_USAGE_TIMESTAMP);
   if (lateReportTime === undefined || !Number.isInteger(lateReportTime)) {
     getLogger().info(
       "No previous report time found, creating a 'made up' previous report time."
