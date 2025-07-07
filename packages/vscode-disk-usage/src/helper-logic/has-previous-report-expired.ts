@@ -1,4 +1,5 @@
 import type { Memento } from "vscode";
+import { getLogger } from "../logger/logger";
 
 const internal = {
   randomPreviousReportTime,
@@ -13,8 +14,11 @@ async function hasPreviousReportExpired(opts: {
 }): Promise<boolean> {
   const nowInMs = Date.now();
 
-  const lateReportTime = opts.globalState.get(DISK_USAGE_TIMESTAMP);
+  const lateReportTime = opts.globalState.get(DISK_USAGE_TIMESTAMP) ;
   if (lateReportTime === undefined || !Number.isInteger(lateReportTime)) {
+    getLogger().info(
+      "No previous report time found, creating a 'made up' previous report time."
+    );
     // using a random previous report time enables statistic **rate limiting**
     // to avoid every new dev-space from quickly creating a new report.
     const madeUpPreviousReportTime = randomPreviousReportTime({
@@ -25,12 +29,14 @@ async function hasPreviousReportExpired(opts: {
       DISK_USAGE_TIMESTAMP,
       madeUpPreviousReportTime
     );
+  } else {
+    getLogger().info(`last report time: ${lateReportTime}`);
   }
 
   const lastReportMsTime = opts.globalState.get(DISK_USAGE_TIMESTAMP) as number;
-  const oneWeekMs = 7 * 24 * 60 * 60 * 1000;
-  const atLeastOneWeekPassed = nowInMs - lastReportMsTime >= oneWeekMs;
-  return atLeastOneWeekPassed;
+  const timeBetweenRuns = opts.daysBetweenRuns * 24 * 60 * 60 * 1000;
+  const previousReportExpired = nowInMs - lastReportMsTime >= timeBetweenRuns;
+  return previousReportExpired;
 }
 
 /**

@@ -63,7 +63,7 @@
         "vscode-disk-usage.report.disable": {
           "type": "boolean",
           "default": false,
-          "description": "Prevent disk usage report from being run",
+          "description": "Prevent automated disk usage report from being run",
           "scope": "window"
         },
         "vscode-disk-usage.report.initialDelay": {

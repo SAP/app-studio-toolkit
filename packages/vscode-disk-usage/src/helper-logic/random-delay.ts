@@ -1,4 +1,5 @@
 import * as assert from "node:assert";
+import { getLogger } from "../logger/logger";
 
 export { performWithRandomDelay, clearTimeout };
 
@@ -16,10 +17,13 @@ function performWithRandomDelay(opts: {
   );
 
   clearTimeout();
+  const minMs = opts.minMinutes * 60 * 1000;
+  const maxMs = opts.maxMinutes * 60 * 1000;
+  const deltaMs = maxMs - minMs;
+  const randomDeltaMs = Math.floor(Math.random() * deltaMs);
+  const randomDelayMs = minMs + randomDeltaMs;
 
-  const delta = opts.maxMinutes - opts.minMinutes;
-  const randomDelta = Math.floor(Math.random() * delta);
-  const randomDelayMs = (opts.minMinutes + randomDelta) * 60 * 1000;
+  getLogger().info(`chosen random delay: ${randomDelayMs}ms`);
   timeOut = setTimeout(() => {
     opts.action();
   }, randomDelayMs);
