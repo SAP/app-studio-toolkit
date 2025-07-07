@@ -10,6 +10,8 @@ export { allVscodeJavaRedHatReport };
 async function allVscodeJavaRedHatReport(
   targetFolder: string
 ): Promise<number> {
+  getLogger().info("Running `allVscodeJavaRedHatReport()`...");
+
   let result = -1;
 
   const workspaceStorageFolder = resolve(
@@ -32,6 +34,10 @@ async function allVscodeJavaRedHatReport(
         }
       );
       result = parseInt(stdout, 10);
+    } else {
+      getLogger().error(
+        `Workspace storage folder "${workspaceStorageFolder}" does not exist, unable to compute 'redhat.java' size.`
+      );
     }
   } catch (error) {
     getLogger().error(

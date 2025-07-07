@@ -11,6 +11,8 @@ export { knownTechnicalFoldersReport };
 async function knownTechnicalFoldersReport(
   prefixPath: string
 ): Promise<KnownTechnicalFoldersReport> {
+  getLogger().info("Running `knownTechnicalFoldersReport...");
+
   const report: KnownTechnicalFoldersReport = {
     ".ui5": -1,
     ".continue": -1,
@@ -28,6 +30,12 @@ async function knownTechnicalFoldersReport(
         const { stdout } = await exec(`du -sm ${fullFolderPath} | cut -f1`);
         const sizeInMb = parseInt(stdout, 10);
         report[reportFolder as keyof KnownTechnicalFoldersReport] = sizeInMb;
+      } else {
+        // some of these folders are optional and do not always exist.
+        // so `info` is used instead of `error`
+        getLogger().info(
+          `Target folder "${fullFolderPath}" does not exist, unable to compute size for "${reportFolder}".`
+        );
       }
     } catch (error) {
       getLogger().error(

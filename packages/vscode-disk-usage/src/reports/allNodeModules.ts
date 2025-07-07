@@ -7,6 +7,7 @@ import { getLogger } from "../logger/logger";
 export { allNodeModulesReport };
 
 async function allNodeModulesReport(targetFolder: string): Promise<number> {
+  getLogger().info("Running `allNodeModulesReport`...");
   let result = -1;
 
   try {
@@ -23,6 +24,10 @@ async function allNodeModulesReport(targetFolder: string): Promise<number> {
         }
       );
       result = parseInt(stdout, 10);
+    } else {
+      getLogger().error(
+        `Target folder "${targetFolder}" does not exist, unable to compute 'node_modules' size.`
+      );
     }
   } catch (error) {
     getLogger().error(

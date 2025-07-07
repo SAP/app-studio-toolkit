@@ -8,6 +8,7 @@ import { getLogger } from "../logger/logger";
 export { allNoneHiddenReport };
 
 async function allNoneHiddenReport(targetFolder: string): Promise<number> {
+  getLogger().info("Running `allNoneHiddenReport`...");
   let result = -1;
 
   // will ensure no trailing slash
@@ -21,6 +22,10 @@ async function allNoneHiddenReport(targetFolder: string): Promise<number> {
         `du -sm ${targetFolder} --exclude='${targetFolder}/.*' | cut -f1`
       );
       result = parseInt(stdout, 10);
+    } else {
+      getLogger().error(
+        `Target folder "${targetFolderResolved}" does not exist, unable to compute all none hidden size.`
+      );
     }
   } catch (error) {
     getLogger().error(
