@@ -26,8 +26,7 @@ async function activate(context: ExtensionContext): Promise<void> {
       "Not Running in a BAS Dev Space, extension features are disabled"
     );
   } else {
-    // TODO: remove || true before merge -- for testing only as FF is not yet available
-    if ((await isFeatureEnabled("disk-usage", "automatedReport")) || true) {
+    if (await isFeatureEnabled("disk-usage", "automatedReport")) {
       const extConfig = readExtConfig();
       reportTimeout = await automatedReport({
         ...extConfig,
