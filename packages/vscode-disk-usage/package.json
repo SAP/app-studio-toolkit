@@ -1,0 +1,99 @@
+{
+  "name": "vscode-disk-usage",
+  "displayName": "BAS Disk Usage",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Performs and Logs Disk Usage Reports for SAP Business Application Studio Dev Spaces",
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "BAS"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/app-studio-toolkit",
+    "directory": "packages/vscode-disk-usage"
+  },
+  "license": "Apache-2.0",
+  "publisher": "SAPOSS",
+  "main": "./dist/extension.js",
+  "scripts": {
+    "bundle": "esbuild ./dist/src/extension.js --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node",
+    "ci": "npm-run-all clean compile bundle package",
+    "clean": "rimraf ./dist *.vsix LICENSE",
+    "compile": "tsc",
+    "package": "shx cp ../../LICENSE . && vsce package --allow-star-activation",
+    "package-temp": "vsce --help",
+    "watch": "tsc -watch -p ./"
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "disk-usage.log-disk-usage",
+        "title": "Log Disk Usage Report"
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "VSCodeDiskUsage",
+      "properties": {
+        "vscode-disk-usage.logging.level": {
+          "type": "string",
+          "enum": [
+            "off",
+            "fatal",
+            "error",
+            "warn",
+            "info",
+            "debug",
+            "trace"
+          ],
+          "default": "error",
+          "description": "The verbosity of logging according to the following order: trace > debug > info > warn > error > fatal > off.",
+          "scope": "resource"
+        },
+        "vscode-disk-usage.report.disable": {
+          "type": "boolean",
+          "default": false,
+          "description": "disable the automated disk usage report",
+          "scope": "window"
+        },
+        "vscode-disk-usage.report.initialDelay": {
+          "type": "number",
+          "default": 30,
+          "description": "Minimum Number of minutes after dev-space startup before running the disk usage report",
+          "scope": "window"
+        },
+        "vscode-disk-usage.report.daysBetweenRuns": {
+          "type": "number",
+          "default": 7,
+          "description": "number of days between runs of the automated disk usage report",
+          "scope": "window"
+        }
+      }
+    }
+  },
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "dependencies": {
+    "@sap-devx/feature-toggle-node": "2.0.3",
+    "@sap/bas-sdk": "3.11.6",
+    "@vscode-logging/wrapper": "2.0.0",
+    "fs-extra": "11.3.0"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "11.0.4",
+    "@vscode-logging/types": "2.0.0",
+    "@vscode/vsce": "3.6.0",
+    "esbuild": "0.25.5",
+    "shx": "0.4.0"
+  },
+  "engines": {
+    "vscode": "^1.76.0"
+  },
+  "vsce": {
+    "dependencies": false
+  }
+}

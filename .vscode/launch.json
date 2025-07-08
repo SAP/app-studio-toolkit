@@ -84,6 +84,16 @@
       ]
     },
     {
+      "name": "Run vscode-disk-usage",
+      "type": "extensionHost",
+      "request": "launch",
+      "runtimeExecutable": "${execPath}",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}/packages/vscode-disk-usage"
+      ],
+      "outFiles": ["${workspaceFolder}/packages/vscode-disk-usage/dist/**/*.js"]
+    },
+    {
       "type": "node",
       "request": "launch",
       "name": "backend app-studio-toolkit unit tests",
