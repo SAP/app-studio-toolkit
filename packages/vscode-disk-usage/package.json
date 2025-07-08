@@ -93,7 +93,6 @@
   "engines": {
     "vscode": "^1.76.0"
   },
-  "icon": "icon.png",
   "vsce": {
     "dependencies": false
   }
