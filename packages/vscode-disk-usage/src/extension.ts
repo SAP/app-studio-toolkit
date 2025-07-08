@@ -66,7 +66,7 @@ function readExtConfig(): ExtConfig {
   return extConfig;
 }
 
-function deactivate() {
+function deactivate(): void {
   if (reportTimeout) {
     reportTimeout.unref();
     reportTimeout = undefined;
