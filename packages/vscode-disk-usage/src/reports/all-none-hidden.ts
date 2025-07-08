@@ -7,29 +7,29 @@ import { getLogger } from "../logger/logger";
 
 export { allNoneHiddenReport };
 
-async function allNoneHiddenReport(targetFolder: string): Promise<number> {
+async function allNoneHiddenReport(homeFolder: string): Promise<number> {
   getLogger().info("Running `allNoneHiddenReport`...");
   let result = -1;
 
   // will ensure no trailing slash
-  const targetFolderResolved = resolve(targetFolder);
+  const homeFolderResolved = resolve(homeFolder);
   try {
-    if (await exists(targetFolder)) {
+    if (await exists(homeFolder)) {
       // `-s` for single line summary, `-m` for megabytes
       // `cut -f1` for returning the first field only (size in MB)
       // using `/` is safe as this *.vsix is only intended for linux systems
       const { stdout } = await exec(
-        `du -sm ${targetFolder} --exclude='${targetFolder}/.*' | cut -f1`
+        `du -sm ${homeFolder} --exclude='${homeFolder}/.*' | cut -f1`
       );
       result = parseInt(stdout, 10);
     } else {
       getLogger().error(
-        `Target folder "${targetFolderResolved}" does not exist, unable to compute all none hidden size.`
+        `Target folder "${homeFolderResolved}" does not exist, unable to compute all none hidden size.`
       );
     }
   } catch (error) {
     getLogger().error(
-      `Error when computing all none hidden sub-folder sizes in "${targetFolderResolved}"`,
+      `Error when computing all none hidden sub-folder sizes in "${homeFolderResolved}"`,
       error
     );
   }
