@@ -16,13 +16,11 @@ export type DiskUsageReport = {
   // /home/user/.vscode/data/User/workspaceStorage/-580716d0/redhat.java/*
   // - note `-580716d0` is variable
   allJavaRedHat: number;
-  // TODO: add home folder (whole)
   knownTechnicalFolders: KnownTechnicalFoldersReport;
 };
 
-// unless specified otherwise, these folders are in the home folder
 export type KnownTechnicalFoldersReport = {
-  ".": number; // total /home/user folder size
+  ".": number;
   ".ui5": number;
   ".continue": number;
   ".m2": number;
