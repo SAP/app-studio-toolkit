@@ -20,10 +20,10 @@ export type DiskUsageReport = {
 };
 
 export type KnownTechnicalFoldersReport = {
-  ".": number;
-  ".ui5": number;
-  ".continue": number;
-  ".m2": number;
-  ".node_modules_global": number;
-  ".asdf-inst": number;
+  dot: number;
+  dot_ui5: number;
+  dot_continue: number;
+  dot_m2: number;
+  dot_node_modules_global: number;
+  "dot_asdf-inst": number;
 };

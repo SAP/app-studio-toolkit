@@ -41,7 +41,7 @@ async function allVscodeJavaRedHatReport(
     }
   } catch (error) {
     getLogger().error(
-      `Error when computing all (recursive) user's 'node_modules' sizes in "${targetFolder}"`,
+      `Error when computing all (recursive) user's 'java.redhat' sizes in "${targetFolder}"`,
       error
     );
   }

@@ -3,10 +3,7 @@
   "displayName": "BAS Disk Usage",
   "version": "1.0.0",
   "private": true,
-  "engines": {
-    "vscode": "^1.76.0"
-  },
-  "icon": "icon.png",
+  "description": "Performs and Logs Disk Usage Reports for SAP Business Application Studio Dev Spaces",
   "categories": [
     "Other"
   ],
@@ -22,17 +19,14 @@
   "publisher": "SAPOSS",
   "main": "./dist/extension.js",
   "scripts": {
+    "bundle": "esbuild ./dist/src/extension.js --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node",
     "ci": "npm-run-all clean compile bundle package",
     "clean": "rimraf ./dist *.vsix LICENSE",
     "compile": "tsc",
-    "bundle": "esbuild ./dist/src/extension.js --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node",
-    "package": "cp ../../LICENSE . && vsce package --allow-star-activation",
+    "package": "shx cp ../../LICENSE . && vsce package --allow-star-activation",
     "package-temp": "vsce --help",
     "watch": "tsc -watch -p ./"
   },
-  "activationEvents": [
-    "*"
-  ],
   "contributes": {
     "commands": [
       {
@@ -80,19 +74,26 @@
       }
     }
   },
+  "activationEvents": [
+    "onStartupFinished"
+  ],
   "dependencies": {
-    "@vscode-logging/wrapper": "2.0.0",
     "@sap-devx/feature-toggle-node": "2.0.3",
     "@sap/bas-sdk": "3.11.6",
+    "@vscode-logging/wrapper": "2.0.0",
     "fs-extra": "11.3.0"
   },
   "devDependencies": {
     "@types/fs-extra": "11.0.4",
-    "@vscode/vsce": "3.6.0",
     "@vscode-logging/types": "2.0.0",
+    "@vscode/vsce": "3.6.0",
     "esbuild": "0.25.5",
     "shx": "0.4.0"
   },
+  "engines": {
+    "vscode": "^1.76.0"
+  },
+  "icon": "icon.png",
   "vsce": {
     "dependencies": false
   }
