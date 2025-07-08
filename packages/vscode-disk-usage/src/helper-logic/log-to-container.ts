@@ -15,9 +15,8 @@ function logToContainer(report: DiskUsageReport): void {
   getLogger().debug(`logString: ${logString}`);
   // `/proc/1/fd/1` is the standard output of the main process in a container
   // This will ensure the log is captured by the container's logging system
-  // TODO: why is this execSync and not plain exec?
   try {
-    getLogger().info("logging to container main process file descriptor 1!!!");
+    getLogger().info("logging to container main process file descriptor 1");
     execSync(`echo '${logString}' > /proc/1/fd/1`, { encoding: "utf-8" });
   } catch (error) {
     getLogger().error(
