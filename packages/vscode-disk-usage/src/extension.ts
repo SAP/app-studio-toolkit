@@ -1,4 +1,5 @@
 import { commands, ExtensionContext, window, workspace } from "vscode";
+import { core } from "@sap/bas-sdk";
 import { isFeatureEnabled } from "@sap-devx/feature-toggle-node";
 import { getLogger, initLogger } from "./logger/logger";
 import { ExtConfig } from "./types";
@@ -18,7 +19,7 @@ async function activate(context: ExtensionContext): Promise<void> {
 
   getLogger().info(`Extension ${context.extension.id} activated`);
 
-  if (process.env["WS_BASE_URL"] === undefined) {
+  if (!(await core.isAppStudio())) {
     getLogger().warn(
       "Not Running in a BAS Dev Space, extension features are disabled"
     );

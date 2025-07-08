@@ -14,6 +14,7 @@ async function knownTechnicalFoldersReport(
   getLogger().info("Running `knownTechnicalFoldersReport...");
 
   const report: KnownTechnicalFoldersReport = {
+    ".": -1,
     ".ui5": -1,
     ".continue": -1,
     ".m2": -1,

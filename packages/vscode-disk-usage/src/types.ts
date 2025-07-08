@@ -22,6 +22,7 @@ export type DiskUsageReport = {
 
 // unless specified otherwise, these folders are in the home folder
 export type KnownTechnicalFoldersReport = {
+  ".": number; // total /home/user folder size
   ".ui5": number;
   ".continue": number;
   ".m2": number;
