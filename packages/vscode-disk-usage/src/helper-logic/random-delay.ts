@@ -3,20 +3,19 @@ import { getLogger } from "../logger/logger";
 
 export { performWithRandomDelay, clearTimeout };
 
-let timeOut: NodeJS.Timeout | undefined = undefined;
+const timeOut: NodeJS.Timeout | undefined = undefined;
 
 function performWithRandomDelay(opts: {
   minMinutes: number;
   maxMinutes: number;
   action: Function;
-}): void {
+}): NodeJS.Timeout {
   assert(opts.minMinutes >= 0, "minMinutes must be >= 0");
   assert(
     opts.maxMinutes >= opts.minMinutes,
     "maxMinutes must be >= minMinutes"
   );
 
-  clearTimeout();
   const minMs = opts.minMinutes * 60 * 1000;
   const maxMs = opts.maxMinutes * 60 * 1000;
   const deltaMs = maxMs - minMs;
@@ -24,14 +23,9 @@ function performWithRandomDelay(opts: {
   const randomDelayMs = minMs + randomDeltaMs;
 
   getLogger().info(`chosen random delay: ${randomDelayMs}ms`);
-  timeOut = setTimeout(() => {
+  const timeOut = setTimeout(() => {
     opts.action();
   }, randomDelayMs);
-}
 
-function clearTimeout(): void {
-  if (timeOut) {
-    timeOut.unref();
-    timeOut = undefined;
-  }
+  return timeOut;
 }

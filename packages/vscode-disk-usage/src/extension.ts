@@ -9,6 +9,8 @@ import { automatedReport } from "./flows/automated";
 
 export { activate };
 
+let reportTimeout: NodeJS.Timeout | undefined = undefined;
+
 async function activate(context: ExtensionContext): Promise<void> {
   initLogger({
     extensionName: context.extension.id,
@@ -27,7 +29,7 @@ async function activate(context: ExtensionContext): Promise<void> {
     // TODO: remove || true before merge -- for testing only as FF is not yet available
     if ((await isFeatureEnabled("disk-usage", "automatedReport")) || true) {
       const extConfig = readExtConfig();
-      await automatedReport({
+      reportTimeout = await automatedReport({
         ...extConfig,
         globalState: context.globalState,
         homeFolder: HOME_DIR,
@@ -62,4 +64,11 @@ function readExtConfig(): ExtConfig {
   getLogger().info(`Extension config: ${JSON.stringify(extConfig, null, 2)}`);
 
   return extConfig;
+}
+
+function deactivate() {
+  if (reportTimeout) {
+    reportTimeout.unref();
+    reportTimeout = undefined;
+  }
 }

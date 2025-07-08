@@ -14,7 +14,7 @@ async function automatedReport(
     globalState: Memento;
     homeFolder: string;
   }
-): Promise<void> {
+): Promise<NodeJS.Timeout | undefined> {
   const shouldCreateNewReport = await hasPreviousReportExpired({
     daysBetweenRuns: opts.daysBetweenRuns,
     globalState: opts.globalState,
@@ -22,7 +22,7 @@ async function automatedReport(
 
   if (shouldCreateNewReport) {
     getLogger().info("Automated disk usage queued with random delay");
-    performWithRandomDelay({
+    return performWithRandomDelay({
       minMinutes: opts.initialDelay,
       maxMinutes: opts.initialDelay * 2,
       action: async () => {
