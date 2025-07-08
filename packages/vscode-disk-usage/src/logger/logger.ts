@@ -5,7 +5,8 @@ import { configureLogger, NOOP_LOGGER } from "@vscode-logging/wrapper";
 export { getLogger, initLogger };
 
 const LOGGING_LEVEL_CONFIG_PROP = "vscode-disk-usage.logging.level";
-// TODO: define this configuration property
+// this property does not exist on the extension configuration
+// it is overkill for this extension...
 const SOURCE_TRACKING_CONFIG_PROP =
   "vscode-disk-usage.logging.sourceLocationTracking";
 
