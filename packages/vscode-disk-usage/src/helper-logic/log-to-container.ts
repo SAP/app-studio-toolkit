@@ -1,5 +1,4 @@
 import { execSync } from "node:child_process";
-import { WS_ID } from "./constants";
 import { DiskUsageReport } from "../types";
 import { getLogger } from "../logger/logger";
 
@@ -8,7 +7,6 @@ export { logToContainer };
 function logToContainer(report: DiskUsageReport): void {
   const logEntry = {
     application: "basdiskusage",
-    wsid: WS_ID,
     ...report,
   };
 
