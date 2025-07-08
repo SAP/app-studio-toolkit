@@ -34,7 +34,7 @@ async function activate(context: ExtensionContext): Promise<void> {
       });
     } else {
       getLogger().info(
-        `Feature 'automatedReport' for disk-usage is disabled in IDE settings.`
+        `Feature 'automatedReport' for disk-usage is disabled via feature toggle.`
       );
     }
 
