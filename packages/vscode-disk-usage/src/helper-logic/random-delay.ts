@@ -3,8 +3,6 @@ import { getLogger } from "../logger/logger";
 
 export { performWithRandomDelay, clearTimeout };
 
-const timeOut: NodeJS.Timeout | undefined = undefined;
-
 function performWithRandomDelay(opts: {
   minMinutes: number;
   maxMinutes: number;
