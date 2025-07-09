@@ -7,11 +7,11 @@ import { manualReport } from "./flows/manual";
 import { HOME_DIR } from "./helper-logic/constants";
 import { automatedReport } from "./flows/automated";
 
-export { activate };
+export { activate, deactivate };
 
 let reportTimeout: NodeJS.Timeout | undefined = undefined;
 
-async function activate(context: ExtensionContext): Promise<void> {
+function activate(context: ExtensionContext): void {
   initLogger({
     extensionName: context.extension.id,
     logUri: context.logUri,
@@ -21,31 +21,45 @@ async function activate(context: ExtensionContext): Promise<void> {
 
   getLogger().info(`Extension ${context.extension.id} activated`);
 
+  // do not wait for init to finish to quickly end finish `activate()`
+  void init(context);
+}
+
+async function init(context: ExtensionContext): Promise<void> {
   if (!(await core.isAppStudio())) {
     getLogger().warn(
       "Not Running in a BAS Dev Space, extension features are disabled"
     );
   } else {
-    if (await isFeatureEnabled("disk-usage", "automatedReport")) {
-      const extConfig = readExtConfig();
-      reportTimeout = await automatedReport({
-        ...extConfig,
-        globalState: context.globalState,
-        homeFolder: HOME_DIR,
-      });
-    } else {
-      getLogger().info(
-        `Feature 'automatedReport' for disk-usage is disabled via feature toggle.`
-      );
-    }
+    await tryRunningAutomatedReport(context);
+    registerCommands(context);
+  }
+}
 
-    context.subscriptions.push(
-      commands.registerCommand("disk-usage.log-disk-usage", async () => {
-        getLogger().info(`manual activation of disk-usage log/report command`);
-        await manualReport(HOME_DIR);
-      })
+async function tryRunningAutomatedReport(
+  context: ExtensionContext
+): Promise<void> {
+  if (await isFeatureEnabled("disk-usage", "automatedReport")) {
+    const extConfig = readExtConfig();
+    reportTimeout = await automatedReport({
+      ...extConfig,
+      globalState: context.globalState,
+      homeFolder: HOME_DIR,
+    });
+  } else {
+    getLogger().info(
+      `Feature 'automatedReport' for disk-usage is disabled via feature toggle.`
     );
   }
+}
+
+function registerCommands(context: ExtensionContext): void {
+  context.subscriptions.push(
+    commands.registerCommand("disk-usage.log-disk-usage", async () => {
+      getLogger().info(`manual activation of disk-usage log/report command`);
+      await manualReport(HOME_DIR);
+    })
+  );
 }
 
 function readExtConfig(): ExtConfig {

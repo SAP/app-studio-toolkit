@@ -21,7 +21,7 @@
   "scripts": {
     "bundle": "esbuild ./dist/src/extension.js --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node",
     "ci": "npm-run-all clean compile bundle package",
-    "clean": "rimraf ./dist *.vsix LICENSE",
+    "clean": "shx rm -rf ./dist *.vsix LICENSE",
     "compile": "tsc",
     "package": "shx cp ../../LICENSE . && vsce package --allow-star-activation",
     "package-temp": "vsce --help",
@@ -72,6 +72,14 @@
           "scope": "window"
         }
       }
+    },
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "disk-usage.log-disk-usage",
+          "when": "false"
+        }
+      ]
     }
   },
   "activationEvents": [
