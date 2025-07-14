@@ -67,6 +67,4 @@ describe("has-previous-report-expired module", () => {
       expect(timestampAfter - 1000).to.be.greaterThan(sevenDaysAgoInMs);
     });
   });
-
-  context("internal.randomPreviousReportTime() function", () => {});
 });
