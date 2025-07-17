@@ -2,11 +2,7 @@ import type { Memento } from "vscode";
 import { getLogger } from "../logger/logger";
 import { DISK_USAGE_TIMESTAMP } from "./constants";
 
-const internal = {
-  randomPreviousReportTime,
-};
-
-export { hasPreviousReportExpired, internal };
+export { hasPreviousReportExpired };
 
 async function hasPreviousReportExpired(opts: {
   globalState: Memento;

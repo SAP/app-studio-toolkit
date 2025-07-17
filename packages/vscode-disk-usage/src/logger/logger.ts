@@ -20,12 +20,14 @@ function getLogger(): IVSCodeExtLogger {
   return logger;
 }
 
+/* istanbul ignore next -- never using real logger in pure unit tests */
 function initLogger(opts: {
   extensionName: string;
   subscriptions: ExtensionContext["subscriptions"];
   logUri: ExtensionContext["logUri"];
   createOutputChannel: typeof window.createOutputChannel;
 }): void {
+  /* istanbul ignore next -- we are never using a real logger in unit tests */
   try {
     logger = configureLogger({
       extName: opts.extensionName,

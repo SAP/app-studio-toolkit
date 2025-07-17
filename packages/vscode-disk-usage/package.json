@@ -20,12 +20,13 @@
   "main": "./dist/extension.js",
   "scripts": {
     "bundle": "esbuild ./dist/src/extension.js --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node",
-    "ci": "npm-run-all clean compile bundle package",
+    "ci": "npm-run-all clean compile coverage bundle package",
     "clean": "shx rm -rf ./dist *.vsix LICENSE",
     "compile": "tsc",
+    "coverage": "nyc mocha",
     "package": "shx cp ../../LICENSE . && vsce package --allow-star-activation",
-    "package-temp": "vsce --help",
-    "watch": "tsc -watch -p ./"
+    "test": "mocha",
+    "watch": "tsc -watch"
   },
   "contributes": {
     "commands": [

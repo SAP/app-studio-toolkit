@@ -39,6 +39,7 @@ async function allNodeModulesReport(homeFolder: string): Promise<number> {
         getLogger().info(
           `No 'node_modules' found in "${homeFolder}", skipping size computation.`
         );
+        result = 0;
       }
     } else {
       getLogger().error(
