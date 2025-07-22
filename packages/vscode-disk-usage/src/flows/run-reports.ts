@@ -19,7 +19,7 @@ async function runReports(homeFolder: string): Promise<DiskUsageReport> {
     allJavaRedHat: allJavaRedHat,
     allNodeModules: allNodeModules,
     allNoneHidden: allNoneHidden,
-    knownTechnicalFolders,
+    knownHomeFolders: knownTechnicalFolders,
   };
 
   return report;

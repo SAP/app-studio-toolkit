@@ -4,22 +4,27 @@ import { resolve } from "node:path";
 const exec = promisify(execCb);
 import { exists } from "fs-extra";
 import { getLogger } from "../logger/logger";
-import { KnownTechnicalFoldersReport } from "../types";
+import { KnownHomeFoldersReport } from "../types";
 
 export { knownTechnicalFoldersReport };
 
 async function knownTechnicalFoldersReport(
   prefixPath: string
-): Promise<KnownTechnicalFoldersReport> {
+): Promise<KnownHomeFoldersReport> {
   getLogger().info("Running `knownTechnicalFoldersReport...");
 
-  const report: KnownTechnicalFoldersReport = {
+  const report: KnownHomeFoldersReport = {
     dot: -1,
+    projects: -1,
     dot_ui5: -1,
     dot_continue: -1,
     dot_m2: -1,
     dot_node_modules_global: -1,
     "dot_asdf-inst": -1,
+    dot_nvm: -1,
+    "dot_vscode-server": -1,
+    dot_fioritools: -1,
+    dot_yarn: -1,
   };
 
   for (const [reportFolderKey] of Object.entries(report)) {
@@ -31,7 +36,7 @@ async function knownTechnicalFoldersReport(
         // `cut -f1` for returning the first field only (size in MB)
         const { stdout } = await exec(`du -sm ${fullFolderPath} | cut -f1`);
         const sizeInMb = parseInt(stdout, 10);
-        report[reportFolderKey as keyof KnownTechnicalFoldersReport] = sizeInMb;
+        report[reportFolderKey as keyof KnownHomeFoldersReport] = sizeInMb;
       } else {
         // some of these folders are optional and do not always exist.
         // so `info` is used instead of `error`
