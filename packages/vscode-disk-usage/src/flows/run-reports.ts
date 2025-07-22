@@ -1,6 +1,6 @@
 import type { DiskUsageReport } from "../types";
 import { getWsID } from "../helper-logic/constants";
-import { knownTechnicalFoldersReport } from "../reports/known-technical-folders";
+import { knownTechnicalFoldersReport } from "../reports/known-home-folders";
 import { allVscodeJavaRedHatReport } from "../reports/all-vscode-java-redhat";
 import { allNodeModulesReport } from "../reports/all-node-modules";
 import { allNoneHiddenReport } from "../reports/all-none-hidden";
