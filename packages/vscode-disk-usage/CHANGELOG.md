@@ -1,5 +1,11 @@
 # vscode-disk-usage
 
+## 2.1.0
+
+### Minor Changes
+
+- 62a126b: additional folders logged for disk usage
+
 ## 2.0.0
 
 ### Major Changes
