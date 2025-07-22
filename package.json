@@ -23,7 +23,8 @@
     "legal:delete": "pnpm -r exec -- shx rm -rf .reuse LICENSES || true",
     "lint:fix": "eslint . --ext=js,ts,vue --fix --max-warnings=0 --ignore-path=.gitignore",
     "lint:validate": "eslint . --ext=js,ts,vue --max-warnings=0 --ignore-path=.gitignore",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "temp": "pnpm changeset"
   },
   "commitlint": {
     "extends": [
@@ -39,7 +40,7 @@
     ]
   },
   "devDependencies": {
-    "@changesets/cli": "2.27.11",
+    "@changesets/cli": "2.29.5",
     "@commitlint/cli": "19.5.0",
     "@commitlint/config-conventional": "19.5.0",
     "@types/chai": "4.3.17",
