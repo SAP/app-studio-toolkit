@@ -34,6 +34,8 @@ async function allNodeModulesReport(homeFolder: string): Promise<number> {
             cwd: homeFolder,
           }
         );
+        // TODO: in some unknown edge case, stdout may not be an int
+        // and will compute to `NaN`, how to reproduce this?
         result = parseInt(stdout, 10);
       } else {
         getLogger().info(

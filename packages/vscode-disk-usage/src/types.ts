@@ -7,6 +7,7 @@ export type ExtConfig = {
 export type DiskUsageReport = {
   timestamp: number;
   workspaceId: string;
+  tenantPlan: string;
   // Size (recursive) of all `node_modules` folders in the home folder:
   allNodeModules: number;
   // Size of none hidden (dot) folders in `home/user`
