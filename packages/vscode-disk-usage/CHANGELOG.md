@@ -1,5 +1,11 @@
 # vscode-disk-usage
 
+## 2.2.0
+
+### Minor Changes
+
+- 7c045e1: add tenant_plan to disk usage report
+
 ## 2.1.0
 
 ### Minor Changes
