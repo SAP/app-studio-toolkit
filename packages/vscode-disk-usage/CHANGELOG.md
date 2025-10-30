@@ -1,5 +1,11 @@
 # vscode-disk-usage
 
+## 2.3.0
+
+### Minor Changes
+
+- 28cafbe: additional sub-folders and pack info
+
 ## 2.2.0
 
 ### Minor Changes
