@@ -17,14 +17,25 @@ async function knownTechnicalFoldersReport(
     dot: -1,
     projects: -1,
     dot_ui5: -1,
+    // this `/` is safe because this code is only meant to run on linux
+    "dot_ui5/framework": -1,
     dot_continue: -1,
     dot_m2: -1,
+    dot_npm: -1,
     dot_node_modules_global: -1,
+    dot_asdf: -1,
     "dot_asdf-inst": -1,
     dot_nvm: -1,
     "dot_vscode-server": -1,
+    dot_vscode: -1,
     dot_fioritools: -1,
     dot_yarn: -1,
+    dot_hanatools: -1,
+    dot_cache: -1,
+    dot_mscan: -1,
+    dot_hdb: -1,
+    dot_local: -1,
+    dot_notary: -1,
   };
 
   for (const [reportFolderKey] of Object.entries(report)) {
