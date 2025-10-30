@@ -1,5 +1,9 @@
 import { expect } from "chai";
-import { getWsID, getTenantPlan } from "../../src/helper-logic/constants";
+import {
+  getWsID,
+  getTenantPlan,
+  getTenantPack,
+} from "../../src/helper-logic/constants";
 
 describe("Constants module", () => {
   context("getWsID function", () => {
@@ -39,6 +43,26 @@ describe("Constants module", () => {
     it("should return the actual plan when `TENANT_PLAN` env variable is set", () => {
       process.env["TENANT_PLAN"] = "plan-abc123";
       expect(getTenantPlan()).to.equal("abc123");
+    });
+  });
+
+  context("getTenantPack function", () => {
+    const orgTenantPlan = process.env["TENANT_PACK"];
+    before(() => {
+      delete process.env["TENANT_PACK"];
+    });
+
+    after(() => {
+      process.env["TENANT_PACK"] = orgTenantPlan;
+    });
+
+    it("should return `unknown` pack when no `TENANT_PACK` env variable set", () => {
+      expect(getTenantPack()).to.equal("unknown");
+    });
+
+    it("should return the actual pack when `TENANT_PACK` env variable is set", () => {
+      process.env["TENANT_PACK"] = "pack-abc123";
+      expect(getTenantPack()).to.equal("pack-abc123");
     });
   });
 });

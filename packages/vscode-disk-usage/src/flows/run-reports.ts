@@ -1,5 +1,9 @@
 import type { DiskUsageReport } from "../types";
-import { getTenantPlan, getWsID } from "../helper-logic/constants";
+import {
+  getTenantPlan,
+  getTenantPack,
+  getWsID,
+} from "../helper-logic/constants";
 import { knownTechnicalFoldersReport } from "../reports/known-home-folders";
 import { allVscodeJavaRedHatReport } from "../reports/all-vscode-java-redhat";
 import { allNodeModulesReport } from "../reports/all-node-modules";
@@ -17,6 +21,7 @@ async function runReports(homeFolder: string): Promise<DiskUsageReport> {
     timestamp: new Date().getTime(),
     workspaceId: getWsID(),
     tenantPlan: getTenantPlan(),
+    tenantPack: getTenantPack(),
     allJavaRedHat: allJavaRedHat,
     allNodeModules: allNodeModules,
     allNoneHidden: allNoneHidden,

@@ -1,4 +1,10 @@
-export { HOME_DIR, DISK_USAGE_TIMESTAMP, getWsID, getTenantPlan };
+export {
+  HOME_DIR,
+  DISK_USAGE_TIMESTAMP,
+  getWsID,
+  getTenantPlan,
+  getTenantPack,
+};
 
 // "~" did not work perfectly for all shell commands
 // using `/` is safe as this extension is only meant to run under linux
@@ -15,4 +21,10 @@ function getTenantPlan(): string {
   const tenantPlanRaw = process.env.TENANT_PLAN;
   const plan = tenantPlanRaw ? tenantPlanRaw.replace("plan-", "") : "unknown";
   return plan;
+}
+
+function getTenantPack(): string {
+  const tenantPackRaw = process.env.TENANT_PACK;
+  const pack = tenantPackRaw ? tenantPackRaw : "unknown";
+  return pack;
 }
