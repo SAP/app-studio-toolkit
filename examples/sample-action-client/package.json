@@ -1,6 +1,6 @@
 {
   "name": "sample-action-client",
-  "version": "2.8.0",
+  "version": "2.9.0",
   "private": true,
   "displayName": "Sample Action Client",
   "publisher": "SAPOSS",
