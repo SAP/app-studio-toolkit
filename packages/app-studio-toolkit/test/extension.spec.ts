@@ -28,6 +28,7 @@ const testVscode = {
   workspace: {
     getConfiguration: () => wsConfig,
     onDidChangeWorkspaceFolders: () => {},
+    onDidChangeConfiguration: () => {},
   },
   commands: {
     registerCommand: () => {},
@@ -36,6 +37,16 @@ const testVscode = {
     public readonly label: string;
     constructor(label?: string) {
       this.label = label || "";
+    }
+  },
+  Disposable: class MockDisposable {
+    dispose() {}
+    static from(...disposables: { dispose(): void }[]) {
+      return {
+        dispose: () => {
+          disposables.forEach((d) => d.dispose());
+        },
+      };
     }
   },
 };
@@ -47,6 +58,7 @@ mockVscode(testVscode, "dist/src/actions/actionsConfig.js");
 mockVscode(testVscode, "dist/src/basctlServer/basctlServer.js");
 mockVscode(testVscode, "dist/src/project-type/workspace-instance.js");
 mockVscode(testVscode, "dist/src/devspace-manager/instance.js");
+mockVscode(testVscode, "dist/src/actions/actionsFactory.js");
 import * as extension from "../src/extension";
 import * as performer from "../src/actions/performer";
 import * as basctlServer from "../src/basctlServer/basctlServer";
@@ -149,6 +161,7 @@ describe("extension unit test", () => {
       wsConfigMock
         .expects("get")
         .withExactArgs("actions", [])
+        .twice()
         .returns([scheduledAction]);
       const action = ActionsFactory.createAction(scheduledAction, true);
       performerMock.expects("_performAction").withExactArgs(action).resolves();
@@ -169,7 +182,11 @@ describe("extension unit test", () => {
       basUtilsMock.expects("shouldRunCtlServer").returns(false);
       performerMock.expects("_performAction").never();
 
-      wsConfigMock.expects("get").withExactArgs("actions", []).returns([]);
+      wsConfigMock
+        .expects("get")
+        .withExactArgs("actions", [])
+        .twice()
+        .returns([]);
       basRemoteExplorerMock
         .expects("initBasRemoteExplorer")
         .withExactArgs(context);
