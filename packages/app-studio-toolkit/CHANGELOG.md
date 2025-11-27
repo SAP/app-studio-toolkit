@@ -1,5 +1,11 @@
 # app-studio-toolkit
 
+## 2.10.0
+
+### Minor Changes
+
+- b11aec3: support for "immediate" execution of the BAS action
+
 ## 2.9.0
 
 ### Minor Changes
