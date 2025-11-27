@@ -1,4 +1,4 @@
-import { extensions } from "vscode";
+import { Disposable, extensions, workspace } from "vscode";
 import { getLogger } from "../logger/logger";
 import { BasAction } from "@sap-devx/app-studio-toolkit-types";
 import { _performAction } from "./performer";
@@ -139,5 +139,66 @@ export class ActionsController {
       }
     });
     void actionsConfig.clear();
+  }
+
+  private static isExecutingImmediateActions = false;
+
+  private static async executeImmediateActions() {
+    // Prevent recursive execution during config clearing
+    if (ActionsController.isExecutingImmediateActions) {
+      return;
+    }
+
+    ActionsController.isExecutingImmediateActions = true;
+
+    try {
+      const actionsList: string[] = actionsConfig.get();
+      const immediateActions = actionsList.filter(
+        (item) => !isString(item) && (item as any)?.execute === "immediate"
+      );
+
+      if (immediateActions.length === 0) {
+        return;
+      }
+
+      for (const actionItem of immediateActions) {
+        try {
+          const action = ActionsFactory.createAction(actionItem, true);
+          await _performAction(action);
+        } catch (error) {
+          getLogger().error(
+            `Failed to execute immediate action ${JSON.stringify(
+              actionItem
+            )}: ${error}`,
+            { method: "executeImmediateActions" }
+          );
+        }
+      }
+
+      // Clear immediate actions after execution to prevent re-running
+      actionsConfig.clear(true);
+    } finally {
+      ActionsController.isExecutingImmediateActions = false;
+    }
+  }
+
+  public static performImmediateActions(): Disposable {
+    const disposables: Disposable[] = [];
+
+    const handleConfigChange = (uri?: any) => (e: any) => {
+      if (e.affectsConfiguration(actionsConfig.key, uri)) {
+        void ActionsController.executeImmediateActions();
+      }
+    };
+
+    workspace.workspaceFolders?.forEach((wsFolder) => {
+      disposables.push(
+        workspace.onDidChangeConfiguration(handleConfigChange(wsFolder.uri))
+      );
+    });
+
+    disposables.push(workspace.onDidChangeConfiguration(handleConfigChange()));
+
+    return Disposable.from(...disposables);
   }
 }

@@ -28,6 +28,9 @@ export function activate(context: ExtensionContext): BasToolkit {
     startBasctlServer(context);
   }
 
+  // Register immediate actions listener before async operations
+  context.subscriptions.push(ActionsController.performImmediateActions());
+
   // performance: run the actions after the extension is activated
   setTimeout(() => {
     ActionsController.loadContributedActions();
