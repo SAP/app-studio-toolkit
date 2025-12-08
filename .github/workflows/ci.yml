@@ -18,10 +18,15 @@ jobs:
   build:
     name: Full Build (node ${{ matrix.node_version }})
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+      pull-requests: write
+      issues: write
     strategy:
       matrix:
         node_version:
-          - 20.x
+          - 24.x
       # https://stackoverflow.com/questions/61070925/github-actions-disable-auto-cancel-when-job-fails
       fail-fast: false
 
@@ -46,14 +51,6 @@ jobs:
       - name: Build
         run: pnpm run ci
 
-      - name: npm auth setup
-        run: |
-          npm logout || true
-          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
-          npm whoami
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
       - name: ChangeSets Release or PR creation
         id: changesets_release_or_pr
         uses: changesets/action@v1
@@ -70,7 +67,6 @@ jobs:
         env:
           # See: https://github.com/changesets/action/issues/187#issuecomment-1228413850
           GITHUB_TOKEN: ${{ secrets.BOT_GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       # To avoid race condition errors in the upload vsix step
       - name: Wait for GH Releases to be published
@@ -78,7 +74,7 @@ jobs:
         run: sleep 10s
         shell: bash
 
-      - name:
+      - name: Upload VSIX to releases
         run: node scripts/upload-vsix-to-releases.mjs
         if: steps.changesets_release_or_pr.outputs.published == 'true'
         env:
