@@ -1,5 +1,11 @@
 # sample-action-client
 
+## 2.10.1
+
+### Patch Changes
+
+- 84b5383: Migrating project to NPM trusted publishers
+
 ## 2.10.0
 
 ## 2.9.0
