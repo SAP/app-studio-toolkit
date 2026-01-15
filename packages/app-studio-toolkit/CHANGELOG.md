@@ -1,5 +1,11 @@
 # app-studio-toolkit
 
+## 2.11.0
+
+### Minor Changes
+
+- ab53b1e: remote desktop client -> open settings command key filter updated
+
 ## 2.10.1
 
 ## 2.10.0
