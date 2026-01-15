@@ -1,5 +1,7 @@
 # vscode-using-workspace-api
 
+## 2.11.0
+
 ## 2.10.1
 
 ## 2.10.0
