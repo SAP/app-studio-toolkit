@@ -18,8 +18,8 @@ importers:
         specifier: 19.5.0
         version: 19.5.0
       '@types/chai':
-        specifier: 4.3.17
-        version: 4.3.17
+        specifier: 4.3.20
+        version: 4.3.20
       '@types/chai-as-promised':
         specifier: 7.1.4
         version: 7.1.4
@@ -1300,8 +1300,8 @@ packages:
   '@types/chai-as-promised@7.1.4':
     resolution: {integrity: sha512-1y3L1cHePcIm5vXkh1DSGf/zQq5n5xDKG1fpCvf18+uOkpce0Z1ozNFPkyWsVswK7ntN1sZBw3oU6gmN+pDUcA==}
 
-  '@types/chai@4.3.17':
-    resolution: {integrity: sha512-zmZ21EWzR71B4Sscphjief5djsLre50M6lI622OSySTmn9DB3j+C3kWroHfBQWXbOBwbgg/M8CG/hUxDLIloow==}
+  '@types/chai@4.3.20':
+    resolution: {integrity: sha512-/pC9HAB5I/xMlc5FP77qjCnI16ChlJfW0tGa0IUcFn38VJrTV6DeZ60NU5KZBtaOZqjdpwTWohz5HU1RrhiYxQ==}
 
   '@types/connect@3.4.35':
     resolution: {integrity: sha512-cdeYyv4KWoEgpBISTxWvqYsVy444DOqehiF3fM3ne10AmJ62RSyNkUnxMJXHQWRQQX2eR94m5y1IZyDwBjV9FQ==}
@@ -5148,6 +5148,7 @@ packages:
   whatwg-encoding@3.1.1:
     resolution: {integrity: sha512-6qN4hJdMwfYBtE3YBTTHhoeuUrDBPZmbQaxWAqSALV/MeEnR5z1xd8UKud2RAkFoPkmB+hli1TZSnyi84xz1vQ==}
     engines: {node: '>=18'}
+    deprecated: Use @exodus/bytes instead for a more spec-conformant and faster implementation
 
   whatwg-mimetype@4.0.0:
     resolution: {integrity: sha512-QaKxh0eNIi2mE9p2vEdzfagOKHCcj1pJ56EEHGQOVxp8r9/iszLUUV7v89x9O1p/T+NlTM5W7jW6+cz4Fq1YVg==}
@@ -6546,9 +6547,9 @@ snapshots:
 
   '@types/chai-as-promised@7.1.4':
     dependencies:
-      '@types/chai': 4.3.17
+      '@types/chai': 4.3.20
 
-  '@types/chai@4.3.17': {}
+  '@types/chai@4.3.20': {}
 
   '@types/connect@3.4.35':
     dependencies:
