@@ -163,7 +163,7 @@ describe("extension unit test", () => {
     it("command `local-extension.tree.settings`", () => {
       commandsMock
         .expects(`executeCommand`)
-        .withExactArgs(`workbench.action.openSettings`, `Desktop Client`)
+        .withExactArgs(`workbench.action.openSettings`, `sap-remote`)
         .returns({});
       instance.initBasRemoteExplorer(context);
       registry.get(`local-extension.tree.settings`)?.();

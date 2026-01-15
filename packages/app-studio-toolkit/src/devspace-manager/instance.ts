@@ -29,7 +29,7 @@ import { LandscapeNode } from "./tree/treeItems";
 export function initBasRemoteExplorer(context: ExtensionContext): void {
   context.subscriptions.push(
     commands.registerCommand("local-extension.tree.settings", () =>
-      commands.executeCommand("workbench.action.openSettings", "Desktop Client")
+      commands.executeCommand("workbench.action.openSettings", "sap-remote")
     )
   );
 
