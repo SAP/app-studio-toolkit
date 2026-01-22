@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "fs-extra": "10.0.0",
-    "lodash": "4.17.21",
+    "lodash": "4.17.23",
     "semver": "7.6.3"
   },
   "devDependencies": {
