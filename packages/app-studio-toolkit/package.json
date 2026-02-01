@@ -1,421 +1,421 @@
 {
-  "name": "app-studio-toolkit",
-  "displayName": "SAP Business Application Studio toolkit",
-  "version": "2.10.1",
-  "private": true,
-  "description": "Includes essential capabilities that will improve your SAP Business Application Studio development experience, making it easier and faster.",
-  "categories": [
-    "Other"
-  ],
-  "keywords": [
-    "BAS",
-    "Remote",
-    "SAP"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/SAP/app-studio-toolkit",
-    "directory": "packages/app-studio-toolkit"
-  },
-  "license": "Apache-2.0",
-  "publisher": "SAPOSS",
-  "main": "./dist/src/extension",
-  "scripts": {
-    "bundle": "webpack --mode production",
-    "ci": "npm-run-all clean compile coverage bundle package",
-    "clean": "rimraf ./dist *.vsix ./.nyc_output",
-    "compile": "tsc -p ./",
-    "coverage": "nyc mocha",
-    "package": "node ./scripts/package-vsix.js",
-    "test": "mocha"
-  },
-  "contributes": {
-    "authentication": [
-      {
-        "id": "baslandscapepat",
-        "label": "SAP BAS"
-      }
-    ],
-    "commands": [
-      {
-        "command": "project-api.command.run",
-        "title": "Run a specific command of Project API"
-      },
-      {
-        "command": "local-extension.tree.refresh",
-        "title": "Refresh",
-        "icon": "$(refresh)"
-      },
-      {
-        "command": "local-extension.tree.settings",
-        "title": "Settings"
-      },
-      {
-        "command": "local-extension.landscape.set",
-        "title": "Set landscape"
-      },
-      {
-        "command": "local-extension.landscape.add",
-        "title": "Add landscape",
-        "icon": "$(add)"
-      },
-      {
-        "command": "local-extension.landscape.delete",
-        "title": "Remove landscape"
-      },
-      {
-        "command": "local-extension.landscape.open-dev-space-manager",
-        "title": "Open dev space manager in browser"
-      },
-      {
-        "command": "local-extension.dev-space.add",
-        "title": "Add dev space",
-        "icon": "$(add)"
-      },
-      {
-        "command": "local-extension.dev-space.connect-new-window",
-        "title": "Open in new window",
-        "icon": "$(empty-window)"
-      },
-      {
-        "command": "local-extension.dev-space.connect-same-window",
-        "title": "Open in same window"
-      },
-      {
-        "command": "local-extension.dev-space.copy-ws-id",
-        "title": "Copy ws id to clipboard"
-      },
-      {
-        "command": "local-extension.dev-space.open-in-bas",
-        "title": "Open dev space in SAP Business application studio"
-      },
-      {
-        "command": "local-extension.dev-space.open-in-code",
-        "title": "Open dev space in vscode",
-        "category": "SAP Business Application Studio"
-      },
-      {
-        "command": "local-extension.dev-space.start",
-        "title": "Start dev space",
-        "icon": "$(play)"
-      },
-      {
-        "command": "local-extension.dev-space.stop",
-        "title": "Stop dev space",
-        "icon": "$(debug-stop)"
-      },
-      {
-        "command": "local-extension.dev-space.delete",
-        "title": "Delete dev space"
-      },
-      {
-        "command": "local-extension.dev-space.edit",
-        "title": "Edit dev space extensions"
-      },
-      {
-        "command": "local-extension.login",
-        "title": "Log in",
-        "icon": {
-          "light": "resources/devspace/login.svg",
-          "dark": "resources/devspace/login.svg"
-        }
-      },
-      {
-        "command": "app-studio-toolkit.devspace-manager.landscape.default-on",
-        "title": "Set as default landscape",
-        "icon": "$(vm-outline)"
-      },
-      {
-        "command": "app-studio-toolkit.devspace-manager.landscape.default-off",
-        "title": "Remove as default landscape",
-        "icon": "$(vm-active)"
-      },
-      {
-        "command": "app-studio-toolkit.devspace-manager.get-default-landscape",
-        "title": "Returns the landscape marked as the default"
-      }
-    ],
-    "configuration": [
-      {
-        "properties": {
-          "actions": {
-            "type": "array",
-            "scope": "resource"
-          },
-          "app-studio-toolkit.logging.level": {
-            "type": "string",
-            "enum": [
-              "off",
-              "fatal",
-              "error",
-              "warn",
-              "info",
-              "debug",
-              "trace"
-            ],
-            "default": "error",
-            "description": "The verbosity of logging. The Order is off < fatal < error < warn < info < debug < trace.",
-            "scope": "window"
-          },
-          "app-studio-toolkit.logging.sourceLocationTracking": {
-            "type": "boolean",
-            "default": false,
-            "description": "Should Source Code Location Info be added to log entries, DANGER - May be very slow, only use in debugging scenarios",
-            "scope": "window"
-          },
-          "sapbas.telemetryEnabled": {
-            "type": "boolean",
-            "default": true,
-            "description": "Enable collecting usage analytics data of SAP Business Application Studio related extensions. If enabled, non-personally identifiable information is used to help understand the product usage and improve the tool."
-          }
-        }
-      },
-      {
-        "title": "Business Application Studio Desktop Client",
-        "properties": {
-          "sap-remote.landscape-name": {
-            "type": "string",
-            "title": "Business Application Studio Desktop Client",
-            "default": "",
-            "description": "Landscape: the landscape to connect",
-            "scope": "window"
-          }
-        }
-      }
-    ],
-    "menus": {
-      "view/title": [
-        {
-          "command": "local-extension.landscape.add",
-          "when": "view == dev-spaces",
-          "group": "navigation"
-        },
-        {
-          "command": "local-extension.tree.refresh",
-          "when": "view == dev-spaces",
-          "group": "navigation"
-        },
-        {
-          "command": "local-extension.tree.settings",
-          "when": "view == dev-spaces"
-        }
-      ],
-      "commandPalette": [
-        {
-          "when": "false",
-          "command": "app-studio-toolkit.devspace-manager.get-default-landscape"
-        },
-        {
-          "when": "false",
-          "command": "app-studio-toolkit.devspace-manager.landscape.default-on"
-        },
-        {
-          "when": "false",
-          "command": "app-studio-toolkit.devspace-manager.landscape.default-off"
-        },
-        {
-          "when": "false",
-          "command": "local-extension.landscape.add"
-        },
-        {
-          "when": "false",
-          "command": "local-extension.landscape.set"
-        },
-        {
-          "when": "false",
-          "command": "local-extension.landscape.delete"
-        },
-        {
-          "when": "false",
-          "command": "local-extension.landscape.open-dev-space-manager"
-        },
-        {
-          "when": "false",
-          "command": "local-extension.tree.refresh"
-        },
-        {
-          "when": "false",
-          "command": "local-extension.tree.settings"
-        },
-        {
-          "when": "false",
-          "command": "local-extension.dev-space.start"
-        },
-        {
-          "when": "false",
-          "command": "local-extension.dev-space.stop"
-        },
-        {
-          "when": "false",
-          "command": "local-extension.dev-space.delete"
-        },
-        {
-          "when": "false",
-          "command": "local-extension.dev-space.edit"
-        },
-        {
-          "when": "false",
-          "command": "local-extension.dev-space.open-in-bas"
-        },
-        {
-          "when": "isWeb",
-          "command": "local-extension.dev-space.open-in-code"
-        },
-        {
-          "when": "false",
-          "command": "local-extension.dev-space.copy-ws-id"
-        },
-        {
-          "when": "false",
-          "command": "local-extension.dev-space.connect-same-window"
-        },
-        {
-          "when": "false",
-          "command": "local-extension.dev-space.connect-new-window"
-        },
-        {
-          "when": "false",
-          "command": "local-extension.dev-space.add"
-        },
-        {
-          "when": "false",
-          "command": "local-extension.login"
-        }
-      ],
-      "view/item/context": [
-        {
-          "command": "local-extension.dev-space.copy-ws-id",
-          "when": "view == dev-spaces && viewItem =~ /.*dev-space-.*/"
-        },
-        {
-          "command": "local-extension.dev-space.connect-same-window",
-          "when": "view == hide_dev-spaces && viewItem == dev-space-running"
-        },
-        {
-          "command": "local-extension.dev-space.connect-new-window",
-          "when": "view == dev-spaces && viewItem == dev-space-running",
-          "group": "inline"
-        },
-        {
-          "command": "local-extension.dev-space.open-in-bas",
-          "when": "view == dev-spaces && viewItem == dev-space-running"
-        },
-        {
-          "command": "local-extension.dev-space.start",
-          "when": "view == dev-spaces && viewItem == dev-space-stopped",
-          "group": "inline"
-        },
-        {
-          "command": "local-extension.dev-space.stop",
-          "when": "view == dev-spaces && viewItem == dev-space-running",
-          "group": "inline"
-        },
-        {
-          "command": "local-extension.dev-space.edit",
-          "when": "view == hide_dev-spaces && viewItem == dev-space-stopped"
-        },
-        {
-          "command": "local-extension.dev-space.delete",
-          "when": "view == dev-spaces && viewItem =~ /.*dev-space.*/ && viewItem =~ /.*transitioning|running|stopped|not-desktop-compatible.*/"
-        },
-        {
-          "command": "local-extension.dev-space.add",
-          "when": "view == hide_dev-spaces && viewItem =~ /.*landscape-log-in.*/",
-          "group": "inline"
-        },
-        {
-          "command": "local-extension.landscape.open-dev-space-manager",
-          "when": "view == dev-spaces && viewItem =~ /landscape-log-in/"
-        },
-        {
-          "command": "local-extension.landscape.delete",
-          "when": "view == dev-spaces && viewItem =~ /landscape/"
-        },
-        {
-          "command": "local-extension.login",
-          "when": "view == dev-spaces && viewItem =~ /.*landscape-log-out.*/",
-          "group": "inline@2"
-        },
-        {
-          "command": "app-studio-toolkit.devspace-manager.landscape.default-on",
-          "when": "view == dev-spaces && viewItem =~ /.*landscape-.*default-off.*/",
-          "group": "inline@1"
-        },
-        {
-          "command": "app-studio-toolkit.devspace-manager.landscape.default-off",
-          "when": "view == dev-spaces && viewItem =~ /.*landscape-.*default-on.*/",
-          "group": "inline@1"
-        }
-      ]
-    },
-    "views": {
-      "BAS": [
-        {
-          "id": "dev-spaces",
-          "name": "Dev Spaces",
-          "when": "ext.runPlatform =~ /desktop/"
-        }
-      ]
-    },
-    "viewsContainers": {
-      "activitybar": [
-        {
-          "id": "BAS",
-          "title": "Business Application Studio Desktop Client",
-          "icon": "resources/common/pane.svg"
-        }
-      ]
-    },
-    "viewsWelcome": [
-      {
-        "view": "dev-spaces",
-        "contents": "You haven’t connected to SAP Business Application Studio landscapes\n[Connect Landscape](command:local-extension.landscape.set)\nHow to connect Dev Space [user guide](https://github.com/SAP/app-studio-toolkit/blob/main/packages/app-studio-toolkit/README.md)"
-      }
-    ]
-  },
-  "activationEvents": [
-    "*"
-  ],
-  "dependencies": {
-    "@sap/artifact-management": "1.48.0",
-    "@sap/bas-sdk": "3.11.4",
-    "@vscode-logging/wrapper": "2.0.0",
-    "applicationinsights": "2.9.6",
-    "axios": "1.8.2",
-    "body-parser": "1.20.3",
-    "cors": "2.8.5",
-    "express": "4.20.0",
-    "http-terminator": "3.2.0",
-    "lodash": "4.17.21",
-    "ssh-config": "4.2.1",
-    "ts-enum-util": "4.0.2",
-    "url-join": "4.0.1",
-    "uuid": "9.0.1",
-    "websocket": "1.0.34"
-  },
-  "devDependencies": {
-    "@sap-devx/app-studio-toolkit-types": "workspace:*",
-    "@types/body-parser": "1.19.5",
-    "@types/cors": "2.8.13",
-    "@types/express": "4.17.17",
-    "@types/http-terminator": "2.0.5",
-    "@types/proxyquire": "1.3.28",
-    "@types/url-join": "4.0.1",
-    "@types/uuid": "9.0.8",
-    "@types/websocket": "1.0.5",
-    "@vscode-logging/types": "0.1.4",
-    "copy-webpack-plugin": "11.0.0",
-    "fs-extra": "11.1.1",
-    "mock-require": "3.0.3",
-    "p-defer": "3.0.0",
-    "string-replace-loader": "3.1.0",
-    "ts-loader": "9.4.2"
-  },
-  "extensionPack": [
-    "SAPOSS.app-studio-remote-access"
-  ],
-  "engines": {
-    "vscode": "^1.76.0"
-  },
-  "icon": "icon.png"
+	"name": "app-studio-toolkit",
+	"displayName": "SAP Business Application Studio toolkit",
+	"version": "2.10.1",
+	"private": true,
+	"description": "Includes essential capabilities that will improve your SAP Business Application Studio development experience, making it easier and faster.",
+	"categories": [
+		"Other"
+	],
+	"keywords": [
+		"BAS",
+		"Remote",
+		"SAP"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/SAP/app-studio-toolkit",
+		"directory": "packages/app-studio-toolkit"
+	},
+	"license": "Apache-2.0",
+	"publisher": "SAPOSS",
+	"main": "./dist/src/extension",
+	"scripts": {
+		"bundle": "webpack --mode production",
+		"ci": "npm-run-all clean compile coverage bundle package",
+		"clean": "rimraf ./dist *.vsix ./.nyc_output",
+		"compile": "tsc -p ./",
+		"coverage": "nyc mocha",
+		"package": "node ./scripts/package-vsix.js",
+		"test": "mocha"
+	},
+	"contributes": {
+		"authentication": [
+			{
+				"id": "baslandscapepat",
+				"label": "SAP BAS"
+			}
+		],
+		"commands": [
+			{
+				"command": "project-api.command.run",
+				"title": "Run a specific command of Project API"
+			},
+			{
+				"command": "local-extension.tree.refresh",
+				"title": "Refresh",
+				"icon": "$(refresh)"
+			},
+			{
+				"command": "local-extension.tree.settings",
+				"title": "Settings"
+			},
+			{
+				"command": "local-extension.landscape.set",
+				"title": "Set landscape"
+			},
+			{
+				"command": "local-extension.landscape.add",
+				"title": "Add landscape",
+				"icon": "$(add)"
+			},
+			{
+				"command": "local-extension.landscape.delete",
+				"title": "Remove landscape"
+			},
+			{
+				"command": "local-extension.landscape.open-dev-space-manager",
+				"title": "Open dev space manager in browser"
+			},
+			{
+				"command": "local-extension.dev-space.add",
+				"title": "Add dev space",
+				"icon": "$(add)"
+			},
+			{
+				"command": "local-extension.dev-space.connect-new-window",
+				"title": "Open in new window",
+				"icon": "$(empty-window)"
+			},
+			{
+				"command": "local-extension.dev-space.connect-same-window",
+				"title": "Open in same window"
+			},
+			{
+				"command": "local-extension.dev-space.copy-ws-id",
+				"title": "Copy ws id to clipboard"
+			},
+			{
+				"command": "local-extension.dev-space.open-in-bas",
+				"title": "Open dev space in SAP Business application studio"
+			},
+			{
+				"command": "local-extension.dev-space.open-in-code",
+				"title": "Open dev space in vscode",
+				"category": "SAP Business Application Studio"
+			},
+			{
+				"command": "local-extension.dev-space.start",
+				"title": "Start dev space",
+				"icon": "$(play)"
+			},
+			{
+				"command": "local-extension.dev-space.stop",
+				"title": "Stop dev space",
+				"icon": "$(debug-stop)"
+			},
+			{
+				"command": "local-extension.dev-space.delete",
+				"title": "Delete dev space"
+			},
+			{
+				"command": "local-extension.dev-space.edit",
+				"title": "Edit dev space extensions"
+			},
+			{
+				"command": "local-extension.login",
+				"title": "Log in",
+				"icon": {
+					"light": "resources/devspace/login.svg",
+					"dark": "resources/devspace/login.svg"
+				}
+			},
+			{
+				"command": "app-studio-toolkit.devspace-manager.landscape.default-on",
+				"title": "Set as default landscape",
+				"icon": "$(vm-outline)"
+			},
+			{
+				"command": "app-studio-toolkit.devspace-manager.landscape.default-off",
+				"title": "Remove as default landscape",
+				"icon": "$(vm-active)"
+			},
+			{
+				"command": "app-studio-toolkit.devspace-manager.get-default-landscape",
+				"title": "Returns the landscape marked as the default"
+			}
+		],
+		"configuration": [
+			{
+				"properties": {
+					"actions": {
+						"type": "array",
+						"scope": "resource"
+					},
+					"app-studio-toolkit.logging.level": {
+						"type": "string",
+						"enum": [
+							"off",
+							"fatal",
+							"error",
+							"warn",
+							"info",
+							"debug",
+							"trace"
+						],
+						"default": "error",
+						"description": "The verbosity of logging. The Order is off < fatal < error < warn < info < debug < trace.",
+						"scope": "window"
+					},
+					"app-studio-toolkit.logging.sourceLocationTracking": {
+						"type": "boolean",
+						"default": false,
+						"description": "Should Source Code Location Info be added to log entries, DANGER - May be very slow, only use in debugging scenarios",
+						"scope": "window"
+					},
+					"sapbas.telemetryEnabled": {
+						"type": "boolean",
+						"default": true,
+						"description": "Enable collecting usage analytics data of SAP Business Application Studio related extensions. If enabled, non-personally identifiable information is used to help understand the product usage and improve the tool."
+					}
+				}
+			},
+			{
+				"title": "Business Application Studio Desktop Client",
+				"properties": {
+					"sap-remote.landscape-name": {
+						"type": "string",
+						"title": "Business Application Studio Desktop Client",
+						"default": "",
+						"description": "Landscape: the landscape to connect",
+						"scope": "window"
+					}
+				}
+			}
+		],
+		"menus": {
+			"view/title": [
+				{
+					"command": "local-extension.landscape.add",
+					"when": "view == dev-spaces",
+					"group": "navigation"
+				},
+				{
+					"command": "local-extension.tree.refresh",
+					"when": "view == dev-spaces",
+					"group": "navigation"
+				},
+				{
+					"command": "local-extension.tree.settings",
+					"when": "view == dev-spaces"
+				}
+			],
+			"commandPalette": [
+				{
+					"when": "false",
+					"command": "app-studio-toolkit.devspace-manager.get-default-landscape"
+				},
+				{
+					"when": "false",
+					"command": "app-studio-toolkit.devspace-manager.landscape.default-on"
+				},
+				{
+					"when": "false",
+					"command": "app-studio-toolkit.devspace-manager.landscape.default-off"
+				},
+				{
+					"when": "false",
+					"command": "local-extension.landscape.add"
+				},
+				{
+					"when": "false",
+					"command": "local-extension.landscape.set"
+				},
+				{
+					"when": "false",
+					"command": "local-extension.landscape.delete"
+				},
+				{
+					"when": "false",
+					"command": "local-extension.landscape.open-dev-space-manager"
+				},
+				{
+					"when": "false",
+					"command": "local-extension.tree.refresh"
+				},
+				{
+					"when": "false",
+					"command": "local-extension.tree.settings"
+				},
+				{
+					"when": "false",
+					"command": "local-extension.dev-space.start"
+				},
+				{
+					"when": "false",
+					"command": "local-extension.dev-space.stop"
+				},
+				{
+					"when": "false",
+					"command": "local-extension.dev-space.delete"
+				},
+				{
+					"when": "false",
+					"command": "local-extension.dev-space.edit"
+				},
+				{
+					"when": "false",
+					"command": "local-extension.dev-space.open-in-bas"
+				},
+				{
+					"when": "isWeb",
+					"command": "local-extension.dev-space.open-in-code"
+				},
+				{
+					"when": "false",
+					"command": "local-extension.dev-space.copy-ws-id"
+				},
+				{
+					"when": "false",
+					"command": "local-extension.dev-space.connect-same-window"
+				},
+				{
+					"when": "false",
+					"command": "local-extension.dev-space.connect-new-window"
+				},
+				{
+					"when": "false",
+					"command": "local-extension.dev-space.add"
+				},
+				{
+					"when": "false",
+					"command": "local-extension.login"
+				}
+			],
+			"view/item/context": [
+				{
+					"command": "local-extension.dev-space.copy-ws-id",
+					"when": "view == dev-spaces && viewItem =~ /.*dev-space-.*/"
+				},
+				{
+					"command": "local-extension.dev-space.connect-same-window",
+					"when": "view == hide_dev-spaces && viewItem == dev-space-running"
+				},
+				{
+					"command": "local-extension.dev-space.connect-new-window",
+					"when": "view == dev-spaces && viewItem == dev-space-running",
+					"group": "inline"
+				},
+				{
+					"command": "local-extension.dev-space.open-in-bas",
+					"when": "view == dev-spaces && viewItem == dev-space-running"
+				},
+				{
+					"command": "local-extension.dev-space.start",
+					"when": "view == dev-spaces && viewItem == dev-space-stopped",
+					"group": "inline"
+				},
+				{
+					"command": "local-extension.dev-space.stop",
+					"when": "view == dev-spaces && viewItem == dev-space-running",
+					"group": "inline"
+				},
+				{
+					"command": "local-extension.dev-space.edit",
+					"when": "view == hide_dev-spaces && viewItem == dev-space-stopped"
+				},
+				{
+					"command": "local-extension.dev-space.delete",
+					"when": "view == dev-spaces && viewItem =~ /.*dev-space.*/ && viewItem =~ /.*transitioning|running|stopped|not-desktop-compatible.*/"
+				},
+				{
+					"command": "local-extension.dev-space.add",
+					"when": "view == hide_dev-spaces && viewItem =~ /.*landscape-log-in.*/",
+					"group": "inline"
+				},
+				{
+					"command": "local-extension.landscape.open-dev-space-manager",
+					"when": "view == dev-spaces && viewItem =~ /landscape-log-in/"
+				},
+				{
+					"command": "local-extension.landscape.delete",
+					"when": "view == dev-spaces && viewItem =~ /landscape/"
+				},
+				{
+					"command": "local-extension.login",
+					"when": "view == dev-spaces && viewItem =~ /.*landscape-log-out.*/",
+					"group": "inline@2"
+				},
+				{
+					"command": "app-studio-toolkit.devspace-manager.landscape.default-on",
+					"when": "view == dev-spaces && viewItem =~ /.*landscape-.*default-off.*/",
+					"group": "inline@1"
+				},
+				{
+					"command": "app-studio-toolkit.devspace-manager.landscape.default-off",
+					"when": "view == dev-spaces && viewItem =~ /.*landscape-.*default-on.*/",
+					"group": "inline@1"
+				}
+			]
+		},
+		"views": {
+			"BAS": [
+				{
+					"id": "dev-spaces",
+					"name": "Dev Spaces",
+					"when": "ext.runPlatform =~ /desktop/"
+				}
+			]
+		},
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "BAS",
+					"title": "Business Application Studio Desktop Client",
+					"icon": "resources/common/pane.svg"
+				}
+			]
+		},
+		"viewsWelcome": [
+			{
+				"view": "dev-spaces",
+				"contents": "You haven’t connected to SAP Business Application Studio landscapes\n[Connect Landscape](command:local-extension.landscape.set)\nHow to connect Dev Space [user guide](https://github.com/SAP/app-studio-toolkit/blob/main/packages/app-studio-toolkit/README.md)"
+			}
+		]
+	},
+	"activationEvents": [
+		"*"
+	],
+	"dependencies": {
+		"@sap/artifact-management": "1.48.0",
+		"@sap/bas-sdk": "3.11.4",
+		"@vscode-logging/wrapper": "2.0.0",
+		"applicationinsights": "2.9.6",
+		"axios": "1.8.2",
+		"body-parser": "1.20.3",
+		"cors": "2.8.5",
+		"express": "4.20.0",
+		"http-terminator": "3.2.0",
+		"lodash": "4.17.23",
+		"ssh-config": "4.2.1",
+		"ts-enum-util": "4.0.2",
+		"url-join": "4.0.1",
+		"uuid": "9.0.1",
+		"websocket": "1.0.34"
+	},
+	"devDependencies": {
+		"@sap-devx/app-studio-toolkit-types": "workspace:*",
+		"@types/body-parser": "1.19.5",
+		"@types/cors": "2.8.13",
+		"@types/express": "4.17.17",
+		"@types/http-terminator": "2.0.5",
+		"@types/proxyquire": "1.3.28",
+		"@types/url-join": "4.0.1",
+		"@types/uuid": "9.0.8",
+		"@types/websocket": "1.0.5",
+		"@vscode-logging/types": "0.1.4",
+		"copy-webpack-plugin": "11.0.0",
+		"fs-extra": "11.1.1",
+		"mock-require": "3.0.3",
+		"p-defer": "3.0.0",
+		"string-replace-loader": "3.1.0",
+		"ts-loader": "9.4.2"
+	},
+	"extensionPack": [
+		"SAPOSS.app-studio-remote-access"
+	],
+	"engines": {
+		"vscode": "^1.76.0"
+	},
+	"icon": "icon.png"
 }

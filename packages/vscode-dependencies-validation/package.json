@@ -1,89 +1,89 @@
 {
-  "name": "vscode-dependencies-validation",
-  "displayName": "NPM Dependencies Validation",
-  "version": "3.0.1",
-  "private": true,
-  "description": "Diagnostics and quick-fixes for NPM dependencies issues for VSCode",
-  "categories": [
-    "Other"
-  ],
-  "engines": {
-    "vscode": "^1.50.0"
-  },
-  "license": "Apache-2.0",
-  "publisher": "SAPOSS",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/SAP/app-studio-toolkit",
-    "directory": "packages/vscode-dependencies-validation"
-  },
-  "main": "./dist/src/extension",
-  "activationEvents": [
-    "onStartupFinished"
-  ],
-  "contributes": {
-    "configuration": {
-      "title": "NPM Dependency Validation",
-      "properties": {
-        "dependenciesValidation.enableAutoFix": {
-          "type": "boolean",
-          "default": false,
-          "description": "Enables the automatic fixing of dependency misalignment"
-        },
-        "dependenciesValidation.delayAutoFix": {
-          "type": "number",
-          "default": 10,
-          "description": "Delay (in seconds) for the automatic fixing of dependency misalignment on startup"
-        },
-        "dependenciesValidation.logging.level": {
-          "type": "string",
-          "enum": [
-            "off",
-            "fatal",
-            "error",
-            "warn",
-            "info",
-            "debug",
-            "trace"
-          ],
-          "default": "error",
-          "description": "The verbosity of logging. The Order is off < fatal < error < warn < info < debug < trace.",
-          "scope": "window"
-        },
-        "dependenciesValidation.logging.sourceLocationTracking": {
-          "type": "boolean",
-          "default": false,
-          "description": "If chosen, the location of the source code is added to log entries. Warning - this action may slow your extension. We recommend you use it only for debugging.",
-          "scope": "window"
-        }
-      }
-    }
-  },
-  "scripts": {
-    "ci": "npm-run-all clean compile coverage bundle package",
-    "clean": "rimraf ./dist *.vsix ./coverage ./.nyc_output",
-    "compile": "tsc -p ./",
-    "watch": "tsc -p ./ --watch",
-    "test": "mocha",
-    "coverage": "nyc mocha",
-    "bundle": "webpack --mode production",
-    "package": "node ./scripts/package-vsix.js"
-  },
-  "dependencies": {
-    "@sap-devx/npm-dependencies-validation": "workspace:*",
-    "@vscode-logging/wrapper": "2.0.0",
-    "fs-extra": "10.0.0",
-    "jsonc-parser": "3.0.0",
-    "lodash": "4.17.21",
-    "ts-essentials": "9.1.2",
-    "vscode-languageserver-textdocument": "1.0.4"
-  },
-  "devDependencies": {
-    "@types/fs-extra": "9.0.13",
-    "@types/proxyquire": "1.3.28",
-    "@vscode-logging/types": "2.0.0",
-    "jest-mock-vscode": "^0.1.3",
-    "proxyquire": "2.1.3",
-    "vscode-uri": "3.0.3"
-  }
+	"name": "vscode-dependencies-validation",
+	"displayName": "NPM Dependencies Validation",
+	"version": "3.0.1",
+	"private": true,
+	"description": "Diagnostics and quick-fixes for NPM dependencies issues for VSCode",
+	"categories": [
+		"Other"
+	],
+	"engines": {
+		"vscode": "^1.50.0"
+	},
+	"license": "Apache-2.0",
+	"publisher": "SAPOSS",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/SAP/app-studio-toolkit",
+		"directory": "packages/vscode-dependencies-validation"
+	},
+	"main": "./dist/src/extension",
+	"activationEvents": [
+		"onStartupFinished"
+	],
+	"contributes": {
+		"configuration": {
+			"title": "NPM Dependency Validation",
+			"properties": {
+				"dependenciesValidation.enableAutoFix": {
+					"type": "boolean",
+					"default": false,
+					"description": "Enables the automatic fixing of dependency misalignment"
+				},
+				"dependenciesValidation.delayAutoFix": {
+					"type": "number",
+					"default": 10,
+					"description": "Delay (in seconds) for the automatic fixing of dependency misalignment on startup"
+				},
+				"dependenciesValidation.logging.level": {
+					"type": "string",
+					"enum": [
+						"off",
+						"fatal",
+						"error",
+						"warn",
+						"info",
+						"debug",
+						"trace"
+					],
+					"default": "error",
+					"description": "The verbosity of logging. The Order is off < fatal < error < warn < info < debug < trace.",
+					"scope": "window"
+				},
+				"dependenciesValidation.logging.sourceLocationTracking": {
+					"type": "boolean",
+					"default": false,
+					"description": "If chosen, the location of the source code is added to log entries. Warning - this action may slow your extension. We recommend you use it only for debugging.",
+					"scope": "window"
+				}
+			}
+		}
+	},
+	"scripts": {
+		"ci": "npm-run-all clean compile coverage bundle package",
+		"clean": "rimraf ./dist *.vsix ./coverage ./.nyc_output",
+		"compile": "tsc -p ./",
+		"watch": "tsc -p ./ --watch",
+		"test": "mocha",
+		"coverage": "nyc mocha",
+		"bundle": "webpack --mode production",
+		"package": "node ./scripts/package-vsix.js"
+	},
+	"dependencies": {
+		"@sap-devx/npm-dependencies-validation": "workspace:*",
+		"@vscode-logging/wrapper": "2.0.0",
+		"fs-extra": "10.0.0",
+		"jsonc-parser": "3.0.0",
+		"lodash": "4.17.23",
+		"ts-essentials": "9.1.2",
+		"vscode-languageserver-textdocument": "1.0.4"
+	},
+	"devDependencies": {
+		"@types/fs-extra": "9.0.13",
+		"@types/proxyquire": "1.3.28",
+		"@vscode-logging/types": "2.0.0",
+		"jest-mock-vscode": "^0.1.3",
+		"proxyquire": "2.1.3",
+		"vscode-uri": "3.0.3"
+	}
 }
