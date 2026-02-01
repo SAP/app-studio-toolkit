@@ -26,7 +26,7 @@ describe("convertToDiagnostics() function", () => {
       "name": "inline-pkg-json",
       "version": "1.0.0",
       "dependencies": {
-        "lodash": "~4.17.21"
+        "lodash": "4.17.23"
       },
       "devDependencies": {
         "mocha": "^5.0.0"
