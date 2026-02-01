@@ -67,7 +67,7 @@ describe("convertToDiagnostics() function", () => {
             },
             _end: {
               _line: 4,
-              _character: 19,
+              _character: 18,
             },
           },
           code: "npm_dependency_issues",
@@ -145,7 +145,7 @@ describe("convertToDiagnostics() function", () => {
             },
             _end: {
               _line: 4,
-              _character: 19,
+              _character: 18,
             },
           },
           code: "npm_dependency_issues",
