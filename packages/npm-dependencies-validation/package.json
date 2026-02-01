@@ -1,42 +1,42 @@
 {
-	"name": "@sap-devx/npm-dependencies-validation",
-	"version": "3.0.1",
-	"private": true,
-	"description": "Detects NPM dependencies issues",
-	"author": "SAP SE",
-	"license": "Apache-2.0",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/SAP/app-studio-toolkit",
-		"directory": "packages/npm-dependencies-validation"
-	},
-	"main": "./dist/src/api",
-	"types": "./dist/src/api.d.ts",
-	"files": [
-		".reuse",
-		"LICENSES",
-		"README.md",
-		"CHANGELOG.md",
-		"CHANGELOG.old.md",
-		"dist/src/**/*.js",
-		"dist/src/**/*.js.map",
-		"src/**/*.ts"
-	],
-	"scripts": {
-		"ci": "npm-run-all clean compile coverage",
-		"clean": "rimraf ./dist ./coverage ./.nyc_output",
-		"compile": "tsc -p ./",
-		"test": "mocha",
-		"coverage": "nyc mocha"
-	},
-	"dependencies": {
-		"fs-extra": "10.0.0",
-		"lodash": "4.17.23",
-		"semver": "7.6.3"
-	},
-	"devDependencies": {
-		"@types/fs-extra": "9.0.13",
-		"@types/semver": "7.5.8",
-		"type-fest": "2.11.1"
-	}
+  "name": "@sap-devx/npm-dependencies-validation",
+  "version": "3.0.1",
+  "private": true,
+  "description": "Detects NPM dependencies issues",
+  "author": "SAP SE",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/app-studio-toolkit",
+    "directory": "packages/npm-dependencies-validation"
+  },
+  "main": "./dist/src/api",
+  "types": "./dist/src/api.d.ts",
+  "files": [
+    ".reuse",
+    "LICENSES",
+    "README.md",
+    "CHANGELOG.md",
+    "CHANGELOG.old.md",
+    "dist/src/**/*.js",
+    "dist/src/**/*.js.map",
+    "src/**/*.ts"
+  ],
+  "scripts": {
+    "ci": "npm-run-all clean compile coverage",
+    "clean": "rimraf ./dist ./coverage ./.nyc_output",
+    "compile": "tsc -p ./",
+    "test": "mocha",
+    "coverage": "nyc mocha"
+  },
+  "dependencies": {
+    "fs-extra": "10.0.0",
+    "lodash": "4.17.23",
+    "semver": "7.6.3"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "9.0.13",
+    "@types/semver": "7.5.8",
+    "type-fest": "2.11.1"
+  }
 }
