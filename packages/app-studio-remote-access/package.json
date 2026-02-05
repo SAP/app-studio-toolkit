@@ -95,7 +95,7 @@
     "@microsoft/dev-tunnels-ssh": "3.11.2",
     "@microsoft/dev-tunnels-ssh-keys": "3.11.2",
     "@microsoft/dev-tunnels-ssh-tcp": "3.11.2",
-    "@sap/bas-sdk": "3.11.4",
+    "@sap/bas-sdk": "3.13.2",
     "@vscode-logging/wrapper": "2.0.0",
     "lodash": "4.17.23",
     "ssh-config": "4.2.1",
