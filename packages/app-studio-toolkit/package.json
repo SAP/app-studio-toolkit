@@ -377,8 +377,8 @@
     "*"
   ],
   "dependencies": {
-    "@sap/artifact-management": "1.48.0",
-    "@sap/bas-sdk": "3.11.4",
+    "@sap/artifact-management": "1.49.0",
+    "@sap/bas-sdk": "3.13.2",
     "@vscode-logging/wrapper": "2.0.0",
     "applicationinsights": "2.9.6",
     "axios": "1.8.2",
@@ -386,7 +386,7 @@
     "cors": "2.8.5",
     "express": "4.20.0",
     "http-terminator": "3.2.0",
-    "lodash": "4.17.21",
+    "lodash": "4.17.23",
     "ssh-config": "4.2.1",
     "ts-enum-util": "4.0.2",
     "url-join": "4.0.1",
