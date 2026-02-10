@@ -88,7 +88,7 @@
   ],
   "dependencies": {
     "@sap-devx/feature-toggle-node": "2.0.3",
-    "@sap/bas-sdk": "3.11.6",
+    "@sap/bas-sdk": "3.13.2",
     "@vscode-logging/wrapper": "2.0.0",
     "fs-extra": "11.3.0"
   },
