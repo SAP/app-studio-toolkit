@@ -1,5 +1,15 @@
 # app-studio-toolkit
 
+## 2.11.0
+
+### Minor Changes
+
+- ab53b1e: remote desktop client -> open settings command key filter updated
+
+### Patch Changes
+
+- cc4e59c: upgrade lodash to 4.17.23
+
 ## 2.10.1
 
 ## 2.10.0

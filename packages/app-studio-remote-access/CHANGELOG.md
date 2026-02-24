@@ -1,5 +1,11 @@
 # app-studio-remote-access
 
+## 4.1.1
+
+### Patch Changes
+
+- cc4e59c: upgrade lodash to 4.17.23
+
 ## 4.1.0
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # vscode-disk-usage
 
+## 2.3.1
+
+### Patch Changes
+
+- cc4e59c: upgrade lodash to 4.17.23
+
 ## 2.3.0
 
 ### Minor Changes

@@ -1,5 +1,7 @@
 # sample-action-client
 
+## 2.11.0
+
 ## 2.10.1
 
 ### Patch Changes
