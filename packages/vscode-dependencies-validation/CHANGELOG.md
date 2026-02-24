@@ -1,5 +1,13 @@
 # vscode-dependencies-validation
 
+## 3.0.2
+
+### Patch Changes
+
+- cc4e59c: upgrade lodash to 4.17.23
+- Updated dependencies [cc4e59c]
+  - @sap-devx/npm-dependencies-validation@3.0.2
+
 ## 3.0.1
 
 ### Patch Changes
