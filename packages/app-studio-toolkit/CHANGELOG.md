@@ -1,5 +1,11 @@
 # app-studio-toolkit
 
+## 2.11.1
+
+### Patch Changes
+
+- 589dceb: bumping @sap/artifact-management dependency to 1.53.1
+
 ## 2.11.0
 
 ### Minor Changes
