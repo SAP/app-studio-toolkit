@@ -201,8 +201,8 @@ importers:
   packages/app-studio-toolkit:
     dependencies:
       '@sap/artifact-management':
-        specifier: 1.53.1
-        version: 1.53.1(bufferutil@4.0.7)(utf-8-validate@5.0.10)
+        specifier: 1.53.2
+        version: 1.53.2(bufferutil@4.0.7)(utf-8-validate@5.0.10)
       '@sap/bas-sdk':
         specifier: 3.13.2
         version: 3.13.2(bufferutil@4.0.7)(utf-8-validate@5.0.10)
@@ -300,8 +300,8 @@ importers:
   packages/app-studio-toolkit-types:
     dependencies:
       '@sap/artifact-management-types':
-        specifier: 1.53.1
-        version: 1.53.1
+        specifier: 1.53.2
+        version: 1.53.2
       '@types/vscode':
         specifier: 1.75.0
         version: 1.75.0
@@ -1138,34 +1138,34 @@ packages:
     resolution: {integrity: sha512-OxdJigAFybeZH9Uxm14EXp0NAb+pWzU4U0CvttJgmrRx+NL1loL0/o8gb/Vqk8wHAtNTqXjhz7GvLZ4tfDjUrA==}
     engines: {node: '>=14.21.2'}
 
-  '@sap/artifact-management-base-types@1.53.1':
-    resolution: {integrity: sha512-lTUVaL4yoUvK9mtOyyPfgCz7gaTou+Mdq9BmbSY01TYJm1f5OblthA6kPHIlkLt3PKXavFxZDR68EPs2mG/KwA==}
+  '@sap/artifact-management-base-types@1.53.2':
+    resolution: {integrity: sha512-2bKF8Ns4vdPAEDCApdFXf9qaAN1XtvOvOhQyiYMeeG1KSTvnvHmeCVw0QPF1nvTOI+i8lOy/r0no5k0+fDoFlw==}
 
-  '@sap/artifact-management-base@1.53.1':
-    resolution: {integrity: sha512-WzxZzOcgs/cBGmUVg/t8acVzZ94RzqCJpyxrJRsDCXEDt13enaJuGOt1QX5E6KpjkF1hLDsd/w0l8mCYrdlViA==}
+  '@sap/artifact-management-base@1.53.2':
+    resolution: {integrity: sha512-8lGQRHF5vvEzRGuCRPcZLsU60I7oLkkmtFg9yuS6u2YK9Zc9PUpJpkjH2vw95dZBi4ojW/KsVNvG7fF4NQhGOQ==}
     engines: {node: '>=14.14.0'}
 
-  '@sap/artifact-management-fioriplugin@1.53.1':
-    resolution: {integrity: sha512-1HB3BS0axMLuUVwjaAQCHvvIo/hvkeli8ZVYETtvCIWwydsWB3uSDJKZjqwGwrSdiHMlHQAbialf0kcnmfdKHQ==}
+  '@sap/artifact-management-fioriplugin@1.53.2':
+    resolution: {integrity: sha512-qvrXRm91xvUhFMgbAjBN5EjBxxcDZLRKpWte4MuaIGVo9Fu9YeTZp80mwwk5CFtO+WkNDKbdNsKXF9DhKVJ09w==}
 
-  '@sap/artifact-management-hanaplugin@1.53.1':
-    resolution: {integrity: sha512-CCs7MJ0cflP7YBcpdW3fz4y3hiroAi012r6GOGL2qIizdgxRGP6anN1rn/m4tKyf4Yx8+psy+DNwiCky8eVezg==}
+  '@sap/artifact-management-hanaplugin@1.53.2':
+    resolution: {integrity: sha512-tOWEkkP/2SSBhMi6lt0Gy+7RSsAZV8f25q5slCxIRX+SPQk9ne+h0MwzOnAWb9YUhOlXXrCqReHn5jip3L9DAA==}
 
-  '@sap/artifact-management-mdkplugin@1.53.1':
-    resolution: {integrity: sha512-rPyGAnWpW1EIerBrWwgYLD/8Bm7uYUFZf2TEtAXfkJNDd/6XakPU5RuN+X/TnH8xUitoHY1A8fzUOauU9/O9gA==}
+  '@sap/artifact-management-mdkplugin@1.53.2':
+    resolution: {integrity: sha512-SLFZEiBw+4Zno9AIlk7I+bmQahhx+rNW7i1PkjLz9BbatjsSGvcpoFUxo0l0t/b/+43SQy+R/Wnwm+zWm+sjZw==}
 
-  '@sap/artifact-management-types@1.53.1':
-    resolution: {integrity: sha512-IVgUV3IwthdpHpe1ua853Z0VMd0PPGc3VEFwKJcmokcgkItC2CkELu9aaxPO7vqDz+Vzf0hx8i63EVvC+FBxMg==}
+  '@sap/artifact-management-types@1.53.2':
+    resolution: {integrity: sha512-BIId3KV9g92cDtewlD2KkOb4P/8E7hKM5rJ7harOyyY6GMDPf0hsHOePubzPz9s+MJ119SOX3F/jACGRge39ug==}
 
-  '@sap/artifact-management@1.53.1':
-    resolution: {integrity: sha512-2Zp+Z9P69XDUyhqzu/2sliLg3fTCVF743ZoZULP/VAKGcne7F1/ngKkV/RebYMzWPIoazMMNecatXkn30kGq4w==}
+  '@sap/artifact-management@1.53.2':
+    resolution: {integrity: sha512-kLN7EfdRJ/08NQJzhKAVp+tsMCQRwfHANwhhn9fe9rEm8KLqUXQXU+zxzN1h5TOn8+5NhWcK9ZwosGsgjhDpqg==}
     hasBin: true
 
   '@sap/bas-sdk@3.13.2':
     resolution: {integrity: sha512-tuWNJ6Y3e9EjrYJoxub9PsHIson+mWj01zIxoT/SpVx/LQUHPY2i7o7GrP4C54tDILUPAG3EBT3RBIS+NVtNuQ==}
 
-  '@sap/bas-sdk@3.13.3':
-    resolution: {integrity: sha512-HLOwEc6z/Dyu5qR7mSwhRSjz0KbRBPZGL8FIAVwvGP/6JHU0tc6UDMQRHBV6NoyrNXdGSYzbPlS9y2uPWlmuow==}
+  '@sap/bas-sdk@3.13.6':
+    resolution: {integrity: sha512-x+uwIczUyLIHS2Ap2yPdCdMvDyXRO1jyTgRK/YPzNkzQnc7K4QQmYKnVydL5uT1Q6w3evUwPWvnevx6vIVbl7g==}
 
   '@secretlint/config-creator@10.1.1':
     resolution: {integrity: sha512-TJ42CHZqqnEe9ORvIXVVMqdu3KAtyZRxLspjFexo6XgrwJ6CoFHQYzIihilqRjo2sJh9HMrpnYSj/5hopofGrA==}
@@ -1757,8 +1757,8 @@ packages:
   axios@1.13.2:
     resolution: {integrity: sha512-VPk9ebNqPcy5lRGuSlKx752IlDatOjT9paPlm8A7yOuW2Fbvp4X3JznJtT4f0GzGLLiWE9W8onz51SqLYwzGaA==}
 
-  axios@1.13.5:
-    resolution: {integrity: sha512-cz4ur7Vb0xS4/KUN0tPWe44eqxrIu31me+fbang3ijiNscE129POzipJJA6zniq2C/Z6sJCjMimjS8Lc/GAs8Q==}
+  axios@1.15.0:
+    resolution: {integrity: sha512-wWyJDlAatxk30ZJer+GeCWS209sA42X+N5jU2jy6oHTp7ufw8uzUTVFBX9+wTfAlhiJXGS0Bq7X6efruWjuK9Q==}
 
   axios@1.8.2:
     resolution: {integrity: sha512-ls4GYBm5aig9vWx8AWDSGLpnpDQRtWAfrjU+EuytuODrFBkqesN2RkOQCBzrA1RQNHw1SmRMSDDDSwzNAYQ6Rg==}
@@ -2343,9 +2343,6 @@ packages:
   dom-serializer@2.0.0:
     resolution: {integrity: sha512-wIkAryiqt/nV5EQKqQpo3SToSOV9J0DnbJqwK7Wv/Trc92zIAYZ4FlMu+JPFW1DfGFt81ZTCGgDEabffXeLyJg==}
 
-  domelementtype@2.2.0:
-    resolution: {integrity: sha512-DtBMo82pv1dFtUmHyr48beiuq792Sxohr+8Hm9zoxklYPfa6n0Z3Byjj2IV7bmr2IyqClnqEQhfgHJJ5QF0R5A==}
-
   domelementtype@2.3.0:
     resolution: {integrity: sha512-OLETBj6w0OsagBwdXnPdN0cnMfF9opN69co+7ZrbfPGrdpPVNBUj02spi6B1N7wChLQiPn4CSH/zJvXw56gmHw==}
 
@@ -2391,9 +2388,9 @@ packages:
   ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
 
-  ejs@3.1.10:
-    resolution: {integrity: sha512-UeJmFfOrAQS8OJWPZ4qtgHyWExa088/MtK5UEyoJGFH67cDEXkZSviOiKRCZ4Xij0zxI3JECgYs3oKx+AizQBA==}
-    engines: {node: '>=0.10.0'}
+  ejs@5.0.2:
+    resolution: {integrity: sha512-IpbUaI/CAW86l3f+T8zN0iggSc0LmMZLcIW5eRVStLVNCoTXkE0YlncbbH50fp8Cl6zHIky0sW2uUbhBqGw0Jw==}
+    engines: {node: '>=0.12.18'}
     hasBin: true
 
   electron-to-chromium@1.5.50:
@@ -2715,9 +2712,6 @@ packages:
 
   file-stream-rotator@0.6.1:
     resolution: {integrity: sha512-u+dBid4PvZw17PmDeRcNOtCP9CCK/9lRN2w+r1xIS7yOL9JFrIBKTvrYsxT4P0pGtThYTn++QS5ChHaUov3+zQ==}
-
-  filelist@1.0.2:
-    resolution: {integrity: sha512-z7O0IS8Plc39rTCq6i6iHxk43duYOn8uFJiWSewIq0Bww1RNybVHSCjahmcC87ZqAm4OTvFzlzeGu3XAzG1ctQ==}
 
   fill-keys@1.0.2:
     resolution: {integrity: sha512-tcgI872xXjwFF4xgQmLxi76GnwJG3g/3isB1l4/G5Z4zrbddGpBjqZCO9oEAcB5wX0Hj/5iQB3toxfO7in1hHA==}
@@ -3382,11 +3376,6 @@ packages:
     resolution: {integrity: sha512-zptv57P3GpL+O0I7VdMJNBZCu+BPHVQUk55Ft8/QCJjTVxrnJHuVuX/0Bl2A6/+2oyR/ZMEuFKwmzqqZ/U5nPQ==}
     engines: {node: 20 || >=22}
 
-  jake@10.8.5:
-    resolution: {integrity: sha512-sVpxYeuAhWt0OTWITwT98oyV0GsXyMlXCF+3L1SuafBVUIr/uILGRB+NqwkzhgXKvoJpDIpQvqkUALgdmQsQxw==}
-    engines: {node: '>=10'}
-    hasBin: true
-
   jest-mock-vscode@0.1.3:
     resolution: {integrity: sha512-uZIjXXLMO58rSMxVlUXcwZWarl8S5vmYaE2shA+pvV4giFiEFlJigyw3841+hAWK/EPoDDKGp/XOFWmJiT2R7Q==}
     peerDependencies:
@@ -3409,6 +3398,10 @@ packages:
 
   js-yaml@4.1.0:
     resolution: {integrity: sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==}
+    hasBin: true
+
+  js-yaml@4.1.1:
+    resolution: {integrity: sha512-qQKT4zQxXl8lLwBtHMWwaTcGfFOZviOJet3Oy/xmGk2gZH677CJM9EvtfdSkgWcATZhj/55JZ0rmy3myCT5lsA==}
     hasBin: true
 
   jsbn@0.1.1:
@@ -3635,6 +3628,9 @@ packages:
 
   lodash@4.17.23:
     resolution: {integrity: sha512-LgVTMpQtIopCi79SJeDiP0TfWi5CNEc/L/aRdTh3yIvmZXTnheWpKjSZhnvMl8iXbC1tFg9gdHHDMLoV7CnG+w==}
+
+  lodash@4.18.1:
+    resolution: {integrity: sha512-dMInicTPVE8d1e5otfwmmjlxkZoUpiVLwyeTdUsi/Caj/gfzzblBcCE5sRHV/AsjuCmxWrte2TNGSYuCeCq+0Q==}
 
   log-driver@1.2.7:
     resolution: {integrity: sha512-U7KCmLdqsGHBLeWqYlFA0V0Sl6P08EE1ZrmA9cxjUE0WVqT9qnyVDPz1kzpFEP0jdJuFnasWIfSd7fsaNXkpbg==}
@@ -4079,9 +4075,6 @@ packages:
   parse5@6.0.1:
     resolution: {integrity: sha512-Ofn/CTFzRGTTxwpNEs9PP93gXShHcTq255nzRYSKe8AkVpZY7e1fpmTfOyoIvjP5HG7Z2ZM7VS9PPhQGW2pOpw==}
 
-  parse5@7.1.2:
-    resolution: {integrity: sha512-Czj1WaSVpaoj0wbhMzLmWD69anp2WH7FXMB9n1Sy8/ZFF9jolSQVMu1Ij5WIyGmcBmhk7EOndpO4mIpihVqAXw==}
-
   parse5@7.3.0:
     resolution: {integrity: sha512-IInvU7fabl34qmi9gY8XOVxhYyMyuH2xUNpb2q8/Y+7552KlejkRvqvD19nMoUW/uQGGbqNpA6Tufu5FL5BZgw==}
 
@@ -4221,6 +4214,10 @@ packages:
 
   proxy-from-env@1.1.0:
     resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}
+
+  proxy-from-env@2.1.0:
+    resolution: {integrity: sha512-cJ+oHTW1VAEa8cJslgmUZrc+sjRKgAKl3Zyse6+PV38hZe/V6Z14TbCuXcan9F9ghlz4QrFr2c92TNF82UkYHA==}
+    engines: {node: '>=10'}
 
   proxyquire@2.1.3:
     resolution: {integrity: sha512-BQWfCqYM+QINd+yawJz23tbBM40VIGXOdDw3X344KcclI/gtBbdWF6SlQ4nK/bYhF9d27KYug9WzljHC6B9Ysg==}
@@ -5930,7 +5927,7 @@ snapshots:
   '@eslint/eslintrc@0.4.3':
     dependencies:
       ajv: 6.12.6
-      debug: 4.3.6(supports-color@8.1.1)
+      debug: 4.4.1
       espree: 7.3.1
       globals: 13.12.0
       ignore: 4.0.6
@@ -5944,7 +5941,7 @@ snapshots:
   '@humanwhocodes/config-array@0.5.0':
     dependencies:
       '@humanwhocodes/object-schema': 1.2.1
-      debug: 4.3.6(supports-color@8.1.1)
+      debug: 4.4.1
       minimatch: 3.1.2
     transitivePeerDependencies:
       - supports-color
@@ -6248,35 +6245,35 @@ snapshots:
     dependencies:
       node-cache: 5.1.2
 
-  '@sap/artifact-management-base-types@1.53.1':
+  '@sap/artifact-management-base-types@1.53.2':
     dependencies:
       '@types/node': 14.14.6
       '@types/vscode': 1.75.0
       '@vscode-logging/types': 0.1.3
       vscode-languageserver-types: 3.17.5
 
-  '@sap/artifact-management-base@1.53.1':
+  '@sap/artifact-management-base@1.53.2':
     dependencies:
-      ejs: 3.1.10
+      ejs: 5.0.2
       fast-glob: 3.3.2
       ignore: 5.3.1
-      js-yaml: 4.1.0
-      lodash: 4.17.23
+      js-yaml: 4.1.1
+      lodash: 4.18.1
       vscode-languageserver-types: 3.17.5
       vscode-uri: 3.1.0
       winston: 3.15.0
       winston-daily-rotate-file: 5.0.0(winston@3.15.0)
       winston-transport: 4.8.0
 
-  '@sap/artifact-management-fioriplugin@1.53.1':
+  '@sap/artifact-management-fioriplugin@1.53.2':
     dependencies:
-      '@sap/artifact-management-base': 1.53.1
+      '@sap/artifact-management-base': 1.53.2
       cheerio: 1.2.0
       xml2js: 0.6.2
 
-  '@sap/artifact-management-hanaplugin@1.53.1(bufferutil@4.0.7)(utf-8-validate@5.0.10)':
+  '@sap/artifact-management-hanaplugin@1.53.2(bufferutil@4.0.7)(utf-8-validate@5.0.10)':
     dependencies:
-      '@sap/artifact-management-base': 1.53.1
+      '@sap/artifact-management-base': 1.53.2
       fast-glob: 3.3.2
       jsdom: 25.0.1(bufferutil@4.0.7)(utf-8-validate@5.0.10)
       xml2js: 0.6.2
@@ -6286,29 +6283,29 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@sap/artifact-management-mdkplugin@1.53.1':
+  '@sap/artifact-management-mdkplugin@1.53.2':
     dependencies:
-      '@sap/artifact-management-base': 1.53.1
+      '@sap/artifact-management-base': 1.53.2
 
-  '@sap/artifact-management-types@1.53.1':
+  '@sap/artifact-management-types@1.53.2':
     dependencies:
-      '@sap/artifact-management-base-types': 1.53.1
+      '@sap/artifact-management-base-types': 1.53.2
 
-  '@sap/artifact-management@1.53.1(bufferutil@4.0.7)(utf-8-validate@5.0.10)':
+  '@sap/artifact-management@1.53.2(bufferutil@4.0.7)(utf-8-validate@5.0.10)':
     dependencies:
       '@babel/parser': 7.27.5
       '@babel/traverse': 7.27.4
       '@babel/types': 7.27.6
-      '@sap/artifact-management-base': 1.53.1
-      '@sap/artifact-management-fioriplugin': 1.53.1
-      '@sap/artifact-management-hanaplugin': 1.53.1(bufferutil@4.0.7)(utf-8-validate@5.0.10)
-      '@sap/artifact-management-mdkplugin': 1.53.1
-      '@sap/bas-sdk': 3.13.3(bufferutil@4.0.7)(utf-8-validate@5.0.10)
+      '@sap/artifact-management-base': 1.53.2
+      '@sap/artifact-management-fioriplugin': 1.53.2
+      '@sap/artifact-management-hanaplugin': 1.53.2(bufferutil@4.0.7)(utf-8-validate@5.0.10)
+      '@sap/artifact-management-mdkplugin': 1.53.2
+      '@sap/bas-sdk': 3.13.6(bufferutil@4.0.7)(utf-8-validate@5.0.10)
       ajv: 8.18.0
       chokidar: 3.6.0
-      js-yaml: 4.1.0
+      js-yaml: 4.1.1
       jsdom: 25.0.1(bufferutil@4.0.7)(utf-8-validate@5.0.10)
-      lodash: 4.17.23
+      lodash: 4.18.1
       micromatch: 4.0.8
       simple-git: 3.33.0
       uuid: 11.0.0-0
@@ -6337,13 +6334,13 @@ snapshots:
       - debug
       - utf-8-validate
 
-  '@sap/bas-sdk@3.13.3(bufferutil@4.0.7)(utf-8-validate@5.0.10)':
+  '@sap/bas-sdk@3.13.6(bufferutil@4.0.7)(utf-8-validate@5.0.10)':
     dependencies:
-      axios: 1.13.5
+      axios: 1.15.0
       cross-spawn: 7.0.6
       fs-extra: 11.3.2
       jwt-decode: 4.0.0
-      lodash: 4.17.23
+      lodash: 4.18.1
       url-join: 4.0.1
       ws: 8.18.3(bufferutil@4.0.7)(utf-8-validate@5.0.10)
     transitivePeerDependencies:
@@ -6360,7 +6357,7 @@ snapshots:
       '@secretlint/profiler': 10.1.1
       '@secretlint/resolver': 10.1.1
       '@secretlint/types': 10.1.1
-      ajv: 8.17.1
+      ajv: 8.18.0
       debug: 4.4.1
       rc-config-loader: 4.1.3
     transitivePeerDependencies:
@@ -6956,9 +6953,9 @@ snapshots:
       ajv: 8.12.0
       fast-deep-equal: 3.1.3
 
-  ajv-keywords@5.1.0(ajv@8.17.1):
+  ajv-keywords@5.1.0(ajv@8.18.0):
     dependencies:
-      ajv: 8.17.1
+      ajv: 8.18.0
       fast-deep-equal: 3.1.3
 
   ajv@6.12.6:
@@ -7088,11 +7085,11 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  axios@1.13.5:
+  axios@1.15.0:
     dependencies:
       follow-redirects: 1.15.11
       form-data: 4.0.5
-      proxy-from-env: 1.1.0
+      proxy-from-env: 2.1.0
     transitivePeerDependencies:
       - debug
 
@@ -7295,7 +7292,7 @@ snapshots:
     dependencies:
       css-select: 4.1.3
       css-what: 5.1.0
-      domelementtype: 2.2.0
+      domelementtype: 2.3.0
       domhandler: 4.2.2
       domutils: 2.8.0
 
@@ -7714,7 +7711,7 @@ snapshots:
 
   dom-serializer@1.3.2:
     dependencies:
-      domelementtype: 2.2.0
+      domelementtype: 2.3.0
       domhandler: 4.2.2
       entities: 2.2.0
 
@@ -7724,13 +7721,11 @@ snapshots:
       domhandler: 5.0.3
       entities: 4.5.0
 
-  domelementtype@2.2.0: {}
-
   domelementtype@2.3.0: {}
 
   domhandler@4.2.2:
     dependencies:
-      domelementtype: 2.2.0
+      domelementtype: 2.3.0
 
   domhandler@5.0.3:
     dependencies:
@@ -7739,7 +7734,7 @@ snapshots:
   domutils@2.8.0:
     dependencies:
       dom-serializer: 1.3.2
-      domelementtype: 2.2.0
+      domelementtype: 2.3.0
       domhandler: 4.2.2
 
   domutils@3.2.2:
@@ -7777,9 +7772,7 @@ snapshots:
 
   ee-first@1.1.1: {}
 
-  ejs@3.1.10:
-    dependencies:
-      jake: 10.8.5
+  ejs@5.0.2: {}
 
   electron-to-chromium@1.5.50: {}
 
@@ -8201,10 +8194,6 @@ snapshots:
     dependencies:
       moment: 2.29.1
 
-  filelist@1.0.2:
-    dependencies:
-      minimatch: 3.1.2
-
   fill-keys@1.0.2:
     dependencies:
       is-object: 1.0.2
@@ -8592,7 +8581,7 @@ snapshots:
 
   htmlparser2@6.1.0:
     dependencies:
-      domelementtype: 2.2.0
+      domelementtype: 2.3.0
       domhandler: 4.2.2
       domutils: 2.8.0
       entities: 2.2.0
@@ -8856,7 +8845,7 @@ snapshots:
 
   istanbul-lib-source-maps@4.0.1:
     dependencies:
-      debug: 4.3.6(supports-color@8.1.1)
+      debug: 4.4.1
       istanbul-lib-coverage: 3.2.0
       source-map: 0.6.1
     transitivePeerDependencies:
@@ -8876,13 +8865,6 @@ snapshots:
   jackspeak@4.1.1:
     dependencies:
       '@isaacs/cliui': 8.0.2
-
-  jake@10.8.5:
-    dependencies:
-      async: 3.2.4
-      chalk: 4.1.2
-      filelist: 1.0.2
-      minimatch: 3.1.2
 
   jest-mock-vscode@0.1.3:
     dependencies:
@@ -8907,6 +8889,10 @@ snapshots:
     dependencies:
       argparse: 2.0.1
 
+  js-yaml@4.1.1:
+    dependencies:
+      argparse: 2.0.1
+
   jsbn@0.1.1: {}
 
   jsdom@25.0.1(bufferutil@4.0.7)(utf-8-validate@5.0.10):
@@ -8920,7 +8906,7 @@ snapshots:
       https-proxy-agent: 7.0.5
       is-potential-custom-element-name: 1.0.1
       nwsapi: 2.2.13
-      parse5: 7.1.2
+      parse5: 7.3.0
       rrweb-cssom: 0.7.1
       saxes: 6.0.0
       symbol-tree: 3.2.4
@@ -9141,6 +9127,8 @@ snapshots:
   lodash@4.17.21: {}
 
   lodash@4.17.23: {}
+
+  lodash@4.18.1: {}
 
   log-driver@1.2.7: {}
 
@@ -9632,10 +9620,6 @@ snapshots:
 
   parse5@6.0.1: {}
 
-  parse5@7.1.2:
-    dependencies:
-      entities: 4.5.0
-
   parse5@7.3.0:
     dependencies:
       entities: 6.0.1
@@ -9739,6 +9723,8 @@ snapshots:
       ipaddr.js: 1.9.1
 
   proxy-from-env@1.1.0: {}
+
+  proxy-from-env@2.1.0: {}
 
   proxyquire@2.1.3:
     dependencies:
@@ -9989,9 +9975,9 @@ snapshots:
   schema-utils@4.3.2:
     dependencies:
       '@types/json-schema': 7.0.15
-      ajv: 8.17.1
+      ajv: 8.18.0
       ajv-formats: 2.1.1
-      ajv-keywords: 5.1.0(ajv@8.17.1)
+      ajv-keywords: 5.1.0(ajv@8.18.0)
 
   secretlint@10.1.1:
     dependencies:
@@ -10390,7 +10376,7 @@ snapshots:
 
   table@6.7.3:
     dependencies:
-      ajv: 8.17.1
+      ajv: 8.18.0
       lodash.truncate: 4.4.2
       slice-ansi: 4.0.0
       string-width: 4.2.3
@@ -10398,7 +10384,7 @@ snapshots:
 
   table@6.9.0:
     dependencies:
-      ajv: 8.17.1
+      ajv: 8.18.0
       lodash.truncate: 4.4.2
       slice-ansi: 4.0.0
       string-width: 4.2.3
