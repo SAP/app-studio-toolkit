@@ -390,7 +390,7 @@
     "ssh-config": "4.2.1",
     "ts-enum-util": "4.0.2",
     "url-join": "4.0.1",
-    "uuid": "9.0.1",
+    "uuid": "14.0.0",
     "websocket": "1.0.34"
   },
   "devDependencies": {
