@@ -8,7 +8,7 @@ async function manualReport(homeFolder: string): Promise<void> {
   const diskUsageReport = await runReports(homeFolder);
   logToContainer(diskUsageReport);
   getLogger().info(
-    `Automated disk usage report created: ${JSON.stringify(
+    `Manual disk usage report created: ${JSON.stringify(
       diskUsageReport,
       null,
       2
