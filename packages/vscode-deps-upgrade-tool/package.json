@@ -76,7 +76,7 @@
   },
   "dependencies": {
     "@types/fs-extra": "9.0.13",
-    "@vscode-logging/wrapper": "1.0.1",
+    "@vscode-logging/wrapper": "1.0.2",
     "delay": "5.0.0",
     "fs-extra": "10.0.1",
     "jsonc-parser": "3.0.0",
