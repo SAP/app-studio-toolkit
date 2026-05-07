@@ -1,5 +1,11 @@
 # vscode-disk-usage
 
+## 2.3.2
+
+### Patch Changes
+
+- 34e70d4: typo in logs for manual flow
+
 ## 2.3.1
 
 ### Patch Changes
