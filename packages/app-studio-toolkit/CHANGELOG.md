@@ -1,5 +1,11 @@
 # app-studio-toolkit
 
+## 2.11.3
+
+### Patch Changes
+
+- 2a15dd8: updating dependencies
+
 ## 2.11.2
 
 ### Patch Changes
