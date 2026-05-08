@@ -1,5 +1,11 @@
 # app-studio-remote-access
 
+## 4.1.2
+
+### Patch Changes
+
+- 2a15dd8: updating dependencies
+
 ## 4.1.1
 
 ### Patch Changes

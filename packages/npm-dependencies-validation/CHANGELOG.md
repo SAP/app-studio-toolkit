@@ -1,5 +1,11 @@
 # @sap-devx/npm-dependencies-validation
 
+## 3.0.3
+
+### Patch Changes
+
+- 2a15dd8: updating dependencies
+
 ## 3.0.2
 
 ### Patch Changes

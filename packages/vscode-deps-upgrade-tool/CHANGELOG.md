@@ -1,5 +1,11 @@
 # vscode-deps-upgrade-tool
 
+## 5.0.2
+
+### Patch Changes
+
+- 2a15dd8: updating dependencies
+
 ## 5.0.1
 
 ### Patch Changes

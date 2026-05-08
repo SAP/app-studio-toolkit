@@ -1,5 +1,11 @@
 # vscode-disk-usage
 
+## 2.3.3
+
+### Patch Changes
+
+- 2a15dd8: updating dependencies
+
 ## 2.3.2
 
 ### Patch Changes
