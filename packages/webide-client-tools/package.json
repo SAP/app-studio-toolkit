@@ -34,24 +34,18 @@
     "chai": "4.4.1",
     "chai-as-promised": "7.1.1",
     "chai-string": "1.6.0",
-    "eslint": "8.3.0",
     "eslint-config-airbnb-base": "15.0.0",
-    "eslint-plugin-eslint-comments": "3.2.0",
     "eslint-plugin-import": "2.25.3",
-    "jest": "27.4.2",
-    "prettier": "2.5.0"
+    "jest": "27.4.2"
   },
   "scripts": {
-    "ci": "npm-run-all format:validate type_check lint test",
+    "ci": "npm-run-all type_check test",
     "clean": "shx rm -rf dist .nyc_output docs/web/html_docs",
-    "lint": "eslint src/**/*.js test/**/*.js test_integration/**/*.js",
     "test": "jest",
     "test_integration": "npm-run-all init_example execute_integration_tests unlink_example",
     "init_example": "node scripts/init_example.js",
     "execute_integration_tests": "jest --maxWorkers 1 --config test_integration/jest.config.json",
     "unlink_example": "cd ./example && npm unlink @sap-webide/webide-client-tools",
-    "format:fix": "prettier --write \"**/*.@(js|ts|json|md)\" --ignore-path=.gitignore",
-    "format:validate": "prettier --check \"**/*.@(js|ts|json|md)\" --ignore-path=.gitignore",
     "type_check": "tsc"
   },
   "files": [

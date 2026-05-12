@@ -1,7 +1,3 @@
-[![Continuous Integration](https://github.com/SAP/app-studio-toolkit/actions/workflows/ci.yml/badge.svg)](https://github.com/SAP/app-studio-toolkit/actions/workflows/ci.yml)
-[![npm version](https://badge.fury.io/js/%40sap-webide%2Fwebide-client-tools.svg)](https://badge.fury.io/js/%40sap-webide%2Fwebide-client-tools)
-[![REUSE status](https://api.reuse.software/badge/github.com/SAP/app-studio-toolkit)](https://api.reuse.software/info/github.com/SAP/app-studio-toolkit)
-
 # webide-client-tools
 
 ## Description
@@ -48,7 +44,7 @@ npm install
 npm test              # run tests with coverage
 npm run lint          # ESLint
 npm run type_check    # TypeScript type check
-npm run ci            # full validation: format + type check + lint + test
+npm run ci            # type check + test (format and lint run at monorepo root)
 ```
 
 ## Known Issues
