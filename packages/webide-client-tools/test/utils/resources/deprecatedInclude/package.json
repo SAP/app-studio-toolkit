@@ -1,0 +1,9 @@
+{
+  "name": "deprecatedInclude",
+  "deprecatedConfigIncludes": [
+    "file:config.json"
+  ],
+  "bundledPlugins": {
+    "common": "file:common"
+  }
+}

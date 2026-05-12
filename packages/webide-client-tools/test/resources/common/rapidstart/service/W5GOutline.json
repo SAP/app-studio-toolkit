@@ -1,0 +1,14 @@
+{
+  "name": "sap.watt.bamba.rapidstart.W5GOutline",
+  "description": "The w5gOutline interface",
+  "extends": [
+    "sap.watt.common.service.ui.Part",
+    "sap.watt.common.service.selection.UI5ControlProvider"
+  ],
+  "configurationProperties": {
+    "contextMenu": {
+      "type": "string",
+      "multiple": false
+    }
+  }
+}

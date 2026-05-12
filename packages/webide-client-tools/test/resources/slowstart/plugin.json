@@ -1,0 +1,10 @@
+{
+  "name": "sap.watt.bamba.slowstart",
+  "description": "The Bamba Fiori Extension Plugin",
+  "i18n": "sap.watt.bamba.slowstart/i18n/i18n",
+  "provides": {
+    "interfaces": {
+      "sap.watt.bamba.quickstart.slowStartService": "sap.watt.bamba.slowstart/service/W5GOutline"
+    }
+  }
+}

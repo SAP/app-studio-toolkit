@@ -1,0 +1,15 @@
+/coverage/
+/dist/
+/dev/
+
+# we really do want the latest version of webide and client-tools here.
+# the lock will prevent that as it specifies an exact version.
+/package-lock.json
+
+// bundled artifacts
+./webpack.entry.js
+config-preload.js
+config-preload.js.map
+
+yarn.lock
+

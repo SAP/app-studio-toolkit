@@ -1,0 +1,45 @@
+{
+  "name": "sap.webide.example.plugin.service.Sample",
+  "description": "The sample service interface",
+  "methods": {
+    "modifyVar": {
+      "description": "Display a greeting message notification",
+      "params": [
+        {
+          "name": "sName",
+          "type": "string",
+          "description": "The name of the user to greet"
+        }
+      ]
+    },
+    "sayHello": {
+      "description": "Display a greeting message notification",
+      "params": [
+        {
+          "name": "sName",
+          "type": "string",
+          "description": "The name of the user to greet"
+        }
+      ]
+    },
+    "getNotificationCount": {
+      "description": "Get the number of greeting notifications displayed so far",
+      "returns": {
+        "type": "number",
+        "description": "Number of greeting notifications displayed so far"
+      }
+    }
+  },
+
+  "events": {
+    "notificationDisplayed": {
+      "params": [
+        {
+          "name": "notificationCount",
+          "type": "number",
+          "description": "The number of greeting notifications displayed so far"
+        }
+      ]
+    }
+  }
+}

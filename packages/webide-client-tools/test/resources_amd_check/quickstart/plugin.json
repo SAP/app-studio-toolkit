@@ -1,0 +1,9 @@
+{
+  "name": "sap.watt.bamba.quickstart",
+  "description": "The UI5 Wysiwyg Fiori Extension Plugin",
+  "provides": {
+    "interfaces": {
+      "sap.watt.bamba.quickstart.QuickStartService": "sap.watt.bamba.quickstart/service/QuickStartService"
+    }
+  }
+}

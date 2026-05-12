@@ -1,0 +1,9 @@
+{
+  "name": "sample_extentsion",
+  "description": "used for i18n tests",
+  "version": "1.0.0",
+  "enabledByDefault": true,
+  "bundledPlugins": {
+    "sap.watt.bamba.invalidi18n": "file:invalidi18n"
+  }
+}

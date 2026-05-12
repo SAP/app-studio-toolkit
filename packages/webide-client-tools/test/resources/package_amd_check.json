@@ -1,0 +1,13 @@
+{
+  "name": "sample_extentsion",
+  "description": "used for tests",
+  "version": "1.0.0",
+  "enabledByDefault": true,
+  "bundledPlugins": {
+    "sap.watt.bamba.quickstart": "file:../resources_amd_check/quickstart",
+    "sap.watt.bamba.slowstart": "file:slowstart"
+  },
+  "bundledFeatures": {
+    "common": "file:common/package.json"
+  }
+}
