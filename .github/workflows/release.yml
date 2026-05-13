@@ -21,7 +21,7 @@ jobs:
           # See: https://github.com/changesets/action/issues/187#issuecomment-1228413850
           token: ${{ secrets.BOT_GITHUB_TOKEN }}
 
-      - uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44821de2a # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 24.x
 
