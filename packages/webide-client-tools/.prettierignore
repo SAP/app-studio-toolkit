@@ -1,0 +1,6 @@
+docs/web/
+coverage/
+dist/
+
+# hack workaround for prettier errors during release flow
+package.json

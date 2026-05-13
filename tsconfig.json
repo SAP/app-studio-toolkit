@@ -22,6 +22,9 @@
       "path": "./packages/vscode-deps-upgrade-tool"
     },
     {
+      "path": "./packages/webide-client-tools"
+    },
+    {
       "path": "./examples/sample-action-client"
     },
     {

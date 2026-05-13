@@ -1,0 +1,13 @@
+{
+  "name": "sap.watt.bamba.quickstart.QuickStartService",
+  "description": "The Quick Start interface",
+  "methods": {
+    "onMetadataUploaded": {
+      "description": "Metadata uploaded event handler.",
+      "returns": "object"
+    },
+    "quickStartWithLayoutEditor": {
+      "description": "Generates a simple application and opens it with layout editor."
+    }
+  }
+}

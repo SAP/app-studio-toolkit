@@ -1,0 +1,42 @@
+{
+  "name": "sap.watt.common.plugin.focus.service.Focus",
+  "description": "The focus interface",
+  "methods": {
+    "setFocus": {
+      "params": [
+        {
+          "name": "oService",
+          "type": "sap.watt.common.service.ui.Part"
+        }
+      ]
+    },
+    "getFocus": {
+      "returns": "sap.watt.common.service.ui.Part"
+    },
+    "attachFocus": {
+      "params": [
+        {
+          "name": "oService",
+          "type": "sap.watt.common.service.ui.Part"
+        }
+      ]
+    },
+    "detachFocus": {
+      "params": [
+        {
+          "name": "oService",
+          "type": "sap.watt.common.service.ui.Part"
+        }
+      ]
+    }
+  },
+  "events": {
+    "changed": {},
+    "$dialogOpened": {
+      "description": "Private event to disbale command keybindings on dialogs"
+    },
+    "$dialogClosed": {
+      "description": "Private event to disbale command keybindings on dialogs"
+    }
+  }
+}

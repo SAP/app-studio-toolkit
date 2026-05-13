@@ -1,0 +1,15 @@
+{
+  "name": "common",
+
+  "requires": {
+    "services": []
+  },
+
+  "provides": {
+    "services": {
+      "common_service": {
+        "module": "somewhere"
+      }
+    }
+  }
+}
