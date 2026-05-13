@@ -31,14 +31,6 @@
       "@commitlint/config-conventional"
     ]
   },
-  "lint-staged": {
-    "*.{js,ts,json,md}": [
-      "prettier --write"
-    ],
-    "*.{ts,js}": [
-      "eslint --fix --max-warnings=0 --ignore-pattern=!.*"
-    ]
-  },
   "devDependencies": {
     "@changesets/cli": "2.29.5",
     "@commitlint/cli": "19.5.0",

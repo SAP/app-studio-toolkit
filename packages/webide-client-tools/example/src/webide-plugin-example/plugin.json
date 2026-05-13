@@ -1,0 +1,68 @@
+{
+  "name": "sap.webide.example.plugin",
+  "description": "This is a sample plugin that demonstrates some SAP web IDE capabilities like adding a menu item and firing an event",
+  "i18n": "sap.webide.example.plugin/i18n/i18n",
+  "requires": {
+    "services": ["usernotification", "log", "command", "commandGroup"]
+  },
+  "provides": {
+    "services": {
+      "sample": {
+        "implements": "sap.webide.example.plugin.service.Sample",
+        "module": "sap.webide.example.plugin/service/Sample"
+      }
+    },
+
+    "interfaces": {
+      "sap.webide.example.plugin.service.Sample": "sap.webide.example.plugin/service/Sample"
+    }
+  },
+  "configures": {
+    "services": {
+      "command:commands": [
+        {
+          "id": "sap.webide.example.plugin.helloWorld",
+          "label": "{i18n>command_helloWorld}",
+          "service": "sap.webide.example.plugin/command/HelloWorld",
+          "available": true,
+          "enabled": true
+        }
+      ],
+
+      "commandGroup:groups": [
+        {
+          "id": "tools.sample",
+          "label": "{i18n>commandgroup_sample}"
+        },
+        {
+          "id": "tools.sample.helloWorld"
+        }
+      ],
+
+      "commandGroup:items": [
+        {
+          "parent": "tools",
+          "type": "menu",
+          "group": "tools.sample",
+          "prio": 100
+        },
+        {
+          "parent": "tools.sample",
+          "type": "inline",
+          "group": "tools.sample.helloWorld",
+          "prio": 10
+        },
+        {
+          "parent": "tools.sample.helloWorld",
+          "type": "action",
+          "command": "sap.webide.example.plugin.helloWorld",
+          "prio": 10
+        }
+      ]
+    }
+  },
+
+  "subscribes": {
+    "sample:notificationDisplayed": "sample:onAfterNotificationDisplayed"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "context_root": "/",
+  "server_type": "java",
+  "ui5_root": "https://sapui5.hana.ondemand.com/",
+  "ws_server": "di",
+  "orion_path": "/",
+  "orion_preview": "https://webidetesting{{uniqueToken}}-{{account}}.{{dispatcher}}/",
+  "orion_needs_login": false,
+  "account_id": "di_local",
+  "che_needs_login": false,
+  "internal": true,
+  "help_url": "https://help.hana.ondemand.com",
+  "beta_features": true
+}

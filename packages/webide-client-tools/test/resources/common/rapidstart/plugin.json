@@ -1,0 +1,29 @@
+{
+  "name": "sap.watt.bamba.rapidstart",
+  "description": "from bundled feature",
+  "i18n": "sap.watt.bamba.rapidstart/i18n/i18n",
+  "provides": {
+    "interfaces": {
+      "sap.watt.bamba.rapidstart.rapidstartService": "sap.watt.bamba.rapidstart/service/W5GOutline"
+    },
+    "services": {
+      "sample": {
+        "implements": "sap.webide.example.plugin.service.Sample",
+        "module": "sap.watt.bamba.rapidstart/service/b2"
+      }
+    }
+  },
+  "configures": {
+    "services": {
+      "command:commands": [
+        {
+          "id": "sap.webide.example.plugin.helloWorld",
+          "label": "{i18n>command_helloWorld}",
+          "service": "sap.watt.bamba.rapidstart/command/b1",
+          "available": true,
+          "enabled": true
+        }
+      ]
+    }
+  }
+}

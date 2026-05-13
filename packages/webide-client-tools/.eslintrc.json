@@ -1,0 +1,32 @@
+{
+  "extends": ["airbnb-base", "prettier"],
+  "ignorePatterns": [
+    "resources/**",
+    "test/resources/**",
+    "test/resources2/**",
+    "test/resources_amd_check/**",
+    "example/**",
+    "**/*.d.ts"
+  ],
+  "env": {
+    "browser": true,
+    "node": true,
+    "jest": true
+  },
+  "rules": {
+    "no-else-return": 0,
+    "linebreak-style": 0,
+    "arrow-body-style": 0,
+    "strict": 0,
+    "no-console": 0,
+    "func-names": 0,
+    "import/no-extraneous-dependencies": [
+      2,
+      {
+        "devDependencies": true
+      }
+    ],
+    "prefer-destructuring": 0,
+    "eslint-comments/require-description": ["error", { "ignore": [] }]
+  }
+}

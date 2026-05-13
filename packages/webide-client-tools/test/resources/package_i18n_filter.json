@@ -1,0 +1,11 @@
+{
+  "name": "sample_extentsion",
+  "description": "used for tests",
+  "version": "1.0.0",
+  "enabledByDefault": true,
+  "bundledPlugins": {
+    "sap.watt.bamba.quickstart": "file:../resources2/quickstart",
+    "sap.watt.bamba.slowstart": "file:slowstart",
+    "ap.watt.bamba.external": "file:external"
+  }
+}

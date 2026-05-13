@@ -1,0 +1,9 @@
+{
+  "name": "sample_bundled_feature",
+  "description": "used for tests",
+  "version": "1.0.0",
+  "enabledByDefault": true,
+  "bundledPlugins": {
+    "sap.watt.bamba.rapidstart": "file:rapidstart"
+  }
+}

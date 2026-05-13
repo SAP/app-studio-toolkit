@@ -1,0 +1,4 @@
+{
+  "name": "sap.watt.bamba.rapidstart",
+  "module": "i.am.outside.plugin.and.shouldd.not.be.bundled/plugin"
+}
