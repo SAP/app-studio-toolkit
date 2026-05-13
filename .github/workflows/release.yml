@@ -15,8 +15,7 @@ jobs:
       contents: write # Push version bump commits, create git tags, and upload release assets
       pull-requests: write # Create "Version Packages" PR via changesets/action
     steps:
-      # using `v1` because of: https://github.com/actions/checkout/issues/246
-      - uses: actions/checkout@50fbc622fc4ef5163becd7fab6573eac35f8462e # v1
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           # See: https://github.com/changesets/action/issues/187#issuecomment-1228413850
           token: ${{ secrets.BOT_GITHUB_TOKEN }}
