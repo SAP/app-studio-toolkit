@@ -1,0 +1,63 @@
+name: Release
+on:
+  push:
+    branches:
+      - main*
+
+# Restrictive default: no permissions unless explicitly granted at the job level
+permissions: {}
+
+jobs:
+  release:
+    name: Changesets Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Push version bump commits, create git tags, and upload release assets
+      pull-requests: write # Create "Version Packages" PR via changesets/action
+    steps:
+      # using `v1` because of: https://github.com/actions/checkout/issues/246
+      - uses: actions/checkout@50fbc622fc4ef5163becd7fab6573eac35f8462e # v1
+        with:
+          # See: https://github.com/changesets/action/issues/187#issuecomment-1228413850
+          token: ${{ secrets.BOT_GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44821de2a # v4
+        with:
+          node-version: 24.x
+
+      - name: Setup pnpm
+        # pnpm version from package.json `packageManager` field is used
+        uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build
+        run: pnpm run ci
+
+      - name: ChangeSets Release or PR creation
+        id: changesets_release_or_pr
+        uses: changesets/action@63a615b9cd06ba9a3e6d13796c7fbcb080a60a0b # v1
+        with:
+          title: "chore: version packages"
+          commit: "chore: version packages"
+          version: pnpm run ci:version
+          publish: pnpm run ci:release
+        env:
+          # See: https://github.com/changesets/action/issues/187#issuecomment-1228413850
+          GITHUB_TOKEN: ${{ secrets.BOT_GITHUB_TOKEN }}
+
+      # To avoid race condition errors in the upload vsix step
+      - name: Wait for GH Releases to be published
+        if: steps.changesets_release_or_pr.outputs.published == 'true'
+        run: sleep 10s
+        shell: bash
+
+      - name: Upload VSIX to releases
+        run: node scripts/upload-vsix-to-releases.mjs
+        if: steps.changesets_release_or_pr.outputs.published == 'true'
+        env:
+          PKG_LIST: ${{ steps.changesets_release_or_pr.outputs.publishedPackages }}
+          # because this is a **secret** it is not automatically passed in the env,
+          # unless explicitly defined...
+          GITHUB_TOKEN: ${{ secrets.BOT_GITHUB_TOKEN }}

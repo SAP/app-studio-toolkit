@@ -10,6 +10,9 @@ on:
     branches:
       - main*
 
+# Restrictive default: no permissions unless explicitly granted at the job level
+permissions: {}
+
 env:
   artifact-retention-days: 14
   retention-comment: This comment will be **updated** with the data of the **last successful** build of this PR.
@@ -19,10 +22,9 @@ jobs:
     name: Full Build (node ${{ matrix.node_version }})
     runs-on: ubuntu-latest
     permissions:
-      id-token: write
-      contents: write
-      pull-requests: write
-      issues: write
+      contents: read # Checkout repository code
+      pull-requests: write # Create/update PR build report comments
+      issues: write # Required by peter-evans/create-or-update-comment to write comments via the Issues API
     strategy:
       matrix:
         node_version:
@@ -33,9 +35,6 @@ jobs:
     steps:
       # using `v1` because of: https://github.com/actions/checkout/issues/246
       - uses: actions/checkout@50fbc622fc4ef5163becd7fab6573eac35f8462e # v1
-        with:
-          # See: https://github.com/changesets/action/issues/187#issuecomment-1228413850
-          token: ${{ secrets.BOT_GITHUB_TOKEN }}
 
       - uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44821de2a # v4
         with:
@@ -50,38 +49,6 @@ jobs:
 
       - name: Build
         run: pnpm run ci
-
-      - name: ChangeSets Release or PR creation
-        id: changesets_release_or_pr
-        uses: changesets/action@63a615b9cd06ba9a3e6d13796c7fbcb080a60a0b # v1
-        # Changesets + `apps` may automatically create tags for 'apps' during PR builds, but this should only happen
-        # after merge to master
-        # - https://github.com/changesets/changesets/blob/main/docs/versioning-apps.md
-        # - Our `private:true` packages (mainly VSIX) are treated as `apps` by changesets
-        if: github.event_name != 'pull_request'
-        with:
-          title: "chore: version packages"
-          commit: "chore: version packages"
-          version: pnpm run ci:version
-          publish: pnpm run ci:release
-        env:
-          # See: https://github.com/changesets/action/issues/187#issuecomment-1228413850
-          GITHUB_TOKEN: ${{ secrets.BOT_GITHUB_TOKEN }}
-
-      # To avoid race condition errors in the upload vsix step
-      - name: Wait for GH Releases to be published
-        if: steps.changesets_release_or_pr.outputs.published == 'true'
-        run: sleep 10s
-        shell: bash
-
-      - name: Upload VSIX to releases
-        run: node scripts/upload-vsix-to-releases.mjs
-        if: steps.changesets_release_or_pr.outputs.published == 'true'
-        env:
-          PKG_LIST: ${{steps.changesets_release_or_pr.outputs.publishedPackages}}
-          # because this is a **secret** it is not automatically passed in the env,
-          # unless explicitly defined...
-          GITHUB_TOKEN: ${{ secrets.BOT_GITHUB_TOKEN }}
 
       - name: upload build artifacts
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4
