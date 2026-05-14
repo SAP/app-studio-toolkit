@@ -71,16 +71,6 @@
     "webpack": "5.104.1",
     "webpack-cli": "6.0.1"
   },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "@vscode/vsce-sign",
-      "bufferutil",
-      "es5-ext",
-      "esbuild",
-      "keytar",
-      "utf-8-validate"
-    ]
-  },
   "packageManager": "pnpm@11.1.1",
   "engines": {
     "node": ">=20"
