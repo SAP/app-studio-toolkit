@@ -5,10 +5,10 @@ on:
   # See: https://github.community/t/duplicate-checks-on-push-and-pull-request-simultaneous-event/18012
   push:
     branches:
-      - main*
+      - main
   pull_request:
     branches:
-      - main*
+      - main
 
 # Restrictive default: no permissions unless explicitly granted at the job level
 permissions: {}

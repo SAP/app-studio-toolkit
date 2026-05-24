@@ -2,7 +2,7 @@ name: Release
 on:
   push:
     branches:
-      - main*
+      - main
 
 # Restrictive default: no permissions unless explicitly granted at the job level
 permissions: {}
