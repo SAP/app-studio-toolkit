@@ -1,2 +1,3 @@
-The [ChangeLog](./docs/changes/CHANGELOG.md) has moved
-to the docs folder.
+# Changelog
+
+See [git history](https://github.com/SAP/app-studio-toolkit/commits/main/packages/webide-client-tools) for changes.
