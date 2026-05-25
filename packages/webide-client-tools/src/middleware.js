@@ -2,7 +2,7 @@
 // because it can't be easily tested using unit tests.
 
 const url = require("url")
-const proxy = require("http-proxy-middleware")
+const { createProxyMiddleware } = require("http-proxy-middleware")
 const _ = require("lodash")
 const execSync = require("child_process").execSync
 const which = require("which")
@@ -50,9 +50,9 @@ const middleware = {
     }
 
     if (actualOptions.context) {
-      return proxy(actualOptions.context, proxyOpts)
+      return createProxyMiddleware(actualOptions.context, proxyOpts)
     }
-    return proxy(proxyOpts)
+    return createProxyMiddleware(proxyOpts)
   },
 
   /**
@@ -77,9 +77,9 @@ const middleware = {
       }
 
       if (actualOptions.context) {
-        return proxy(actualOptions.context, proxyOptions)
+        return createProxyMiddleware(actualOptions.context, proxyOptions)
       }
-      return proxy(proxyOptions)
+      return createProxyMiddleware(proxyOptions)
     } catch (oError) {
       console.log("minikube not found. No middleware to add")
       return undefined
