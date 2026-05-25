@@ -297,8 +297,8 @@ importers:
   packages/app-studio-toolkit-types:
     dependencies:
       '@sap/artifact-management-types':
-        specifier: 1.53.2
-        version: 1.53.2
+        specifier: 1.53.3
+        version: 1.53.3
       '@types/vscode':
         specifier: 1.75.0
         version: 1.75.0
@@ -1402,8 +1402,8 @@ packages:
     resolution: {integrity: sha512-OxdJigAFybeZH9Uxm14EXp0NAb+pWzU4U0CvttJgmrRx+NL1loL0/o8gb/Vqk8wHAtNTqXjhz7GvLZ4tfDjUrA==}
     engines: {node: '>=14.21.2'}
 
-  '@sap/artifact-management-base-types@1.53.2':
-    resolution: {integrity: sha512-2bKF8Ns4vdPAEDCApdFXf9qaAN1XtvOvOhQyiYMeeG1KSTvnvHmeCVw0QPF1nvTOI+i8lOy/r0no5k0+fDoFlw==}
+  '@sap/artifact-management-base-types@1.53.3':
+    resolution: {integrity: sha512-rfshAX80R16frKAcWPKtg7hAwAtwSuJX+2v/lJAgeRvYhUCH6lpz9y0CaQeiDYXElpzpm291VVRw1WPa3y9Y9w==}
 
   '@sap/artifact-management-base@1.53.3':
     resolution: {integrity: sha512-lycMO8y0TXMda0GWAWsSNSjtMTON9CVdLnQcBRMN3YatwPrj88BQKCMsNFPH5x0fSEtTV6xmEi/2jIHmXQHDHA==}
@@ -1418,8 +1418,8 @@ packages:
   '@sap/artifact-management-mdkplugin@1.53.3':
     resolution: {integrity: sha512-VSVGvJ4bLYbTf4suQS8GXNT2VOBnscaAO/2h5dF5zoOYuKOr/X8XqVuPjsxA7ZJ3APiTJv4CsqopHpHfTSJr7w==}
 
-  '@sap/artifact-management-types@1.53.2':
-    resolution: {integrity: sha512-BIId3KV9g92cDtewlD2KkOb4P/8E7hKM5rJ7harOyyY6GMDPf0hsHOePubzPz9s+MJ119SOX3F/jACGRge39ug==}
+  '@sap/artifact-management-types@1.53.3':
+    resolution: {integrity: sha512-F1UHcwDIT2jtXK7UH4bmHFzJeYf5BVjBn8dsDytf1o2p2wA7k6M+3WY67t17KEqr5IYZ9oyye4Q9OLcfNksTJw==}
 
   '@sap/artifact-management@1.53.3':
     resolution: {integrity: sha512-YfXhhkkSDMxZXMtsGPiarYGBpToSFTIsJQu2VBsWtQqWafNCPJYK5LJjJlT2rZO7WgJ8dGdMMtM1YbM4bOHhSQ==}
@@ -1645,9 +1645,6 @@ packages:
 
   '@types/node@16.11.10':
     resolution: {integrity: sha512-3aRnHa1KlOEEhJ6+CvyHKK5vE9BcLGjtUpwvqYLRvYNQKMfabu3BwfJaA/SLW8dxe28LsNDjtHwePTuzn3gmOA==}
-
-  '@types/node@25.9.1':
-    resolution: {integrity: sha512-xfrlY7UD5rMJk3ZVJP8BNzS28J36YJg+xp+LPXV1TdWxr8uMH5A860QNxYDGQe/ylDSgjxE52Q9VnO7p75tJxg==}
 
   '@types/normalize-package-data@2.4.4':
     resolution: {integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==}
@@ -6418,9 +6415,6 @@ packages:
   underscore@1.13.1:
     resolution: {integrity: sha512-hzSoAVtJF+3ZtiFX0VgfFPHEDRm7Y/QPjGyNo4TVdnDTdft3tr8hEkD25a1jC+TjTuE7tkHGKkhwCgs9dgBB2g==}
 
-  undici-types@7.24.6:
-    resolution: {integrity: sha512-WRNW+sJgj5OBN4/0JpHFqtqzhpbnV0GuB+OozA9gCL7a993SmU+1JBZCzLNxYsbMfIeDL+lTsphD5jN5N+n0zg==}
-
   undici@7.25.0:
     resolution: {integrity: sha512-xXnp4kTyor2Zq+J1FfPI6Eq3ew5h6Vl0F/8d9XU5zZQf1tX9s2Su1/3PiMmUANFULpmksxkClamIZcaUqryHsQ==}
     engines: {node: '>=20.18.1'}
@@ -7762,7 +7756,7 @@ snapshots:
     dependencies:
       '@types/istanbul-lib-coverage': 2.0.6
       '@types/istanbul-reports': 3.0.4
-      '@types/node': 25.9.1
+      '@types/node': 16.11.10
       '@types/yargs': 16.0.11
       chalk: 4.1.2
 
@@ -8044,7 +8038,7 @@ snapshots:
     dependencies:
       node-cache: 5.1.2
 
-  '@sap/artifact-management-base-types@1.53.2':
+  '@sap/artifact-management-base-types@1.53.3':
     dependencies:
       '@types/node': 14.14.6
       '@types/vscode': 1.75.0
@@ -8086,9 +8080,9 @@ snapshots:
     dependencies:
       '@sap/artifact-management-base': 1.53.3
 
-  '@sap/artifact-management-types@1.53.2':
+  '@sap/artifact-management-types@1.53.3':
     dependencies:
-      '@sap/artifact-management-base-types': 1.53.2
+      '@sap/artifact-management-base-types': 1.53.3
 
   '@sap/artifact-management@1.53.3(bufferutil@4.1.0)(utf-8-validate@5.0.10)':
     dependencies:
@@ -8415,10 +8409,6 @@ snapshots:
   '@types/node@14.14.6': {}
 
   '@types/node@16.11.10': {}
-
-  '@types/node@25.9.1':
-    dependencies:
-      undici-types: 7.24.6
 
   '@types/normalize-package-data@2.4.4': {}
 
@@ -11749,7 +11739,7 @@ snapshots:
   jest-util@27.5.1:
     dependencies:
       '@jest/types': 27.5.1
-      '@types/node': 25.9.1
+      '@types/node': 16.11.10
       chalk: 4.1.2
       ci-info: 3.9.0
       graceful-fs: 4.2.11
@@ -14053,8 +14043,6 @@ snapshots:
       which-boxed-primitive: 1.1.1
 
   underscore@1.13.1: {}
-
-  undici-types@7.24.6: {}
 
   undici@7.25.0: {}
 
