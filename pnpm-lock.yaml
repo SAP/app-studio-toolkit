@@ -181,7 +181,7 @@ importers:
         version: 2.0.8
       copy-webpack-plugin:
         specifier: 11.0.0
-        version: 11.0.0(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1)))
+        version: 11.0.0(webpack@5.104.1(webpack-cli@6.0.1))
       fs-extra:
         specifier: 11.1.1
         version: 11.1.1
@@ -193,10 +193,10 @@ importers:
         version: 3.0.0
       string-replace-loader:
         specifier: 3.1.0
-        version: 3.1.0(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1)))
+        version: 3.1.0(webpack@5.104.1(webpack-cli@6.0.1))
       ts-loader:
         specifier: 9.4.2
-        version: 9.4.2(typescript@4.5.2)(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1)))
+        version: 9.4.2(typescript@4.5.2)(webpack@5.104.1(webpack-cli@6.0.1))
 
   packages/app-studio-toolkit:
     dependencies:
@@ -275,7 +275,7 @@ importers:
         version: 2.0.8
       copy-webpack-plugin:
         specifier: 11.0.0
-        version: 11.0.0(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1)))
+        version: 11.0.0(webpack@5.104.1(webpack-cli@6.0.1))
       fs-extra:
         specifier: 11.1.1
         version: 11.1.1
@@ -287,10 +287,10 @@ importers:
         version: 3.0.0
       string-replace-loader:
         specifier: 3.1.0
-        version: 3.1.0(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1)))
+        version: 3.1.0(webpack@5.104.1(webpack-cli@6.0.1))
       ts-loader:
         specifier: 9.4.2
-        version: 9.4.2(typescript@4.5.2)(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1)))
+        version: 9.4.2(typescript@4.5.2)(webpack@5.104.1(webpack-cli@6.0.1))
 
   packages/app-studio-toolkit-themes: {}
 
@@ -466,8 +466,8 @@ importers:
         specifier: 11.1.0
         version: 11.1.0
       http-proxy-middleware:
-        specifier: 2.0.7
-        version: 2.0.7(@types/express@4.17.25)
+        specifier: 2.0.9
+        version: 2.0.9(@types/express@4.17.25)
       js-string-escape:
         specifier: 1.0.1
         version: 1.0.1
@@ -1645,6 +1645,9 @@ packages:
 
   '@types/node@16.11.10':
     resolution: {integrity: sha512-3aRnHa1KlOEEhJ6+CvyHKK5vE9BcLGjtUpwvqYLRvYNQKMfabu3BwfJaA/SLW8dxe28LsNDjtHwePTuzn3gmOA==}
+
+  '@types/node@25.9.1':
+    resolution: {integrity: sha512-xfrlY7UD5rMJk3ZVJP8BNzS28J36YJg+xp+LPXV1TdWxr8uMH5A860QNxYDGQe/ylDSgjxE52Q9VnO7p75tJxg==}
 
   '@types/normalize-package-data@2.4.4':
     resolution: {integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==}
@@ -3485,6 +3488,15 @@ packages:
       debug:
         optional: true
 
+  follow-redirects@1.16.0:
+    resolution: {integrity: sha512-y5rN/uOsadFT/JfYwhxRS5R7Qce+g3zG97+JrtFZlC9klX/W5hD7iiLzScI4nZqUS7DNUdhPgw4xI8W2LuXlUw==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+
   for-each@0.3.5:
     resolution: {integrity: sha512-dKx12eRCVIzqCxFGplyFKJMPvLEWgmNtUrpTiJIR5u97zEhRG8ySrtboPHZXx7daLxQVrl643cTzbab2tkQjxg==}
     engines: {node: '>= 0.4'}
@@ -3843,8 +3855,8 @@ packages:
     resolution: {integrity: sha512-T1gkAiYYDWYx3V5Bmyu7HcfcvL7mUrTWiM6yOfa3PIphViJ/gFPbvidQ+veqSOHci/PxBcDabeUNCzpOODJZig==}
     engines: {node: '>= 14'}
 
-  http-proxy-middleware@2.0.7:
-    resolution: {integrity: sha512-fgVY8AV7qU7z/MmXJ/rxwbrtQH4jBQ9m7kp3llF0liB7glmFeVZFBepQb32T3y8n8k2+AEYuMPCpinYW+/CuRA==}
+  http-proxy-middleware@2.0.9:
+    resolution: {integrity: sha512-c1IyJYLYppU574+YI7R4QyX2ystMtVXZwIdzazUIPIJsHuWNd+mho2j+bKoHftndicGj9yh+xjd+l0yj7VeT1Q==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
       '@types/express': ^4.17.13
@@ -6406,6 +6418,9 @@ packages:
   underscore@1.13.1:
     resolution: {integrity: sha512-hzSoAVtJF+3ZtiFX0VgfFPHEDRm7Y/QPjGyNo4TVdnDTdft3tr8hEkD25a1jC+TjTuE7tkHGKkhwCgs9dgBB2g==}
 
+  undici-types@7.24.6:
+    resolution: {integrity: sha512-WRNW+sJgj5OBN4/0JpHFqtqzhpbnV0GuB+OozA9gCL7a993SmU+1JBZCzLNxYsbMfIeDL+lTsphD5jN5N+n0zg==}
+
   undici@7.25.0:
     resolution: {integrity: sha512-xXnp4kTyor2Zq+J1FfPI6Eq3ew5h6Vl0F/8d9XU5zZQf1tX9s2Su1/3PiMmUANFULpmksxkClamIZcaUqryHsQ==}
     engines: {node: '>=20.18.1'}
@@ -7747,7 +7762,7 @@ snapshots:
     dependencies:
       '@types/istanbul-lib-coverage': 2.0.6
       '@types/istanbul-reports': 3.0.4
-      '@types/node': 16.11.10
+      '@types/node': 25.9.1
       '@types/yargs': 16.0.11
       chalk: 4.1.2
 
@@ -8400,6 +8415,10 @@ snapshots:
   '@types/node@14.14.6': {}
 
   '@types/node@16.11.10': {}
+
+  '@types/node@25.9.1':
+    dependencies:
+      undici-types: 7.24.6
 
   '@types/normalize-package-data@2.4.4': {}
 
@@ -9537,7 +9556,7 @@ snapshots:
 
   cookie@0.7.2: {}
 
-  copy-webpack-plugin@11.0.0(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1))):
+  copy-webpack-plugin@11.0.0(webpack@5.104.1(webpack-cli@6.0.1)):
     dependencies:
       fast-glob: 3.2.12
       glob-parent: 6.0.2
@@ -9545,7 +9564,7 @@ snapshots:
       normalize-path: 3.0.0
       schema-utils: 4.0.0
       serialize-javascript: 6.0.0
-      webpack: 5.106.2(webpack-cli@6.0.1(webpack@5.104.1))
+      webpack: 5.104.1(webpack-cli@6.0.1)
 
   core-util-is@1.0.2: {}
 
@@ -10585,6 +10604,8 @@ snapshots:
 
   follow-redirects@1.15.11: {}
 
+  follow-redirects@1.16.0: {}
+
   for-each@0.3.5:
     dependencies:
       is-callable: 1.2.7
@@ -11006,7 +11027,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  http-proxy-middleware@2.0.7(@types/express@4.17.25):
+  http-proxy-middleware@2.0.9(@types/express@4.17.25):
     dependencies:
       '@types/http-proxy': 1.17.17
       http-proxy: 1.18.1
@@ -11021,7 +11042,7 @@ snapshots:
   http-proxy@1.18.1:
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.15.11
+      follow-redirects: 1.16.0
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
@@ -11728,7 +11749,7 @@ snapshots:
   jest-util@27.5.1:
     dependencies:
       '@jest/types': 27.5.1
-      '@types/node': 16.11.10
+      '@types/node': 25.9.1
       chalk: 4.1.2
       ci-info: 3.9.0
       graceful-fs: 4.2.11
@@ -13636,11 +13657,11 @@ snapshots:
       char-regex: 1.0.2
       strip-ansi: 6.0.1
 
-  string-replace-loader@3.1.0(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1))):
+  string-replace-loader@3.1.0(webpack@5.104.1(webpack-cli@6.0.1)):
     dependencies:
       loader-utils: 2.0.4
       schema-utils: 3.1.1
-      webpack: 5.106.2(webpack-cli@6.0.1(webpack@5.104.1))
+      webpack: 5.104.1(webpack-cli@6.0.1)
 
   string-similarity@4.0.4: {}
 
@@ -13898,14 +13919,14 @@ snapshots:
     dependencies:
       typescript: 4.5.2
 
-  ts-loader@9.4.2(typescript@4.5.2)(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1))):
+  ts-loader@9.4.2(typescript@4.5.2)(webpack@5.104.1(webpack-cli@6.0.1)):
     dependencies:
       chalk: 4.1.2
       enhanced-resolve: 5.8.3
       micromatch: 4.0.4
       semver: 7.3.5
       typescript: 4.5.2
-      webpack: 5.106.2(webpack-cli@6.0.1(webpack@5.104.1))
+      webpack: 5.104.1(webpack-cli@6.0.1)
 
   tsconfig-paths@3.15.0:
     dependencies:
@@ -14032,6 +14053,8 @@ snapshots:
       which-boxed-primitive: 1.1.1
 
   underscore@1.13.1: {}
+
+  undici-types@7.24.6: {}
 
   undici@7.25.0: {}
 
