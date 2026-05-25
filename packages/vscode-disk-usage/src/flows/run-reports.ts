@@ -1,0 +1,32 @@
+import type { DiskUsageReport } from "../types";
+import {
+  getTenantPlan,
+  getTenantPack,
+  getWsID,
+} from "../helper-logic/constants";
+import { knownTechnicalFoldersReport } from "../reports/known-home-folders";
+import { allVscodeJavaRedHatReport } from "../reports/all-vscode-java-redhat";
+import { allNodeModulesReport } from "../reports/all-node-modules";
+import { allNoneHiddenReport } from "../reports/all-none-hidden";
+
+export { runReports };
+
+async function runReports(homeFolder: string): Promise<DiskUsageReport> {
+  const allJavaRedHat = await allVscodeJavaRedHatReport(homeFolder);
+  const allNodeModules = await allNodeModulesReport(homeFolder);
+  const allNoneHidden = await allNoneHiddenReport(homeFolder);
+  const knownTechnicalFolders = await knownTechnicalFoldersReport(homeFolder);
+
+  const report: DiskUsageReport = {
+    timestamp: new Date().getTime(),
+    workspaceId: getWsID(),
+    tenantPlan: getTenantPlan(),
+    tenantPack: getTenantPack(),
+    allJavaRedHat: allJavaRedHat,
+    allNodeModules: allNodeModules,
+    allNoneHidden: allNoneHidden,
+    knownHomeFolders: knownTechnicalFolders,
+  };
+
+  return report;
+}

@@ -1,5 +1,17 @@
 # @sap-devx/npm-dependencies-validation
 
+## 3.0.3
+
+### Patch Changes
+
+- 2a15dd8: updating dependencies
+
+## 3.0.2
+
+### Patch Changes
+
+- cc4e59c: upgrade lodash to 4.17.23
+
 ## 3.0.1
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
   "name": "@sap-devx/app-studio-toolkit-types",
-  "version": "2.4.0",
+  "version": "2.11.3",
   "author": "SAP SE",
   "license": "Apache-2.0",
   "description": "The SAP Business Application Studio Toolkit VSCode Extension's API type signatures",
@@ -25,9 +25,9 @@
     "compile": "tsc -p ."
   },
   "dependencies": {
-    "@sap/artifact-management-types": "1.44.1",
+    "@sap/artifact-management-types": "1.53.2",
     "@types/vscode": "1.75.0",
-    "@vscode-logging/types": "2.0.0",
+    "@vscode-logging/types": "2.0.8",
     "type-fest": "2.11.1"
   }
 }

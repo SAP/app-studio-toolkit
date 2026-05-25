@@ -1,0 +1,15 @@
+{
+  "name": "core",
+
+  "requires": {
+    "services": []
+  },
+
+  "provides": {
+    "services": {
+      "core_service": {
+        "module": "somewhere"
+      }
+    }
+  }
+}

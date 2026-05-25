@@ -1,0 +1,5 @@
+{
+  "name": "sap.watt.bamba.external",
+  "description": "The Bamba Fiori Extension Plugin",
+  "i18n": "i.am.external/i18n/i18n"
+}

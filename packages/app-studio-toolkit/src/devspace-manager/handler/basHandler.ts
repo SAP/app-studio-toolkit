@@ -10,6 +10,8 @@ import { DevSpaceDataProvider } from "../tree/devSpacesProvider";
 import { cmdDevSpaceConnectNewWindow } from "../devspace/connect";
 import { messages } from "../common/messages";
 import { cmdDevSpaceStart } from "../devspace/update";
+import { JwtPayload } from "@sap-devx/app-studio-toolkit-types";
+import { URLSearchParams } from "node:url";
 
 async function getDevSpace(landscape: LandscapeNode, devspaceidParam: string) {
   const devspaces = await landscape.getChildren(landscape);
@@ -75,30 +77,30 @@ async function getLandscapeFromUrl(
   return landscapeNode;
 }
 
-function getParamFromUrl(query: string, name: string): string {
-  const param = query
-    .split("&")
-    .find((el) => el.split("=")[0] === name)
-    ?.split("=")[1];
-  if (!param) {
+function getParamFromUrl(
+  query: string,
+  name: string,
+  optional = false
+): string {
+  const value = new URLSearchParams(query).get(name);
+  if (!optional && !value) {
     throw new Error(messages.err_url_param_missing(query, name));
   }
-  return param;
+  return value ?? "";
 }
 
-export interface LoginEvent {
-  jwt?: string;
-}
+export interface LoginEvent extends Partial<JwtPayload> {}
 
 // Create an instance of EventEmitter
 export const eventEmitter = new EventEmitter<LoginEvent>();
 
-async function handleLogin(uri: Uri): Promise<void> {
-  // expected URL format :
-  // vscode://SAPOSS.app-studio-toolkit/login?jwt=`value`
-  return Promise.resolve().then(() => {
-    eventEmitter.fire({ jwt: getParamFromUrl(uri.query, "jwt") });
-  });
+function handleLogin(uri: Uri): void {
+  // expected URL format:
+  // vscode://SAPOSS.app-studio-toolkit/login?jwt=`value&iasjwt=`value
+  const jwt = decodeURIComponent(getParamFromUrl(uri.query, "jwt"));
+  const iasjwt = decodeURIComponent(getParamFromUrl(uri.query, "iasjwt", true));
+  eventEmitter.fire({ jwt, iasjwt });
+  getLogger().info("jwt(s) received");
 }
 
 async function handleOpen(
@@ -133,7 +135,7 @@ export function getBasUriHandler(
         if (uri.path === "/open") {
           await handleOpen(uri, devSpacesProvider);
         } else if (uri.path === "/login") {
-          await handleLogin(uri);
+          handleLogin(uri);
         } else {
           throw new Error(
             messages.err_url_has_incorrect_format(uri.toString())

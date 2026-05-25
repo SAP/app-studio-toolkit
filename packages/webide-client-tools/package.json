@@ -1,0 +1,89 @@
+{
+  "name": "@sap-webide/webide-client-tools",
+  "version": "4.0.0",
+  "license": "Apache-2.0",
+  "main": "src/api.js",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "acorn": "8.16.0",
+    "connect": "3.7.0",
+    "fs-extra": "10.0.0",
+    "glob": "11.1.0",
+    "http-proxy-middleware": "2.0.7",
+    "js-string-escape": "1.0.1",
+    "lodash": "4.18.1",
+    "optional-require": "1.1.8",
+    "requirejs": "2.3.8",
+    "serve-static": "1.16.0",
+    "webpack": "5.106.2",
+    "which": "2.0.2"
+  },
+  "peerDependencies": {
+    "karma": ">= 1.7.0",
+    "karma-chrome-launcher": "2.1.1",
+    "karma-coverage": "1.1.1",
+    "karma-mocha": "1.3.0",
+    "karma-mocha-reporter": "2.2.3",
+    "karma-openui5": "0.2.2",
+    "karma-requirejs": "1.1.0",
+    "mocha": "*"
+  },
+  "devDependencies": {
+    "chai": "4.4.1",
+    "chai-as-promised": "7.1.2",
+    "chai-string": "1.6.0",
+    "eslint-config-airbnb-base": "15.0.0",
+    "eslint-plugin-import": "2.25.3",
+    "jest": "27.5.1"
+  },
+  "scripts": {
+    "ci": "npm-run-all type_check test",
+    "clean": "shx rm -rf dist .nyc_output docs/web/html_docs",
+    "test": "jest",
+    "test_integration": "npm-run-all init_example execute_integration_tests unlink_example",
+    "init_example": "node scripts/init_example.js",
+    "execute_integration_tests": "jest --maxWorkers 1 --config test_integration/jest.config.json",
+    "unlink_example": "cd ./example && npm unlink @sap-webide/webide-client-tools",
+    "type_check": "tsc"
+  },
+  "files": [
+    "src",
+    "example",
+    "resources",
+    "README.md",
+    "api.d.ts"
+  ],
+  "prettier": {
+    "semi": false
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testRegex": "test/.*spec\\.js$",
+    "transform": {},
+    "collectCoverage": true,
+    "coverageDirectory": ".nyc_output",
+    "coverageReporters": [
+      "json",
+      "text"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 100,
+        "functions": 100,
+        "lines": 100,
+        "statements": 100
+      }
+    },
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/src/dev_server.js",
+      "<rootDir>/src/middleware.js",
+      "<rootDir>/src/di_backend.js"
+    ]
+  },
+  "typings": "api.d.ts",
+  "publishConfig": {
+    "access": "public"
+  }
+}

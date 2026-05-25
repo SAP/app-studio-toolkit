@@ -452,7 +452,7 @@ describe("basHandler scope", () => {
     it("login, ok", async () => {
       mockEmitter
         .expects("fire")
-        .withExactArgs({ jwt: `${token}` })
+        .withExactArgs({ jwt: `${token}`, iasjwt: "" })
         .returns("");
       await handler.handleUri(uri);
     });

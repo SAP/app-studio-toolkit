@@ -37,9 +37,24 @@ const testVscode = {
     ],
   },
   workspace: {
-    workspaceFolders: [{}, {}],
+    workspaceFolders: [{ uri: "folder1" }, { uri: "folder2" }],
     getConfiguration: () => wsConfig,
     onDidChangeWorkspaceFolders: () => {},
+    onDidChangeConfiguration: () => ({ dispose: () => {} }),
+  },
+  Disposable: {
+    from: (...disposables: any[]) => ({
+      dispose: () => {
+        disposables.forEach((d: any) => {
+          if (d.dispose) {
+            d.dispose();
+          }
+        });
+      },
+    }),
+  },
+  Uri: {
+    parse: (uri: string) => ({ toString: () => uri }),
   },
 };
 mockVscode(testVscode, "dist/src/actions/controller.js");
@@ -318,6 +333,419 @@ describe("controller unit test", () => {
       } catch (error) {
         expect(error).to.be.equal(testError);
       }
+    });
+  });
+
+  describe("performScheduledActions", () => {
+    let actionsConfigMock: any;
+    const actionsConfig = require("../src/actions/actionsConfig");
+
+    beforeEach(() => {
+      actionsConfigMock = sandbox.mock(actionsConfig);
+    });
+
+    afterEach(() => {
+      actionsConfigMock.verify();
+    });
+
+    it("should perform actions with string id", () => {
+      const actionId = "openSettingsAction";
+      const action = ActionsFactory.createAction(
+        {
+          id: actionId,
+          actionType: "COMMAND",
+          name: "workbench.action.openGlobalSettings",
+        },
+        true
+      );
+
+      ActionsController["actions"].push(action);
+
+      actionsConfigMock.expects("get").returns([actionId]);
+      actionsConfigMock.expects("clear").once();
+      performerMock.expects("_performAction").withExactArgs(action).resolves();
+
+      ActionsController.performScheduledActions();
+    });
+
+    it("should perform actions with action object", () => {
+      const actionObj = {
+        actionType: "COMMAND",
+        name: "workbench.action.openSettings",
+      };
+      const action = ActionsFactory.createAction(actionObj, true);
+
+      actionsConfigMock.expects("get").returns([actionObj]);
+      actionsConfigMock.expects("clear").once();
+      performerMock.expects("_performAction").withExactArgs(action).resolves();
+
+      ActionsController.performScheduledActions();
+    });
+
+    it("should skip undefined actions", () => {
+      actionsConfigMock.expects("get").returns(["nonExistentAction"]);
+      actionsConfigMock.expects("clear").once();
+      performerMock.expects("_performAction").never();
+
+      ActionsController.performScheduledActions();
+    });
+
+    it("should handle errors during action execution", () => {
+      const actionObj = {
+        actionType: "COMMAND",
+        name: "workbench.action.openSettings",
+      };
+
+      actionsConfigMock.expects("get").returns([actionObj]);
+      actionsConfigMock.expects("clear").once();
+
+      ActionsController.performScheduledActions();
+    });
+
+    it("should not perform action when action creation returns null", () => {
+      const invalidActionObj = {
+        actionType: "INVALID",
+        name: "invalid.action",
+      };
+
+      actionsConfigMock.expects("get").returns([invalidActionObj]);
+      actionsConfigMock.expects("clear").once();
+      performerMock.expects("_performAction").never();
+
+      ActionsController.performScheduledActions();
+    });
+  });
+
+  describe("performImmediateActions", () => {
+    let disposable: any;
+    let actionsConfigMock: any;
+    const actionsConfig = require("../src/actions/actionsConfig");
+
+    beforeEach(() => {
+      actionsConfigMock = sandbox.mock(actionsConfig);
+    });
+
+    afterEach(() => {
+      if (disposable && typeof disposable.dispose === "function") {
+        try {
+          disposable.dispose();
+        } catch (e) {
+          // Ignore disposal errors in tests
+        }
+      }
+      disposable = undefined;
+      if (actionsConfigMock) {
+        actionsConfigMock.verify();
+      }
+    });
+
+    it("should return a Disposable", () => {
+      disposable = ActionsController.performImmediateActions();
+      expect(disposable).to.have.property("dispose");
+      expect(typeof disposable.dispose).to.equal("function");
+    });
+
+    it("should register configuration change listeners", () => {
+      const onDidChangeConfigStub = sandbox
+        .stub()
+        .returns({ dispose: () => {} });
+      (testVscode.workspace as any).onDidChangeConfiguration =
+        onDidChangeConfigStub;
+
+      disposable = ActionsController.performImmediateActions();
+
+      // Should be called for each workspace folder + 1 for global
+      expect(onDidChangeConfigStub.callCount).to.be.greaterThan(0);
+    });
+
+    it("should execute immediate actions when configuration changes", async () => {
+      const handlers: any[] = [];
+      const onDidChangeConfigStub = sandbox.stub().callsFake((handler: any) => {
+        handlers.push(handler);
+        return { dispose: () => {} };
+      });
+      (testVscode.workspace as any).onDidChangeConfiguration =
+        onDidChangeConfigStub;
+
+      const immediateAction = {
+        actionType: "COMMAND",
+        name: "workbench.action.openSettings",
+        execute: "immediate",
+      };
+      const action = ActionsFactory.createAction(immediateAction, true);
+
+      actionsConfigMock.expects("get").returns([immediateAction]);
+      actionsConfigMock.expects("clear").withExactArgs(true).once();
+      performerMock.expects("_performAction").withExactArgs(action).resolves();
+
+      disposable = ActionsController.performImmediateActions();
+
+      // Simulate configuration change on the last handler (global config)
+      const mockEvent = {
+        affectsConfiguration: (key: string, uri?: any) => key === "actions",
+      };
+
+      if (handlers.length > 0) {
+        await handlers[handlers.length - 1](mockEvent);
+        // Wait a bit for async execution to complete
+        await new Promise((resolve) => setTimeout(resolve, 50));
+      }
+    });
+
+    it("should not execute actions when configuration change does not affect actions key", async () => {
+      const handlers: any[] = [];
+      const onDidChangeConfigStub = sandbox.stub().callsFake((handler: any) => {
+        handlers.push(handler);
+        return { dispose: () => {} };
+      });
+      (testVscode.workspace as any).onDidChangeConfiguration =
+        onDidChangeConfigStub;
+
+      actionsConfigMock.expects("get").never();
+      actionsConfigMock.expects("clear").never();
+      performerMock.expects("_performAction").never();
+
+      disposable = ActionsController.performImmediateActions();
+
+      // Simulate configuration change for a different key (not "actions")
+      const mockEvent = {
+        affectsConfiguration: (key: string, uri?: any) =>
+          key === "someOtherKey",
+      };
+
+      if (handlers.length > 0) {
+        await handlers[handlers.length - 1](mockEvent);
+        // Wait a bit to ensure nothing is executed
+        await new Promise((resolve) => setTimeout(resolve, 50));
+      }
+    });
+
+    it("should handle when workspaceFolders is undefined", async () => {
+      const handlers: any[] = [];
+      const onDidChangeConfigStub = sandbox.stub().callsFake((handler: any) => {
+        handlers.push(handler);
+        return { dispose: () => {} };
+      });
+      (testVscode.workspace as any).onDidChangeConfiguration =
+        onDidChangeConfigStub;
+
+      // Temporarily set workspaceFolders to undefined
+      const originalFolders = testVscode.workspace.workspaceFolders;
+      (testVscode.workspace as any).workspaceFolders = undefined;
+
+      const immediateAction = {
+        actionType: "COMMAND",
+        name: "workbench.action.openSettings",
+        execute: "immediate",
+      };
+      const action = ActionsFactory.createAction(immediateAction, true);
+
+      actionsConfigMock.expects("get").returns([immediateAction]);
+      actionsConfigMock.expects("clear").withExactArgs(true).once();
+      performerMock.expects("_performAction").withExactArgs(action).resolves();
+
+      disposable = ActionsController.performImmediateActions();
+
+      // Should only register the global handler (no folder handlers)
+      expect(handlers.length).to.equal(1);
+
+      // Simulate configuration change on the global handler
+      const mockEvent = {
+        affectsConfiguration: (key: string, uri?: any) => key === "actions",
+      };
+
+      await handlers[0](mockEvent);
+      // Wait a bit for async execution to complete
+      await new Promise((resolve) => setTimeout(resolve, 50));
+
+      // Restore original folders
+      (testVscode.workspace as any).workspaceFolders = originalFolders;
+    });
+  });
+
+  describe("executeImmediateActions", () => {
+    let actionsConfigMock: any;
+    const actionsConfig = require("../src/actions/actionsConfig");
+
+    beforeEach(() => {
+      actionsConfigMock = sandbox.mock(actionsConfig);
+      ActionsController["isExecutingImmediateActions"] = false;
+    });
+
+    afterEach(() => {
+      actionsConfigMock.verify();
+      ActionsController["isExecutingImmediateActions"] = false;
+    });
+
+    it("should execute immediate actions", async () => {
+      const immediateAction = {
+        actionType: "COMMAND",
+        name: "workbench.action.openSettings",
+        execute: "immediate",
+      };
+      const action = ActionsFactory.createAction(immediateAction, true);
+
+      actionsConfigMock.expects("get").returns([immediateAction]);
+      actionsConfigMock.expects("clear").withExactArgs(true).once();
+      performerMock.expects("_performAction").withExactArgs(action).resolves();
+
+      await ActionsController["executeImmediateActions"]();
+    });
+
+    it("should skip non-immediate actions", async () => {
+      const scheduledAction = {
+        actionType: "COMMAND",
+        name: "workbench.action.openSettings",
+        execute: "scheduled",
+      };
+
+      actionsConfigMock.expects("get").returns([scheduledAction]);
+      actionsConfigMock.expects("clear").never();
+      performerMock.expects("_performAction").never();
+
+      await ActionsController["executeImmediateActions"]();
+    });
+
+    it("should skip string actions", async () => {
+      actionsConfigMock.expects("get").returns(["someActionId"]);
+      actionsConfigMock.expects("clear").never();
+      performerMock.expects("_performAction").never();
+
+      await ActionsController["executeImmediateActions"]();
+    });
+
+    it("should skip actions without execute property", async () => {
+      const actionWithoutExecute = {
+        actionType: "COMMAND",
+        name: "workbench.action.openSettings",
+      };
+
+      actionsConfigMock.expects("get").returns([actionWithoutExecute]);
+      actionsConfigMock.expects("clear").never();
+      performerMock.expects("_performAction").never();
+
+      await ActionsController["executeImmediateActions"]();
+    });
+
+    it("should skip null or undefined items in actions list", async () => {
+      const immediateAction = {
+        actionType: "COMMAND",
+        name: "workbench.action.openSettings",
+        execute: "immediate",
+      };
+      const action = ActionsFactory.createAction(immediateAction, true);
+
+      actionsConfigMock
+        .expects("get")
+        .returns([null, immediateAction, undefined]);
+      actionsConfigMock.expects("clear").withExactArgs(true).once();
+      performerMock.expects("_performAction").withExactArgs(action).resolves();
+
+      await ActionsController["executeImmediateActions"]();
+    });
+
+    it("should return early if already executing", async () => {
+      ActionsController["isExecutingImmediateActions"] = true;
+
+      actionsConfigMock.expects("get").never();
+      actionsConfigMock.expects("clear").never();
+      performerMock.expects("_performAction").never();
+
+      await ActionsController["executeImmediateActions"]();
+    });
+
+    it("should reset flag even on error", async () => {
+      const immediateAction = {
+        actionType: "COMMAND",
+        name: "workbench.action.openSettings",
+        execute: "immediate",
+      };
+
+      actionsConfigMock.expects("get").returns([immediateAction]);
+      actionsConfigMock.expects("clear").withExactArgs(true).once();
+      performerMock.expects("_performAction").rejects(new Error("Test error"));
+
+      await ActionsController["executeImmediateActions"]();
+
+      expect(ActionsController["isExecutingImmediateActions"]).to.be.false;
+    });
+
+    it("should return early when no immediate actions exist", async () => {
+      actionsConfigMock.expects("get").returns([]);
+      actionsConfigMock.expects("clear").never();
+      performerMock.expects("_performAction").never();
+
+      await ActionsController["executeImmediateActions"]();
+    });
+  });
+
+  describe("detectActionMode", () => {
+    it("should detect Inlined mode for valid JSON array", () => {
+      const inlinedParam = '[{"actionType":"COMMAND","name":"test"}]';
+      const result = ActionsController["detectActionMode"](inlinedParam);
+      expect(result).to.equal("Inlined");
+    });
+
+    it("should detect ByIDs mode for non-JSON string", () => {
+      const byIdsParam = "action1,action2";
+      const result = ActionsController["detectActionMode"](byIdsParam);
+      expect(result).to.equal("ByIDs");
+    });
+
+    it("should detect ByIDs mode for JSON object (not array)", () => {
+      const objectParam = '{"actionType":"COMMAND"}';
+      const result = ActionsController["detectActionMode"](objectParam);
+      expect(result).to.equal("ByIDs");
+    });
+
+    it("should detect ByIDs mode for invalid JSON", () => {
+      const invalidParam = "not-valid-json";
+      const result = ActionsController["detectActionMode"](invalidParam);
+      expect(result).to.equal("ByIDs");
+    });
+  });
+
+  describe("performActionsByIds", () => {
+    beforeEach(() => {
+      ActionsController["actions"].length = 0;
+    });
+
+    it("should perform actions by IDs", () => {
+      const action = ActionsFactory.createAction(
+        {
+          id: "testAction",
+          actionType: "COMMAND",
+          name: "test.command",
+        },
+        true
+      );
+      ActionsController["actions"].push(action);
+
+      performerMock.expects("_performAction").withExactArgs(action).resolves();
+
+      ActionsController["performActionsByIds"](["testAction"]);
+    });
+
+    it("should trim action IDs", () => {
+      const action = ActionsFactory.createAction(
+        {
+          id: "testAction",
+          actionType: "COMMAND",
+          name: "test.command",
+        },
+        true
+      );
+      ActionsController["actions"].push(action);
+
+      performerMock.expects("_performAction").withExactArgs(action).resolves();
+
+      ActionsController["performActionsByIds"](["  testAction  "]);
+    });
+
+    it("should skip non-existent actions", () => {
+      performerMock.expects("_performAction").never();
+
+      ActionsController["performActionsByIds"](["nonExistent"]);
     });
   });
 });

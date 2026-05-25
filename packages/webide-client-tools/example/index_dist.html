@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<script src="node_modules/@sap-webide/webide-client-tools/resources/local_env/webide_starter.js"></script>
+
+<script>
+    var myFeatureConfig = _.cloneDeep(DEFAULT_FEATURE_CONFIG)
+    myFeatureConfig.bundledFeatures["client-tools-example"] = "file:../../../../../dist/package.json"
+    startWebIDE({ featureConfig: myFeatureConfig })
+</script>
+
+</body>
+</html>

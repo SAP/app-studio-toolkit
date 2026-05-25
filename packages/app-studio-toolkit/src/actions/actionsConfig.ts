@@ -1,11 +1,37 @@
 import { workspace, WorkspaceConfiguration } from "vscode";
-import { uniqWith, isEqual, size } from "lodash";
+import { uniqWith, isEqual } from "lodash";
 
-const key = "actions";
+export const key = "actions";
 
 const addActions = (actions: any[], config: WorkspaceConfiguration): void => {
   const configActions = config.get<any[]>(key, []);
-  actions.splice(actions.length, 0, ...configActions);
+  actions.push(...configActions);
+};
+
+const clearConfiguration = (
+  config: WorkspaceConfiguration,
+  onlyImmediateActions: boolean
+): void => {
+  const currentActions = config.get<any[]>(key, []);
+  if (currentActions.length === 0) return;
+
+  if (onlyImmediateActions) {
+    const updatedActions = currentActions.filter(
+      (action) => action.execute !== "immediate"
+    );
+    void config.update(key, updatedActions);
+  } else {
+    void config.update(key, undefined);
+  }
+};
+
+export const clear = (onlyImmediateActions = false): void => {
+  workspace.workspaceFolders?.forEach((wsFolder) => {
+    const config = workspace.getConfiguration(undefined, wsFolder.uri);
+    clearConfiguration(config, onlyImmediateActions);
+  });
+
+  clearConfiguration(workspace.getConfiguration(), onlyImmediateActions);
 };
 
 export const get = (): any[] => {
@@ -18,18 +44,4 @@ export const get = (): any[] => {
   addActions(actions, workspace.getConfiguration());
 
   return uniqWith(actions, isEqual);
-};
-
-export const clear = (): void => {
-  workspace.workspaceFolders?.forEach((wsFolder) => {
-    const configurations = workspace.getConfiguration(undefined, wsFolder.uri);
-    if (size(configurations["actions"]) > 0) {
-      void configurations.update(key, undefined); // removes actions key if they exist
-    }
-  });
-
-  const configurations = workspace.getConfiguration();
-  if (size(configurations["actions"]) > 0) {
-    void configurations.update(key, undefined);
-  }
 };

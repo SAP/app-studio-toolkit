@@ -1,0 +1,6 @@
+{
+  "name": "invalid.feature.path.inner",
+  "bundledFeatures": {
+    "common": "file:common"
+  }
+}

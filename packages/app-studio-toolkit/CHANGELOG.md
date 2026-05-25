@@ -1,5 +1,71 @@
 # app-studio-toolkit
 
+## 2.11.3
+
+### Patch Changes
+
+- 2a15dd8: updating dependencies
+
+## 2.11.2
+
+### Patch Changes
+
+- 5befbd1: bumping @sap/artifact-management dependency to 1.53.2
+
+## 2.11.1
+
+### Patch Changes
+
+- 589dceb: bumping @sap/artifact-management dependency to 1.53.1
+
+## 2.11.0
+
+### Minor Changes
+
+- ab53b1e: remote desktop client -> open settings command key filter updated
+
+### Patch Changes
+
+- cc4e59c: upgrade lodash to 4.17.23
+
+## 2.10.1
+
+## 2.10.0
+
+### Minor Changes
+
+- b11aec3: support for "immediate" execution of the BAS action
+
+## 2.9.0
+
+### Minor Changes
+
+- 37f0485: bumping @sap/artifact-management dependency to 1.48.0
+
+## 2.8.0
+
+### Minor Changes
+
+- c78e88a: bumping @sap/artifact-management dependency to 1.47.10
+
+## 2.7.0
+
+### Minor Changes
+
+- b2781fe: bumping @sap/artifact-management dependency to 1.47.0
+
+## 2.6.0
+
+### Minor Changes
+
+- 9b0880a: bumping @sap/artifact-management dependency to 1.46.0
+
+## 2.5.0
+
+### Minor Changes
+
+- e900d97: support for 'iasjwt' together with existing 'jwt'
+
 ## 2.4.0
 
 ### Minor Changes

@@ -1,0 +1,6 @@
+{
+  "name": "invalid.feature.path",
+  "bundledFeatures": {
+    "invalid.feature.path.inner": "inner"
+  }
+}

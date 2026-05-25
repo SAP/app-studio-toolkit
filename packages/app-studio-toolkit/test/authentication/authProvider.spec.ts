@@ -100,8 +100,8 @@ describe("authProvider unit test", () => {
   const landscape1 = `https://my.landscape-1.com`;
   const landscape2 = `https://my.landscape-2.com`;
   const objToken: any = {};
-  objToken[landscape1] = `token-1`;
-  objToken[landscape2] = `token-2`;
+  objToken[landscape1] = { jwt: "token-1", iasjwt: "ias-token-1" };
+  objToken[landscape2] = { jwt: "token-2", iasjwt: undefined };
   const secretKey: string = "baslandscapepat";
   const dummyToken = `dummy-token`;
 
@@ -136,6 +136,7 @@ describe("authProvider unit test", () => {
           id: BasRemoteAuthenticationProviderProxy.id,
           scopes: [],
           accessToken: dummyToken,
+          iasToken: undefined,
         },
       ]);
     });
@@ -157,7 +158,8 @@ describe("authProvider unit test", () => {
           },
           id: BasRemoteAuthenticationProviderProxy.id,
           scopes: [landscape1],
-          accessToken: objToken[landscape1],
+          accessToken: objToken[landscape1].jwt,
+          iasToken: objToken[landscape1].iasjwt,
         },
       ]);
     });
@@ -202,7 +204,8 @@ describe("authProvider unit test", () => {
         },
         id: BasRemoteAuthenticationProviderProxy.id,
         scopes: [landscape2],
-        accessToken: objToken[landscape2],
+        accessToken: objToken[landscape2].jwt,
+        iasToken: objToken[landscape2].iasjwt,
       });
     });
 
@@ -235,7 +238,8 @@ describe("authProvider unit test", () => {
         },
         id: BasRemoteAuthenticationProviderProxy.id,
         scopes: [landscape2],
-        accessToken: objToken[landscape2],
+        accessToken: objToken[landscape2].jwt,
+        iasToken: objToken[landscape2].iasjwt,
       });
     });
 
@@ -270,7 +274,8 @@ describe("authProvider unit test", () => {
         },
         id: BasRemoteAuthenticationProviderProxy.id,
         scopes: [landscape2],
-        accessToken: objToken[landscape2],
+        accessToken: objToken[landscape2].jwt,
+        iasToken: objToken[landscape2].iasjwt,
       });
     });
 
@@ -322,7 +327,9 @@ describe("authProvider unit test", () => {
       const instance = new BasRemoteAuthenticationProviderProxy(
         proxySecretSorage
       );
-      expect(instance[`getTokenByScope`](`{}`, [])).to.be.equal(dummyToken);
+      expect(instance[`getTokenByScope`](`{}`, [])).to.be.deep.equal({
+        jwt: dummyToken,
+      });
     });
 
     it("getTokenByScope, objToken empty object, scope specified", () => {
@@ -338,7 +345,7 @@ describe("authProvider unit test", () => {
       );
       expect(
         instance[`getTokenByScope`](JSON.stringify(objToken), [landscape2])
-      ).to.be.equal(objToken[landscape2]);
+      ).to.be.deep.equal({ jwt: objToken[landscape2].jwt });
     });
 
     it("getTokenByScope, objToken provided, not existed scope specified", () => {
@@ -442,7 +449,9 @@ describe("authProvider unit test", () => {
       expect(await instance[`checkForUpdates`]([landscape1])).to.be.undefined;
       const args = stubEmitter.args[0][0];
       expect(args.added.length).to.be.equal(1);
-      expect(args.added[0].accessToken).to.be.equal(landscapeToken[landscape1]);
+      expect(args.added[0].accessToken).to.be.equal(
+        landscapeToken[landscape1].jwt
+      );
       expect(args.removed.length).to.be.equal(0);
       expect(args.changed.length).to.be.equal(0);
     });
@@ -465,7 +474,7 @@ describe("authProvider unit test", () => {
       const args = stubEmitter.args[0][0];
       expect(args.added.length).to.be.equal(0);
       expect(args.removed.length).to.be.equal(1);
-      expect(args.removed[0].accessToken).to.be.equal(objToken[landscape2]);
+      expect(args.removed[0].accessToken).to.be.equal(objToken[landscape2].jwt);
       expect(args.changed.length).to.be.equal(0);
     });
 
@@ -474,7 +483,7 @@ describe("authProvider unit test", () => {
         proxySecretSorage
       );
       const landscapeToken = cloneDeep(objToken);
-      landscapeToken[landscape2] = "token-updated";
+      landscapeToken[landscape2].jwt = "token-updated";
       mockStorage
         .expects(`get`)
         .withExactArgs(secretKey)
@@ -489,8 +498,67 @@ describe("authProvider unit test", () => {
       expect(args.removed.length).to.be.equal(0);
       expect(args.changed.length).to.be.equal(1);
       expect(args.changed[0].accessToken).to.be.equal(
-        landscapeToken[landscape2]
+        landscapeToken[landscape2].jwt
       );
+    });
+
+    it("checkForUpdates, previousToken exists but both jwt and iasjwt are falsy, should add session", async () => {
+      const instance = new BasRemoteAuthenticationProviderProxy(
+        proxySecretSorage
+      );
+
+      // Simulate previousToken with both jwt and iasjwt falsy
+      const previousToken = { jwt: "", iasjwt: "" };
+      instance["getTokenByScope"] = () => previousToken;
+
+      // Simulate a valid session
+      const session = {
+        id: BasRemoteAuthenticationProviderProxy.id,
+        account: {
+          id: BasRemoteAuthenticationProviderProxy.id,
+          label: patLabel,
+        },
+        scopes: [],
+        accessToken: "some-token",
+        iasToken: undefined,
+      };
+      // eslint-disable-next-line @typescript-eslint/require-await -- this is a mock
+      instance["getSessions"] = async () => [session];
+
+      instance[`_onDidChangeSessions`] = proxyEmitter;
+      const stubEmitter = sandbox.stub(proxyEmitter, "fire");
+
+      expect(await instance["checkForUpdates"]([])).to.be.undefined;
+      const args = stubEmitter.args[0][0];
+      expect(args.added.length).to.equal(1);
+      expect(args.added[0].accessToken).to.equal("some-token");
+      expect(args.removed.length).to.equal(0);
+      expect(args.changed.length).to.equal(0);
+    });
+
+    it("checkForUpdates, previousToken exists with iasjwt, but session does not exist (should remove)", async () => {
+      const instance = new BasRemoteAuthenticationProviderProxy(
+        proxySecretSorage
+      );
+
+      // Simulate previousToken with iasjwt set
+      const previousToken = { jwt: "", iasjwt: "some-iasjwt" };
+      instance["getTokenByScope"] = () => previousToken;
+
+      // Simulate no session returned
+      // eslint-disable-next-line @typescript-eslint/require-await -- this is a mock
+      instance.getSessions = async () => [];
+
+      instance["_onDidChangeSessions"] = proxyEmitter;
+      const stubEmitter = sandbox.stub(proxyEmitter, "fire");
+
+      expect(await instance["checkForUpdates"]([])).to.be.undefined;
+      const args = stubEmitter.args[0][0];
+      expect(args.added.length).to.equal(0);
+      expect(args.removed.length).to.equal(1);
+      expect(args.removed[0].accessToken).to.equal(""); // jwt is empty string
+      expect(args.removed[0].iasToken).to.equal("some-iasjwt");
+      expect(args.changed.length).to.equal(0);
     });
   });
 

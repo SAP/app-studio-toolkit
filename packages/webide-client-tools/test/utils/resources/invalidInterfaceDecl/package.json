@@ -1,0 +1,6 @@
+{
+  "name": "invalid.interface.decl",
+  "bundledPlugins": {
+    "sap.watt.common.focus": "file:focus"
+  }
+}
