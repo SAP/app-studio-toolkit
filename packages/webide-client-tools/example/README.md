@@ -65,12 +65,12 @@ A local development server provides a static web server for hosting and serving 
 ### How Does the Development Server Work?
 
 _localhost:3000_ redirects to _localhost:3000/index.html_.
-This [index.html](https://github.com/SAP/webide-client-tools/blob/master/example/template/index.html) starts SAP Web IDE in an iframe and injects configuration options, such as adding our example plugin's _package.json_ file to the root SAP Web IDE _featureConfig_.
+This [index.html](https://github.com/SAP/app-studio-toolkit/blob/main/packages/webide-client-tools/example/index.html) starts SAP Web IDE in an iframe and injects configuration options, such as adding our example plugin's _package.json_ file to the root SAP Web IDE _featureConfig_.
 
 This is available as a programmatic API (**startWebIDE**) with several optional arguments.
 
 Let's have a look at two variants to demonstrate customizability:
-[index_dist.html](https://github.com/SAP/webide-client-tools/blob/master/example/template/index_dist.html). This starts SAP Web IDE and loads the example plugin from the _dist_ folder after bundling.
+[index_dist.html](https://github.com/SAP/app-studio-toolkit/blob/main/packages/webide-client-tools/example/index_dist.html). This starts SAP Web IDE and loads the example plugin from the _dist_ folder after bundling.
 
 ## <a name="BUNDLING"></a> Bundling
 
@@ -105,8 +105,8 @@ Relevant Resources:
 - http://requirejs.org/docs/api.html#config
 - https://stackoverflow.com/questions/tagged/requirejs
 
-**Note**: The _require.js_ optimizer is meant only to bundle files using the AMD module pattern. See the [FAQ](https://github.com/SAP/webide-client-tools/blob/master/FAQ.md) for details about how to exclude files from bundling.
+**Note**: The _require.js_ optimizer is meant only to bundle files using the AMD module pattern. See the [FAQ](https://github.com/SAP/app-studio-toolkit/blob/main/packages/webide-client-tools/FAQ.md) for details about how to exclude files from bundling.
 
 ## <a name="TESTING"></a> Testing
 
-For more information about testing, see the [documentation](https://github.com/SAP/webide-client-tools/blob/master/docs/unit_service_testing.md).
+For more information about testing, see the [documentation](https://github.com/SAP/app-studio-toolkit/blob/main/packages/webide-client-tools/docs/guide/testing.md).
