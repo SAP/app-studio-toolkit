@@ -12,13 +12,20 @@ jobs:
     name: Changesets Release
     runs-on: ubuntu-latest
     permissions:
-      contents: write # Push version bump commits, create git tags, and upload release assets
-      pull-requests: write # Create "Version Packages" PR via changesets/action
+      contents: write # Upload release assets via VSIX upload step
     steps:
+      - name: Generate GitHub App Token
+        id: app-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
+          # Custom App Token needed to trigger transitive jobs from the PR
           # See: https://github.com/changesets/action/issues/187#issuecomment-1228413850
-          token: ${{ secrets.BOT_GITHUB_TOKEN }}
+          token: ${{ steps.app-token.outputs.token }}
 
       - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
         with:
@@ -44,7 +51,7 @@ jobs:
           publish: pnpm run ci:release
         env:
           # See: https://github.com/changesets/action/issues/187#issuecomment-1228413850
-          GITHUB_TOKEN: ${{ secrets.BOT_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
 
       # To avoid race condition errors in the upload vsix step
       - name: Wait for GH Releases to be published
@@ -57,6 +64,4 @@ jobs:
         if: steps.changesets_release_or_pr.outputs.published == 'true'
         env:
           PKG_LIST: ${{ steps.changesets_release_or_pr.outputs.publishedPackages }}
-          # because this is a **secret** it is not automatically passed in the env,
-          # unless explicitly defined...
-          GITHUB_TOKEN: ${{ secrets.BOT_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
