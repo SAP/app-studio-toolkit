@@ -24,8 +24,8 @@ importers:
         specifier: 7.1.8
         version: 7.1.8
       '@types/deep-equal-in-any-order':
-        specifier: 1.0.1
-        version: 1.0.1
+        specifier: 1.0.4
+        version: 1.0.4
       '@types/lodash':
         specifier: 4.14.177
         version: 4.14.177
@@ -57,8 +57,8 @@ importers:
         specifier: 3.1.1
         version: 3.1.1
       deep-equal-in-any-order:
-        specifier: 1.1.15
-        version: 1.1.15
+        specifier: 1.1.20
+        version: 1.1.20
       dotenv:
         specifier: 16.4.7
         version: 16.4.7
@@ -1579,8 +1579,8 @@ packages:
   '@types/cors@2.8.19':
     resolution: {integrity: sha512-mFNylyeyqN93lfe/9CSxOGREz8cpzAhH+E93xJ4xWQf62V8sQ/24reV2nyzUWM6H6Xji+GGHpkbLe7pVoUEskg==}
 
-  '@types/deep-equal-in-any-order@1.0.1':
-    resolution: {integrity: sha512-hUWUUE53WjKfcCncSmWmNXVNNT+0Iz7gYFnov3zdCXrX3Thxp1Cnmfd5LwWOeCVUV5LhpiFgS05vaAG72doo9w==}
+  '@types/deep-equal-in-any-order@1.0.4':
+    resolution: {integrity: sha512-nkgl+KTkRWeybgMSBCrWrc1YHFrLADVxZ6Kllj40p9U499NGsCrFUjzgHgQY+Upsa/VWOc3YlsFEvhg+drUmkA==}
 
   '@types/eslint-scope@3.7.7':
     resolution: {integrity: sha512-MzMFlSLBqNF2gcHWO0G1vP/YQyfvrxZ0bF+u7mzUdZ1/xK4A4sru+nraZz5i3iEIk1l1uyicaDVTB4QbbEkAYg==}
@@ -2830,8 +2830,8 @@ packages:
     resolution: {integrity: sha512-SUwdGfqdKOwxCPeVYjwSyRpJ7Z+fhpwIAtmCUdZIWZ/YP5R9WAsyuSgpLVDi9bjWoN2LXHNss/dk3urXtdQxGg==}
     engines: {node: '>=6'}
 
-  deep-equal-in-any-order@1.1.15:
-    resolution: {integrity: sha512-/W36YW15Z+AymTkswOoCOX++gWLd0XBy1lFlxmML/m/PW0/0GuNkE65UTA2qiuPrKJTxXssKKrvtIZkOh+yEHA==}
+  deep-equal-in-any-order@1.1.20:
+    resolution: {integrity: sha512-GTpQxcQx28KvV6ChrHb4AcL5z+eFEymtoSUaWe+FEakEpZ/66jTvz52xLUym/sK4Pn1sbYLsCV5rEURDeiFl3w==}
 
   deep-extend@0.6.0:
     resolution: {integrity: sha512-LOHxIOaPYdHlJRtCQfDIVZtfw/ufM8+rVj649RIHzcm/vGwQRXFt6OPqIFWsm2XEMrNIEtWR64sY1LEKD2vAOA==}
@@ -8327,7 +8327,7 @@ snapshots:
     dependencies:
       '@types/node': 16.11.10
 
-  '@types/deep-equal-in-any-order@1.0.1': {}
+  '@types/deep-equal-in-any-order@1.0.4': {}
 
   '@types/eslint-scope@3.7.7':
     dependencies:
@@ -9757,7 +9757,7 @@ snapshots:
     dependencies:
       type-detect: 4.1.0
 
-  deep-equal-in-any-order@1.1.15:
+  deep-equal-in-any-order@1.1.20:
     dependencies:
       lodash.mapvalues: 4.6.0
       sort-any: 2.0.0
