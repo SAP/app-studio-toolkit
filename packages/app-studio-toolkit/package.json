@@ -401,7 +401,6 @@
     "@types/http-terminator": "2.0.5",
     "@types/proxyquire": "1.3.31",
     "@types/url-join": "4.0.3",
-    "@types/uuid": "9.0.8",
     "@types/websocket": "1.0.5",
     "@vscode-logging/types": "2.0.8",
     "copy-webpack-plugin": "11.0.0",
