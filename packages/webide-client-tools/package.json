@@ -16,7 +16,7 @@
     "lodash": "4.18.1",
     "optional-require": "1.1.8",
     "requirejs": "2.3.8",
-    "serve-static": "1.14.1",
+    "serve-static": "1.16.0",
     "webpack": "5.106.2",
     "which": "2.0.2"
   },
