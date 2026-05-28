@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Yeoman User Interface</title>
+    <style>
+      /* Fix white flash when opening a v-autocomplete dropdown.
+         Inline here (not in a .css file) to bypass Chromium's webview resource cache,
+         since index.html is read fresh from disk by the extension on every webview creation.
+         NOTE: keep in sync with the duplicate rules in src/assets/css/globalStyles.css. */
+      .v-menu > .v-overlay__content > .v-list {
+        background: var(--vscode-dropdown-background, var(--vscode-editor-background, #1f1f1f)) !important;
+        color: var(--vscode-dropdown-foreground, var(--vscode-editor-foreground, #cccccc)) !important;
+      }
+      /* Fix white flash from v-autocomplete__mask (the input mask that appears on click). */
+      .v-autocomplete__mask {
+        background: var(--vscode-input-background, var(--vscode-editor-background, #3c3c3c)) !important;
+      }
+    </style>
+  </head>
+  <body>
+    <noscript>
+      <strong>We're sorry but Yeoman UI doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+    <script type="module" src="./src/youi/main.js"></script>
+  </body>
+</html>
