@@ -13,7 +13,9 @@ import "@mdi/font/css/materialdesignicons.css";
 // dark-theme default when the property is missing or blank.
 function getVSCodeColor(variable, fallback) {
   try {
-    const val = getComputedStyle(document.body).getPropertyValue(variable).trim();
+    const val = getComputedStyle(document.body)
+      .getPropertyValue(variable)
+      .trim();
     return val.length > 0 ? val : fallback;
   } catch {
     return fallback;
@@ -53,8 +55,14 @@ const vuetify = createVuetify({
 // stay correct without needing to close and reopen the panel.
 // The observer reference is exported so callers (e.g. tests) can disconnect it.
 export const themeObserver = new MutationObserver(() => {
-  Object.assign(vuetify.theme.themes.value.light.colors, getVSCodeSurfaceColors());
+  Object.assign(
+    vuetify.theme.themes.value.light.colors,
+    getVSCodeSurfaceColors()
+  );
 });
-themeObserver.observe(document.body, { attributes: true, attributeFilter: ["class"] });
+themeObserver.observe(document.body, {
+  attributes: true,
+  attributeFilter: ["class"],
+});
 
 export default vuetify;

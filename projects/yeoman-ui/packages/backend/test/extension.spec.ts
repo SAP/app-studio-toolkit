@@ -42,12 +42,16 @@ describe("extension unit test", () => {
 
   describe("activate", () => {
     it("commands registration", () => {
-      loggerWrapperMock.expects("createExtensionLoggerAndSubscribeToLogSettingsChanges");
+      loggerWrapperMock.expects(
+        "createExtensionLoggerAndSubscribeToLogSettingsChanges"
+      );
       trackerWrapperMock.expects("createTracker");
 
       const applySpy = sandbox.spy(shellJsWorkarounds, "apply");
       windowMock.expects("registerWebviewPanelSerializer").withArgs("yeomanui");
-      windowMock.expects("registerWebviewPanelSerializer").withArgs("exploreGens");
+      windowMock
+        .expects("registerWebviewPanelSerializer")
+        .withArgs("exploreGens");
 
       extension.activate(testContext);
 
@@ -60,7 +64,9 @@ describe("extension unit test", () => {
       loggerWrapperMock
         .expects("createExtensionLoggerAndSubscribeToLogSettingsChanges")
         .throws(new Error("activation error"));
-      consoleMock.expects("error").withExactArgs("Extension activation failed.", "activation error");
+      consoleMock
+        .expects("error")
+        .withExactArgs("Extension activation failed.", "activation error");
       extension.activate(null);
     });
   });

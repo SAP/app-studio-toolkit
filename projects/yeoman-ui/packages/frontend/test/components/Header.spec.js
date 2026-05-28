@@ -24,7 +24,11 @@ describe("Header.vue", () => {
   test("set title and info", () => {
     const testTitle = "test title";
     const testInfo = "test info";
-    wrapper = initComponent(Header, { headerTitle: testTitle, headerInfo: testInfo }, true);
+    wrapper = initComponent(
+      Header,
+      { headerTitle: testTitle, headerInfo: testInfo },
+      true
+    );
     expect(wrapper.find(".v-toolbar-title").text()).toBe(testTitle);
     expect(wrapper.find(".mdi-information-outline").html()).toBeTruthy();
   });
@@ -39,7 +43,7 @@ describe("Header.vue", () => {
         },
         isGeneric: false,
       },
-      true,
+      true
     );
     wrapper.findAll("button")[0].trigger("click");
     expect(rpcInvokeMockFunction).toHaveBeenCalledWith("toggleOutput", [{}]);
@@ -55,10 +59,12 @@ describe("Header.vue", () => {
         },
         isGeneric: true,
       },
-      true,
+      true
     );
 
     wrapper.findAll("button")[0].trigger("click");
-    expect(rpcInvokeMockFunction).toHaveBeenCalledWith("exploreGenerators", [{}]);
+    expect(rpcInvokeMockFunction).toHaveBeenCalledWith("exploreGenerators", [
+      {},
+    ]);
   });
 });

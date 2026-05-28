@@ -84,7 +84,8 @@ const config = {
         loader: "string-replace-loader",
         options: {
           search: "return import[(]",
-          replace: "return new Function('specifier', 'return import(specifier)')(",
+          replace:
+            "return new Function('specifier', 'return import(specifier)')(",
           flags: "g",
         },
       },

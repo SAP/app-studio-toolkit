@@ -13,8 +13,10 @@ export type FlowPromise<T> = {
 
 export function createFlowPromise<T>(): FlowPromise<T> {
   let state: State<T>;
-  const promise: Promise<T> = new Promise<T>((resolve: ResolveFunc<T>, reject: RejectFunc) => {
-    state = { resolve, reject };
-  });
+  const promise: Promise<T> = new Promise<T>(
+    (resolve: ResolveFunc<T>, reject: RejectFunc) => {
+      state = { resolve, reject };
+    }
+  );
   return { promise, state };
 }

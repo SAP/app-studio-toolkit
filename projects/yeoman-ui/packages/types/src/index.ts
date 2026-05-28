@@ -218,4 +218,7 @@ export type OutputTabLinkResult = { show: boolean; linkMessage?: string };
  */
 export type ShowOutputTabLink =
   | "validationMessageOverflow"
-  | (() => OutputTabLinkResult | boolean | Promise<OutputTabLinkResult | boolean>);
+  | (() =>
+      | OutputTabLinkResult
+      | boolean
+      | Promise<OutputTabLinkResult | boolean>);

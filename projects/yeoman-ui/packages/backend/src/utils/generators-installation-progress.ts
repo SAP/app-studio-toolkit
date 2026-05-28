@@ -32,7 +32,9 @@ async function waitForGeneratorsInstallation(): Promise<void> {
 }
 
 function didGeneratorsFinishInstallation(): Promise<boolean | void> {
-  return sdk.devspace.didBASGeneratorsFinishInstallation().catch((err) => console.log("Error: ", err));
+  return sdk.devspace
+    .didBASGeneratorsFinishInstallation()
+    .catch((err) => console.log("Error: ", err));
 }
 
 async function shouldWaitForGeneratorsInstallation(): Promise<boolean> {
@@ -44,7 +46,9 @@ async function shouldWaitForGeneratorsInstallation(): Promise<boolean> {
   );
 }
 
-export async function notifyGeneratorsInstallationProgress(yeomanUIPanel: YeomanUIPanel): Promise<void | string> {
+export async function notifyGeneratorsInstallationProgress(
+  yeomanUIPanel: YeomanUIPanel
+): Promise<void | string> {
   // reset `panelDisposed` state for each call (each call is per webview panel creation)
   internal.panelDisposed = false;
 

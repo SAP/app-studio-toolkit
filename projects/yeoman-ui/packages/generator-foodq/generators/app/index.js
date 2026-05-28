@@ -47,7 +47,9 @@ module.exports = class extends Generator {
     this.argument("beers", {
       type: Array,
       required: false,
-      default: silent ? ["Allagash White Ale", "St. Feuillien Blonde"] : undefined,
+      default: silent
+        ? ["Allagash White Ale", "St. Feuillien Blonde"]
+        : undefined,
     });
     this.argument("hungerLevel", {
       type: String,
@@ -109,7 +111,8 @@ module.exports = class extends Generator {
     var prompts = [
       {
         name: "Basic Information",
-        description: "Provide basic information to receive personalized service.",
+        description:
+          "Provide basic information to receive personalized service.",
       },
       { name: "Main Dishes", description: "Select a main dish from the list." },
       { name: "Desserts", description: "How would you like to end your meal?" },
@@ -147,7 +150,9 @@ module.exports = class extends Generator {
       this.appWizard.setBanner({
         displayBannerForStep: "Main Dishes",
         icon: {
-          source: this._getImage(path.join(this.sourceRoot(), "../images/junk-food.jpg")),
+          source: this._getImage(
+            path.join(this.sourceRoot(), "../images/junk-food.jpg")
+          ),
           type: "image",
         },
         text: "Explore our chef's specials! Select your main dish and see details for each option. ",
@@ -188,13 +193,13 @@ module.exports = class extends Generator {
                     "Names in our system are used for personalized greetings, table reservations, and loyalty\n" +
                     "program enrollment. The first character must be uppercase (e.g. 'Alice', not 'alice').\n" +
                     "If your name begins with a special character or a non-Latin script, please contact\n" +
-                    "our support team at support@foodq.example.com for assistance.",
+                    "our support team at support@foodq.example.com for assistance."
                 );
                 resolve(
                   "Your name must start with a capital letter! " +
                     "Names are used for personalized greetings, table reservations, and loyalty program enrollment. " +
                     "Please ensure the first character is uppercase (e.g. 'Alice', not 'alice'). " +
-                    "For further details, check the output tab.",
+                    "For further details, check the output tab."
                 );
               }
             }, 900);
@@ -218,7 +223,9 @@ module.exports = class extends Generator {
         name: "confirmHungry",
         message: (answers) => {
           const isHungry = this._getAnswer("hungry", answers);
-          return `You said you are ${isHungry ? "" : "not "}hungry. Is this correct?`;
+          return `You said you are ${
+            isHungry ? "" : "not "
+          }hungry. Is this correct?`;
         },
         guiOptions: {
           breadcrumb: "Really hungry",
@@ -226,10 +233,16 @@ module.exports = class extends Generator {
         store: true,
         validate: (value) => {
           if (value) {
-            this.appWizard.showInformation("Good news !! You are hungry !!!", types.MessageType.prompt);
+            this.appWizard.showInformation(
+              "Good news !! You are hungry !!!",
+              types.MessageType.prompt
+            );
             return true;
           }
-          this.appWizard.showError("You must be hungry", types.MessageType.prompt);
+          this.appWizard.showError(
+            "You must be hungry",
+            types.MessageType.prompt
+          );
           return "You must be hungry";
         },
         when: () => _.isNil(this._getOption("confirmHungry")),
@@ -243,7 +256,12 @@ module.exports = class extends Generator {
         name: "diningStyle",
         message: "What’s the best way to describe your dining style?",
         orientation: "vertical",
-        choices: ["Slow Eater", "Speed Eater", "Social Eater", { value: "Picky Eater", disabled: true }],
+        choices: [
+          "Slow Eater",
+          "Speed Eater",
+          "Social Eater",
+          { value: "Picky Eater", disabled: true },
+        ],
         default: "cat",
       },
       {
@@ -285,7 +303,8 @@ module.exports = class extends Generator {
           }
           if (input === "error") {
             return {
-              message: "Some error message (consider using a validation message)",
+              message:
+                "Some error message (consider using a validation message)",
               severity: 0,
             };
           }
@@ -294,7 +313,10 @@ module.exports = class extends Generator {
           if (_.isNil(this._getOption("favColor"))) {
             const hungry = this._getAnswer("hungry", response);
             if (hungry) {
-              this.appWizard.showInformation("Our recommendation for color is green", types.MessageType.notification);
+              this.appWizard.showInformation(
+                "Our recommendation for color is green",
+                types.MessageType.notification
+              );
             }
 
             return hungry;
@@ -383,34 +405,46 @@ module.exports = class extends Generator {
           {
             value: "junk-food",
             name: "Junk Food",
-            description: "It is the best food, but long term, junk food can increase the risk of a heart attack.",
-            homepage: "https://www.betterhealthsolutions.org/junk-food-ruining-body/",
-            image: this._getImage(path.join(this.sourceRoot(), "../images/junk-food.jpg")),
+            description:
+              "It is the best food, but long term, junk food can increase the risk of a heart attack.",
+            homepage:
+              "https://www.betterhealthsolutions.org/junk-food-ruining-body/",
+            image: this._getImage(
+              path.join(this.sourceRoot(), "../images/junk-food.jpg")
+            ),
           },
           {
             value: "jerk-chicken",
             name: "Pulled Jerk Chicken",
             description: "A slow cooked pulled chicken.",
-            image: this._getImage(path.join(this.sourceRoot(), "../images/jerk-chicken.jpeg")),
+            image: this._getImage(
+              path.join(this.sourceRoot(), "../images/jerk-chicken.jpeg")
+            ),
           },
           {
             value: "lasagna",
             name: "Lasagna",
             description:
               "Layers of creamy ricotta, spinach, and tomato sauce, topped with Parmesan and mozzarella cheese. ",
-            image: this._getImage(path.join(this.sourceRoot(), "../images/lasagna.jpeg")),
+            image: this._getImage(
+              path.join(this.sourceRoot(), "../images/lasagna.jpeg")
+            ),
           },
           {
             value: "steak",
             name: "Rib Eye Steak",
             description: "Super traditional big rib eye with baked potatos.",
-            image: this._getImage(path.join(this.sourceRoot(), "../images/steak.jpg")),
+            image: this._getImage(
+              path.join(this.sourceRoot(), "../images/steak.jpg")
+            ),
           },
           {
             value: "spaghetti",
             name: "Spaghetti Carbonara",
-            description: "Classic spaghetti alla carbonara, made with pancetta and Italian-style bacon.",
-            homepage: "https://www.allrecipes.com/recipe/11973/spaghetti-carbonara-ii/",
+            description:
+              "Classic spaghetti alla carbonara, made with pancetta and Italian-style bacon.",
+            homepage:
+              "https://www.allrecipes.com/recipe/11973/spaghetti-carbonara-ii/",
             image: DEFAULT_IMAGE,
           },
         ],
@@ -430,7 +464,10 @@ module.exports = class extends Generator {
     ];
 
     this.answers_main_dish = await this.prompt(prompts);
-    this.answers_main_dish.food = this._getAnswer("food", this.answers_main_dish);
+    this.answers_main_dish.food = this._getAnswer(
+      "food",
+      this.answers_main_dish
+    );
 
     // currently not supported:
     const ui = new Inquirer.ui.BottomBar();
@@ -513,7 +550,9 @@ module.exports = class extends Generator {
         name: "enjoy",
         message: "Did you enjoy your meal?",
         default: (answers) => {
-          return this._getAnswer("hungerLevel", answers) === "A bit hungry" ? "ok" : "michelin";
+          return this._getAnswer("hungerLevel", answers) === "A bit hungry"
+            ? "ok"
+            : "michelin";
         },
         choices: [
           {
@@ -607,9 +646,14 @@ module.exports = class extends Generator {
         ],
         validate: (value) => {
           if (value === "private") {
-            this.appWizard.showError("Private repository is not supported", types.MessageType.notification);
+            this.appWizard.showError(
+              "Private repository is not supported",
+              types.MessageType.notification
+            );
           }
-          return value !== "private" ? true : "private repository is not supported";
+          return value !== "private"
+            ? true
+            : "private repository is not supported";
         },
         when: () => _.isNil(this._getOption("repoperms")),
       },
@@ -649,7 +693,13 @@ module.exports = class extends Generator {
             return false;
           }
           const isValid = /\w/.test(answer) && /\d/.test(answer);
-          return isValid ? false : { show: true, linkMessage: "See full password requirements in the output tab." };
+          return isValid
+            ? false
+            : {
+                show: true,
+                linkMessage:
+                  "See full password requirements in the output tab.",
+              };
         },
         when: (response) => {
           if (_.isNil(this._getOption("password"))) {
@@ -679,11 +729,11 @@ module.exports = class extends Generator {
         "  - Must contain at least one digit (0-9)\n" +
         "  - Special characters are allowed but not required\n" +
         "  - Example of a valid password: 'FoodQ2024!'\n" +
-        "Please update your password to meet all requirements before continuing.",
+        "Please update your password to meet all requirements before continuing."
     );
     this.appWizard.showWarning(
       "The password must contain at least a letter and a number",
-      types.MessageType.notification,
+      types.MessageType.notification
     );
     return "The password must contain at least a letter and a number";
   }
@@ -702,7 +752,12 @@ module.exports = class extends Generator {
 
   configuring() {
     this.log("FoodQ is in configuring stage.");
-    this.destinationRoot(path.join(this.destinationRoot(), _.get(this, "answers_main_dish.food", "")));
+    this.destinationRoot(
+      path.join(
+        this.destinationRoot(),
+        _.get(this, "answers_main_dish.food", "")
+      )
+    );
     this.log(`Destination Root = ${this.destinationRoot()}`);
   }
 
@@ -711,34 +766,48 @@ module.exports = class extends Generator {
     this.appWizard.showProgress("Generating the FoodQ project.");
 
     this.log("The following choices were chosen:");
-    !_.isNil(this.answers.hungry) && this.log(`Hungry = ${this.answers.hungry}`);
-    !_.isNil(this.answers.confirmHungry) && this.log(`Confirm Hungry = ${this.answers.confirmHungry}`);
-    !_.isNil(this.answers_main_dish.food) && this.log(`Main dish = ${this.answers_main_dish.food}`);
+    !_.isNil(this.answers.hungry) &&
+      this.log(`Hungry = ${this.answers.hungry}`);
+    !_.isNil(this.answers.confirmHungry) &&
+      this.log(`Confirm Hungry = ${this.answers.confirmHungry}`);
+    !_.isNil(this.answers_main_dish.food) &&
+      this.log(`Main dish = ${this.answers_main_dish.food}`);
     !_.isEmpty(this.answers.beers) && this.log(`Beers = ${this.answers.beers}`);
-    !_.isNil(this.answers.favColor) && this.log(`Favorite napkin color = ${this.answers.favColor}`);
-    !_.isNil(this.answers.number) && this.log(`Times you have been in this restaurant = ${this.answers.number}`);
+    !_.isNil(this.answers.favColor) &&
+      this.log(`Favorite napkin color = ${this.answers.favColor}`);
+    !_.isNil(this.answers.number) &&
+      this.log(
+        `Times you have been in this restaurant = ${this.answers.number}`
+      );
 
-    this.fs.copyTpl(this.templatePath("index.html"), this.destinationPath("public/index.html"), {
-      title: "Templating with Yeoman",
-      hungry: this.answers.hungry,
-      confirmHungry: this.answers.confirmHungry,
-      food: this.answers_main_dish.food,
-      beers: this.answers.beers,
-      favColor: this.answers.favColor,
-      number: this.answers.number,
+    this.fs.copyTpl(
+      this.templatePath("index.html"),
+      this.destinationPath("public/index.html"),
+      {
+        title: "Templating with Yeoman",
+        hungry: this.answers.hungry,
+        confirmHungry: this.answers.confirmHungry,
+        food: this.answers_main_dish.food,
+        beers: this.answers.beers,
+        favColor: this.answers.favColor,
+        number: this.answers.number,
 
-      hungerLevel: this.answers.hungerLevel,
-      dessert: this.answers.dessert,
-      enjoy: this.answers.enjoy,
-      comments: this.answers.comments,
+        hungerLevel: this.answers.hungerLevel,
+        dessert: this.answers.dessert,
+        enjoy: this.answers.enjoy,
+        comments: this.answers.comments,
 
-      repotype: this.answers.repotype,
-      repoperms: this.answers.repoperms,
-      email: this.answers.email,
-      password: this.answers.password,
-    });
+        repotype: this.answers.repotype,
+        repoperms: this.answers.repoperms,
+        email: this.answers.email,
+        password: this.answers.password,
+      }
+    );
 
-    this.fs.copy(this.templatePath("README.md"), this.destinationPath("README.md"));
+    this.fs.copy(
+      this.templatePath("README.md"),
+      this.destinationPath("README.md")
+    );
 
     const pkgJson = {
       devDependencies: {
@@ -754,7 +823,11 @@ module.exports = class extends Generator {
 
   install() {
     this.log("FoodQ is installing dependencies.");
-    this.npmInstall(["lodash"], { "save-dev": true }, { stdio: ["inherit", "ignore", "ignore"] });
+    this.npmInstall(
+      ["lodash"],
+      { "save-dev": true },
+      { stdio: ["inherit", "ignore", "ignore"] }
+    );
   }
 
   end() {

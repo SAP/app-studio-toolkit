@@ -22,9 +22,11 @@ describe("Done.vue", () => {
         doneStatus: true,
         doneMessage: testDoneMessage,
       },
-      true,
+      true
     );
-    expect(wrapper.find(".mdi-checkbox-marked-circle-outline").html()).toBeTruthy();
+    expect(
+      wrapper.find(".mdi-checkbox-marked-circle-outline").html()
+    ).toBeTruthy();
     expect(wrapper.find("p").text()).toBe("testDoneMessage");
   });
 
@@ -35,7 +37,7 @@ describe("Done.vue", () => {
         doneStatus: false,
         doneMessage: testDoneMessage,
       },
-      true,
+      true
     );
     expect(wrapper.find(".mdi-close-circle-outline").html()).toBeTruthy();
     expect(wrapper.find("p").text()).toBe("testDoneMessage");

@@ -85,7 +85,9 @@ describe("YOUIBanner.vue", () => {
 
     const bannerIcon = wrapper.find(".banner-icon img");
     expect(bannerIcon.exists()).toBe(true);
-    expect(bannerIcon.attributes("src")).toBe(propsData.bannerProps.icon.source);
+    expect(bannerIcon.attributes("src")).toBe(
+      propsData.bannerProps.icon.source
+    );
   });
 
   test("emits parent-execute-command event when action is triggered from banner", async () => {
@@ -114,7 +116,9 @@ describe("YOUIBanner.vue", () => {
     await nextTick();
 
     expect(wrapper.emitted()["parent-execute-command"]).toBeTruthy();
-    expect(wrapper.emitted()["parent-execute-command"][0]).toEqual([{ id: "test.command", params: { key: "value" } }]);
+    expect(wrapper.emitted()["parent-execute-command"][0]).toEqual([
+      { id: "test.command", params: { key: "value" } },
+    ]);
   });
 
   test('renders clickable link correctly when triggerActionFrom is "link"', async () => {
@@ -168,7 +172,9 @@ describe("YOUIBanner.vue", () => {
     await nextTick();
 
     expect(wrapper.emitted()["parent-execute-command"]).toBeTruthy();
-    expect(wrapper.emitted()["parent-execute-command"][0]).toEqual([{ id: "test.command", params: { key: "value" } }]);
+    expect(wrapper.emitted()["parent-execute-command"][0]).toEqual([
+      { id: "test.command", params: { key: "value" } },
+    ]);
     expect(link.attributes("href")).toBe("javascript:void(0)");
   });
 });
@@ -200,7 +206,9 @@ describe("YOUIBanner.vue - trigger command", () => {
     await banner.trigger("click");
 
     expect(wrapper.emitted("parent-execute-command")).toBeTruthy();
-    expect(wrapper.emitted("parent-execute-command")[0]).toEqual(["test-command"]);
+    expect(wrapper.emitted("parent-execute-command")[0]).toEqual([
+      "test-command",
+    ]);
   });
 
   it("should not emit 'parent-execute-command' when triggerActionFrom is not 'banner'", async () => {
@@ -280,7 +288,9 @@ describe("SVG icon detection and rendering", () => {
   });
 
   it("detects SVG icon correctly with isSvgIcon computed", () => {
-    const svgBase64 = btoa('<svg xmlns="http://www.w3.org/2000/svg"><path fill="currentColor"/></svg>');
+    const svgBase64 = btoa(
+      '<svg xmlns="http://www.w3.org/2000/svg"><path fill="currentColor"/></svg>'
+    );
 
     wrapper = mount(Banner, {
       props: {
@@ -326,7 +336,8 @@ describe("SVG icon detection and rendering", () => {
   });
 
   it("renders themed-image-container with v-html for SVG icons", () => {
-    const svgMarkup = '<svg xmlns="http://www.w3.org/2000/svg"><path fill="currentColor"/></svg>';
+    const svgMarkup =
+      '<svg xmlns="http://www.w3.org/2000/svg"><path fill="currentColor"/></svg>';
     const base64Svg = btoa(svgMarkup);
 
     wrapper = mount(Banner, {

@@ -30,10 +30,13 @@ export type PackagesData = {
 export const isWin32 = platform() === "win32";
 const NPM = isWin32 ? "npm.cmd" : "npm";
 
-const regUrl = new URL(_.get(process, "env.NPM_CFG_REGISTRY", "http://registry.npmjs.com/"));
+const regUrl = new URL(
+  _.get(process, "env.NPM_CFG_REGISTRY", "http://registry.npmjs.com/")
+);
 regUrl.pathname = `-/v1/search`;
 const SEARCH_QUERY_PREFIX = `${regUrl.toString()}?text=`;
-const SEARCH_QUERY_SUFFIX = "keywords:yeoman-generator &size=25&ranking=popularity";
+const SEARCH_QUERY_SUFFIX =
+  "keywords:yeoman-generator &size=25&ranking=popularity";
 
 const CANCELED = "Action cancelled";
 const HAS_ACCESS = "Has Access";
@@ -44,18 +47,26 @@ class Command {
 
   constructor() {
     this.setGlobalNodeModulesPath();
-    this.SET_DEFAULT_LOCATION = messages.set_default_location(customLocation.DEFAULT_LOCATION);
+    this.SET_DEFAULT_LOCATION = messages.set_default_location(
+      customLocation.DEFAULT_LOCATION
+    );
   }
 
   private setGlobalNodeModulesPath() {
-    this.globalNodeModulesPathPromise = this.execCommand(`${NPM} root -g`).then((globalNodeModulesPath: string) => {
-      return fs.promises.mkdir(globalNodeModulesPath, { recursive: true }).then(() => globalNodeModulesPath);
-    });
+    this.globalNodeModulesPathPromise = this.execCommand(`${NPM} root -g`).then(
+      (globalNodeModulesPath: string) => {
+        return fs.promises
+          .mkdir(globalNodeModulesPath, { recursive: true })
+          .then(() => globalNodeModulesPath);
+      }
+    );
   }
 
   private getGenLocationParams(): string {
     const customInstallationPath = customLocation.getPath();
-    return _.isEmpty(customInstallationPath) ? "-g" : `--prefix ${customInstallationPath}`;
+    return _.isEmpty(customInstallationPath)
+      ? "-g"
+      : `--prefix ${customInstallationPath}`;
   }
 
   private async execCommand(arg: string): Promise<string> {
@@ -76,11 +87,15 @@ class Command {
   private getGensQueryURL(query: string, recommended: string): string {
     query = query || "";
     recommended = recommended || "";
-    return encodeURI(`${SEARCH_QUERY_PREFIX} ${query} ${recommended} ${SEARCH_QUERY_SUFFIX}`);
+    return encodeURI(
+      `${SEARCH_QUERY_PREFIX} ${query} ${recommended} ${SEARCH_QUERY_SUFFIX}`
+    );
   }
 
   private getSingleGenQueryURL(query: string): string {
-    return encodeURI(`${SEARCH_QUERY_PREFIX} ${query} keywords:yeoman-generator &size=1`);
+    return encodeURI(
+      `${SEARCH_QUERY_PREFIX} ${query} keywords:yeoman-generator &size=1`
+    );
   }
 
   private async sudoExec(command: string) {
@@ -107,7 +122,7 @@ class Command {
           messages.no_write_access(globalPath),
           { modal: true },
           messages.change_owner_for_global(globalPath),
-          this.SET_DEFAULT_LOCATION,
+          this.SET_DEFAULT_LOCATION
         );
       }
     }
@@ -128,7 +143,9 @@ class Command {
       ? `icacls ${globalNodeModulesPath} /grant Users:(OI)(CI)F`
       : `chown -R $USER ${globalNodeModulesPath}`;
     const globalPath = await this.getGlobalPath();
-    const statusBarMessage = vscode.window.setStatusBarMessage(messages.changing_owner_permissions(globalPath));
+    const statusBarMessage = vscode.window.setStatusBarMessage(
+      messages.changing_owner_permissions(globalPath)
+    );
     try {
       await this.sudoExec(changeOwnerCommand);
     } finally {
@@ -140,22 +157,33 @@ class Command {
     const queryUrl = this.getSingleGenQueryURL(packageJson.name);
     const npmJsModules = await npmFetch.json(queryUrl);
     const npmJsModule: any = _.get(npmJsModules, "objects.[0]");
-    return npmJsModule ? npmJsModule.package.version !== packageJson.version : false;
+    return npmJsModule
+      ? npmJsModule.package.version !== packageJson.version
+      : false;
   }
 
   private async getPackageJson(packagePath: string): Promise<any | undefined> {
     const packageJsonFilePath = path.join(packagePath, "package.json");
     try {
-      const packageJsonString: string = await fs.promises.readFile(packageJsonFilePath, "utf8");
+      const packageJsonString: string = await fs.promises.readFile(
+        packageJsonFilePath,
+        "utf8"
+      );
       return JSON.parse(packageJsonString);
     } catch (error) {
-      getConsoleWarnLogger().error(`Could not get ${packageJsonFilePath} file content. Reason: ${error}`);
+      getConsoleWarnLogger().error(
+        `Could not get ${packageJsonFilePath} file content. Reason: ${error}`
+      );
     }
   }
 
   private async getGlobalPath(): Promise<string> {
     const globalNodeModulesPath = await this.getGlobalNodeModulesPath();
-    const globalPathArray = _.split(globalNodeModulesPath, path.join(path.sep, "node_modules"), 1);
+    const globalPathArray = _.split(
+      globalNodeModulesPath,
+      path.join(path.sep, "node_modules"),
+      1
+    );
     return _.get(globalPathArray, "[0]");
   }
 
@@ -172,16 +200,24 @@ class Command {
     };
   }
 
-  public async getPackageJsons(gensMeta: LookupGeneratorMeta[]): Promise<any[]> {
-    const packageJsonPromises: any[] = gensMeta.map((genMeta) => this.getPackageJson(genMeta.packagePath));
+  public async getPackageJsons(
+    gensMeta: LookupGeneratorMeta[]
+  ): Promise<any[]> {
+    const packageJsonPromises: any[] = gensMeta.map((genMeta) =>
+      this.getPackageJson(genMeta.packagePath)
+    );
     return await Promise.all(packageJsonPromises);
   }
 
-  public async getPackageNamesWithOutdatedVersion(gensMeta: LookupGeneratorMeta[]): Promise<string[]> {
+  public async getPackageNamesWithOutdatedVersion(
+    gensMeta: LookupGeneratorMeta[]
+  ): Promise<string[]> {
     const packageJsons: any[] = await this.getPackageJsons(gensMeta);
 
     const packageNameToUpdatePromises = packageJsons.map((packageJson) => {
-      return NpmCommand.shouldBeUpdated(packageJson).then((toUpdate) => (toUpdate ? packageJson.name : undefined));
+      return NpmCommand.shouldBeUpdated(packageJson).then((toUpdate) =>
+        toUpdate ? packageJson.name : undefined
+      );
     });
 
     return _.compact(await Promise.all(packageNameToUpdatePromises));
@@ -201,15 +237,23 @@ class Command {
 
   public async getNodeProcessVersions(): Promise<NodeJS.ProcessVersions> {
     try {
-      const output = await this.spawnCommand("node", ["-p", "JSON.stringify(process.versions)"]);
+      const output = await this.spawnCommand("node", [
+        "-p",
+        "JSON.stringify(process.versions)",
+      ]);
       return JSON.parse(output);
     } catch (e) {
-      getConsoleWarnLogger().error(`Error retrieving NodeJS process versions: ${e.message}`);
+      getConsoleWarnLogger().error(
+        `Error retrieving NodeJS process versions: ${e.message}`
+      );
       return {} as NodeJS.ProcessVersions;
     }
   }
 
-  private spawnCommand(command: string, commandArgs: string[]): Promise<string> {
+  private spawnCommand(
+    command: string,
+    commandArgs: string[]
+  ): Promise<string> {
     return new Promise((resolve, reject) => {
       const spawnOptions = /^win/.test(process.platform)
         ? { windowsVerbatimArguments: true, shell: true, cwd: os.homedir() }

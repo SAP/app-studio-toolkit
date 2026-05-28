@@ -63,7 +63,10 @@ describe("workspaceFolders utility tests", () => {
       sandbox.stub(vscode.workspace, "workspaceFolders").value(mockFolders);
 
       const result = getWorkspaceFolders();
-      expect(result).to.deep.equal(["/path/to/workspace1", "/path/to/workspace2"]);
+      expect(result).to.deep.equal([
+        "/path/to/workspace1",
+        "/path/to/workspace2",
+      ]);
     });
 
     it("filters out non-file scheme folders (vscode-remote)", () => {

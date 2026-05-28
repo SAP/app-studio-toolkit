@@ -58,14 +58,19 @@ export default {
         const bcSetting = question.guiOptions?.breadcrumb;
         const answer = question.answer;
         // 'shouldShow' will only display visible prompt answers
-        if (question.shouldShow && !_isNil(answer) && !_isNil(bcSetting) && bcSetting !== false) {
+        if (
+          question.shouldShow &&
+          !_isNil(answer) &&
+          !_isNil(bcSetting) &&
+          bcSetting !== false
+        ) {
           answerLabels.push({
             label:
               typeof bcSetting === "string"
                 ? bcSetting
                 : question._message // `_message` is the normalised version of `message` (String | Function) used by the Form.vue so we re-use rather than re-processing
-                  ? question._message
-                  : _startCase(question.name),
+                ? question._message
+                : _startCase(question.name),
             value: getTextForAnswer(question, answer),
           });
         }

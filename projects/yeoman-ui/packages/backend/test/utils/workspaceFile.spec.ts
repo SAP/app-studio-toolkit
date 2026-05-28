@@ -40,21 +40,35 @@ describe("extension unit test", () => {
 
   describe("create workspace file", () => {
     it("createWs", () => {
-      const wsFilePath = normalize(join(Constants.HOMEDIR_PROJECTS, "../tmp/workspace.code-workspace"));
+      const wsFilePath = normalize(
+        join(Constants.HOMEDIR_PROJECTS, "../tmp/workspace.code-workspace")
+      );
       const folderConfig = { path: "relative/path/to/project" }; // Adjust to match expected format
 
       uriMock.expects("file").withArgs(wsFilePath);
-      fsMock.expects("writeFileSync").withArgs(wsFilePath, JSON.stringify({ folders: [folderConfig], settings: {} }));
+      fsMock
+        .expects("writeFileSync")
+        .withArgs(
+          wsFilePath,
+          JSON.stringify({ folders: [folderConfig], settings: {} })
+        );
 
       WorkspaceFile.createWs(wsFilePath, folderConfig);
     });
 
     it("create createWsWithPath", () => {
-      const targetFolderPath = normalize(join(Constants.HOMEDIR_PROJECTS, "../tmp/targetFolderPath"));
+      const targetFolderPath = normalize(
+        join(Constants.HOMEDIR_PROJECTS, "../tmp/targetFolderPath")
+      );
       const targetFolderUri = Uri.file(targetFolderPath);
 
-      const wsFilePath = join(Constants.HOMEDIR_PROJECTS, "workspace.code-workspace"); // Expected workspace file path
-      const folderConfig = { path: relative(dirname(wsFilePath), targetFolderPath) };
+      const wsFilePath = join(
+        Constants.HOMEDIR_PROJECTS,
+        "workspace.code-workspace"
+      ); // Expected workspace file path
+      const folderConfig = {
+        path: relative(dirname(wsFilePath), targetFolderPath),
+      };
 
       // Mock existsSync to return false on the first call and true on subsequent calls
       const existsSyncStub = sandbox.stub(fs, "existsSync");
@@ -62,13 +76,20 @@ describe("extension unit test", () => {
       existsSyncStub.onSecondCall().returns(true); // Simulate that the file exists on the second call (forces the unique file path)
 
       uriMock.expects("file").withArgs(wsFilePath);
-      fsMock.expects("writeFileSync").withArgs(wsFilePath, JSON.stringify({ folders: [folderConfig], settings: {} }));
+      fsMock
+        .expects("writeFileSync")
+        .withArgs(
+          wsFilePath,
+          JSON.stringify({ folders: [folderConfig], settings: {} })
+        );
 
       WorkspaceFile.createWsWithPath(targetFolderUri);
     });
 
     it("workspace file exists with isUri true", () => {
-      const targetFolderPath = normalize(join(Constants.HOMEDIR_PROJECTS, "../projects/tmp/targetFolderPath"));
+      const targetFolderPath = normalize(
+        join(Constants.HOMEDIR_PROJECTS, "../projects/tmp/targetFolderPath")
+      );
 
       // Create FolderUriConfig
       const folderConfig: FolderUriConfig = {
@@ -88,10 +109,15 @@ describe("extension unit test", () => {
         settings: {},
       };
 
-      const expectedWsFilePath = join(Constants.HOMEDIR_PROJECTS, `workspace.1.code-workspace`); // The new workspace file path
+      const expectedWsFilePath = join(
+        Constants.HOMEDIR_PROJECTS,
+        `workspace.1.code-workspace`
+      ); // The new workspace file path
 
       // Expect writeFileSync to be called with the new workspace file path and content
-      fsMock.expects("writeFileSync").withArgs(expectedWsFilePath, JSON.stringify(fileContent));
+      fsMock
+        .expects("writeFileSync")
+        .withArgs(expectedWsFilePath, JSON.stringify(fileContent));
       uriMock.expects("file").withArgs(expectedWsFilePath);
 
       WorkspaceFile.createWsWithUri(folderConfig); // Pass the FolderUriConfig here
@@ -133,21 +159,27 @@ describe("extension unit test", () => {
         uri: "invalid-uri",
         name: "example",
       };
-      expect(() => getValidFolderUri(folderUri)).to.throw(messages.bad_project_uri_config_error);
+      expect(() => getValidFolderUri(folderUri)).to.throw(
+        messages.bad_project_uri_config_error
+      );
     });
 
     it("should throw error for missing uri", () => {
       const folderUri = {
         name: "example",
       };
-      expect(() => getValidFolderUri(folderUri)).to.throw(messages.bad_project_uri_config_error);
+      expect(() => getValidFolderUri(folderUri)).to.throw(
+        messages.bad_project_uri_config_error
+      );
     });
 
     it("should throw error for missing name", () => {
       const folderUri = {
         uri: "https://example.com",
       };
-      expect(() => getValidFolderUri(folderUri)).to.throw(messages.bad_project_uri_config_error);
+      expect(() => getValidFolderUri(folderUri)).to.throw(
+        messages.bad_project_uri_config_error
+      );
     });
 
     it("should throw error for non-string uri", () => {
@@ -155,7 +187,9 @@ describe("extension unit test", () => {
         uri: 123,
         name: "example",
       };
-      expect(() => getValidFolderUri(folderUri)).to.throw(messages.bad_project_uri_config_error);
+      expect(() => getValidFolderUri(folderUri)).to.throw(
+        messages.bad_project_uri_config_error
+      );
     });
 
     it("should throw error for non-string name", () => {
@@ -163,14 +197,22 @@ describe("extension unit test", () => {
         uri: "https://example.com",
         name: 123,
       };
-      expect(() => getValidFolderUri(folderUri)).to.throw(messages.bad_project_uri_config_error);
+      expect(() => getValidFolderUri(folderUri)).to.throw(
+        messages.bad_project_uri_config_error
+      );
     });
 
     describe("getFolderUri", () => {
       it("should return FolderUriConfig for valid JSON string with uri and name", () => {
-        const optionalFolderUri = JSON.stringify({ uri: "https://example.com", name: "example" });
+        const optionalFolderUri = JSON.stringify({
+          uri: "https://example.com",
+          name: "example",
+        });
         const result = getFolderUri(optionalFolderUri);
-        expect(result).to.deep.equal({ uri: "https://example.com", name: "example" });
+        expect(result).to.deep.equal({
+          uri: "https://example.com",
+          name: "example",
+        });
       });
 
       it("should return undefined for valid JSON string without uri", () => {
@@ -180,13 +222,16 @@ describe("extension unit test", () => {
       });
 
       it("should return undefined for valid JSON string without name", () => {
-        const optionalFolderUri = JSON.stringify({ uri: "https://example.com" });
+        const optionalFolderUri = JSON.stringify({
+          uri: "https://example.com",
+        });
         const result = getFolderUri(optionalFolderUri);
         expect(result).to.be.undefined;
       });
 
       it("should return undefined for invalid JSON string", () => {
-        const optionalFolderUri = "{ uri: 'https://example.com', name: 'example' }";
+        const optionalFolderUri =
+          "{ uri: 'https://example.com', name: 'example' }";
         const result = getFolderUri(optionalFolderUri);
         expect(result).to.be.undefined;
       });
@@ -201,7 +246,10 @@ describe("extension unit test", () => {
 
   describe("isUriFlow", () => {
     it("should return true when  getFolderUri is not undefined", () => {
-      const optionalFolderUri = JSON.stringify({ uri: "https://example.com", name: "example" });
+      const optionalFolderUri = JSON.stringify({
+        uri: "https://example.com",
+        name: "example",
+      });
       const result = isUriFlow(optionalFolderUri);
       expect(result).to.be.true;
     });

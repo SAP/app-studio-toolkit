@@ -1,6 +1,9 @@
 import { createSandbox, SinonMock, SinonSandbox } from "sinon";
 import * as sdk from "@sap/bas-sdk";
-import { internal, notifyGeneratorsInstallationProgress } from "../../src/utils/generators-installation-progress";
+import {
+  internal,
+  notifyGeneratorsInstallationProgress,
+} from "../../src/utils/generators-installation-progress";
 import { expect } from "chai";
 import { vscode } from "../mockUtil";
 import messages from "../../src/messages";
@@ -56,13 +59,19 @@ describe("generators installation progress - unit test", () => {
   });
 
   it("notifyGeneratorsInstallationProgress - all generators already installed", async () => {
-    sdkDevspaceMock.expects("didBASGeneratorsFinishInstallation").once().resolves(true);
+    sdkDevspaceMock
+      .expects("didBASGeneratorsFinishInstallation")
+      .once()
+      .resolves(true);
     await notifyGeneratorsInstallationProgress(objYeomanUiPanel);
     expect(internal.retries).equals(0);
   });
 
   it("notifyGeneratorsInstallationProgress - throw error", async () => {
-    sdkDevspaceMock.expects("didBASGeneratorsFinishInstallation").once().rejects("failed to read installation file");
+    sdkDevspaceMock
+      .expects("didBASGeneratorsFinishInstallation")
+      .once()
+      .rejects("failed to read installation file");
     try {
       await notifyGeneratorsInstallationProgress(objYeomanUiPanel);
     } catch (error) {
@@ -75,9 +84,18 @@ describe("generators installation progress - unit test", () => {
     internal.DELAY_MS = 10;
     internal.MAX_RETRY = 3;
 
-    sdkDevspaceMock.expects("didBASGeneratorsFinishInstallation").atMost(4).resolves(false);
-    mockYeomanUiPanel.expects("notifyGeneratorsChange").withExactArgs(["installing generators"]).resolves();
-    windowMock.expects("showErrorMessage").withExactArgs(messages.timeout_install_generators).resolves();
+    sdkDevspaceMock
+      .expects("didBASGeneratorsFinishInstallation")
+      .atMost(4)
+      .resolves(false);
+    mockYeomanUiPanel
+      .expects("notifyGeneratorsChange")
+      .withExactArgs(["installing generators"])
+      .resolves();
+    windowMock
+      .expects("showErrorMessage")
+      .withExactArgs(messages.timeout_install_generators)
+      .resolves();
 
     await notifyGeneratorsInstallationProgress(objYeomanUiPanel);
 
@@ -97,7 +115,9 @@ describe("generators installation progress - unit test", () => {
       .resolves(false)
       .onCall(2)
       .resolves(true);
-    const notifyGeneratorsChangeStub = sandbox.stub(objYeomanUiPanel, "notifyGeneratorsChange").resolves();
+    const notifyGeneratorsChangeStub = sandbox
+      .stub(objYeomanUiPanel, "notifyGeneratorsChange")
+      .resolves();
 
     await notifyGeneratorsInstallationProgress(objYeomanUiPanel);
 
@@ -105,7 +125,9 @@ describe("generators installation progress - unit test", () => {
     expect(notifyGeneratorsChangeStub.firstCall.args.length)
       .equals(notifyGeneratorsChangeStub.secondCall.args.length)
       .equals(1);
-    expect(notifyGeneratorsChangeStub.firstCall.args[0]).deep.equal(["installing generators"]);
+    expect(notifyGeneratorsChangeStub.firstCall.args[0]).deep.equal([
+      "installing generators",
+    ]);
     expect(notifyGeneratorsChangeStub.secondCall.args[0]).deep.equal([]);
     expect(internal.retries).equals(1);
 

@@ -21,7 +21,11 @@ function getCategories(filterObject?: any): string[] {
 
 function getTypes(filterObject?: any): string[] {
   let types: string[] = [];
-  const objectTypes: any = _.get(filterObject, "types", _.get(filterObject, "type"));
+  const objectTypes: any = _.get(
+    filterObject,
+    "types",
+    _.get(filterObject, "type")
+  );
   if (_.isString(objectTypes)) {
     types.push(objectTypes);
   } else if (_.isArray(objectTypes)) {
@@ -46,6 +50,6 @@ export class GeneratorFilter {
 
   private constructor(
     public readonly types: string[],
-    public readonly categories: string[],
+    public readonly categories: string[]
   ) {}
 }

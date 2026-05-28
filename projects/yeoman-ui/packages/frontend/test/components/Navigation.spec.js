@@ -32,7 +32,11 @@ describe("Navigation.vue", () => {
 
   test("component props - promptAnswers", async () => {
     // const promptAnswersSpy = jest.spyOn(Navigation.watch, "promptAnswers");
-    wrapper = initComponent(Navigation, { promptIndex: 0, prompts: [{ firstStep: 1 }, { secondStep: 2 }] }, true);
+    wrapper = initComponent(
+      Navigation,
+      { promptIndex: 0, prompts: [{ firstStep: 1 }, { secondStep: 2 }] },
+      true
+    );
 
     let firstStepAnswers = {
       promptName: "1st prompt",
@@ -45,7 +49,9 @@ describe("Navigation.vue", () => {
     await wrapper.setProps({ promptAnswers: firstStepAnswers });
     // expect(promptAnswersSpy).toHaveBeenCalledTimes(1);
     // expect(promptAnswersSpy).toHaveBeenCalledWith(firstStepAnswers, undefined);
-    expect(wrapper.vm.answers).toEqual({ [firstStepAnswers.promptName]: firstStepAnswers.answers });
+    expect(wrapper.vm.answers).toEqual({
+      [firstStepAnswers.promptName]: firstStepAnswers.answers,
+    });
 
     firstStepAnswers = {
       promptName: "1st prompt",
@@ -58,7 +64,9 @@ describe("Navigation.vue", () => {
     await wrapper.setProps({
       promptAnswers: firstStepAnswers,
     });
-    expect(wrapper.vm.answers).toEqual({ [firstStepAnswers.promptName]: firstStepAnswers.answers });
+    expect(wrapper.vm.answers).toEqual({
+      [firstStepAnswers.promptName]: firstStepAnswers.answers,
+    });
 
     // A different step, answers should be appended
     let secondStepAnswers = {
@@ -77,7 +85,11 @@ describe("Navigation.vue", () => {
 
   describe("gotoStep", () => {
     test("numOfSteps > 0", async () => {
-      wrapper = initComponent(Navigation, { promptIndex: 1, prompts: [{}] }, true);
+      wrapper = initComponent(
+        Navigation,
+        { promptIndex: 1, prompts: [{}] },
+        true
+      );
       expect(wrapper.vm.steps).toEqual(1);
       expect(wrapper.vm.currentStep).toEqual(2);
       await wrapper.setProps({
@@ -98,7 +110,11 @@ describe("Navigation.vue", () => {
     });
 
     test("numOfSteps = 0", async () => {
-      wrapper = initComponent(Navigation, { promptIndex: 1, prompts: [{}] }, true);
+      wrapper = initComponent(
+        Navigation,
+        { promptIndex: 1, prompts: [{}] },
+        true
+      );
       expect(wrapper.vm.steps).toEqual(1);
       expect(wrapper.vm.currentStep).toEqual(2);
       await wrapper.setProps({
@@ -120,7 +136,11 @@ describe("Navigation.vue", () => {
   });
 
   test("getStepClass method", async () => {
-    wrapper = initComponent(Navigation, { promptIndex: 0, prompts: [{}] }, true);
+    wrapper = initComponent(
+      Navigation,
+      { promptIndex: 0, prompts: [{}] },
+      true
+    );
     expect(wrapper.vm.steps).toEqual(1);
     expect(wrapper.vm.currentStep).toEqual(1);
     await wrapper.setProps({

@@ -19,7 +19,10 @@ export class ExploreGensPanel extends AbstractWebviewPanel {
 
   public setWebviewPanel(webviewPanel: WebviewPanel, uiOptions?: unknown) {
     super.setWebviewPanel(webviewPanel);
-    this.rpc = new RpcExtension(webviewPanel.webview, getWebviewRpcLibraryLogger());
+    this.rpc = new RpcExtension(
+      webviewPanel.webview,
+      getWebviewRpcLibraryLogger()
+    );
     this.exploreGens.init(this.rpc);
     this.initWebviewPanel();
     void this.installGenOnPanelOpenIfNeeded(uiOptions);
