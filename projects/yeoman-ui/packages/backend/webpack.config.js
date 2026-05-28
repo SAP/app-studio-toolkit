@@ -263,22 +263,7 @@ const config = {
     ],
   },
   optimization: {
-    minimizer: [
-      (compiler) => {
-        const TerserPlugin = require("terser-webpack-plugin");
-        // Required for ESM generator support: keep_classnames and keep_fnames prevent mangling that breaks dynamic ESM imports
-        new TerserPlugin({
-          terserOptions: {
-            keep_classnames: true,
-            keep_fnames: true,
-            mangle: {
-              keep_classnames: true,
-              keep_fnames: true,
-            },
-          },
-        }).apply(compiler);
-      },
-    ],
+    minimize: false,
   },
 };
 module.exports = config;

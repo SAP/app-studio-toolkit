@@ -29,7 +29,7 @@ module.exports = {
     "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
     "^.+\\.mjs$": "<rootDir>/node_modules/babel-jest",
   },
-  snapshotSerializers: ["../../node_modules/jest-serializer-vue"],
+  snapshotSerializers: ["jest-serializer-vue"],
   coverageThreshold: {
     global: {
       branches: 87,

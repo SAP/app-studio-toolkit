@@ -19,7 +19,7 @@ In the [Application Wizard](https://marketplace.visualstudio.com/items?itemName=
 
 ### From GitHub Releases
 
-1. Go to [GitHub Releases](https://github.com/sap/yeoman-ui/releases).
+1. Go to [GitHub Releases](https://github.com/SAP/app-studio-toolkit/releases).
 2. Search for the `.vsix` archive under Assets for the specific release.
 3. Follow the instructions for installing an extension from a `.vsix` file in the [VSCode's guide](https://code.visualstudio.com/docs/editor/extension-gallery#_install-from-a-vsix).
 
@@ -38,8 +38,8 @@ The tool collects non-personally identifiable information about your usage of th
 
 ## How to obtain support
 
-To get more help, support, and information please open a github [issue](https://github.com/SAP/yeoman-ui/issues).
+To get more help, support, and information please open a github [issue](https://github.com/SAP/app-studio-toolkit/issues).
 
 ## Contributing
 
-Contributing information can be found in the [CONTRIBUTING.md](./CONTRIBUTING.md) file.
+Contributing information can be found in the [CONTRIBUTING.md](../../CONTRIBUTING.md) file.

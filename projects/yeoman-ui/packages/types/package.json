@@ -5,7 +5,8 @@
   "description": "Yeoman-UI prompt types",
   "repository": {
     "type": "git",
-    "url": "https://github.com/SAP/yeoman-ui.git"
+    "url": "https://github.com/SAP/app-studio-toolkit.git",
+    "directory": "projects/yeoman-ui/packages/types"
   },
   "license": "Apache-2.0",
   "author": "SAP SE",

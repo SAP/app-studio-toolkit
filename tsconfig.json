@@ -32,6 +32,12 @@
     },
     {
       "path": "./examples/vscode-using-upgrade-tool"
+    },
+    {
+      "path": "./projects/yeoman-ui/packages/backend"
+    },
+    {
+      "path": "./projects/yeoman-ui/packages/types"
     }
   ],
   "files": [],

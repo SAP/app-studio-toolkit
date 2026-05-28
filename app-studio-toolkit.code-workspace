@@ -1,0 +1,13 @@
+{
+  "folders": [
+    {
+      "name": "app-studio-toolkit (root)",
+      "path": "."
+    },
+    {
+      "name": "yeoman-ui",
+      "path": "projects/yeoman-ui"
+    }
+  ],
+  "settings": {}
+}

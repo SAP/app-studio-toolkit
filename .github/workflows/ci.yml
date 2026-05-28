@@ -54,7 +54,9 @@ jobs:
         id: upload_build_artifacts
         with:
           name: all-vsix
-          path: packages/*/*.vsix
+          path: |
+            packages/*/*.vsix
+            projects/yeoman-ui/packages/backend/*.vsix
           # default is 90 days; however, we want to avoid excessive storage usage...
           retention-days: ${{ env.artifact-retention-days }}
 
