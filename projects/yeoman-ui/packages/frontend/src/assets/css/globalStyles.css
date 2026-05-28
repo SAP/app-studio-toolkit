@@ -1,0 +1,258 @@
+html,
+body {
+  height: 100%;
+  background-color: var(--vscode-editor-background, #1e1e1e);
+  overflow: hidden !important;
+}
+#exploregens,
+#app {
+  height: 100%;
+  color: var(--vscode-foreground, #cccccc); 
+  background-color: var(--vscode-editor-background, #1e1e1e);
+  font-family: var(--vscode-font-family, Arial, Helvetica, sans-serif);
+  font-weight: var(--vscode-font-weight);
+  font-size: var(--vscode-font-size);
+}
+/* Align v-card image to fit card */
+.v-card .v-image__image--cover {
+    background-size: contain;
+}
+div.v-application button.v-btn:not(.v-btn--variant-flat):not(.v-btn--variant-text):not(.v-btn--variant-outline){
+  background-color: var(--vscode-button-background, #0e639c);
+  border-color: var(--vscode-button-background, #0e639c);
+  border-radius: 0px;
+}
+div.v-application button.v-btn:not(.v-btn--variant-flat):not(.v-btn--variant-text):not(.v-btn--variant-outline) .v-btn__content{
+  color: var(--vscode-button-foreground, #ffffff);
+}
+
+button#back {
+  margin-right: 6px;
+}
+div.v-application .theme--light.v-btn.v-btn--disabled .v-icon {
+  color: var(--vscode-button-foreground, #ffffff) !important;
+}
+
+.v-application button.v-btn:not(.v-btn--variant-flat):not(.v-btn--variant-text):not(.v-btn--variant-outline):hover {
+  background-color: var(--vscode-button-hoverBackground, #1177bb);
+  border-color: var(--vscode-button-hoverBackground, #1177bb);
+}
+/* Do not accept uppercase from vuetify and no letter spacing */
+.v-btn {
+  text-transform: none !important;
+  letter-spacing: normal !important; 
+}
+
+/* Do not accept letter spacing and opacity on vuetify labels */
+.v-label {
+  letter-spacing: 0px !important;
+  opacity: unset !important;
+}
+
+/* Do not accept from vuetify ripple effect and the background style effect upon user click */
+.v-ripple__container {
+  display:none !important;
+}
+
+/* All inputs should have this background color unless it is in radio group */
+form.inquirer-gui :not(.v-radio-group)>.v-input__control {
+  background-color: var(--vscode-input-background,#3c3c3c);
+}
+
+.v-btn--disabled {
+  opacity: 0.55;
+}
+
+p.question-label{
+  margin-bottom: 0.25rem ;
+}
+
+.v-theme--light.v-input input, .v-theme--light.v-input textarea,
+div.v-input__slot .v-select__selection,
+.v-input div label.v-label{
+  color: var(--vscode-input-foreground, #cccccc) !important;
+}
+
+div.v-select-list div.v-list{
+  background-color: var(--vscode-input-background, #3c3c3c);
+}
+
+/* Have to be important since vuetify itself define this color important */
+div.v-autocomplete__content div.v-list div.v-list-item,
+div.v-autocomplete__content div.v-list div.v-list-item:not(.v-list-item--active):not(.v-list-item--disabled)
+{
+  color: var(--vscode-input-foreground, #cccccc) !important;
+}
+
+.v-list-item-title {
+  color: var(--vscode-dropdown-foreground);
+}
+
+/* Styling for separator in <v-select> component */
+div.v-autocomplete__content div.v-list div.v-list-item--disabled div.v-list-subheader {
+  text-transform: uppercase;
+  font-weight: 800;
+  font-size: 11px;
+  color: var(--vscode-foreground, #cccccc);
+}
+
+.v-textarea.v-input:not(.v-input--is-disabled) input{
+  color: var(--vscode-input-foreground, #cccccc);
+}
+
+/* Override error state colors on input components  */
+div.v-messages__message {
+  color: var(--vscode-errorForeground, #ff5252);
+}
+/* Have to be important since vuetify itself define this color important */
+/* prevent controls from being red when thet're in error stare */
+div.v-application .error--text {
+  color: var(--vscode-input-foreground, #cccccc) !important;
+  caret-color: var(--vscode-input-foreground, #cccccc) !important;
+}
+/* Error validation text div */
+form.inquirer-gui .error-validation-text{
+  font-size: 12px;
+  padding-left: 0px;
+  color: var(--vscode-errorForeground, #ff5252);
+}
+
+form.inquirer-gui i.v-theme--light.v-icon {
+  font-size: 20px;
+  color: var(--vscode-foreground, #cccccc);
+}
+
+/* vuetify checkbox fill color */
+form.inquirer-gui i.v-theme--light.v-icon.mdi-radiobox-marked {
+  color: var(--vscode-focusBorder, #1976d2);
+}
+
+
+.mandatory-asterisk{
+  font-size: 14px;
+  color: var(--vscode-errorForeground, #ff5252);
+}
+
+.v-input--has-state.error--text .v-label{
+  animation: none;
+}
+
+div.prompt-title {
+  padding-left: 0px;
+  padding-top: 0px;
+  overflow: visible;
+  text-wrap: initial;
+}
+
+form.inquirer-gui > *:not(.tiles) {
+  max-width: 66%;
+}
+
+form.inquirer-gui .v-field {
+  border-radius: 0;
+}
+
+form.inquirer-gui .v-text-field input {
+  margin-bottom: 0px;
+  margin-top: 0px;
+  /* like the previous padding - fix cursor aligned to the left*/
+  padding: 0 12px; 
+  border-color: var(--vscode-panel-border, #cecece); 
+}
+
+form.inquirer-gui .v-field--focused .v-field__outline {
+  color: var(--vscode-focusBorder, #1976d2);
+}
+
+form.inquirer-gui .v-field--variant-outlined.v-field--focused .v-field__outline {
+  --v-field-border-width: 1px;
+}
+
+form.inquirer-gui div.v-list {
+  background-color: var(--vscode-input-background, #3c3c3c);
+}
+
+div[role="listbox"].v-theme--light.v-list {
+  background-color: var(--vscode-input-background, #3c3c3c);
+}
+
+/* Fix white flash when opening a v-autocomplete dropdown.
+   Vuetify teleports the dropdown list to <body> and applies
+   background:rgb(--v-theme-surface) via .v-menu>.v-overlay__content>.v-list
+   before any other CSS re-evaluates. We match that exact selector and use
+   !important so we win regardless of load order or Vuetify's inline styles.
+   NOTE: keep in sync with the duplicate inline rule in index.html, which exists
+   to bypass Chromium's webview resource cache on every panel creation. */
+.v-menu > .v-overlay__content > .v-list {
+  background: var(--vscode-dropdown-background, var(--vscode-editor-background, #1f1f1f)) !important;
+  color: var(--vscode-dropdown-foreground, var(--vscode-editor-foreground, #cccccc)) !important;
+}
+
+/* Fix white flash from v-autocomplete__mask.
+   When clicking an autocomplete, Vuetify briefly shows a mask over the input
+   with background:rgb(--v-theme-surface-light) = white in the light theme.
+   NOTE: keep in sync with the duplicate inline rule in index.html (see comment above). */
+.v-autocomplete__mask {
+  background: var(--vscode-input-background, var(--vscode-editor-background, #3c3c3c)) !important;
+}
+
+div.v-theme--light.v-list-item:not(.v-list-item--active):not(.v-list-item--disabled) {
+  color: var(--vscode-input-foreground, white) !important;
+}
+
+/* set checkbox and radio button icon color for inactive items */
+form.inquirer-gui .v-theme--light:not(.v-item--active) .v-icon {
+  color: var(--vscode-input-foreground, white);
+}
+
+form.inquirer-gui div.v-theme--light.v-card.v-card--variant-outlined {
+  border-width: thin;
+  border-style: solid;
+  border-color: var(--vscode-panel-border, #cecece);
+  /* TODO: replace with vscode-settings-textInputBorder when supported by Theia */
+  background-color: var(--vscode-input-background, #3c3c3c);
+}
+
+form.inquirer-gui div.theme--light.v-input input,
+form.inquirer-gui div.theme--light.v-input textarea {
+  color: var(--vscode-input-foreground, white);
+}
+
+form.inquirer-gui .v-card {
+  background-color: var(--vscode-sideBar-background, #252526);
+  border-radius: 0px;
+
+}
+form.inquirer-gui .v-card:hover {
+  border: 1px solid var(--vscode-sideBar-border, #0e639c);
+  background-color: var(--vscode-list-hoverBackground,#2a2d2e);
+}
+form.inquirer-gui .v-card.selected {
+  border: 1px solid var(--vscode-focusBorder, #0e639c);
+  background-color: var(--vscode-sideBar-background,#2a2d2e) ;
+}
+
+.explore-generators-cards .v-card-title,
+.explore-generators-cards .v-card-subtitle,
+form.inquirer-gui .v-card-title {
+  color: var(--vscode-foreground, #cccccc);
+}
+
+#prompt-info-component .v-card-subtitle {
+  color: var(--vscode-editor-foreground, #32363a);
+  opacity: 1;
+  padding-bottom: 16px;
+}
+
+form.inquirer-gui .v-card > div.v-card-text {
+  color: var(--vscode-editor-foreground, #32363a);
+}
+
+.v-application header.v-toolbar {
+  border-bottom: 1px solid var(--vscode-titleBar-border,#d9d9d9);
+}
+
+.v-application .right-col [role=separator].v-divider {
+  border-top: 1px solid var(--vscode-titleBar-border,#d9d9d9)!important; /* must !important other less accurate rule catches */
+  opacity: 1;
+}
