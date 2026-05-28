@@ -192,7 +192,7 @@ class Command {
   }
 
   public async getPackagesData(query = "", author = ""): Promise<PackagesData> {
-    const gensQueryUrl = NpmCommand.getGensQueryURL(query, author);
+    const gensQueryUrl = this.getGensQueryURL(query, author);
     const queryResult: any = await npmFetch.json(gensQueryUrl);
     return {
       packages: _.get(queryResult, "objects", []),
@@ -215,7 +215,7 @@ class Command {
     const packageJsons: any[] = await this.getPackageJsons(gensMeta);
 
     const packageNameToUpdatePromises = packageJsons.map((packageJson) => {
-      return NpmCommand.shouldBeUpdated(packageJson).then((toUpdate) =>
+      return this.shouldBeUpdated(packageJson).then((toUpdate) =>
         toUpdate ? packageJson.name : undefined
       );
     });
