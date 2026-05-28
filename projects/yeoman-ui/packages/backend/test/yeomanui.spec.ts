@@ -7,7 +7,11 @@ import * as _ from "lodash";
 import { YeomanUI } from "../src/yeomanui";
 import { ReplayUtils } from "../src/replayUtils";
 import { YouiEvents } from "../src/youi-events";
-import { IMethod, IPromiseCallbacks, IRpc } from "@sap-devx/webview-rpc/out.ext/rpc-common";
+import {
+  IMethod,
+  IPromiseCallbacks,
+  IRpc,
+} from "@sap-devx/webview-rpc/out.ext/rpc-common";
 import { GeneratorFilter } from "../src/filter";
 import { homedir } from "os";
 import messages from "../src/messages";
@@ -138,7 +142,7 @@ describe("yeomanui unit test", () => {
     outputChannel,
     testLogger,
     { filter: GeneratorFilter.create(), messages },
-    flowPromise.state,
+    flowPromise.state
   );
 
   before(() => {
@@ -248,12 +252,28 @@ describe("yeomanui unit test", () => {
           },
         });
       youiEventsMock.expects("setAppWizardHeaderTitle").withArgs(undefined);
-      wsConfigMock.expects("get").withExactArgs("ApplicationWizard.TargetFolder").twice();
-      wsConfigMock.expects("get").withExactArgs("ApplicationWizard.HideGenerator").once().returns("");
-      rpcMock.expects("invoke").withArgs("showPrompt").resolves({ generator: "test1-project:app" });
-      rpcMock.expects("invoke").withExactArgs("setGenInWriting", [false]).resolves();
+      wsConfigMock
+        .expects("get")
+        .withExactArgs("ApplicationWizard.TargetFolder")
+        .twice();
+      wsConfigMock
+        .expects("get")
+        .withExactArgs("ApplicationWizard.HideGenerator")
+        .once()
+        .returns("");
+      rpcMock
+        .expects("invoke")
+        .withArgs("showPrompt")
+        .resolves({ generator: "test1-project:app" });
+      rpcMock
+        .expects("invoke")
+        .withExactArgs("setGenInWriting", [false])
+        .resolves();
       trackerWrapperMock.expects("updateGeneratorStarted").once().resolves();
-      trackerWrapperMock.expects("updateGeneratorSelected").withArgs("test1-project:app").resolves();
+      trackerWrapperMock
+        .expects("updateGeneratorSelected")
+        .withArgs("test1-project:app")
+        .resolves();
       trackerWrapperMock.expects("updateGeneratorEnded").once().resolves();
       await yeomanUi["receiveIsWebviewReady"]();
     });
@@ -280,9 +300,18 @@ describe("yeomanui unit test", () => {
             on: () => "",
           },
         });
-      wsConfigMock.expects("get").withExactArgs(yeomanUi["TARGET_FOLDER_CONFIG_PROP"]).twice();
-      rpcMock.expects("invoke").withExactArgs("setGenInWriting", [false]).resolves();
-      trackerWrapperMock.expects("updateGeneratorSelected").withArgs("test4:app").resolves();
+      wsConfigMock
+        .expects("get")
+        .withExactArgs(yeomanUi["TARGET_FOLDER_CONFIG_PROP"])
+        .twice();
+      rpcMock
+        .expects("invoke")
+        .withExactArgs("setGenInWriting", [false])
+        .resolves();
+      trackerWrapperMock
+        .expects("updateGeneratorSelected")
+        .withArgs("test4:app")
+        .resolves();
       trackerWrapperMock.expects("updateGeneratorEnded").once().resolves();
       await yeomanUi["receiveIsWebviewReady"]();
     });
@@ -297,7 +326,9 @@ describe("yeomanui unit test", () => {
     it("called with command id & args", () => {
       const commandId = "vscode.open";
       const commandArgs = [{ fsPath: "https://en.wikipedia.org" }];
-      youiEventsMock.expects("executeCommand").withExactArgs(commandId, commandArgs);
+      youiEventsMock
+        .expects("executeCommand")
+        .withExactArgs(commandId, commandArgs);
       yeomanUi["executeCommand"](commandId, ...commandArgs);
     });
   });
@@ -322,7 +353,10 @@ describe("yeomanui unit test", () => {
 
   it("_notifyGeneratorsChange", async () => {
     envUtilsMock.expects("getGeneratorsData").resolves();
-    wsConfigMock.expects("get").withExactArgs("ApplicationWizard.HideGenerator").returns("");
+    wsConfigMock
+      .expects("get")
+      .withExactArgs("ApplicationWizard.HideGenerator")
+      .returns("");
     rpcMock.expects("invoke").withArgs("updateGeneratorsPrompt");
     await yeomanUi._notifyGeneratorsChange();
   });
@@ -335,11 +369,20 @@ describe("yeomanui unit test", () => {
     });
     it("called with empty args array (install ended) and the prompt is generators", async () => {
       const args: any = [];
-      const rpcInvokeStub = sandbox.stub(rpc, "invoke").onFirstCall().resolves(true).onSecondCall().resolves();
+      const rpcInvokeStub = sandbox
+        .stub(rpc, "invoke")
+        .onFirstCall()
+        .resolves(true)
+        .onSecondCall()
+        .resolves();
       await yeomanUi._notifyGeneratorsInstall(args, false);
       expect(rpcInvokeStub.callCount).to.equal(2);
-      expect(rpcInvokeStub.firstCall.args).to.deep.equal(["isGeneratorsPrompt"]);
-      expect(rpcInvokeStub.secondCall.args).to.deep.equal(["resetPromptMessage"]);
+      expect(rpcInvokeStub.firstCall.args).to.deep.equal([
+        "isGeneratorsPrompt",
+      ]);
+      expect(rpcInvokeStub.secondCall.args).to.deep.equal([
+        "resetPromptMessage",
+      ]);
       expect(yeomanUi["uiOptions"].installGens).to.be.undefined;
       rpcInvokeStub.restore();
     });
@@ -358,11 +401,17 @@ describe("yeomanui unit test", () => {
           versionRange: "^2.0.1",
         },
       ];
-      rpcMock.expects("invoke").withExactArgs("isGeneratorsPrompt").resolves(true);
+      rpcMock
+        .expects("invoke")
+        .withExactArgs("isGeneratorsPrompt")
+        .resolves(true);
       youiEventsMock.expects("getAppWizard").returns(appWizard);
       appWizardMock
         .expects("showWarning")
-        .withExactArgs(yeomanUi["uiOptions"].messages.generators_are_being_installed, MessageType.prompt);
+        .withExactArgs(
+          yeomanUi["uiOptions"].messages.generators_are_being_installed,
+          MessageType.prompt
+        );
       appWizardMock.expects("showInformation").never();
       await yeomanUi._notifyGeneratorsInstall(args, false);
       expect(yeomanUi["uiOptions"].installGens).to.be.deep.equal(args);
@@ -382,11 +431,17 @@ describe("yeomanui unit test", () => {
           versionRange: "^2.0.1",
         },
       ];
-      rpcMock.expects("invoke").withExactArgs("isGeneratorsPrompt").resolves(false);
+      rpcMock
+        .expects("invoke")
+        .withExactArgs("isGeneratorsPrompt")
+        .resolves(false);
       youiEventsMock.expects("getAppWizard").returns(appWizard);
       appWizardMock
         .expects("showWarning")
-        .withExactArgs(yeomanUi["uiOptions"].messages.generators_are_being_installed, MessageType.prompt);
+        .withExactArgs(
+          yeomanUi["uiOptions"].messages.generators_are_being_installed,
+          MessageType.prompt
+        );
       appWizardMock.expects("showInformation").never();
       await yeomanUi._notifyGeneratorsInstall(args, true);
       expect(yeomanUi["uiOptions"].installGens).to.be.deep.equal(args);
@@ -406,7 +461,10 @@ describe("yeomanui unit test", () => {
           versionRange: "^2.0.1",
         },
       ];
-      rpcMock.expects("invoke").withExactArgs("isGeneratorsPrompt").resolves(false);
+      rpcMock
+        .expects("invoke")
+        .withExactArgs("isGeneratorsPrompt")
+        .resolves(false);
       youiEventsMock.expects("getAppWizard").never();
       appWizardMock.expects("showInformation").never();
       await yeomanUi._notifyGeneratorsInstall(args, false);
@@ -416,19 +474,31 @@ describe("yeomanui unit test", () => {
 
   describe("showGeneratorsInstallingMessage", () => {
     it("called with empty args array (install ended)", async () => {
-      const rpcInvokeStub = sandbox.stub(rpc, "invoke").onFirstCall().resolves(true).onSecondCall().resolves();
+      const rpcInvokeStub = sandbox
+        .stub(rpc, "invoke")
+        .onFirstCall()
+        .resolves(true)
+        .onSecondCall()
+        .resolves();
       appWizardMock.expects("showWarning").never();
       await yeomanUi._notifyGeneratorsInstall([], false);
       expect(rpcInvokeStub.callCount).to.equal(2);
-      expect(rpcInvokeStub.firstCall.args).to.deep.equal(["isGeneratorsPrompt"]);
-      expect(rpcInvokeStub.secondCall.args).to.deep.equal(["resetPromptMessage"]);
+      expect(rpcInvokeStub.firstCall.args).to.deep.equal([
+        "isGeneratorsPrompt",
+      ]);
+      expect(rpcInvokeStub.secondCall.args).to.deep.equal([
+        "resetPromptMessage",
+      ]);
       rpcInvokeStub.restore();
     });
     it("called with args array containing generators (install started)", () => {
       youiEventsMock.expects("getAppWizard").returns(appWizard);
       appWizardMock
         .expects("showWarning")
-        .withExactArgs(yeomanUi["uiOptions"].messages.generators_are_being_installed, MessageType.prompt);
+        .withExactArgs(
+          yeomanUi["uiOptions"].messages.generators_are_being_installed,
+          MessageType.prompt
+        );
       appWizardMock.expects("showInformation").never();
       void yeomanUi._notifyGeneratorsInstall([{}], true);
     });
@@ -496,7 +566,10 @@ describe("yeomanui unit test", () => {
 
     it("there are no generators", async () => {
       envUtilsMock.expects("getGeneratorsData").withExactArgs().resolves([]);
-      wsConfigMock.expects("get").withExactArgs("ApplicationWizard.HideGenerator").returns("");
+      wsConfigMock
+        .expects("get")
+        .withExactArgs("ApplicationWizard.HideGenerator")
+        .returns("");
       const result = await yeomanUi["getGeneratorsPrompt"]();
       const generatorQuestion: any = {
         type: "list",
@@ -522,7 +595,7 @@ describe("yeomanui unit test", () => {
         outputChannel,
         testLogger,
         { filter: GeneratorFilter.create(), messages },
-        flowPromise.state,
+        flowPromise.state
       );
       const noGeneratorsResult = {
         name: "Select Generator",
@@ -532,7 +605,8 @@ describe("yeomanui unit test", () => {
             guiType: "tiles",
             guiOptions: {
               breadcrumb: "",
-              hint: yeomanUi["uiOptions"].messages.select_generator_question_hint,
+              hint: yeomanUi["uiOptions"].messages
+                .select_generator_question_hint,
             },
             name: "generator",
             message: yeomanUi["uiOptions"].messages.channel_name,
@@ -554,8 +628,14 @@ describe("yeomanui unit test", () => {
             description: "test hidden category",
           },
         };
-        envUtilsMock.expects("getGeneratorsData").withExactArgs().resolves([generatorData]);
-        wsConfigMock.expects("get").withExactArgs("ApplicationWizard.HideGenerator").returns("");
+        envUtilsMock
+          .expects("getGeneratorsData")
+          .withExactArgs()
+          .resolves([generatorData]);
+        wsConfigMock
+          .expects("get")
+          .withExactArgs("ApplicationWizard.HideGenerator")
+          .returns("");
         const result = await yeomanUiInstance["getGeneratorsPrompt"]();
         expect(result).to.be.deep.equal(noGeneratorsResult);
         expect(result.questions[0].choices).to.be.empty;
@@ -577,7 +657,10 @@ describe("yeomanui unit test", () => {
           .expects("get")
           .withExactArgs("ApplicationWizard.HideGenerator")
           .returns("@ns/test1-project ,  other:app ");
-        envUtilsMock.expects("getGeneratorsData").withExactArgs().resolves([generatorData]);
+        envUtilsMock
+          .expects("getGeneratorsData")
+          .withExactArgs()
+          .resolves([generatorData]);
         const result = await yeomanUiInstance["getGeneratorsPrompt"]();
         expect(result).to.be.deep.equal(noGeneratorsResult);
         expect(result.questions[0].choices).to.be.empty;
@@ -587,12 +670,20 @@ describe("yeomanui unit test", () => {
         const generatorData = {
           generatorMeta,
           generatorPackageJson: {
-            "generator-filter": { categories: ["sap.cap", "hidden", "some.category"] },
+            "generator-filter": {
+              categories: ["sap.cap", "hidden", "some.category"],
+            },
             description: "test hidden category",
           },
         };
-        envUtilsMock.expects("getGeneratorsData").withExactArgs().resolves([generatorData]);
-        wsConfigMock.expects("get").withExactArgs("ApplicationWizard.HideGenerator").returns("");
+        envUtilsMock
+          .expects("getGeneratorsData")
+          .withExactArgs()
+          .resolves([generatorData]);
+        wsConfigMock
+          .expects("get")
+          .withExactArgs("ApplicationWizard.HideGenerator")
+          .returns("");
         const result = await yeomanUiInstance["getGeneratorsPrompt"]();
         expect(result).to.be.deep.equal(noGeneratorsResult);
         expect(result.questions[0].choices).to.be.empty;
@@ -607,8 +698,14 @@ describe("yeomanui unit test", () => {
             description,
           },
         };
-        envUtilsMock.expects("getGeneratorsData").withExactArgs().resolves([generatorData]);
-        wsConfigMock.expects("get").withExactArgs("ApplicationWizard.HideGenerator").returns("");
+        envUtilsMock
+          .expects("getGeneratorsData")
+          .withExactArgs()
+          .resolves([generatorData]);
+        wsConfigMock
+          .expects("get")
+          .withExactArgs("ApplicationWizard.HideGenerator")
+          .returns("");
         const result = await yeomanUiInstance["getGeneratorsPrompt"]();
         expect(result.questions[0].choices).to.have.lengthOf(1);
         const test1Choice = result.questions[0].choices[0];
@@ -618,17 +715,31 @@ describe("yeomanui unit test", () => {
     });
 
     it("get generators with type project", async () => {
-      wsConfigMock.expects("get").withExactArgs("ApplicationWizard.Workspace").returns({});
-      wsConfigMock.expects("get").withExactArgs("ApplicationWizard.HideGenerator").once().returns("");
-      envUtilsMock.expects("getGeneratorsData").withExactArgs().resolves(gensMeta);
-      wsConfigMock.expects("get").withExactArgs(yeomanUi["TARGET_FOLDER_CONFIG_PROP"]);
+      wsConfigMock
+        .expects("get")
+        .withExactArgs("ApplicationWizard.Workspace")
+        .returns({});
+      wsConfigMock
+        .expects("get")
+        .withExactArgs("ApplicationWizard.HideGenerator")
+        .once()
+        .returns("");
+      envUtilsMock
+        .expects("getGeneratorsData")
+        .withExactArgs()
+        .resolves(gensMeta);
+      wsConfigMock
+        .expects("get")
+        .withExactArgs(yeomanUi["TARGET_FOLDER_CONFIG_PROP"]);
       const genFilter: GeneratorFilter = GeneratorFilter.create({
         type: "project",
       });
       yeomanUi["uiOptions"] = { filter: genFilter, messages };
       const result: any = await yeomanUi["getGeneratorsPrompt"]();
 
-      const question = result.questions.find((question: { type: string }) => question.type === "list");
+      const question = result.questions.find(
+        (question: { type: string }) => question.type === "list"
+      );
       expect(question.choices).to.have.lengthOf(2);
       const test1Choice = question.choices[0];
       const test2Choice = question.choices[1];
@@ -639,8 +750,14 @@ describe("yeomanui unit test", () => {
     });
 
     it("get generators with type module", async () => {
-      envUtilsMock.expects("getGeneratorsData").withExactArgs().resolves(gensMeta);
-      wsConfigMock.expects("get").withExactArgs("ApplicationWizard.HideGenerator").returns("");
+      envUtilsMock
+        .expects("getGeneratorsData")
+        .withExactArgs()
+        .resolves(gensMeta);
+      wsConfigMock
+        .expects("get")
+        .withExactArgs("ApplicationWizard.HideGenerator")
+        .returns("");
       const genFilter = GeneratorFilter.create({ type: "module" });
       yeomanUi["uiOptions"] = { filter: genFilter, messages };
       const result = await yeomanUi["getGeneratorsPrompt"]();
@@ -653,7 +770,10 @@ describe("yeomanui unit test", () => {
 
     it("get generators all generators", async () => {
       envUtilsMock.expects("getGeneratorsData").resolves(gensMeta);
-      wsConfigMock.expects("get").withExactArgs("ApplicationWizard.HideGenerator").returns("");
+      wsConfigMock
+        .expects("get")
+        .withExactArgs("ApplicationWizard.HideGenerator")
+        .returns("");
       yeomanUi["uiOptions"] = {
         filter: GeneratorFilter.create({ type: [] }),
         messages,
@@ -735,7 +855,10 @@ describe("yeomanui unit test", () => {
       ];
 
       envUtilsMock.expects("getGeneratorsData").resolves(gensMeta);
-      wsConfigMock.expects("get").withExactArgs("ApplicationWizard.HideGenerator").returns("");
+      wsConfigMock
+        .expects("get")
+        .withExactArgs("ApplicationWizard.HideGenerator")
+        .returns("");
       yeomanUi["uiOptions"] = {
         filter: GeneratorFilter.create({ type: [] }),
         messages,
@@ -746,8 +869,14 @@ describe("yeomanui unit test", () => {
     });
 
     it("wrong generators filter type is provided", async () => {
-      wsConfigMock.expects("get").withExactArgs("ApplicationWizard.Workspace").returns({});
-      wsConfigMock.expects("get").withExactArgs("ApplicationWizard.HideGenerator").returns("");
+      wsConfigMock
+        .expects("get")
+        .withExactArgs("ApplicationWizard.Workspace")
+        .returns({});
+      wsConfigMock
+        .expects("get")
+        .withExactArgs("ApplicationWizard.HideGenerator")
+        .returns("");
       envUtilsMock
         .expects("getGeneratorsData")
         .withExactArgs()
@@ -765,20 +894,30 @@ describe("yeomanui unit test", () => {
           },
         ]);
 
-      wsConfigMock.expects("get").withExactArgs(yeomanUi["TARGET_FOLDER_CONFIG_PROP"]);
+      wsConfigMock
+        .expects("get")
+        .withExactArgs(yeomanUi["TARGET_FOLDER_CONFIG_PROP"]);
       yeomanUi["uiOptions"] = {
         filter: GeneratorFilter.create({ type: "project" }),
         messages,
       };
       const result = await yeomanUi["getGeneratorsPrompt"]();
 
-      const question = result.questions.find((question: { type: string }) => question.type === "list");
+      const question = result.questions.find(
+        (question: { type: string }) => question.type === "list"
+      );
       expect(question.choices).to.be.empty;
     });
 
     it("get generators with type project and categories cat1 and cat2", async () => {
-      wsConfigMock.expects("get").withExactArgs("ApplicationWizard.Workspace").returns({});
-      wsConfigMock.expects("get").withExactArgs("ApplicationWizard.HideGenerator").returns("");
+      wsConfigMock
+        .expects("get")
+        .withExactArgs("ApplicationWizard.Workspace")
+        .returns({});
+      wsConfigMock
+        .expects("get")
+        .withExactArgs("ApplicationWizard.HideGenerator")
+        .returns("");
       gensMeta[0].generatorPackageJson = {
         "generator-filter": { type: ["project"], categories: ["cat2"] },
         description: "test1Description",
@@ -793,17 +932,24 @@ describe("yeomanui unit test", () => {
         "generator-filter": { type: "project", categories: ["cat1"] },
         description: "test4Description",
       };
-      envUtilsMock.expects("getGeneratorsData").withExactArgs().resolves(gensMeta);
+      envUtilsMock
+        .expects("getGeneratorsData")
+        .withExactArgs()
+        .resolves(gensMeta);
 
       const genFilter: GeneratorFilter = GeneratorFilter.create({
         type: ["project"],
         categories: ["cat1", "cat2"],
       });
       yeomanUi["uiOptions"].filter = genFilter;
-      wsConfigMock.expects("get").withExactArgs(yeomanUi["TARGET_FOLDER_CONFIG_PROP"]);
+      wsConfigMock
+        .expects("get")
+        .withExactArgs(yeomanUi["TARGET_FOLDER_CONFIG_PROP"]);
       const result = await yeomanUi["getGeneratorsPrompt"]();
 
-      const question = result.questions.find((question: { type: string }) => question.type === "list");
+      const question = result.questions.find(
+        (question: { type: string }) => question.type === "list"
+      );
       expect(question.choices).to.have.lengthOf(3);
       const test1Choice = question.choices[0];
       const test2Choice = question.choices[1];
@@ -818,8 +964,14 @@ describe("yeomanui unit test", () => {
         description: "test3Description",
         displayName: "3rd - Test",
       };
-      envUtilsMock.expects("getGeneratorsData").withExactArgs().resolves(gensMeta.slice(0, 3));
-      wsConfigMock.expects("get").withExactArgs("ApplicationWizard.HideGenerator").returns("");
+      envUtilsMock
+        .expects("getGeneratorsData")
+        .withExactArgs()
+        .resolves(gensMeta.slice(0, 3));
+      wsConfigMock
+        .expects("get")
+        .withExactArgs("ApplicationWizard.HideGenerator")
+        .returns("");
 
       yeomanUi["uiOptions"] = {
         filter: GeneratorFilter.create({ type: undefined }),
@@ -849,8 +1001,14 @@ describe("yeomanui unit test", () => {
         homepage: "https://myhomepage.com/ANY/generator-test2-module#readme",
       };
 
-      envUtilsMock.expects("getGeneratorsData").withExactArgs().resolves(gensMeta.slice(0, 3));
-      wsConfigMock.expects("get").withExactArgs("ApplicationWizard.HideGenerator").returns("");
+      envUtilsMock
+        .expects("getGeneratorsData")
+        .withExactArgs()
+        .resolves(gensMeta.slice(0, 3));
+      wsConfigMock
+        .expects("get")
+        .withExactArgs("ApplicationWizard.HideGenerator")
+        .returns("");
 
       yeomanUi["uiOptions"] = { filter: GeneratorFilter.create(), messages };
       const result = await yeomanUi["getGeneratorsPrompt"]();
@@ -860,24 +1018,40 @@ describe("yeomanui unit test", () => {
       const test1Choice = choices[0];
       const test2Choice = choices[1];
       const test3Choice = choices[2];
-      expect(test1Choice.homepage).to.be.equal("https://myhomepage.com/ANY/generator-test1-project#readme");
-      expect(test2Choice.homepage).to.be.equal("https://myhomepage.com/ANY/generator-test2-module#readme");
+      expect(test1Choice.homepage).to.be.equal(
+        "https://myhomepage.com/ANY/generator-test1-project#readme"
+      );
+      expect(test2Choice.homepage).to.be.equal(
+        "https://myhomepage.com/ANY/generator-test2-module#readme"
+      );
       expect(test3Choice.homepage).to.be.equal("");
     });
 
     it("generator with type project", async () => {
-      envUtilsMock.expects("getGeneratorsData").withExactArgs().resolves(gensMeta.slice(0, 1));
+      envUtilsMock
+        .expects("getGeneratorsData")
+        .withExactArgs()
+        .resolves(gensMeta.slice(0, 1));
       sandbox
         .stub(vscode.workspace, "workspaceFolders")
-        .value([{ uri: { fsPath: "rootFolderPath" } }, { uri: { fsPath: "testRoot" } }]);
+        .value([
+          { uri: { fsPath: "rootFolderPath" } },
+          { uri: { fsPath: "testRoot" } },
+        ]);
 
       yeomanUi["uiOptions"] = {
         filter: GeneratorFilter.create({ type: "project" }),
         messages,
       };
-      wsConfigMock.expects("get").withExactArgs(yeomanUi["TARGET_FOLDER_CONFIG_PROP"]);
-      wsConfigMock.expects("get").withExactArgs(yeomanUi["SELECTED_WORKSPACE_CONFIG_PROP"]);
-      wsConfigMock.expects("get").withExactArgs(yeomanUi["HIDE_GENERATORS_PROP"]);
+      wsConfigMock
+        .expects("get")
+        .withExactArgs(yeomanUi["TARGET_FOLDER_CONFIG_PROP"]);
+      wsConfigMock
+        .expects("get")
+        .withExactArgs(yeomanUi["SELECTED_WORKSPACE_CONFIG_PROP"]);
+      wsConfigMock
+        .expects("get")
+        .withExactArgs(yeomanUi["HIDE_GENERATORS_PROP"]);
 
       await yeomanUi["getGeneratorsPrompt"]();
     });
@@ -887,19 +1061,34 @@ describe("yeomanui unit test", () => {
         "generator-filter": { type: "tools-suite" },
         description: "test4Description",
       };
-      envUtilsMock.expects("getGeneratorsData").withExactArgs().resolves(gensMeta.slice(0, 1));
+      envUtilsMock
+        .expects("getGeneratorsData")
+        .withExactArgs()
+        .resolves(gensMeta.slice(0, 1));
       sandbox
         .stub(vscode.workspace, "workspaceFolders")
-        .value([{ uri: { fsPath: "rootFolderPath" } }, { uri: { fsPath: "testRoot" } }]);
-      wsConfigMock.expects("get").withExactArgs(yeomanUi["TARGET_FOLDER_CONFIG_PROP"]);
-      wsConfigMock.expects("get").withExactArgs(yeomanUi["SELECTED_WORKSPACE_CONFIG_PROP"]);
-      wsConfigMock.expects("get").withExactArgs("ApplicationWizard.HideGenerator").returns("gen1,gen2,gen3");
+        .value([
+          { uri: { fsPath: "rootFolderPath" } },
+          { uri: { fsPath: "testRoot" } },
+        ]);
+      wsConfigMock
+        .expects("get")
+        .withExactArgs(yeomanUi["TARGET_FOLDER_CONFIG_PROP"]);
+      wsConfigMock
+        .expects("get")
+        .withExactArgs(yeomanUi["SELECTED_WORKSPACE_CONFIG_PROP"]);
+      wsConfigMock
+        .expects("get")
+        .withExactArgs("ApplicationWizard.HideGenerator")
+        .returns("gen1,gen2,gen3");
       yeomanUi["uiOptions"] = {
         filter: GeneratorFilter.create({ type: "project" }),
         messages,
       };
       await yeomanUi["getGeneratorsPrompt"]();
-      expect(yeomanUi["generatorsToIgnoreArray"]).to.be.contains("test1-project:app");
+      expect(yeomanUi["generatorsToIgnoreArray"]).to.be.contains(
+        "test1-project:app"
+      );
     });
   });
 
@@ -918,12 +1107,21 @@ describe("yeomanui unit test", () => {
   });
 
   describe("getCwd", () => {
-    const yeomanUiInstance: YeomanUI = new YeomanUI(rpc, youiEvents, outputChannel, testLogger, {}, flowPromise.state);
+    const yeomanUiInstance: YeomanUI = new YeomanUI(
+      rpc,
+      youiEvents,
+      outputChannel,
+      testLogger,
+      {},
+      flowPromise.state
+    );
 
     it("in VSCODE, target folder is undefined", () => {
       Constants.IS_IN_BAS = false;
       _.set(vscode, "workspace.workspaceFolders[0].uri.fsPath", undefined);
-      wsConfigMock.expects("get").withExactArgs(yeomanUiInstance["TARGET_FOLDER_CONFIG_PROP"]);
+      wsConfigMock
+        .expects("get")
+        .withExactArgs(yeomanUiInstance["TARGET_FOLDER_CONFIG_PROP"]);
       const res = yeomanUiInstance["getCwd"]();
       expect(res).equal(Constants.HOMEDIR_PROJECTS);
     });
@@ -931,7 +1129,10 @@ describe("yeomanui unit test", () => {
     it("in VSCODE, target folder is empty non-zero length string", () => {
       Constants.IS_IN_BAS = false;
       _.set(vscode, "workspace.workspaceFolders[0].uri.fsPath", undefined);
-      wsConfigMock.expects("get").withExactArgs(yeomanUiInstance["TARGET_FOLDER_CONFIG_PROP"]).returns("     ");
+      wsConfigMock
+        .expects("get")
+        .withExactArgs(yeomanUiInstance["TARGET_FOLDER_CONFIG_PROP"])
+        .returns("     ");
       const res = yeomanUiInstance["getCwd"]();
       expect(res).equal(Constants.HOMEDIR_PROJECTS);
     });
@@ -951,9 +1152,15 @@ describe("yeomanui unit test", () => {
     it("in VSCODE, a folder is opened", () => {
       Constants.IS_IN_BAS = false;
       const openedVscodeFolderPath = "/home/user/folder/folder2";
-      _.set(vscode, "workspace.workspaceFolders[0].uri.fsPath", openedVscodeFolderPath);
+      _.set(
+        vscode,
+        "workspace.workspaceFolders[0].uri.fsPath",
+        openedVscodeFolderPath
+      );
       _.set(vscode, "workspace.workspaceFolders[0].uri.scheme", "file");
-      wsConfigMock.expects("get").withExactArgs(yeomanUiInstance["TARGET_FOLDER_CONFIG_PROP"]);
+      wsConfigMock
+        .expects("get")
+        .withExactArgs(yeomanUiInstance["TARGET_FOLDER_CONFIG_PROP"]);
       const res = yeomanUiInstance["getCwd"]();
       expect(res).equal(openedVscodeFolderPath);
     });
@@ -961,7 +1168,9 @@ describe("yeomanui unit test", () => {
     it("in BAS, target folder is undefined", () => {
       Constants.IS_IN_BAS = true;
       _.set(vscode, "workspace.workspaceFolders[0].uri.fsPath", undefined);
-      wsConfigMock.expects("get").withExactArgs(yeomanUiInstance["TARGET_FOLDER_CONFIG_PROP"]);
+      wsConfigMock
+        .expects("get")
+        .withExactArgs(yeomanUiInstance["TARGET_FOLDER_CONFIG_PROP"]);
       const res = yeomanUiInstance["getCwd"]();
       expect(res).equal(Constants.HOMEDIR_PROJECTS);
     });
@@ -969,7 +1178,10 @@ describe("yeomanui unit test", () => {
     it("in BAS, target folder is empty non-zero length string", () => {
       Constants.IS_IN_BAS = true;
       _.set(vscode, "workspace.workspaceFolders[0].uri.fsPath", undefined);
-      wsConfigMock.expects("get").withExactArgs(yeomanUiInstance["TARGET_FOLDER_CONFIG_PROP"]).returns("     ");
+      wsConfigMock
+        .expects("get")
+        .withExactArgs(yeomanUiInstance["TARGET_FOLDER_CONFIG_PROP"])
+        .returns("     ");
       const res = yeomanUiInstance["getCwd"]();
       expect(res).equal(Constants.HOMEDIR_PROJECTS);
     });
@@ -994,7 +1206,7 @@ describe("yeomanui unit test", () => {
       outputChannel,
       testLogger,
       null,
-      flowPromise.state,
+      flowPromise.state
     );
     const errorInfo = "Error Info";
     const res = yeomanUiInstance["getErrorInfo"](errorInfo);
@@ -1003,7 +1215,11 @@ describe("yeomanui unit test", () => {
 
   describe("answersUtils", () => {
     it("setDefaults", () => {
-      const questions = [{ name: "q1", default: "a" }, { name: "q2", default: () => "b" }, { name: "q3" }];
+      const questions = [
+        { name: "q1", default: "a" },
+        { name: "q2", default: () => "b" },
+        { name: "q3" },
+      ];
       const answers = {
         q1: "x",
         q2: "y",
@@ -1011,13 +1227,19 @@ describe("yeomanui unit test", () => {
       };
       ReplayUtils["setDefaults"](questions, answers);
       for (const question of questions) {
-        expect((question as any)["__origAnswer"]).to.equal((<any>answers)[question.name]);
+        expect((question as any)["__origAnswer"]).to.equal(
+          (<any>answers)[question.name]
+        );
         expect((question as any)["__ForceDefault"]).to.be.true;
       }
     });
 
     it("setDefaults", () => {
-      const questions = [{ name: "q1", default: "a" }, { name: "q2", default: () => "b" }, { name: "q3" }];
+      const questions = [
+        { name: "q1", default: "a" },
+        { name: "q2", default: () => "b" },
+        { name: "q3" },
+      ];
       const answers = {
         q1: "x",
         q3: "z",
@@ -1030,7 +1252,14 @@ describe("yeomanui unit test", () => {
   });
 
   it("handleErrors", () => {
-    const yeomanUiInstance: YeomanUI = new YeomanUI(rpc, youiEvents, outputChannel, testLogger, {}, flowPromise.state);
+    const yeomanUiInstance: YeomanUI = new YeomanUI(
+      rpc,
+      youiEvents,
+      outputChannel,
+      testLogger,
+      {},
+      flowPromise.state
+    );
     const env: Environment = Environment.createEnv();
     const envMock = sandbox.mock(env);
     const gen = { on: () => "" };
@@ -1047,7 +1276,14 @@ describe("yeomanui unit test", () => {
   });
 
   it("handleErrors - when 'startOver' operation selected", () => {
-    const yeomanUiInstance: YeomanUI = new YeomanUI(rpc, youiEvents, outputChannel, testLogger, {}, flowPromise.state);
+    const yeomanUiInstance: YeomanUI = new YeomanUI(
+      rpc,
+      youiEvents,
+      outputChannel,
+      testLogger,
+      {},
+      flowPromise.state
+    );
     yeomanUiInstance["onUncaughtException"] = () => "";
     const onUncaughtExceptionBefore = yeomanUiInstance["onUncaughtException"];
     const env: Environment = Environment.createEnv();
@@ -1058,19 +1294,30 @@ describe("yeomanui unit test", () => {
     envMock.expects("on").withArgs("error");
     genMock.expects("on").withArgs("error");
     processMock.expects("on").withArgs("uncaughtException");
-    processMock.expects("removeListener").withArgs("uncaughtException", onUncaughtExceptionBefore);
+    processMock
+      .expects("removeListener")
+      .withArgs("uncaughtException", onUncaughtExceptionBefore);
     yeomanUiInstance["handleErrors"](env, gen, "genName");
     envMock.verify();
     genMock.verify();
     processMock.verify();
     expect(yeomanUiInstance["onUncaughtException"]).to.be.ok;
-    expect(yeomanUiInstance["onUncaughtException"]).to.not.equal(onUncaughtExceptionBefore);
+    expect(yeomanUiInstance["onUncaughtException"]).to.not.equal(
+      onUncaughtExceptionBefore
+    );
   });
 
   describe("setGenInWriting", () => {
     let genMock: any;
     let rpcMock: any;
-    const yeomanUiInstance: YeomanUI = new YeomanUI(rpc, youiEvents, outputChannel, testLogger, {}, flowPromise.state);
+    const yeomanUiInstance: YeomanUI = new YeomanUI(
+      rpc,
+      youiEvents,
+      outputChannel,
+      testLogger,
+      {},
+      flowPromise.state
+    );
     const gen: any = { on: () => "" };
 
     beforeEach(() => {
@@ -1096,8 +1343,18 @@ describe("yeomanui unit test", () => {
   });
 
   it("exploreGenerators", () => {
-    const yeomanUiInstance: YeomanUI = new YeomanUI(rpc, youiEvents, outputChannel, testLogger, {}, flowPromise.state);
-    commandsMock.expects("executeCommand").withExactArgs("exploreGenerators").resolves();
+    const yeomanUiInstance: YeomanUI = new YeomanUI(
+      rpc,
+      youiEvents,
+      outputChannel,
+      testLogger,
+      {},
+      flowPromise.state
+    );
+    commandsMock
+      .expects("executeCommand")
+      .withExactArgs("exploreGenerators")
+      .resolves();
     yeomanUiInstance["exploreGenerators"]();
   });
 
@@ -1108,7 +1365,7 @@ describe("yeomanui unit test", () => {
       outputChannel,
       testLogger,
       GeneratorFilter.create(),
-      flowPromise.state,
+      flowPromise.state
     );
     const gen: any = { on: () => "" };
     const genMock = sandbox.mock(gen);
@@ -1133,7 +1390,7 @@ describe("yeomanui unit test", () => {
         outputChannel,
         testLogger,
         GeneratorFilter.create(),
-        flowPromise.state,
+        flowPromise.state
       );
       const questions = [{ name: "q1" }];
       const response = await yeomanUiInstance.showPrompt(questions);
@@ -1146,7 +1403,7 @@ describe("yeomanui unit test", () => {
 
       (rpc.invoke as (methodName: string, params: any[]) => Promise<any>) = (
         methodName: string,
-        params: any[],
+        params: any[]
       ): Promise<unknown> => {
         const questionName: string = params[0][0].name;
         if (questionName === "q1") {
@@ -1166,7 +1423,7 @@ describe("yeomanui unit test", () => {
         outputChannel,
         testLogger,
         GeneratorFilter.create(),
-        flowPromise.state,
+        flowPromise.state
       );
       yeomanUiInstance["runGenerator"] = (): Promise<any> => {
         return Promise.resolve();
@@ -1212,17 +1469,23 @@ describe("yeomanui unit test", () => {
         targetFolderPath: "testDestinationRoot",
         childDirs: ["dirparh1", "dirpath2"],
       };
-      trackerWrapperMock.expects("updateGeneratorEnded").withArgs("testGenName").resolves();
+      trackerWrapperMock
+        .expects("updateGeneratorEnded")
+        .withArgs("testGenName")
+        .resolves();
       yeomanUi["onGeneratorSuccess"]("testGenName", beforeGen, afterGen);
       expect(
         doGeneratorDoneSpy.calledWith(
           true,
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          _.get(yeomanUi, "uiOptions.messages.artifact_with_name_generated", (a: string) => "")("testGenName"),
+          _.get(
+            yeomanUi,
+            "uiOptions.messages.artifact_with_name_generated",
+            (_: string) => ""
+          )("testGenName"),
           create_and_close,
           "files",
-          "dirpath2",
-        ),
+          "dirpath2"
+        )
       ).to.be.true;
     });
 
@@ -1235,17 +1498,23 @@ describe("yeomanui unit test", () => {
         targetFolderPath: "testDestinationRoot",
         childDirs: ["dirparh1", "dirpath2", "dirpath3"],
       };
-      trackerWrapperMock.expects("updateGeneratorEnded").withArgs("testGenName").resolves();
+      trackerWrapperMock
+        .expects("updateGeneratorEnded")
+        .withArgs("testGenName")
+        .resolves();
       yeomanUi["onGeneratorSuccess"]("testGenName", beforeGen, afterGen);
       expect(
         doGeneratorDoneSpy.calledWith(
           true,
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          _.get(yeomanUi, "uiOptions.messages.artifact_with_name_generated", (a: string) => "")("testGenName"),
+          _.get(
+            yeomanUi,
+            "uiOptions.messages.artifact_with_name_generated",
+            (_: string) => ""
+          )("testGenName"),
           create_and_close,
           "files",
-          null,
-        ),
+          null
+        )
       ).to.be.true;
     });
 
@@ -1258,17 +1527,23 @@ describe("yeomanui unit test", () => {
         targetFolderPath: "testDestinationRoot",
         childDirs: ["dirparh1"],
       };
-      trackerWrapperMock.expects("updateGeneratorEnded").withArgs("testGenName").resolves();
+      trackerWrapperMock
+        .expects("updateGeneratorEnded")
+        .withArgs("testGenName")
+        .resolves();
       yeomanUi["onGeneratorSuccess"]("testGenName", beforeGen, afterGen);
       expect(
         doGeneratorDoneSpy.calledWith(
           true,
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          _.get(yeomanUi, "uiOptions.messages.artifact_with_name_generated", (a: string) => "")("testGenName"),
+          _.get(
+            yeomanUi,
+            "uiOptions.messages.artifact_with_name_generated",
+            (_: string) => ""
+          )("testGenName"),
           create_and_close,
           "",
-          null,
-        ),
+          null
+        )
       ).to.be.true;
     });
 
@@ -1277,44 +1552,66 @@ describe("yeomanui unit test", () => {
       const afterGen = {
         targetFolderPath: "testDestinationRoot/generatedProject",
       };
-      trackerWrapperMock.expects("updateGeneratorEnded").withArgs("testGenName").resolves();
+      trackerWrapperMock
+        .expects("updateGeneratorEnded")
+        .withArgs("testGenName")
+        .resolves();
       yeomanUi["onGeneratorSuccess"]("testGenName", beforeGen, afterGen);
       expect(
         doGeneratorDoneSpy.calledWith(
           true,
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          _.get(yeomanUi, "uiOptions.messages.artifact_with_name_generated", (a: string) => "")("testGenName"),
+          _.get(
+            yeomanUi,
+            "uiOptions.messages.artifact_with_name_generated",
+            (_: string) => ""
+          )("testGenName"),
           create_and_close,
           "files",
-          "testDestinationRoot/generatedProject",
-        ),
+          "testDestinationRoot/generatedProject"
+        )
       ).to.be.true;
     });
 
     it("onGeneratorFailure", () => {
       yeomanUi["onGeneratorFailure"]("testGenName", "testError");
-      expect(doGeneratorDoneSpy.calledWith(false, "testGenName generator failed - testError", "", "files")).to.be.true;
+      expect(
+        doGeneratorDoneSpy.calledWith(
+          false,
+          "testGenName generator failed - testError",
+          "",
+          "files"
+        )
+      ).to.be.true;
     });
 
     it("onGeneratorSuccess - generator type is project", () => {
-      wsConfigMock.expects("get").withExactArgs("ApplicationWizard.Workspace").returns(open_in_new_ws);
+      wsConfigMock
+        .expects("get")
+        .withExactArgs("ApplicationWizard.Workspace")
+        .returns(open_in_new_ws);
       yeomanUi["typesMap"].clear();
       yeomanUi["typesMap"].set("foodq:app", "project");
       const beforeGen = { targetFolderPath: "testDestinationRoot" };
       const afterGen = {
         targetFolderPath: "testDestinationRoot/generatedProject",
       };
-      trackerWrapperMock.expects("updateGeneratorEnded").withArgs("foodq:app").resolves();
+      trackerWrapperMock
+        .expects("updateGeneratorEnded")
+        .withArgs("foodq:app")
+        .resolves();
       yeomanUi["onGeneratorSuccess"]("foodq:app", beforeGen, afterGen);
       expect(
         doGeneratorDoneSpy.calledWith(
           true,
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          _.get(yeomanUi, "uiOptions.messages.artifact_with_name_generated", (a: string) => "")("foodq:app"),
+          _.get(
+            yeomanUi,
+            "uiOptions.messages.artifact_with_name_generated",
+            (_: string) => ""
+          )("foodq:app"),
           open_in_new_ws,
           "project",
-          "testDestinationRoot/generatedProject",
-        ),
+          "testDestinationRoot/generatedProject"
+        )
       ).to.be.true;
     });
 
@@ -1326,17 +1623,27 @@ describe("yeomanui unit test", () => {
       const afterGen = {
         targetFolderPath: "testDestinationRoot/generatedProject",
       };
-      trackerWrapperMock.expects("updateGeneratorEnded").withArgs("fiori-generator:app").resolves();
-      yeomanUi["onGeneratorSuccess"]("fiori-generator:app", beforeGen, afterGen);
+      trackerWrapperMock
+        .expects("updateGeneratorEnded")
+        .withArgs("fiori-generator:app")
+        .resolves();
+      yeomanUi["onGeneratorSuccess"](
+        "fiori-generator:app",
+        beforeGen,
+        afterGen
+      );
       expect(
         doGeneratorDoneSpy.calledWith(
           true,
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          _.get(yeomanUi, "uiOptions.messages.artifact_with_name_generated", (a: string) => "")("fiori-generator:app"),
+          _.get(
+            yeomanUi,
+            "uiOptions.messages.artifact_with_name_generated",
+            (_: string) => ""
+          )("fiori-generator:app"),
           create_and_close,
           "project",
-          "testDestinationRoot/generatedProject",
-        ),
+          "testDestinationRoot/generatedProject"
+        )
       ).to.be.true;
     });
   });
@@ -1358,13 +1665,17 @@ describe("yeomanui unit test", () => {
         outputChannel,
         testLogger,
         GeneratorFilter.create(),
-        flowPromise.state,
+        flowPromise.state
       );
 
       yeomanUiInstance["addCustomQuestionEventHandlers"](questions);
       expect(questions[0]).to.not.have.property("testEvent");
 
-      yeomanUiInstance.registerCustomQuestionEventHandler("questionType", "testEvent", testEventFunction);
+      yeomanUiInstance.registerCustomQuestionEventHandler(
+        "questionType",
+        "testEvent",
+        testEventFunction
+      );
       yeomanUiInstance["addCustomQuestionEventHandlers"](questions);
       expect(questions[0]).to.have.property("testEvent");
       expect((questions[0] as any)["testEvent"]).to.equal(testEventFunction);
@@ -1383,11 +1694,21 @@ describe("yeomanui unit test", () => {
         testLogger,
         GeneratorFilter.create(),
 
-        flowPromise.state,
+        flowPromise.state
       );
-      yeomanUiInstance.registerCustomQuestionEventHandler("questionType", "testEvent", testEventFunction);
-      yeomanUiInstance["currentQuestions"] = [{ name: "question1", guiType: "questionType" }];
-      const response = await yeomanUiInstance["evaluateMethod"](null, "question1", "testEvent");
+      yeomanUiInstance.registerCustomQuestionEventHandler(
+        "questionType",
+        "testEvent",
+        testEventFunction
+      );
+      yeomanUiInstance["currentQuestions"] = [
+        { name: "question1", guiType: "questionType" },
+      ];
+      const response = await yeomanUiInstance["evaluateMethod"](
+        null,
+        "question1",
+        "testEvent"
+      );
       expect(response).to.be.true;
     });
 
@@ -1398,7 +1719,7 @@ describe("yeomanui unit test", () => {
         outputChannel,
         testLogger,
         GeneratorFilter.create(),
-        flowPromise.state,
+        flowPromise.state
       );
       yeomanUiInstance["currentQuestions"] = [
         {
@@ -1408,7 +1729,11 @@ describe("yeomanui unit test", () => {
           },
         },
       ];
-      const response = await yeomanUiInstance["evaluateMethod"](null, "question1", "method1");
+      const response = await yeomanUiInstance["evaluateMethod"](
+        null,
+        "question1",
+        "method1"
+      );
       expect(response).to.be.true;
     });
 
@@ -1419,9 +1744,13 @@ describe("yeomanui unit test", () => {
         outputChannel,
         testLogger,
         GeneratorFilter.create(),
-        flowPromise.state,
+        flowPromise.state
       );
-      const response = await yeomanUiInstance["evaluateMethod"](null, "question1", "method1");
+      const response = await yeomanUiInstance["evaluateMethod"](
+        null,
+        "question1",
+        "method1"
+      );
       expect(response).to.be.undefined;
     });
 
@@ -1432,7 +1761,7 @@ describe("yeomanui unit test", () => {
         outputChannel,
         testLogger,
         GeneratorFilter.create(),
-        flowPromise.state,
+        flowPromise.state
       );
       yeomanUiInstance["gen"] = Object.create({});
       yeomanUiInstance["gen"].options = {};
@@ -1458,7 +1787,7 @@ describe("yeomanui unit test", () => {
         outputChannel,
         testLogger,
         GeneratorFilter.create(),
-        flowPromise.state,
+        flowPromise.state
       );
       yeomanUiInstance["gen"] = Object.create({});
       yeomanUiInstance["gen"].options = {};
@@ -1479,10 +1808,13 @@ describe("yeomanui unit test", () => {
         outputChannel,
         testLogger,
         GeneratorFilter.create(),
-        flowPromise.state,
+        flowPromise.state
       );
-      const expectedDestinationPath = '{"uri":"abapdf://testDestinationRoot","name":"projectName"}';
-      const destinationPath = yeomanUiInstance["getGeneratorDestinationPath"](expectedDestinationPath);
+      const expectedDestinationPath =
+        '{"uri":"abapdf://testDestinationRoot","name":"projectName"}';
+      const destinationPath = yeomanUiInstance["getGeneratorDestinationPath"](
+        expectedDestinationPath
+      );
       expect(destinationPath).to.be.equal(expectedDestinationPath);
     });
   });

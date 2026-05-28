@@ -27,18 +27,30 @@ export function activate(context: ExtensionContext) {
 
   context.subscriptions.push(
     window.registerWebviewPanelSerializer("yeomanui", {
-      async deserializeWebviewPanel(webViewPanel: WebviewPanel, state?: unknown) {
-        (await extCommands.getYeomanUIPanel()).setWebviewPanel(webViewPanel, state);
+      async deserializeWebviewPanel(
+        webViewPanel: WebviewPanel,
+        state?: unknown
+      ) {
+        (await extCommands.getYeomanUIPanel()).setWebviewPanel(
+          webViewPanel,
+          state
+        );
       },
-    }),
+    })
   );
 
   context.subscriptions.push(
     window.registerWebviewPanelSerializer("exploreGens", {
-      async deserializeWebviewPanel(webViewPanel: WebviewPanel, state?: unknown) {
-        (await extCommands.getExploreGensPanel()).setWebviewPanel(webViewPanel, state);
+      async deserializeWebviewPanel(
+        webViewPanel: WebviewPanel,
+        state?: unknown
+      ) {
+        (await extCommands.getExploreGensPanel()).setWebviewPanel(
+          webViewPanel,
+          state
+        );
       },
-    }),
+    })
   );
 }
 

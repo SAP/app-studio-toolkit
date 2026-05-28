@@ -22,7 +22,9 @@ export function isUriFlow(optionalFolderUri: string): boolean {
   return getFolderUri(optionalFolderUri) !== undefined;
 }
 
-export function getFolderUri(optionalFolderUri: string): FolderUriConfig | undefined {
+export function getFolderUri(
+  optionalFolderUri: string
+): FolderUriConfig | undefined {
   try {
     const folderUri = JSON.parse(optionalFolderUri);
     return folderUri?.uri && folderUri?.name ? folderUri : undefined;
@@ -55,7 +57,9 @@ export function isValidUri(uri: string): boolean {
 class WorkspaceFileUtil {
   public createWsWithPath(targetFolderUri: Uri) {
     const wsFilePath = this.getUniqWorkspaceFilePath();
-    const folderConfig: FolderPathConfig = { path: relative(dirname(wsFilePath), targetFolderUri.fsPath) };
+    const folderConfig: FolderPathConfig = {
+      path: relative(dirname(wsFilePath), targetFolderUri.fsPath),
+    };
     return this.createWs(wsFilePath, folderConfig);
   }
 
@@ -64,7 +68,10 @@ class WorkspaceFileUtil {
     return this.createWs(wsFilePath, folderConfig);
   }
 
-  public createWs(wsFilePath: string, folderConfig: FolderUriConfig | FolderPathConfig): Uri {
+  public createWs(
+    wsFilePath: string,
+    folderConfig: FolderUriConfig | FolderPathConfig
+  ): Uri {
     const fileContent = {
       folders: [folderConfig],
       settings: {},
@@ -76,7 +83,10 @@ class WorkspaceFileUtil {
 
   private createWsFilePath(counter?: number): string {
     const counterStr = counter ? `.${counter}.` : `.`;
-    return join(Constants.HOMEDIR_PROJECTS, `workspace${counterStr}code-workspace`);
+    return join(
+      Constants.HOMEDIR_PROJECTS,
+      `workspace${counterStr}code-workspace`
+    );
   }
 
   private getUniqWorkspaceFilePath(): string {

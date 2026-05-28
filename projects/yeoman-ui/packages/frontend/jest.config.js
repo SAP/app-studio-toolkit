@@ -16,12 +16,15 @@ module.exports = {
   ],
   coverageReporters: ["lcov", "html", "text-summary"],
   moduleFileExtensions: ["js", "vue", "json"],
-  transformIgnorePatterns: ["<rootDir>/node_modules/(?!(@sap-devx|vuetify|material-design-icons-iconfont|@mdi/font)/)"],
+  transformIgnorePatterns: [
+    "<rootDir>/node_modules/(?!(@sap-devx|vuetify|material-design-icons-iconfont|@mdi/font)/)",
+  ],
   modulePaths: ["<rootDir>/src", "<rootDir>/node_modules"],
   transform: {
     ".*\\.(vue)$": "@vue/vue3-jest",
     "^.+\\.vue$": "@vue/vue3-jest",
-    ".+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$": "jest-transform-stub",
+    ".+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$":
+      "jest-transform-stub",
     "^.+\\.tsx?$": "ts-jest",
     "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
     "^.+\\.mjs$": "<rootDir>/node_modules/babel-jest",

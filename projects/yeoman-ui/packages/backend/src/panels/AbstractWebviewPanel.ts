@@ -27,7 +27,10 @@ export abstract class AbstractWebviewPanel {
   protected flowPromise: FlowPromise<void>;
   protected viewColumn: vscode.ViewColumn;
 
-  public loadWebviewPanel(uiOptions?: any, disposables: vscode.Disposable[] = []): Promise<void> {
+  public loadWebviewPanel(
+    uiOptions?: any,
+    disposables: vscode.Disposable[] = []
+  ): Promise<void> {
     this.disposeWebviewPanel();
     if (uiOptions?.viewColumn in vscode.ViewColumn) {
       this.viewColumn = uiOptions.viewColumn;
@@ -56,13 +59,18 @@ export abstract class AbstractWebviewPanel {
   }
 
   public createWebviewPanel(): vscode.WebviewPanel {
-    return vscode.window.createWebviewPanel(this.viewType, this.viewTitle, this.viewColumn, {
-      // Enable javascript in the webview
-      enableScripts: true,
-      retainContextWhenHidden: true,
-      // And restrict the webview to only loading content from our extension's `media` directory.
-      localResourceRoots: [vscode.Uri.file(this.mediaPath)],
-    });
+    return vscode.window.createWebviewPanel(
+      this.viewType,
+      this.viewTitle,
+      this.viewColumn,
+      {
+        // Enable javascript in the webview
+        enableScripts: true,
+        retainContextWhenHidden: true,
+        // And restrict the webview to only loading content from our extension's `media` directory.
+        localResourceRoots: [vscode.Uri.file(this.mediaPath)],
+      }
+    );
   }
 
   protected disposeWebviewPanel() {
@@ -81,7 +89,11 @@ export abstract class AbstractWebviewPanel {
     // Set the context (current panel is focused)
     this.setFocused(this.webViewPanel.active);
 
-    this.webViewPanel.onDidDispose(() => this.dispose(), null, this.disposables);
+    this.webViewPanel.onDidDispose(
+      () => this.dispose(),
+      null,
+      this.disposables
+    );
 
     // Update the content based on view changes
     this.webViewPanel.onDidChangeViewState(
@@ -89,12 +101,16 @@ export abstract class AbstractWebviewPanel {
         this.setFocused(this.webViewPanel.active);
       },
       null,
-      this.disposables,
+      this.disposables
     );
   }
 
   protected setFocused(focusedValue: boolean) {
-    void vscode.commands.executeCommand("setContext", this.focusedKey, focusedValue);
+    void vscode.commands.executeCommand(
+      "setContext",
+      this.focusedKey,
+      focusedValue
+    );
   }
 
   private cleanFlowPromise() {
@@ -108,7 +124,10 @@ export abstract class AbstractWebviewPanel {
 
   protected dispose() {
     this.setFocused(false);
-    const isGeneratorCompleted = get(this.webViewPanel, Constants.GENERATOR_COMPLETED);
+    const isGeneratorCompleted = get(
+      this.webViewPanel,
+      Constants.GENERATOR_COMPLETED
+    );
     const yeomanui: any = get(this, "yeomanui");
     // Verify the dispose happened before the user has finished the wizard and not by clicking "Finish".
     // When user clicks "Finish" the generated has ended and the success/failure result will be set in "GENERATOR_COMPLETED".
@@ -123,7 +142,7 @@ export abstract class AbstractWebviewPanel {
           yeomanui.generatorName ?? "",
           wizardStepName,
           currentPromptCount,
-          numOfPromopts,
+          numOfPromopts
         );
       }
     }
@@ -143,11 +162,15 @@ export abstract class AbstractWebviewPanel {
   }
 
   protected initHtmlContent(): void {
-    let indexHtml = readFileSync(join(this.mediaPath, this.htmlFileName), "utf8");
+    let indexHtml = readFileSync(
+      join(this.mediaPath, this.htmlFileName),
+      "utf8"
+    );
     if (indexHtml) {
       // Local path to main script run in the webview
       const scriptPathOnDisk = vscode.Uri.file(join(this.mediaPath, sep));
-      const scriptUri = this.webViewPanel.webview.asWebviewUri(scriptPathOnDisk);
+      const scriptUri =
+        this.webViewPanel.webview.asWebviewUri(scriptPathOnDisk);
       const baseUrl = scriptUri.toString();
       const $ = cheerio.load(indexHtml);
 

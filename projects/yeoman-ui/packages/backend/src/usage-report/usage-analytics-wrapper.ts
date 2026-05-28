@@ -1,5 +1,9 @@
 import type { ExtensionContext } from "vscode";
-import { initTelemetrySettings, BASClientFactory, BASTelemetryClient } from "@sap/swa-for-sapbas-vsx";
+import {
+  initTelemetrySettings,
+  BASClientFactory,
+  BASTelemetryClient,
+} from "@sap/swa-for-sapbas-vsx";
 import { getLogger } from "../logger/logger-wrapper";
 import * as path from "path";
 
@@ -29,10 +33,15 @@ export class AnalyticsWrapper {
 
   public static createTracker(context: ExtensionContext): void {
     try {
-      const packageJson = require(path.join(context.extensionPath, "package.json"));
+      const packageJson = require(path.join(
+        context.extensionPath,
+        "package.json"
+      ));
       const vscodeExtentionFullName = `${packageJson.publisher}.${packageJson.name}`;
       initTelemetrySettings(vscodeExtentionFullName, packageJson.version);
-      getLogger().info(`SAP Web Analytics tracker was created for ${vscodeExtentionFullName}`);
+      getLogger().info(
+        `SAP Web Analytics tracker was created for ${vscodeExtentionFullName}`
+      );
     } catch (error) {
       getLogger().error(error);
     }
@@ -47,9 +56,12 @@ export class AnalyticsWrapper {
         eventName,
       });
     } else {
-      getLogger().trace("SAP Web Analytics tracker was not called because LANDSCAPE_ENVIRONMENT is not set", {
-        eventName,
-      });
+      getLogger().trace(
+        "SAP Web Analytics tracker was not called because LANDSCAPE_ENVIRONMENT is not set",
+        {
+          eventName,
+        }
+      );
     }
   }
 
@@ -76,7 +88,8 @@ export class AnalyticsWrapper {
 
   public static updateGeneratorEnded(generatorName: string): void {
     try {
-      const eventName = AnalyticsWrapper.EVENT_TYPES.PROJECT_GENERATED_SUCCESSFULLY;
+      const eventName =
+        AnalyticsWrapper.EVENT_TYPES.PROJECT_GENERATED_SUCCESSFULLY;
       const endTime = Date.now();
       const generationTimeMilliSec = endTime - AnalyticsWrapper.startTime;
       const generationTimeSec = Math.round(generationTimeMilliSec / 1000);
@@ -94,7 +107,7 @@ export class AnalyticsWrapper {
     generatorName: string,
     wizardStepName: string,
     currentStep: number,
-    totalNumOfSteps: number,
+    totalNumOfSteps: number
   ): void {
     try {
       const eventName = AnalyticsWrapper.EVENT_TYPES.PROJECT_GENERATOR_CLOSED;

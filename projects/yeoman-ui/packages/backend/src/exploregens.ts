@@ -27,8 +27,10 @@ export class ExploreGens {
   private cachedGeneratorsDataPromise: Promise<GeneratorData[]>;
   private readonly context: any;
 
-  private readonly GLOBAL_ACCEPT_LEGAL_NOTE = "global.exploreGens.acceptlegalNote";
-  private readonly LAST_AUTO_UPDATE_DATE = "global.exploreGens.lastAutoUpdateDate";
+  private readonly GLOBAL_ACCEPT_LEGAL_NOTE =
+    "global.exploreGens.acceptlegalNote";
+  private readonly LAST_AUTO_UPDATE_DATE =
+    "global.exploreGens.lastAutoUpdateDate";
   private readonly SEARCH_QUERY = "ApplicationWizard.searchQuery";
   private readonly AUTO_UPDATE = "ApplicationWizard.autoUpdate";
   private readonly ONE_DAY = 1000 * 60 * 60 * 24;
@@ -62,7 +64,9 @@ export class ExploreGens {
   }
 
   private isLegalNoteAccepted() {
-    return Constants.IS_IN_BAS ? this.context.globalState.get(this.GLOBAL_ACCEPT_LEGAL_NOTE, false) : true;
+    return Constants.IS_IN_BAS
+      ? this.context.globalState.get(this.GLOBAL_ACCEPT_LEGAL_NOTE, false)
+      : true;
   }
 
   private async acceptLegalNote() {
@@ -74,10 +78,16 @@ export class ExploreGens {
     try {
       const autoUpdateEnabled = this.getWsConfig().get(this.AUTO_UPDATE, true);
       if (autoUpdateEnabled) {
-        const lastUpdateDate = this.context.globalState.get(this.LAST_AUTO_UPDATE_DATE, 0);
+        const lastUpdateDate = this.context.globalState.get(
+          this.LAST_AUTO_UPDATE_DATE,
+          0
+        );
         const currentDate = Date.now();
         if (currentDate - lastUpdateDate > this.ONE_DAY) {
-          this.context.globalState.update(this.LAST_AUTO_UPDATE_DATE, currentDate);
+          this.context.globalState.update(
+            this.LAST_AUTO_UPDATE_DATE,
+            currentDate
+          );
           await NpmCommand.checkAccessAndSetGeneratorsPath();
           await this.updateAllInstalledGenerators();
         }
@@ -93,7 +103,10 @@ export class ExploreGens {
 
   private initRpc(rpc: Partial<IRpc>) {
     this.rpc = rpc;
-    this.rpc.registerMethod({ func: this.getFilteredGenerators, thisArg: this });
+    this.rpc.registerMethod({
+      func: this.getFilteredGenerators,
+      thisArg: this,
+    });
     this.rpc.registerMethod({ func: this.update, thisArg: this });
     this.rpc.registerMethod({ func: this.install, thisArg: this });
     this.rpc.registerMethod({ func: this.uninstall, thisArg: this });
@@ -104,11 +117,16 @@ export class ExploreGens {
   }
 
   private async updateAllInstalledGenerators() {
-    const gensToUpdate: string[] = await Env.getGeneratorNamesWithOutdatedVersion();
+    const gensToUpdate: string[] =
+      await Env.getGeneratorNamesWithOutdatedVersion();
     if (!_.isEmpty(gensToUpdate)) {
       this.logger.debug(messages.auto_update_started);
-      const statusBarMessage = this.setStatusBarMessage(messages.auto_update_started);
-      const promises = _.map(gensToUpdate, (genName) => this.update(genName, true));
+      const statusBarMessage = this.setStatusBarMessage(
+        messages.auto_update_started
+      );
+      const promises = _.map(gensToUpdate, (genName) =>
+        this.update(genName, true)
+      );
       const failedToUpdateGens: any[] = _.compact(await Promise.all(promises));
       if (!_.isEmpty(failedToUpdateGens)) {
         const errMessage = messages.failed_to_update_gens(failedToUpdateGens);
@@ -124,15 +142,28 @@ export class ExploreGens {
     return vscode.workspace.getConfiguration();
   }
 
-  private async getFilteredGenerators(query?: string, recommended?: string): Promise<PackagesData> {
+  private async getFilteredGenerators(
+    query?: string,
+    recommended?: string
+  ): Promise<PackagesData> {
     const gensData: GeneratorData[] = await this.getInstalledGens();
-    const packagesData: PackagesData = await NpmCommand.getPackagesData(query, recommended);
+    const packagesData: PackagesData = await NpmCommand.getPackagesData(
+      query,
+      recommended
+    );
 
     const filteredGenerators = _.map(packagesData.packages, (meta) => {
       const genName = meta.package.name;
-      const installedGenData = gensData.find((genData) => genData.generatorPackageJson.name === genName);
-      meta.state = !!installedGenData ? GenState.installed : GenState.notInstalled;
-      if (meta.state === GenState.installed && meta.package.version !== installedGenData.generatorPackageJson.version) {
+      const installedGenData = gensData.find(
+        (genData) => genData.generatorPackageJson.name === genName
+      );
+      meta.state = !!installedGenData
+        ? GenState.installed
+        : GenState.notInstalled;
+      if (
+        meta.state === GenState.installed &&
+        meta.package.version !== installedGenData.generatorPackageJson.version
+      ) {
         meta.state = GenState.outdated;
       }
       meta.disabledToHandle = false;
@@ -221,11 +252,16 @@ export class ExploreGens {
     }
   }
 
-  private async update(gen: any, isAutoUpdate = false): Promise<string | undefined> {
+  private async update(
+    gen: any,
+    isAutoUpdate = false
+  ): Promise<string | undefined> {
     const genName = _.get(gen.package, "name", gen);
     this.addToHandled(genName, GenState.updating);
     const updatingMessage = messages.updating(genName);
-    const statusbarMessage = isAutoUpdate ? undefined : this.setStatusBarMessage(updatingMessage);
+    const statusbarMessage = isAutoUpdate
+      ? undefined
+      : this.setStatusBarMessage(updatingMessage);
 
     try {
       this.logger.debug(updatingMessage);

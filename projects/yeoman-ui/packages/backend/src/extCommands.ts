@@ -11,22 +11,34 @@ export class ExtCommands {
   }
 
   public registerAndSubscribeCommands() {
-    this.registerAndSubscribeCommand("runGenerator", this.yeomanUIPanel_runGenerator_Command.bind(this));
+    this.registerAndSubscribeCommand(
+      "runGenerator",
+      this.yeomanUIPanel_runGenerator_Command.bind(this)
+    );
 
-    this.registerAndSubscribeCommand("loadYeomanUI", this.yeomanUIPanel_loadYeomanUI_Command.bind(this));
+    this.registerAndSubscribeCommand(
+      "loadYeomanUI",
+      this.yeomanUIPanel_loadYeomanUI_Command.bind(this)
+    );
 
-    this.registerAndSubscribeCommand("yeomanUI.toggleOutput", this.yeomanUIPanel_toggleOutput_Command.bind(this));
+    this.registerAndSubscribeCommand(
+      "yeomanUI.toggleOutput",
+      this.yeomanUIPanel_toggleOutput_Command.bind(this)
+    );
 
     this.registerAndSubscribeCommand(
       "yeomanUI._notifyGeneratorsChange",
-      this.yeomanUIPanel_notifyGeneratorsChange_Command.bind(this),
+      this.yeomanUIPanel_notifyGeneratorsChange_Command.bind(this)
     );
 
-    this.registerAndSubscribeCommand("exploreGenerators", this.exploreGenerators_Command.bind(this));
+    this.registerAndSubscribeCommand(
+      "exploreGenerators",
+      this.exploreGenerators_Command.bind(this)
+    );
 
     this.registerAndSubscribeCommand(
       "sap.ux.appWizard.showOutputChannel",
-      this.yeomanUIPanel_toggleOutput_Command.bind(this),
+      this.yeomanUIPanel_toggleOutput_Command.bind(this)
     );
   }
 
@@ -55,7 +67,9 @@ export class ExtCommands {
   }
 
   private async yeomanUIPanel_notifyGeneratorsChange_Command(uiOptions?: any) {
-    return (await this.getYeomanUIPanel(false)).notifyGeneratorsChange(uiOptions);
+    return (await this.getYeomanUIPanel(false)).notifyGeneratorsChange(
+      uiOptions
+    );
   }
 
   private async exploreGenerators_Command(uiOptions?: any) {
@@ -71,9 +85,11 @@ export class ExtCommands {
       const btnContinue = "Continue";
       if (
         (await window.showWarningMessage(
-          messages.warn_another_generator_running(this.yeomanUIPanel.yeomanui.generatorName.split(":")[0]),
+          messages.warn_another_generator_running(
+            this.yeomanUIPanel.yeomanui.generatorName.split(":")[0]
+          ),
           btnContinue,
-          "Cancel",
+          "Cancel"
         )) !== btnContinue
       ) {
         return false;
