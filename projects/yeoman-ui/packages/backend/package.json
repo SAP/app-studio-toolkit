@@ -15,11 +15,12 @@
     "generator"
   ],
   "bugs": {
-    "url": "https://github.com/SAP/yeoman-ui/issues"
+    "url": "https://github.com/SAP/app-studio-toolkit/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/SAP/yeoman-ui.git"
+    "url": "https://github.com/SAP/app-studio-toolkit.git",
+    "directory": "projects/yeoman-ui/packages/backend"
   },
   "license": "Apache 2.0",
   "author": {
@@ -34,11 +35,11 @@
     "clean:frontend": "cd ./dist && shx rm -rf ./media",
     "compile": "tsc",
     "compile:watch": "tsc -watch",
-    "coverage": "nyc mocha",
-    "coverage:copy": "shx mkdir -p ../../coverage && shx cp -u ./coverage/lcov.info ../../coverage/lcov_backend.info",
+    "coverage": "NODE_OPTIONS='--max-old-space-size=8192 --no-experimental-strip-types' nyc mocha",
+    "coverage:copy": "shx mkdir -p ../../../../coverage && shx cp -u ./coverage/lcov.info ../../../../coverage/lcov_backend.info",
     "frontend:copy": "npm-run-all clean:frontend && shx cp -r ../frontend/dist/. ./dist/media/",
-    "package": "vsce package --yarn",
-    "test": "mocha",
+    "package": "vsce package --no-dependencies",
+    "test": "NODE_OPTIONS='--no-experimental-strip-types' mocha",
     "webpack": "webpack --mode development",
     "webpack-dev:watch": "webpack --mode development --watch",
     "ws:egRun": "node ./dist/src/webSocketServer/exploregens.js",
@@ -176,21 +177,6 @@
     }
   },
   "activationEvents": [],
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
-  },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ]
-  },
-  "config": {
-    "commitizen": {
-      "path": "cz-conventional-changelog"
-    }
-  },
   "dependencies": {
     "@sap-devx/webview-rpc": "0.4.1",
     "@sap-devx/yeoman-ui-types": "^1.25.0",
@@ -201,18 +187,20 @@
     "cheerio": "^1.0.0-rc.12",
     "datauri": "4.1.0",
     "humanize-string": "2.1.0",
+    "lodash": "4.18.1",
     "npm-registry-fetch": "16.1.0",
     "object-hash": "3.0.0",
     "strip-ansi": "6.0.0",
     "sudo-prompt": "9.2.1",
     "titleize": "2.1.0",
     "vscode-uri": "3.1.0",
-    "yeoman-environment": "3.19.3"
+    "yeoman-environment": "3.19.3",
+    "yeoman-generator": "^4.13.0"
   },
   "devDependencies": {
     "@types/cheerio": "^0.22.31",
     "@types/inquirer": "^7.3.3",
-    "@types/lodash": "4.17.21",
+    "@types/lodash": "4.14.202",
     "@types/node": "^14.14.44",
     "@types/npm-registry-fetch": "^8.0.0",
     "@types/object-hash": "^2.1.0",
@@ -221,13 +209,16 @@
     "@types/webpack-env": "^1.16.2",
     "@types/ws": "^7.4.5",
     "@types/yeoman-environment": "^2.10.3",
+    "@types/yeoman-generator": "5.2.14",
     "@vscode/vsce": "2.24.0",
     "copy-webpack-plugin": "^12.0.2",
     "lcov-result-merger": "5.0.0",
     "sinon": "^18.0.1",
     "string-replace-loader": "3.0.3",
+    "terser": "^5.48.0",
+    "terser-webpack-plugin": "^5.3.0",
     "ts-loader": "^9.2.3",
-    "ts-node": "^9.1.1",
+    "ts-node": "^10.9.2",
     "webpack": "^5.94.0",
     "webpack-cli": "^5.1.4",
     "ws": "8.17.1"

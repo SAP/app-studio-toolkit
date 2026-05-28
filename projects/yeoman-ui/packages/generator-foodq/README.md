@@ -4,7 +4,7 @@
 
 ## Description
 
-[yeoman-ui](https://github.com/SAP/yeoman-ui) is a graphical user interface for running Yeoman generators. It runs as a [Visual Studio Code extension](https://code.visualstudio.com/api), or as a standalone web application for _development_ purposes.
+[yeoman-ui](https://github.com/SAP/app-studio-toolkit/tree/main/projects/yeoman-ui) is a graphical user interface for running Yeoman generators. It runs as a [Visual Studio Code extension](https://code.visualstudio.com/api), or as a standalone web application for _development_ purposes.
 
 This repo contains a sample Yeoman generator that includes different Yeoman capabilities, including different Inquirer [prompt types](https://github.com/SBoudrias/Inquirer.js/blob/master/README.md#prompt-types), [question properties](https://github.com/SBoudrias/Inquirer.js/blob/master/README.md#question).
 
@@ -16,11 +16,11 @@ In the terminal type:
 
 ```sh
 # install yeoman
-yarn global add yo
+pnpm add -g yo
 # install dependencies of this generator
-yarn
+pnpm install
 # make this generator available locally
-yarn link
+pnpm link --global
 # run this generator
 yo foodq
 ```
@@ -62,7 +62,7 @@ If you write your own generator and you want it to render well in the wizard, fo
     3. set list of all virtual prompts
     4. save the propmpts in a variable
 
-    See example: https://github.com/SAP/yeoman-ui/blob/master/generator-foodq/generators/app/index.js
+    See example: https://github.com/SAP/app-studio-toolkit/blob/main/projects/yeoman-ui/packages/generator-foodq/generators/app/index.js
 
 ```javascript
 module.exports = class extends Generator {
@@ -115,7 +115,7 @@ module.exports = class extends Generator {
 
     6. in a question that located before a dynamic promp decide whether you need to remove a dynamic prompt or add it back to the list
 
-    See example: https://github.com/SAP/yeoman-ui/blob/master/generator-foodq/generators/app2/index.js
+    See example: https://github.com/SAP/app-studio-toolkit/blob/main/projects/yeoman-ui/packages/generator-foodq/generators/app2/index.js
 
 - Update the target folder (your project root path) in the 'configuring()' method
 

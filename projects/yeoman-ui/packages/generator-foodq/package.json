@@ -6,11 +6,11 @@
   "keywords": [
     "yeoman-generator"
   ],
-  "homepage": "https://github.com/SAP/yeoman-ui/tree/master/packages/generator-foodq#readme",
+  "homepage": "https://github.com/SAP/app-studio-toolkit/tree/main/projects/yeoman-ui/packages/generator-foodq#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/SAP/yeoman-ui",
-    "directory": "generator-foodq"
+    "url": "https://github.com/SAP/app-studio-toolkit.git",
+    "directory": "projects/yeoman-ui/packages/generator-foodq"
   },
   "license": "Apache 2.0",
   "files": [

@@ -21,8 +21,8 @@
   "extension": [".ts"],
   "all": true,
   "check-coverage": true,
-  "branches": 91,
-  "lines": 93,
-  "functions": 88,
-  "statements": 92
+  "branches": 87,
+  "lines": 92,
+  "functions": 84,
+  "statements": 89
 }

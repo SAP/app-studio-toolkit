@@ -1,9 +1,6 @@
-[![Continuous Integration](https://github.com/SAP/yeoman-ui/actions/workflows/ci.yml/badge.svg)](https://github.com/SAP/yeoman-ui/actions/workflows/ci.yml)
-[![Coverage Status](https://coveralls.io/repos/github/SAP/yeoman-ui/badge.svg?branch=master)](https://coveralls.io/github/SAP/yeoman-ui?branch=master)
-[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/SAP/yeoman-ui.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/SAP/yeoman-ui/context:javascript)
-[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+[![Continuous Integration](https://github.com/SAP/app-studio-toolkit/actions/workflows/ci.yml/badge.svg)](https://github.com/SAP/app-studio-toolkit/actions/workflows/ci.yml)
 ![GitHub license](https://img.shields.io/badge/license-Apache_2.0-blue.svg)
-[![REUSE status](https://api.reuse.software/badge/github.com/SAP/yeoman-ui)](https://api.reuse.software/info/github.com/SAP/yeoman-ui)
+[![REUSE status](https://api.reuse.software/badge/github.com/SAP/app-studio-toolkit)](https://api.reuse.software/info/github.com/SAP/app-studio-toolkit)
 
 # Application Wizard
 
@@ -25,7 +22,7 @@ This npm [mono-repo][mono-repo] currently contains:
 
 ## Support
 
-To get more help, support, and information please open a github [issue](https://github.com/SAP/yeoman-ui/issues).
+To get more help, support, and information please open a github [issue](https://github.com/SAP/app-studio-toolkit/issues).
 
 ## Report an Issue
 
@@ -53,6 +50,37 @@ An issue that is about a real bug is closed as soon as the fix is committed.
 | mjs 6.0.1  | ❌       | ✅       | ✅       |
 | cjs 7.5.1  | ❌       | ❌       | ❌       |
 | mjs 7.5.1  | ❌       | ❌       | ✅       |
+
+## Debugging
+
+The debug configurations live in [`.vscode/launch.json`](./.vscode/launch.json) and are designed to be used with the [`app-studio-toolkit.code-workspace`](../../app-studio-toolkit.code-workspace) file at the repository root. Open that workspace file in VS Code to ensure `${workspaceFolder}` resolves to this directory (`projects/yeoman-ui`) and all configurations work correctly.
+
+### Prerequisites
+
+Run `pnpm install` from the repository root before using any debug configuration.
+
+### Available configurations
+
+| Configuration                        | Description                                                                                                                                         |
+| ------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Run Extension**                    | Launches the Application Wizard extension in a new VS Code Extension Development Host window. Triggers `watch backend (webpack)` pre-task.          |
+| **Test Extension**                   | Runs the extension test suite inside a VS Code Extension Development Host. Triggers `watch backend (tsc)` pre-task.                                 |
+| **Run YoUi websocket server**        | Starts the yeoman-ui standalone websocket server on port 8081. Use together with `pnpm serve` in `packages/frontend` for browser-based development. |
+| **Run ExploreGens websocket server** | Starts the explore-generators websocket server on port 8082. Use together with `pnpm serve` in `packages/frontend`.                                 |
+| **Backend unit tests**               | Runs the backend mocha test suite with the Node.js debugger attached. Requires a prior compile (`pnpm compile` in `packages/backend`).              |
+| **Frontend unit tests**              | Runs the frontend Jest test suite with the Node.js debugger attached (`--inspect-brk`).                                                             |
+| **Run reference generator (foodq)**  | Runs the sample `generator-foodq` via `yo` for manual testing. Requires `pnpm install` inside `packages/generator-foodq`.                           |
+
+### Workspace tasks
+
+The following background tasks are available in the **Terminal → Run Task** menu and are also triggered automatically as `preLaunchTask` by the configurations above:
+
+| Task                      | Description                                                                |
+| ------------------------- | -------------------------------------------------------------------------- |
+| `watch backend (webpack)` | Runs webpack in development watch mode in `packages/backend`.              |
+| `watch backend (tsc)`     | Runs `tsc --watch` in `packages/backend`.                                  |
+| `serve frontend`          | Starts the Vite dev server in `packages/frontend` (http://localhost:5173). |
+| `dev`                     | Runs `watch backend (webpack)` and `serve frontend` in parallel.           |
 
 ## Contributing
 

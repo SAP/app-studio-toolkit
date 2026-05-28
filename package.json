@@ -18,8 +18,8 @@
     "format:fix": "prettier --write \"**/*.@(js|ts|json|md)\" --ignore-path=.gitignore",
     "format:validate": "prettier --check \"**/*.@(js|ts|json|md)\" --ignore-path=.gitignore",
     "preinstall": "npx only-allow pnpm",
-    "legal:copy-license": "pnpm -r exec -- shx cp -r ../../LICENSES LICENSES",
-    "legal:copy-reuse": "pnpm -r exec -- shx cp -r ../../.reuse .reuse",
+    "legal:copy-license": "shx cp -r LICENSES projects/yeoman-ui/ && pnpm -r exec -- shx cp -r ../../LICENSES LICENSES",
+    "legal:copy-reuse": "shx cp -r .reuse projects/yeoman-ui/ && pnpm -r exec -- shx cp -r ../../.reuse .reuse",
     "legal:delete": "pnpm -r exec -- shx rm -rf .reuse LICENSES || true",
     "lint:fix": "eslint . --ext=js,ts,vue --fix --max-warnings=0 --ignore-path=.gitignore",
     "lint:validate": "eslint . --ext=js,ts,vue --max-warnings=0 --ignore-path=.gitignore",
@@ -74,5 +74,12 @@
   "packageManager": "pnpm@11.1.1",
   "engines": {
     "node": ">=20"
+  },
+  "pnpm": {
+    "overrides": {
+      "@types/lodash": "4.14.202",
+      "terser": "^5.48.0",
+      "terser-webpack-plugin>terser": "^5.48.0"
+    }
   }
 }
