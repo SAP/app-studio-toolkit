@@ -155,8 +155,8 @@ importers:
         specifier: 3.11.2
         version: 3.11.2
       '@sap/bas-sdk':
-        specifier: 3.13.7
-        version: 3.13.7(bufferutil@4.1.0)(utf-8-validate@5.0.10)
+        specifier: 3.13.8
+        version: 3.13.8(bufferutil@4.1.0)(utf-8-validate@5.0.10)
       '@vscode-logging/wrapper':
         specifier: 2.0.9
         version: 2.0.9
@@ -204,8 +204,8 @@ importers:
         specifier: 1.53.3
         version: 1.53.3(bufferutil@4.1.0)(utf-8-validate@5.0.10)
       '@sap/bas-sdk':
-        specifier: 3.13.7
-        version: 3.13.7(bufferutil@4.1.0)(utf-8-validate@5.0.10)
+        specifier: 3.13.8
+        version: 3.13.8(bufferutil@4.1.0)(utf-8-validate@5.0.10)
       '@vscode-logging/wrapper':
         specifier: 2.0.9
         version: 2.0.9
@@ -426,8 +426,8 @@ importers:
         specifier: 2.0.3
         version: 2.0.3
       '@sap/bas-sdk':
-        specifier: 3.13.7
-        version: 3.13.7(bufferutil@4.1.0)(utf-8-validate@5.0.10)
+        specifier: 3.13.8
+        version: 3.13.8(bufferutil@4.1.0)(utf-8-validate@5.0.10)
       '@vscode-logging/wrapper':
         specifier: 2.0.9
         version: 2.0.9
@@ -1425,8 +1425,8 @@ packages:
     resolution: {integrity: sha512-YfXhhkkSDMxZXMtsGPiarYGBpToSFTIsJQu2VBsWtQqWafNCPJYK5LJjJlT2rZO7WgJ8dGdMMtM1YbM4bOHhSQ==}
     hasBin: true
 
-  '@sap/bas-sdk@3.13.7':
-    resolution: {integrity: sha512-R7LsbZ1qajZrCTRu0iRpfC7fovdiZ26/mnjlHVAzcEAGgTJoOndR+8QzVZ2z0yiDao7IzJcJP1kDKpKYkV7J0w==}
+  '@sap/bas-sdk@3.13.8':
+    resolution: {integrity: sha512-EjVSYVItSQVbgTe8flHF9kMHPSdCDh5ELA8vMDM/zH0D2lW41Sl3ziqPV3evcIrehGTak7RdJ/x3E1Rm/cUhJg==}
 
   '@secretlint/config-creator@10.1.1':
     resolution: {integrity: sha512-TJ42CHZqqnEe9ORvIXVVMqdu3KAtyZRxLspjFexo6XgrwJ6CoFHQYzIihilqRjo2sJh9HMrpnYSj/5hopofGrA==}
@@ -8117,13 +8117,12 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@sap/bas-sdk@3.13.7(bufferutil@4.1.0)(utf-8-validate@5.0.10)':
+  '@sap/bas-sdk@3.13.8(bufferutil@4.1.0)(utf-8-validate@5.0.10)':
     dependencies:
       axios: 1.15.2
       cross-spawn: 7.0.6
       fs-extra: 11.3.2
       jwt-decode: 4.0.0
-      lodash: 4.18.1
       url-join: 4.0.1
       ws: 8.18.3(bufferutil@4.1.0)(utf-8-validate@5.0.10)
     transitivePeerDependencies:
