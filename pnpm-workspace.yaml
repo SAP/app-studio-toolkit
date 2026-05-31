@@ -11,3 +11,7 @@ allowBuilds:
   esbuild: true
   keytar: true
   utf-8-validate: true
+overrides:
+  '@types/lodash': '4.14.202'
+  terser: '^5.48.0'
+  terser-webpack-plugin>terser: '^5.48.0'

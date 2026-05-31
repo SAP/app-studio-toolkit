@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  '@types/lodash': 4.14.202
+  terser: ^5.48.0
+  terser-webpack-plugin>terser: ^5.48.0
+
 importers:
 
   .:
@@ -27,8 +32,8 @@ importers:
         specifier: 1.0.4
         version: 1.0.4
       '@types/lodash':
-        specifier: 4.14.177
-        version: 4.14.177
+        specifier: 4.14.202
+        version: 4.14.202
       '@types/mocha':
         specifier: 10.0.7
         version: 10.0.7
@@ -2677,9 +2682,6 @@ packages:
 
   '@types/keyv@3.1.4':
     resolution: {integrity: sha512-BQ5aZNSCpj7D6K2ksrRCTmKRLEpnPvWDiLPfoGyhZ++8YtiK9d/3DBKPJgry359X/P1PfruyYwvnvwFjuEiEIg==}
-
-  '@types/lodash@4.14.177':
-    resolution: {integrity: sha512-0fDwydE2clKe9MNfvXHBHF9WEahRuj+msTuQqOmAApNORFvhMYZKNGGJdCzuhheVjMps/ti0Ak/iJPACMaevvw==}
 
   '@types/lodash@4.14.202':
     resolution: {integrity: sha512-OvlIYQK9tNneDlS0VN54LLd5uiPCBOp7gS5Z0f1mjoJYBrtStzgmJBxONW3U6OZqdtNzZPmn9BS/7WI7BFFcFQ==}
@@ -9073,11 +9075,6 @@ packages:
       uglify-js:
         optional: true
 
-  terser@5.31.6:
-    resolution: {integrity: sha512-PQ4DAriWzKj+qgehQ7LK5bQqCFNMmlhjR2PFFLuqGCpuCAauxemVBWwWOxo3UIwWQx8+Pr61Df++r76wDmkQBg==}
-    engines: {node: '>=10'}
-    hasBin: true
-
   terser@5.48.0:
     resolution: {integrity: sha512-J/9An6vs9Us6wKRriSFXBWdRZapREHqFzdNUKk0pmu804EMR6dr6winwo7e5JDxN4xahxQsuysyYFwlwj4XN/Q==}
     engines: {node: '>=10'}
@@ -9627,7 +9624,7 @@ packages:
       sass: '*'
       stylus: '*'
       sugarss: '*'
-      terser: ^5.4.0
+      terser: ^5.48.0
     peerDependenciesMeta:
       '@types/node':
         optional: true
@@ -12744,8 +12741,6 @@ snapshots:
   '@types/keyv@3.1.4':
     dependencies:
       '@types/node': 16.11.10
-
-  '@types/lodash@4.14.177': {}
 
   '@types/lodash@4.14.202': {}
 
@@ -20857,7 +20852,7 @@ snapshots:
       '@jridgewell/trace-mapping': 0.3.31
       jest-worker: 27.5.1
       schema-utils: 4.3.3
-      terser: 5.31.6
+      terser: 5.48.0
       webpack: 5.104.1(webpack-cli@6.0.1)
 
   terser-webpack-plugin@5.5.0(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1))):
@@ -20865,7 +20860,7 @@ snapshots:
       '@jridgewell/trace-mapping': 0.3.31
       jest-worker: 27.5.1
       schema-utils: 4.3.3
-      terser: 5.31.6
+      terser: 5.48.0
       webpack: 5.106.2(webpack-cli@6.0.1(webpack@5.104.1))
 
   terser-webpack-plugin@5.5.0(webpack@5.106.2):
@@ -20873,15 +20868,8 @@ snapshots:
       '@jridgewell/trace-mapping': 0.3.31
       jest-worker: 27.5.1
       schema-utils: 4.3.3
-      terser: 5.31.6
+      terser: 5.48.0
       webpack: 5.106.2(webpack-cli@5.1.4)
-
-  terser@5.31.6:
-    dependencies:
-      '@jridgewell/source-map': 0.3.6
-      acorn: 8.16.0
-      commander: 2.20.3
-      source-map-support: 0.5.21
 
   terser@5.48.0:
     dependencies:

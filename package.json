@@ -74,12 +74,5 @@
   "packageManager": "pnpm@11.1.1",
   "engines": {
     "node": ">=20"
-  },
-  "pnpm": {
-    "overrides": {
-      "@types/lodash": "4.14.202",
-      "terser": "^5.48.0",
-      "terser-webpack-plugin>terser": "^5.48.0"
-    }
   }
 }

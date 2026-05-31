@@ -3,6 +3,7 @@
 "use strict";
 
 const path = require("path");
+const TerserPlugin = require("terser-webpack-plugin");
 
 /**
  * Investigate the usage of "import(/webpackIgnore: true / 'ignored-module.js');"
@@ -263,7 +264,21 @@ const config = {
     ],
   },
   optimization: {
-    minimize: false,
+    minimizer: [
+      new TerserPlugin({
+        terserOptions: {
+          // ecma 2020 required to parse modern class syntax from deep dependencies
+          // keep_classnames/keep_fnames prevent mangling that breaks dynamic ESM imports
+          ecma: 2020,
+          keep_classnames: true,
+          keep_fnames: true,
+          mangle: {
+            keep_classnames: true,
+            keep_fnames: true,
+          },
+        },
+      }),
+    ],
   },
 };
 module.exports = config;
