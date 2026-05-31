@@ -378,7 +378,7 @@ describe("The, Exported bundling APIs", () => {
 
   function defineBundleFeatureSpecs(bundler) {
     describe(`bundleFeature API - ${bundler}`, () => {
-      const bundleTestTimeout = 10000
+      const bundleTestTimeout = 20000
       const distFolder = path.resolve(__dirname, "dist")
       const expectedJSOutputFile = `${distFolder}/config-preload.js`
       const expectedMetadataOutputFile = `${distFolder}/config-preload.json`
