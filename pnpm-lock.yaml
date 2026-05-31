@@ -8,6 +8,8 @@ overrides:
   '@types/lodash': 4.14.202
   terser: ^5.48.0
   terser-webpack-plugin>terser: ^5.48.0
+  jest-runner>jest-environment-node: 27.5.1
+  jest-config>jest-environment-node: 27.5.1
 
 importers:
 
@@ -6394,10 +6396,6 @@ packages:
   jest-environment-node@27.5.1:
     resolution: {integrity: sha512-Jt4ZUnxdOsTGwSRAfKEnE6BcwsSPNOijjwifq5sDFSA2kesnXTvNqKHYgM0hDq3549Uf/KzdXNYn4wMZJPlFLw==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
-
-  jest-environment-node@29.7.0:
-    resolution: {integrity: sha512-DOSwCRqXirTOyheM+4d5YZOrWcdu0LNZ87ewUoywbcb2XR4wKgqiG8vNeYwhjFMbEkfju7wx2GYH0P2gevGvFw==}
-    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
 
   jest-get-type@27.5.1:
     resolution: {integrity: sha512-2KY95ksYSaK7DMBWQn6dQz3kqAf3BB64y2udeG+hv4KfSOb9qwcYQstTJc1KCbsix+wLZWZYN8t7nwX3GOBLRw==}
@@ -17221,7 +17219,7 @@ snapshots:
       glob: 7.2.0
       graceful-fs: 4.2.11
       jest-circus: 29.7.0
-      jest-environment-node: 29.7.0
+      jest-environment-node: 27.5.1
       jest-get-type: 29.6.3
       jest-regex-util: 29.6.3
       jest-resolve: 29.7.0
@@ -17252,7 +17250,7 @@ snapshots:
       glob: 7.2.0
       graceful-fs: 4.2.11
       jest-circus: 29.7.0
-      jest-environment-node: 29.7.0
+      jest-environment-node: 27.5.1
       jest-get-type: 29.6.3
       jest-regex-util: 29.6.3
       jest-resolve: 29.7.0
@@ -17283,7 +17281,7 @@ snapshots:
       glob: 7.2.0
       graceful-fs: 4.2.11
       jest-circus: 29.7.0
-      jest-environment-node: 29.7.0
+      jest-environment-node: 27.5.1
       jest-get-type: 29.6.3
       jest-regex-util: 29.6.3
       jest-resolve: 29.7.0
@@ -17378,15 +17376,6 @@ snapshots:
       '@types/node': 16.11.10
       jest-mock: 27.5.1
       jest-util: 27.5.1
-
-  jest-environment-node@29.7.0:
-    dependencies:
-      '@jest/environment': 29.7.0
-      '@jest/fake-timers': 29.7.0
-      '@jest/types': 29.6.3
-      '@types/node': 16.11.10
-      jest-mock: 29.7.0
-      jest-util: 29.7.0
 
   jest-get-type@27.5.1: {}
 
@@ -17604,7 +17593,7 @@ snapshots:
       emittery: 0.13.1
       graceful-fs: 4.2.11
       jest-docblock: 29.7.0
-      jest-environment-node: 29.7.0
+      jest-environment-node: 27.5.1
       jest-haste-map: 29.7.0
       jest-leak-detector: 29.7.0
       jest-message-util: 29.7.0
