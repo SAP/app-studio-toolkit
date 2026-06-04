@@ -36,6 +36,12 @@ jobs:
         id: app-token
         uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
         with:
+          # Problem: The default GHA tokens will not trigger transitive workflows
+          #          From a PR created by the default GHA token, So Voter won't run for the ChangeSets
+          #          Versioning PR.
+          # Solution: Use a Technical user's PAT or better, a short-lived GH App Token.
+          #           We Use a GH App Token for the increased security.
+          # See: https://github.com/organizations/SAP/settings/apps (only aviliable for repo admins)
           app-id: ${{ secrets.APP_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
 
