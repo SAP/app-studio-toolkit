@@ -4,13 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-overrides:
-  '@types/lodash': 4.14.202
-  terser: ^5.48.0
-  terser-webpack-plugin>terser: ^5.48.0
-  jest-runner>jest-environment-node: 27.5.1
-  jest-config>jest-environment-node: 27.5.1
-
 importers:
 
   .:
@@ -34,8 +27,8 @@ importers:
         specifier: 1.0.4
         version: 1.0.4
       '@types/lodash':
-        specifier: 4.14.202
-        version: 4.14.202
+        specifier: 4.14.177
+        version: 4.14.177
       '@types/mocha':
         specifier: 10.0.7
         version: 10.0.7
@@ -78,6 +71,9 @@ importers:
       eslint-plugin-eslint-comments:
         specifier: 3.2.0
         version: 3.2.0(eslint@7.30.0)
+      eslint-plugin-vue:
+        specifier: 9.14.1
+        version: 9.14.1(eslint@7.30.0)
       glob:
         specifier: 11.1.0
         version: 11.1.0
@@ -2684,6 +2680,9 @@ packages:
 
   '@types/keyv@3.1.4':
     resolution: {integrity: sha512-BQ5aZNSCpj7D6K2ksrRCTmKRLEpnPvWDiLPfoGyhZ++8YtiK9d/3DBKPJgry359X/P1PfruyYwvnvwFjuEiEIg==}
+
+  '@types/lodash@4.14.177':
+    resolution: {integrity: sha512-0fDwydE2clKe9MNfvXHBHF9WEahRuj+msTuQqOmAApNORFvhMYZKNGGJdCzuhheVjMps/ti0Ak/iJPACMaevvw==}
 
   '@types/lodash@4.14.202':
     resolution: {integrity: sha512-OvlIYQK9tNneDlS0VN54LLd5uiPCBOp7gS5Z0f1mjoJYBrtStzgmJBxONW3U6OZqdtNzZPmn9BS/7WI7BFFcFQ==}
@@ -6397,6 +6396,10 @@ packages:
     resolution: {integrity: sha512-Jt4ZUnxdOsTGwSRAfKEnE6BcwsSPNOijjwifq5sDFSA2kesnXTvNqKHYgM0hDq3549Uf/KzdXNYn4wMZJPlFLw==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
 
+  jest-environment-node@29.7.0:
+    resolution: {integrity: sha512-DOSwCRqXirTOyheM+4d5YZOrWcdu0LNZ87ewUoywbcb2XR4wKgqiG8vNeYwhjFMbEkfju7wx2GYH0P2gevGvFw==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
   jest-get-type@27.5.1:
     resolution: {integrity: sha512-2KY95ksYSaK7DMBWQn6dQz3kqAf3BB64y2udeG+hv4KfSOb9qwcYQstTJc1KCbsix+wLZWZYN8t7nwX3GOBLRw==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
@@ -9622,7 +9625,7 @@ packages:
       sass: '*'
       stylus: '*'
       sugarss: '*'
-      terser: ^5.48.0
+      terser: ^5.4.0
     peerDependenciesMeta:
       '@types/node':
         optional: true
@@ -12739,6 +12742,8 @@ snapshots:
   '@types/keyv@3.1.4':
     dependencies:
       '@types/node': 16.11.10
+
+  '@types/lodash@4.14.177': {}
 
   '@types/lodash@4.14.202': {}
 
@@ -17219,7 +17224,7 @@ snapshots:
       glob: 7.2.0
       graceful-fs: 4.2.11
       jest-circus: 29.7.0
-      jest-environment-node: 27.5.1
+      jest-environment-node: 29.7.0
       jest-get-type: 29.6.3
       jest-regex-util: 29.6.3
       jest-resolve: 29.7.0
@@ -17250,7 +17255,7 @@ snapshots:
       glob: 7.2.0
       graceful-fs: 4.2.11
       jest-circus: 29.7.0
-      jest-environment-node: 27.5.1
+      jest-environment-node: 29.7.0
       jest-get-type: 29.6.3
       jest-regex-util: 29.6.3
       jest-resolve: 29.7.0
@@ -17281,7 +17286,7 @@ snapshots:
       glob: 7.2.0
       graceful-fs: 4.2.11
       jest-circus: 29.7.0
-      jest-environment-node: 27.5.1
+      jest-environment-node: 29.7.0
       jest-get-type: 29.6.3
       jest-regex-util: 29.6.3
       jest-resolve: 29.7.0
@@ -17376,6 +17381,15 @@ snapshots:
       '@types/node': 16.11.10
       jest-mock: 27.5.1
       jest-util: 27.5.1
+
+  jest-environment-node@29.7.0:
+    dependencies:
+      '@jest/environment': 29.7.0
+      '@jest/fake-timers': 29.7.0
+      '@jest/types': 29.6.3
+      '@types/node': 16.11.10
+      jest-mock: 29.7.0
+      jest-util: 29.7.0
 
   jest-get-type@27.5.1: {}
 
@@ -17593,7 +17607,7 @@ snapshots:
       emittery: 0.13.1
       graceful-fs: 4.2.11
       jest-docblock: 29.7.0
-      jest-environment-node: 27.5.1
+      jest-environment-node: 29.7.0
       jest-haste-map: 29.7.0
       jest-leak-detector: 29.7.0
       jest-message-util: 29.7.0

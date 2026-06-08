@@ -3,6 +3,7 @@ module.exports = {
   extends: ["plugin:eslint-comments/recommended", "prettier"],
   env: {
     commonjs: true,
+    es6: true,
     mocha: true,
     node: true,
   },
@@ -58,6 +59,45 @@ module.exports = {
         "@typescript-eslint/no-unsafe-member-access": ["off"],
         "@typescript-eslint/no-unsafe-call": ["off"],
       },
+    },
+    {
+      // yeoman-ui was integrated with eslint-comments/require-description: "off"
+      // TODO: enable this rule once existing comments have been annotated
+      files: ["projects/yeoman-ui/**"],
+      rules: {
+        "eslint-comments/require-description": "off",
+      },
+    },
+    {
+      // Additional TypeScript rules for yeoman-ui packages.
+      files: ["projects/yeoman-ui/**/*.ts"],
+      rules: {
+        semi: "error",
+        "no-extra-semi": "error",
+        "no-eval": "error",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-floating-promises": "error",
+        "@typescript-eslint/no-non-null-assertion": "off",
+        "@typescript-eslint/no-unsafe-return": "off",
+        "@typescript-eslint/no-unsafe-argument": "off",
+        "@typescript-eslint/unbound-method": "off",
+        "@typescript-eslint/no-unused-vars": [
+          "error",
+          { argsIgnorePattern: "^_" },
+        ],
+        "no-async-promise-executor": "off",
+        "no-irregular-whitespace": "off",
+        "prefer-rest-params": "off",
+        "prefer-spread": "off",
+      },
+    },
+    {
+      // For Vue frontend sub-packages.
+      files: ["*.vue"],
+      parser: "vue-eslint-parser",
+      // Using the smaller vue rule subset (essential) to avoid including formatting rules
+      // as formatting is handled by prettier **directly**.
+      extends: ["plugin:vue/essential"],
     },
   ],
 };

@@ -85,5 +85,11 @@
   "typings": "api.d.ts",
   "publishConfig": {
     "access": "public"
+  },
+  "pnpm": {
+    "overrides": {
+      "jest-runner>jest-environment-node": "27.5.1",
+      "jest-config>jest-environment-node": "27.5.1"
+    }
   }
 }

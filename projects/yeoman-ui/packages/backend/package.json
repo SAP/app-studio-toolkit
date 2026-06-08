@@ -229,5 +229,10 @@
   "engines": {
     "vscode": "^1.50.0"
   },
-  "icon": "Wizard_logo.png"
+  "icon": "Wizard_logo.png",
+  "pnpm": {
+    "overrides": {
+      "terser-webpack-plugin>terser": "^5.48.0"
+    }
+  }
 }

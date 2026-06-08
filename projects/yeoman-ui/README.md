@@ -22,23 +22,11 @@ This npm [mono-repo][mono-repo] currently contains:
 
 ## Support
 
-To get more help, support, and information please open a github [issue](https://github.com/SAP/app-studio-toolkit/issues).
+To get more help, support, and information please open a GitHub [issue](https://github.com/SAP/app-studio-toolkit/issues/new?labels=project%3Ayeoman-ui).
 
 ## Report an Issue
 
-To report an issue please use the github issue tracker. Please try to make sure you have these in your issue:
-
-- No duplicate
-- Reproducible
-- Good summary
-- Well-documented
-- Minimal example
-
-## Issue handling process
-
-When an issue is reported, a committer will look at it and either confirm it as a real issue (by giving the "in progress" label), close it if it is not an issue, or ask for more details. In-progress issues are then either assigned to a committer in GitHub, reported in our internal issue handling system, or left open as "contribution welcome" for easy or not urgent fixes.
-
-An issue that is about a real bug is closed as soon as the fix is committed.
+See [reporting and handling issues](../../CONTRIBUTING.md#report-an-issue) in the root CONTRIBUTING.md.
 
 ## Compatibility matrix
 
