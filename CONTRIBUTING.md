@@ -33,6 +33,22 @@ Please see our [guideline for AI-generated code contributions to SAP Open Source
 7. Once the change has been approved and merged, we will inform you in a comment.
 8. Celebrate!
 
+## Report an Issue
+
+To report an issue please use the [GitHub issue tracker](https://github.com/SAP/app-studio-toolkit/issues). Please try to make sure you have these in your issue:
+
+- No duplicate
+- Reproducible
+- Good summary
+- Well-documented
+- Minimal example
+
+## Issue Handling Process
+
+When an issue is reported, a committer will look at it and either confirm it as a real issue (by giving the "in progress" label), close it if it is not an issue, or ask for more details. In-progress issues are then either assigned to a committer in GitHub, reported in our internal issue handling system, or left open as "contribution welcome" for easy or not urgent fixes.
+
+An issue that is about a real bug is closed as soon as the fix is committed.
+
 ## Legal
 
 All contributors must sign the DCO
