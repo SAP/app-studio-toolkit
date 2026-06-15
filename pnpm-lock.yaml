@@ -184,7 +184,7 @@ importers:
         version: 2.0.8
       copy-webpack-plugin:
         specifier: 11.0.0
-        version: 11.0.0(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1)))
+        version: 11.0.0(webpack@5.104.1(webpack-cli@6.0.1))
       fs-extra:
         specifier: 11.1.1
         version: 11.1.1
@@ -196,10 +196,10 @@ importers:
         version: 3.0.0
       string-replace-loader:
         specifier: 3.1.0
-        version: 3.1.0(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1)))
+        version: 3.1.0(webpack@5.104.1(webpack-cli@6.0.1))
       ts-loader:
         specifier: 9.4.2
-        version: 9.4.2(typescript@4.5.2)(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1)))
+        version: 9.4.2(typescript@4.5.2)(webpack@5.104.1(webpack-cli@6.0.1))
 
   packages/app-studio-toolkit:
     dependencies:
@@ -278,7 +278,7 @@ importers:
         version: 2.0.8
       copy-webpack-plugin:
         specifier: 11.0.0
-        version: 11.0.0(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1)))
+        version: 11.0.0(webpack@5.104.1(webpack-cli@6.0.1))
       fs-extra:
         specifier: 11.1.1
         version: 11.1.1
@@ -290,10 +290,10 @@ importers:
         version: 3.0.0
       string-replace-loader:
         specifier: 3.1.0
-        version: 3.1.0(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1)))
+        version: 3.1.0(webpack@5.104.1(webpack-cli@6.0.1))
       ts-loader:
         specifier: 9.4.2
-        version: 9.4.2(typescript@4.5.2)(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1)))
+        version: 9.4.2(typescript@4.5.2)(webpack@5.104.1(webpack-cli@6.0.1))
 
   packages/app-studio-toolkit-themes: {}
 
@@ -534,7 +534,7 @@ importers:
         version: 2.25.3(@typescript-eslint/parser@4.33.0(eslint@7.30.0)(typescript@4.5.2))(eslint@7.30.0)
       jest:
         specifier: 27.5.1
-        version: 27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@25.9.1)(typescript@4.5.2))(utf-8-validate@5.0.10)
+        version: 27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@16.11.10)(typescript@4.5.2))(utf-8-validate@5.0.10)
 
   projects/yeoman-ui/packages/backend:
     dependencies:
@@ -672,29 +672,29 @@ importers:
         specifier: 5.9.55
         version: 5.9.55
       '@sap-devx/inquirer-gui':
-        specifier: 3.4.10
-        version: 3.4.10(typescript@4.5.2)
+        specifier: 3.4.13
+        version: 3.4.13(typescript@4.5.2)
       '@sap-devx/inquirer-gui-auto-complete-plugin':
-        specifier: 3.4.10
-        version: 3.4.10(typescript@4.5.2)(vite@4.5.11(@types/node@16.11.10)(sass@1.56.1)(terser@5.48.0))
+        specifier: 3.4.13
+        version: 3.4.13(typescript@4.5.2)(vite@4.5.11(@types/node@16.11.10)(sass@1.56.1)(terser@5.48.0))
       '@sap-devx/inquirer-gui-file-browser-plugin':
-        specifier: 3.4.10
-        version: 3.4.10(typescript@4.5.2)
+        specifier: 3.4.13
+        version: 3.4.13(typescript@4.5.2)
       '@sap-devx/inquirer-gui-folder-browser-plugin':
-        specifier: 3.4.10
-        version: 3.4.10(typescript@4.5.2)
+        specifier: 3.4.13
+        version: 3.4.13(typescript@4.5.2)
       '@sap-devx/inquirer-gui-label-plugin':
-        specifier: 3.4.10
-        version: 3.4.10(typescript@4.5.2)
+        specifier: 3.4.13
+        version: 3.4.13(typescript@4.5.2)
       '@sap-devx/inquirer-gui-login-plugin':
-        specifier: 3.4.10
-        version: 3.4.10(typescript@4.5.2)
+        specifier: 3.4.13
+        version: 3.4.13(typescript@4.5.2)
       '@sap-devx/inquirer-gui-radio-plugin':
-        specifier: 3.4.10
-        version: 3.4.10(typescript@4.5.2)
+        specifier: 3.4.13
+        version: 3.4.13(typescript@4.5.2)
       '@sap-devx/inquirer-gui-tiles-plugin':
-        specifier: 3.4.10
-        version: 3.4.10(typescript@4.5.2)
+        specifier: 3.4.13
+        version: 3.4.13(typescript@4.5.2)
       '@sap-devx/webview-rpc':
         specifier: 0.4.1
         version: 0.4.1(bufferutil@4.1.0)(utf-8-validate@5.0.10)
@@ -2372,29 +2372,29 @@ packages:
     resolution: {integrity: sha512-OxdJigAFybeZH9Uxm14EXp0NAb+pWzU4U0CvttJgmrRx+NL1loL0/o8gb/Vqk8wHAtNTqXjhz7GvLZ4tfDjUrA==}
     engines: {node: '>=14.21.2'}
 
-  '@sap-devx/inquirer-gui-auto-complete-plugin@3.4.10':
-    resolution: {integrity: sha512-3KtAEoJpxa+KM0l3Q4T6wB72gkUpTPzI12eW4scrmXYJ2DrCZJTfTHBavKcwBre5YVjHGuKEjlwY2YAs09k+Wg==}
+  '@sap-devx/inquirer-gui-auto-complete-plugin@3.4.13':
+    resolution: {integrity: sha512-/mHFa8GMGg+7v9bb0Oi6mlAVOjWWOn9uTyUpac0KId3ly2Cakm2q+ZQayamcPWuhFEUophT9BiE+fE/qmDTdrg==}
 
-  '@sap-devx/inquirer-gui-file-browser-plugin@3.4.10':
-    resolution: {integrity: sha512-tM1l51BsQRO6cMpKPqIjEtX4v0ciFIkTDah7KwBBw25SnbBVuhKM41n6Puh7UUkGw3E6RDyjIz9hmU3wBJXypQ==}
+  '@sap-devx/inquirer-gui-file-browser-plugin@3.4.13':
+    resolution: {integrity: sha512-mhvrjvGXapdXOxhvv/HEzIjD4HzsTR7mdC8euUovc2htbJqWTKY77fAjRqXUs15B8aU59kJNOHqL80Fgglxiww==}
 
-  '@sap-devx/inquirer-gui-folder-browser-plugin@3.4.10':
-    resolution: {integrity: sha512-SC2Ht+dtQ4+03DGk4VZcAOCx74mWSMQ4+qu8d5ogCGYUNTQsbBY809Nc1XUSFiznZUqlR4Hfp9oDy81lav8JYw==}
+  '@sap-devx/inquirer-gui-folder-browser-plugin@3.4.13':
+    resolution: {integrity: sha512-7yNRZbs8j1oRwquo4OmOiZ3Uho4TWdzvCEb/MDPNNq7WM2cTZhR9JOyXomkXKGWsaXthPYlDItJn06qT3MPtjw==}
 
-  '@sap-devx/inquirer-gui-label-plugin@3.4.10':
-    resolution: {integrity: sha512-taf8MGtGhAo7qZQV9ssYBLf8j3PHJJUs6AAd0LIYfKyNrXLA1kYLK4O1hho2q4nzumGVUgtDHz3u0wgismtTcQ==}
+  '@sap-devx/inquirer-gui-label-plugin@3.4.13':
+    resolution: {integrity: sha512-DEbwqpzDk6EBzOSEsMq2UJbMocnOxWrpOVNW8HHiYQRU9to7LLCs2hoqBWHzp6fvpSbQYNqE9MXpfPv9v3DcCQ==}
 
-  '@sap-devx/inquirer-gui-login-plugin@3.4.10':
-    resolution: {integrity: sha512-LDlMsCFFSJE/k9qyWgefMCFWUyCiTmPeUJTE24xspbutVlf53/nhpTKwksOl0BbdunXLL3fVAUgr8mDiBSD+VA==}
+  '@sap-devx/inquirer-gui-login-plugin@3.4.13':
+    resolution: {integrity: sha512-HHJLw7kQMlJEK4PKvcmNCdINBCAWyvpXoTVs9JyCx3IBFiTkKQ7yfwsyL1o8+QgaJk3+PtXy4z3eAm+aO/jZOQ==}
 
-  '@sap-devx/inquirer-gui-radio-plugin@3.4.10':
-    resolution: {integrity: sha512-HEfWvKNiJ1Q7Fxyb6ZIHD4Nr1zOA9mz71drHSzkTeqabpzLT6Oc5yClmR92uXGdSHzMySH39QjYaBQxZQrt7Kg==}
+  '@sap-devx/inquirer-gui-radio-plugin@3.4.13':
+    resolution: {integrity: sha512-gzGRSrjdoZJR4Ks01HyyqByZXSUbVNRUXvXHMGYp6+a1bgjRznW7WmkklnLqiKc46K65yhtK92rig/050O6PRg==}
 
-  '@sap-devx/inquirer-gui-tiles-plugin@3.4.10':
-    resolution: {integrity: sha512-/6XSCfpgtuKDlPudIGPWXNcjptzax+gXvKRowpKQWiYpYPmVXb+oOxX3ZzZFQgld22zP5us8LDUNOUrS5+rnXg==}
+  '@sap-devx/inquirer-gui-tiles-plugin@3.4.13':
+    resolution: {integrity: sha512-s0KupNE9ALGM9lap+BsSCvHmzlT0IA356BnPuxpW8iVH76rv1T95+J1qiewyVnB7WbeuhyOUFiVf23n/ptKFEA==}
 
-  '@sap-devx/inquirer-gui@3.4.10':
-    resolution: {integrity: sha512-xtQQJnB4ZJS28dgwpUmR2i9daDtVvuBReEjw+pvHmIKwpdDc4aI3T9pT7HCDZpaJRgMl5IpwqDgRmFxiO7LjFw==}
+  '@sap-devx/inquirer-gui@3.4.13':
+    resolution: {integrity: sha512-HiX4leGf8ndoBY/zz46haiuaHDlEORvEO01d0Wu5V/yOJgbIVt4FFvTHEAdqiEhSLo2fSHFlSDXuU0U2sd6myg==}
 
   '@sap-devx/webview-rpc@0.4.1':
     resolution: {integrity: sha512-FznAh7u1qZh4VWle6wxCmXL2/qI0QigRx67jsL/Eyn7lW1e+6CO2vShond5IjS6+YKpXL7WFwK2MnU08kqqM6A==}
@@ -11495,7 +11495,7 @@ snapshots:
       jest-util: 29.7.0
       slash: 3.0.0
 
-  '@jest/core@27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@25.9.1)(typescript@4.5.2))(utf-8-validate@5.0.10)':
+  '@jest/core@27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@16.11.10)(typescript@4.5.2))(utf-8-validate@5.0.10)':
     dependencies:
       '@jest/console': 27.5.1
       '@jest/reporters': 27.5.1
@@ -11509,7 +11509,7 @@ snapshots:
       exit: 0.1.2
       graceful-fs: 4.2.11
       jest-changed-files: 27.5.1
-      jest-config: 27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@25.9.1)(typescript@4.5.2))(utf-8-validate@5.0.10)
+      jest-config: 27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@16.11.10)(typescript@4.5.2))(utf-8-validate@5.0.10)
       jest-haste-map: 27.5.1
       jest-message-util: 27.5.1
       jest-regex-util: 27.5.1
@@ -11714,7 +11714,7 @@ snapshots:
       jest-worker: 29.7.0
       slash: 3.0.0
       string-length: 4.0.2
-      strip-ansi: 6.0.1
+      strip-ansi: 6.0.0
       v8-to-istanbul: 9.3.0
     transitivePeerDependencies:
       - supports-color
@@ -12250,56 +12250,56 @@ snapshots:
     dependencies:
       node-cache: 5.1.2
 
-  '@sap-devx/inquirer-gui-auto-complete-plugin@3.4.10(typescript@4.5.2)(vite@4.5.11(@types/node@16.11.10)(sass@1.56.1)(terser@5.48.0))':
+  '@sap-devx/inquirer-gui-auto-complete-plugin@3.4.13(typescript@4.5.2)(vite@4.5.11(@types/node@16.11.10)(sass@1.56.1)(terser@5.48.0))':
     dependencies:
-      strip-ansi: 6.0.1
+      strip-ansi: 6.0.0
       vite-plugin-css-injected-by-js: 3.5.2(vite@4.5.11(@types/node@16.11.10)(sass@1.56.1)(terser@5.48.0))
       vue: 3.5.34(typescript@4.5.2)
     transitivePeerDependencies:
       - typescript
       - vite
 
-  '@sap-devx/inquirer-gui-file-browser-plugin@3.4.10(typescript@4.5.2)':
+  '@sap-devx/inquirer-gui-file-browser-plugin@3.4.13(typescript@4.5.2)':
     dependencies:
       vue: 3.5.34(typescript@4.5.2)
     transitivePeerDependencies:
       - typescript
 
-  '@sap-devx/inquirer-gui-folder-browser-plugin@3.4.10(typescript@4.5.2)':
+  '@sap-devx/inquirer-gui-folder-browser-plugin@3.4.13(typescript@4.5.2)':
     dependencies:
       vue: 3.5.34(typescript@4.5.2)
     transitivePeerDependencies:
       - typescript
 
-  '@sap-devx/inquirer-gui-label-plugin@3.4.10(typescript@4.5.2)':
+  '@sap-devx/inquirer-gui-label-plugin@3.4.13(typescript@4.5.2)':
     dependencies:
       vue: 3.5.34(typescript@4.5.2)
     transitivePeerDependencies:
       - typescript
 
-  '@sap-devx/inquirer-gui-login-plugin@3.4.10(typescript@4.5.2)':
+  '@sap-devx/inquirer-gui-login-plugin@3.4.13(typescript@4.5.2)':
     dependencies:
       vue: 3.5.34(typescript@4.5.2)
     transitivePeerDependencies:
       - typescript
 
-  '@sap-devx/inquirer-gui-radio-plugin@3.4.10(typescript@4.5.2)':
+  '@sap-devx/inquirer-gui-radio-plugin@3.4.13(typescript@4.5.2)':
     dependencies:
       vue: 3.5.34(typescript@4.5.2)
     transitivePeerDependencies:
       - typescript
 
-  '@sap-devx/inquirer-gui-tiles-plugin@3.4.10(typescript@4.5.2)':
+  '@sap-devx/inquirer-gui-tiles-plugin@3.4.13(typescript@4.5.2)':
     dependencies:
       vue: 3.5.34(typescript@4.5.2)
     transitivePeerDependencies:
       - typescript
 
-  '@sap-devx/inquirer-gui@3.4.10(typescript@4.5.2)':
+  '@sap-devx/inquirer-gui@3.4.13(typescript@4.5.2)':
     dependencies:
       '@vscode-elements/elements': 1.11.0
       lodash: 4.18.1
-      strip-ansi: 6.0.1
+      strip-ansi: 6.0.0
       vue: 3.5.34(typescript@4.5.2)
       vuetify: 3.12.6(typescript@4.5.2)(vue@3.5.34(typescript@4.5.2))
     transitivePeerDependencies:
@@ -14322,13 +14322,13 @@ snapshots:
   cliui@6.0.0:
     dependencies:
       string-width: 4.2.3
-      strip-ansi: 6.0.1
+      strip-ansi: 6.0.0
       wrap-ansi: 6.2.0
 
   cliui@7.0.4:
     dependencies:
       string-width: 4.2.3
-      strip-ansi: 6.0.1
+      strip-ansi: 6.0.0
       wrap-ansi: 7.0.0
 
   cliui@8.0.1:
@@ -14506,7 +14506,7 @@ snapshots:
 
   copy-descriptor@0.1.1: {}
 
-  copy-webpack-plugin@11.0.0(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1))):
+  copy-webpack-plugin@11.0.0(webpack@5.104.1(webpack-cli@6.0.1)):
     dependencies:
       fast-glob: 3.2.12
       glob-parent: 6.0.2
@@ -14514,7 +14514,7 @@ snapshots:
       normalize-path: 3.0.0
       schema-utils: 4.0.0
       serialize-javascript: 6.0.0
-      webpack: 5.106.2(webpack-cli@6.0.1(webpack@5.104.1))
+      webpack: 5.104.1(webpack-cli@6.0.1)
 
   copy-webpack-plugin@12.0.2(webpack@5.106.2):
     dependencies:
@@ -17119,16 +17119,16 @@ snapshots:
       - babel-plugin-macros
       - supports-color
 
-  jest-cli@27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@25.9.1)(typescript@4.5.2))(utf-8-validate@5.0.10):
+  jest-cli@27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@16.11.10)(typescript@4.5.2))(utf-8-validate@5.0.10):
     dependencies:
-      '@jest/core': 27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@25.9.1)(typescript@4.5.2))(utf-8-validate@5.0.10)
+      '@jest/core': 27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@16.11.10)(typescript@4.5.2))(utf-8-validate@5.0.10)
       '@jest/test-result': 27.5.1
       '@jest/types': 27.5.1
       chalk: 4.1.2
       exit: 0.1.2
       graceful-fs: 4.2.11
       import-local: 3.0.3
-      jest-config: 27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@25.9.1)(typescript@4.5.2))(utf-8-validate@5.0.10)
+      jest-config: 27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@16.11.10)(typescript@4.5.2))(utf-8-validate@5.0.10)
       jest-util: 27.5.1
       jest-validate: 27.5.1
       prompts: 2.4.2
@@ -17178,7 +17178,7 @@ snapshots:
       - supports-color
       - ts-node
 
-  jest-config@27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@25.9.1)(typescript@4.5.2))(utf-8-validate@5.0.10):
+  jest-config@27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@16.11.10)(typescript@4.5.2))(utf-8-validate@5.0.10):
     dependencies:
       '@babel/core': 7.29.0
       '@jest/test-sequencer': 27.5.1
@@ -17205,7 +17205,7 @@ snapshots:
       slash: 3.0.0
       strip-json-comments: 3.1.1
     optionalDependencies:
-      ts-node: 10.9.2(@types/node@25.9.1)(typescript@4.5.2)
+      ts-node: 10.9.2(@types/node@16.11.10)(typescript@4.5.2)
     transitivePeerDependencies:
       - bufferutil
       - canvas
@@ -17808,11 +17808,11 @@ snapshots:
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
-  jest@27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@25.9.1)(typescript@4.5.2))(utf-8-validate@5.0.10):
+  jest@27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@16.11.10)(typescript@4.5.2))(utf-8-validate@5.0.10):
     dependencies:
-      '@jest/core': 27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@25.9.1)(typescript@4.5.2))(utf-8-validate@5.0.10)
+      '@jest/core': 27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@16.11.10)(typescript@4.5.2))(utf-8-validate@5.0.10)
       import-local: 3.0.3
-      jest-cli: 27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@25.9.1)(typescript@4.5.2))(utf-8-validate@5.0.10)
+      jest-cli: 27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@16.11.10)(typescript@4.5.2))(utf-8-validate@5.0.10)
     transitivePeerDependencies:
       - bufferutil
       - canvas
@@ -19246,7 +19246,7 @@ snapshots:
       is-interactive: 1.0.0
       is-unicode-supported: 0.1.0
       log-symbols: 4.1.0
-      strip-ansi: 6.0.1
+      strip-ansi: 6.0.0
       wcwidth: 1.0.1
 
   os-homedir@1.0.2: {}
@@ -20631,7 +20631,7 @@ snapshots:
   string-length@4.0.2:
     dependencies:
       char-regex: 1.0.2
-      strip-ansi: 6.0.1
+      strip-ansi: 6.0.0
 
   string-replace-loader@3.0.3(webpack@5.106.2):
     dependencies:
@@ -20639,11 +20639,11 @@ snapshots:
       schema-utils: 3.1.1
       webpack: 5.106.2(webpack-cli@5.1.4)
 
-  string-replace-loader@3.1.0(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1))):
+  string-replace-loader@3.1.0(webpack@5.104.1(webpack-cli@6.0.1)):
     dependencies:
       loader-utils: 2.0.4
       schema-utils: 3.1.1
-      webpack: 5.106.2(webpack-cli@6.0.1(webpack@5.104.1))
+      webpack: 5.104.1(webpack-cli@6.0.1)
 
   string-similarity@4.0.4: {}
 
@@ -21023,14 +21023,14 @@ snapshots:
       babel-jest: 29.7.0(@babel/core@7.29.0)
       jest-util: 29.7.0
 
-  ts-loader@9.4.2(typescript@4.5.2)(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1))):
+  ts-loader@9.4.2(typescript@4.5.2)(webpack@5.104.1(webpack-cli@6.0.1)):
     dependencies:
       chalk: 4.1.2
       enhanced-resolve: 5.8.3
       micromatch: 4.0.4
       semver: 7.3.5
       typescript: 4.5.2
-      webpack: 5.106.2(webpack-cli@6.0.1(webpack@5.104.1))
+      webpack: 5.104.1(webpack-cli@6.0.1)
 
   ts-loader@9.4.2(typescript@4.5.2)(webpack@5.106.2):
     dependencies:
@@ -21884,13 +21884,13 @@ snapshots:
     dependencies:
       ansi-styles: 4.3.0
       string-width: 4.2.3
-      strip-ansi: 6.0.1
+      strip-ansi: 6.0.0
 
   wrap-ansi@7.0.0:
     dependencies:
       ansi-styles: 4.3.0
       string-width: 4.2.3
-      strip-ansi: 6.0.1
+      strip-ansi: 6.0.0
 
   wrap-ansi@8.1.0:
     dependencies:
