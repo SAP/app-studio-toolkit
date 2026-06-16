@@ -1,0 +1,91 @@
+name: PR Build Comment
+on:
+  workflow_run:
+    workflows: ["Continuous Integration"]
+    types:
+      - completed
+
+# Restrictive default: no permissions unless explicitly granted at the job level
+permissions: {}
+
+env:
+  retention-comment: This comment will be **updated** with the data of the **last successful** build of this PR.
+
+jobs:
+  comment:
+    name: Post build report comment
+    runs-on: ubuntu-latest
+    # Only runs on CI triggered by a pull_request event (not direct pushes to main)
+    if: github.event.workflow_run.event == 'pull_request'
+    permissions:
+      pull-requests: write # Create/update PR build report comments
+      issues: write # Required by create-or-update-comment to write via the Issues API
+      actions: read # Read workflow run artifacts
+
+    steps:
+      - name: Download PR comment metadata
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: pr-comment-meta
+          path: /tmp/pr-comment-meta
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+
+      - name: Post or update PR comment
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
+        env:
+          RETENTION_COMMENT: ${{ env.retention-comment }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const prNumber   = fs.readFileSync('/tmp/pr-comment-meta/pr-number.txt',  'utf8').trim();
+            const headSha    = fs.readFileSync('/tmp/pr-comment-meta/head-sha.txt',   'utf8').trim();
+            const runId      = fs.readFileSync('/tmp/pr-comment-meta/run-id.txt',     'utf8').trim();
+            const artifactId = fs.readFileSync('/tmp/pr-comment-meta/artifact-id.txt','utf8').trim();
+
+            const jobPath   = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${runId}`;
+            const retentionComment = process.env.RETENTION_COMMENT;
+
+            const body = [
+              '## Build Report',
+              '',
+              `[![badge](https://img.shields.io/badge/Build-Success!-3fb950?logo=github&style=for-the-badge)](${jobPath})`,
+              '',
+              'Please note:',
+              '',
+              '1. Files only stay for around 14 days!',
+              `2. ${retentionComment}`,
+              '',
+              '| Name       | Link                                        |',
+              '|------------|---------------------------------------------|',
+              `| Commit     | ${headSha}                                  |`,
+              `| Logs       | ${jobPath}                                  |`,
+              `| VSIX Files | ${jobPath}/artifacts/${artifactId}          |`,
+            ].join('\n');
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: parseInt(prNumber),
+            });
+
+            const existing = comments.find(c =>
+              c.user.login === 'github-actions[bot]' && c.body.includes(retentionComment)
+            );
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: parseInt(prNumber),
+                body,
+              });
+            }
