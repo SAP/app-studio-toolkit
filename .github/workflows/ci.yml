@@ -24,7 +24,7 @@ jobs:
     permissions:
       contents: read # Checkout repository code
     outputs:
-      artifact-id: ${{ steps.upload_build_artifacts.outputs.artifact-id }}
+      vsix-artifact-id: ${{ steps.upload_build_artifacts.outputs.artifact-id }}
     strategy:
       matrix:
         node_version:
@@ -87,7 +87,7 @@ jobs:
         env:
           HEAD_SHA: ${{ github.sha }}
           JOB_PATH: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          ARTIFACT_ID: ${{ needs.build.outputs.artifact-id }}
+          ARTIFACT_ID: ${{ needs.build.outputs.vsix-artifact-id }}
         with:
           edit-mode: replace
           issue-number: ${{ github.event.number }}
