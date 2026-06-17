@@ -64,6 +64,7 @@ jobs:
     name: Post build report comment
     runs-on: ubuntu-latest
     needs: build
+    # Same head repository means this is not a forked PR.
     if: >
       github.event_name == 'pull_request' &&
       github.event.pull_request.head.repo.full_name == github.repository &&
