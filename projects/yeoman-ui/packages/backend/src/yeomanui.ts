@@ -2,6 +2,7 @@ import * as path from "path";
 import { promises } from "fs";
 import * as _ from "lodash";
 import * as inquirer from "inquirer";
+import * as EventEmitter from "events";
 import { ReplayUtils, ReplayState } from "./replayUtils";
 const datauri = require("datauri"); // eslint-disable-line @typescript-eslint/no-var-requires
 const titleize = require("titleize"); // eslint-disable-line @typescript-eslint/no-var-requires
@@ -23,9 +24,9 @@ import {
   GeneratorNotFoundError,
 } from "./utils/env";
 import { vscode, getVscode } from "./utils/vscodeProxy";
-import * as Generator from "yeoman-generator";
-import * as Environment from "yeoman-environment";
-import { Questions } from "yeoman-environment/lib/adapter";
+import Generator from "yeoman-generator";
+import Environment from "yeoman-environment";
+import type { PromptQuestions, PromptAnswers } from "@yeoman/adapter/types";
 import { State } from "./utils/promise";
 import { Constants } from "./utils/constants";
 import { isUriFlow } from "./utils/workspaceFile";
@@ -53,10 +54,9 @@ export class YeomanUI {
   private readonly youiAdapter: YouiAdapter;
   private gen: Generator | undefined;
   private promptCount: number;
-  private currentQuestions: Questions<any>;
+  private currentQuestions: PromptQuestions | undefined;
   private generatorName: string;
   private readonly replayUtils: ReplayUtils;
-  // eslint-disable-next-line @typescript-eslint/ban-types
   private readonly customQuestionEventHandlers: Map<
     string,
     Map<string, Function>
@@ -108,7 +108,7 @@ export class YeomanUI {
     this.youiAdapter = new YouiAdapter(youiEvents, output);
     this.youiAdapter.setYeomanUI(this);
     this.promptCount = 0;
-    this.currentQuestions = {};
+    this.currentQuestions = undefined;
     this.customQuestionEventHandlers = new Map();
     this.typesMap = new Map();
     this.generatorsToIgnoreArray = [];
@@ -153,13 +153,11 @@ export class YeomanUI {
     void this.rpc.invoke("resetPromptMessage");
   }
 
-  // eslint-disable-next-line @typescript-eslint/ban-types
   public registerCustomQuestionEventHandler(
     questionType: string,
     methodName: string,
     handler: Function
   ): void {
-    // eslint-disable-next-line @typescript-eslint/ban-types
     let entry: Map<string, Function> =
       this.customQuestionEventHandlers.get(questionType);
     if (entry === undefined) {
@@ -263,7 +261,11 @@ export class YeomanUI {
       // handles generator install step if exists
       this.onGenInstall(this.gen);
       // handles generator errors
-      this.handleErrors(envGen.env, this.gen, generatorNamespace);
+      this.handleErrors(
+        envGen.env as Environment & EventEmitter,
+        this.gen,
+        generatorNamespace
+      );
 
       await envGen.env.runGenerator(envGen.gen);
       if (!this.errorThrown) {
@@ -310,9 +312,13 @@ export class YeomanUI {
     );
   }
 
-  private handleErrors(env: Environment, gen: any, generatorName: string) {
+  private handleErrors(
+    env: Environment & EventEmitter,
+    gen: any,
+    generatorName: string
+  ) {
     const errorEventName = "error";
-    env.on(errorEventName, (error) => {
+    env.on(errorEventName, (error: any) => {
       env.removeAllListeners(errorEventName);
       this.onGeneratorFailure(
         generatorName,
@@ -370,7 +376,6 @@ export class YeomanUI {
             "guiOptions.type",
             relevantQuestion.guiType
           );
-          // eslint-disable-next-line @typescript-eslint/ban-types
           const customQuestionEventHandler: Function =
             this.getCustomQuestionEventHandler(guiType, methodName);
           return _.isUndefined(customQuestionEventHandler)
@@ -431,7 +436,7 @@ export class YeomanUI {
   }
 
   public async showPrompt(
-    questions: Questions<any>
+    questions: PromptQuestions
   ): Promise<inquirer.Answers> {
     this.promptCount++;
     const promptName = this.getPromptName(questions);
@@ -446,7 +451,7 @@ export class YeomanUI {
     this.replayUtils.recall(questions);
 
     this.currentQuestions = questions;
-    const mappedQuestions: Questions<any> = this.normalizeFunctions(questions);
+    const mappedQuestions: PromptQuestions = this.normalizeFunctions(questions);
     if (_.isEmpty(mappedQuestions)) {
       return {};
     }
@@ -460,7 +465,7 @@ export class YeomanUI {
   }
 
   private async back(
-    partialAnswers: Environment.Answers,
+    partialAnswers: PromptAnswers,
     numOfSteps: number
   ): Promise<void> {
     this.replayUtils.start(this.currentQuestions, partialAnswers, numOfSteps);
@@ -471,12 +476,10 @@ export class YeomanUI {
     void this.youiEvents.executeCommand(id, args);
   }
 
-  // eslint-disable-next-line @typescript-eslint/ban-types
   private getCustomQuestionEventHandler(
     questionType: string,
     methodName: string
   ): Function {
-    // eslint-disable-next-line @typescript-eslint/ban-types
     const entry: Map<string, Function> =
       this.customQuestionEventHandlers.get(questionType);
     if (entry !== undefined) {
@@ -484,7 +487,7 @@ export class YeomanUI {
     }
   }
 
-  private getPromptName(questions: Questions<any>): string {
+  private getPromptName(questions: PromptQuestions): string {
     const firstQuestionName = _.get(questions, "[0].name");
     return firstQuestionName
       ? _.startCase(firstQuestionName)
@@ -734,7 +737,9 @@ export class YeomanUI {
       this.logger.debug(error);
     }
 
-    const genName = Environment.namespaceToName(genNamespace);
+    const genName = genNamespace
+      .replace(/:.*$/, "")
+      .replace(/(?:^|(?<=\/))(generator-)/, "");
     const genMessage = _.get(
       packageJson,
       "description",
@@ -769,7 +774,7 @@ export class YeomanUI {
    * Functions are lost when being passed to client (using JSON.Stringify)
    * Also functions cannot be evaluated on client)
    */
-  private normalizeFunctions(questions: Questions<any>): Questions<any> {
+  private normalizeFunctions(questions: PromptQuestions): PromptQuestions {
     this.addCustomQuestionEventHandlers(questions);
     return JSON.parse(JSON.stringify(questions, YeomanUI.funcReplacer));
   }
@@ -786,7 +791,7 @@ export class YeomanUI {
     }
   }
 
-  private addCustomQuestionEventHandlers(questions: Questions<any>): void {
+  private addCustomQuestionEventHandlers(questions: PromptQuestions): void {
     for (const question of questions as any[]) {
       const guiType = _.get(question, "guiOptions.type", question.guiType);
       const questionHandlers = this.customQuestionEventHandlers.get(guiType);

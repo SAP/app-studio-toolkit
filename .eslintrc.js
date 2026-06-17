@@ -31,7 +31,7 @@ module.exports = {
       },
       extends: [
         "plugin:@typescript-eslint/eslint-recommended",
-        "plugin:@typescript-eslint/recommended-requiring-type-checking",
+        "plugin:@typescript-eslint/recommended-type-checked",
       ],
       rules: {
         "@typescript-eslint/no-use-before-define": [
@@ -76,6 +76,13 @@ module.exports = {
         "no-extra-semi": "error",
         "no-eval": "error",
         "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-require-imports": "off",
+        "@typescript-eslint/no-redundant-type-constituents": "off",
+        "@typescript-eslint/no-wrapper-object-types": "off",
+        "@typescript-eslint/no-unsafe-function-type": "off",
+        "@typescript-eslint/no-unused-expressions": "off",
+        "@typescript-eslint/no-misused-promises": "off",
+        "@typescript-eslint/no-unnecessary-type-assertion": "off",
         "@typescript-eslint/no-floating-promises": "error",
         "@typescript-eslint/no-non-null-assertion": "off",
         "@typescript-eslint/no-unsafe-return": "off",
@@ -83,7 +90,7 @@ module.exports = {
         "@typescript-eslint/unbound-method": "off",
         "@typescript-eslint/no-unused-vars": [
           "error",
-          { argsIgnorePattern: "^_" },
+          { argsIgnorePattern: "^_", caughtErrors: "none" },
         ],
         "no-async-promise-executor": "off",
         "no-irregular-whitespace": "off",
@@ -97,7 +104,7 @@ module.exports = {
       parser: "vue-eslint-parser",
       // Using the smaller vue rule subset (essential) to avoid including formatting rules
       // as formatting is handled by prettier **directly**.
-      extends: ["plugin:vue/essential"],
+      extends: ["plugin:vue/vue3-essential"],
     },
   ],
 };
