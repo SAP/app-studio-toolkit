@@ -17,6 +17,24 @@ const repoRoot = resolve(__dirname, "..");
 // dontenv is only used in local testing flows, so local scripts dir is used for `.env` file
 dotenv.config({ path: resolve(__dirname, ".env") });
 
+const rootPackageJson = JSON.parse(
+  await readFile(resolve(repoRoot, "package.json"), "utf8")
+);
+const workspacePackageGlobs = rootPackageJson.workspaces.packages;
+if (
+  !Array.isArray(workspacePackageGlobs) ||
+  workspacePackageGlobs.some(
+    (workspacePackageGlob) =>
+      typeof workspacePackageGlob !== "string" ||
+      workspacePackageGlob.length === 0 ||
+      workspacePackageGlob.startsWith("!")
+  )
+) {
+  throw new Error(
+    "package.json workspaces.packages must contain non-empty positive glob strings"
+  );
+}
+
 if (process.env.GITHUB_TOKEN === undefined) {
   throw new Error("GH_TOKEN is required in env");
 }
@@ -61,7 +79,9 @@ for (const { name, version } of pkgList) {
 
   const artifactPath = vsixArtifactForRelease(name, version);
   if (artifactPath !== undefined && existsSync(artifactPath)) {
-    console.log(`Found artifact ${artifactPath} to upload for ${name}@${version} release`);
+    console.log(
+      `Found artifact ${artifactPath} to upload for ${name}@${version} release`
+    );
     try {
       console.log(`reading artifact ${artifactPath}`);
       const data = await readFile(artifactPath);

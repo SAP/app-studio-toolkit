@@ -1,4 +1,6 @@
 import { expect } from "chai";
+import { mkdtemp, rm, writeFile } from "fs/promises";
+import { tmpdir } from "os";
 import { resolve } from "path";
 import { noop } from "lodash";
 import { createSandbox, SinonSpy } from "sinon";
@@ -41,12 +43,19 @@ describe("npmUtil unit test", () => {
 
     it("fails when installing non existing npm package", async function () {
       this.timeout(npmSpawnTestTimeout * 2);
-      const cwd = resolve("./test/packages-samples/negative");
-      const config = {
-        commandArgs: ["install", "nonexisting@1.2.3"],
-        cwd,
-      };
-      await expect(invokeNPMCommand(config, outputChannel)).to.be.rejected;
+      // using a temp dir to avoid npm reading this project package.json
+      // and erroring on pnpm specific syntax (e.g.: `workspace:*`) dep versions
+      const cwd = await mkdtemp(resolve(tmpdir(), "npm-util-"));
+      await writeFile(resolve(cwd, "package.json"), '{"private":true}', "utf8");
+      try {
+        const config = {
+          commandArgs: ["install", "nonexisting@1.2.3"],
+          cwd,
+        };
+        await expect(invokeNPMCommand(config, outputChannel)).to.be.rejected;
+      } finally {
+        await rm(cwd, { recursive: true, force: true });
+      }
     });
   });
 
