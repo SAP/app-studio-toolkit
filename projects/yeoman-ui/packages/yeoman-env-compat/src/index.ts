@@ -18,7 +18,7 @@ export type CompatEnvironment = {
 };
 
 export type CreateEnvFn = (
-  args?: string[]  ,
+  args?: string[],
   opts?: Record<string, unknown>,
   adapter?: any
 ) => CompatEnvironment;
