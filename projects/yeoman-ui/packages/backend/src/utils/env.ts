@@ -1,4 +1,6 @@
 import * as _ from "lodash";
+import * as path from "path";
+import * as fs from "fs";
 import { NpmCommand } from "./npm";
 import * as customLocation from "./customLocation";
 import Environment, { createEnv } from "yeoman-environment";
@@ -9,6 +11,75 @@ import { getClassLogger } from "../logger/logger-wrapper";
 
 const GENERATOR = "generator-";
 const NAMESPACE = "namespace";
+
+// Detects whether a generator requires yeoman-environment v3 (legacy) or v6 (modern)
+//
+// Detection strategy:
+// 1. Private node_modules copy: read yeoman-generator/package.json from the generator's
+//    own node_modules subtree — version major ≤ 5 → legacy
+// 2. Declared dep range: read the generator's own package.json dependencies field —
+//    covers generators that webpack-bundled their deps (no node_modules subfolder)
+// 3. Bundle scan: read the generator's resolved entry file and look for `env.runLoop` —
+//    the exact property name checked by yeoman-generator ≤ v5
+function isLegacyGenerator(meta: LookupGeneratorMeta): boolean {
+  // --- Check 1: private node_modules copy ---
+  const nodeModulesRoots = [
+    path.join(meta.packagePath, "node_modules"),
+    path.join(path.dirname(meta.resolved), "node_modules"),
+  ];
+
+  for (const root of nodeModulesRoots) {
+    const pkgJson = path.join(root, "yeoman-generator", "package.json");
+
+    try {
+      const version: string =
+        JSON.parse(fs.readFileSync(pkgJson, "utf8")).version ?? "";
+      const major = parseInt(version.split(".")[0], 10);
+
+      return !isNaN(major) && major <= 5;
+    } catch {
+      // not present at this root, try next check
+    }
+  }
+
+  // --- Check 2: declared dependency range in generator's package.json ---
+  // Handles generators that bundled deps and may not have a node_modules subfolder
+  try {
+    const genPkg = JSON.parse(
+      fs.readFileSync(path.join(meta.packagePath, "package.json"), "utf8")
+    );
+    const range: string =
+      (genPkg.dependencies ?? {})["yeoman-generator"] ??
+      (genPkg.devDependencies ?? {})["yeoman-generator"] ??
+      (genPkg.peerDependencies ?? {})["yeoman-generator"] ??
+      "";
+
+    if (range) {
+      const firstDigit = parseInt(
+        range.replace(/^[^0-9]*/, "").split(".")[0],
+        10
+      );
+
+      return !isNaN(firstDigit) && firstDigit <= 5;
+    }
+  } catch {
+    // generator has no readable package.json, try next check
+  }
+
+  // --- Check 3: scan resolved entry file for env.runLoop usage ---
+  // yeoman-generator ≤ v5 checks `env.runLoop` in its constructor — this property name
+  // is structural and survives minification. Generators that fully
+  // bundle their deps (no node_modules, no dep in package.json) still carry this pattern
+  try {
+    const bundle = fs.readFileSync(meta.resolved, "utf8");
+
+    return bundle.includes("env.runLoop");
+  } catch {
+    // unreadable entry file
+  }
+
+  return false;
+}
 
 function namespaceToName(ns: string): string {
   const base = ns.replace(/:.*$/, "");
@@ -162,6 +233,11 @@ class EnvUtil {
   ): Promise<EnvGen> {
     const meta: LookupGeneratorMeta = await this.getGenMetadata(genNamespace);
     this.unloadGeneratorModules(genNamespace);
+
+    if (isLegacyGenerator(meta)) {
+      return this.createLegacyEnvAndGen(genNamespace, meta, options, adapter);
+    }
+
     const env: Environment = this.createEnvInstance(
       {
         sharedOptions: { forwardErrorToEnvironment: true } as Record<
@@ -171,13 +247,36 @@ class EnvUtil {
       },
       adapter
     );
-    // yeoman-environment v6: LookupGeneratorMeta uses `resolved` (path to the generator file),
-    // not `generatorPath` (v3 field). env.create() is always async in v6.
+
     env.register(meta.resolved, {
       namespace: genNamespace,
       packagePath: meta.packagePath,
     });
     const gen: any = await env.create(genNamespace, { options } as any);
+
+    return { env, gen };
+  }
+
+  private createLegacyEnvAndGen(
+    genNamespace: string,
+    meta: LookupGeneratorMeta,
+    options: any,
+    adapter: any
+  ): EnvGen {
+    // Load yeoman-environment v3 from the bundled yeoman-env-compat.js file.
+    // __non_webpack_require__ bypasses the webpack bundle and uses Node's native require,
+    // resolving relative to the extension's dist/ directory at runtime
+    const compat = __non_webpack_require__("./yeoman-env-compat"); // eslint-disable-line @typescript-eslint/no-var-requires
+
+    // yeoman-environment v3: createEnv() is synchronous and accepts an adapter as the
+    // second argument. env.register() takes a resolved path and a namespace string
+    const env = compat.createEnv(
+      undefined,
+      { sharedOptions: { forwardErrorToEnvironment: true } },
+      adapter
+    );
+    env.register(meta.resolved, genNamespace);
+    const gen = env.create(genNamespace, { options });
 
     return { env, gen };
   }
