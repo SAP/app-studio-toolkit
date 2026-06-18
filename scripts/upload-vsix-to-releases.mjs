@@ -10,8 +10,10 @@ import { readFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 import { Octokit } from "octokit";
+import { globSync } from "glob";
 import dotenv from "dotenv";
 const __dirname = import.meta.dirname;
+const repoRoot = resolve(__dirname, "..");
 // dontenv is only used in local testing flows, so local scripts dir is used for `.env` file
 dotenv.config({ path: resolve(__dirname, ".env") });
 
@@ -58,7 +60,7 @@ for (const { name, version } of pkgList) {
   }
 
   const artifactPath = vsixArtifactForRelease(name, version);
-  if (existsSync(artifactPath)) {
+  if (artifactPath !== undefined && existsSync(artifactPath)) {
     console.log(`Found artifact ${artifactPath} to upload for ${name}@${version} release`);
     try {
       console.log(`reading artifact ${artifactPath}`);
@@ -97,12 +99,13 @@ async function uploadArtifact({ uploadUrl, name, version, releaseID, data }) {
 }
 
 function vsixArtifactForRelease(name, version) {
-  const artifactPath = resolve(
-    __dirname,
-    "..",
-    "packages",
-    name,
-    `${name}-${version}.vsix`
+  const artifactName = `${name}-${version}.vsix`;
+  const artifactPaths = workspacePackageGlobs.flatMap((workspacePackageGlob) =>
+    globSync(`${workspacePackageGlob}/${artifactName}`, {
+      cwd: repoRoot,
+      absolute: true,
+    })
   );
-  return artifactPath;
+
+  return artifactPaths[0];
 }
