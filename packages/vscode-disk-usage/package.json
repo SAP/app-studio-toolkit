@@ -96,7 +96,7 @@
     "@types/fs-extra": "11.0.4",
     "@vscode-logging/types": "2.0.8",
     "@vscode/vsce": "3.6.0",
-    "esbuild": "0.25.5",
+    "esbuild": "0.28.1",
     "shx": "0.4.0"
   },
   "engines": {
