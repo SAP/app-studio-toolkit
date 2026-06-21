@@ -10,7 +10,8 @@
       "@sap-devx/app-studio-toolkit-types",
       "sample-action-client",
       "vscode-using-workspace-api"
-    ]
+    ],
+    ["yeoman-ui", "yeoman-ui-frontend"]
   ],
   "linked": [],
   "access": "restricted",
