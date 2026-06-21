@@ -179,7 +179,7 @@
   "activationEvents": [],
   "dependencies": {
     "@sap-devx/webview-rpc": "0.4.1",
-    "@sap-devx/yeoman-ui-types": "^1.25.0",
+    "@sap-devx/yeoman-ui-types": "workspace:^",
     "@sap/bas-sdk": "3.13.7",
     "@sap/swa-for-sapbas-vsx": "2.0.16",
     "@vscode-logging/logger": "2.0.9",

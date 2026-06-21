@@ -18,7 +18,7 @@
     "yeoman.png"
   ],
   "dependencies": {
-    "@sap-devx/yeoman-ui-types": "^1.25.0",
+    "@sap-devx/yeoman-ui-types": "workspace:^",
     "chalk-pipe": "^4.0.0",
     "datauri": "^3.0.0",
     "inquirer": "^7.3.3",
