@@ -5,4 +5,4 @@
 "@sap-devx/yeoman-ui-types": patch
 ---
 
-Release yeomain-ui
+Release yeoman-ui (uses updated inquirer-gui libraries)
