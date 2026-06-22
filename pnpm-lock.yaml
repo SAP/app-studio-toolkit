@@ -542,8 +542,8 @@ importers:
         specifier: 0.4.1
         version: 0.4.1(bufferutil@4.1.0)(utf-8-validate@5.0.10)
       '@sap-devx/yeoman-ui-types':
-        specifier: ^1.25.0
-        version: 1.25.0
+        specifier: workspace:^
+        version: link:../types
       '@sap/bas-sdk':
         specifier: 3.13.7
         version: 3.13.7(bufferutil@4.1.0)(utf-8-validate@5.0.10)
@@ -699,8 +699,8 @@ importers:
         specifier: 0.4.1
         version: 0.4.1(bufferutil@4.1.0)(utf-8-validate@5.0.10)
       '@sap-devx/yeoman-ui-types':
-        specifier: ^1.25.0
-        version: 1.25.0
+        specifier: workspace:^
+        version: link:../types
       core-js:
         specifier: ^3.8.3
         version: 3.49.0
@@ -775,8 +775,8 @@ importers:
   projects/yeoman-ui/packages/generator-foodq:
     dependencies:
       '@sap-devx/yeoman-ui-types':
-        specifier: ^1.25.0
-        version: 1.25.0
+        specifier: workspace:^
+        version: link:../types
       chalk-pipe:
         specifier: ^4.0.0
         version: 4.0.0
@@ -2653,9 +2653,6 @@ packages:
 
   '@sap-devx/webview-rpc@0.4.1':
     resolution: {integrity: sha512-FznAh7u1qZh4VWle6wxCmXL2/qI0QigRx67jsL/Eyn7lW1e+6CO2vShond5IjS6+YKpXL7WFwK2MnU08kqqM6A==}
-
-  '@sap-devx/yeoman-ui-types@1.25.0':
-    resolution: {integrity: sha512-eqiD0C5JmT5mMUbYaRO8YUfnlmSYZgB/ZMuh62G2196z9FG2ppayElzZMKWNGEgx5ZXFbbxJc6dVrny94I2vQA==}
 
   '@sap/artifact-management-base-types@1.53.2':
     resolution: {integrity: sha512-2bKF8Ns4vdPAEDCApdFXf9qaAN1XtvOvOhQyiYMeeG1KSTvnvHmeCVw0QPF1nvTOI+i8lOy/r0no5k0+fDoFlw==}
@@ -13506,8 +13503,6 @@ snapshots:
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
-
-  '@sap-devx/yeoman-ui-types@1.25.0': {}
 
   '@sap/artifact-management-base-types@1.53.2':
     dependencies:
