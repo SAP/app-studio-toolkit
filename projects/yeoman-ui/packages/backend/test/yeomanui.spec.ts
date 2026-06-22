@@ -18,7 +18,7 @@ import messages from "../src/messages";
 import { AnalyticsWrapper } from "../src/usage-report/usage-analytics-wrapper";
 import { AppWizard, MessageType } from "@sap-devx/yeoman-ui-types";
 import { Env } from "../src/utils/env";
-import Environment = require("yeoman-environment");
+import Environment, { createEnv } from "yeoman-environment";
 import { createFlowPromise } from "../src/utils/promise";
 import { Constants } from "../src/utils/constants";
 
@@ -1215,7 +1215,7 @@ describe("yeomanui unit test", () => {
 
   describe("answersUtils", () => {
     it("setDefaults", () => {
-      const questions = [
+      const questions: any[] = [
         { name: "q1", default: "a" },
         { name: "q2", default: () => "b" },
         { name: "q3" },
@@ -1227,15 +1227,15 @@ describe("yeomanui unit test", () => {
       };
       ReplayUtils["setDefaults"](questions, answers);
       for (const question of questions) {
-        expect((question as any)["__origAnswer"]).to.equal(
-          (<any>answers)[question.name]
+        expect(question["__origAnswer"]).to.equal(
+          (answers as any)[question.name]
         );
-        expect((question as any)["__ForceDefault"]).to.be.true;
+        expect(question["__ForceDefault"]).to.be.true;
       }
     });
 
     it("setDefaults", () => {
-      const questions = [
+      const questions: any[] = [
         { name: "q1", default: "a" },
         { name: "q2", default: () => "b" },
         { name: "q3" },
@@ -1246,8 +1246,8 @@ describe("yeomanui unit test", () => {
       };
       ReplayUtils["setDefaults"](questions, answers);
       const question = _.find(questions, { name: "q2" });
-      expect((question as any).__origAnswer).to.be.undefined;
-      expect((question as any).__ForceDefault).to.be.undefined;
+      expect(question.__origAnswer).to.be.undefined;
+      expect(question.__ForceDefault).to.be.undefined;
     });
   });
 
@@ -1260,7 +1260,7 @@ describe("yeomanui unit test", () => {
       {},
       flowPromise.state
     );
-    const env: Environment = Environment.createEnv();
+    const env: Environment = createEnv();
     const envMock = sandbox.mock(env);
     const gen = { on: () => "" };
     const genMock = sandbox.mock(gen);
@@ -1268,7 +1268,7 @@ describe("yeomanui unit test", () => {
     envMock.expects("on").withArgs("error");
     genMock.expects("on").withArgs("error");
     processMock.expects("on").withArgs("uncaughtException");
-    yeomanUiInstance["handleErrors"](env, gen, "genName");
+    yeomanUiInstance["handleErrors"](env as any, gen, "genName");
     envMock.verify();
     genMock.verify();
     processMock.verify();
@@ -1286,7 +1286,7 @@ describe("yeomanui unit test", () => {
     );
     yeomanUiInstance["onUncaughtException"] = () => "";
     const onUncaughtExceptionBefore = yeomanUiInstance["onUncaughtException"];
-    const env: Environment = Environment.createEnv();
+    const env: Environment = createEnv();
     const envMock = sandbox.mock(env);
     const gen = { on: () => "" };
     const genMock = sandbox.mock(gen);
@@ -1297,7 +1297,7 @@ describe("yeomanui unit test", () => {
     processMock
       .expects("removeListener")
       .withArgs("uncaughtException", onUncaughtExceptionBefore);
-    yeomanUiInstance["handleErrors"](env, gen, "genName");
+    yeomanUiInstance["handleErrors"](env as any, gen, "genName");
     envMock.verify();
     genMock.verify();
     processMock.verify();
@@ -1392,7 +1392,7 @@ describe("yeomanui unit test", () => {
         GeneratorFilter.create(),
         flowPromise.state
       );
-      const questions = [{ name: "q1" }];
+      const questions: any[] = [{ name: "q1" }];
       const response = await yeomanUiInstance.showPrompt(questions);
       expect(response.firstName).to.equal(firstName);
     });
@@ -1428,7 +1428,7 @@ describe("yeomanui unit test", () => {
       yeomanUiInstance["runGenerator"] = (): Promise<any> => {
         return Promise.resolve();
       };
-      let questions = [{ name: "q1" }];
+      let questions: any[] = [{ name: "q1" }];
       let response = await yeomanUiInstance.showPrompt(questions);
       expect(response.firstName).to.equal(firstName);
 
@@ -1477,10 +1477,11 @@ describe("yeomanui unit test", () => {
       expect(
         doGeneratorDoneSpy.calledWith(
           true,
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           _.get(
             yeomanUi,
             "uiOptions.messages.artifact_with_name_generated",
-            (_: string) => ""
+            (_a: string) => ""
           )("testGenName"),
           create_and_close,
           "files",
@@ -1506,10 +1507,11 @@ describe("yeomanui unit test", () => {
       expect(
         doGeneratorDoneSpy.calledWith(
           true,
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           _.get(
             yeomanUi,
             "uiOptions.messages.artifact_with_name_generated",
-            (_: string) => ""
+            (_a: string) => ""
           )("testGenName"),
           create_and_close,
           "files",
@@ -1535,10 +1537,11 @@ describe("yeomanui unit test", () => {
       expect(
         doGeneratorDoneSpy.calledWith(
           true,
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           _.get(
             yeomanUi,
             "uiOptions.messages.artifact_with_name_generated",
-            (_: string) => ""
+            (_a: string) => ""
           )("testGenName"),
           create_and_close,
           "",
@@ -1560,10 +1563,11 @@ describe("yeomanui unit test", () => {
       expect(
         doGeneratorDoneSpy.calledWith(
           true,
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           _.get(
             yeomanUi,
             "uiOptions.messages.artifact_with_name_generated",
-            (_: string) => ""
+            (_a: string) => ""
           )("testGenName"),
           create_and_close,
           "files",
@@ -1603,10 +1607,11 @@ describe("yeomanui unit test", () => {
       expect(
         doGeneratorDoneSpy.calledWith(
           true,
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           _.get(
             yeomanUi,
             "uiOptions.messages.artifact_with_name_generated",
-            (_: string) => ""
+            (_a: string) => ""
           )("foodq:app"),
           open_in_new_ws,
           "project",
@@ -1635,10 +1640,11 @@ describe("yeomanui unit test", () => {
       expect(
         doGeneratorDoneSpy.calledWith(
           true,
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           _.get(
             yeomanUi,
             "uiOptions.messages.artifact_with_name_generated",
-            (_: string) => ""
+            (_a: string) => ""
           )("fiori-generator:app"),
           create_and_close,
           "project",
@@ -1653,7 +1659,7 @@ describe("yeomanui unit test", () => {
       const testEventFunction = () => {
         return true;
       };
-      const questions = [
+      const questions: any[] = [
         {
           name: "q1",
           guiType: "questionType",
@@ -1678,7 +1684,7 @@ describe("yeomanui unit test", () => {
       );
       yeomanUiInstance["addCustomQuestionEventHandlers"](questions);
       expect(questions[0]).to.have.property("testEvent");
-      expect((questions[0] as any)["testEvent"]).to.equal(testEventFunction);
+      expect(questions[0]["testEvent"]).to.equal(testEventFunction);
     });
   });
 
@@ -1702,7 +1708,7 @@ describe("yeomanui unit test", () => {
         testEventFunction
       );
       yeomanUiInstance["currentQuestions"] = [
-        { name: "question1", guiType: "questionType" },
+        { name: "question1", guiType: "questionType" } as any,
       ];
       const response = await yeomanUiInstance["evaluateMethod"](
         null,
@@ -1727,7 +1733,7 @@ describe("yeomanui unit test", () => {
           method1: () => {
             return true;
           },
-        },
+        } as any,
       ];
       const response = await yeomanUiInstance["evaluateMethod"](
         null,
@@ -1764,14 +1770,14 @@ describe("yeomanui unit test", () => {
         flowPromise.state
       );
       yeomanUiInstance["gen"] = Object.create({});
-      yeomanUiInstance["gen"].options = {};
+      (yeomanUiInstance["gen"] as any).options = {};
       yeomanUiInstance["currentQuestions"] = [
         {
           name: "question1",
           method1: () => {
             throw new Error("Error");
           },
-        },
+        } as any,
       ];
       try {
         await yeomanUiInstance["evaluateMethod"](null, "question1", "method1");
@@ -1790,7 +1796,7 @@ describe("yeomanui unit test", () => {
         flowPromise.state
       );
       yeomanUiInstance["gen"] = Object.create({});
-      yeomanUiInstance["gen"].options = {};
+      (yeomanUiInstance["gen"] as any).options = {};
       yeomanUiInstance["currentQuestions"] = undefined;
       try {
         await yeomanUiInstance["evaluateMethod"](null, "question1", "method1");

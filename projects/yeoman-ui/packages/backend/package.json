@@ -29,7 +29,7 @@
   "publisher": "SAPOS",
   "main": "./dist/extension",
   "scripts": {
-    "bundle": "webpack --mode production",
+    "bundle": "pnpm --filter yeoman-env-compat bundle && shx cp ../yeoman-env-compat/dist/index.js ./dist/yeoman-env-compat.js && webpack --mode production",
     "ci": "npm-run-all clean compile coverage bundle frontend:copy package coverage:copy",
     "clean": "shx rm -rf ./dist ./coverage *.vsix",
     "clean:frontend": "cd ./dist && shx rm -rf ./media",
@@ -183,6 +183,8 @@
     "@sap/bas-sdk": "3.13.7",
     "@sap/swa-for-sapbas-vsx": "2.0.16",
     "@vscode-logging/logger": "2.0.9",
+    "@yeoman/adapter": "4.0.2",
+    "@yeoman/types": "1.11.1",
     "chalk": "4.1.2",
     "cheerio": "^1.0.0-rc.12",
     "datauri": "4.1.0",
@@ -194,8 +196,8 @@
     "sudo-prompt": "9.2.1",
     "titleize": "2.1.0",
     "vscode-uri": "3.1.0",
-    "yeoman-environment": "3.19.3",
-    "yeoman-generator": "^4.13.0"
+    "yeoman-environment": "6.1.0",
+    "yeoman-generator": "8.2.2"
   },
   "devDependencies": {
     "@types/cheerio": "^0.22.31",
@@ -208,8 +210,6 @@
     "@types/vscode": "^1.50.0",
     "@types/webpack-env": "^1.16.2",
     "@types/ws": "^7.4.5",
-    "@types/yeoman-environment": "^2.10.3",
-    "@types/yeoman-generator": "5.2.14",
     "@vscode/vsce": "2.24.0",
     "copy-webpack-plugin": "^12.0.2",
     "lcov-result-merger": "5.0.0",
