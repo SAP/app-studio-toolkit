@@ -56,7 +56,6 @@ export class YeomanUI {
   private currentQuestions: Questions<any>;
   private generatorName: string;
   private readonly replayUtils: ReplayUtils;
-  // eslint-disable-next-line @typescript-eslint/ban-types
   private readonly customQuestionEventHandlers: Map<
     string,
     Map<string, Function>
@@ -153,13 +152,11 @@ export class YeomanUI {
     void this.rpc.invoke("resetPromptMessage");
   }
 
-  // eslint-disable-next-line @typescript-eslint/ban-types
   public registerCustomQuestionEventHandler(
     questionType: string,
     methodName: string,
     handler: Function
   ): void {
-    // eslint-disable-next-line @typescript-eslint/ban-types
     let entry: Map<string, Function> =
       this.customQuestionEventHandlers.get(questionType);
     if (entry === undefined) {
@@ -370,7 +367,6 @@ export class YeomanUI {
             "guiOptions.type",
             relevantQuestion.guiType
           );
-          // eslint-disable-next-line @typescript-eslint/ban-types
           const customQuestionEventHandler: Function =
             this.getCustomQuestionEventHandler(guiType, methodName);
           return _.isUndefined(customQuestionEventHandler)
@@ -471,12 +467,10 @@ export class YeomanUI {
     void this.youiEvents.executeCommand(id, args);
   }
 
-  // eslint-disable-next-line @typescript-eslint/ban-types
   private getCustomQuestionEventHandler(
     questionType: string,
     methodName: string
   ): Function {
-    // eslint-disable-next-line @typescript-eslint/ban-types
     const entry: Map<string, Function> =
       this.customQuestionEventHandlers.get(questionType);
     if (entry !== undefined) {
