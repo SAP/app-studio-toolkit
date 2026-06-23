@@ -89,7 +89,7 @@
     "@types/semver": "7.3.12",
     "@types/validate-npm-package-name": "3.0.3",
     "@vscode-logging/types": "2.0.8",
-    "type-fest": "2.11.1",
+    "type-fest": "2.19.0",
     "vscode-uri": "3.0.3"
   }
 }
