@@ -1,0 +1,100 @@
+import { Uri, ExtensionContext, commands, tasks } from "vscode";
+import { SWATracker } from "@sap/swa-for-sapbas-vsx";
+import { MtaBuildCommand } from "./commands/mtaBuildCommand";
+import { MtarDeployCommand } from "./commands/mtarDeployCommand";
+import { AddModuleCommand } from "./commands/addModuleCommand";
+import { messages } from "./i18n/messages";
+import {
+  createExtensionLoggerAndSubscribeToLogSettingsChanges,
+  getLogger,
+} from "./logger/logger-wrapper";
+import { registerValidation } from "./validations/validations";
+import { initSWA } from "./utils/swa";
+import { DEPLOY_MTA, BUILD_MTA } from "./task-providers/definitions";
+import { BuildMtaTaskProvider } from "./task-providers/task-build/buildTask";
+import { DeployMtaTaskProvider } from "./task-providers/task-deploy/deployTask";
+import {
+  ConfiguredTask,
+  TaskEditorContributionAPI,
+  TaskEditorContributorExtensionAPI,
+} from "@sap_oss/task_contrib_types";
+
+export async function activate(
+  context: ExtensionContext
+): Promise<TaskEditorContributorExtensionAPI<ConfiguredTask>> {
+  initializeLogger(context);
+  const logger = getLogger();
+  const swa = new SWATracker(
+    "SAPSE",
+    "vscode-mta-tools",
+    (err: string | number) => {
+      /* istanbul ignore next - we ignore error code `204` because it appears in every user interaction */
+      if (err !== 204) {
+        logger.error(err.toString());
+      }
+    }
+  );
+
+  initSWA(swa);
+
+  context.subscriptions.push(
+    commands.registerCommand("extension.mtaBuildCommand", mtaBuildCommand)
+  );
+  context.subscriptions.push(
+    commands.registerCommand("extension.mtarDeployCommand", mtarDeployCommand)
+  );
+  context.subscriptions.push(
+    commands.registerCommand("extension.addModuleCommand", addModuleCommand)
+  );
+
+  const deployTaskProvider = new DeployMtaTaskProvider(context);
+  context.subscriptions.push(
+    tasks.registerTaskProvider(DEPLOY_MTA, deployTaskProvider)
+  );
+
+  const buildTaskProvider = new BuildMtaTaskProvider(context);
+  context.subscriptions.push(
+    tasks.registerTaskProvider(BUILD_MTA, buildTaskProvider)
+  );
+
+  await registerValidation(context.subscriptions);
+
+  return {
+    getTaskEditorContributors() {
+      const contributors = new Map<
+        string,
+        TaskEditorContributionAPI<ConfiguredTask>
+      >();
+      return contributors;
+    },
+  };
+}
+
+export async function mtaBuildCommand(
+  selected: Uri | undefined
+): Promise<void> {
+  const command: MtaBuildCommand = new MtaBuildCommand();
+  return command.mtaBuildCommand(selected);
+}
+
+export async function mtarDeployCommand(
+  selected: Uri | undefined
+): Promise<void> {
+  const command: MtarDeployCommand = new MtarDeployCommand();
+  return command.mtarDeployCommand(selected);
+}
+
+export async function addModuleCommand(
+  selected: Uri | undefined
+): Promise<void> {
+  const command: AddModuleCommand = new AddModuleCommand();
+  return command.addModuleCommand(selected);
+}
+
+function initializeLogger(context: ExtensionContext): void {
+  try {
+    createExtensionLoggerAndSubscribeToLogSettingsChanges(context);
+  } catch (error) {
+    console.error(messages.ERROR_ACTIVATION_FAILED, error.message);
+  }
+}
