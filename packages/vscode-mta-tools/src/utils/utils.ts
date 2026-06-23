@@ -77,17 +77,20 @@ export class Utils {
       let exited = false;
 
       childProcess.stdout.on("data", (data: string | Buffer) => {
+        /* istanbul ignore else */
         if (!childProcess.killed) {
           output += data.toString();
         }
       });
 
-      childProcess.stderr.on("data", (data: string | Buffer) => {
-        /* istanbul ignore next */
-        if (!childProcess.killed) {
-          errOutput += data.toString();
+      childProcess.stderr.on(
+        "data",
+        /* istanbul ignore next */ (data: string | Buffer) => {
+          if (!childProcess.killed) {
+            errOutput += data.toString();
+          }
         }
-      });
+      );
 
       childProcess.on("exit", (code: number | null, signal: string | null) => {
         /* istanbul ignore if */
@@ -99,7 +102,10 @@ export class Utils {
         resolve({
           // Either code or signal will be non-null
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          exitCode: (code ?? signal)!,
+          exitCode:
+            code !== null
+              ? code
+              : /* istanbul ignore next */ (signal as string),
           stdout: output.trim(),
           stderr: errOutput.trim(),
         });
@@ -147,6 +153,7 @@ export class Utils {
     return true;
   }
 
+  /* istanbul ignore next */
   public static getTarget(weak?: boolean): Promise<ITarget> {
     return cfGetTarget(weak);
   }

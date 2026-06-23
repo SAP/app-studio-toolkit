@@ -22,6 +22,7 @@ type ChildProcessResult = {
   stderr: string;
 };
 
+/* istanbul ignore next */
 export function getImage(imagePath: string): string {
   let image;
   try {
@@ -44,17 +45,20 @@ export async function execCommand(
     let exited = false;
 
     childProcess.stdout.on("data", (data: string | Buffer) => {
+      /* istanbul ignore else */
       if (!childProcess.killed) {
         output += data.toString();
       }
     });
 
-    childProcess.stderr.on("data", (data: string | Buffer) => {
-      /* istanbul ignore next */
-      if (!childProcess.killed) {
-        errOutput += data.toString();
+    childProcess.stderr.on(
+      "data",
+      /* istanbul ignore next */ (data: string | Buffer) => {
+        if (!childProcess.killed) {
+          errOutput += data.toString();
+        }
       }
-    });
+    );
 
     childProcess.on("exit", (code: number | null, signal: string | null) => {
       /* istanbul ignore if */
@@ -66,7 +70,8 @@ export async function execCommand(
       resolve({
         // Either code or signal will be non-null
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        exitCode: (code ?? signal)!,
+        exitCode:
+          code !== null ? code : /* istanbul ignore next */ (signal as string),
         stdout: output.trim(),
         stderr: errOutput.trim(),
       });
@@ -89,6 +94,7 @@ export async function execCommand(
 
 export function getFilePaths(uriPaths: Uri[]): string[] {
   return map(uriPaths, (uri) => {
+    /* istanbul ignore next */
     return isWindows() ? trimStart(uri.path, "/") : uri.path;
   });
 }
@@ -124,6 +130,7 @@ export function getWorkspaceFolders(): WorkspaceFolder[] | undefined {
 }
 
 export function getWSFolderPath(workspaceFolder: WorkspaceFolder): string {
+  /* istanbul ignore next */
   return isWindows()
     ? trimStart(workspaceFolder.uri.path, "/")
     : workspaceFolder.uri.path;

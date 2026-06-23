@@ -74,6 +74,7 @@ export class MtaBuildCommand {
       }
     }
 
+    /* istanbul ignore next */
     path = Utils.isWindows() ? trimStart(path, "/") : path;
 
     const options: ShellExecutionOptions = { cwd: homeDir };

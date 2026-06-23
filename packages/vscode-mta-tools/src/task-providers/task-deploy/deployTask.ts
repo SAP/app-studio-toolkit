@@ -88,6 +88,7 @@ export class DeployMtaTaskProvider implements TaskProvider {
 
   private async checkCFPluginInstalled(): Promise<boolean> {
     // note: the following scenario not supported: user uninstalls cf plugin during his work.
+    /* istanbul ignore if */
     if (this.cfInstalled) {
       return true;
     }

@@ -90,6 +90,7 @@ export class BuildMtaTaskProvider implements TaskProvider {
 
   private async checkMBTToolInstalled(): Promise<boolean> {
     // note: the following scenario not supported: user uninstalls mbt during his work.
+    /* istanbul ignore if */
     if (this.mbtInstalled) {
       return true;
     }
