@@ -382,7 +382,7 @@
     "@vscode-logging/wrapper": "2.0.9",
     "applicationinsights": "2.9.6",
     "axios": "1.15.2",
-    "body-parser": "1.20.3",
+    "body-parser": "1.20.5",
     "cors": "2.8.6",
     "express": "4.22.1",
     "http-terminator": "3.2.0",
@@ -395,7 +395,7 @@
   },
   "devDependencies": {
     "@sap-devx/app-studio-toolkit-types": "workspace:*",
-    "@types/body-parser": "1.19.5",
+    "@types/body-parser": "1.19.6",
     "@types/cors": "2.8.19",
     "@types/express": "4.17.25",
     "@types/http-terminator": "2.0.5",
