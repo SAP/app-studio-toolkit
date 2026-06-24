@@ -88,7 +88,7 @@ async function validateDepsIssues(opts: {
           (await validateMismatchDep({
             depPkgJsonPath,
             depName,
-            expectedVerRange,
+            expectedVerRange: expectedVerRange as string,
             isDev: opts.isDev,
           }))
         );
