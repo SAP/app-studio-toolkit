@@ -1,0 +1,17 @@
+# Exclude everything by default (handles pnpm symlinks and hoisted node_modules)
+**
+
+# Webpack bundle and MTA binary
+!dist/
+dist/src/**
+dist/tests/**
+
+# Source maps reference the original TypeScript sources
+!src/
+
+# Extension metadata
+!package.json
+!README.md
+!CHANGELOG.md
+!LICENSE
+!LICENSES
