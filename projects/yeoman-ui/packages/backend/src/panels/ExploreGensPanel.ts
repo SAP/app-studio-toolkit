@@ -1,4 +1,4 @@
-import { ExtensionContext, WebviewPanel } from "vscode";
+import type { ExtensionContext, WebviewPanel } from "vscode";
 import { join } from "path";
 import { ExploreGens } from "../exploregens";
 import { AbstractWebviewPanel } from "./AbstractWebviewPanel";

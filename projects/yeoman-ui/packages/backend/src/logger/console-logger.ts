@@ -1,4 +1,4 @@
-import { IChildLogger } from "@vscode-logging/logger";
+import type { IChildLogger } from "@vscode-logging/logger";
 
 export function getConsoleWarnLogger(): IChildLogger {
   const consoleLog = (msg: string, ...args: any[]): void => {

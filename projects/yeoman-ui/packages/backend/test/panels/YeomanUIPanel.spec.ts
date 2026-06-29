@@ -19,29 +19,36 @@ describe("YeomanUIPanel unit test", () => {
   let npmUtilsMock: SinonMock;
   let windowMock: SinonMock;
   let commandsMock: SinonMock;
-  let loggerWrapperMock: SinonMock;
   let panel: YeomanUIPanel.YeomanUIPanel;
   let setWebviewPanelStub: SinonStub;
   let createWebviewPanelStub: SinonStub;
   let trackerWrapperMock: SinonMock;
 
+  const mockLogger: any = {
+    debug: () => {},
+    info: () => {},
+    error: () => {},
+    warn: () => {},
+    trace: () => {},
+    fatal: () => {},
+    getChildLogger: () => mockLogger,
+  };
+
   before(() => {
     sandbox = createSandbox();
+    loggerWrapper._setTestLogger(mockLogger);
   });
 
   after(() => {
+    loggerWrapper._resetTestLogger();
     sandbox.restore();
   });
 
   beforeEach(() => {
-    loggerWrapperMock = sandbox.mock(loggerWrapper);
     envUtilsMock = sandbox.mock(Env);
     npmUtilsMock = sandbox.mock(NpmCommand);
     windowMock = sandbox.mock(vscode.window);
     commandsMock = sandbox.mock(vscode.commands);
-    loggerWrapperMock
-      .expects("getClassLogger")
-      .withExactArgs("AbstractWebviewPanel");
     panel = new YeomanUIPanel.YeomanUIPanel(vscode.context);
     setWebviewPanelStub = sandbox.stub(panel, "setWebviewPanel");
     createWebviewPanelStub = sandbox.stub(panel, "createWebviewPanel");
@@ -49,7 +56,6 @@ describe("YeomanUIPanel unit test", () => {
   });
 
   afterEach(() => {
-    loggerWrapperMock.verify();
     envUtilsMock.verify();
     npmUtilsMock.verify();
     windowMock.verify();

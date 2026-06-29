@@ -1,13 +1,29 @@
-import * as _ from "lodash";
+import {
+  compact,
+  get,
+  isEmpty,
+  isNil,
+  map,
+  orderBy,
+  size,
+  split,
+  union,
+  unionBy,
+  uniq,
+  uniqBy,
+} from "lodash";
 import { homedir } from "os";
 import * as path from "path";
 import { existsSync } from "fs";
 import { isWin32, NpmCommand } from "./npm";
 import * as customLocation from "./customLocation";
-import * as Environment from "yeoman-environment";
-import TerminalAdapter = require("yeoman-environment/lib/adapter");
-import { IChildLogger } from "@vscode-logging/logger";
+import Environment from "yeoman-environment";
+import type TerminalAdapter from "yeoman-environment/lib/adapter";
+import type { IChildLogger } from "@vscode-logging/logger";
 import { getClassLogger } from "../logger/logger-wrapper";
+import { createRequire } from "module";
+
+const _require = createRequire(import.meta.url);
 
 const GENERATOR = "generator-";
 const NAMESPACE = "namespace";
@@ -51,7 +67,7 @@ class EnvUtil {
   }
 
   public loadNpmPath(force = false) {
-    if (_.isNil(this.existingNpmPathsPromise) || force === true) {
+    if (isNil(this.existingNpmPathsPromise) || force === true) {
       this.existingNpmPathsPromise = this.getExistingNpmPath().then((paths) => {
         this.logger?.debug("existing npm paths", { paths: paths.join(";") });
         return paths;
@@ -79,12 +95,12 @@ class EnvUtil {
         return isWin32 ? resPath : path.join(path.sep, resPath);
       });
     // uniq and existing only paths (global npm path is always added)
-    const paths: string[] = _.union(globalNpmPaths, userNpmPaths).filter(
+    const paths: string[] = union(globalNpmPaths, userNpmPaths).filter(
       (npmPath: string) => existsSync(npmPath)
     );
     paths.push(await NpmCommand.getGlobalNodeModulesPath());
 
-    return _.uniq(paths);
+    return uniq(paths);
   }
 
   private createEnvInstance(
@@ -107,10 +123,10 @@ class EnvUtil {
       generatorName = `${GENERATOR}${genShortName}`;
     }
 
-    const keys = Object.keys(require.cache);
+    const keys = Object.keys(_require.cache);
     for (const key of keys) {
       if (key.includes(generatorName)) {
-        delete require.cache[key];
+        delete _require.cache[key];
       }
     }
   }
@@ -131,16 +147,16 @@ class EnvUtil {
     });
 
     const customNpmPath = customLocation.getNodeModulesPath();
-    const customInstalledGensMeta = _.isEmpty(customNpmPath)
+    const customInstalledGensMeta = isEmpty(customNpmPath)
       ? []
       : this.lookupGensMeta({ npmPaths: [customNpmPath] });
 
-    const gensMeta = _.unionBy(
+    const gensMeta = unionBy(
       customInstalledGensMeta,
       globallyInstalledGensMeta,
       NAMESPACE
     );
-    return _.orderBy(gensMeta, [NAMESPACE], ["asc"]);
+    return orderBy(gensMeta, [NAMESPACE], ["asc"]);
   }
 
   private async getGenMetadata(
@@ -188,7 +204,7 @@ class EnvUtil {
   public async getAllGeneratorNamespaces(): Promise<string[]> {
     const gensMeta: Environment.LookupGeneratorMeta[] =
       await this.getGeneratorsMeta(false);
-    return _.map(gensMeta, (genMeta) => genMeta.namespace);
+    return map(gensMeta, (genMeta) => genMeta.namespace);
   }
 
   public async createEnvAndGen(
@@ -206,7 +222,7 @@ class EnvUtil {
       adapter
     );
     // @types/yeoman-environment bug: generatorPath is still not exposed on LookupGeneratorMeta
-    env.register(_.get(meta, "generatorPath"), genNamespace, meta.packagePath);
+    env.register(get(meta, "generatorPath"), genNamespace, meta.packagePath);
     let gen: any = env.create(genNamespace, { options } as any);
 
     // Handle async generator creation (ESM modules)
@@ -239,7 +255,7 @@ class EnvUtil {
       );
     });
     // remove duplicates
-    additional = _.uniqBy(additional, "namespace");
+    additional = uniqBy(additional, "namespace");
     // get additional generators data
     if (additional.length) {
       const additionalGensMeta = this.allInstalledGensMeta.filter((genMeta) =>
@@ -265,7 +281,7 @@ class EnvUtil {
       gensData.push(...additionalGensData);
     }
 
-    return _.compact(gensData);
+    return compact(gensData);
   }
 
   public async getGeneratorNamesWithOutdatedVersion(): Promise<string[]> {
@@ -278,8 +294,8 @@ class EnvUtil {
 
   public getGeneratorFullName(genNamespace: string): string {
     const genName = Environment.namespaceToName(genNamespace);
-    const parts = _.split(genName, "/");
-    return _.size(parts) === 1
+    const parts = split(genName, "/");
+    return size(parts) === 1
       ? `${GENERATOR}${genName}`
       : `${parts[0]}/${GENERATOR}${parts[1]}`;
   }

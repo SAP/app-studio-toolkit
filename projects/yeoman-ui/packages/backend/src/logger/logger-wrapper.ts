@@ -1,10 +1,10 @@
 import * as vscode from "vscode"; // NOSONAR
 import {
   getExtensionLogger,
-  getExtensionLoggerOpts,
   IChildLogger,
   IVSCodeExtLogger,
   LogLevel,
+  getExtensionLoggerOpts,
 } from "@vscode-logging/logger";
 import {
   listenToLogSettingsChanges,
@@ -123,3 +123,15 @@ export function createExtensionLoggerAndSubscribeToLogSettingsChanges(
   // Subscribe to Logger settings changes.
   listenToLogSettingsChanges(context);
 }
+
+export function _setTestLogger(mockLogger: any): void {
+  logger = mockLogger;
+}
+
+export function _resetTestLogger(): void {
+  logger = undefined;
+}
+
+export const loggerApi = {
+  createExtensionLoggerAndSubscribeToLogSettingsChanges,
+};

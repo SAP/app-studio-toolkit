@@ -1,6 +1,6 @@
 import * as WebSocket from "ws";
 import { RpcExtensionWebSockets } from "@sap-devx/webview-rpc/out.ext/rpc-extension-ws";
-import { IChildLogger } from "@vscode-logging/logger";
+import type { IChildLogger } from "@vscode-logging/logger";
 import { ExploreGens } from "../exploregens";
 import { getConsoleWarnLogger } from "../logger/console-logger";
 import { vscode } from "../utils/vscodeProxy";

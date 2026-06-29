@@ -1,4 +1,7 @@
-const Module = require("module");
+import { createRequire } from "module";
+
+const _require = createRequire(import.meta.url);
+const Module = _require("module");
 
 // Replaces shelljs.exec method when execResult is undefined
 // https://github.com/shelljs/shelljs/wiki/Electron-compatibility

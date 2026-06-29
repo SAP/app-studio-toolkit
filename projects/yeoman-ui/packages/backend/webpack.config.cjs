@@ -21,7 +21,7 @@ const config = {
   output: {
     // the bundle is stored in the 'dist' folder (check package.json), 📖 -> https://webpack.js.org/configuration/output/
     path: path.resolve(__dirname, "dist"),
-    filename: "extension.js",
+    filename: "extension.cjs",
     libraryTarget: "commonjs2",
     devtoolModuleFilenameTemplate: "../[resource-path]",
   },
@@ -44,15 +44,6 @@ const config = {
             loader: "ts-loader",
           },
         ],
-      },
-      {
-        test: /usage-report[/|\\]usage-analytics-wrapper.ts/,
-        loader: "string-replace-loader",
-        options: {
-          search: "require[(]",
-          replace: "__non_webpack_require__(",
-          flags: "g",
-        },
       },
       {
         test: /yeoman-environment[/|\\]lib[/|\\]environment.js/,
@@ -222,24 +213,6 @@ const config = {
         options: {
           search: "require[.]extensions",
           replace: "__non_webpack_require__.extensions",
-          flags: "g",
-        },
-      },
-      {
-        test: /utils[/|\\]env.ts/,
-        loader: "string-replace-loader",
-        options: {
-          search: "require[.]cache",
-          replace: "__non_webpack_require__.cache",
-          flags: "g",
-        },
-      },
-      {
-        test: /utils[/|\\]vscodeProxy.ts/,
-        loader: "string-replace-loader",
-        options: {
-          search: "require[.]main",
-          replace: "__non_webpack_require__.main",
           flags: "g",
         },
       },

@@ -1,9 +1,9 @@
 import * as vscode from "vscode";
 import { isEmpty, isNil, set } from "lodash";
 import { YouiEvents } from "./youi-events";
-import { IRpc } from "@sap-devx/webview-rpc/out.ext/rpc-common";
+import type { IRpc } from "@sap-devx/webview-rpc/out.ext/rpc-common";
 import { GeneratorOutput } from "./vscode-output";
-import { IChildLogger } from "@vscode-logging/logger";
+import type { IChildLogger } from "@vscode-logging/logger";
 import { getClassLogger } from "./logger/logger-wrapper";
 import { getImage } from "./images/messageImages";
 import {

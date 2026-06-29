@@ -1,11 +1,12 @@
 import type { ExtensionContext } from "vscode";
+import type { BASTelemetryClient } from "@sap/swa-for-sapbas-vsx";
 import {
   initTelemetrySettings,
   BASClientFactory,
-  BASTelemetryClient,
 } from "@sap/swa-for-sapbas-vsx";
 import { getLogger } from "../logger/logger-wrapper";
 import * as path from "path";
+import { readFile } from "fs/promises";
 
 /**
  * A Simple Wrapper for reporting usage analytics
@@ -31,12 +32,11 @@ export class AnalyticsWrapper {
     return BASClientFactory.getBASTelemetryClient();
   }
 
-  public static createTracker(context: ExtensionContext): void {
+  public static async createTracker(context: ExtensionContext): Promise<void> {
     try {
-      const packageJson = require(path.join(
-        context.extensionPath,
-        "package.json"
-      ));
+      const packageJson = JSON.parse(
+        await readFile(path.join(context.extensionPath, "package.json"), "utf8")
+      );
       const vscodeExtentionFullName = `${packageJson.publisher}.${packageJson.name}`;
       initTelemetrySettings(vscodeExtentionFullName, packageJson.version);
       getLogger().info(

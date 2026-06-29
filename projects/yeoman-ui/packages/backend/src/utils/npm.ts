@@ -1,7 +1,7 @@
 import { exec } from "child_process";
 import { promisify } from "util";
 import { platform } from "os";
-import * as _ from "lodash";
+import { compact, get, isEmpty, split, trim } from "lodash";
 import * as customLocation from "./customLocation";
 import * as sudo from "sudo-prompt";
 import * as fs from "fs";
@@ -9,7 +9,7 @@ import messages from "../messages";
 import { vscode } from "./vscodeProxy";
 import * as path from "path";
 import * as npmFetch from "npm-registry-fetch";
-import { LookupGeneratorMeta } from "yeoman-environment";
+import type { LookupGeneratorMeta } from "yeoman-environment";
 import { getConsoleWarnLogger } from "../logger/console-logger";
 import { Constants } from "./constants";
 import { spawn } from "child_process";
@@ -31,7 +31,7 @@ export const isWin32 = platform() === "win32";
 const NPM = isWin32 ? "npm.cmd" : "npm";
 
 const regUrl = new URL(
-  _.get(process, "env.NPM_CFG_REGISTRY", "http://registry.npmjs.com/")
+  get(process, "env.NPM_CFG_REGISTRY", "http://registry.npmjs.com/")
 );
 regUrl.pathname = `-/v1/search`;
 const SEARCH_QUERY_PREFIX = `${regUrl.toString()}?text=`;
@@ -64,7 +64,7 @@ class Command {
 
   private getGenLocationParams(): string {
     const customInstallationPath = customLocation.getPath();
-    return _.isEmpty(customInstallationPath)
+    return isEmpty(customInstallationPath)
       ? "-g"
       : `--prefix ${customInstallationPath}`;
   }
@@ -73,12 +73,12 @@ class Command {
     return new Promise((resolve) => {
       setTimeout(() => {
         void promisifiedExec(arg).then((result: ExecResult) => {
-          if (!_.isEmpty(result.stderr)) {
+          if (!isEmpty(result.stderr)) {
             // no need to throw error, because stderr usually contains warnings
             getConsoleWarnLogger().warn(result.stderr);
           }
 
-          resolve(_.trim(result.stdout));
+          resolve(trim(result.stdout));
         });
       }, 1);
     });
@@ -113,7 +113,7 @@ class Command {
 
   private async getAccessResult(): Promise<string> {
     // we assume that if custom path set by an user it is writable
-    if (_.isEmpty(customLocation.getPath())) {
+    if (isEmpty(customLocation.getPath())) {
       const globalNodeModulesPath = await this.getGlobalNodeModulesPath();
       const isWritable = await this.isPathWritable(globalNodeModulesPath);
       if (!isWritable) {
@@ -156,7 +156,7 @@ class Command {
   private async shouldBeUpdated(packageJson: any): Promise<boolean> {
     const queryUrl = this.getSingleGenQueryURL(packageJson.name);
     const npmJsModules = await npmFetch.json(queryUrl);
-    const npmJsModule: any = _.get(npmJsModules, "objects.[0]");
+    const npmJsModule: any = get(npmJsModules, "objects.[0]");
     return npmJsModule
       ? npmJsModule.package.version !== packageJson.version
       : false;
@@ -179,12 +179,12 @@ class Command {
 
   private async getGlobalPath(): Promise<string> {
     const globalNodeModulesPath = await this.getGlobalNodeModulesPath();
-    const globalPathArray = _.split(
+    const globalPathArray = split(
       globalNodeModulesPath,
       path.join(path.sep, "node_modules"),
       1
     );
-    return _.get(globalPathArray, "[0]");
+    return get(globalPathArray, "[0]");
   }
 
   public getGlobalNodeModulesPath(): Promise<string> {
@@ -195,7 +195,7 @@ class Command {
     const gensQueryUrl = this.getGensQueryURL(query, author);
     const queryResult: any = await npmFetch.json(gensQueryUrl);
     return {
-      packages: _.get(queryResult, "objects", []),
+      packages: get(queryResult, "objects", []),
       total: queryResult.total,
     };
   }
@@ -220,7 +220,7 @@ class Command {
       );
     });
 
-    return _.compact(await Promise.all(packageNameToUpdatePromises));
+    return compact(await Promise.all(packageNameToUpdatePromises));
   }
 
   public async install(packageName: string): Promise<any> {

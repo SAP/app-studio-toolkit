@@ -1,7 +1,7 @@
-import * as Environment from "yeoman-environment";
-import { IPrompt } from "@sap-devx/yeoman-ui-types";
-import * as hash from "object-hash";
-import TerminalAdapter = require("yeoman-environment/lib/adapter");
+import Environment from "yeoman-environment";
+import type { IPrompt } from "@sap-devx/yeoman-ui-types";
+import hash from "object-hash";
+import type TerminalAdapter from "yeoman-environment/lib/adapter";
 
 export enum ReplayState {
   Replaying,

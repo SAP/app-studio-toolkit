@@ -8,29 +8,38 @@ import { ExtCommands } from "../src/extCommands";
 describe("extension commands unit test", () => {
   let sandbox: SinonSandbox;
   let windowMock: SinonMock;
-  let loggerWrapperMock: SinonMock;
 
   const testContext: any = {
     subscriptions: [],
     extensionPath: "testExtensionpath",
   };
 
+  const mockLogger: any = {
+    debug: () => {},
+    info: () => {},
+    error: () => {},
+    warn: () => {},
+    trace: () => {},
+    fatal: () => {},
+    getChildLogger: () => mockLogger,
+  };
+
   before(() => {
     sandbox = createSandbox();
+    loggerWrapper._setTestLogger(mockLogger);
   });
 
   after(() => {
+    loggerWrapper._resetTestLogger();
     sandbox.restore();
   });
 
   beforeEach(() => {
     windowMock = sandbox.mock(vscode.window);
-    loggerWrapperMock = sandbox.mock(loggerWrapper);
   });
 
   afterEach(() => {
     windowMock.verify();
-    loggerWrapperMock.verify();
   });
 
   it("registerAndSubscribeCommands", () => {
@@ -145,8 +154,6 @@ describe("extension commands unit test", () => {
     it("getYeomanUIPanel - open twice, no generator loaded", async () => {
       extCommands["yeomanUIPanel"] = undefined;
 
-      loggerWrapperMock.expects("getClassLogger");
-
       // yeomanUIPanel is undefined
       const yeomanUIPanel_firstTime = await extCommands["getYeomanUIPanel"]();
       // yeomanUIPanel should be already defined
@@ -203,7 +210,6 @@ describe("extension commands unit test", () => {
     const extCommands = new ExtCommands(testContext);
     extCommands["exploreGensPanel"] = undefined;
 
-    loggerWrapperMock.expects("getClassLogger");
     // windowMock.expects("registerWebviewPanelSerializer").withArgs("exploreGens");
 
     // exploreGensPanel is undefined

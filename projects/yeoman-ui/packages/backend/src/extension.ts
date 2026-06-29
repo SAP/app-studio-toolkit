@@ -1,5 +1,5 @@
 import { ExtensionContext, window, WebviewPanel } from "vscode";
-import { createExtensionLoggerAndSubscribeToLogSettingsChanges } from "./logger/logger-wrapper";
+import { loggerApi } from "./logger/logger-wrapper";
 import { AnalyticsWrapper } from "./usage-report/usage-analytics-wrapper";
 import * as shellJsWorkarounds from "./utils/shellJsWorkarounds";
 import { ExtCommands } from "./extCommands";
@@ -16,8 +16,8 @@ export function activate(context: ExtensionContext) {
   void import("./utils/env");
 
   try {
-    createExtensionLoggerAndSubscribeToLogSettingsChanges(context);
-    AnalyticsWrapper.createTracker(context);
+    loggerApi.createExtensionLoggerAndSubscribeToLogSettingsChanges(context);
+    void AnalyticsWrapper.createTracker(context);
   } catch (error) {
     console.error("Extension activation failed.", error.message);
     return;

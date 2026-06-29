@@ -4,7 +4,7 @@ import { YeomanUI } from "../yeomanui";
 import { ServerOutput } from "./server-output";
 import { ServerYouiEvents } from "./server-youi-events";
 import backendMessages from "../messages";
-import { IChildLogger } from "@vscode-logging/logger";
+import type { IChildLogger } from "@vscode-logging/logger";
 import { YouiEvents } from "../youi-events";
 import { GeneratorFilter } from "../filter";
 import { getConsoleWarnLogger } from "../logger/console-logger";

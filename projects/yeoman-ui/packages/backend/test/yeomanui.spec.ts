@@ -1,13 +1,13 @@
 import { vscode } from "./mockUtil";
 import { createSandbox, SinonSandbox, SinonMock } from "sinon";
-const datauri = require("datauri"); // eslint-disable-line @typescript-eslint/no-var-requires
+import datauri from "datauri";
 import { promises } from "fs";
 import { expect } from "chai";
-import * as _ from "lodash";
+import { find, get, set } from "lodash";
 import { YeomanUI } from "../src/yeomanui";
 import { ReplayUtils } from "../src/replayUtils";
 import { YouiEvents } from "../src/youi-events";
-import {
+import type {
   IMethod,
   IPromiseCallbacks,
   IRpc,
@@ -18,7 +18,7 @@ import messages from "../src/messages";
 import { AnalyticsWrapper } from "../src/usage-report/usage-analytics-wrapper";
 import { AppWizard, MessageType } from "@sap-devx/yeoman-ui-types";
 import { Env } from "../src/utils/env";
-import Environment = require("yeoman-environment");
+import Environment from "yeoman-environment";
 import { createFlowPromise } from "../src/utils/promise";
 import { Constants } from "../src/utils/constants";
 
@@ -1118,7 +1118,7 @@ describe("yeomanui unit test", () => {
 
     it("in VSCODE, target folder is undefined", () => {
       Constants.IS_IN_BAS = false;
-      _.set(vscode, "workspace.workspaceFolders[0].uri.fsPath", undefined);
+      set(vscode, "workspace.workspaceFolders[0].uri.fsPath", undefined);
       wsConfigMock
         .expects("get")
         .withExactArgs(yeomanUiInstance["TARGET_FOLDER_CONFIG_PROP"]);
@@ -1128,7 +1128,7 @@ describe("yeomanui unit test", () => {
 
     it("in VSCODE, target folder is empty non-zero length string", () => {
       Constants.IS_IN_BAS = false;
-      _.set(vscode, "workspace.workspaceFolders[0].uri.fsPath", undefined);
+      set(vscode, "workspace.workspaceFolders[0].uri.fsPath", undefined);
       wsConfigMock
         .expects("get")
         .withExactArgs(yeomanUiInstance["TARGET_FOLDER_CONFIG_PROP"])
@@ -1140,7 +1140,7 @@ describe("yeomanui unit test", () => {
     it("in VSCODE, target folder is defined", () => {
       Constants.IS_IN_BAS = false;
       const targetFolderConfig = "/home/user/folder/folder2";
-      _.set(vscode, "workspace.workspaceFolders[0].uri.fsPath", undefined);
+      set(vscode, "workspace.workspaceFolders[0].uri.fsPath", undefined);
       wsConfigMock
         .expects("get")
         .withExactArgs(yeomanUiInstance["TARGET_FOLDER_CONFIG_PROP"])
@@ -1152,12 +1152,12 @@ describe("yeomanui unit test", () => {
     it("in VSCODE, a folder is opened", () => {
       Constants.IS_IN_BAS = false;
       const openedVscodeFolderPath = "/home/user/folder/folder2";
-      _.set(
+      set(
         vscode,
         "workspace.workspaceFolders[0].uri.fsPath",
         openedVscodeFolderPath
       );
-      _.set(vscode, "workspace.workspaceFolders[0].uri.scheme", "file");
+      set(vscode, "workspace.workspaceFolders[0].uri.scheme", "file");
       wsConfigMock
         .expects("get")
         .withExactArgs(yeomanUiInstance["TARGET_FOLDER_CONFIG_PROP"]);
@@ -1167,7 +1167,7 @@ describe("yeomanui unit test", () => {
 
     it("in BAS, target folder is undefined", () => {
       Constants.IS_IN_BAS = true;
-      _.set(vscode, "workspace.workspaceFolders[0].uri.fsPath", undefined);
+      set(vscode, "workspace.workspaceFolders[0].uri.fsPath", undefined);
       wsConfigMock
         .expects("get")
         .withExactArgs(yeomanUiInstance["TARGET_FOLDER_CONFIG_PROP"]);
@@ -1177,7 +1177,7 @@ describe("yeomanui unit test", () => {
 
     it("in BAS, target folder is empty non-zero length string", () => {
       Constants.IS_IN_BAS = true;
-      _.set(vscode, "workspace.workspaceFolders[0].uri.fsPath", undefined);
+      set(vscode, "workspace.workspaceFolders[0].uri.fsPath", undefined);
       wsConfigMock
         .expects("get")
         .withExactArgs(yeomanUiInstance["TARGET_FOLDER_CONFIG_PROP"])
@@ -1188,7 +1188,7 @@ describe("yeomanui unit test", () => {
 
     it("in BAS, target folder is defined", () => {
       Constants.IS_IN_BAS = true;
-      _.set(vscode, "workspace.workspaceFolders[0].uri.fsPath", undefined);
+      set(vscode, "workspace.workspaceFolders[0].uri.fsPath", undefined);
       const targetFolderConfig = "/home/user/folder/folder2";
       wsConfigMock
         .expects("get")
@@ -1245,7 +1245,7 @@ describe("yeomanui unit test", () => {
         q3: "z",
       };
       ReplayUtils["setDefaults"](questions, answers);
-      const question = _.find(questions, { name: "q2" });
+      const question = find(questions, { name: "q2" });
       expect((question as any).__origAnswer).to.be.undefined;
       expect((question as any).__ForceDefault).to.be.undefined;
     });
@@ -1477,7 +1477,7 @@ describe("yeomanui unit test", () => {
       expect(
         doGeneratorDoneSpy.calledWith(
           true,
-          _.get(
+          get(
             yeomanUi,
             "uiOptions.messages.artifact_with_name_generated",
             (_: string) => ""
@@ -1506,7 +1506,7 @@ describe("yeomanui unit test", () => {
       expect(
         doGeneratorDoneSpy.calledWith(
           true,
-          _.get(
+          get(
             yeomanUi,
             "uiOptions.messages.artifact_with_name_generated",
             (_: string) => ""
@@ -1535,7 +1535,7 @@ describe("yeomanui unit test", () => {
       expect(
         doGeneratorDoneSpy.calledWith(
           true,
-          _.get(
+          get(
             yeomanUi,
             "uiOptions.messages.artifact_with_name_generated",
             (_: string) => ""
@@ -1560,7 +1560,7 @@ describe("yeomanui unit test", () => {
       expect(
         doGeneratorDoneSpy.calledWith(
           true,
-          _.get(
+          get(
             yeomanUi,
             "uiOptions.messages.artifact_with_name_generated",
             (_: string) => ""
@@ -1603,7 +1603,7 @@ describe("yeomanui unit test", () => {
       expect(
         doGeneratorDoneSpy.calledWith(
           true,
-          _.get(
+          get(
             yeomanUi,
             "uiOptions.messages.artifact_with_name_generated",
             (_: string) => ""
@@ -1635,7 +1635,7 @@ describe("yeomanui unit test", () => {
       expect(
         doGeneratorDoneSpy.calledWith(
           true,
-          _.get(
+          get(
             yeomanUi,
             "uiOptions.messages.artifact_with_name_generated",
             (_: string) => ""

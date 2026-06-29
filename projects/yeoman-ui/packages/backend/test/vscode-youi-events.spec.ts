@@ -1,8 +1,8 @@
 import { vscode } from "./mockUtil";
 import { expect } from "chai";
 import { createSandbox, SinonSandbox, SinonMock } from "sinon";
-import * as _ from "lodash";
-import {
+import { set } from "lodash";
+import type {
   IMethod,
   IPromiseCallbacks,
   IRpc,
@@ -22,7 +22,6 @@ describe("vscode-youi-events unit test", () => {
   let commandsMock: SinonMock;
   let workspaceMock: SinonMock;
   let eventsMock: SinonMock;
-  let loggerWrapperMock: SinonMock;
   let generatorOutputMock: SinonMock;
   let rpcMock: SinonMock;
   let loggerMock: SinonMock;
@@ -81,16 +80,16 @@ describe("vscode-youi-events unit test", () => {
 
   before(() => {
     sandbox = createSandbox();
+    loggerWrapper._setTestLogger(testLogger);
   });
 
   after(() => {
+    loggerWrapper._resetTestLogger();
     sandbox.restore();
   });
 
   beforeEach(() => {
     const webViewPanel: any = { dispose: () => true };
-    loggerWrapperMock = sandbox.mock(loggerWrapper);
-    loggerWrapperMock.expects("getClassLogger").returns(testLogger);
     events = new VSCodeYouiEvents(
       rpc,
       webViewPanel,
@@ -113,7 +112,6 @@ describe("vscode-youi-events unit test", () => {
     eventsMock.verify();
     commandsMock.verify();
     workspaceMock.verify();
-    loggerWrapperMock.verify();
     generatorOutputMock.verify();
     loggerMock.verify();
     rpcMock.verify();
@@ -257,7 +255,7 @@ describe("vscode-youi-events unit test", () => {
   });
 
   it("doGeneratorInstall", () => {
-    _.set(vscode, "ProgressLocation.Notification", 15);
+    set(vscode, "ProgressLocation.Notification", 15);
     windowMock
       .expects("withProgress")
       .withArgs({
@@ -484,8 +482,6 @@ describe("vscode-youi-events unit test", () => {
         .withArgs("vscode.openFolder")
         .resolves();
       workspaceMock.expects("updateWorkspaceFolders").withArgs(0, null);
-      fsMock.expects("existsSync").returns(false);
-      fsMock.expects("writeFileSync");
       uriMock.expects("file").twice().returns({ fsPath: "testFsPath" });
       return events.doGeneratorDone(
         true,
@@ -512,9 +508,6 @@ describe("vscode-youi-events unit test", () => {
         .resolves();
       workspaceMock.expects("updateWorkspaceFolders").withArgs(0, null);
 
-      fsMock.expects("existsSync").returns(false);
-      fsMock.expects("writeFileSync");
-
       events.doGeneratorDone(
         true,
         "success message",
@@ -539,9 +532,6 @@ describe("vscode-youi-events unit test", () => {
         .withArgs("vscode.openFolder")
         .resolves();
 
-      fsMock.expects("existsSync").returns(false);
-      fsMock.expects("writeFileSync");
-
       events.doGeneratorDone(
         true,
         "success message",
@@ -561,9 +551,6 @@ describe("vscode-youi-events unit test", () => {
           messages.default.artifact_generated_project_saved_for_future
         )
         .resolves();
-
-      fsMock.expects("existsSync").returns(false);
-      fsMock.expects("writeFileSync");
 
       events.doGeneratorDone(
         true,

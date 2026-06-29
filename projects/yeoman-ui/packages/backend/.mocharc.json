@@ -1,5 +1,5 @@
 {
-  "require": ["ts-node/register/transpile-only", "source-map-support/register"],
+  "loader": ["ts-node/esm", "./test/loaderHooks.mjs"],
   "spec": ["test/**/*.spec.ts"],
   "timeout": 5000
 }
