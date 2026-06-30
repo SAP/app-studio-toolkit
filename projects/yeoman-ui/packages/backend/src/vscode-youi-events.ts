@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { isEmpty, isNil, set } from "lodash";
+import _ from "lodash";
 import { YouiEvents } from "./youi-events";
 import type { IRpc } from "@sap-devx/webview-rpc/out.ext/rpc-common";
 import { GeneratorOutput } from "./vscode-output";
@@ -92,7 +92,7 @@ export class VSCodeYouiEvents implements YouiEvents {
     type: string,
     targetFolderPath?: string
   ): void {
-    set(this.webviewPanel, Constants.GENERATOR_COMPLETED, success);
+    _.set(this.webviewPanel, Constants.GENERATOR_COMPLETED, success);
     this.doClose();
     void this.showDoneMessage(
       success,
@@ -151,7 +151,7 @@ export class VSCodeYouiEvents implements YouiEvents {
     const openOutput: any = this.messages.show_progress_button;
     const buttons: string[] = [];
     buttons.push(openOutput);
-    if (isEmpty(message)) {
+    if (_.isEmpty(message)) {
       message = this.messages.show_progress_message;
     }
     this.output.appendLine(message);
@@ -209,7 +209,7 @@ export class VSCodeYouiEvents implements YouiEvents {
     this.resolveInstallingProgress();
 
     if (success) {
-      if (!isNil(targetFolderPath)) {
+      if (!_.isNil(targetFolderPath)) {
         const folderUri = getFolderUri(targetFolderPath);
         if (folderUri) {
           const folderUriConfig: FolderUriConfig = getValidFolderUri(folderUri);
@@ -242,7 +242,7 @@ export class VSCodeYouiEvents implements YouiEvents {
         uri: targetFolderUri,
       };
       this.addOrCreateProjectWorkspace(wsFoldersToAdd);
-      if (isNil(vscode.workspace.workspaceFile)) {
+      if (_.isNil(vscode.workspace.workspaceFile)) {
         const workspaceFileUri =
           WorkspaceFile.createWsWithPath(targetFolderUri);
         void vscode.commands.executeCommand(
@@ -271,7 +271,7 @@ export class VSCodeYouiEvents implements YouiEvents {
         name: uniqueProjectName,
       };
       this.addOrCreateProjectWorkspace(wsFoldersToAdd);
-      if (isNil(vscode.workspace.workspaceFile)) {
+      if (_.isNil(vscode.workspace.workspaceFile)) {
         const workspaceFileUri = WorkspaceFile.createWsWithUri(folderUriConfig);
         void vscode.commands.executeCommand(
           "vscode.openFolder",

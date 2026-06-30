@@ -7,7 +7,7 @@ import { RpcExtension } from "@sap-devx/webview-rpc/out.ext/rpc-extension";
 import { createFlowPromise, FlowPromise } from "../utils/promise";
 import * as cheerio from "cheerio";
 import { AnalyticsWrapper } from "../usage-report/usage-analytics-wrapper";
-import { get } from "lodash";
+import _ from "lodash";
 import { Constants } from "../utils/constants";
 
 export abstract class AbstractWebviewPanel {
@@ -124,16 +124,16 @@ export abstract class AbstractWebviewPanel {
 
   protected dispose() {
     this.setFocused(false);
-    const isGeneratorCompleted = get(
+    const isGeneratorCompleted = _.get(
       this.webViewPanel,
       Constants.GENERATOR_COMPLETED
     );
-    const yeomanui: any = get(this, "yeomanui");
+    const yeomanui: any = _.get(this, "yeomanui");
     // Verify the dispose happened before the user has finished the wizard and not by clicking "Finish".
     // When user clicks "Finish" the generated has ended and the success/failure result will be set in "GENERATOR_COMPLETED".
     // If it has not been ended, "GENERATOR_COMPLETED" will be undefined.
     if (yeomanui && isGeneratorCompleted === undefined) {
-      const promptItems: any = get(yeomanui, "gen.prompts.items");
+      const promptItems: any = _.get(yeomanui, "gen.prompts.items");
       if (promptItems) {
         const currentPromptCount = yeomanui.promptCount;
         const numOfPromopts = promptItems.length;

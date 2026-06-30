@@ -1,15 +1,4 @@
-import {
-  compact,
-  difference,
-  filter,
-  get,
-  intersection,
-  isArray,
-  isEmpty,
-  isString,
-  map,
-  trim,
-} from "lodash";
+import _ from "lodash";
 
 export enum GeneratorType {
   project = "project",
@@ -17,12 +6,12 @@ export enum GeneratorType {
 }
 
 function getCategories(filterObject?: any): string[] {
-  const categories: string[] = get(filterObject, "categories", []);
-  if (isArray(categories)) {
-    const strValues = filter(categories, (category) => {
-      return isString(category);
+  const categories: string[] = _.get(filterObject, "categories", []);
+  if (_.isArray(categories)) {
+    const strValues = _.filter(categories, (category) => {
+      return _.isString(category);
     });
-    if (isEmpty(difference(categories, strValues))) {
+    if (_.isEmpty(_.difference(categories, strValues))) {
       return categories;
     }
   }
@@ -32,19 +21,19 @@ function getCategories(filterObject?: any): string[] {
 
 function getTypes(filterObject?: any): string[] {
   let types: string[] = [];
-  const objectTypes: any = get(
+  const objectTypes: any = _.get(
     filterObject,
     "types",
-    get(filterObject, "type")
+    _.get(filterObject, "type")
   );
-  if (isString(objectTypes)) {
+  if (_.isString(objectTypes)) {
     types.push(objectTypes);
-  } else if (isArray(objectTypes)) {
+  } else if (_.isArray(objectTypes)) {
     // leave only string values
-    types = filter(objectTypes, (type) => isString(type));
+    types = _.filter(objectTypes, (type) => _.isString(type));
   }
 
-  return compact(map(types, trim));
+  return _.compact(_.map(types, _.trim));
 }
 
 export class GeneratorFilter {
@@ -56,7 +45,7 @@ export class GeneratorFilter {
   }
 
   public static hasIntersection(array1: string[], array2: string[]) {
-    return isEmpty(array1) || !isEmpty(intersection(array1, array2));
+    return _.isEmpty(array1) || !_.isEmpty(_.intersection(array1, array2));
   }
 
   private constructor(

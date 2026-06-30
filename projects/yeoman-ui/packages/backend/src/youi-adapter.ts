@@ -1,7 +1,7 @@
 import { YeomanUI } from "./yeomanui";
 import { YouiEvents } from "./youi-events";
 import yoUiLog from "./utils/log";
-import { isFunction, get } from "lodash";
+import _ from "lodash";
 import chalk from "chalk";
 import type { Questions } from "yeoman-environment/lib/adapter";
 import { Output } from "./output";
@@ -47,13 +47,13 @@ export class YouiAdapter {
       const result: any = await (this.yeomanui.showPrompt(
         questions
       ) as Promise<T2>);
-      if (isFunction(cb)) {
+      if (_.isFunction(cb)) {
         try {
           return await cb(result); // eslint-disable-line @typescript-eslint/await-thenable
         } catch (err) {
           this.youiEvents.doGeneratorDone(
             false,
-            get(err, "message", "Template Wizard detected an error"),
+            _.get(err, "message", "Template Wizard detected an error"),
             "",
             "files"
           );

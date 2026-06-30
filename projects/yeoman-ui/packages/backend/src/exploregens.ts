@@ -1,4 +1,4 @@
-import { compact, find, get, isEmpty, map, remove, uniq } from "lodash";
+import _ from "lodash";
 import type { IChildLogger } from "@vscode-logging/logger";
 import type { IRpc } from "@sap-devx/webview-rpc/out.ext/rpc-common";
 import { NpmCommand, PackagesData } from "./utils/npm";
@@ -119,16 +119,16 @@ export class ExploreGens {
   private async updateAllInstalledGenerators() {
     const gensToUpdate: string[] =
       await Env.getGeneratorNamesWithOutdatedVersion();
-    if (!isEmpty(gensToUpdate)) {
+    if (!_.isEmpty(gensToUpdate)) {
       this.logger.debug(messages.auto_update_started);
       const statusBarMessage = this.setStatusBarMessage(
         messages.auto_update_started
       );
-      const promises = map(gensToUpdate, (genName) =>
+      const promises = _.map(gensToUpdate, (genName) =>
         this.update(genName, true)
       );
-      const failedToUpdateGens: any[] = compact(await Promise.all(promises));
-      if (!isEmpty(failedToUpdateGens)) {
+      const failedToUpdateGens: any[] = _.compact(await Promise.all(promises));
+      if (!_.isEmpty(failedToUpdateGens)) {
         const errMessage = messages.failed_to_update_gens(failedToUpdateGens);
         this.showAndLogError(errMessage);
       }
@@ -152,7 +152,7 @@ export class ExploreGens {
       recommended
     );
 
-    const filteredGenerators = map(packagesData.packages, (meta) => {
+    const filteredGenerators = _.map(packagesData.packages, (meta) => {
       const genName = meta.package.name;
       const installedGenData = gensData.find(
         (genData) => genData.generatorPackageJson.name === genName
@@ -179,7 +179,7 @@ export class ExploreGens {
   }
 
   private getErrorMessage(error: Error): string {
-    return get(error, "stack", get(error, "message", error.toString()));
+    return _.get(error, "stack", _.get(error, "message", error.toString()));
   }
 
   private showAndLogError(messagePrefix: string, error?: Error) {
@@ -193,7 +193,7 @@ export class ExploreGens {
 
   private getRecommendedQuery(): string[] {
     const recommended: string[] = this.getWsConfig().get(this.SEARCH_QUERY, []);
-    return uniq(recommended);
+    return _.uniq(recommended);
   }
 
   private notifyGeneratorsChange() {
@@ -256,7 +256,7 @@ export class ExploreGens {
     gen: any,
     isAutoUpdate = false
   ): Promise<string | undefined> {
-    const genName = get(gen.package, "name", gen);
+    const genName = _.get(gen.package, "name", gen);
     this.addToHandled(genName, GenState.updating);
     const updatingMessage = messages.updating(genName);
     const statusbarMessage = isAutoUpdate
@@ -304,16 +304,16 @@ export class ExploreGens {
   }
 
   private removeFromHandled(genName: string) {
-    remove(this.gensBeingHandled, (gen) => {
+    _.remove(this.gensBeingHandled, (gen) => {
       return gen.name === genName;
     });
   }
 
   private getHandlingState(genName: string) {
-    const gen = find(this.gensBeingHandled, (gen) => {
+    const gen = _.find(this.gensBeingHandled, (gen) => {
       return gen.name === genName;
     });
 
-    return get(gen, "state");
+    return _.get(gen, "state");
   }
 }

@@ -1,4 +1,4 @@
-import { set } from "lodash";
+import _ from "lodash";
 import { join } from "path";
 import { URI } from "vscode-uri";
 import { createRequire } from "module";
@@ -54,7 +54,7 @@ const workspace = {
 const oRegisteredCommands = {};
 const commands = {
   registerCommand: (id: string, cmd: any) => {
-    set(oRegisteredCommands, id, cmd);
+    _.set(oRegisteredCommands, id, cmd);
     return Promise.resolve(oRegisteredCommands);
   },
   executeCommand: returnPromise,

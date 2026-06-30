@@ -1,4 +1,4 @@
-import { isEmpty, get, isNil, assign } from "lodash";
+import _ from "lodash";
 import { join } from "path";
 import * as vscode from "vscode";
 import { YeomanUI } from "../yeomanui";
@@ -26,14 +26,14 @@ export class YeomanUIPanel extends AbstractWebviewPanel {
   }
 
   public notifyGeneratorsChange(args?: any[]) {
-    const yeomanUi = get(this, "yeomanui");
-    this.installGens = !yeomanUi && isEmpty(args) ? undefined : args;
+    const yeomanUi = _.get(this, "yeomanui");
+    this.installGens = !yeomanUi && _.isEmpty(args) ? undefined : args;
     if (yeomanUi) {
       if (!this.installGens) {
         void yeomanUi._notifyGeneratorsChange();
       } else {
         void yeomanUi._notifyGeneratorsInstall(this.installGens);
-        if (isEmpty(this.installGens)) {
+        if (_.isEmpty(this.installGens)) {
           Env.loadNpmPath(true); // force to reload the env existing npm paths
           void yeomanUi._notifyGeneratorsChange();
           this.installGens = undefined;
@@ -90,9 +90,13 @@ export class YeomanUIPanel extends AbstractWebviewPanel {
   ) {
     super.setWebviewPanel(webViewPanel);
 
-    this.messages = assign({}, backendMessages, get(uiOptions, "messages", {}));
-    const filter = GeneratorFilter.create(get(uiOptions, "filter"));
-    const generator = get(uiOptions, "generator");
+    this.messages = _.assign(
+      {},
+      backendMessages,
+      _.get(uiOptions, "messages", {})
+    );
+    const filter = GeneratorFilter.create(_.get(uiOptions, "filter"));
+    const generator = _.get(uiOptions, "generator");
 
     this.rpc = new RpcExtension(
       this.webViewPanel.webview,
@@ -120,7 +124,7 @@ export class YeomanUIPanel extends AbstractWebviewPanel {
         filter,
         messages: this.messages,
         installGens: this.installGens,
-        data: get(uiOptions, "data"),
+        data: _.get(uiOptions, "data"),
       },
       this.flowPromise.state
     );
@@ -165,7 +169,7 @@ export class YeomanUIPanel extends AbstractWebviewPanel {
 
     let uri;
     try {
-      if (isEmpty(currentPath)) {
+      if (_.isEmpty(currentPath)) {
         throw new Error("Empty path");
       }
       uri = vscode.Uri.file(currentPath);
@@ -175,7 +179,7 @@ export class YeomanUIPanel extends AbstractWebviewPanel {
         fileSchemeWorkspaces.length > 0
           ? fileSchemeWorkspaces[0].uri
           : undefined;
-      if (isNil(uri)) {
+      if (_.isNil(uri)) {
         uri = vscode.Uri.file(join(homedir()));
       }
     }
@@ -186,7 +190,7 @@ export class YeomanUIPanel extends AbstractWebviewPanel {
         canSelectFolders,
         defaultUri: uri,
       });
-      return get(filePath, "[0].fsPath", currentPath);
+      return _.get(filePath, "[0].fsPath", currentPath);
     } catch (error) {
       return currentPath;
     }

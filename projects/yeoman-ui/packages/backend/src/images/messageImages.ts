@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { get } from "lodash";
+import _ from "lodash";
 import { Severity } from "@sap-devx/yeoman-ui-types";
 import { Constants } from "../utils/constants";
 
@@ -29,8 +29,8 @@ export function getImage(state: Severity) {
   if (state === Severity.error) {
     return Constants.IS_IN_BAS
       ? errorTheiaDark
-      : get(vscode, "window.activeColorTheme.kind") ===
-        get(vscode, "ColorThemeKind.Light")
+      : _.get(vscode, "window.activeColorTheme.kind") ===
+        _.get(vscode, "ColorThemeKind.Light")
       ? errorVSCodeLight
       : errorVSCodeDark;
   } else if (state === Severity.warning) {

@@ -1,17 +1,4 @@
-import {
-  compact,
-  get,
-  isEmpty,
-  isNil,
-  map,
-  orderBy,
-  size,
-  split,
-  union,
-  unionBy,
-  uniq,
-  uniqBy,
-} from "lodash";
+import _ from "lodash";
 import { homedir } from "os";
 import * as path from "path";
 import { existsSync } from "fs";
@@ -67,7 +54,7 @@ class EnvUtil {
   }
 
   public loadNpmPath(force = false) {
-    if (isNil(this.existingNpmPathsPromise) || force === true) {
+    if (_.isNil(this.existingNpmPathsPromise) || force === true) {
       this.existingNpmPathsPromise = this.getExistingNpmPath().then((paths) => {
         this.logger?.debug("existing npm paths", { paths: paths.join(";") });
         return paths;
@@ -95,12 +82,12 @@ class EnvUtil {
         return isWin32 ? resPath : path.join(path.sep, resPath);
       });
     // uniq and existing only paths (global npm path is always added)
-    const paths: string[] = union(globalNpmPaths, userNpmPaths).filter(
+    const paths: string[] = _.union(globalNpmPaths, userNpmPaths).filter(
       (npmPath: string) => existsSync(npmPath)
     );
     paths.push(await NpmCommand.getGlobalNodeModulesPath());
 
-    return uniq(paths);
+    return _.uniq(paths);
   }
 
   private createEnvInstance(
@@ -147,16 +134,16 @@ class EnvUtil {
     });
 
     const customNpmPath = customLocation.getNodeModulesPath();
-    const customInstalledGensMeta = isEmpty(customNpmPath)
+    const customInstalledGensMeta = _.isEmpty(customNpmPath)
       ? []
       : this.lookupGensMeta({ npmPaths: [customNpmPath] });
 
-    const gensMeta = unionBy(
+    const gensMeta = _.unionBy(
       customInstalledGensMeta,
       globallyInstalledGensMeta,
       NAMESPACE
     );
-    return orderBy(gensMeta, [NAMESPACE], ["asc"]);
+    return _.orderBy(gensMeta, [NAMESPACE], ["asc"]);
   }
 
   private async getGenMetadata(
@@ -204,7 +191,7 @@ class EnvUtil {
   public async getAllGeneratorNamespaces(): Promise<string[]> {
     const gensMeta: Environment.LookupGeneratorMeta[] =
       await this.getGeneratorsMeta(false);
-    return map(gensMeta, (genMeta) => genMeta.namespace);
+    return _.map(gensMeta, (genMeta) => genMeta.namespace);
   }
 
   public async createEnvAndGen(
@@ -222,7 +209,7 @@ class EnvUtil {
       adapter
     );
     // @types/yeoman-environment bug: generatorPath is still not exposed on LookupGeneratorMeta
-    env.register(get(meta, "generatorPath"), genNamespace, meta.packagePath);
+    env.register(_.get(meta, "generatorPath"), genNamespace, meta.packagePath);
     let gen: any = env.create(genNamespace, { options } as any);
 
     // Handle async generator creation (ESM modules)
@@ -255,7 +242,7 @@ class EnvUtil {
       );
     });
     // remove duplicates
-    additional = uniqBy(additional, "namespace");
+    additional = _.uniqBy(additional, "namespace");
     // get additional generators data
     if (additional.length) {
       const additionalGensMeta = this.allInstalledGensMeta.filter((genMeta) =>
@@ -281,7 +268,7 @@ class EnvUtil {
       gensData.push(...additionalGensData);
     }
 
-    return compact(gensData);
+    return _.compact(gensData);
   }
 
   public async getGeneratorNamesWithOutdatedVersion(): Promise<string[]> {
@@ -294,8 +281,8 @@ class EnvUtil {
 
   public getGeneratorFullName(genNamespace: string): string {
     const genName = Environment.namespaceToName(genNamespace);
-    const parts = split(genName, "/");
-    return size(parts) === 1
+    const parts = _.split(genName, "/");
+    return _.size(parts) === 1
       ? `${GENERATOR}${genName}`
       : `${parts[0]}/${GENERATOR}${parts[1]}`;
   }
