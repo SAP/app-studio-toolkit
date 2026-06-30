@@ -1,4 +1,4 @@
-import _ from "lodash";
+import lodash from "lodash";
 import { join } from "path";
 import * as vscode from "vscode";
 import { YeomanUI } from "../yeomanui";
@@ -18,6 +18,8 @@ import { notifyGeneratorsInstallationProgress } from "../utils/generators-instal
 import messages from "../messages";
 import { getFileSchemeWorkspaceFolders } from "../utils/workspaceFolders";
 
+const { assign, get, isEmpty, isNil } = lodash;
+
 export class YeomanUIPanel extends AbstractWebviewPanel {
   public static YEOMAN_UI = "Application Wizard";
 
@@ -26,14 +28,14 @@ export class YeomanUIPanel extends AbstractWebviewPanel {
   }
 
   public notifyGeneratorsChange(args?: any[]) {
-    const yeomanUi = _.get(this, "yeomanui");
-    this.installGens = !yeomanUi && _.isEmpty(args) ? undefined : args;
+    const yeomanUi = get(this, "yeomanui");
+    this.installGens = !yeomanUi && isEmpty(args) ? undefined : args;
     if (yeomanUi) {
       if (!this.installGens) {
         void yeomanUi._notifyGeneratorsChange();
       } else {
         void yeomanUi._notifyGeneratorsInstall(this.installGens);
-        if (_.isEmpty(this.installGens)) {
+        if (isEmpty(this.installGens)) {
           Env.loadNpmPath(true); // force to reload the env existing npm paths
           void yeomanUi._notifyGeneratorsChange();
           this.installGens = undefined;
@@ -90,13 +92,9 @@ export class YeomanUIPanel extends AbstractWebviewPanel {
   ) {
     super.setWebviewPanel(webViewPanel);
 
-    this.messages = _.assign(
-      {},
-      backendMessages,
-      _.get(uiOptions, "messages", {})
-    );
-    const filter = GeneratorFilter.create(_.get(uiOptions, "filter"));
-    const generator = _.get(uiOptions, "generator");
+    this.messages = assign({}, backendMessages, get(uiOptions, "messages", {}));
+    const filter = GeneratorFilter.create(get(uiOptions, "filter"));
+    const generator = get(uiOptions, "generator");
 
     this.rpc = new RpcExtension(
       this.webViewPanel.webview,
@@ -124,7 +122,7 @@ export class YeomanUIPanel extends AbstractWebviewPanel {
         filter,
         messages: this.messages,
         installGens: this.installGens,
-        data: _.get(uiOptions, "data"),
+        data: get(uiOptions, "data"),
       },
       this.flowPromise.state
     );
@@ -169,7 +167,7 @@ export class YeomanUIPanel extends AbstractWebviewPanel {
 
     let uri;
     try {
-      if (_.isEmpty(currentPath)) {
+      if (isEmpty(currentPath)) {
         throw new Error("Empty path");
       }
       uri = vscode.Uri.file(currentPath);
@@ -179,7 +177,7 @@ export class YeomanUIPanel extends AbstractWebviewPanel {
         fileSchemeWorkspaces.length > 0
           ? fileSchemeWorkspaces[0].uri
           : undefined;
-      if (_.isNil(uri)) {
+      if (isNil(uri)) {
         uri = vscode.Uri.file(join(homedir()));
       }
     }
@@ -190,7 +188,7 @@ export class YeomanUIPanel extends AbstractWebviewPanel {
         canSelectFolders,
         defaultUri: uri,
       });
-      return _.get(filePath, "[0].fsPath", currentPath);
+      return get(filePath, "[0].fsPath", currentPath);
     } catch (error) {
       return currentPath;
     }

@@ -1,7 +1,9 @@
 import stripAnsi from "strip-ansi";
-import _ from "lodash";
+import lodash from "lodash";
 import { Output } from "../output";
 import { YeomanUI } from "../yeomanui";
+
+const { get } = lodash;
 
 export default (output: Output, yeomanUi: YeomanUI) => {
   function pad(methodName: string) {
@@ -12,7 +14,7 @@ export default (output: Output, yeomanUi: YeomanUI) => {
 
   function getMessage(args: any, methodName = "") {
     const prefix = `${pad(methodName)} `;
-    const message = stripAnsi(_.get(args, "[0]", ""));
+    const message = stripAnsi(get(args, "[0]", ""));
     return `${prefix}${message}`;
   }
 

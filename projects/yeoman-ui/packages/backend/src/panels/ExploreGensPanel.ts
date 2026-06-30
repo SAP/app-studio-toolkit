@@ -4,8 +4,10 @@ import { ExploreGens } from "../exploregens";
 import { AbstractWebviewPanel } from "./AbstractWebviewPanel";
 import { RpcExtension } from "@sap-devx/webview-rpc/out.ext/rpc-extension";
 import { getWebviewRpcLibraryLogger } from "../logger/logger-wrapper";
-import _ from "lodash";
+import lodash from "lodash";
 import * as messages from "../messages";
+
+const { get, isNil } = lodash;
 
 export class ExploreGensPanel extends AbstractWebviewPanel {
   public constructor(context: Partial<ExtensionContext>) {
@@ -29,7 +31,7 @@ export class ExploreGensPanel extends AbstractWebviewPanel {
   }
 
   private async installGenOnPanelOpenIfNeeded(uiOptions?: unknown) {
-    const genFullName = _.get(uiOptions, "package.name");
+    const genFullName = get(uiOptions, "package.name");
     if (genFullName) {
       try {
         await this.exploreGens.setGenFilter(genFullName);
@@ -44,7 +46,7 @@ export class ExploreGensPanel extends AbstractWebviewPanel {
   public exploreGens: ExploreGens;
 
   public async loadWebviewPanel(uiOptions?: unknown) {
-    if (this.webViewPanel && _.isNil(uiOptions)) {
+    if (this.webViewPanel && isNil(uiOptions)) {
       this.webViewPanel.reveal();
     } else {
       await super.loadWebviewPanel(uiOptions);
