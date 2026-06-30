@@ -1,10 +1,10 @@
 import * as vscode from "vscode"; // NOSONAR
 import {
   getExtensionLogger,
+  getExtensionLoggerOpts,
   IChildLogger,
   IVSCodeExtLogger,
   LogLevel,
-  getExtensionLoggerOpts,
 } from "@vscode-logging/logger";
 import {
   listenToLogSettingsChanges,

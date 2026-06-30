@@ -1,8 +1,8 @@
 import type { ExtensionContext } from "vscode";
-import type { BASTelemetryClient } from "@sap/swa-for-sapbas-vsx";
 import {
   initTelemetrySettings,
   BASClientFactory,
+  BASTelemetryClient,
 } from "@sap/swa-for-sapbas-vsx";
 import { getLogger } from "../logger/logger-wrapper";
 import * as path from "path";

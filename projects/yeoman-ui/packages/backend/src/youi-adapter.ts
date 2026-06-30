@@ -1,7 +1,7 @@
 import { YeomanUI } from "./yeomanui";
 import { YouiEvents } from "./youi-events";
 import yoUiLog from "./utils/log";
-import { get, isFunction } from "lodash";
+import { isFunction, get } from "lodash";
 import chalk from "chalk";
 import type { Questions } from "yeoman-environment/lib/adapter";
 import { Output } from "./output";
