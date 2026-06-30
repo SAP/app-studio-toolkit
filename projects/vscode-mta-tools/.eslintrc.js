@@ -32,6 +32,10 @@ module.exports = {
         "plugin:@typescript-eslint/recommended",
       ],
       rules: {
+        "@typescript-eslint/no-unused-vars": [
+          "error",
+          { caughtErrorsIgnorePattern: "^_" },
+        ],
         "@typescript-eslint/no-use-before-define": [
           "error",
           { functions: false },

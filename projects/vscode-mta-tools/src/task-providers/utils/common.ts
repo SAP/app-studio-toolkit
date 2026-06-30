@@ -12,9 +12,7 @@ import {
 } from "vscode";
 import { taskProvidersMessages } from "../../i18n/messages";
 import { getLogger } from "../../logger/logger-wrapper";
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const datauri = require("datauri");
+import datauri from "datauri";
 
 type ChildProcessResult = {
   exitCode: number | string;
@@ -27,7 +25,7 @@ export function getImage(imagePath: string): string {
   let image;
   try {
     image = datauri.sync(imagePath);
-  } catch (error) {
+  } catch (_error) {
     // image = DEFAULT_IMAGE;
   }
   return image;

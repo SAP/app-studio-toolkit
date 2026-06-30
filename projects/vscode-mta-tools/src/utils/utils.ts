@@ -46,7 +46,7 @@ export class Utils {
       const jsonStr = await readFile(configFilePath, "utf8");
       const configJson = parse(jsonStr);
       return configJson[field];
-    } catch (error) {
+    } catch (_error) {
       // empty or non existing file
       logger.error(`Could not fetch field from config file`);
       return;
@@ -169,7 +169,7 @@ export class Utils {
       ) {
         return true;
       }
-    } catch (e) {
+    } catch (_e) {
       // User is not logged in to Cloud Foundry
     }
     return false;
