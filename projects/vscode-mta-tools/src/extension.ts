@@ -27,8 +27,8 @@ export async function activate(
   const swa = new SWATracker(
     "SAPSE",
     "vscode-mta-tools",
+    /* istanbul ignore next */
     (err: string | number) => {
-      /* istanbul ignore next - we ignore error code `204` because it appears in every user interaction */
       if (err !== 204) {
         logger.error(err.toString());
       }
@@ -60,6 +60,7 @@ export async function activate(
   await registerValidation(context.subscriptions);
 
   return {
+    /* istanbul ignore next */
     getTaskEditorContributors() {
       const contributors = new Map<
         string,

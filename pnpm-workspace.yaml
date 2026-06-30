@@ -1,6 +1,7 @@
 packages:
   - 'packages/*'
   - 'projects/*/packages/*'
+  - 'projects/vscode-mta-tools'
   - 'examples/*'
 allowBuilds:
   '@vscode/vsce-sign': true
@@ -9,5 +10,6 @@ allowBuilds:
   ejs: true
   es5-ext: true
   esbuild: true
+  husky: false
   keytar: true
   utf-8-validate: true

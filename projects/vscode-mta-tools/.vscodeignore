@@ -1,21 +1,17 @@
-# The node modules are bundled
-node_modules
+# Exclude everything by default (handles pnpm symlinks and hoisted node_modules)
+**
 
-# The VSCode Extension's dev artifacts
-.idea/**
-.vscode/**
-.vscode-test/**
-.nyc_output/**
-.circleci/**
-.github/**
-coverage/**
-tests/**
-github-rel-env/**
+# Webpack bundle and MTA binary
+!dist/
+dist/src/**
+dist/tests/**
 
-# Compiled code is in dist
-out/**
+# Source maps reference the original TypeScript sources
+!src/
 
-# All files in the root folder (except package.json) should not be packaged
-*
-# Keep README.md
+# Extension metadata
+!package.json
 !README.md
+!CHANGELOG.md
+!LICENSE
+!LICENSES

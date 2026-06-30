@@ -5,6 +5,7 @@ import { SWATracker } from "@sap/swa-for-sapbas-vsx";
 export type ISWATracker = Pick<SWATracker, "track">;
 
 const SWA_NOOP: ISWATracker = {
+  /* istanbul ignore next */
   track(): void {},
 };
 
