@@ -49,6 +49,7 @@ describe("extension unit test", () => {
     });
 
     it("create createWsWithPath", () => {
+      fs.mkdirSync(Constants.HOMEDIR_PROJECTS, { recursive: true });
       const targetFolderPath = normalize(
         join(Constants.HOMEDIR_PROJECTS, "../tmp/targetFolderPath")
       );
@@ -72,6 +73,7 @@ describe("extension unit test", () => {
     });
 
     it("workspace file exists with isUri true", () => {
+      fs.mkdirSync(Constants.HOMEDIR_PROJECTS, { recursive: true });
       const targetFolderPath = normalize(
         join(Constants.HOMEDIR_PROJECTS, "../projects/tmp/targetFolderPath")
       );
