@@ -248,6 +248,18 @@ module.exports = class extends Generator {
         when: () => _.isNil(this._getOption("confirmHungry")),
       },
       {
+        type: "confirm",
+        name: "outsideDining",
+        message: "Would you like to sit outside?",
+        labelTrue: "Outside please",
+        labelFalse: "Indoors please",
+        guiOptions: {
+          breadcrumb: true,
+        },
+        default: true,
+        when: () => _.isNil(this._getOption("outsideDining")),
+      },
+      {
         type: "input",
         guiOptions: {
           type: "radio",
