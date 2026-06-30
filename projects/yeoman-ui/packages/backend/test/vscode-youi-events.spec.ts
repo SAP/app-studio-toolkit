@@ -1,7 +1,7 @@
 import { vscode } from "./mockUtil";
 import { expect } from "chai";
 import { createSandbox, SinonSandbox, SinonMock } from "sinon";
-import { set } from "lodash";
+import _ from "lodash";
 import type {
   IMethod,
   IPromiseCallbacks,
@@ -262,7 +262,7 @@ describe("vscode-youi-events unit test", () => {
   });
 
   it("doGeneratorInstall", () => {
-    set(vscode, "ProgressLocation.Notification", 15);
+    _.set(vscode, "ProgressLocation.Notification", 15);
     windowMock
       .expects("withProgress")
       .withArgs({
