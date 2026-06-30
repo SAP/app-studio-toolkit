@@ -13,6 +13,7 @@ import { GeneratorOutput } from "../src/vscode-output";
 import { Constants } from "../src/utils/constants";
 import * as loggerWrapper from "../src/logger/logger-wrapper";
 import { VSCodeYouiEvents } from "../src/vscode-youi-events";
+import { WorkspaceFile } from "../src/utils/workspaceFile";
 import * as fs from "fs";
 
 describe("vscode-youi-events unit test", () => {
@@ -27,6 +28,7 @@ describe("vscode-youi-events unit test", () => {
   let loggerMock: SinonMock;
   let uriMock: SinonMock;
   let fsMock: SinonMock;
+  let wsFileMockUri: any;
 
   const testLogger = {
     debug: () => true,
@@ -85,7 +87,6 @@ describe("vscode-youi-events unit test", () => {
 
   after(() => {
     loggerWrapper._resetTestLogger();
-    sandbox.restore();
   });
 
   beforeEach(() => {
@@ -105,6 +106,9 @@ describe("vscode-youi-events unit test", () => {
     rpcMock = sandbox.mock(rpc);
     uriMock = sandbox.mock(vscode.Uri);
     fsMock = sandbox.mock(fs);
+    wsFileMockUri = vscode.Uri.file("/tmp/workspace.code-workspace");
+    sandbox.stub(WorkspaceFile, "createWsWithPath").returns(wsFileMockUri);
+    sandbox.stub(WorkspaceFile, "createWsWithUri").returns(wsFileMockUri);
   });
 
   afterEach(() => {
@@ -117,6 +121,9 @@ describe("vscode-youi-events unit test", () => {
     rpcMock.verify();
     uriMock.verify();
     fsMock.verify();
+    sandbox.restore();
+    sandbox = createSandbox();
+    loggerWrapper._setTestLogger(testLogger);
   });
 
   describe("getAppWizard", () => {
@@ -482,7 +489,7 @@ describe("vscode-youi-events unit test", () => {
         .withArgs("vscode.openFolder")
         .resolves();
       workspaceMock.expects("updateWorkspaceFolders").withArgs(0, null);
-      uriMock.expects("file").twice().returns({ fsPath: "testFsPath" });
+      uriMock.expects("file").once().returns({ fsPath: "testFsPath" });
       return events.doGeneratorDone(
         true,
         "success message",
