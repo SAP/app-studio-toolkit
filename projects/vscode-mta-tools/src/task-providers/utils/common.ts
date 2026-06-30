@@ -12,7 +12,7 @@ import {
 } from "vscode";
 import { taskProvidersMessages } from "../../i18n/messages";
 import { getLogger } from "../../logger/logger-wrapper";
-import datauri from "datauri";
+import * as datauri from "datauri";
 
 type ChildProcessResult = {
   exitCode: number | string;
@@ -22,7 +22,7 @@ type ChildProcessResult = {
 
 /* istanbul ignore next */
 export function getImage(imagePath: string): string {
-  let image;
+  let image = "";
   try {
     image = datauri.sync(imagePath);
   } catch (_error) {
