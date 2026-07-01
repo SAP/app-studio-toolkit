@@ -43,6 +43,10 @@ describe("Tests for answerUtils", () => {
           "value": "No",
         },
         {
+          "label": "Are you sure?",
+          "value": "Yes, I am",
+        },
+        {
           "label": "Restaurant visits (number)",
           "value": "11",
         },

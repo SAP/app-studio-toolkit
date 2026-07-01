@@ -39,7 +39,7 @@ function getTextForAnswer(question, answer) {
   }
 
   if (question.type === "confirm" && typeof answer === "boolean") {
-    return answer ? "Yes" : "No";
+    return answer ? question.labelTrue ?? "Yes" : question.labelFalse ?? "No";
   }
 
   return answer;
