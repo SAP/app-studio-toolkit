@@ -17,5 +17,15 @@ const mockVscode = () => {
   };
 };
 
+export const mockLogger: any = {
+  debug: () => {},
+  info: () => {},
+  error: () => {},
+  warn: () => {},
+  trace: () => {},
+  fatal: () => {},
+  getChildLogger: () => mockLogger,
+};
+
 mockVscode();
 export const vscode = getVscodeMock();

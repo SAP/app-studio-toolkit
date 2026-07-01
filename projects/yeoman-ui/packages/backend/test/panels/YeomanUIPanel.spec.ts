@@ -1,4 +1,4 @@
-import { vscode } from "../mockUtil";
+import { vscode, mockLogger } from "../mockUtil";
 import * as loggerWrapper from "../../src/logger/logger-wrapper";
 import { createSandbox, SinonSandbox, SinonMock, SinonStub } from "sinon";
 import * as YeomanUIPanel from "../../src/panels/YeomanUIPanel";
@@ -24,23 +24,13 @@ describe("YeomanUIPanel unit test", () => {
   let createWebviewPanelStub: SinonStub;
   let trackerWrapperMock: SinonMock;
 
-  const mockLogger: any = {
-    debug: () => {},
-    info: () => {},
-    error: () => {},
-    warn: () => {},
-    trace: () => {},
-    fatal: () => {},
-    getChildLogger: () => mockLogger,
-  };
-
   before(() => {
     sandbox = createSandbox();
-    loggerWrapper._setTestLogger(mockLogger);
+    loggerWrapper.internalApi.setLogger(mockLogger);
   });
 
   after(() => {
-    loggerWrapper._resetTestLogger();
+    loggerWrapper.internalApi.resetLogger();
     sandbox.restore();
   });
 

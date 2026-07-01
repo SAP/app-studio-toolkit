@@ -82,11 +82,11 @@ describe("vscode-youi-events unit test", () => {
 
   before(() => {
     sandbox = createSandbox();
-    loggerWrapper._setTestLogger(testLogger);
+    loggerWrapper.internalApi.setLogger(testLogger);
   });
 
   after(() => {
-    loggerWrapper._resetTestLogger();
+    loggerWrapper.internalApi.resetLogger();
   });
 
   beforeEach(() => {
@@ -123,7 +123,7 @@ describe("vscode-youi-events unit test", () => {
     fsMock.verify();
     sandbox.restore();
     sandbox = createSandbox();
-    loggerWrapper._setTestLogger(testLogger);
+    loggerWrapper.internalApi.setLogger(testLogger);
   });
 
   describe("getAppWizard", () => {

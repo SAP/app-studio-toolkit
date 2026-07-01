@@ -1,4 +1,4 @@
-import { vscode } from "./mockUtil";
+import { vscode, mockLogger } from "./mockUtil";
 import { get } from "lodash";
 import * as loggerWrapper from "../src/logger/logger-wrapper";
 import { expect } from "chai";
@@ -14,23 +14,13 @@ describe("extension commands unit test", () => {
     extensionPath: "testExtensionpath",
   };
 
-  const mockLogger: any = {
-    debug: () => {},
-    info: () => {},
-    error: () => {},
-    warn: () => {},
-    trace: () => {},
-    fatal: () => {},
-    getChildLogger: () => mockLogger,
-  };
-
   before(() => {
     sandbox = createSandbox();
-    loggerWrapper._setTestLogger(mockLogger);
+    loggerWrapper.internalApi.setLogger(mockLogger);
   });
 
   after(() => {
-    loggerWrapper._resetTestLogger();
+    loggerWrapper.internalApi.resetLogger();
     sandbox.restore();
   });
 

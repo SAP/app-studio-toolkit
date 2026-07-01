@@ -124,14 +124,15 @@ export function createExtensionLoggerAndSubscribeToLogSettingsChanges(
   listenToLogSettingsChanges(context);
 }
 
-export function _setTestLogger(mockLogger: any): void {
-  logger = mockLogger;
-}
-
-export function _resetTestLogger(): void {
-  logger = undefined;
-}
-
-export const loggerApi = {
-  createExtensionLoggerAndSubscribeToLogSettingsChanges,
+export const internalApi = {
+  setLogger(mockLogger: any): void {
+    logger = mockLogger;
+  },
+  resetLogger(): void {
+    logger = undefined;
+  },
+  createExtensionLoggerAndSubscribeToLogSettingsChanges:
+    createExtensionLoggerAndSubscribeToLogSettingsChanges as (
+      context: vscode.ExtensionContext
+    ) => void,
 };

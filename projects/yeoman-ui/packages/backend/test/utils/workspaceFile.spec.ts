@@ -10,6 +10,7 @@ import {
 import { Constants } from "../../src/utils/constants";
 import { vscode } from "../mockUtil";
 import * as fs from "fs";
+import { tmpdir } from "os";
 import { join, normalize } from "path";
 import { expect } from "chai";
 import messages from "../../src/messages";
@@ -17,9 +18,15 @@ import messages from "../../src/messages";
 describe("extension unit test", () => {
   let sandbox: SinonSandbox;
   let uriFileStub: SinonStub;
+  const testTmpDir = join(tmpdir(), "yeoman-ui-test-workspace");
 
   before(() => {
     sandbox = createSandbox();
+    fs.mkdirSync(testTmpDir, { recursive: true });
+  });
+
+  after(() => {
+    fs.rmSync(testTmpDir, { recursive: true, force: true });
   });
 
   afterEach(() => {
@@ -29,14 +36,13 @@ describe("extension unit test", () => {
   beforeEach(() => {
     const origFile = vscode.Uri.file.bind(vscode.Uri);
     uriFileStub = sandbox.stub(vscode.Uri, "file").callsFake(origFile);
+    sandbox.stub(Constants, "HOMEDIR_PROJECTS").value(testTmpDir);
   });
 
   describe("create workspace file", () => {
     it("createWs", () => {
-      const tmpDir = join(Constants.HOMEDIR_PROJECTS, "../tmp");
-      fs.mkdirSync(tmpDir, { recursive: true });
       const wsFilePath = normalize(
-        join(tmpDir, "workspace_test.code-workspace")
+        join(testTmpDir, "workspace_test.code-workspace")
       );
       const folderConfig = { path: "relative/path/to/project" };
 
@@ -45,59 +51,25 @@ describe("extension unit test", () => {
       expect(uriFileStub.calledWith(wsFilePath)).to.be.true;
       const written = JSON.parse(fs.readFileSync(wsFilePath, "utf8"));
       expect(written).to.deep.equal({ folders: [folderConfig], settings: {} });
-      fs.unlinkSync(wsFilePath);
     });
 
     it("create createWsWithPath", () => {
-      fs.mkdirSync(Constants.HOMEDIR_PROJECTS, { recursive: true });
-      const targetFolderPath = normalize(
-        join(Constants.HOMEDIR_PROJECTS, "../tmp/targetFolderPath")
+      const targetFolderUri = vscode.Uri.file(
+        join(testTmpDir, "targetFolderPath")
       );
-      const targetFolderUri = vscode.Uri.file(targetFolderPath);
 
-      // Let the real filesystem handle existsSync - cleanup written files after
       expect(() =>
         WorkspaceFile.createWsWithPath(targetFolderUri)
       ).to.not.throw();
-
-      // Cleanup any written workspace files
-      const possiblePaths = [
-        join(Constants.HOMEDIR_PROJECTS, "workspace.code-workspace"),
-        join(Constants.HOMEDIR_PROJECTS, "workspace_test.code-workspace"),
-      ];
-      possiblePaths.forEach((p) => {
-        try {
-          fs.unlinkSync(p);
-        } catch {}
-      });
     });
 
     it("workspace file exists with isUri true", () => {
-      fs.mkdirSync(Constants.HOMEDIR_PROJECTS, { recursive: true });
-      const targetFolderPath = normalize(
-        join(Constants.HOMEDIR_PROJECTS, "../projects/tmp/targetFolderPath")
-      );
-
       const folderConfig: FolderUriConfig = {
-        uri: targetFolderPath,
+        uri: join(testTmpDir, "targetFolderPath"),
         name: "targetFolder",
       };
 
-      // Let the real filesystem handle existsSync - cleanup written files after
       expect(() => WorkspaceFile.createWsWithUri(folderConfig)).to.not.throw();
-
-      // Cleanup any written workspace files
-      for (let i = 0; i <= 5; i++) {
-        const suffix = i === 0 ? "" : `.${i}`;
-        try {
-          fs.unlinkSync(
-            join(
-              Constants.HOMEDIR_PROJECTS,
-              `workspace${suffix}.code-workspace`
-            )
-          );
-        } catch {}
-      }
     });
   });
 

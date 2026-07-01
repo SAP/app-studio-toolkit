@@ -1,7 +1,7 @@
 import { createSandbox, SinonSandbox, SinonMock } from "sinon";
 import * as extension from "../src/extension";
 import { ExtCommands } from "../src/extCommands";
-import { loggerApi } from "../src/logger/logger-wrapper";
+import { internalApi as loggerTestApi } from "../src/logger/logger-wrapper";
 import { AnalyticsWrapper } from "../src/usage-report/usage-analytics-wrapper";
 import { vscode } from "./mockUtil";
 
@@ -25,16 +25,17 @@ describe("extension unit test", () => {
   });
 
   beforeEach(() => {
-    const origLogger =
-      loggerApi.createExtensionLoggerAndSubscribeToLogSettingsChanges;
-    loggerApi.createExtensionLoggerAndSubscribeToLogSettingsChanges = () => {};
+    const origFn =
+      loggerTestApi.createExtensionLoggerAndSubscribeToLogSettingsChanges;
+    loggerTestApi.createExtensionLoggerAndSubscribeToLogSettingsChanges =
+      () => {};
     loggerWrapperStub = {
       restore: () => {
-        loggerApi.createExtensionLoggerAndSubscribeToLogSettingsChanges =
-          origLogger;
+        loggerTestApi.createExtensionLoggerAndSubscribeToLogSettingsChanges =
+          origFn;
       },
       throws: (err: Error) => {
-        loggerApi.createExtensionLoggerAndSubscribeToLogSettingsChanges =
+        loggerTestApi.createExtensionLoggerAndSubscribeToLogSettingsChanges =
           () => {
             throw err;
           };
@@ -53,23 +54,23 @@ describe("extension unit test", () => {
   });
 
   describe("activate", () => {
-    it("commands registration", () => {
+    it("commands registration", async () => {
       trackerWrapperMock.expects("createTracker");
       windowMock.expects("registerWebviewPanelSerializer").withArgs("yeomanui");
       windowMock
         .expects("registerWebviewPanelSerializer")
         .withArgs("exploreGens");
 
-      extension.activate(testContext);
+      await extension.activate(testContext);
     });
 
-    it("logger failure on extension activation", () => {
+    it("logger failure on extension activation", async () => {
       const consoleMock = sandbox.mock(console);
       loggerWrapperStub.throws(new Error("activation error"));
       consoleMock
         .expects("error")
         .withExactArgs("Extension activation failed.", "activation error");
-      extension.activate(null);
+      await extension.activate(null);
       consoleMock.verify();
       consoleMock.restore();
     });
