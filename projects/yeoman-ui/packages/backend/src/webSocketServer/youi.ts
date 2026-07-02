@@ -1,4 +1,4 @@
-import * as WebSocket from "ws";
+import WebSocket from "ws";
 import { RpcExtensionWebSockets } from "@sap-devx/webview-rpc/out.ext/rpc-extension-ws";
 import { YeomanUI } from "../yeomanui";
 import { ServerOutput } from "./server-output";

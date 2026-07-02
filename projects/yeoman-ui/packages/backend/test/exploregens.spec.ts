@@ -1,5 +1,5 @@
 import { vscode } from "./mockUtil";
-import { get } from "lodash";
+import lodash from "lodash";
 import { expect } from "chai";
 import { createSandbox, SinonSandbox, SinonMock } from "sinon";
 import type { IRpc } from "@sap-devx/webview-rpc/out.ext/rpc-common";
@@ -9,6 +9,8 @@ import { Env, GeneratorData } from "../src/utils/env";
 import type { IChildLogger } from "@vscode-logging/logger";
 import { ExploreGens, GenState } from "../src/exploregens";
 import { Constants } from "../src/utils/constants";
+
+const { get } = lodash;
 
 describe("exploregens unit test", () => {
   const sandbox: SinonSandbox = createSandbox();

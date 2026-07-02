@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import { join, sep } from "path";
 import { readFileSync } from "fs";
-import { IChildLogger } from "@vscode-logging/logger";
+import type { IChildLogger } from "@vscode-logging/logger";
 import { getClassLogger } from "../logger/logger-wrapper";
 import { RpcExtension } from "@sap-devx/webview-rpc/out.ext/rpc-extension";
 import { createFlowPromise, FlowPromise } from "../utils/promise";

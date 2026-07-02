@@ -1,19 +1,8 @@
 import lodash from "lodash";
 import { join } from "path";
 import { URI } from "vscode-uri";
-import { createRequire } from "module";
 
 const { set } = lodash;
-
-const _require = createRequire(import.meta.url);
-
-export const getVscode = () => {
-  try {
-    return _require("vscode");
-  } catch (error) {
-    return undefined;
-  }
-};
 
 const _isInTest = process.argv.some((arg) =>
   arg.includes(join("node_modules", "mocha"))
@@ -104,5 +93,3 @@ const vscodeMock = {
 };
 
 export const getVscodeMock = () => vscodeMock;
-
-export const vscode = getVscode() ?? getVscodeMock();

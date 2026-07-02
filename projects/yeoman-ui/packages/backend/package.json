@@ -28,7 +28,7 @@
   },
   "publisher": "SAPOS",
   "type": "module",
-  "main": "./dist/extension.cjs",
+  "main": "./dist/extension.js",
   "scripts": {
     "bundle": "webpack --config webpack.config.cjs --mode production",
     "ci": "npm-run-all clean compile coverage bundle frontend:copy package coverage:copy",
@@ -229,7 +229,7 @@
     "SAPOSS.app-studio-toolkit"
   ],
   "engines": {
-    "vscode": "^1.50.0"
+    "vscode": "^1.100.0"
   },
   "icon": "Wizard_logo.png",
   "pnpm": {

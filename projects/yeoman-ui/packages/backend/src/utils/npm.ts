@@ -6,7 +6,7 @@ import * as customLocation from "./customLocation";
 import * as sudo from "sudo-prompt";
 import * as fs from "fs";
 import messages from "../messages";
-import { vscode } from "./vscodeProxy";
+import * as vscode from "vscode";
 import * as path from "path";
 import * as npmFetch from "npm-registry-fetch";
 import type { LookupGeneratorMeta } from "yeoman-environment";
@@ -123,7 +123,7 @@ class Command {
           { modal: true },
           messages.change_owner_for_global(globalPath),
           this.SET_DEFAULT_LOCATION
-        );
+        ) as Promise<string>;
       }
     }
     // global path/custom path is writable

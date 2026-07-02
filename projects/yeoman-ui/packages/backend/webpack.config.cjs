@@ -18,15 +18,20 @@ const config = {
   node: { global: true },
   entry: ["./src/extension.ts"], // the entry point of this extension, 📖 -> https://webpack.js.org/configuration/entry-context/
   devtool: "source-map",
+  experiments: {
+    outputModule: true,
+  },
   output: {
     // the bundle is stored in the 'dist' folder (check package.json), 📖 -> https://webpack.js.org/configuration/output/
     path: path.resolve(__dirname, "dist"),
-    filename: "extension.cjs",
-    libraryTarget: "commonjs2",
+    filename: "extension.js",
+    library: {
+      type: "module",
+    },
     devtoolModuleFilenameTemplate: "../[resource-path]",
   },
   externals: {
-    vscode: "commonjs vscode",
+    vscode: "module vscode",
     // the vscode-module is created on-the-fly and must be excluded. Add other modules that cannot be webpack'ed, 📖 -> https://webpack.js.org/configuration/externals/
   },
   resolve: {

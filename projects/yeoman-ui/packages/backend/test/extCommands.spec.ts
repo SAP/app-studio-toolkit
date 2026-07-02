@@ -1,9 +1,11 @@
 import { vscode, mockLogger } from "./mockUtil";
-import { get } from "lodash";
+import lodash from "lodash";
 import * as loggerWrapper from "../src/logger/logger-wrapper";
 import { expect } from "chai";
 import { createSandbox, SinonSandbox, SinonMock } from "sinon";
 import { ExtCommands } from "../src/extCommands";
+
+const { get } = lodash;
 
 describe("extension commands unit test", () => {
   let sandbox: SinonSandbox;

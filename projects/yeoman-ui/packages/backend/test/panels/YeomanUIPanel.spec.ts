@@ -6,12 +6,14 @@ import { Env } from "../../src/utils/env";
 import { Constants } from "../../src/utils/constants";
 import { NpmCommand } from "../../src/utils/npm";
 import { YeomanUI } from "../../src/yeomanui";
-import { set } from "lodash";
+import lodash from "lodash";
 import { expect } from "chai";
 import { join } from "path";
 import { homedir } from "os";
 import messages from "../../src/messages";
 import { AnalyticsWrapper } from "../../src/usage-report/usage-analytics-wrapper";
+
+const { set } = lodash;
 
 describe("YeomanUIPanel unit test", () => {
   let sandbox: SinonSandbox;

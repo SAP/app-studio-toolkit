@@ -1,11 +1,12 @@
 import * as vscode from "vscode"; // NOSONAR
-import {
-  getExtensionLogger,
+import vscodeLogger from "@vscode-logging/logger";
+import type {
   getExtensionLoggerOpts,
   IChildLogger,
   IVSCodeExtLogger,
   LogLevel,
 } from "@vscode-logging/logger";
+const { getExtensionLogger } = vscodeLogger;
 import {
   listenToLogSettingsChanges,
   logLoggerDetails,

@@ -4,7 +4,7 @@ import type { IRpc } from "@sap-devx/webview-rpc/out.ext/rpc-common";
 import { NpmCommand, PackagesData } from "./utils/npm";
 import messages from "./exploreGensMessages";
 import { Env, GeneratorData } from "./utils/env";
-import { vscode } from "./utils/vscodeProxy";
+import * as vscode from "vscode";
 import { Constants } from "./utils/constants";
 
 type Disposable = {
@@ -192,7 +192,10 @@ export class ExploreGens {
   }
 
   private getRecommendedQuery(): string[] {
-    const recommended: string[] = this.getWsConfig().get(this.SEARCH_QUERY, []);
+    const recommended: string[] = this.getWsConfig().get(
+      this.SEARCH_QUERY,
+      []
+    ) as string[];
     return _.uniq(recommended);
   }
 

@@ -5,5 +5,4 @@
 !Wizard_logo.png
 !dist/media
 !dist/*.js
-!dist/*.cjs
 !resources
