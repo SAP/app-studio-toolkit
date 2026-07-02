@@ -6,7 +6,6 @@ import type {
   IVSCodeExtLogger,
   LogLevel,
 } from "@vscode-logging/logger";
-const { getExtensionLogger } = vscodeLogger;
 import {
   listenToLogSettingsChanges,
   logLoggerDetails,
@@ -15,6 +14,8 @@ import {
   getLoggingLevelSetting,
   getSourceLocationTrackingSetting,
 } from "./settings";
+
+const { getExtensionLogger } = vscodeLogger;
 
 const YEOMAN_UI_LOGGER_NAME = "yeomanui";
 const YEOMAN_UI = "Application Wizard";
