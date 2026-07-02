@@ -5,6 +5,7 @@ module.exports = {
   include: "**/src/**",
   // TODO: avoid duplication with the exclusions in each package's nyc.config.js
   exclude: [
+    ".vscode-test/**",
     "packages/vscode-dependencies-validation/src/commands.ts",
     "packages/vscode-dependencies-validation/src/logger/logger.ts",
     "packages/vscode-deps-upgrade-tool/src/logger.ts",
