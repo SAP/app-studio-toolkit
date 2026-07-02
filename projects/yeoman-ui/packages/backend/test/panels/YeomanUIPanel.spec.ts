@@ -1,4 +1,4 @@
-import { vscode } from "../mockUtil";
+import { vscode, mockLogger } from "../mockUtil";
 import * as loggerWrapper from "../../src/logger/logger-wrapper";
 import { createSandbox, SinonSandbox, SinonMock, SinonStub } from "sinon";
 import * as YeomanUIPanel from "../../src/panels/YeomanUIPanel";
@@ -6,12 +6,14 @@ import { Env } from "../../src/utils/env";
 import { Constants } from "../../src/utils/constants";
 import { NpmCommand } from "../../src/utils/npm";
 import { YeomanUI } from "../../src/yeomanui";
-import { set } from "lodash";
+import lodash from "lodash";
 import { expect } from "chai";
 import { join } from "path";
 import { homedir } from "os";
 import messages from "../../src/messages";
 import { AnalyticsWrapper } from "../../src/usage-report/usage-analytics-wrapper";
+
+const { set } = lodash;
 
 describe("YeomanUIPanel unit test", () => {
   let sandbox: SinonSandbox;
@@ -19,7 +21,6 @@ describe("YeomanUIPanel unit test", () => {
   let npmUtilsMock: SinonMock;
   let windowMock: SinonMock;
   let commandsMock: SinonMock;
-  let loggerWrapperMock: SinonMock;
   let panel: YeomanUIPanel.YeomanUIPanel;
   let setWebviewPanelStub: SinonStub;
   let createWebviewPanelStub: SinonStub;
@@ -27,21 +28,19 @@ describe("YeomanUIPanel unit test", () => {
 
   before(() => {
     sandbox = createSandbox();
+    loggerWrapper.internalApi.setLogger(mockLogger);
   });
 
   after(() => {
+    loggerWrapper.internalApi.resetLogger();
     sandbox.restore();
   });
 
   beforeEach(() => {
-    loggerWrapperMock = sandbox.mock(loggerWrapper);
     envUtilsMock = sandbox.mock(Env);
     npmUtilsMock = sandbox.mock(NpmCommand);
     windowMock = sandbox.mock(vscode.window);
     commandsMock = sandbox.mock(vscode.commands);
-    loggerWrapperMock
-      .expects("getClassLogger")
-      .withExactArgs("AbstractWebviewPanel");
     panel = new YeomanUIPanel.YeomanUIPanel(vscode.context);
     setWebviewPanelStub = sandbox.stub(panel, "setWebviewPanel");
     createWebviewPanelStub = sandbox.stub(panel, "createWebviewPanel");
@@ -49,7 +48,6 @@ describe("YeomanUIPanel unit test", () => {
   });
 
   afterEach(() => {
-    loggerWrapperMock.verify();
     envUtilsMock.verify();
     npmUtilsMock.verify();
     windowMock.verify();

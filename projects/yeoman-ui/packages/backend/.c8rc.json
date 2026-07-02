@@ -1,5 +1,4 @@
 {
-  "require": ["ts-node/register/transpile-only"],
   "include": ["src/**/*.ts"],
   "exclude": [
     "src/logger/*.ts",
@@ -18,7 +17,6 @@
     "src/messages.ts"
   ],
   "reporter": ["lcov", "text"],
-  "extension": [".ts"],
   "all": true,
   "check-coverage": true,
   "branches": 87,

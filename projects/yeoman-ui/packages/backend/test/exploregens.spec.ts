@@ -1,14 +1,16 @@
 import { vscode } from "./mockUtil";
-import * as _ from "lodash";
+import lodash from "lodash";
 import { expect } from "chai";
 import { createSandbox, SinonSandbox, SinonMock } from "sinon";
-import { IRpc } from "@sap-devx/webview-rpc/out.ext/rpc-common";
+import type { IRpc } from "@sap-devx/webview-rpc/out.ext/rpc-common";
 import messages from "../src/exploreGensMessages";
 import { NpmCommand, PackagesData } from "../src/utils/npm";
 import { Env, GeneratorData } from "../src/utils/env";
-import { IChildLogger } from "@vscode-logging/logger";
+import type { IChildLogger } from "@vscode-logging/logger";
 import { ExploreGens, GenState } from "../src/exploregens";
 import { Constants } from "../src/utils/constants";
+
+const { get } = lodash;
 
 describe("exploregens unit test", () => {
   const sandbox: SinonSandbox = createSandbox();
@@ -58,7 +60,7 @@ describe("exploregens unit test", () => {
     commandsMock = sandbox.mock(vscode.commands);
     exploregens = new ExploreGens(
       childLogger as IChildLogger,
-      _.get(vscode, "context")
+      get(vscode, "context")
     );
     exploregens["initRpc"](rpc);
   });

@@ -1,18 +1,12 @@
-import { set } from "lodash";
+import lodash from "lodash";
 import { join } from "path";
 import { URI } from "vscode-uri";
 
-export const getVscode = () => {
-  try {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    return require("vscode");
-  } catch (error) {
-    return undefined;
-  }
-};
+const { set } = lodash;
 
-const filename: string = require?.main?.filename;
-const _isInTest = filename?.includes(join("node_modules", "mocha"));
+const _isInTest = process.argv.some((arg) =>
+  arg.includes(join("node_modules", "mocha"))
+);
 
 const returnValue = (...args: any[]) => {
   if (_isInTest) {
@@ -82,6 +76,12 @@ const ViewColumn = {
   Two: 2,
 };
 
+const ProgressLocation = {
+  SourceControl: 1,
+  Window: 10,
+  Notification: 15,
+};
+
 const vscodeMock = {
   Uri,
   context,
@@ -89,8 +89,7 @@ const vscodeMock = {
   commands,
   window,
   ViewColumn,
+  ProgressLocation,
 };
 
 export const getVscodeMock = () => vscodeMock;
-
-export const vscode = getVscode() ?? getVscodeMock();

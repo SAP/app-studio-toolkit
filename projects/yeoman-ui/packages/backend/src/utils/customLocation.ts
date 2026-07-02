@@ -1,9 +1,11 @@
 import * as path from "path";
 import { existsSync, mkdirSync } from "fs";
 import { homedir } from "os";
-import { isEmpty, trim } from "lodash";
-import { vscode } from "./vscodeProxy";
+import lodash from "lodash";
+import * as vscode from "vscode";
 import { execSync } from "child_process";
+
+const { isEmpty, trim } = lodash;
 
 export const GLOBAL_CONFIG_KEY = "ApplicationWizard.installationLocation";
 

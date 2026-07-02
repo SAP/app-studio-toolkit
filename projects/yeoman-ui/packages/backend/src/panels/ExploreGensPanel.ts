@@ -1,11 +1,13 @@
-import { ExtensionContext, WebviewPanel } from "vscode";
+import type { ExtensionContext, WebviewPanel } from "vscode";
 import { join } from "path";
 import { ExploreGens } from "../exploregens";
 import { AbstractWebviewPanel } from "./AbstractWebviewPanel";
 import { RpcExtension } from "@sap-devx/webview-rpc/out.ext/rpc-extension";
 import { getWebviewRpcLibraryLogger } from "../logger/logger-wrapper";
-import { get, isNil } from "lodash";
+import lodash from "lodash";
 import * as messages from "../messages";
+
+const { get, isNil } = lodash;
 
 export class ExploreGensPanel extends AbstractWebviewPanel {
   public constructor(context: Partial<ExtensionContext>) {

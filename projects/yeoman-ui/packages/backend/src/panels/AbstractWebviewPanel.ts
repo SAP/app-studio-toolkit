@@ -1,14 +1,16 @@
 import * as vscode from "vscode";
 import { join, sep } from "path";
 import { readFileSync } from "fs";
-import { IChildLogger } from "@vscode-logging/logger";
+import type { IChildLogger } from "@vscode-logging/logger";
 import { getClassLogger } from "../logger/logger-wrapper";
 import { RpcExtension } from "@sap-devx/webview-rpc/out.ext/rpc-extension";
 import { createFlowPromise, FlowPromise } from "../utils/promise";
 import * as cheerio from "cheerio";
 import { AnalyticsWrapper } from "../usage-report/usage-analytics-wrapper";
-import { get } from "lodash";
+import lodash from "lodash";
 import { Constants } from "../utils/constants";
+
+const { get } = lodash;
 
 export abstract class AbstractWebviewPanel {
   public viewType: string;

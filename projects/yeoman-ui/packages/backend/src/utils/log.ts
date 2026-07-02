@@ -1,9 +1,11 @@
-import stripAnsi = require("strip-ansi");
-import { get } from "lodash";
+import stripAnsi from "strip-ansi";
+import lodash from "lodash";
 import { Output } from "../output";
 import { YeomanUI } from "../yeomanui";
 
-module.exports = (output: Output, yeomanUi: YeomanUI) => {
+const { get } = lodash;
+
+export default (output: Output, yeomanUi: YeomanUI) => {
   function pad(methodName: string) {
     const max = "identical".length;
     const delta = max - methodName.length;

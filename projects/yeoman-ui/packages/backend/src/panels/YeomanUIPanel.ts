@@ -1,4 +1,4 @@
-import { isEmpty, get, isNil, assign } from "lodash";
+import lodash from "lodash";
 import { join } from "path";
 import * as vscode from "vscode";
 import { YeomanUI } from "../yeomanui";
@@ -17,6 +17,8 @@ import { Constants } from "../utils/constants";
 import { notifyGeneratorsInstallationProgress } from "../utils/generators-installation-progress";
 import messages from "../messages";
 import { getFileSchemeWorkspaceFolders } from "../utils/workspaceFolders";
+
+const { assign, get, isEmpty, isNil } = lodash;
 
 export class YeomanUIPanel extends AbstractWebviewPanel {
   public static YEOMAN_UI = "Application Wizard";

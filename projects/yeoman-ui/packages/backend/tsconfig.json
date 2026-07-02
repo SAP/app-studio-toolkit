@@ -12,11 +12,18 @@
     "rootDir": ".",
     "baseUrl": ".",
     "sourceMap": true,
-    "target": "es6",
+    "target": "es2022",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true,
     "traceResolution": false,
     "declaration": true,
-    "alwaysStrict": true,
     "skipLibCheck": true
   },
-  "include": ["src/**/*", "test/**/*"]
+  "include": ["src/**/*", "test/**/*"],
+  "ts-node": {
+    "transpileOnly": true,
+    "esm": true,
+    "experimentalSpecifierResolution": "node"
+  }
 }

@@ -2,7 +2,7 @@
 import * as mocha from "mocha";
 import { expect } from "chai";
 import { YouiEvents } from "../src/youi-events";
-import {
+import type {
   IMethod,
   IPromiseCallbacks,
   IRpc,

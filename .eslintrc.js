@@ -22,6 +22,15 @@ module.exports = {
       },
     },
     {
+      // For ES module files (.mjs) — loader hooks and other ESM-only scripts.
+      files: ["*.mjs"],
+      extends: ["eslint:recommended"],
+      parserOptions: {
+        ecmaVersion: 2022,
+        sourceType: "module",
+      },
+    },
+    {
       // For sub-packages using TypeScript (libraries/VSCode Exts) && TypeScript definitions (d.ts)
       files: ["*.ts"],
       plugins: ["@typescript-eslint"],

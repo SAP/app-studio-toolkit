@@ -1,15 +1,15 @@
 import { exec } from "child_process";
 import { promisify } from "util";
 import { platform } from "os";
-import * as _ from "lodash";
+import _ from "lodash";
 import * as customLocation from "./customLocation";
 import * as sudo from "sudo-prompt";
 import * as fs from "fs";
 import messages from "../messages";
-import { vscode } from "./vscodeProxy";
+import * as vscode from "vscode";
 import * as path from "path";
 import * as npmFetch from "npm-registry-fetch";
-import { LookupGeneratorMeta } from "yeoman-environment";
+import type { LookupGeneratorMeta } from "yeoman-environment";
 import { getConsoleWarnLogger } from "../logger/console-logger";
 import { Constants } from "./constants";
 import { spawn } from "child_process";
@@ -123,7 +123,7 @@ class Command {
           { modal: true },
           messages.change_owner_for_global(globalPath),
           this.SET_DEFAULT_LOCATION
-        );
+        ) as Promise<string>;
       }
     }
     // global path/custom path is writable

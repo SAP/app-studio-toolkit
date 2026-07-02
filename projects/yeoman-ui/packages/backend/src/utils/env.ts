@@ -1,13 +1,16 @@
-import * as _ from "lodash";
+import _ from "lodash";
 import { homedir } from "os";
 import * as path from "path";
 import { existsSync } from "fs";
 import { isWin32, NpmCommand } from "./npm";
 import * as customLocation from "./customLocation";
-import * as Environment from "yeoman-environment";
-import TerminalAdapter = require("yeoman-environment/lib/adapter");
-import { IChildLogger } from "@vscode-logging/logger";
+import Environment from "yeoman-environment";
+import type TerminalAdapter from "yeoman-environment/lib/adapter";
+import type { IChildLogger } from "@vscode-logging/logger";
 import { getClassLogger } from "../logger/logger-wrapper";
+import { createRequire } from "module";
+
+const _require = createRequire(import.meta.url);
 
 const GENERATOR = "generator-";
 const NAMESPACE = "namespace";
@@ -107,10 +110,10 @@ class EnvUtil {
       generatorName = `${GENERATOR}${genShortName}`;
     }
 
-    const keys = Object.keys(require.cache);
+    const keys = Object.keys(_require.cache);
     for (const key of keys) {
       if (key.includes(generatorName)) {
-        delete require.cache[key];
+        delete _require.cache[key];
       }
     }
   }

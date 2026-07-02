@@ -4,7 +4,7 @@ import {
   LOGGING_LEVEL_CONFIG_PROP,
   SOURCE_TRACKING_CONFIG_PROP,
 } from "./settings";
-import { LogLevel } from "@vscode-logging/logger";
+import type { LogLevel } from "@vscode-logging/logger";
 
 export function logLoggerDetails(
   context: vscode.ExtensionContext,
@@ -48,8 +48,3 @@ export function listenToLogSettingsChanges(context: vscode.ExtensionContext) {
     })
   );
 }
-
-module.exports = {
-  listenToLogSettingsChanges,
-  logLoggerDetails,
-};
