@@ -74,7 +74,7 @@ describe("test cfutil ", () => {
   });
 
   it("isLoggedInToCF - cfconfig file doesnt exist - should return false", async () => {
-    stub(fsextra, "readFile").returns(Promise.reject("aaa"));
+    stub(fsextra, "readFile").returns(Promise.reject(new Error("aaa")));
     const result = await isLoggedInToCF();
     expect(result).to.be.false;
   });

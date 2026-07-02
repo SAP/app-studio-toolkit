@@ -231,7 +231,7 @@ describe("Add mta module command unit tests", () => {
       .expects("executeCommand")
       .once()
       .withExactArgs("loadYeomanUI", testData)
-      .returns(Promise.reject("error"));
+      .returns(Promise.reject(new Error("error")));
     windowMock.expects("showErrorMessage").once();
     await addModuleCommand.addModuleCommand(undefined);
     expect(swaEventType).to.equal(messages.EVENT_TYPE_ADD_MODULE);
