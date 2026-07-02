@@ -208,7 +208,7 @@
     "coverage": "nyc mocha",
     "bundle": "webpack --mode production",
     "bundle:watch": "webpack --mode development --watch",
-    "package": "vsce package"
+    "package": "node ./scripts/package-vsix.js"
   },
   "dependencies": {
     "lodash": "4.17.21",
