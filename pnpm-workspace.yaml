@@ -10,6 +10,5 @@ allowBuilds:
   ejs: true
   es5-ext: true
   esbuild: true
-  husky: false
   keytar: true
   utf-8-validate: true

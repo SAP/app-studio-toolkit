@@ -208,7 +208,7 @@
     "coverage": "nyc mocha",
     "bundle": "webpack --mode production",
     "bundle:watch": "webpack --mode development --watch",
-    "package": "node ./scripts/package-vsix.js"
+    "package": "vsce package --no-dependencies"
   },
   "dependencies": {
     "lodash": "4.17.21",
@@ -232,8 +232,5 @@
     "ts-loader": "8.0.16",
     "tmp": "^0.2.1",
     "vscode-test": "1.5.2"
-  },
-  "prettier": {
-    "endOfLine": "lf"
   }
 }

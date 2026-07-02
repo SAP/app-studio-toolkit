@@ -1,10 +1,4 @@
-[![CircleCI](https://circleci.com/gh/SAP/vscode-mta-tools.svg?style=svg)](https://circleci.com/gh/SAP/vscode-mta-tools)
-[![Coverage Status](https://coveralls.io/repos/github/SAP/vscode-mta-tools/badge.svg?branch=master)](https://coveralls.io/github/SAP/vscode-mta-tools?branch=master)
-[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/SAP/vscode-mta-tools.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/SAP/vscode-mta-tools/context:javascript)
-[![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
-[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
-[![dependabot](https://api.dependabot.com/badges/status?host=github&repo=SAP/vscode-mta-tools)](https://dependabot.com/)
-[![REUSE status](https://api.reuse.software/badge/github.com/SAP/vscode-mta-tools)](https://api.reuse.software/info/github.com/SAP/vscode-mta-tools)
+[![REUSE status](https://api.reuse.software/badge/github.com/SAP/app-studio-toolkit)](https://api.reuse.software/info/github.com/SAP/app-studio-toolkit)
 
 ## Description
 
@@ -21,24 +15,19 @@ Make sure the following tools are installed in your environment:
 - `GNU Make 4.2.1` or later to build MTA project.
 - [Cloud MTA Build Tool](https://github.com/SAP/cloud-mta-build-tool) to build MTA project.
 - [Cloud Foundry CLI](https://github.com/cloudfoundry/cli) to work with Cloud Foundry.
-- [MultiApps CF CLI Plugin](https://github.com/cloudfoundry-incubator/multiapps-cli-plugin) to deploy MTA archive to Cloud Fountry.
+- [MultiApps CF CLI Plugin](https://github.com/cloudfoundry-incubator/multiapps-cli-plugin) to deploy MTA archive to Cloud Foundry.
 - [MTA tool](https://github.com/SAP/cloud-mta) to add MTA modules.
-- [Yeoman-ui extension](https://github.com/SAP/yeoman-ui) to add MTA modules.
+- [Yeoman-ui extension](https://github.com/SAP/app-studio-toolkit) to add MTA modules.
 
-### Download and Installation
+### Support
 
-Import the extension into your Visual Studio Code.
-Run `npm install` to install all the needed dependencies.
+Please report issues [here](https://github.com/SAP/app-studio-toolkit/issues/new/choose) and label them with `vscode-mta-tools`.
 
 ### Contributing
 
 Contributions are greatly appreciated.
-See [CONTRIBUTING.md](https://github.com/SAP/vscode-mta-tools/blob/master/.github/CONTRIBUTING.md) for details.
-
-### Support
-
-Please report [here](https://github.com/SAP/vscode-mta-tools/issues) on any issue.
+See [CONTRIBUTING.md](https://github.com/SAP/app-studio-toolkit/blob/main/CONTRIBUTING.md) for details.
 
 ## Licensing
 
-Please see our [LICENSE](https://github.com/SAP/vscode-mta-tools/LICENSE) for copyright and license information. Detailed information including third-party components and their licensing/copyright information is available via the [REUSE tool](https://api.reuse.software/info/github.com/SAP/vscode-mta-tools).
+Please see our [LICENSE](LICENSE) for copyright and license information. Detailed information including third-party components and their licensing/copyright information is available via the [REUSE tool](https://api.reuse.software/info/github.com/SAP/app-studio-toolkit).
