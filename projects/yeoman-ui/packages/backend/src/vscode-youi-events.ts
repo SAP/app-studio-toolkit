@@ -1,11 +1,11 @@
 import * as vscode from "vscode";
 import lodash from "lodash";
-import { YouiEvents } from "./youi-events";
-import type { IRpc } from "@sap-devx/webview-rpc/out.ext/rpc-common";
-import { GeneratorOutput } from "./vscode-output";
+import { YouiEvents } from "./youi-events.js";
+import type { IRpc } from "@sap-devx/webview-rpc/out.ext/rpc-common.js";
+import { GeneratorOutput } from "./vscode-output.js";
 import type { IChildLogger } from "@vscode-logging/logger";
-import { getClassLogger } from "./logger/logger-wrapper";
-import { getImage } from "./images/messageImages";
+import { getClassLogger } from "./logger/logger-wrapper.js";
+import { getImage } from "./images/messageImages.js";
 import {
   AppWizard,
   MessageType,
@@ -18,9 +18,9 @@ import {
   getValidFolderUri,
   WorkspaceFile,
   WsFoldersToAdd,
-} from "./utils/workspaceFile";
-import { Constants } from "./utils/constants";
-import { getFileSchemeWorkspaceFolders } from "./utils/workspaceFolders";
+} from "./utils/workspaceFile.js";
+import { Constants } from "./utils/constants.js";
+import { getFileSchemeWorkspaceFolders } from "./utils/workspaceFolders.js";
 
 const { isEmpty, isNil, set } = lodash;
 

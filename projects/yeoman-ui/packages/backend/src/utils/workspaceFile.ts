@@ -1,8 +1,8 @@
 import { Uri } from "vscode";
 import { writeFileSync, existsSync } from "fs";
 import { dirname, join, relative } from "path";
-import { Constants } from "./constants";
-import messages from "../messages";
+import { Constants } from "./constants.js";
+import messages from "../messages.js";
 
 export interface FolderUriConfig {
   uri: string;

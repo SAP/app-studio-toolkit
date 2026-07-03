@@ -1,9 +1,9 @@
 import { createSandbox, SinonSandbox, SinonMock } from "sinon";
-import * as extension from "../src/extension";
-import { ExtCommands } from "../src/extCommands";
-import { internalApi as loggerTestApi } from "../src/logger/logger-wrapper";
-import { AnalyticsWrapper } from "../src/usage-report/usage-analytics-wrapper";
-import { vscode } from "./mockUtil";
+import * as extension from "../src/extension.js";
+import { ExtCommands } from "../src/extCommands.js";
+import { internalApi as loggerTestApi } from "../src/logger/logger-wrapper.js";
+import { AnalyticsWrapper } from "../src/usage-report/usage-analytics-wrapper.js";
+import { vscode } from "./mockUtil.js";
 
 describe("extension unit test", () => {
   let sandbox: SinonSandbox;

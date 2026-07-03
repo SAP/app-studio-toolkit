@@ -1,11 +1,11 @@
 import _ from "lodash";
 import type { IChildLogger } from "@vscode-logging/logger";
-import type { IRpc } from "@sap-devx/webview-rpc/out.ext/rpc-common";
-import { NpmCommand, PackagesData } from "./utils/npm";
-import messages from "./exploreGensMessages";
-import { Env, GeneratorData } from "./utils/env";
+import type { IRpc } from "@sap-devx/webview-rpc/out.ext/rpc-common.js";
+import { NpmCommand, PackagesData } from "./utils/npm.js";
+import messages from "./exploreGensMessages.js";
+import { Env, GeneratorData } from "./utils/env.js";
 import * as vscode from "vscode";
-import { Constants } from "./utils/constants";
+import { Constants } from "./utils/constants.js";
 
 type Disposable = {
   dispose(): void;

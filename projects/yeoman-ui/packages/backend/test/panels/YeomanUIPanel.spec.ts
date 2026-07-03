@@ -1,17 +1,17 @@
-import { vscode, mockLogger } from "../mockUtil";
-import * as loggerWrapper from "../../src/logger/logger-wrapper";
+import { vscode, mockLogger } from "../mockUtil.js";
+import * as loggerWrapper from "../../src/logger/logger-wrapper.js";
 import { createSandbox, SinonSandbox, SinonMock, SinonStub } from "sinon";
-import * as YeomanUIPanel from "../../src/panels/YeomanUIPanel";
-import { Env } from "../../src/utils/env";
-import { Constants } from "../../src/utils/constants";
-import { NpmCommand } from "../../src/utils/npm";
-import { YeomanUI } from "../../src/yeomanui";
+import * as YeomanUIPanel from "../../src/panels/YeomanUIPanel.js";
+import { Env } from "../../src/utils/env.js";
+import { Constants } from "../../src/utils/constants.js";
+import { NpmCommand } from "../../src/utils/npm.js";
+import { YeomanUI } from "../../src/yeomanui.js";
 import lodash from "lodash";
 import { expect } from "chai";
 import { join } from "path";
 import { homedir } from "os";
-import messages from "../../src/messages";
-import { AnalyticsWrapper } from "../../src/usage-report/usage-analytics-wrapper";
+import messages from "../../src/messages.js";
+import { AnalyticsWrapper } from "../../src/usage-report/usage-analytics-wrapper.js";
 
 const { set } = lodash;
 

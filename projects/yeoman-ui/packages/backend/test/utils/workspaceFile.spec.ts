@@ -6,14 +6,14 @@ import {
   isUriFlow,
   isValidUri,
   WorkspaceFile,
-} from "../../src/utils/workspaceFile";
-import { Constants } from "../../src/utils/constants";
-import { vscode } from "../mockUtil";
+} from "../../src/utils/workspaceFile.js";
+import { Constants } from "../../src/utils/constants.js";
+import { vscode } from "../mockUtil.js";
 import * as fs from "fs";
 import { tmpdir } from "os";
 import { join, normalize } from "path";
 import { expect } from "chai";
-import messages from "../../src/messages";
+import messages from "../../src/messages.js";
 
 describe("extension unit test", () => {
   let sandbox: SinonSandbox;

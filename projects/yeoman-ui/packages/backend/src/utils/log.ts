@@ -1,7 +1,7 @@
 import stripAnsi from "strip-ansi";
 import lodash from "lodash";
-import { Output } from "../output";
-import { YeomanUI } from "../yeomanui";
+import { Output } from "../output.js";
+import { YeomanUI } from "../yeomanui.js";
 
 const { get } = lodash;
 

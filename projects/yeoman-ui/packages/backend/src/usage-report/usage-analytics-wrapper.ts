@@ -4,7 +4,7 @@ import {
   BASClientFactory,
   BASTelemetryClient,
 } from "@sap/swa-for-sapbas-vsx";
-import { getLogger } from "../logger/logger-wrapper";
+import { getLogger } from "../logger/logger-wrapper.js";
 import * as path from "path";
 import { readFile } from "fs/promises";
 

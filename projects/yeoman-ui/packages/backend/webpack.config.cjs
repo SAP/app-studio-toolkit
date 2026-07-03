@@ -38,6 +38,12 @@ const config = {
     modules: ["node_modules"],
     // support reading TypeScript and JavaScript files, 📖 -> https://github.com/TypeStrong/ts-loader
     extensions: [".ts", ".js"],
+    // node16 module resolution requires explicit `.js` extensions in ESM
+    // relative imports; those specifiers must map back to their `.ts` sources
+    // during bundling.
+    extensionAlias: {
+      ".js": [".ts", ".js"],
+    },
   },
   module: {
     rules: [

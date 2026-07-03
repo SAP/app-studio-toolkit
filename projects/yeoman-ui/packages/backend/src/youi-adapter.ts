@@ -1,10 +1,10 @@
-import { YeomanUI } from "./yeomanui";
-import { YouiEvents } from "./youi-events";
-import yoUiLog from "./utils/log";
+import { YeomanUI } from "./yeomanui.js";
+import { YouiEvents } from "./youi-events.js";
+import yoUiLog from "./utils/log.js";
 import lodash from "lodash";
 import chalk from "chalk";
 import type { Questions } from "yeoman-environment/lib/adapter";
-import { Output } from "./output";
+import { Output } from "./output.js";
 
 const { get, isFunction } = lodash;
 

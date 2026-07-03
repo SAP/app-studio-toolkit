@@ -9,11 +9,11 @@ import type {
 import {
   listenToLogSettingsChanges,
   logLoggerDetails,
-} from "./settings-changes-handler";
+} from "./settings-changes-handler.js";
 import {
   getLoggingLevelSetting,
   getSourceLocationTrackingSetting,
-} from "./settings";
+} from "./settings.js";
 
 const { getExtensionLogger } = vscodeLogger;
 

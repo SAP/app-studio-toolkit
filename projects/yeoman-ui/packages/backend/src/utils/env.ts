@@ -2,12 +2,12 @@ import _ from "lodash";
 import { homedir } from "os";
 import * as path from "path";
 import { existsSync } from "fs";
-import { isWin32, NpmCommand } from "./npm";
-import * as customLocation from "./customLocation";
+import { isWin32, NpmCommand } from "./npm.js";
+import * as customLocation from "./customLocation.js";
 import Environment from "yeoman-environment";
 import type TerminalAdapter from "yeoman-environment/lib/adapter";
 import type { IChildLogger } from "@vscode-logging/logger";
-import { getClassLogger } from "../logger/logger-wrapper";
+import { getClassLogger } from "../logger/logger-wrapper.js";
 import { createRequire } from "module";
 
 const _require = createRequire(import.meta.url);

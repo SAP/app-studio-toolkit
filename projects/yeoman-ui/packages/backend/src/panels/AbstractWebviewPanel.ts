@@ -2,13 +2,13 @@ import * as vscode from "vscode";
 import { join, sep } from "path";
 import { readFileSync } from "fs";
 import type { IChildLogger } from "@vscode-logging/logger";
-import { getClassLogger } from "../logger/logger-wrapper";
-import { RpcExtension } from "@sap-devx/webview-rpc/out.ext/rpc-extension";
-import { createFlowPromise, FlowPromise } from "../utils/promise";
+import { getClassLogger } from "../logger/logger-wrapper.js";
+import { RpcExtension } from "@sap-devx/webview-rpc/out.ext/rpc-extension.js";
+import { createFlowPromise, FlowPromise } from "../utils/promise.js";
 import * as cheerio from "cheerio";
-import { AnalyticsWrapper } from "../usage-report/usage-analytics-wrapper";
+import { AnalyticsWrapper } from "../usage-report/usage-analytics-wrapper.js";
 import lodash from "lodash";
-import { Constants } from "../utils/constants";
+import { Constants } from "../utils/constants.js";
 
 const { get } = lodash;
 

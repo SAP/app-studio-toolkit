@@ -1,11 +1,11 @@
 import { createSandbox, SinonSandbox, SinonMock } from "sinon";
 import { expect } from "chai";
-import { vscode } from "../mockUtil";
+import { vscode } from "../mockUtil.js";
 import {
   getWorkspaceFolders,
   getFileSchemeWorkspaceFolders,
   getFirstWorkspacePath,
-} from "../../src/utils/workspaceFolders";
+} from "../../src/utils/workspaceFolders.js";
 import type { WorkspaceFolder } from "vscode";
 const { Uri } = vscode;
 

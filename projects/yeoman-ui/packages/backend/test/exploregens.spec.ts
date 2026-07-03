@@ -1,14 +1,14 @@
-import { vscode } from "./mockUtil";
+import { vscode } from "./mockUtil.js";
 import lodash from "lodash";
 import { expect } from "chai";
 import { createSandbox, SinonSandbox, SinonMock } from "sinon";
-import type { IRpc } from "@sap-devx/webview-rpc/out.ext/rpc-common";
-import messages from "../src/exploreGensMessages";
-import { NpmCommand, PackagesData } from "../src/utils/npm";
-import { Env, GeneratorData } from "../src/utils/env";
+import type { IRpc } from "@sap-devx/webview-rpc/out.ext/rpc-common.js";
+import messages from "../src/exploreGensMessages.js";
+import { NpmCommand, PackagesData } from "../src/utils/npm.js";
+import { Env, GeneratorData } from "../src/utils/env.js";
 import type { IChildLogger } from "@vscode-logging/logger";
-import { ExploreGens, GenState } from "../src/exploregens";
-import { Constants } from "../src/utils/constants";
+import { ExploreGens, GenState } from "../src/exploregens.js";
+import { Constants } from "../src/utils/constants.js";
 
 const { get } = lodash;
 

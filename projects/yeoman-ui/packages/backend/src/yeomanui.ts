@@ -2,34 +2,34 @@ import * as path from "path";
 import { promises } from "fs";
 import _ from "lodash";
 import inquirer from "inquirer";
-import { ReplayUtils, ReplayState } from "./replayUtils";
+import { ReplayUtils, ReplayState } from "./replayUtils.js";
 import datauri from "datauri";
 import titleize from "titleize";
 import humanizeString from "humanize-string";
-import * as defaultImage from "./images/defaultImage";
-import { YouiAdapter } from "./youi-adapter";
-import { YouiEvents } from "./youi-events";
-import type { IRpc } from "@sap-devx/webview-rpc/out.ext/rpc-common";
-import { GeneratorFilter, GeneratorType } from "./filter";
+import * as defaultImage from "./images/defaultImage.js";
+import { YouiAdapter } from "./youi-adapter.js";
+import { YouiEvents } from "./youi-events.js";
+import type { IRpc } from "@sap-devx/webview-rpc/out.ext/rpc-common.js";
+import { GeneratorFilter, GeneratorType } from "./filter.js";
 import type { IChildLogger } from "@vscode-logging/logger";
 import { IPrompt, MessageType } from "@sap-devx/yeoman-ui-types";
-import { AnalyticsWrapper } from "./usage-report/usage-analytics-wrapper";
-import { Output } from "./output";
+import { AnalyticsWrapper } from "./usage-report/usage-analytics-wrapper.js";
+import { Output } from "./output.js";
 import { resolve } from "path";
 import {
   Env,
   EnvGen,
   GeneratorData,
   GeneratorNotFoundError,
-} from "./utils/env";
+} from "./utils/env.js";
 import * as vscode from "vscode";
 import Generator from "yeoman-generator";
 import Environment from "yeoman-environment";
 import type { Questions } from "yeoman-environment/lib/adapter";
-import { State } from "./utils/promise";
-import { Constants } from "./utils/constants";
-import { isUriFlow } from "./utils/workspaceFile";
-import { getFirstWorkspacePath } from "./utils/workspaceFolders";
+import { State } from "./utils/promise.js";
+import { Constants } from "./utils/constants.js";
+import { isUriFlow } from "./utils/workspaceFile.js";
+import { getFirstWorkspacePath } from "./utils/workspaceFolders.js";
 
 export interface IQuestionsPrompt extends IPrompt {
   questions: any[];
