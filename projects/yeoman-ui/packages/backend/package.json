@@ -208,7 +208,7 @@
     "@types/sinon": "^17.0.3",
     "@types/vscode": "^1.50.0",
     "@types/webpack-env": "^1.16.2",
-    "@types/ws": "^7.4.5",
+    "@types/ws": "^8.5.14",
     "@types/yeoman-environment": "^2.10.3",
     "@types/yeoman-generator": "5.2.14",
     "@vscode/vsce": "2.24.0",

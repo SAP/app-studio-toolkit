@@ -1,5 +1,5 @@
 {
-  "loader": ["ts-node/esm", "./test/loaderHooks.mjs"],
+  "loader": ["ts-node/esm"],
   "spec": ["test/**/*.spec.ts"],
   "timeout": 5000
 }

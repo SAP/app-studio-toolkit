@@ -4,7 +4,7 @@ import type { IRpc } from "@sap-devx/webview-rpc/out.ext/rpc-common.js";
 import { NpmCommand, PackagesData } from "./utils/npm.js";
 import messages from "./exploreGensMessages.js";
 import { Env, GeneratorData } from "./utils/env.js";
-import * as vscode from "vscode";
+import { vscode } from "./utils/vscodeProxy.js";
 import { Constants } from "./utils/constants.js";
 
 type Disposable = {

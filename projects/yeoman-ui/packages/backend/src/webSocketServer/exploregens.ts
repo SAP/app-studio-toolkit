@@ -1,4 +1,4 @@
-import WebSocket from "ws";
+import { WebSocketServer } from "ws";
 import { RpcExtensionWebSockets } from "@sap-devx/webview-rpc/out.ext/rpc-extension-ws.js";
 import type { IChildLogger } from "@vscode-logging/logger";
 import { ExploreGens } from "../exploregens.js";
@@ -12,7 +12,7 @@ class ExploreGensWebSocketServer {
     // web socket server
     const port = process.env.PORT ? Number.parseInt(process.env.PORT) : 8082;
 
-    const wss = new WebSocket.Server({ port: port }, () => {
+    const wss = new WebSocketServer({ port: port }, () => {
       console.log("started websocket server");
     });
     wss.on("listening", () => {
@@ -26,10 +26,10 @@ class ExploreGensWebSocketServer {
     wss.on("connection", (ws) => {
       console.log("exploregens: new ws connection");
       const childLogger: IChildLogger = getConsoleWarnLogger();
-      // Cast: rpc-extension-ws.d.ts uses `import * as WebSocket from "ws"` which,
-      // under node16 module resolution against @types/ws's `export = WebSocket`,
-      // widens the constructor parameter type in a way the class instance from
-      // `wss.on("connection", ...)` no longer structurally satisfies.
+      // Cast: rpc-extension-ws.d.ts types its ctor param via
+      // `import * as WebSocket from "ws"`, which under node16 resolution
+      // is not structurally interchangeable with the WebSocket class
+      // instance emitted by `on("connection")`.
       this.rpc = new RpcExtensionWebSockets(ws as any, childLogger);
 
       this.exploreGens = new ExploreGens(childLogger);

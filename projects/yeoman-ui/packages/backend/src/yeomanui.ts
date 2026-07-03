@@ -22,7 +22,7 @@ import {
   GeneratorData,
   GeneratorNotFoundError,
 } from "./utils/env.js";
-import * as vscode from "vscode";
+import { vscode, getVscode } from "./utils/vscodeProxy.js";
 import Generator from "yeoman-generator";
 import Environment from "yeoman-environment";
 import type { Questions } from "yeoman-environment/lib/adapter";
@@ -231,7 +231,7 @@ export class YeomanUI {
 
       const options = {
         logger: this.logger.getChildLogger({ label: generatorNamespace }),
-        vscode: vscode,
+        vscode: getVscode(),
         data: this.uiOptions.data,
         tracker: AnalyticsWrapper.getTracker(),
         appWizard: this.youiEvents.getAppWizard(),

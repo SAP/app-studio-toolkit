@@ -6,7 +6,7 @@ import * as customLocation from "./customLocation.js";
 import * as sudo from "sudo-prompt";
 import * as fs from "fs";
 import messages from "../messages.js";
-import * as vscode from "vscode";
+import { vscode } from "./vscodeProxy.js";
 import * as path from "path";
 import * as npmFetch from "npm-registry-fetch";
 import type { LookupGeneratorMeta } from "yeoman-environment";

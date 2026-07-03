@@ -1,4 +1,5 @@
-import { Uri } from "vscode";
+import type { Uri } from "vscode";
+import { vscode } from "./vscodeProxy.js";
 import { writeFileSync, existsSync } from "fs";
 import { dirname, join, relative } from "path";
 import { Constants } from "./constants.js";
@@ -78,7 +79,7 @@ class WorkspaceFileUtil {
     };
 
     writeFileSync(wsFilePath, JSON.stringify(fileContent));
-    return Uri.file(wsFilePath);
+    return vscode.Uri.file(wsFilePath);
   }
 
   private createWsFilePath(counter?: number): string {

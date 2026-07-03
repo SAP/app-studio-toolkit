@@ -1,4 +1,5 @@
-import * as vscode from "vscode";
+import type { Uri, WebviewPanel } from "vscode";
+import { vscode } from "./utils/vscodeProxy.js";
 import lodash from "lodash";
 import { YouiEvents } from "./youi-events.js";
 import type { IRpc } from "@sap-devx/webview-rpc/out.ext/rpc-common.js";
@@ -57,7 +58,7 @@ class YoUiAppWizard extends AppWizard {
 
 export class VSCodeYouiEvents implements YouiEvents {
   private readonly rpc: IRpc;
-  private webviewPanel: vscode.WebviewPanel;
+  private webviewPanel: WebviewPanel;
   private readonly messages: any;
   private resolveFunc: any;
   public output: GeneratorOutput;
@@ -66,7 +67,7 @@ export class VSCodeYouiEvents implements YouiEvents {
 
   constructor(
     rpc: IRpc,
-    webviewPanel: vscode.WebviewPanel,
+    webviewPanel: WebviewPanel,
     messages: any,
     output: GeneratorOutput
   ) {
@@ -236,7 +237,7 @@ export class VSCodeYouiEvents implements YouiEvents {
     targetFolderPath: string,
     selectedWorkspace: string
   ) {
-    const targetFolderUri: vscode.Uri = vscode.Uri.file(targetFolderPath);
+    const targetFolderUri: Uri = vscode.Uri.file(targetFolderPath);
     if (selectedWorkspace === this.messages.open_in_a_new_workspace) {
       void vscode.commands.executeCommand("vscode.openFolder", targetFolderUri);
     } else if (selectedWorkspace === this.messages.add_to_workspace) {

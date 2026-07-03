@@ -1,8 +1,19 @@
 import lodash from "lodash";
 import { join } from "path";
 import { URI } from "vscode-uri";
+import { createRequire } from "module";
 
 const { set } = lodash;
+
+const _require = createRequire(import.meta.url);
+
+export const getVscode = (): typeof import("vscode") | undefined => {
+  try {
+    return _require("vscode");
+  } catch {
+    return undefined;
+  }
+};
 
 const _isInTest = process.argv.some((arg) =>
   arg.includes(join("node_modules", "mocha"))
@@ -71,16 +82,9 @@ const window = {
   },
 };
 
-const ViewColumn = {
-  One: 1,
-  Two: 2,
-};
-
-const ProgressLocation = {
-  SourceControl: 1,
-  Window: 10,
-  Notification: 15,
-};
+const ViewColumn = { One: 1, Two: 2 };
+const ProgressLocation = { SourceControl: 1, Window: 10, Notification: 15 };
+const ConfigurationTarget = { Global: 1, Workspace: 2, WorkspaceFolder: 3 };
 
 const vscodeMock = {
   Uri,
@@ -90,6 +94,10 @@ const vscodeMock = {
   window,
   ViewColumn,
   ProgressLocation,
+  ConfigurationTarget,
 };
 
 export const getVscodeMock = () => vscodeMock;
+
+export const vscode = (getVscode() ??
+  getVscodeMock()) as unknown as typeof import("vscode");

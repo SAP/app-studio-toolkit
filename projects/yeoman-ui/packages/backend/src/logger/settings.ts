@@ -1,4 +1,4 @@
-import * as vscode from "vscode"; // NOSONAR
+import { vscode } from "../utils/vscodeProxy.js";
 import type { LogLevel } from "@vscode-logging/logger";
 
 /**

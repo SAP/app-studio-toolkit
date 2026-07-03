@@ -621,8 +621,8 @@ importers:
         specifier: ^1.16.2
         version: 1.18.8
       '@types/ws':
-        specifier: ^7.4.5
-        version: 7.4.7
+        specifier: ^8.5.14
+        version: 8.18.1
       '@types/yeoman-environment':
         specifier: ^2.10.3
         version: 2.10.11(mem-fs@4.1.4)
@@ -2858,9 +2858,6 @@ packages:
 
   '@types/websocket@1.0.5':
     resolution: {integrity: sha512-NbsqiNX9CnEfC1Z0Vf4mE1SgAJ07JnRYcNex7AJ9zAVzmiGHmjKFEk7O4TJIsgv2B1sLEb6owKFZrACwdYngsQ==}
-
-  '@types/ws@7.4.7':
-    resolution: {integrity: sha512-JQbbmxZTZehdc2iszGKs5oC3NFnjeay7mtAWrdt7qNtAVK0g19muApzAy4bm9byz79xa2ZnO/BOBC2R8RC5Lww==}
 
   '@types/ws@8.18.1':
     resolution: {integrity: sha512-ThVF6DCVhA8kUGy+aazFQ4kXQ7E1Ty7A3ypFOe0IcJV8O/M511G99AW24irKrW56Wt44yG9+ij8FaqoBGkuBXg==}
@@ -12955,10 +12952,6 @@ snapshots:
   '@types/webpack-env@1.18.8': {}
 
   '@types/websocket@1.0.5':
-    dependencies:
-      '@types/node': 16.11.10
-
-  '@types/ws@7.4.7':
     dependencies:
       '@types/node': 16.11.10
 

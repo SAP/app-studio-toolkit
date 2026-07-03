@@ -1,4 +1,5 @@
-import * as vscode from "vscode"; // NOSONAR
+import type { ExtensionContext } from "vscode";
+import { vscode } from "../utils/vscodeProxy.js";
 import vscodeLogger from "@vscode-logging/logger";
 import type {
   getExtensionLoggerOpts,
@@ -94,7 +95,7 @@ function initLoggerWrapper(newLogger: any) {
   logger = newLogger;
 }
 
-function createExtensionLogger(context: vscode.ExtensionContext) {
+function createExtensionLogger(context: ExtensionContext) {
   const contextLogPath = context.logPath;
   const logLevelSetting: LogLevel = getLoggingLevelSetting();
   const sourceLocationTrackingSettings: boolean =
@@ -119,7 +120,7 @@ function createExtensionLogger(context: vscode.ExtensionContext) {
 }
 
 export function createExtensionLoggerAndSubscribeToLogSettingsChanges(
-  context: vscode.ExtensionContext
+  context: ExtensionContext
 ) {
   createExtensionLogger(context);
   // Subscribe to Logger settings changes.
@@ -135,6 +136,6 @@ export const internalApi = {
   },
   createExtensionLoggerAndSubscribeToLogSettingsChanges:
     createExtensionLoggerAndSubscribeToLogSettingsChanges as (
-      context: vscode.ExtensionContext
+      context: ExtensionContext
     ) => void,
 };

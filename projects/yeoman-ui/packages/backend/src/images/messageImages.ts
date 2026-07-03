@@ -1,4 +1,4 @@
-import * as vscode from "vscode";
+import { vscode } from "../utils/vscodeProxy.js";
 import _ from "lodash";
 import { Severity } from "@sap-devx/yeoman-ui-types";
 import { Constants } from "../utils/constants.js";

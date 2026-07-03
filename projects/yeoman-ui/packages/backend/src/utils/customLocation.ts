@@ -2,7 +2,7 @@ import * as path from "path";
 import { existsSync, mkdirSync } from "fs";
 import { homedir } from "os";
 import lodash from "lodash";
-import * as vscode from "vscode";
+import { vscode } from "./vscodeProxy.js";
 import { execSync } from "child_process";
 
 const { isEmpty, trim } = lodash;

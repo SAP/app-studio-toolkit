@@ -1,4 +1,5 @@
-import { ExtensionContext, window, WebviewPanel } from "vscode";
+import type { ExtensionContext, WebviewPanel } from "vscode";
+import { vscode } from "./utils/vscodeProxy.js";
 import { internalApi as _loggerApi } from "./logger/logger-wrapper.js";
 import { AnalyticsWrapper } from "./usage-report/usage-analytics-wrapper.js";
 import * as shellJsWorkarounds from "./utils/shellJsWorkarounds.js";
@@ -26,7 +27,7 @@ export async function activate(context: ExtensionContext) {
   extCommands.registerAndSubscribeCommands();
 
   context.subscriptions.push(
-    window.registerWebviewPanelSerializer("yeomanui", {
+    vscode.window.registerWebviewPanelSerializer("yeomanui", {
       async deserializeWebviewPanel(
         webViewPanel: WebviewPanel,
         state?: unknown
@@ -40,7 +41,7 @@ export async function activate(context: ExtensionContext) {
   );
 
   context.subscriptions.push(
-    window.registerWebviewPanelSerializer("exploreGens", {
+    vscode.window.registerWebviewPanelSerializer("exploreGens", {
       async deserializeWebviewPanel(
         webViewPanel: WebviewPanel,
         state?: unknown

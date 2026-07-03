@@ -1,4 +1,5 @@
-import { ExtensionContext, commands, window } from "vscode";
+import type { ExtensionContext } from "vscode";
+import { vscode } from "./utils/vscodeProxy.js";
 import messages from "./messages.js";
 
 export class ExtCommands {
@@ -43,7 +44,9 @@ export class ExtCommands {
   }
 
   private registerAndSubscribeCommand(cId: string, cAction: any) {
-    this.context.subscriptions.push(commands.registerCommand(cId, cAction));
+    this.context.subscriptions.push(
+      vscode.commands.registerCommand(cId, cAction)
+    );
   }
 
   private async yeomanUIPanel_runGenerator_Command() {
@@ -84,7 +87,7 @@ export class ExtCommands {
     if (this.yeomanUIPanel?.yeomanui?.generatorName) {
       const btnContinue = "Continue";
       if (
-        (await window.showWarningMessage(
+        (await vscode.window.showWarningMessage(
           messages.warn_another_generator_running(
             this.yeomanUIPanel.yeomanui.generatorName.split(":")[0]
           ),

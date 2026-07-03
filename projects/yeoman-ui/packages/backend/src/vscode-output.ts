@@ -1,9 +1,10 @@
-import * as vscode from "vscode";
+import type { OutputChannel } from "vscode";
+import { vscode } from "./utils/vscodeProxy.js";
 import stripAnsi from "strip-ansi";
 import { Output } from "./output.js";
 
 export class GeneratorOutput implements Output {
-  private outputChannel: vscode.OutputChannel;
+  private outputChannel: OutputChannel;
   private outputChannels: any;
 
   constructor() {

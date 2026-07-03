@@ -1,6 +1,6 @@
 import * as sdk from "@sap/bas-sdk";
 import { YeomanUIPanel } from "../panels/YeomanUIPanel.js";
-import { window } from "vscode";
+import { vscode } from "./vscodeProxy.js";
 import messages from "../messages.js";
 
 // exported for test purpose
@@ -64,7 +64,9 @@ export async function notifyGeneratorsInstallationProgress(
 
     if (internal.retries >= internal.MAX_RETRY) {
       // generators didn't complete installation after 5 minutes of retries..
-      return window.showErrorMessage(messages.timeout_install_generators);
+      return vscode.window.showErrorMessage(
+        messages.timeout_install_generators
+      );
     }
 
     // notify ui on generators installation finished (in case of panelDisposed - will just reset the prompt message for next time)

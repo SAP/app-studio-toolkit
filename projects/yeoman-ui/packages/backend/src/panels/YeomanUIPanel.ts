@@ -1,6 +1,7 @@
 import lodash from "lodash";
 import { join } from "path";
-import * as vscode from "vscode";
+import type { ExtensionContext, WebviewPanel } from "vscode";
+import { vscode } from "../utils/vscodeProxy.js";
 import { YeomanUI } from "../yeomanui.js";
 import { RpcExtension } from "@sap-devx/webview-rpc/out.ext/rpc-extension.js";
 import { GeneratorFilter } from "../filter.js";
@@ -86,10 +87,7 @@ export class YeomanUIPanel extends AbstractWebviewPanel {
     }
   }
 
-  public setWebviewPanel(
-    webViewPanel: vscode.WebviewPanel,
-    uiOptions?: unknown
-  ) {
+  public setWebviewPanel(webViewPanel: WebviewPanel, uiOptions?: unknown) {
     super.setWebviewPanel(webViewPanel);
 
     this.messages = assign({}, backendMessages, get(uiOptions, "messages", {}));
@@ -143,7 +141,7 @@ export class YeomanUIPanel extends AbstractWebviewPanel {
   private installGens: any;
   private readonly output: GeneratorOutput;
 
-  public constructor(context: Partial<vscode.ExtensionContext>) {
+  public constructor(context: Partial<ExtensionContext>) {
     super(context);
     this.viewType = "yeomanui";
     this.viewTitle = YeomanUIPanel.YEOMAN_UI;

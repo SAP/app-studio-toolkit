@@ -24,8 +24,10 @@
   "scripts": {
     "ci": "npm-run-all clean compile",
     "clean": "shx rm -rf ./dist",
-    "compile": "tsc -b ./tsconfig.json ./tsconfig.cjs.json ./tsconfig.esm.json ./tsconfig.types.json",
-    "compile:watch": "tsc -watch"
+    "compile": "npm-run-all compile:tsc esm:mark",
+    "compile:tsc": "tsc -b ./tsconfig.json ./tsconfig.cjs.json ./tsconfig.esm.json ./tsconfig.types.json",
+    "compile:watch": "tsc -watch",
+    "esm:mark": "node -e \"require('fs').writeFileSync('./dist/esm/package.json','{\\\"type\\\":\\\"module\\\"}')\""
   },
   "publishConfig": {
     "access": "public"
