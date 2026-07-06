@@ -793,7 +793,11 @@ importers:
         specifier: ^4.12.0
         version: 4.13.0(encoding@0.1.13)
 
-  projects/yeoman-ui/packages/types: {}
+  projects/yeoman-ui/packages/types:
+    devDependencies:
+      esbuild:
+        specifier: 0.25.5
+        version: 0.25.5
 
 packages:
 

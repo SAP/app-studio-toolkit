@@ -2,13 +2,15 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "lib": ["es2017", "es7", "es6", "dom"],
-    "rootDir": ".",
-    "outDir": "dist",
+    "rootDir": "./src",
+    "outDir": "./dist/types",
     "baseUrl": ".",
-    "target": "es5",
+    "target": "es2022",
     "esModuleInterop": true,
     "strict": true,
-    "types": []
+    "types": [],
+    "declaration": true,
+    "emitDeclarationOnly": true
   },
-  "include": ["src/**/*", "test/**/*"]
+  "include": ["src/index.ts"]
 }
