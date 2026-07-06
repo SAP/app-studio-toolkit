@@ -1,5 +1,6 @@
-import { ExtensionContext, commands, window } from "vscode";
-import messages from "./messages";
+import type { ExtensionContext } from "vscode";
+import { vscode } from "./utils/vscodeProxy.js";
+import messages from "./messages.js";
 
 export class ExtCommands {
   private exploreGensPanel: any;
@@ -43,7 +44,9 @@ export class ExtCommands {
   }
 
   private registerAndSubscribeCommand(cId: string, cAction: any) {
-    this.context.subscriptions.push(commands.registerCommand(cId, cAction));
+    this.context.subscriptions.push(
+      vscode.commands.registerCommand(cId, cAction)
+    );
   }
 
   private async yeomanUIPanel_runGenerator_Command() {
@@ -84,7 +87,7 @@ export class ExtCommands {
     if (this.yeomanUIPanel?.yeomanui?.generatorName) {
       const btnContinue = "Continue";
       if (
-        (await window.showWarningMessage(
+        (await vscode.window.showWarningMessage(
           messages.warn_another_generator_running(
             this.yeomanUIPanel.yeomanui.generatorName.split(":")[0]
           ),
@@ -100,7 +103,7 @@ export class ExtCommands {
 
   public async getYeomanUIPanel(verifyEmptyState = true) {
     if (!this.yeomanUIPanel) {
-      const { YeomanUIPanel } = await import("./panels/YeomanUIPanel");
+      const { YeomanUIPanel } = await import("./panels/YeomanUIPanel.js");
       this.yeomanUIPanel = new YeomanUIPanel(this.context);
     }
     if (!verifyEmptyState || (await this.isInEmptyState())) {
@@ -112,7 +115,7 @@ export class ExtCommands {
 
   public async getExploreGensPanel() {
     if (!this.exploreGensPanel) {
-      const { ExploreGensPanel } = await import("./panels/ExploreGensPanel");
+      const { ExploreGensPanel } = await import("./panels/ExploreGensPanel.js");
       this.exploreGensPanel = new ExploreGensPanel(this.context);
     }
 

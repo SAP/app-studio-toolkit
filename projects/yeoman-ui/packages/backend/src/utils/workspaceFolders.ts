@@ -1,4 +1,5 @@
-import { workspace, WorkspaceFolder } from "vscode";
+import type { WorkspaceFolder } from "vscode";
+import { vscode } from "./vscodeProxy.js";
 
 /**
  * Returns an array of WorkspaceFolder objects with 'file' URI scheme.
@@ -6,8 +7,8 @@ import { workspace, WorkspaceFolder } from "vscode";
  * @returns Array of WorkspaceFolder objects with file scheme, or empty array
  */
 export function getFileSchemeWorkspaceFolders(): WorkspaceFolder[] {
-  return workspace.workspaceFolders
-    ? workspace.workspaceFolders.filter(
+  return vscode.workspace.workspaceFolders
+    ? vscode.workspace.workspaceFolders.filter(
         (folder) => folder?.uri?.scheme === "file"
       )
     : [];

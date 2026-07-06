@@ -1,35 +1,35 @@
 import * as path from "path";
 import { promises } from "fs";
-import * as _ from "lodash";
-import * as inquirer from "inquirer";
-import { ReplayUtils, ReplayState } from "./replayUtils";
-const datauri = require("datauri"); // eslint-disable-line @typescript-eslint/no-var-requires
-const titleize = require("titleize"); // eslint-disable-line @typescript-eslint/no-var-requires
-const humanizeString = require("humanize-string"); // eslint-disable-line @typescript-eslint/no-var-requires
-import * as defaultImage from "./images/defaultImage";
-import { YouiAdapter } from "./youi-adapter";
-import { YouiEvents } from "./youi-events";
-import { IRpc } from "@sap-devx/webview-rpc/out.ext/rpc-common";
-import { GeneratorFilter, GeneratorType } from "./filter";
-import { IChildLogger } from "@vscode-logging/logger";
+import _ from "lodash";
+import inquirer from "inquirer";
+import { ReplayUtils, ReplayState } from "./replayUtils.js";
+import datauri from "datauri";
+import titleize from "titleize";
+import humanizeString from "humanize-string";
+import * as defaultImage from "./images/defaultImage.js";
+import { YouiAdapter } from "./youi-adapter.js";
+import { YouiEvents } from "./youi-events.js";
+import type { IRpc } from "@sap-devx/webview-rpc/out.ext/rpc-common.js";
+import { GeneratorFilter, GeneratorType } from "./filter.js";
+import type { IChildLogger } from "@vscode-logging/logger";
 import { IPrompt, MessageType } from "@sap-devx/yeoman-ui-types";
-import { AnalyticsWrapper } from "./usage-report/usage-analytics-wrapper";
-import { Output } from "./output";
+import { AnalyticsWrapper } from "./usage-report/usage-analytics-wrapper.js";
+import { Output } from "./output.js";
 import { resolve } from "path";
 import {
   Env,
   EnvGen,
   GeneratorData,
   GeneratorNotFoundError,
-} from "./utils/env";
-import { vscode, getVscode } from "./utils/vscodeProxy";
-import * as Generator from "yeoman-generator";
-import * as Environment from "yeoman-environment";
-import { Questions } from "yeoman-environment/lib/adapter";
-import { State } from "./utils/promise";
-import { Constants } from "./utils/constants";
-import { isUriFlow } from "./utils/workspaceFile";
-import { getFirstWorkspacePath } from "./utils/workspaceFolders";
+} from "./utils/env.js";
+import { vscode, getVscode } from "./utils/vscodeProxy.js";
+import Generator from "yeoman-generator";
+import Environment from "yeoman-environment";
+import type { Questions } from "yeoman-environment/lib/adapter";
+import { State } from "./utils/promise.js";
+import { Constants } from "./utils/constants.js";
+import { isUriFlow } from "./utils/workspaceFile.js";
+import { getFirstWorkspacePath } from "./utils/workspaceFolders.js";
 
 export interface IQuestionsPrompt extends IPrompt {
   questions: any[];
@@ -231,7 +231,7 @@ export class YeomanUI {
 
       const options = {
         logger: this.logger.getChildLogger({ label: generatorNamespace }),
-        vscode: getVscode(), // TODO: remove this temporary workaround once a better solution is found,
+        vscode: await getVscode(),
         data: this.uiOptions.data,
         tracker: AnalyticsWrapper.getTracker(),
         appWizard: this.youiEvents.getAppWizard(),
@@ -513,7 +513,7 @@ export class YeomanUI {
       } else if (_.size(newDirs) === 0) {
         hasNewDirs = false;
       }
-      //else { // _.size(newDirs) > 1 (5 folders)
+      //else { // size(newDirs) > 1 (5 folders)
       // We don't know what is the correct targetFolderPath ---> no buttons should be shown.
       // No folder added by generator ---> Fiori module generator flow.
       // Many folders added by generator --->

@@ -3,11 +3,11 @@ import * as sdk from "@sap/bas-sdk";
 import {
   internal,
   notifyGeneratorsInstallationProgress,
-} from "../../src/utils/generators-installation-progress";
+} from "../../src/utils/generators-installation-progress.js";
 import { expect } from "chai";
-import { vscode } from "../mockUtil";
-import messages from "../../src/messages";
-import { YeomanUIPanel } from "../../src/panels/YeomanUIPanel";
+import { vscode } from "../mockUtil.js";
+import messages from "../../src/messages.js";
+import { YeomanUIPanel } from "../../src/panels/YeomanUIPanel.js";
 
 describe("generators installation progress - unit test", () => {
   let sandbox: SinonSandbox;

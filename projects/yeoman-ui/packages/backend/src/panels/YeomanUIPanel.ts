@@ -1,22 +1,25 @@
-import { isEmpty, get, isNil, assign } from "lodash";
+import lodash from "lodash";
 import { join } from "path";
-import * as vscode from "vscode";
-import { YeomanUI } from "../yeomanui";
-import { RpcExtension } from "@sap-devx/webview-rpc/out.ext/rpc-extension";
-import { GeneratorFilter } from "../filter";
-import backendMessages from "../messages";
-import { YouiEvents } from "../youi-events";
-import { VSCodeYouiEvents } from "../vscode-youi-events";
-import { AbstractWebviewPanel } from "./AbstractWebviewPanel";
-import { GeneratorOutput } from "../vscode-output";
-import { Env } from "../utils/env";
-import { getWebviewRpcLibraryLogger } from "../logger/logger-wrapper";
+import type { ExtensionContext, WebviewPanel } from "vscode";
+import { vscode } from "../utils/vscodeProxy.js";
+import { YeomanUI } from "../yeomanui.js";
+import { RpcExtension } from "@sap-devx/webview-rpc/out.ext/rpc-extension.js";
+import { GeneratorFilter } from "../filter.js";
+import backendMessages from "../messages.js";
+import { YouiEvents } from "../youi-events.js";
+import { VSCodeYouiEvents } from "../vscode-youi-events.js";
+import { AbstractWebviewPanel } from "./AbstractWebviewPanel.js";
+import { GeneratorOutput } from "../vscode-output.js";
+import { Env } from "../utils/env.js";
+import { getWebviewRpcLibraryLogger } from "../logger/logger-wrapper.js";
 import { homedir } from "os";
-import { NpmCommand } from "../utils/npm";
-import { Constants } from "../utils/constants";
-import { notifyGeneratorsInstallationProgress } from "../utils/generators-installation-progress";
-import messages from "../messages";
-import { getFileSchemeWorkspaceFolders } from "../utils/workspaceFolders";
+import { NpmCommand } from "../utils/npm.js";
+import { Constants } from "../utils/constants.js";
+import { notifyGeneratorsInstallationProgress } from "../utils/generators-installation-progress.js";
+import messages from "../messages.js";
+import { getFileSchemeWorkspaceFolders } from "../utils/workspaceFolders.js";
+
+const { assign, get, isEmpty, isNil } = lodash;
 
 export class YeomanUIPanel extends AbstractWebviewPanel {
   public static YEOMAN_UI = "Application Wizard";
@@ -84,10 +87,7 @@ export class YeomanUIPanel extends AbstractWebviewPanel {
     }
   }
 
-  public setWebviewPanel(
-    webViewPanel: vscode.WebviewPanel,
-    uiOptions?: unknown
-  ) {
+  public setWebviewPanel(webViewPanel: WebviewPanel, uiOptions?: unknown) {
     super.setWebviewPanel(webViewPanel);
 
     this.messages = assign({}, backendMessages, get(uiOptions, "messages", {}));
@@ -141,7 +141,7 @@ export class YeomanUIPanel extends AbstractWebviewPanel {
   private installGens: any;
   private readonly output: GeneratorOutput;
 
-  public constructor(context: Partial<vscode.ExtensionContext>) {
+  public constructor(context: Partial<ExtensionContext>) {
     super(context);
     this.viewType = "yeomanui";
     this.viewTitle = YeomanUIPanel.YEOMAN_UI;

@@ -18,21 +18,32 @@ const config = {
   node: { global: true },
   entry: ["./src/extension.ts"], // the entry point of this extension, 📖 -> https://webpack.js.org/configuration/entry-context/
   devtool: "source-map",
+  experiments: {
+    outputModule: true,
+  },
   output: {
     // the bundle is stored in the 'dist' folder (check package.json), 📖 -> https://webpack.js.org/configuration/output/
     path: path.resolve(__dirname, "dist"),
     filename: "extension.js",
-    libraryTarget: "commonjs2",
+    library: {
+      type: "module",
+    },
     devtoolModuleFilenameTemplate: "../[resource-path]",
   },
   externals: {
-    vscode: "commonjs vscode",
+    vscode: "module vscode",
     // the vscode-module is created on-the-fly and must be excluded. Add other modules that cannot be webpack'ed, 📖 -> https://webpack.js.org/configuration/externals/
   },
   resolve: {
     modules: ["node_modules"],
     // support reading TypeScript and JavaScript files, 📖 -> https://github.com/TypeStrong/ts-loader
     extensions: [".ts", ".js"],
+    // node16 module resolution requires explicit `.js` extensions in ESM
+    // relative imports; those specifiers must map back to their `.ts` sources
+    // during bundling.
+    extensionAlias: {
+      ".js": [".ts", ".js"],
+    },
   },
   module: {
     rules: [
@@ -44,15 +55,6 @@ const config = {
             loader: "ts-loader",
           },
         ],
-      },
-      {
-        test: /usage-report[/|\\]usage-analytics-wrapper.ts/,
-        loader: "string-replace-loader",
-        options: {
-          search: "require[(]",
-          replace: "__non_webpack_require__(",
-          flags: "g",
-        },
       },
       {
         test: /yeoman-environment[/|\\]lib[/|\\]environment.js/,
@@ -222,24 +224,6 @@ const config = {
         options: {
           search: "require[.]extensions",
           replace: "__non_webpack_require__.extensions",
-          flags: "g",
-        },
-      },
-      {
-        test: /utils[/|\\]env.ts/,
-        loader: "string-replace-loader",
-        options: {
-          search: "require[.]cache",
-          replace: "__non_webpack_require__.cache",
-          flags: "g",
-        },
-      },
-      {
-        test: /utils[/|\\]vscodeProxy.ts/,
-        loader: "string-replace-loader",
-        options: {
-          search: "require[.]main",
-          replace: "__non_webpack_require__.main",
           flags: "g",
         },
       },

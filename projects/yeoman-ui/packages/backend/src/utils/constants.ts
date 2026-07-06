@@ -1,7 +1,9 @@
-import { isEmpty, get } from "lodash";
+import lodash from "lodash";
 import { join } from "path";
 import { homedir } from "os";
 import { devspace } from "@sap/bas-sdk";
+
+const { get, isEmpty } = lodash;
 
 class ConstantsUtil {
   public IS_IN_BAS =
