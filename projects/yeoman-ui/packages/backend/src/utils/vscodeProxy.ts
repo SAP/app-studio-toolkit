@@ -1,15 +1,14 @@
 import lodash from "lodash";
 import { join } from "path";
 import { URI } from "vscode-uri";
-import { createRequire } from "module";
 
 const { set } = lodash;
 
-const _require = createRequire(import.meta.url);
-
-export const getVscode = (): typeof import("vscode") | undefined => {
+export const getVscode = async (): Promise<
+  typeof import("vscode") | undefined
+> => {
   try {
-    return _require("vscode");
+    return (await import("vscode")) as unknown as typeof import("vscode");
   } catch {
     return undefined;
   }
@@ -99,5 +98,5 @@ const vscodeMock = {
 
 export const getVscodeMock = () => vscodeMock;
 
-export const vscode = (getVscode() ??
+export const vscode = ((await getVscode()) ??
   getVscodeMock()) as unknown as typeof import("vscode");

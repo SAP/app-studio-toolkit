@@ -231,7 +231,7 @@ export class YeomanUI {
 
       const options = {
         logger: this.logger.getChildLogger({ label: generatorNamespace }),
-        vscode: getVscode(),
+        vscode: await getVscode(),
         data: this.uiOptions.data,
         tracker: AnalyticsWrapper.getTracker(),
         appWizard: this.youiEvents.getAppWizard(),
