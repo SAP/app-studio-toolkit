@@ -5,6 +5,7 @@
     "packages": [
       "packages/*",
       "projects/*/packages/*",
+      "projects/*",
       "examples/*"
     ]
   },
