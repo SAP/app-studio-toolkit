@@ -69,6 +69,14 @@ module.exports = {
       },
     },
     {
+      // vscode-mta-tools was integrated with eslint-comments/require-description: "off"
+      // TODO: enable this rule once existing comments have been annotated
+      files: ["projects/vscode-mta-tools/**"],
+      rules: {
+        "eslint-comments/require-description": "off",
+      },
+    },
+    {
       // These packages pre-date strict type-checked linting and have many existing violations.
       // Rules are relaxed to match the historical behaviour before the ESLint crash was fixed.
       // TODO: clean up violations and tighten these rules incrementally.
@@ -130,6 +138,28 @@ module.exports = {
         "no-irregular-whitespace": "off",
         "prefer-rest-params": "off",
         "prefer-spread": "off",
+      },
+    },
+    {
+      // Additional TypeScript rules for vscode-mta-tools package.
+      files: ["projects/vscode-mta-tools/**/*.ts"],
+      rules: {
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-require-imports": "off",
+        "@typescript-eslint/no-unsafe-return": "off",
+        "@typescript-eslint/no-unsafe-argument": "off",
+        "@typescript-eslint/unbound-method": "off",
+        "@typescript-eslint/require-await": "off",
+        "@typescript-eslint/no-floating-promises": [
+          "error",
+          { ignoreVoid: true },
+        ],
+        "@typescript-eslint/no-unused-vars": [
+          "error",
+          { argsIgnorePattern: "^_", caughtErrors: "none" },
+        ],
+        "@typescript-eslint/no-unused-expressions": "off",
+        "@typescript-eslint/no-misused-promises": "off",
       },
     },
     {

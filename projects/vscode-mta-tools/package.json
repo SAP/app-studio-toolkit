@@ -1,0 +1,236 @@
+{
+  "name": "vscode-mta-tools",
+  "displayName": "vscode-mta-tools",
+  "description": "VS Code Multi-Target Application tools",
+  "version": "1.4.10",
+  "publisher": "SAPSE",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/app-studio-toolkit",
+    "directory": "projects/vscode-mta-tools"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "vscode": "^1.53.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "*"
+  ],
+  "extensionDependencies": [
+    "sapos.yeoman-ui"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "taskDefinitions": [
+      {
+        "type": "deploy-mta",
+        "required": [
+          "label",
+          "taskType",
+          "mtarPath"
+        ],
+        "properties": {
+          "label": {
+            "type": "string",
+            "description": "Task Name"
+          },
+          "taskType": {
+            "type": "string",
+            "description": "Task Type"
+          },
+          "mtarPath": {
+            "type": "string",
+            "description": "Path to the MTAR File"
+          },
+          "extPath": {
+            "type": "string",
+            "description": "Path to the Extension File"
+          }
+        }
+      },
+      {
+        "type": "build-mta",
+        "required": [
+          "label",
+          "taskType",
+          "mtaFilePath",
+          "buildType"
+        ],
+        "properties": {
+          "label": {
+            "type": "string",
+            "description": "Task Name"
+          },
+          "taskType": {
+            "type": "string",
+            "description": "Task Type"
+          },
+          "buildType": {
+            "type": "string",
+            "description": "Build Type"
+          },
+          "mtaFilePath": {
+            "type": "string",
+            "description": "Path to the Project's 'mta.yaml' File"
+          },
+          "mtarTargetPath": {
+            "type": "string",
+            "description": "Path to the MTAR Target Folder"
+          },
+          "mtarName": {
+            "type": "string",
+            "description": "MTAR File Name"
+          },
+          "extPath": {
+            "type": "string",
+            "description": "Path to the Extension File"
+          },
+          "modules": {
+            "type": "array",
+            "description": "Modules"
+          },
+          "dependencies": {
+            "type": "array",
+            "description": "Dependencies"
+          },
+          "targetFolderPath": {
+            "type": "string",
+            "description": "Path to the Target Folder"
+          }
+        }
+      }
+    ],
+    "problemMatchers": [
+      {
+        "name": "MTA",
+        "source": "MTA Validate",
+        "label": "Validate MTA development descriptor and extension files"
+      }
+    ],
+    "languages": [
+      {
+        "id": "yaml",
+        "extensions": [
+          ".mtaext"
+        ]
+      }
+    ],
+    "jsonValidation": [
+      {
+        "fileMatch": [
+          "mta.yaml",
+          "mta.yml"
+        ],
+        "url": "https://json.schemastore.org/mta"
+      },
+      {
+        "fileMatch": [
+          "mtad.yaml",
+          "mtad.yml"
+        ],
+        "url": "https://json.schemastore.org/mtad"
+      },
+      {
+        "fileMatch": [
+          "*.mtaext"
+        ],
+        "url": "https://json.schemastore.org/mtaext"
+      }
+    ],
+    "commands": [
+      {
+        "command": "extension.mtaBuildCommand",
+        "title": "Build MTA Project"
+      },
+      {
+        "command": "extension.mtarDeployCommand",
+        "title": "Deploy MTA Archive"
+      },
+      {
+        "command": "extension.addModuleCommand",
+        "title": "Create MTA Module from Template"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "when": "resourceFilename == mta.yaml",
+          "command": "extension.mtaBuildCommand",
+          "group": "navigation@2"
+        },
+        {
+          "when": "resourceFilename == mta.yaml",
+          "command": "extension.addModuleCommand",
+          "group": "navigation@1"
+        }
+      ]
+    },
+    "configuration": {
+      "type": "object",
+      "title": "MTA Tools",
+      "properties": {
+        "MTA Tools.loggingLevel": {
+          "type": "string",
+          "enum": [
+            "off",
+            "fatal",
+            "error",
+            "warn",
+            "info",
+            "debug",
+            "trace"
+          ],
+          "default": "error",
+          "description": "The verbosity of logging according to the following order: trace > debug > info > warn > error > fatal > off.",
+          "scope": "resource"
+        },
+        "MTA Tools.sourceLocationTracking": {
+          "type": "boolean",
+          "default": false,
+          "description": "If chosen, the location of the source code is added to log entries. Warning – this action may slow your extension. We recommend you use it only for debugging.",
+          "scope": "resource"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "ci": "npm-run-all clean compile coverage bundle package",
+    "clean": "rimraf ./out ./dist *.vsix ./.nyc_output",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "test": "mocha",
+    "coverage": "nyc mocha",
+    "bundle": "webpack --mode production",
+    "bundle:watch": "webpack --mode development --watch",
+    "package": "node ./scripts/package-vsix.js"
+  },
+  "dependencies": {
+    "lodash": "4.17.21",
+    "comment-json": "4.1.1",
+    "fs-extra": "10.0.0",
+    "@vscode-logging/logger": "1.2.3",
+    "@sap/swa-for-sapbas-vsx": "1.2.15",
+    "@sap/mta-lib": "1.7.4",
+    "@sap/cf-tools": "2.0.1",
+    "datauri": "2.0.0"
+  },
+  "devDependencies": {
+    "@sap_oss/task_contrib_types": "3.1.0",
+    "@types/comment-json": "2.4.2",
+    "@types/fs-extra": "9.0.12",
+    "@types/rimraf": "^3.0.0",
+    "@types/tmp": "^0.2.1",
+    "copy-webpack-plugin": "9.0.1",
+    "mock-spawn": "0.2.6",
+    "source-map-support": "0.5.19",
+    "ts-loader": "8.0.16",
+    "tmp": "^0.2.1",
+    "vscode-test": "1.5.2"
+  }
+}
