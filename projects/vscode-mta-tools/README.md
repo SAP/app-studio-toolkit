@@ -21,7 +21,7 @@ Make sure the following tools are installed in your environment:
 
 ### Support
 
-Please report issues [here](https://github.com/SAP/app-studio-toolkit/issues/new/choose) and label them with `vscode-mta-tools`.
+Please report issues [here](https://github.com/SAP/app-studio-toolkit/issues/new/choose) and label them with `project:vscode-mta-tools`.
 
 ### Contributing
 
