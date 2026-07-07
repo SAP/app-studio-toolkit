@@ -1,9 +1,8 @@
-import * as WebSocket from "ws";
-import { RpcExtensionWebSockets } from "@sap-devx/webview-rpc/out.ext/rpc-extension-ws";
-import { IChildLogger } from "@vscode-logging/logger";
-import { ExploreGens } from "../exploregens";
-import { getConsoleWarnLogger } from "../logger/console-logger";
-import { vscode } from "../utils/vscodeProxy";
+import { WebSocketServer } from "ws";
+import { RpcExtensionWebSockets } from "@sap-devx/webview-rpc/out.ext/rpc-extension-ws.js";
+import type { IChildLogger } from "@vscode-logging/logger";
+import { ExploreGens } from "../exploregens.js";
+import { getConsoleWarnLogger } from "../logger/console-logger.js";
 
 class ExploreGensWebSocketServer {
   private rpc: RpcExtensionWebSockets;
@@ -13,7 +12,7 @@ class ExploreGensWebSocketServer {
     // web socket server
     const port = process.env.PORT ? Number.parseInt(process.env.PORT) : 8082;
 
-    const wss = new WebSocket.Server({ port: port }, () => {
+    const wss = new WebSocketServer({ port: port }, () => {
       console.log("started websocket server");
     });
     wss.on("listening", () => {
@@ -27,9 +26,13 @@ class ExploreGensWebSocketServer {
     wss.on("connection", (ws) => {
       console.log("exploregens: new ws connection");
       const childLogger: IChildLogger = getConsoleWarnLogger();
-      this.rpc = new RpcExtensionWebSockets(ws, childLogger);
+      // Cast: rpc-extension-ws.d.ts types its ctor param via
+      // `import * as WebSocket from "ws"`, which under node16 resolution
+      // is not structurally interchangeable with the WebSocket class
+      // instance emitted by `on("connection")`.
+      this.rpc = new RpcExtensionWebSockets(ws as any, childLogger);
 
-      this.exploreGens = new ExploreGens(childLogger, vscode.context);
+      this.exploreGens = new ExploreGens(childLogger);
       this.exploreGens.init(this.rpc);
     });
   }

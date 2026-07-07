@@ -1,6 +1,7 @@
-import * as vscode from "vscode"; // NOSONAR
-import {
-  getExtensionLogger,
+import type { ExtensionContext } from "vscode";
+import { vscode } from "../utils/vscodeProxy.js";
+import vscodeLogger from "@vscode-logging/logger";
+import type {
   getExtensionLoggerOpts,
   IChildLogger,
   IVSCodeExtLogger,
@@ -9,11 +10,13 @@ import {
 import {
   listenToLogSettingsChanges,
   logLoggerDetails,
-} from "./settings-changes-handler";
+} from "./settings-changes-handler.js";
 import {
   getLoggingLevelSetting,
   getSourceLocationTrackingSetting,
-} from "./settings";
+} from "./settings.js";
+
+const { getExtensionLogger } = vscodeLogger;
 
 const YEOMAN_UI_LOGGER_NAME = "yeomanui";
 const YEOMAN_UI = "Application Wizard";
@@ -92,7 +95,7 @@ function initLoggerWrapper(newLogger: any) {
   logger = newLogger;
 }
 
-function createExtensionLogger(context: vscode.ExtensionContext) {
+function createExtensionLogger(context: ExtensionContext) {
   const contextLogPath = context.logPath;
   const logLevelSetting: LogLevel = getLoggingLevelSetting();
   const sourceLocationTrackingSettings: boolean =
@@ -117,9 +120,22 @@ function createExtensionLogger(context: vscode.ExtensionContext) {
 }
 
 export function createExtensionLoggerAndSubscribeToLogSettingsChanges(
-  context: vscode.ExtensionContext
+  context: ExtensionContext
 ) {
   createExtensionLogger(context);
   // Subscribe to Logger settings changes.
   listenToLogSettingsChanges(context);
 }
+
+export const internalApi = {
+  setLogger(mockLogger: any): void {
+    logger = mockLogger;
+  },
+  resetLogger(): void {
+    logger = undefined;
+  },
+  createExtensionLoggerAndSubscribeToLogSettingsChanges:
+    createExtensionLoggerAndSubscribeToLogSettingsChanges as (
+      context: ExtensionContext
+    ) => void,
+};

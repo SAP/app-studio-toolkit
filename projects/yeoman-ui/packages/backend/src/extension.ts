@@ -1,23 +1,24 @@
-import { ExtensionContext, window, WebviewPanel } from "vscode";
-import { createExtensionLoggerAndSubscribeToLogSettingsChanges } from "./logger/logger-wrapper";
-import { AnalyticsWrapper } from "./usage-report/usage-analytics-wrapper";
-import * as shellJsWorkarounds from "./utils/shellJsWorkarounds";
-import { ExtCommands } from "./extCommands";
+import type { ExtensionContext, WebviewPanel } from "vscode";
+import { vscode } from "./utils/vscodeProxy.js";
+import { internalApi as _loggerApi } from "./logger/logger-wrapper.js";
+import { AnalyticsWrapper } from "./usage-report/usage-analytics-wrapper.js";
+import * as shellJsWorkarounds from "./utils/shellJsWorkarounds.js";
+import { ExtCommands } from "./extCommands.js";
 
 let extCommands: ExtCommands;
 
-export function activate(context: ExtensionContext) {
+export async function activate(context: ExtensionContext) {
   shellJsWorkarounds.apply();
 
   extCommands = new ExtCommands(context);
 
   // performs first time lookup of installed generators
   // runs in background
-  void import("./utils/env");
+  void import("./utils/env.js");
 
   try {
-    createExtensionLoggerAndSubscribeToLogSettingsChanges(context);
-    AnalyticsWrapper.createTracker(context);
+    _loggerApi.createExtensionLoggerAndSubscribeToLogSettingsChanges(context);
+    await AnalyticsWrapper.createTracker(context);
   } catch (error) {
     console.error("Extension activation failed.", error.message);
     return;
@@ -26,7 +27,7 @@ export function activate(context: ExtensionContext) {
   extCommands.registerAndSubscribeCommands();
 
   context.subscriptions.push(
-    window.registerWebviewPanelSerializer("yeomanui", {
+    vscode.window.registerWebviewPanelSerializer("yeomanui", {
       async deserializeWebviewPanel(
         webViewPanel: WebviewPanel,
         state?: unknown
@@ -40,7 +41,7 @@ export function activate(context: ExtensionContext) {
   );
 
   context.subscriptions.push(
-    window.registerWebviewPanelSerializer("exploreGens", {
+    vscode.window.registerWebviewPanelSerializer("exploreGens", {
       async deserializeWebviewPanel(
         webViewPanel: WebviewPanel,
         state?: unknown

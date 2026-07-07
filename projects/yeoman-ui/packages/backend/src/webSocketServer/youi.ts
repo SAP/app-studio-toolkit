@@ -1,14 +1,14 @@
-import * as WebSocket from "ws";
-import { RpcExtensionWebSockets } from "@sap-devx/webview-rpc/out.ext/rpc-extension-ws";
-import { YeomanUI } from "../yeomanui";
-import { ServerOutput } from "./server-output";
-import { ServerYouiEvents } from "./server-youi-events";
-import backendMessages from "../messages";
-import { IChildLogger } from "@vscode-logging/logger";
-import { YouiEvents } from "../youi-events";
-import { GeneratorFilter } from "../filter";
-import { getConsoleWarnLogger } from "../logger/console-logger";
-import { createFlowPromise } from "../utils/promise";
+import { WebSocketServer } from "ws";
+import { RpcExtensionWebSockets } from "@sap-devx/webview-rpc/out.ext/rpc-extension-ws.js";
+import { YeomanUI } from "../yeomanui.js";
+import { ServerOutput } from "./server-output.js";
+import { ServerYouiEvents } from "./server-youi-events.js";
+import backendMessages from "../messages.js";
+import type { IChildLogger } from "@vscode-logging/logger";
+import { YouiEvents } from "../youi-events.js";
+import { GeneratorFilter } from "../filter.js";
+import { getConsoleWarnLogger } from "../logger/console-logger.js";
+import { createFlowPromise } from "../utils/promise.js";
 
 class YeomanUIWebSocketServer {
   private rpc: RpcExtensionWebSockets | undefined;
@@ -20,7 +20,7 @@ class YeomanUIWebSocketServer {
   init() {
     // web socket server
     const port = process.env.PORT ? Number.parseInt(process.env.PORT) : 8081;
-    const wss = new WebSocket.Server({ port: port }, () => {
+    const wss = new WebSocketServer({ port: port }, () => {
       console.log("started websocket server");
     });
     wss.on("listening", () => {
@@ -34,7 +34,11 @@ class YeomanUIWebSocketServer {
     wss.on("connection", (ws) => {
       console.log("new ws connection");
       const childLogger: IChildLogger = getConsoleWarnLogger();
-      this.rpc = new RpcExtensionWebSockets(ws, childLogger);
+      // Cast: rpc-extension-ws.d.ts types its ctor param via
+      // `import * as WebSocket from "ws"`, which under node16 resolution
+      // is not structurally interchangeable with the WebSocket class
+      // instance emitted by `on("connection")`.
+      this.rpc = new RpcExtensionWebSockets(ws as any, childLogger);
       const serverOutput = new ServerOutput(this.rpc, true);
       const youiEvents: YouiEvents = new ServerYouiEvents(this.rpc);
 

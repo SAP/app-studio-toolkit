@@ -11,21 +11,25 @@
   "license": "Apache-2.0",
   "author": "SAP SE",
   "publisher": "SAP",
-  "main": "dist/src/index.js",
-  "types": "dist/types/src/index.d.ts",
+  "main": "./dist/cjs/index.cjs",
+  "types": "./dist/types/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/types/src/index.d.ts",
-      "require": "./dist/cjs/src/index.js",
-      "import": "./dist/esm/src/index.js",
-      "default": "./dist/esm/src/index.js"
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs"
     }
   },
   "scripts": {
     "ci": "npm-run-all clean compile",
     "clean": "shx rm -rf ./dist",
-    "compile": "tsc -b ./tsconfig.json ./tsconfig.cjs.json ./tsconfig.esm.json ./tsconfig.types.json",
-    "compile:watch": "tsc -watch"
+    "compile": "npm-run-all compile:types compile:esm compile:cjs",
+    "compile:types": "tsc",
+    "compile:esm": "esbuild ./src/index.ts --outfile=./dist/esm/index.mjs --format=esm --target=es2022 --sourcemap",
+    "compile:cjs": "esbuild ./src/index.ts --outfile=./dist/cjs/index.cjs --format=cjs --target=es2022 --sourcemap"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.5"
   },
   "publishConfig": {
     "access": "public"

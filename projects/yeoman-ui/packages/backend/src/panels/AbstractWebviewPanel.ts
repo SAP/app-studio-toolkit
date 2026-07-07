@@ -1,35 +1,43 @@
-import * as vscode from "vscode";
+import type {
+  Disposable,
+  ExtensionContext,
+  ViewColumn,
+  WebviewPanel,
+} from "vscode";
+import { vscode } from "../utils/vscodeProxy.js";
 import { join, sep } from "path";
 import { readFileSync } from "fs";
-import { IChildLogger } from "@vscode-logging/logger";
-import { getClassLogger } from "../logger/logger-wrapper";
-import { RpcExtension } from "@sap-devx/webview-rpc/out.ext/rpc-extension";
-import { createFlowPromise, FlowPromise } from "../utils/promise";
+import type { IChildLogger } from "@vscode-logging/logger";
+import { getClassLogger } from "../logger/logger-wrapper.js";
+import { RpcExtension } from "@sap-devx/webview-rpc/out.ext/rpc-extension.js";
+import { createFlowPromise, FlowPromise } from "../utils/promise.js";
 import * as cheerio from "cheerio";
-import { AnalyticsWrapper } from "../usage-report/usage-analytics-wrapper";
-import { get } from "lodash";
-import { Constants } from "../utils/constants";
+import { AnalyticsWrapper } from "../usage-report/usage-analytics-wrapper.js";
+import lodash from "lodash";
+import { Constants } from "../utils/constants.js";
+
+const { get } = lodash;
 
 export abstract class AbstractWebviewPanel {
   public viewType: string;
   protected extensionPath: string;
   protected mediaPath: string;
   protected viewTitle: string;
-  protected webViewPanel: vscode.WebviewPanel;
+  protected webViewPanel: WebviewPanel;
   protected focusedKey: string;
   protected htmlFileName: string;
   protected state: unknown;
-  protected context: Partial<vscode.ExtensionContext>;
+  protected context: Partial<ExtensionContext>;
 
   protected readonly logger: IChildLogger;
-  protected disposables: vscode.Disposable[];
+  protected disposables: Disposable[];
   protected rpc: RpcExtension;
   protected flowPromise: FlowPromise<void>;
-  protected viewColumn: vscode.ViewColumn;
+  protected viewColumn: ViewColumn;
 
   public loadWebviewPanel(
     uiOptions?: any,
-    disposables: vscode.Disposable[] = []
+    disposables: Disposable[] = []
   ): Promise<void> {
     this.disposeWebviewPanel();
     if (uiOptions?.viewColumn in vscode.ViewColumn) {
@@ -42,7 +50,7 @@ export abstract class AbstractWebviewPanel {
     return this.flowPromise.promise;
   }
 
-  protected constructor(context: Partial<vscode.ExtensionContext>) {
+  protected constructor(context: Partial<ExtensionContext>) {
     this.extensionPath = context.extensionPath;
     this.mediaPath = join(context.extensionPath, "dist", "media");
     this.htmlFileName = "index.html";
@@ -52,13 +60,13 @@ export abstract class AbstractWebviewPanel {
     this.viewColumn = vscode.ViewColumn.One;
   }
 
-  public setWebviewPanel(webviewPanel: vscode.WebviewPanel, state?: unknown) {
+  public setWebviewPanel(webviewPanel: WebviewPanel, state?: unknown) {
     this.flowPromise = createFlowPromise<void>();
     this.webViewPanel = webviewPanel;
     this.state = state;
   }
 
-  public createWebviewPanel(): vscode.WebviewPanel {
+  public createWebviewPanel(): WebviewPanel {
     return vscode.window.createWebviewPanel(
       this.viewType,
       this.viewTitle,

@@ -1,18 +1,22 @@
-import { set } from "lodash";
+import lodash from "lodash";
 import { join } from "path";
 import { URI } from "vscode-uri";
 
-export const getVscode = () => {
+const { set } = lodash;
+
+export const getVscode = async (): Promise<
+  typeof import("vscode") | undefined
+> => {
   try {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    return require("vscode");
-  } catch (error) {
+    return (await import("vscode")) as unknown as typeof import("vscode");
+  } catch {
     return undefined;
   }
 };
 
-const filename: string = require?.main?.filename;
-const _isInTest = filename?.includes(join("node_modules", "mocha"));
+const _isInTest = process.argv.some((arg) =>
+  arg.includes(join("node_modules", "mocha"))
+);
 
 const returnValue = (...args: any[]) => {
   if (_isInTest) {
@@ -77,10 +81,9 @@ const window = {
   },
 };
 
-const ViewColumn = {
-  One: 1,
-  Two: 2,
-};
+const ViewColumn = { One: 1, Two: 2 };
+const ProgressLocation = { SourceControl: 1, Window: 10, Notification: 15 };
+const ConfigurationTarget = { Global: 1, Workspace: 2, WorkspaceFolder: 3 };
 
 const vscodeMock = {
   Uri,
@@ -89,8 +92,11 @@ const vscodeMock = {
   commands,
   window,
   ViewColumn,
+  ProgressLocation,
+  ConfigurationTarget,
 };
 
 export const getVscodeMock = () => vscodeMock;
 
-export const vscode = getVscode() ?? getVscodeMock();
+export const vscode = ((await getVscode()) ??
+  getVscodeMock()) as unknown as typeof import("vscode");

@@ -1,12 +1,13 @@
 import { createSandbox, SinonSandbox, SinonMock } from "sinon";
 import { expect } from "chai";
-import { vscode } from "../mockUtil";
+import { vscode } from "../mockUtil.js";
 import {
   getWorkspaceFolders,
   getFileSchemeWorkspaceFolders,
   getFirstWorkspacePath,
-} from "../../src/utils/workspaceFolders";
-import { Uri, WorkspaceFolder } from "vscode";
+} from "../../src/utils/workspaceFolders.js";
+import type { WorkspaceFolder } from "vscode";
+const { Uri } = vscode;
 
 describe("workspaceFolders utility tests", () => {
   let sandbox: SinonSandbox;

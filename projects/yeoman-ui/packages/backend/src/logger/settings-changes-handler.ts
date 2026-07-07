@@ -1,13 +1,14 @@
-import * as vscode from "vscode"; // NOSONAR
-import { getLogger } from "./logger-wrapper";
+import type { ExtensionContext } from "vscode";
+import { vscode } from "../utils/vscodeProxy.js";
+import { getLogger } from "./logger-wrapper.js";
 import {
   LOGGING_LEVEL_CONFIG_PROP,
   SOURCE_TRACKING_CONFIG_PROP,
-} from "./settings";
-import { LogLevel } from "@vscode-logging/logger";
+} from "./settings.js";
+import type { LogLevel } from "@vscode-logging/logger";
 
 export function logLoggerDetails(
-  context: vscode.ExtensionContext,
+  context: ExtensionContext,
   configLogLevel: string
 ): void {
   getLogger().info(`Start Logging in Log Level: <${configLogLevel}>`);
@@ -17,9 +18,9 @@ export function logLoggerDetails(
 }
 
 /**
- * @param {vscode.ExtensionContext} context
+ * @param {ExtensionContext} context
  */
-export function listenToLogSettingsChanges(context: vscode.ExtensionContext) {
+export function listenToLogSettingsChanges(context: ExtensionContext) {
   // To enable dynamic logging level we must listen to VSCode configuration changes
   // on our `loggingLevelConfigProp` configuration setting.
   context.subscriptions.push(
@@ -48,8 +49,3 @@ export function listenToLogSettingsChanges(context: vscode.ExtensionContext) {
     })
   );
 }
-
-module.exports = {
-  listenToLogSettingsChanges,
-  logLoggerDetails,
-};
