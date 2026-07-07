@@ -18,7 +18,7 @@ import messages from "../src/messages.js";
 import { AnalyticsWrapper } from "../src/usage-report/usage-analytics-wrapper.js";
 import { AppWizard, MessageType } from "@sap-devx/yeoman-ui-types";
 import { Env } from "../src/utils/env.js";
-import Environment from "yeoman-environment";
+import Environment, { createEnv } from "yeoman-environment";
 import { createFlowPromise } from "../src/utils/promise.js";
 import { Constants } from "../src/utils/constants.js";
 
@@ -1225,7 +1225,7 @@ describe("yeomanui unit test", () => {
         q2: "y",
         q3: "z",
       };
-      ReplayUtils["setDefaults"](questions, answers);
+      ReplayUtils["setDefaults"](questions as any, answers);
       for (const question of questions) {
         expect((question as any)["__origAnswer"]).to.equal(
           (<any>answers)[question.name]
@@ -1244,7 +1244,7 @@ describe("yeomanui unit test", () => {
         q1: "x",
         q3: "z",
       };
-      ReplayUtils["setDefaults"](questions, answers);
+      ReplayUtils["setDefaults"](questions as any, answers);
       const question = _.find(questions, { name: "q2" });
       expect((question as any).__origAnswer).to.be.undefined;
       expect((question as any).__ForceDefault).to.be.undefined;
@@ -1260,7 +1260,7 @@ describe("yeomanui unit test", () => {
       {},
       flowPromise.state
     );
-    const env: Environment = Environment.createEnv();
+    const env: Environment = createEnv();
     const envMock = sandbox.mock(env);
     const gen = { on: () => "" };
     const genMock = sandbox.mock(gen);
@@ -1286,7 +1286,7 @@ describe("yeomanui unit test", () => {
     );
     yeomanUiInstance["onUncaughtException"] = () => "";
     const onUncaughtExceptionBefore = yeomanUiInstance["onUncaughtException"];
-    const env: Environment = Environment.createEnv();
+    const env: Environment = createEnv();
     const envMock = sandbox.mock(env);
     const gen = { on: () => "" };
     const genMock = sandbox.mock(gen);
@@ -1393,7 +1393,7 @@ describe("yeomanui unit test", () => {
         flowPromise.state
       );
       const questions = [{ name: "q1" }];
-      const response = await yeomanUiInstance.showPrompt(questions);
+      const response = await yeomanUiInstance.showPrompt(questions as any);
       expect(response.firstName).to.equal(firstName);
     });
 
@@ -1429,12 +1429,12 @@ describe("yeomanui unit test", () => {
         return Promise.resolve();
       };
       let questions = [{ name: "q1" }];
-      let response = await yeomanUiInstance.showPrompt(questions);
+      let response = await yeomanUiInstance.showPrompt(questions as any);
       expect(response.firstName).to.equal(firstName);
 
       questions = [{ name: "q2" }];
 
-      response = await yeomanUiInstance.showPrompt(questions);
+      response = await yeomanUiInstance.showPrompt(questions as any);
       expect(response.country).to.equal(country);
       expect(yeomanUiInstance["replayUtils"]["isReplaying"]).to.be.false;
 
@@ -1442,7 +1442,7 @@ describe("yeomanui unit test", () => {
       expect(yeomanUiInstance["replayUtils"]["isReplaying"]).to.be.true;
 
       questions = [{ name: "q1" }];
-      response = await yeomanUiInstance.showPrompt(questions);
+      response = await yeomanUiInstance.showPrompt(questions as any);
       expect(response.firstName).to.equal(firstName);
     });
   });
@@ -1653,7 +1653,7 @@ describe("yeomanui unit test", () => {
       const testEventFunction = () => {
         return true;
       };
-      const questions = [
+      const questions: any[] = [
         {
           name: "q1",
           guiType: "questionType",
@@ -1703,7 +1703,7 @@ describe("yeomanui unit test", () => {
       );
       yeomanUiInstance["currentQuestions"] = [
         { name: "question1", guiType: "questionType" },
-      ];
+      ] as any;
       const response = await yeomanUiInstance["evaluateMethod"](
         null,
         "question1",
@@ -1728,7 +1728,7 @@ describe("yeomanui unit test", () => {
             return true;
           },
         },
-      ];
+      ] as any;
       const response = await yeomanUiInstance["evaluateMethod"](
         null,
         "question1",
@@ -1764,7 +1764,7 @@ describe("yeomanui unit test", () => {
         flowPromise.state
       );
       yeomanUiInstance["gen"] = Object.create({});
-      yeomanUiInstance["gen"].options = {};
+      (yeomanUiInstance["gen"] as any).options = {};
       yeomanUiInstance["currentQuestions"] = [
         {
           name: "question1",
@@ -1772,7 +1772,7 @@ describe("yeomanui unit test", () => {
             throw new Error("Error");
           },
         },
-      ];
+      ] as any;
       try {
         await yeomanUiInstance["evaluateMethod"](null, "question1", "method1");
       } catch (e) {
@@ -1790,7 +1790,7 @@ describe("yeomanui unit test", () => {
         flowPromise.state
       );
       yeomanUiInstance["gen"] = Object.create({});
-      yeomanUiInstance["gen"].options = {};
+      (yeomanUiInstance["gen"] as any).options = {};
       yeomanUiInstance["currentQuestions"] = undefined;
       try {
         await yeomanUiInstance["evaluateMethod"](null, "question1", "method1");

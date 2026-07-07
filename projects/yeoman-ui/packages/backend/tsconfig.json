@@ -18,12 +18,7 @@
     "allowSyntheticDefaultImports": true,
     "traceResolution": false,
     "declaration": true,
-    "skipLibCheck": true,
-    "paths": {
-      "yeoman-environment/lib/adapter": [
-        "./node_modules/@types/yeoman-environment/lib/adapter.d.ts"
-      ]
-    }
+    "skipLibCheck": true
   },
   "include": ["src/**/*", "test/**/*"],
   "ts-node": {

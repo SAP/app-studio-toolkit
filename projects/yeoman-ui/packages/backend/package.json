@@ -30,7 +30,7 @@
   "type": "module",
   "main": "./dist/extension.js",
   "scripts": {
-    "bundle": "webpack --config webpack.config.cjs --mode production",
+    "bundle": "pnpm --filter yeoman-env-v3 bundle && shx mkdir -p ./dist && shx cp ./node_modules/yeoman-env-v3/dist/index.js ./dist/yeoman-env-v3.cjs && webpack --config webpack.config.cjs --mode production",
     "ci": "npm-run-all clean compile coverage bundle frontend:copy package coverage:copy",
     "clean": "shx rm -rf ./dist ./coverage *.vsix",
     "clean:frontend": "cd ./dist && shx rm -rf ./media",
@@ -150,6 +150,14 @@
             "SAP Fiori Elements"
           ],
           "description": "Saved search query."
+        },
+        "ApplicationWizard.legacyGenerators": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "markdownDescription": "Generators listed here run under the legacy yeoman-environment v3 runtime instead of the default v6 runtime. Entries are matched against a generator's namespace prefix (e.g. `@sap/generator-name` matches all its sub-generators). The environment variable `YEOMAN_UI_LEGACY_GENERATORS` (comma-separated) is unioned with this list"
         }
       }
     },
@@ -184,6 +192,8 @@
     "@sap/bas-sdk": "3.13.7",
     "@sap/swa-for-sapbas-vsx": "2.0.16",
     "@vscode-logging/logger": "2.0.9",
+    "@yeoman/adapter": "4.0.2",
+    "@yeoman/types": "1.11.1",
     "chalk": "4.1.2",
     "cheerio": "^1.0.0-rc.12",
     "datauri": "4.1.0",
@@ -195,8 +205,9 @@
     "sudo-prompt": "9.2.1",
     "titleize": "2.1.0",
     "vscode-uri": "3.1.0",
-    "yeoman-environment": "3.19.3",
-    "yeoman-generator": "^4.13.0"
+    "yeoman-env-v3": "workspace:*",
+    "yeoman-environment": "6.1.0",
+    "yeoman-generator": "8.2.2"
   },
   "devDependencies": {
     "@types/cheerio": "^0.22.31",
@@ -209,8 +220,6 @@
     "@types/vscode": "^1.50.0",
     "@types/webpack-env": "^1.16.2",
     "@types/ws": "^8.5.14",
-    "@types/yeoman-environment": "^2.10.3",
-    "@types/yeoman-generator": "5.2.14",
     "@vscode/vsce": "2.24.0",
     "c8": "11.0.0",
     "copy-webpack-plugin": "^12.0.2",
