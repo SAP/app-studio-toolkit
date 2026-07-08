@@ -1,7 +1,7 @@
 {
   "name": "vscode-using-workspace-api",
   "private": "true",
-  "version": "2.11.3",
+  "version": "2.11.4",
   "publisher": "SAPOSS",
   "engines": {
     "vscode": "^1.32.0"
