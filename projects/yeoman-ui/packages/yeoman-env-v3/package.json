@@ -1,6 +1,6 @@
 {
   "name": "yeoman-env-v3",
-  "version": "1.25.0",
+  "version": "1.25.1",
   "private": true,
   "description": "TypeScript wrapper that bundles yeoman-environment v3 for the yeoman-ui extension's legacy-generator code path",
   "license": "Apache 2.0",
@@ -14,8 +14,9 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "clean": "shx rm -rf ./dist",
-    "compile": "tsc --noEmit",
-    "bundle": "webpack --config webpack.config.cjs --mode production"
+    "compile": "pnpm run bundle",
+    "bundle": "webpack --config webpack.config.cjs --mode production",
+    "ci": "pnpm run clean && pnpm run bundle"
   },
   "dependencies": {
     "yeoman-environment": "3.19.3"

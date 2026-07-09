@@ -21,6 +21,7 @@ import { Env } from "../src/utils/env.js";
 import Environment, { createEnv } from "yeoman-environment";
 import { createFlowPromise } from "../src/utils/promise.js";
 import { Constants } from "../src/utils/constants.js";
+import type { YeomanUIQuestion } from "../src/utils/questionTypes.js";
 
 describe("yeomanui unit test", () => {
   let sandbox: SinonSandbox;
@@ -1215,7 +1216,7 @@ describe("yeomanui unit test", () => {
 
   describe("answersUtils", () => {
     it("setDefaults", () => {
-      const questions = [
+      const questions: YeomanUIQuestion[] = [
         { name: "q1", default: "a" },
         { name: "q2", default: () => "b" },
         { name: "q3" },
@@ -1225,17 +1226,17 @@ describe("yeomanui unit test", () => {
         q2: "y",
         q3: "z",
       };
-      ReplayUtils["setDefaults"](questions as any, answers);
+      ReplayUtils["setDefaults"](questions, answers);
       for (const question of questions) {
-        expect((question as any)["__origAnswer"]).to.equal(
+        expect(question["__origAnswer"]).to.equal(
           (<any>answers)[question.name]
         );
-        expect((question as any)["__ForceDefault"]).to.be.true;
+        expect(question["__ForceDefault"]).to.be.true;
       }
     });
 
     it("setDefaults", () => {
-      const questions = [
+      const questions: YeomanUIQuestion[] = [
         { name: "q1", default: "a" },
         { name: "q2", default: () => "b" },
         { name: "q3" },
@@ -1244,10 +1245,10 @@ describe("yeomanui unit test", () => {
         q1: "x",
         q3: "z",
       };
-      ReplayUtils["setDefaults"](questions as any, answers);
+      ReplayUtils["setDefaults"](questions, answers);
       const question = _.find(questions, { name: "q2" });
-      expect((question as any).__origAnswer).to.be.undefined;
-      expect((question as any).__ForceDefault).to.be.undefined;
+      expect(question.__origAnswer).to.be.undefined;
+      expect(question.__ForceDefault).to.be.undefined;
     });
   });
 
@@ -1393,7 +1394,7 @@ describe("yeomanui unit test", () => {
         flowPromise.state
       );
       const questions = [{ name: "q1" }];
-      const response = await yeomanUiInstance.showPrompt(questions as any);
+      const response = await yeomanUiInstance.showPrompt(questions);
       expect(response.firstName).to.equal(firstName);
     });
 
@@ -1429,12 +1430,12 @@ describe("yeomanui unit test", () => {
         return Promise.resolve();
       };
       let questions = [{ name: "q1" }];
-      let response = await yeomanUiInstance.showPrompt(questions as any);
+      let response = await yeomanUiInstance.showPrompt(questions);
       expect(response.firstName).to.equal(firstName);
 
       questions = [{ name: "q2" }];
 
-      response = await yeomanUiInstance.showPrompt(questions as any);
+      response = await yeomanUiInstance.showPrompt(questions);
       expect(response.country).to.equal(country);
       expect(yeomanUiInstance["replayUtils"]["isReplaying"]).to.be.false;
 
@@ -1442,7 +1443,7 @@ describe("yeomanui unit test", () => {
       expect(yeomanUiInstance["replayUtils"]["isReplaying"]).to.be.true;
 
       questions = [{ name: "q1" }];
-      response = await yeomanUiInstance.showPrompt(questions as any);
+      response = await yeomanUiInstance.showPrompt(questions);
       expect(response.firstName).to.equal(firstName);
     });
   });
@@ -1678,7 +1679,7 @@ describe("yeomanui unit test", () => {
       );
       yeomanUiInstance["addCustomQuestionEventHandlers"](questions);
       expect(questions[0]).to.have.property("testEvent");
-      expect((questions[0] as any)["testEvent"]).to.equal(testEventFunction);
+      expect(questions[0]["testEvent"]).to.equal(testEventFunction);
     });
   });
 
@@ -1703,7 +1704,7 @@ describe("yeomanui unit test", () => {
       );
       yeomanUiInstance["currentQuestions"] = [
         { name: "question1", guiType: "questionType" },
-      ] as any;
+      ];
       const response = await yeomanUiInstance["evaluateMethod"](
         null,
         "question1",
@@ -1728,7 +1729,7 @@ describe("yeomanui unit test", () => {
             return true;
           },
         },
-      ] as any;
+      ];
       const response = await yeomanUiInstance["evaluateMethod"](
         null,
         "question1",
@@ -1772,7 +1773,7 @@ describe("yeomanui unit test", () => {
             throw new Error("Error");
           },
         },
-      ] as any;
+      ];
       try {
         await yeomanUiInstance["evaluateMethod"](null, "question1", "method1");
       } catch (e) {

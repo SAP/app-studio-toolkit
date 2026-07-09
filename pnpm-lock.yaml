@@ -711,6 +711,12 @@ importers:
       sinon:
         specifier: ^18.0.1
         version: 18.0.1
+      spdx-exceptions:
+        specifier: ^2.5.0
+        version: 2.5.0
+      spdx-license-ids:
+        specifier: ^3.0.20
+        version: 3.0.23
       string-replace-loader:
         specifier: 3.0.3
         version: 3.0.3(webpack@5.106.2)
@@ -9716,6 +9722,9 @@ packages:
   spdx-exceptions@2.3.0:
     resolution: {integrity: sha512-/tTrYOC7PPI1nUAgx34hUpqXuyJG+DTHJTnIULG4rDygi4xu/tfgmq1e1cIRwRzwZgo4NLySi+ricLkZkw4i5A==}
 
+  spdx-exceptions@2.5.0:
+    resolution: {integrity: sha512-PiU42r+xO4UbUS1buo3LPJkjlO7430Xn5SVAhdpzzsPHsjbYVflnnFdATgabnLude+Cqu25p6N+g2lw/PFsa4w==}
+
   spdx-expression-parse@3.0.1:
     resolution: {integrity: sha512-cbqHunsQWnJNE6KhVSMsMeH5H/L9EpymbzqTQ3uLwNCLZ1Q481oWaofqH7nO6V07xlXwY6PhQdQ2IedWx/ZK4Q==}
 
@@ -9724,6 +9733,9 @@ packages:
 
   spdx-license-ids@3.0.11:
     resolution: {integrity: sha512-Ctl2BrFiM0X3MANYgj3CkygxhRmr9mi6xhejbdO960nF6EDJApTYpn0BQnDKlnNBULKiCN1n3w9EBkHK8ZWg+g==}
+
+  spdx-license-ids@3.0.23:
+    resolution: {integrity: sha512-CWLcCCH7VLu13TgOH+r8p1O/Znwhqv/dbb6lqWy67G+pT1kHmeD/+V36AVb/vq8QMIQwVShJ6Ssl5FPh0fuSdw==}
 
   split-string@3.1.0:
     resolution: {integrity: sha512-NzNVhJDYpwceVVii8/Hu6DKfD2G+NrQHlS/V/qgv763EYudVwEcMQNxd2lh+0VrUByXN/oJkl5grOhYWvQUYiw==}
@@ -22565,6 +22577,8 @@ snapshots:
 
   spdx-exceptions@2.3.0: {}
 
+  spdx-exceptions@2.5.0: {}
+
   spdx-expression-parse@3.0.1:
     dependencies:
       spdx-exceptions: 2.3.0
@@ -22576,6 +22590,8 @@ snapshots:
       spdx-license-ids: 3.0.11
 
   spdx-license-ids@3.0.11: {}
+
+  spdx-license-ids@3.0.23: {}
 
   split-string@3.1.0:
     dependencies:

@@ -3,7 +3,10 @@ import { YouiEvents } from "./youi-events.js";
 import yoUiLog from "./utils/log.js";
 import lodash from "lodash";
 import chalk from "chalk";
-import type { PromptQuestions, PromptAnswers } from "@yeoman/adapter/types";
+import type {
+  YeomanUIQuestions,
+  PromptAnswers,
+} from "./utils/questionTypes.js";
 import { Output } from "./output.js";
 
 const { get, isFunction } = lodash;
@@ -42,7 +45,7 @@ export class YouiAdapter {
    * @param {Function} callback
    */
   public async prompt<T1 extends PromptAnswers, T2>(
-    questions: PromptQuestions<T1>,
+    questions: YeomanUIQuestions,
     cb?: (res: T1) => T2
   ): Promise<T2> {
     if (this.yeomanui && questions) {

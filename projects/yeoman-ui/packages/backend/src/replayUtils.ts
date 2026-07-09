@@ -1,6 +1,10 @@
 import type { IPrompt } from "@sap-devx/yeoman-ui-types";
 import hash from "object-hash";
-import type { PromptQuestions, PromptAnswers } from "@yeoman/adapter/types";
+import { asArray } from "./utils/questionTypes.js";
+import type {
+  YeomanUIQuestions,
+  PromptAnswers,
+} from "./utils/questionTypes.js";
 
 export enum ReplayState {
   Replaying,
@@ -10,7 +14,7 @@ export enum ReplayState {
 
 export class ReplayUtils {
   // assuming that order of questions is consistent
-  private static getQuestionsHash(questions: PromptQuestions): string {
+  private static getQuestionsHash(questions: YeomanUIQuestions): string {
     // we need exclude members that we manipulate in setDefault() below
     // we also need to exclude members set by custom event handlers
     // instead of blacklisting member, we whitelist them based on inquirer.js docs:
@@ -32,16 +36,16 @@ export class ReplayUtils {
       return keyIndex < 0;
     };
 
-    return hash(questions as any, { excludeKeys });
+    return hash(questions as object, { excludeKeys });
   }
 
   private static setDefaults(
-    questions: PromptQuestions,
+    questions: YeomanUIQuestions,
     answers: PromptAnswers
   ): void {
-    for (const question of questions as any[]) {
+    for (const question of asArray(questions)) {
       const name = question["name"];
-      const answer = answers[name];
+      const answer = answers[name as string];
 
       // __ForceDefault is required to let the frontend know to ignore all forms
       //   of default values defined on the question, e.g. the checked property of
@@ -75,7 +79,7 @@ export class ReplayUtils {
   }
 
   public start(
-    questions: PromptQuestions,
+    questions: YeomanUIQuestions,
     answers: PromptAnswers,
     numOfSteps: number
   ): void {
@@ -85,7 +89,7 @@ export class ReplayUtils {
     this.isReplaying = true;
   }
 
-  public stop(questions: PromptQuestions): IPrompt[] {
+  public stop(questions: YeomanUIQuestions): IPrompt[] {
     const prompts = this.prompts;
     this.isReplaying = false;
     this.prompts = [];
@@ -112,12 +116,12 @@ export class ReplayUtils {
     this.prompts = prompts;
   }
 
-  public remember(questions: PromptQuestions, answers: PromptAnswers): void {
+  public remember(questions: YeomanUIQuestions, answers: PromptAnswers): void {
     this._rememberAnswers(questions, answers);
     this.replayStack.push(answers);
   }
 
-  public recall(questions: PromptQuestions): void {
+  public recall(questions: YeomanUIQuestions): void {
     const key: string = ReplayUtils.getQuestionsHash(questions);
     const previousAnswers: PromptAnswers = this.answersCache.get(key);
     if (previousAnswers !== undefined) {
@@ -138,7 +142,7 @@ export class ReplayUtils {
   }
 
   private _rememberAnswers(
-    questions: PromptQuestions,
+    questions: YeomanUIQuestions,
     answers: PromptAnswers
   ): void {
     const key: string = ReplayUtils.getQuestionsHash(questions);

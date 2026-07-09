@@ -9,7 +9,7 @@ import type {
   InputOutputAdapter,
 } from "@yeoman/types";
 import type { IChildLogger } from "@vscode-logging/logger";
-import type { LegacyEnv } from "yeoman-env-v3";
+import type * as YeomanEnvV3 from "yeoman-env-v3";
 import { getClassLogger } from "../logger/logger-wrapper.js";
 import { isLegacyNamespace, namespaceToName } from "./legacyGenerators.js";
 
@@ -42,23 +42,10 @@ export class GeneratorNotFoundError extends Error {
   }
 }
 
-/**
- * Contract for the runtime-loaded yeoman-environment v3 bundle. The full
- * `LegacyEnv` type ships from the `yeoman-env-v3` workspace package — we only
- * need `createEnv` at this layer.
- */
-interface LegacyCompat {
-  createEnv(
-    args: undefined,
-    opts: Record<string, any>,
-    adapter: any
-  ): LegacyEnv;
-}
-
 class EnvUtil {
   private logger: IChildLogger;
   private allInstalledGensMeta: LookupGeneratorMeta[];
-  private legacyCompat: LegacyCompat | undefined;
+  private legacyCompat: typeof YeomanEnvV3 | undefined;
 
   constructor() {
     try {
@@ -239,7 +226,7 @@ class EnvUtil {
     if (!this.legacyCompat) {
       this.legacyCompat = __non_webpack_require__(
         "./yeoman-env-v3.cjs"
-      ) as LegacyCompat;
+      ) as typeof YeomanEnvV3;
     }
 
     const env = this.legacyCompat.createEnv(

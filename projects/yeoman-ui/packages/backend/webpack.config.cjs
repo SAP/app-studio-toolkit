@@ -27,16 +27,6 @@ const config = {
   externals: {
     // vscode is provided by the extension host, not bundled.
     vscode: "module vscode",
-    // spdx-expression-parse (pulled in transitively by @npmcli/arborist → fly-import
-    // → yeoman-environment v6) `require`s these siblings, but they are not listed
-    // in its `dependencies` — pnpm's strict layout therefore does not place them
-    // where webpack's `resolve.modules: ["node_modules"]` walk can reach them.
-    // Leave them as unresolved externals; the code path that actually loads them
-    // is only reached when Arborist normalizes a package.json license field,
-    // which happens during `npm install`-style flows the extension never runs.
-    "spdx-license-ids": "commonjs2 spdx-license-ids",
-    "spdx-license-ids/deprecated": "commonjs2 spdx-license-ids/deprecated",
-    "spdx-exceptions": "commonjs2 spdx-exceptions",
     // Optional native metric packages that Application Insights tries to load
     // via `require()` but that are absent in production installs — leave them
     // as un-resolvable externals so webpack does not attempt to bundle them.
@@ -53,6 +43,28 @@ const config = {
     // during bundling.
     extensionAlias: {
       ".js": [".ts", ".js"],
+    },
+    // `spdx-expression-parse` (pulled transitively via @npmcli/arborist →
+    // fly-import → yeoman-environment@6) requires these siblings without
+    // declaring them in its own `dependencies`. Under pnpm's strict layout
+    // they aren't reachable from within `.pnpm/spdx-expression-parse@…/`.
+    // Declaring them as backend devDependencies places them under
+    // `backend/node_modules/`; the aliases here point webpack directly at
+    // those symlinks so the resolver finds them regardless of where in the
+    // pnpm store it started the walk.
+    alias: {
+      "spdx-license-ids/deprecated$": path.resolve(
+        __dirname,
+        "node_modules/spdx-license-ids/deprecated.json"
+      ),
+      "spdx-license-ids$": path.resolve(
+        __dirname,
+        "node_modules/spdx-license-ids/index.json"
+      ),
+      "spdx-exceptions$": path.resolve(
+        __dirname,
+        "node_modules/spdx-exceptions/index.json"
+      ),
     },
   },
   module: {

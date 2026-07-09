@@ -26,7 +26,10 @@ import { namespaceToName } from "./utils/legacyGenerators.js";
 import { vscode, getVscode } from "./utils/vscodeProxy.js";
 import Generator from "yeoman-generator";
 import Environment from "yeoman-environment";
-import type { PromptQuestions, PromptAnswers } from "@yeoman/adapter/types";
+import type {
+  YeomanUIQuestions,
+  PromptAnswers,
+} from "./utils/questionTypes.js";
 import { State } from "./utils/promise.js";
 import { Constants } from "./utils/constants.js";
 import { isUriFlow } from "./utils/workspaceFile.js";
@@ -54,7 +57,7 @@ export class YeomanUI {
   private readonly youiAdapter: YouiAdapter;
   private gen: Generator | undefined;
   private promptCount: number;
-  private currentQuestions: PromptQuestions | undefined;
+  private currentQuestions: YeomanUIQuestions | undefined;
   private generatorName: string;
   private readonly replayUtils: ReplayUtils;
   private readonly customQuestionEventHandlers: Map<
@@ -428,7 +431,7 @@ export class YeomanUI {
   }
 
   public async showPrompt(
-    questions: PromptQuestions
+    questions: YeomanUIQuestions
   ): Promise<inquirer.Answers> {
     this.promptCount++;
     const promptName = this.getPromptName(questions);
@@ -443,7 +446,8 @@ export class YeomanUI {
     this.replayUtils.recall(questions);
 
     this.currentQuestions = questions;
-    const mappedQuestions: PromptQuestions = this.normalizeFunctions(questions);
+    const mappedQuestions: YeomanUIQuestions =
+      this.normalizeFunctions(questions);
     if (_.isEmpty(mappedQuestions)) {
       return {};
     }
@@ -479,7 +483,7 @@ export class YeomanUI {
     }
   }
 
-  private getPromptName(questions: PromptQuestions): string {
+  private getPromptName(questions: YeomanUIQuestions): string {
     const firstQuestionName = _.get(questions, "[0].name");
     return firstQuestionName
       ? _.startCase(firstQuestionName)
@@ -764,7 +768,7 @@ export class YeomanUI {
    * Functions are lost when being passed to client (using JSON.Stringify)
    * Also functions cannot be evaluated on client)
    */
-  private normalizeFunctions(questions: PromptQuestions): PromptQuestions {
+  private normalizeFunctions(questions: YeomanUIQuestions): YeomanUIQuestions {
     this.addCustomQuestionEventHandlers(questions);
     return JSON.parse(JSON.stringify(questions, YeomanUI.funcReplacer));
   }
@@ -781,7 +785,7 @@ export class YeomanUI {
     }
   }
 
-  private addCustomQuestionEventHandlers(questions: PromptQuestions): void {
+  private addCustomQuestionEventHandlers(questions: YeomanUIQuestions): void {
     for (const question of questions as any[]) {
       const guiType = _.get(question, "guiOptions.type", question.guiType);
       const questionHandlers = this.customQuestionEventHandlers.get(guiType);
