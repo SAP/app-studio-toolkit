@@ -5,29 +5,6 @@
 const path = require("path");
 const TerserPlugin = require("terser-webpack-plugin");
 
-/**
- * VSCode extension bundle for yeoman-ui backend.
- *
- * Output is native ESM (experiments.outputModule + library.type: "module")
- * — VSCode 1.100+ runs extension code as ESM in the extension host.
- *
- * Under ESM output, webpack passes `import.meta.url` and native
- * `createRequire(import.meta.url)` through untouched, so most of the patches
- * needed by a CJS bundle of yeoman-environment v6 are unnecessary here — v6's
- * `store.js` gets its native runtime `require` and can load generators from
- * disk directly.
- *
- * What is still needed:
- *  - Externalize `vscode` (provided by the extension host).
- *  - Load `yeoman-env-v3` at runtime via
- *    `__non_webpack_require__("./yeoman-env-v3.cjs")` — its own build produced
- *    a self-contained CJS bundle that is copied into dist/ before webpack.
- *  - String-replace-loader patches for a handful of third-party CJS packages
- *    that do dynamic `require()` calls webpack cannot statically resolve.
- *  - Keep class/function names so v6 does not re-mangle dynamic ESM class
- *    lookups at generator run time.
- */
-
 /**@type {import('webpack').Configuration}*/
 const config = {
   target: "node", // vscode extensions run in a Node.js-context 📖 -> https://webpack.js.org/configuration/node/
@@ -48,14 +25,21 @@ const config = {
   },
   externalsType: "module",
   externals: {
-    // vscode is provided by the extension host, not bundled
+    // vscode is provided by the extension host, not bundled.
     vscode: "module vscode",
-    // spdx-* are large data-only packages; keep them out of the bundle.
+    // spdx-expression-parse (pulled in transitively by @npmcli/arborist → fly-import
+    // → yeoman-environment v6) `require`s these siblings, but they are not listed
+    // in its `dependencies` — pnpm's strict layout therefore does not place them
+    // where webpack's `resolve.modules: ["node_modules"]` walk can reach them.
+    // Leave them as unresolved externals; the code path that actually loads them
+    // is only reached when Arborist normalizes a package.json license field,
+    // which happens during `npm install`-style flows the extension never runs.
     "spdx-license-ids": "commonjs2 spdx-license-ids",
     "spdx-license-ids/deprecated": "commonjs2 spdx-license-ids/deprecated",
     "spdx-exceptions": "commonjs2 spdx-exceptions",
-    // Optional native metric packages that Application Insights tries to load;
-    // absent in production.
+    // Optional native metric packages that Application Insights tries to load
+    // via `require()` but that are absent in production installs — leave them
+    // as un-resolvable externals so webpack does not attempt to bundle them.
     "@azure/functions-core": "commonjs2 @azure/functions-core",
     "applicationinsights-native-metrics":
       "commonjs2 applicationinsights-native-metrics",
@@ -203,10 +187,17 @@ const config = {
         test: /yeoman-environment[/|\\]dist[/|\\]module-lookup\.js/,
         loader: "string-replace-loader",
         options: {
+          // PACKAGE_NAME_PATTERN is only referenced further down in this same
+          // file as the DEFAULT for `options.packagePatterns`. Yeoman-ui always
+          // passes an explicit `packagePatterns` (or the caller in v6's own
+          // `generator-lookup.js` does — set to `['generator-*']`), so the
+          // inlined value is never actually consulted at lookup time. The
+          // literal `'yeoman-environment'` is just a non-empty placeholder that
+          // makes the static array shape well-formed.
           search:
             "const PACKAGE_NAME_PATTERN = \\[JSON\\.parse\\(readFileSync\\(join\\(PROJECT_ROOT, 'package\\.json'\\)\\)\\.toString\\(\\)\\)\\.name\\];",
           replace:
-            "const PACKAGE_NAME_PATTERN = ['yeoman-environment']; // inlined by webpack.config.cjs — was readFileSync(bake-machine path)",
+            "const PACKAGE_NAME_PATTERN = ['yeoman-environment']; // inlined by webpack.config.cjs — see this file's rule comment above",
           flags: "g",
         },
       },
@@ -220,8 +211,19 @@ const config = {
           flags: "g",
         },
       },
-      // node-gyp is a build-time tool we never invoke at runtime; its dynamic
-      // requires would fail static analysis.
+      // node-gyp is pulled in transitively by @npmcli/arborist. The code path
+      // that reaches it (native-module rebuild during install) is never hit
+      // from the extension, but webpack still has to parse its source graph:
+      //   - Find-VisualStudio.cs is a C# file webpack cannot parse — return
+      //     an empty module for it.
+      //   - bin/node-gyp.js starts with a `#!/usr/bin/env node` shebang that
+      //     webpack's static analyzer trips on — comment it out.
+      //   - lib/node-gyp.js does `require('./' + command)` dynamically —
+      //     hide it from webpack via __non_webpack_require__.
+      {
+        test: /Find-VisualStudio\.cs$/,
+        use: "null-loader",
+      },
       {
         test: /node-gyp[/|\\]lib[/|\\]node-gyp.js/,
         loader: "string-replace-loader",

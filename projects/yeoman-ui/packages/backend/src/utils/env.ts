@@ -11,21 +11,12 @@ import type {
 import type { IChildLogger } from "@vscode-logging/logger";
 import type { LegacyEnv } from "yeoman-env-v3";
 import { getClassLogger } from "../logger/logger-wrapper.js";
-import { isLegacyNamespace } from "./legacyGenerators.js";
+import { isLegacyNamespace, namespaceToName } from "./legacyGenerators.js";
 
 const _require = createRequire(import.meta.url);
 
 const GENERATOR = "generator-";
 const NAMESPACE = "namespace";
-
-// Yeoman-environment v6 dropped the `namespaceToName` static helper. Our uses
-// only need the "package-name-from-namespace" transform — reproduce it here.
-function namespaceToName(ns: string): string {
-  const base = ns.replace(/:.*$/, "");
-  return base.startsWith("@")
-    ? base.replace(/\/generator-/, "/")
-    : base.replace(/^generator-/, "");
-}
 
 export type EnvGen = {
   env: Environment;

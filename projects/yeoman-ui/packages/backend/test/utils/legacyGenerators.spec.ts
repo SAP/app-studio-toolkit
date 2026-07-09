@@ -4,6 +4,7 @@ import { vscode } from "../mockUtil.js";
 import {
   getLegacyGeneratorList,
   isLegacyNamespace,
+  namespaceToName,
 } from "../../src/utils/legacyGenerators.js";
 
 const ENV_VAR = "YEOMAN_UI_LEGACY_GENERATORS";
@@ -204,6 +205,28 @@ describe("legacyGenerators", () => {
       // second call re-reads the default list — set up a fresh expectation
       wsConfigMock.expects("get").withArgs("legacyGenerators").returns([]);
       expect(isLegacyNamespace("@sap/other:app")).to.be.false;
+    });
+  });
+
+  describe("namespaceToName()", () => {
+    it("strips the sub-generator segment from a scoped namespace", () => {
+      expect(namespaceToName("@sap/adaptation-project:app")).to.equal(
+        "@sap/adaptation-project"
+      );
+    });
+
+    it("drops the generator- prefix on a scoped package", () => {
+      expect(namespaceToName("@bas-dev/generator-abap-project:app")).to.equal(
+        "@bas-dev/abap-project"
+      );
+    });
+
+    it("drops the generator- prefix on a bare package", () => {
+      expect(namespaceToName("generator-foo:app")).to.equal("foo");
+    });
+
+    it("returns the namespace unchanged when no colon or generator- prefix", () => {
+      expect(namespaceToName("plain-name")).to.equal("plain-name");
     });
   });
 });

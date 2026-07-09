@@ -1,4 +1,10 @@
-const YeomanEnvironment = require("yeoman-environment") as any;
+const YeomanEnvironment = require("yeoman-environment") as {
+  createEnv: (
+    args?: string[],
+    opts?: Record<string, unknown>,
+    adapter?: unknown
+  ) => LegacyEnv;
+};
 
 export interface LegacyEnv {
   register(resolved: string, namespace: string): void;
@@ -13,8 +19,4 @@ export interface LegacyEnv {
   removeAllListeners(event?: string): unknown;
 }
 
-export const createEnv: (
-  args?: string[],
-  opts?: Record<string, unknown>,
-  adapter?: any
-) => LegacyEnv = YeomanEnvironment.createEnv ?? YeomanEnvironment;
+export const createEnv = YeomanEnvironment.createEnv;

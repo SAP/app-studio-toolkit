@@ -22,6 +22,7 @@ import {
   GeneratorData,
   GeneratorNotFoundError,
 } from "./utils/env.js";
+import { namespaceToName } from "./utils/legacyGenerators.js";
 import { vscode, getVscode } from "./utils/vscodeProxy.js";
 import Generator from "yeoman-generator";
 import Environment from "yeoman-environment";
@@ -728,9 +729,7 @@ export class YeomanUI {
       this.logger.debug(error);
     }
 
-    const genName = genNamespace
-      .replace(/:.*$/, "")
-      .replace(/(?:^|(?<=\/))generator-/, "");
+    const genName = namespaceToName(genNamespace);
     const genMessage = _.get(
       packageJson,
       "description",

@@ -2,24 +2,7 @@
 "use strict";
 
 const path = require("path");
-const fs = require("fs");
-
-// Resolve the real path to yeoman-environment@3 through the symlink pnpm created
-// under this package's node_modules. Without realpathSync webpack might follow
-// a hoisted copy higher up in the pnpm store and bundle a mismatched version.
-const compatNodeModules = path.resolve(__dirname, "node_modules");
-const envV3Root = fs.realpathSync(
-  path.join(compatNodeModules, "yeoman-environment")
-);
-
-// istextorbinary and errlop ship multiple editions via the 'editions' loader,
-// several of which are ESM files webpack can't parse. Alias each to its known
-// CJS edition, resolved from v3's own dep tree.
-const envV3Req = require("module").createRequire(envV3Root + "/package.json");
-const istextorbinaryCJS = envV3Req
-  .resolve("istextorbinary")
-  .replace(/index\.js$/, "edition-node-0.12/index.js");
-const errlop = envV3Req.resolve("errlop");
+const TerserPlugin = require("terser-webpack-plugin");
 
 /** @type {import('webpack').Configuration} */
 module.exports = {
@@ -32,29 +15,27 @@ module.exports = {
     libraryTarget: "commonjs2",
   },
   optimization: {
-    // Keep class and function names — generators inspect env.runLoop and
-    // rely on structural class identity that mangling would break.
-    minimize: false,
-  },
-  externals: {
-    // spdx-* are large data packages and already present in the backend bundle.
-    "spdx-license-ids": "commonjs spdx-license-ids",
-    "spdx-license-ids/deprecated": "commonjs spdx-license-ids/deprecated",
-    "spdx-exceptions": "commonjs spdx-exceptions",
-    // node-gyp does dynamic require('./' + command) and pulls in a .cs file
-    // webpack can't parse. Only relevant during native module compilation,
-    // never during generator execution — externalize it.
-    "node-gyp": "commonjs node-gyp",
-    // bluebird is an optional peer of promise-inflight; not present in pnpm store.
-    bluebird: "commonjs bluebird",
+    // yeoman-environment v3's `isNamespace()` does `constructor.name === "YeomanNamespace"`.
+    // Terser's default mangler renames the class to a short symbol at production
+    // level, making that runtime string comparison always fail — every namespace
+    // instance is then treated as a plain object, re-parsed, and rejected because
+    // `typeof yeomanNamespaceInstance !== "string"`. Preserve class + function
+    // names to keep those reflection-style checks working.
+    minimizer: [
+      new TerserPlugin({
+        terserOptions: {
+          keep_classnames: true,
+          keep_fnames: true,
+          mangle: {
+            keep_classnames: true,
+            keep_fnames: true,
+          },
+        },
+      }),
+    ],
   },
   resolve: {
     extensions: [".ts", ".js", ".json"],
-    alias: {
-      "yeoman-environment": envV3Root,
-      istextorbinary: istextorbinaryCJS,
-      errlop: errlop,
-    },
   },
   module: {
     rules: [
