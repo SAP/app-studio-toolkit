@@ -24,17 +24,16 @@ function projectDirs() {
     encoding: "utf8",
   });
   const packages = JSON.parse(raw);
-  const packagePaths = new Set(packages.map((p) => p.path));
   const dirs = new Set();
 
   for (const { path: pkgPath } of packages) {
     if (!pkgPath || pkgPath === ROOT) continue;
-    // `pnpm -r exec -- shx cp -r ../../X X` copies from two levels up.
+    // `pnpm -r exec -- shx cp -r ../../X/. X` copies from two levels up.
     // For packages nested more than 2 levels below root the "two levels up"
     // target is an intermediate project dir, not the root itself.
     // We need to pre-populate those intermediate dirs with the legal files.
     const twoUp = path.resolve(pkgPath, "../..");
-    if (twoUp !== ROOT && !packagePaths.has(twoUp)) {
+    if (twoUp !== ROOT) {
       dirs.add(twoUp);
     }
   }

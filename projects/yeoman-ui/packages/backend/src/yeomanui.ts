@@ -22,14 +22,11 @@ import {
   GeneratorData,
   GeneratorNotFoundError,
 } from "./utils/env.js";
-import { namespaceToName } from "./utils/legacyGenerators.js";
+import { namespaceToName } from "./utils/namespace.js";
 import { vscode, getVscode } from "./utils/vscodeProxy.js";
 import Generator from "yeoman-generator";
 import Environment from "yeoman-environment";
-import type {
-  YeomanUIQuestions,
-  PromptAnswers,
-} from "./utils/questionTypes.js";
+import type { YeomanUIQuestions } from "./utils/questionTypes.js";
 import { State } from "./utils/promise.js";
 import { Constants } from "./utils/constants.js";
 import { isUriFlow } from "./utils/workspaceFile.js";
@@ -461,7 +458,7 @@ export class YeomanUI {
   }
 
   private async back(
-    partialAnswers: PromptAnswers,
+    partialAnswers: inquirer.Answers,
     numOfSteps: number
   ): Promise<void> {
     this.replayUtils.start(this.currentQuestions, partialAnswers, numOfSteps);

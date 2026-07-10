@@ -113,11 +113,17 @@ const config = {
           flags: "g",
         },
       },
-      // environment-full.js: `await import('yeoman-generator')` is a static
-      // string, so webpack CAN resolve and bundle yeoman-generator — but doing
-      // so triples the bundle size and yeoman-generator itself does dynamic
-      // filesystem loading. Keep it as a native runtime import so the
-      // generator's own installed copy on disk is used.
+      // environment-full.js `requireGenerator(undefined)` does
+      // `await import('yeoman-generator')` to obtain a *default* base Generator
+      // class (only when no resolved generator path is given). We keep it a
+      // native runtime import rather than letting webpack bundle it, because:
+      //   1. Our normal flow never reaches it — generators are loaded by
+      //      store.js via require(meta.resolved), which pulls each generator's
+      //      OWN yeoman-generator from its own node_modules on disk.
+      //   2. If it ever is reached, this bare specifier has no node_modules to
+      //      resolve against inside the *.vsix, so the import rejects and
+      //      yeoman-environment falls through to its `flyImport(...)` fallback
+      //      (which installs on demand). Bundling it wouldn't help that path.
       {
         test: /yeoman-environment[/|\\]dist[/|\\]environment-full\.js/,
         loader: "string-replace-loader",

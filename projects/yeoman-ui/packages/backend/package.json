@@ -150,14 +150,6 @@
             "SAP Fiori Elements"
           ],
           "description": "Saved search query."
-        },
-        "ApplicationWizard.legacyGenerators": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "default": [],
-          "markdownDescription": "Generators listed here run under the legacy yeoman-environment v3 runtime instead of the default v6 runtime. Entries are matched against a generator's namespace prefix (e.g. `@sap/generator-name` matches all its sub-generators). The environment variable `YEOMAN_UI_LEGACY_GENERATORS` (comma-separated) is unioned with this list"
         }
       }
     },
@@ -219,22 +211,15 @@
     "@types/webpack-env": "^1.16.2",
     "@types/ws": "^8.5.14",
     "@vscode/vsce": "2.24.0",
-    "@yeoman/adapter": "4.0.2",
     "@yeoman/types": "1.11.1",
     "c8": "11.0.0",
     "copy-webpack-plugin": "^12.0.2",
     "lcov-result-merger": "5.0.0",
-    "null-loader": "4.0.1",
     "sinon": "^18.0.1",
     "spdx-exceptions": "^2.5.0",
     "spdx-license-ids": "^3.0.20",
-    "string-replace-loader": "3.0.3",
     "terser": "^5.48.0",
-    "terser-webpack-plugin": "^5.3.0",
-    "ts-loader": "^9.2.3",
     "ts-node": "^10.9.2",
-    "webpack": "^5.94.0",
-    "webpack-cli": "^5.1.4",
     "ws": "8.17.1"
   },
   "extensionDependencies": [

@@ -1,10 +1,8 @@
 import type { IPrompt } from "@sap-devx/yeoman-ui-types";
 import hash from "object-hash";
+import type { Answers } from "inquirer";
 import { asArray } from "./utils/questionTypes.js";
-import type {
-  YeomanUIQuestions,
-  PromptAnswers,
-} from "./utils/questionTypes.js";
+import type { YeomanUIQuestions } from "./utils/questionTypes.js";
 
 export enum ReplayState {
   Replaying,
@@ -41,7 +39,7 @@ export class ReplayUtils {
 
   private static setDefaults(
     questions: YeomanUIQuestions,
-    answers: PromptAnswers
+    answers: Answers
   ): void {
     for (const question of asArray(questions)) {
       const name = question["name"];
@@ -58,9 +56,9 @@ export class ReplayUtils {
   }
 
   public isReplaying: boolean;
-  private readonly answersCache: Map<string, PromptAnswers>;
-  private replayStack: PromptAnswers[];
-  private replayQueue: PromptAnswers[];
+  private readonly answersCache: Map<string, Answers>;
+  private replayStack: Answers[];
+  private replayQueue: Answers[];
   private numOfSteps: number;
   private prompts: IPrompt[];
 
@@ -80,7 +78,7 @@ export class ReplayUtils {
 
   public start(
     questions: YeomanUIQuestions,
-    answers: PromptAnswers,
+    answers: Answers,
     numOfSteps: number
   ): void {
     this._rememberAnswers(questions, answers);
@@ -94,13 +92,13 @@ export class ReplayUtils {
     this.isReplaying = false;
     this.prompts = [];
     this.replayQueue = [];
-    const answers: PromptAnswers = this.replayStack.pop();
+    const answers: Answers = this.replayStack.pop();
     ReplayUtils.setDefaults(questions, answers);
     this.replayStack.splice(this.replayStack.length - this.numOfSteps + 1);
     return prompts;
   }
 
-  public next(promptCount: number, promptName: string): PromptAnswers {
+  public next(promptCount: number, promptName: string): Answers {
     if (promptCount > this.prompts.length) {
       const prompt: IPrompt = {
         name: promptName,
@@ -116,14 +114,14 @@ export class ReplayUtils {
     this.prompts = prompts;
   }
 
-  public remember(questions: YeomanUIQuestions, answers: PromptAnswers): void {
+  public remember(questions: YeomanUIQuestions, answers: Answers): void {
     this._rememberAnswers(questions, answers);
     this.replayStack.push(answers);
   }
 
   public recall(questions: YeomanUIQuestions): void {
     const key: string = ReplayUtils.getQuestionsHash(questions);
-    const previousAnswers: PromptAnswers = this.answersCache.get(key);
+    const previousAnswers: Answers = this.answersCache.get(key);
     if (previousAnswers !== undefined) {
       ReplayUtils.setDefaults(questions, previousAnswers);
     }
@@ -143,7 +141,7 @@ export class ReplayUtils {
 
   private _rememberAnswers(
     questions: YeomanUIQuestions,
-    answers: PromptAnswers
+    answers: Answers
   ): void {
     const key: string = ReplayUtils.getQuestionsHash(questions);
     this.answersCache.set(key, answers);

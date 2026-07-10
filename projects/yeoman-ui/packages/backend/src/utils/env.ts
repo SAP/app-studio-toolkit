@@ -11,7 +11,7 @@ import type {
 import type { IChildLogger } from "@vscode-logging/logger";
 import type * as YeomanEnvV3 from "yeoman-env-v3";
 import { getClassLogger } from "../logger/logger-wrapper.js";
-import { isLegacyNamespace, namespaceToName } from "./legacyGenerators.js";
+import { namespaceToName } from "./namespace.js";
 
 const _require = createRequire(import.meta.url);
 
@@ -166,22 +166,13 @@ class EnvUtil {
     const meta: LookupGeneratorMeta = await this.getGenMetadata(genNamespace);
     this.unloadGeneratorModules(genNamespace);
 
-    // Fast path: namespace is in the include list → route straight to v3.
-    // This avoids the wasted work of trying v6 first for known-legacy
-    // generators and skips the wall-clock cost of a failed v6.create().
-    if (isLegacyNamespace(genNamespace)) {
-      this.logger?.info(
-        `routing generator ${genNamespace} to legacy yeoman-environment v3 (matched include list)`
-      );
-      return this.createLegacyEnvAndGen(genNamespace, meta, options, adapter);
-    }
-
-    // Default path: try v6 first. If it throws while instantiating (typical
-    // symptom for v4/v5-shape generators under v6), fall back to v3. This
-    // makes the include list a *performance hint*, not a *filter*: users
-    // still see all their generators, unlisted-legacy ones just pay a small
-    // first-run cost. Operators can add explicit entries once they identify
-    // which packages are legacy to eliminate the retry.
+    // Try the default (modern) yeoman-environment v6 first. Generators written
+    // against the v3/v4 API shape throw when v6 instantiates them; in that case
+    // fall back to the bundled v3 runtime. This keeps the routing fully dynamic:
+    // every installed generator is attempted on v6 and only drops to v3 when it
+    // actually fails, so no static list of "legacy" generators has to be
+    // maintained. The only cost is a single failed v6 create() for a legacy
+    // generator before the fallback runs
     this.logger?.debug(
       `routing generator ${genNamespace} to yeoman-environment v6`
     );
@@ -235,7 +226,9 @@ class EnvUtil {
       adapter
     );
     env.register(meta.resolved, genNamespace);
-    const gen = env.create(genNamespace, { options });
+    const gen = env.create(genNamespace, {
+      options,
+    } as unknown as string[]);
 
     return { env: env as unknown as Environment, gen };
   }
