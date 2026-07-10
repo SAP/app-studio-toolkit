@@ -29,7 +29,7 @@
     "compile:cjs": "esbuild ./src/index.ts --outfile=./dist/cjs/index.cjs --format=cjs --target=es2022 --sourcemap"
   },
   "devDependencies": {
-    "esbuild": "0.25.5"
+    "esbuild": "0.28.1"
   },
   "publishConfig": {
     "access": "public"
