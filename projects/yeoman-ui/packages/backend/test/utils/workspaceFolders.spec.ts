@@ -9,6 +9,10 @@ import {
 import type { WorkspaceFolder } from "vscode";
 const { Uri } = vscode;
 
+// Derive expected fsPath values from the same Uri.file() the production code
+// uses — avoids hardcoded POSIX strings that break on Windows.
+const p = (...parts: string[]) => Uri.file("/" + parts.join("/")).fsPath;
+
 describe("workspaceFolders utility tests", () => {
   let sandbox: SinonSandbox;
   let workspaceMock: SinonMock;
@@ -65,8 +69,8 @@ describe("workspaceFolders utility tests", () => {
 
       const result = getWorkspaceFolders();
       expect(result).to.deep.equal([
-        "/path/to/workspace1",
-        "/path/to/workspace2",
+        p("path", "to", "workspace1"),
+        p("path", "to", "workspace2"),
       ]);
     });
 
@@ -86,7 +90,7 @@ describe("workspaceFolders utility tests", () => {
       sandbox.stub(vscode.workspace, "workspaceFolders").value(mockFolders);
 
       const result = getWorkspaceFolders();
-      expect(result).to.deep.equal(["/local/path"]);
+      expect(result).to.deep.equal([p("local", "path")]);
     });
 
     it("filters out multiple virtual schemes (ssh, wsl, vscode-vfs)", () => {
@@ -120,7 +124,7 @@ describe("workspaceFolders utility tests", () => {
       sandbox.stub(vscode.workspace, "workspaceFolders").value(mockFolders);
 
       const result = getWorkspaceFolders();
-      expect(result).to.deep.equal(["/local/path1", "/local/path2"]);
+      expect(result).to.deep.equal([p("local", "path1"), p("local", "path2")]);
     });
 
     it("returns empty array when only virtual workspaces exist", () => {
@@ -164,7 +168,10 @@ describe("workspaceFolders utility tests", () => {
       sandbox.stub(vscode.workspace, "workspaceFolders").value(mockFolders);
 
       const result = getWorkspaceFolders();
-      expect(result).to.deep.equal(["/valid/path", "/another/valid/path"]);
+      expect(result).to.deep.equal([
+        p("valid", "path"),
+        p("another", "valid", "path"),
+      ]);
     });
   });
 
@@ -246,8 +253,8 @@ describe("workspaceFolders utility tests", () => {
 
       const result = getFileSchemeWorkspaceFolders();
       expect(result).to.have.lengthOf(2);
-      expect(result[0].uri.fsPath).to.equal("/valid/path");
-      expect(result[1].uri.fsPath).to.equal("/another/valid/path");
+      expect(result[0].uri.fsPath).to.equal(p("valid", "path"));
+      expect(result[1].uri.fsPath).to.equal(p("another", "valid", "path"));
     });
   });
 
@@ -267,8 +274,8 @@ describe("workspaceFolders utility tests", () => {
       ];
       sandbox.stub(vscode.workspace, "workspaceFolders").value(mockFolders);
 
-      const result = getFirstWorkspacePath("/fallback/path");
-      expect(result).to.equal("/first/path");
+      const result = getFirstWorkspacePath(p("fallback", "path"));
+      expect(result).to.equal(p("first", "path"));
     });
 
     it("returns fallback when no workspaces exist", () => {
@@ -320,7 +327,7 @@ describe("workspaceFolders utility tests", () => {
       sandbox.stub(vscode.workspace, "workspaceFolders").value(mockFolders);
 
       const result = getFirstWorkspacePath("/fallback/path");
-      expect(result).to.equal("/local/path");
+      expect(result).to.equal(p("local", "path"));
     });
 
     it("works with empty string fallback", () => {
