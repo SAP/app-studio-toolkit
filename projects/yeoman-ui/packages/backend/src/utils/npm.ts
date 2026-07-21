@@ -1,4 +1,4 @@
-import { exec } from "child_process";
+import { exec, execSync } from "child_process";
 import { promisify } from "util";
 import { platform } from "os";
 import _ from "lodash";
@@ -41,6 +41,19 @@ const SEARCH_QUERY_SUFFIX =
 const CANCELED = "Action cancelled";
 const HAS_ACCESS = "Has Access";
 
+// Wrap a filesystem path for safe interpolation into a shell command string.
+// Use only for commands that must go through a shell (e.g. sudo-prompt).
+// Prefer spawn() with an argument array over this whenever possible.
+const shellQuotePath = (p: string): string => {
+  if (isWin32) {
+    // cmd.exe: wrap in double-quotes, escape any embedded double-quotes as ""
+    return `"${p.replace(/"/g, '""')}"`;
+  }
+  // POSIX sh: single-quote the entire path; a single-quote inside is
+  // closed, escaped with \', then reopened: 'it'\''s safe'
+  return `'${p.replace(/'/g, "'\\''")}'`;
+};
+
 class Command {
   private globalNodeModulesPathPromise: Promise<string>;
   private readonly SET_DEFAULT_LOCATION;
@@ -62,11 +75,11 @@ class Command {
     );
   }
 
-  private getGenLocationParams(): string {
+  private getGenLocationArgs(): string[] {
     const customInstallationPath = customLocation.getPath();
     return _.isEmpty(customInstallationPath)
-      ? "-g"
-      : `--prefix ${customInstallationPath}`;
+      ? ["-g"]
+      : ["--prefix", customInstallationPath];
   }
 
   private async execCommand(arg: string): Promise<string> {
@@ -139,9 +152,28 @@ class Command {
 
   private async grantAccessForGlobalNodeModulesPath() {
     const globalNodeModulesPath = await this.getGlobalNodeModulesPath();
+    // Resolve the real username in Node.js so $USER is not evaluated inside
+    // the elevated shell where env_reset typically sets it to "root".
+    const realUser = isWin32
+      ? undefined
+      : (() => {
+          try {
+            return execSync("logname", { encoding: "utf8" }).trim();
+          } catch {
+            /* fall through */
+          }
+          try {
+            return execSync("id -un", { encoding: "utf8" }).trim();
+          } catch {
+            /* fall through */
+          }
+          return os.userInfo().username;
+        })();
     const changeOwnerCommand = isWin32
-      ? `icacls ${globalNodeModulesPath} /grant Users:(OI)(CI)F`
-      : `chown -R $USER ${globalNodeModulesPath}`;
+      ? `icacls ${shellQuotePath(globalNodeModulesPath)} /grant Users:(OI)(CI)F`
+      : `chown -R ${shellQuotePath(realUser)} ${shellQuotePath(
+          globalNodeModulesPath
+        )}`;
     const globalPath = await this.getGlobalPath();
     const statusBarMessage = vscode.window.setStatusBarMessage(
       messages.changing_owner_permissions(globalPath)
@@ -224,15 +256,17 @@ class Command {
   }
 
   public async install(packageName: string): Promise<any> {
-    const locationParams = this.getGenLocationParams();
-    const command = `${NPM} install ${locationParams} ${packageName}@latest`;
-    return this.execCommand(command);
+    const locationArgs = this.getGenLocationArgs();
+    return this.spawnCommand(NPM, [
+      "install",
+      ...locationArgs,
+      `${packageName}@latest`,
+    ]);
   }
 
   public async uninstall(packageName: string): Promise<any> {
-    const locationParams = this.getGenLocationParams();
-    const command = `${NPM} uninstall ${locationParams} ${packageName}`;
-    return this.execCommand(command);
+    const locationArgs = this.getGenLocationArgs();
+    return this.spawnCommand(NPM, ["uninstall", ...locationArgs, packageName]);
   }
 
   public async getNodeProcessVersions(): Promise<NodeJS.ProcessVersions> {
