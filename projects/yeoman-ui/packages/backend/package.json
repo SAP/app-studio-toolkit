@@ -30,7 +30,7 @@
   "type": "module",
   "main": "./dist/extension.js",
   "scripts": {
-    "bundle": "shx mkdir -p ./dist && shx cp ./node_modules/yeoman-env-v3/dist/index.js ./dist/yeoman-env-v3.cjs && webpack --config webpack.config.cjs --mode production",
+    "bundle": "webpack --config webpack.config.cjs --mode production",
     "ci": "npm-run-all clean compile coverage bundle frontend:copy package coverage:copy",
     "clean": "shx rm -rf ./dist ./coverage *.vsix",
     "clean:frontend": "cd ./dist && shx rm -rf ./media",

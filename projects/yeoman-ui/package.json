@@ -1,15 +1,6 @@
 {
-  "name": "@sap-devx/yeoman-ui-project",
-  "version": "1.25.1",
+  "name": "@sap-devx/yeoman-ui-root",
   "private": true,
-  "description": "Private root package for the yeoman-ui project",
-  "license": "Apache 2.0",
-  "author": "SAP SE",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/SAP/app-studio-toolkit.git",
-    "directory": "projects/yeoman-ui"
-  },
   "devDependencies": {
     "null-loader": "4.0.1",
     "string-replace-loader": "3.0.3",

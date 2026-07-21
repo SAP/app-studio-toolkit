@@ -1,7 +1,6 @@
 import type { IPrompt } from "@sap-devx/yeoman-ui-types";
 import hash from "object-hash";
 import type { Answers } from "inquirer";
-import { asArray } from "./utils/questionTypes.js";
 import type { YeomanUIQuestions } from "./utils/questionTypes.js";
 
 export enum ReplayState {
@@ -41,7 +40,8 @@ export class ReplayUtils {
     questions: YeomanUIQuestions,
     answers: Answers
   ): void {
-    for (const question of asArray(questions)) {
+    const questionList = Array.isArray(questions) ? questions : [questions];
+    for (const question of questionList) {
       const name = question["name"];
       const answer = answers[name as string];
 

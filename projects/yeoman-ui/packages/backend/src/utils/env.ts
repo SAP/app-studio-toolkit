@@ -200,14 +200,6 @@ class EnvUtil {
     }
   }
 
-  /**
-   * Legacy code path: load yeoman-environment v3 from the pre-bundled compat
-   * package at runtime and use its v3-shape API. The compat bundle is copied
-   * into the extension's `dist/` folder next to `extension.js` at build time.
-   *
-   * v3's `env.create()` is synchronous — no await here. v3's `register()`
-   * takes a raw namespace string rather than the metadata object v6 accepts.
-   */
   private createLegacyEnvAndGen(
     genNamespace: string,
     meta: LookupGeneratorMeta,
@@ -220,7 +212,7 @@ class EnvUtil {
       ) as typeof YeomanEnvV3;
     }
 
-    const env = this.legacyCompat.createEnv(
+    const env = this.legacyCompat.createV3Env(
       undefined,
       { sharedOptions: { forwardErrorToEnvironment: true } },
       adapter

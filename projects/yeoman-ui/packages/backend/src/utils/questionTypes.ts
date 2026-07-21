@@ -17,8 +17,3 @@ export type YeomanUIQuestion = Pick<
 };
 
 export type YeomanUIQuestions = YeomanUIQuestion | YeomanUIQuestion[];
-
-// Normalize a single-or-array question value to an array
-export function asArray(questions: YeomanUIQuestions): YeomanUIQuestion[] {
-  return Array.isArray(questions) ? questions : [questions];
-}

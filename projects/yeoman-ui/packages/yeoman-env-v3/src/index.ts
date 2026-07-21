@@ -1,5 +1,5 @@
 import Environment = require("yeoman-environment");
 
-export const createEnv = Environment.createEnv;
+export const createV3Env = Environment.createEnv;
 
-export type LegacyEnv = Environment;
+export type LegacyV3Env = Environment;

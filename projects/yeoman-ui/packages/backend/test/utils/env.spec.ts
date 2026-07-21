@@ -44,7 +44,7 @@ function metaFor(fixture: {
   } as unknown as LookupGeneratorMeta;
 }
 
-describe("Env.createEnvAndGen — loading generators on both environments", () => {
+describe("Env.createEnvAndGen()", () => {
   let sandbox: SinonSandbox;
 
   beforeEach(() => {
@@ -91,9 +91,6 @@ describe("Env.createEnvAndGen — loading generators on both environments", () =
     };
     sandbox.stub(Env as any, "createEnvInstance").returns(failingV6Env);
 
-    // Inject the real yeoman-env-v3 compat runtime (in the bundled extension
-    // this is loaded from ./yeoman-env-v3.cjs via __non_webpack_require__,
-    // which is not available under ts-node; the package resolves directly here).
     (Env as any)["legacyCompat"] = require("yeoman-env-v3");
 
     const { env, gen } = await Env.createEnvAndGen(
