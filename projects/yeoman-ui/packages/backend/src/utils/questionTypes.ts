@@ -1,5 +1,8 @@
 import type { Question } from "inquirer";
 
+// A loose shape over inquirer's base `Question` plus the wizard's own fields.
+// @yeoman/adapter's strict `DistinctQuestion` union forced compile errors and
+// `any` casts at every call site, since the wizard adds guiType/replay markers
 export type YeomanUIQuestion = Pick<
   Question,
   "type" | "name" | "message" | "default" | "when" | "validate" | "filter"

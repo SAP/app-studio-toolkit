@@ -45,7 +45,6 @@ export class GeneratorNotFoundError extends Error {
 class EnvUtil {
   private logger: IChildLogger;
   private allInstalledGensMeta: LookupGeneratorMeta[];
-  private legacyCompat: typeof YeomanEnvV3 | undefined;
 
   constructor() {
     try {
@@ -166,63 +165,78 @@ class EnvUtil {
     const meta: LookupGeneratorMeta = await this.getGenMetadata(genNamespace);
     this.unloadGeneratorModules(genNamespace);
 
-    // Try the default (modern) yeoman-environment v6 first. Generators written
-    // against the v3/v4 API shape throw when v6 instantiates them; in that case
-    // fall back to the bundled v3 runtime. This keeps the routing fully dynamic:
-    // every installed generator is attempted on v6 and only drops to v3 when it
-    // actually fails, so no static list of "legacy" generators has to be
-    // maintained. The only cost is a single failed v6 create() for a legacy
-    // generator before the fallback runs
+    // v6 is the default runtime; retry with v3 for legacy generator shapes
     this.logger?.debug(
-      `routing generator ${genNamespace} to yeoman-environment v6`
+      `routing generator ${genNamespace} to default yeoman-environment v6`
     );
 
     try {
-      const env: Environment = this.createEnvInstance(
+      const v6Env: Environment = this.createEnvInstance(
         { sharedOptions: { forwardErrorToEnvironment: true } as any },
         adapter
       );
 
-      env.register(meta.resolved!, {
+      v6Env.register(meta.resolved!, {
         namespace: genNamespace,
         packagePath: meta.packagePath,
       });
 
-      const gen: any = await env.create(genNamespace, { options } as any);
+      const gen: any = await v6Env.create(genNamespace, { options } as any);
 
-      return { env, gen };
-    } catch (error) {
+      return { env: v6Env, gen };
+    } catch (v6Error) {
       this.logger?.info(
-        `yeoman-environment v6 could not create ${genNamespace}, falling back to legacy v3`,
-        { error: (error as Error)?.message }
+        `default yeoman-environment v6 could not create ${genNamespace}, falling back to yeoman-environment v3`,
+        { error: (v6Error as Error)?.message }
       );
-      return this.createLegacyEnvAndGen(genNamespace, meta, options, adapter);
+      try {
+        return this.createLegacyV3EnvAndGen(
+          genNamespace,
+          meta,
+          options,
+          adapter
+        );
+      } catch (v3Error) {
+        this.logger?.error(
+          `yeoman-environment v3 fallback also failed for ${genNamespace}; surfacing the v3 error`,
+          {
+            v6Error: (v6Error as Error)?.message,
+            v3Error: (v3Error as Error)?.message,
+          }
+        );
+
+        v3Error.v6Error = v6Error;
+        throw v3Error;
+      }
     }
   }
 
-  private createLegacyEnvAndGen(
+  private createLegacyV3EnvAndGen(
     genNamespace: string,
     meta: LookupGeneratorMeta,
     options: any,
     adapter: any
   ): EnvGen {
-    if (!this.legacyCompat) {
-      this.legacyCompat = __non_webpack_require__(
-        "./yeoman-env-v3.cjs"
-      ) as typeof YeomanEnvV3;
-    }
+    const legacyCompat = this.loadLegacyV3Compat();
 
-    const env = this.legacyCompat.createV3Env(
+    const v3Env = legacyCompat.createV3Env(
       undefined,
       { sharedOptions: { forwardErrorToEnvironment: true } },
       adapter
     );
-    env.register(meta.resolved, genNamespace);
-    const gen = env.create(genNamespace, {
+    v3Env.register(meta.resolved, {
+      namespace: genNamespace,
+      packagePath: meta.packagePath,
+    } as any);
+    const gen = v3Env.create(genNamespace, {
       options,
     } as unknown as string[]);
 
-    return { env: env as unknown as Environment, gen };
+    return { env: v3Env as unknown as Environment, gen };
+  }
+
+  private loadLegacyV3Compat(): typeof YeomanEnvV3 {
+    return __non_webpack_require__("./yeoman-env-v3.cjs") as typeof YeomanEnvV3;
   }
 
   public async getGeneratorsData(mainOnly = true): Promise<GeneratorData[]> {

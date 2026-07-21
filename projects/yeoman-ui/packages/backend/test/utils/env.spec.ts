@@ -30,6 +30,15 @@ const envV3Fixture = {
   ),
 };
 
+const envV6InitErrorFixture = {
+  namespace: "env-v6-init-error-fixture:app",
+  packagePath: resolve(FIXTURES, "generator-env-v6-init-error-fixture"),
+  resolved: resolve(
+    FIXTURES,
+    "generator-env-v6-init-error-fixture/generators/app/index.js"
+  ),
+};
+
 /** Build a LookupGeneratorMeta the way env.ts consumes it. */
 function metaFor(fixture: {
   namespace: string;
@@ -53,8 +62,6 @@ describe("Env.createEnvAndGen()", () => {
 
   afterEach(() => {
     sandbox.restore();
-    // Clear the cached compat handle so each test controls it explicitly.
-    (Env as any)["legacyCompat"] = undefined;
   });
 
   it("loads a generator through yeoman-environment v6", async () => {
@@ -91,7 +98,9 @@ describe("Env.createEnvAndGen()", () => {
     };
     sandbox.stub(Env as any, "createEnvInstance").returns(failingV6Env);
 
-    (Env as any)["legacyCompat"] = require("yeoman-env-v3");
+    sandbox
+      .stub(Env as any, "loadLegacyV3Compat")
+      .returns(require("yeoman-env-v3"));
 
     const { env, gen } = await Env.createEnvAndGen(
       envV3Fixture.namespace,
@@ -109,5 +118,38 @@ describe("Env.createEnvAndGen()", () => {
       gen.envV3FixtureLoaded,
       "the v3 fixture's constructor actually ran"
     ).to.equal(true);
+  });
+
+  it("surfaces the v3 fallback error (with the v6 error attached) when both runtimes fail", async () => {
+    sandbox
+      .stub(Env as any, "getGenMetadata")
+      .resolves(metaFor(envV6InitErrorFixture));
+    sandbox
+      .stub(Env as any, "loadLegacyV3Compat")
+      .returns(require("yeoman-env-v3"));
+
+    const { V6_INIT_ERROR } = require(envV6InitErrorFixture.resolved);
+
+    let thrown: any;
+    try {
+      await Env.createEnvAndGen(
+        envV6InitErrorFixture.namespace,
+        { silent: true },
+        undefined
+      );
+    } catch (error) {
+      thrown = error;
+    }
+
+    expect(thrown, "createEnvAndGen should reject").to.be.instanceOf(Error);
+    expect(
+      thrown?.message,
+      "the v3 fallback error is surfaced to the user, not the v6 error"
+    ).to.contain("requires yeoman-environment");
+    // The v6 error is preserved as context for diagnostics.
+    expect(
+      thrown?.v6Error?.message,
+      "the original v6 error is attached for diagnostics"
+    ).to.contain(V6_INIT_ERROR);
   });
 });

@@ -16,7 +16,8 @@
     "clean": "shx rm -rf ./dist",
     "compile": "pnpm run bundle",
     "bundle": "webpack --config webpack.config.cjs --mode production",
-    "ci": "pnpm run clean && pnpm run bundle"
+    "test": "node ./test/smoke.cjs",
+    "ci": "pnpm run clean && pnpm run bundle && pnpm run test"
   },
   "dependencies": {
     "yeoman-environment": "3.19.3"

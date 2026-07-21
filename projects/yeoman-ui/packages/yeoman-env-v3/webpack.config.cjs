@@ -35,7 +35,7 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: [".ts", ".js", ".json"],
+    extensions: [".ts", "..."],
   },
   module: {
     rules: [
