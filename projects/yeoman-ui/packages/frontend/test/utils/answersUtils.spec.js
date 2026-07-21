@@ -43,6 +43,18 @@ describe("Tests for answerUtils", () => {
           "value": "No",
         },
         {
+          "label": "Are you sure?",
+          "value": "Yes, I am",
+        },
+        {
+          "label": "Empty labels fallback?",
+          "value": "No",
+        },
+        {
+          "label": "Undefined labels fallback?",
+          "value": "Yes",
+        },
+        {
           "label": "Restaurant visits (number)",
           "value": "11",
         },
