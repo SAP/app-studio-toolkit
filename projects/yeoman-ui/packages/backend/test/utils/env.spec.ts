@@ -12,6 +12,9 @@ const require = createRequire(import.meta.url);
 
 const FIXTURES = resolve(__dirname, "../fixtures");
 
+const ENV_V6_V3_INCOMPATIBILITY_MESSAGE =
+  "Current environment doesn't provides some necessary feature this generator needs.";
+
 const envV6Fixture = {
   namespace: "env-v6-fixture:app",
   packagePath: resolve(FIXTURES, "generator-env-v6-fixture"),
@@ -86,14 +89,15 @@ describe("Env.createEnvAndGen()", () => {
   it("falls back to yeoman-environment v3 when v6 cannot create the generator", async () => {
     sandbox.stub(Env as any, "getGenMetadata").resolves(metaFor(envV3Fixture));
 
-    // Force the v6 path to fail so the v3 fallback runs — simulates a
-    // v3-shape generator that v6 rejects at create() time.
+    // Force the v6 path to fail with the exact env-incompatibility message
+    // yeoman-generator throws when a generator is run on the wrong runtime —
+    // this is the only signal that triggers the v3 fallback.
     const failingV6Env: any = {
       register(): void {
         return undefined;
       },
       create(): never {
-        throw new Error("v6 cannot instantiate a v3-shape generator");
+        throw new Error(ENV_V6_V3_INCOMPATIBILITY_MESSAGE);
       },
     };
     sandbox.stub(Env as any, "createEnvInstance").returns(failingV6Env);
@@ -120,13 +124,12 @@ describe("Env.createEnvAndGen()", () => {
     ).to.equal(true);
   });
 
-  it("surfaces the v3 fallback error (with the v6 error attached) when both runtimes fail", async () => {
+  it("does not fall back to v3 when v6 fails with a generator domain error", async () => {
     sandbox
       .stub(Env as any, "getGenMetadata")
       .resolves(metaFor(envV6InitErrorFixture));
-    sandbox
-      .stub(Env as any, "loadLegacyV3Compat")
-      .returns(require("yeoman-env-v3"));
+
+    const v3Fallback = sandbox.stub(Env as any, "createLegacyV3EnvAndGen");
 
     const { V6_INIT_ERROR } = require(envV6InitErrorFixture.resolved);
 
@@ -144,12 +147,52 @@ describe("Env.createEnvAndGen()", () => {
     expect(thrown, "createEnvAndGen should reject").to.be.instanceOf(Error);
     expect(
       thrown?.message,
+      "the original v6 domain error is surfaced as-is"
+    ).to.contain(V6_INIT_ERROR);
+    expect(
+      v3Fallback.called,
+      "the v3 fallback must NOT run for a v6 domain error"
+    ).to.equal(false);
+  });
+
+  it("surfaces the v3 fallback error (with the v6 error attached) when the incompatible generator also fails on v3", async () => {
+    sandbox.stub(Env as any, "getGenMetadata").resolves(metaFor(envV3Fixture));
+
+    const failingV6Env: any = {
+      register(): void {
+        return undefined;
+      },
+      create(): never {
+        throw new Error(ENV_V6_V3_INCOMPATIBILITY_MESSAGE);
+      },
+    };
+    sandbox.stub(Env as any, "createEnvInstance").returns(failingV6Env);
+
+    const V3_FALLBACK_ERROR = "v3 fallback failed for its own reason";
+    sandbox
+      .stub(Env as any, "createLegacyV3EnvAndGen")
+      .throws(new Error(V3_FALLBACK_ERROR));
+
+    let thrown: any;
+    try {
+      await Env.createEnvAndGen(
+        envV3Fixture.namespace,
+        { silent: true },
+        undefined
+      );
+    } catch (error) {
+      thrown = error;
+    }
+
+    expect(thrown, "createEnvAndGen should reject").to.be.instanceOf(Error);
+    expect(
+      thrown?.message,
       "the v3 fallback error is surfaced to the user, not the v6 error"
-    ).to.contain("requires yeoman-environment");
+    ).to.contain(V3_FALLBACK_ERROR);
     // The v6 error is preserved as context for diagnostics.
     expect(
       thrown?.v6Error?.message,
-      "the original v6 error is attached for diagnostics"
-    ).to.contain(V6_INIT_ERROR);
+      "the original v6 incompatibility error is attached for diagnostics"
+    ).to.contain(ENV_V6_V3_INCOMPATIBILITY_MESSAGE);
   });
 });

@@ -43,6 +43,9 @@ export class GeneratorNotFoundError extends Error {
 }
 
 class EnvUtil {
+  private static readonly ENV_V6_V3_INCOMPATIBILITY_MESSAGE =
+    "Current environment doesn't provides some necessary feature this generator needs.";
+
   private logger: IChildLogger;
   private allInstalledGensMeta: LookupGeneratorMeta[];
 
@@ -52,6 +55,12 @@ class EnvUtil {
     } catch (e) {
       // nothing TODO : testing scope
     }
+  }
+
+  private isEnvIncompatibilityError(error: unknown): boolean {
+    return (
+      (error as Error)?.message === EnvUtil.ENV_V6_V3_INCOMPATIBILITY_MESSAGE
+    );
   }
 
   public loadNpmPath(_force = false) {
@@ -165,7 +174,7 @@ class EnvUtil {
     const meta: LookupGeneratorMeta = await this.getGenMetadata(genNamespace);
     this.unloadGeneratorModules(genNamespace);
 
-    // v6 is the default runtime; retry with v3 for legacy generator shapes
+    // v6 is the default runtime; retry with v3 only on an env-incompatibility error
     this.logger?.debug(
       `routing generator ${genNamespace} to default yeoman-environment v6`
     );
@@ -185,6 +194,14 @@ class EnvUtil {
 
       return { env: v6Env, gen };
     } catch (v6Error) {
+      if (!this.isEnvIncompatibilityError(v6Error)) {
+        this.logger?.error(
+          `yeoman-environment v6 failed to create ${genNamespace} with a non-compatibility error; not falling back to v3`,
+          { error: (v6Error as Error)?.message }
+        );
+        throw v6Error;
+      }
+
       this.logger?.info(
         `default yeoman-environment v6 could not create ${genNamespace}, falling back to yeoman-environment v3`,
         { error: (v6Error as Error)?.message }
