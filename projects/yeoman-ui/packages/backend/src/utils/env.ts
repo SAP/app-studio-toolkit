@@ -194,16 +194,17 @@ class EnvUtil {
 
       return { env: v6Env, gen };
     } catch (v6Error) {
-      if (!this.isEnvIncompatibilityError(v6Error)) {
-        this.logger?.error(
-          `yeoman-environment v6 failed to create ${genNamespace} with a non-compatibility error; not falling back to v3`,
+      const shouldFallbackToV3 = this.isEnvIncompatibilityError(v6Error);
+      if (!shouldFallbackToV3) {
+        this.logger?.debug(
+          `yeoman-environment v6 failed to create ${genNamespace}; rethrowing original generator error without v3 fallback`,
           { error: (v6Error as Error)?.message }
         );
         throw v6Error;
       }
 
       this.logger?.info(
-        `default yeoman-environment v6 could not create ${genNamespace}, falling back to yeoman-environment v3`,
+        `yeoman-environment v6 rejected ${genNamespace} as incompatible; retrying with yeoman-environment v3`,
         { error: (v6Error as Error)?.message }
       );
       try {
@@ -215,7 +216,7 @@ class EnvUtil {
         );
       } catch (v3Error) {
         this.logger?.error(
-          `yeoman-environment v3 fallback also failed for ${genNamespace}; surfacing the v3 error`,
+          `yeoman-environment v3 fallback failed for ${genNamespace}; throwing v3 error with v6 incompatibility attached`,
           {
             v6Error: (v6Error as Error)?.message,
             v3Error: (v3Error as Error)?.message,
