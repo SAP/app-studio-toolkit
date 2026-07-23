@@ -90,8 +90,16 @@ function findIncompatibilityLiteral(pkg: string): string | undefined {
   return undefined;
 }
 
+const MODULE_TYPES = [
+  { label: "cjs", type: "commonjs" as const },
+  { label: "esm", type: "module" as const },
+];
+
 /** Build an on-disk generator extending the given yeoman-generator major. */
-function makeGenerator(pkg: string): { resolved: string; packagePath: string } {
+function makeGenerator(
+  pkg: string,
+  moduleType: "commonjs" | "module"
+): { resolved: string; packagePath: string } {
   const packagePath = mkdtempSync(join(tmpdir(), "gen-compat-"));
   const appDir = join(packagePath, "generators", "app");
 
@@ -101,21 +109,29 @@ function makeGenerator(pkg: string): { resolved: string; packagePath: string } {
     JSON.stringify({
       name: "generator-compat",
       version: "1.0.0",
-      type: "commonjs",
+      type: moduleType,
     })
   );
 
   const genMain = require.resolve(pkg);
 
-  writeFileSync(
-    join(appDir, "index.js"),
-    `"use strict";\n` +
-      `const G = require(${JSON.stringify(genMain)});\n` +
-      `const Base = G.default || G;\n` +
-      `module.exports = class CompatProbe extends Base {\n` +
-      `  initializing() { return "ok"; }\n` +
-      `};\n`
-  );
+  const source =
+    moduleType === "module"
+      ? `import { createRequire } from "module";\n` +
+        `const require = createRequire(import.meta.url);\n` +
+        `const G = require(${JSON.stringify(genMain)});\n` +
+        `const Base = G.default || G;\n` +
+        `export default class CompatProbe extends Base {\n` +
+        `  initializing() { return "ok"; }\n` +
+        `}\n`
+      : `"use strict";\n` +
+        `const G = require(${JSON.stringify(genMain)});\n` +
+        `const Base = G.default || G;\n` +
+        `module.exports = class CompatProbe extends Base {\n` +
+        `  initializing() { return "ok"; }\n` +
+        `};\n`;
+
+  writeFileSync(join(appDir, "index.js"), source);
 
   return { resolved: join(appDir, "index.js"), packagePath };
 }
@@ -154,50 +170,70 @@ describe("yeoman-generator × yeoman-environment compatibility matrix", () => {
   describe("real generator instantiation across supported environments", () => {
     for (const { label: genLabel, pkg } of GENERATOR_MAJORS) {
       for (const env of ENVIRONMENTS) {
-        const isUnloadableCombo = genLabel === "v3" && env.label === "env-v6";
-        const testFn = isUnloadableCombo ? it.skip : it;
-
-        testFn(`generator ${genLabel} on ${env.label}`, async function () {
-          this.timeout(15000);
-          const { resolved, packagePath } = makeGenerator(pkg);
-          const namespace = "compat:app";
-
-          let outcome: { ok: boolean; message?: string };
-          try {
-            const environment = env.create();
-            environment.register(resolved, {
-              namespace,
-              packagePath,
-            });
-            let gen = environment.create(namespace, { options: {} });
-
-            if (gen && typeof gen.then === "function") gen = await gen;
-            outcome = { ok: true };
-          } catch (error) {
-            outcome = { ok: false, message: (error as Error).message };
-          }
-
-          if (!outcome.ok) {
-            const isIncompat = (Env as any).isEnvIncompatibilityError(
-              new Error(outcome.message)
+        for (const moduleType of MODULE_TYPES) {
+          it(`generator ${genLabel} (${moduleType.label}) on ${env.label}`, async function () {
+            this.timeout(15000);
+            const { resolved, packagePath } = makeGenerator(
+              pkg,
+              moduleType.type
             );
-            const isVersionMismatch = (outcome.message ?? "").includes(
-              "requires yeoman-environment"
-            );
+            const namespace = "compat:app";
 
-            expect(
-              isIncompat || isVersionMismatch,
-              `unexpected failure for ${genLabel} on ${env.label}: ${outcome.message}`
-            ).to.equal(true);
+            let outcome: { ok: boolean; message?: string };
+            try {
+              const environment = env.create();
+              environment.register(resolved, {
+                namespace,
+                packagePath,
+              });
+              let gen = environment.create(namespace, { options: {} });
 
-            if (isVersionMismatch) {
-              expect(
-                isIncompat,
-                "a version-mismatch error must not be classified as env-incompatibility"
-              ).to.equal(false);
+              if (gen && typeof gen.then === "function") gen = await gen;
+              outcome = { ok: true };
+            } catch (error) {
+              outcome = { ok: false, message: (error as Error).message };
             }
-          }
-        });
+
+            if (!outcome.ok) {
+              const message = outcome.message ?? "";
+              const isIncompat = (Env as any).isEnvIncompatibilityError(
+                new Error(message)
+              );
+              // yeoman-generator v7+ rejects an older env by version, not by the
+              // feature check
+              const isVersionMismatch = message.includes(
+                "requires yeoman-environment"
+              );
+              // An ESM generator run on the v3 env fails when v3 tries to mutate
+              // the frozen ESM module namespace ("resolved" property). This is a
+              // module-format incompatibility distinct from the two above
+              const isFrozenEsmModule = message.includes(
+                "object is not extensible"
+              );
+
+              expect(
+                isIncompat || isVersionMismatch || isFrozenEsmModule,
+                `unexpected failure for ${genLabel} (${moduleType.label}) on ${env.label}: ${message}`
+              ).to.equal(true);
+
+              if (isVersionMismatch || isFrozenEsmModule) {
+                expect(
+                  isIncompat,
+                  `a ${
+                    isFrozenEsmModule ? "frozen-ESM" : "version-mismatch"
+                  } error must not be classified as env-incompatibility`
+                ).to.equal(false);
+              }
+
+              if (isFrozenEsmModule) {
+                expect(
+                  moduleType.label === "esm" && env.label === "env-v3",
+                  `frozen-ESM error only expected for ESM generators on env-v3, got ${genLabel} (${moduleType.label}) on ${env.label}`
+                ).to.equal(true);
+              }
+            }
+          });
+        }
       }
     }
   });
