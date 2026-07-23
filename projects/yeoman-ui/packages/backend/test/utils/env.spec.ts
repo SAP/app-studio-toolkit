@@ -5,15 +5,13 @@ import { fileURLToPath } from "url";
 import { dirname } from "path";
 import { createRequire } from "module";
 import { Env } from "../../src/utils/env.js";
+import { Constants } from "../../src/utils/constants.js";
 import type { LookupGeneratorMeta } from "@yeoman/types";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const require = createRequire(import.meta.url);
 
 const FIXTURES = resolve(__dirname, "../fixtures");
-
-const ENV_V6_V3_INCOMPATIBILITY_MESSAGE =
-  "Current environment doesn't provides some necessary feature this generator needs.";
 
 const envV6Fixture = {
   namespace: "env-v6-fixture:app",
@@ -97,7 +95,7 @@ describe("Env.createEnvAndGen()", () => {
         return undefined;
       },
       create(): never {
-        throw new Error(ENV_V6_V3_INCOMPATIBILITY_MESSAGE);
+        throw new Error(`${Constants.ENV_INCOMPATIBILITY_MESSAGE_PREFIX}.`);
       },
     };
     sandbox.stub(Env as any, "createEnvInstance").returns(failingV6Env);
@@ -163,7 +161,7 @@ describe("Env.createEnvAndGen()", () => {
         return undefined;
       },
       create(): never {
-        throw new Error(ENV_V6_V3_INCOMPATIBILITY_MESSAGE);
+        throw new Error(`${Constants.ENV_INCOMPATIBILITY_MESSAGE_PREFIX}.`);
       },
     };
     sandbox.stub(Env as any, "createEnvInstance").returns(failingV6Env);
@@ -193,6 +191,6 @@ describe("Env.createEnvAndGen()", () => {
     expect(
       thrown?.v6Error?.message,
       "the original v6 incompatibility error is attached for diagnostics"
-    ).to.contain(ENV_V6_V3_INCOMPATIBILITY_MESSAGE);
+    ).to.contain(`${Constants.ENV_INCOMPATIBILITY_MESSAGE_PREFIX}.`);
   });
 });

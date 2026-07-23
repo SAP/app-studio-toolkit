@@ -12,6 +12,7 @@ import type { IChildLogger } from "@vscode-logging/logger";
 import type * as YeomanEnvV3 from "yeoman-env-v3";
 import { getClassLogger } from "../logger/logger-wrapper.js";
 import { namespaceToName } from "./namespace.js";
+import { Constants } from "./constants.js";
 
 const _require = createRequire(import.meta.url);
 
@@ -43,9 +44,6 @@ export class GeneratorNotFoundError extends Error {
 }
 
 class EnvUtil {
-  private static readonly ENV_V6_V3_INCOMPATIBILITY_MESSAGE =
-    "Current environment doesn't provides some necessary feature this generator needs.";
-
   private logger: IChildLogger;
   private allInstalledGensMeta: LookupGeneratorMeta[];
 
@@ -57,9 +55,11 @@ class EnvUtil {
     }
   }
 
-  private isEnvIncompatibilityError(error: unknown): boolean {
+  public isEnvIncompatibilityError(error: unknown): boolean {
     return (
-      (error as Error)?.message === EnvUtil.ENV_V6_V3_INCOMPATIBILITY_MESSAGE
+      (error as Error)?.message?.startsWith(
+        Constants.ENV_INCOMPATIBILITY_MESSAGE_PREFIX
+      ) ?? false
     );
   }
 
