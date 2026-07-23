@@ -39,7 +39,7 @@ export class ExploreGens {
     this.context = context;
     this.logger = logger;
     this.gensBeingHandled = [];
-    void this.doGeneratorsUpdate();
+    void this.doGeneratorsUpdate().catch((): void => undefined);
   }
 
   public init(rpc: Partial<IRpc>) {
