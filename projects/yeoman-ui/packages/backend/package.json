@@ -226,7 +226,8 @@
     "yeoman-generator-v4": "npm:yeoman-generator@4.13.0",
     "yeoman-generator-v5": "npm:yeoman-generator@5.10.0",
     "yeoman-generator-v6": "npm:yeoman-generator@6.0.1",
-    "yeoman-generator-v7": "npm:yeoman-generator@7.5.1"
+    "yeoman-generator-v7": "npm:yeoman-generator@7.5.1",
+    "yeoman-generator-v8": "npm:yeoman-generator@8.2.2"
   },
   "extensionDependencies": [
     "SAPOSS.app-studio-toolkit"

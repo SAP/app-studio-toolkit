@@ -40,7 +40,11 @@ const GENERATOR_MAJORS = [
     pkg: "yeoman-generator-v7",
     shipsIncompatibilityLiteral: true,
   },
-  { label: "v8", pkg: "yeoman-generator", shipsIncompatibilityLiteral: true },
+  {
+    label: "v8",
+    pkg: "yeoman-generator-v8",
+    shipsIncompatibilityLiteral: true,
+  },
 ];
 
 const ENVIRONMENTS = [

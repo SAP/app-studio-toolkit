@@ -77,6 +77,10 @@ describe("Env.createEnvAndGen()", () => {
     );
 
     expect(env, "a v6 environment instance is returned").to.be.an("object");
+    expect(
+      (env as any).getVersion(),
+      "the returned env is yeoman-environment v6"
+    ).to.match(/^6\./);
     expect(gen, "a generator instance is returned").to.be.an("object");
     expect(
       gen.constructor.name,
