@@ -22,10 +22,11 @@ import {
   GeneratorData,
   GeneratorNotFoundError,
 } from "./utils/env.js";
+import { namespaceToName } from "./utils/namespace.js";
 import { vscode, getVscode } from "./utils/vscodeProxy.js";
 import Generator from "yeoman-generator";
 import Environment from "yeoman-environment";
-import type { Questions } from "yeoman-environment/lib/adapter";
+import type { YeomanUIQuestions } from "./utils/questionTypes.js";
 import { State } from "./utils/promise.js";
 import { Constants } from "./utils/constants.js";
 import { isUriFlow } from "./utils/workspaceFile.js";
@@ -53,7 +54,7 @@ export class YeomanUI {
   private readonly youiAdapter: YouiAdapter;
   private gen: Generator | undefined;
   private promptCount: number;
-  private currentQuestions: Questions<any>;
+  private currentQuestions: YeomanUIQuestions | undefined;
   private generatorName: string;
   private readonly replayUtils: ReplayUtils;
   private readonly customQuestionEventHandlers: Map<
@@ -107,7 +108,7 @@ export class YeomanUI {
     this.youiAdapter = new YouiAdapter(youiEvents, output);
     this.youiAdapter.setYeomanUI(this);
     this.promptCount = 0;
-    this.currentQuestions = {};
+    this.currentQuestions = undefined;
     this.customQuestionEventHandlers = new Map();
     this.typesMap = new Map();
     this.generatorsToIgnoreArray = [];
@@ -427,7 +428,7 @@ export class YeomanUI {
   }
 
   public async showPrompt(
-    questions: Questions<any>
+    questions: YeomanUIQuestions
   ): Promise<inquirer.Answers> {
     this.promptCount++;
     const promptName = this.getPromptName(questions);
@@ -442,7 +443,8 @@ export class YeomanUI {
     this.replayUtils.recall(questions);
 
     this.currentQuestions = questions;
-    const mappedQuestions: Questions<any> = this.normalizeFunctions(questions);
+    const mappedQuestions: YeomanUIQuestions =
+      this.normalizeFunctions(questions);
     if (_.isEmpty(mappedQuestions)) {
       return {};
     }
@@ -456,7 +458,7 @@ export class YeomanUI {
   }
 
   private async back(
-    partialAnswers: Environment.Answers,
+    partialAnswers: inquirer.Answers,
     numOfSteps: number
   ): Promise<void> {
     this.replayUtils.start(this.currentQuestions, partialAnswers, numOfSteps);
@@ -478,7 +480,7 @@ export class YeomanUI {
     }
   }
 
-  private getPromptName(questions: Questions<any>): string {
+  private getPromptName(questions: YeomanUIQuestions): string {
     const firstQuestionName = _.get(questions, "[0].name");
     return firstQuestionName
       ? _.startCase(firstQuestionName)
@@ -728,7 +730,7 @@ export class YeomanUI {
       this.logger.debug(error);
     }
 
-    const genName = Environment.namespaceToName(genNamespace);
+    const genName = namespaceToName(genNamespace);
     const genMessage = _.get(
       packageJson,
       "description",
@@ -763,7 +765,7 @@ export class YeomanUI {
    * Functions are lost when being passed to client (using JSON.Stringify)
    * Also functions cannot be evaluated on client)
    */
-  private normalizeFunctions(questions: Questions<any>): Questions<any> {
+  private normalizeFunctions(questions: YeomanUIQuestions): YeomanUIQuestions {
     this.addCustomQuestionEventHandlers(questions);
     return JSON.parse(JSON.stringify(questions, YeomanUI.funcReplacer));
   }
@@ -780,7 +782,7 @@ export class YeomanUI {
     }
   }
 
-  private addCustomQuestionEventHandlers(questions: Questions<any>): void {
+  private addCustomQuestionEventHandlers(questions: YeomanUIQuestions): void {
     for (const question of questions as any[]) {
       const guiType = _.get(question, "guiOptions.type", question.guiType);
       const questionHandlers = this.customQuestionEventHandlers.get(guiType);

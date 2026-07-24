@@ -1,7 +1,7 @@
-import Environment from "yeoman-environment";
 import type { IPrompt } from "@sap-devx/yeoman-ui-types";
 import hash from "object-hash";
-import type TerminalAdapter from "yeoman-environment/lib/adapter";
+import type { Answers } from "inquirer";
+import type { YeomanUIQuestions } from "./utils/questionTypes.js";
 
 export enum ReplayState {
   Replaying,
@@ -11,9 +11,7 @@ export enum ReplayState {
 
 export class ReplayUtils {
   // assuming that order of questions is consistent
-  private static getQuestionsHash(
-    questions: TerminalAdapter.Questions<any>
-  ): string {
+  private static getQuestionsHash(questions: YeomanUIQuestions): string {
     // we need exclude members that we manipulate in setDefault() below
     // we also need to exclude members set by custom event handlers
     // instead of blacklisting member, we whitelist them based on inquirer.js docs:
@@ -35,16 +33,17 @@ export class ReplayUtils {
       return keyIndex < 0;
     };
 
-    return hash(questions, { excludeKeys });
+    return hash(questions as object, { excludeKeys });
   }
 
   private static setDefaults(
-    questions: TerminalAdapter.Questions<any>,
-    answers: Environment.Answers
+    questions: YeomanUIQuestions,
+    answers: Answers
   ): void {
-    for (const question of questions as any[]) {
+    const questionList = Array.isArray(questions) ? questions : [questions];
+    for (const question of questionList) {
       const name = question["name"];
-      const answer = answers[name];
+      const answer = answers[name as string];
 
       // __ForceDefault is required to let the frontend know to ignore all forms
       //   of default values defined on the question, e.g. the checked property of
@@ -57,9 +56,9 @@ export class ReplayUtils {
   }
 
   public isReplaying: boolean;
-  private readonly answersCache: Map<string, Environment.Answers>;
-  private replayStack: Environment.Answers[];
-  private replayQueue: Environment.Answers[];
+  private readonly answersCache: Map<string, Answers>;
+  private replayStack: Answers[];
+  private replayQueue: Answers[];
   private numOfSteps: number;
   private prompts: IPrompt[];
 
@@ -78,8 +77,8 @@ export class ReplayUtils {
   }
 
   public start(
-    questions: TerminalAdapter.Questions<any>,
-    answers: Environment.Answers,
+    questions: YeomanUIQuestions,
+    answers: Answers,
     numOfSteps: number
   ): void {
     this._rememberAnswers(questions, answers);
@@ -88,18 +87,18 @@ export class ReplayUtils {
     this.isReplaying = true;
   }
 
-  public stop(questions: TerminalAdapter.Questions<any>): IPrompt[] {
+  public stop(questions: YeomanUIQuestions): IPrompt[] {
     const prompts = this.prompts;
     this.isReplaying = false;
     this.prompts = [];
     this.replayQueue = [];
-    const answers: Environment.Answers = this.replayStack.pop();
+    const answers: Answers = this.replayStack.pop();
     ReplayUtils.setDefaults(questions, answers);
     this.replayStack.splice(this.replayStack.length - this.numOfSteps + 1);
     return prompts;
   }
 
-  public next(promptCount: number, promptName: string): Environment.Answers {
+  public next(promptCount: number, promptName: string): Answers {
     if (promptCount > this.prompts.length) {
       const prompt: IPrompt = {
         name: promptName,
@@ -115,17 +114,14 @@ export class ReplayUtils {
     this.prompts = prompts;
   }
 
-  public remember(
-    questions: TerminalAdapter.Questions<any>,
-    answers: Environment.Answers
-  ): void {
+  public remember(questions: YeomanUIQuestions, answers: Answers): void {
     this._rememberAnswers(questions, answers);
     this.replayStack.push(answers);
   }
 
-  public recall(questions: TerminalAdapter.Questions<any>): void {
+  public recall(questions: YeomanUIQuestions): void {
     const key: string = ReplayUtils.getQuestionsHash(questions);
-    const previousAnswers: Environment.Answers = this.answersCache.get(key);
+    const previousAnswers: Answers = this.answersCache.get(key);
     if (previousAnswers !== undefined) {
       ReplayUtils.setDefaults(questions, previousAnswers);
     }
@@ -144,8 +140,8 @@ export class ReplayUtils {
   }
 
   private _rememberAnswers(
-    questions: TerminalAdapter.Questions<any>,
-    answers: Environment.Answers
+    questions: YeomanUIQuestions,
+    answers: Answers
   ): void {
     const key: string = ReplayUtils.getQuestionsHash(questions);
     this.answersCache.set(key, answers);

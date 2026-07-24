@@ -17,6 +17,6 @@
   "access": "restricted",
   "baseBranch": "origin/main",
   "updateInternalDependencies": "patch",
-  "ignore": [],
+  "ignore": ["@sap-devx/yeoman-ui-root"],
   "privatePackages": { "version": true, "tag": true }
 }

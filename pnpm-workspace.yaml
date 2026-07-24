@@ -3,6 +3,11 @@ packages:
   - 'projects/*/packages/*'
   - 'projects/*'
   - 'examples/*'
+overrides:
+  'mem-fs': '4.1.4'
+  'mem-fs-editor': '12.0.4'
+  'yeoman-environment@3>mem-fs': '2.3.0'
+  'yeoman-environment@3>mem-fs-editor': '9.7.0'
 allowBuilds:
   '@vscode/vsce-sign': true
   bufferutil: true

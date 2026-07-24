@@ -1,0 +1,12 @@
+{
+  "name": "@sap-devx/yeoman-ui-root",
+  "private": true,
+  "devDependencies": {
+    "null-loader": "4.0.1",
+    "string-replace-loader": "3.0.3",
+    "terser-webpack-plugin": "5.5.0",
+    "ts-loader": "9.6.2",
+    "webpack": "5.106.2",
+    "webpack-cli": "5.1.4"
+  }
+}

@@ -39,7 +39,12 @@ export class ExploreGens {
     this.context = context;
     this.logger = logger;
     this.gensBeingHandled = [];
-    void this.doGeneratorsUpdate();
+    // Fire-and-forget auto-update kicked off from the constructor. Its own
+    // try/catch already logs and surfaces any failure via showAndLogError, so
+    // the error is handled inside doGeneratorsUpdate. Intentionally swallow
+    // here only to prevent an unhandled promise rejection (fatal on Node 24+)
+    // in the edge case where the error reporting itself throws
+    void this.doGeneratorsUpdate().catch((): void => undefined);
   }
 
   public init(rpc: Partial<IRpc>) {

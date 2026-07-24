@@ -11,6 +11,8 @@ class ConstantsUtil {
     devspace.getBasMode() === "personal-edition";
   public HOMEDIR_PROJECTS: string = join(homedir(), "projects");
   public GENERATOR_COMPLETED: string = "generatorCompleted";
+  public readonly ENV_INCOMPATIBILITY_MESSAGE_PREFIX: string =
+    "Current environment doesn't provides some necessary feature this generator needs";
 }
 
 export const Constants = new ConstantsUtil();

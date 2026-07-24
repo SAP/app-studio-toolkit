@@ -1,0 +1,28 @@
+{
+  "name": "yeoman-env-v3",
+  "version": "3.19.3",
+  "private": true,
+  "description": "TypeScript wrapper that bundles yeoman-environment v3 for the yeoman-ui extension's legacy-generator code path",
+  "license": "Apache 2.0",
+  "author": "SAP SE",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/app-studio-toolkit.git",
+    "directory": "projects/yeoman-ui/packages/yeoman-env-v3"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "clean": "shx rm -rf ./dist",
+    "compile": "pnpm run bundle",
+    "bundle": "webpack --config webpack.config.cjs --mode production",
+    "test": "node ./test/smoke.cjs",
+    "ci": "pnpm run clean && pnpm run bundle && pnpm run test"
+  },
+  "dependencies": {
+    "yeoman-environment": "3.19.3"
+  },
+  "devDependencies": {
+    "@types/yeoman-environment": "2.10.11"
+  }
+}

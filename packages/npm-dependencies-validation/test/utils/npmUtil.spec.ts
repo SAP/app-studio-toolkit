@@ -81,7 +81,9 @@ describe("npmUtil unit test", () => {
     });
   });
 
-  describe("retrieveDistTags", () => {
+  describe("retrieveDistTags", function () {
+    this.timeout(npmSpawnTestTimeout);
+
     it("not cached, disttags found", async () => {
       expect(
         await retrieveDistTags({

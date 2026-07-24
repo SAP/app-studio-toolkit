@@ -18,9 +18,10 @@ import messages from "../src/messages.js";
 import { AnalyticsWrapper } from "../src/usage-report/usage-analytics-wrapper.js";
 import { AppWizard, MessageType } from "@sap-devx/yeoman-ui-types";
 import { Env } from "../src/utils/env.js";
-import Environment from "yeoman-environment";
+import Environment, { createEnv } from "yeoman-environment";
 import { createFlowPromise } from "../src/utils/promise.js";
 import { Constants } from "../src/utils/constants.js";
+import type { YeomanUIQuestion } from "../src/utils/questionTypes.js";
 
 describe("yeomanui unit test", () => {
   let sandbox: SinonSandbox;
@@ -1215,7 +1216,7 @@ describe("yeomanui unit test", () => {
 
   describe("answersUtils", () => {
     it("setDefaults", () => {
-      const questions = [
+      const questions: YeomanUIQuestion[] = [
         { name: "q1", default: "a" },
         { name: "q2", default: () => "b" },
         { name: "q3" },
@@ -1227,15 +1228,15 @@ describe("yeomanui unit test", () => {
       };
       ReplayUtils["setDefaults"](questions, answers);
       for (const question of questions) {
-        expect((question as any)["__origAnswer"]).to.equal(
+        expect(question["__origAnswer"]).to.equal(
           (<any>answers)[question.name]
         );
-        expect((question as any)["__ForceDefault"]).to.be.true;
+        expect(question["__ForceDefault"]).to.be.true;
       }
     });
 
     it("setDefaults", () => {
-      const questions = [
+      const questions: YeomanUIQuestion[] = [
         { name: "q1", default: "a" },
         { name: "q2", default: () => "b" },
         { name: "q3" },
@@ -1246,8 +1247,8 @@ describe("yeomanui unit test", () => {
       };
       ReplayUtils["setDefaults"](questions, answers);
       const question = _.find(questions, { name: "q2" });
-      expect((question as any).__origAnswer).to.be.undefined;
-      expect((question as any).__ForceDefault).to.be.undefined;
+      expect(question.__origAnswer).to.be.undefined;
+      expect(question.__ForceDefault).to.be.undefined;
     });
   });
 
@@ -1260,7 +1261,7 @@ describe("yeomanui unit test", () => {
       {},
       flowPromise.state
     );
-    const env: Environment = Environment.createEnv();
+    const env: Environment = createEnv();
     const envMock = sandbox.mock(env);
     const gen = { on: () => "" };
     const genMock = sandbox.mock(gen);
@@ -1286,7 +1287,7 @@ describe("yeomanui unit test", () => {
     );
     yeomanUiInstance["onUncaughtException"] = () => "";
     const onUncaughtExceptionBefore = yeomanUiInstance["onUncaughtException"];
-    const env: Environment = Environment.createEnv();
+    const env: Environment = createEnv();
     const envMock = sandbox.mock(env);
     const gen = { on: () => "" };
     const genMock = sandbox.mock(gen);
@@ -1653,7 +1654,7 @@ describe("yeomanui unit test", () => {
       const testEventFunction = () => {
         return true;
       };
-      const questions = [
+      const questions: any[] = [
         {
           name: "q1",
           guiType: "questionType",
@@ -1678,7 +1679,7 @@ describe("yeomanui unit test", () => {
       );
       yeomanUiInstance["addCustomQuestionEventHandlers"](questions);
       expect(questions[0]).to.have.property("testEvent");
-      expect((questions[0] as any)["testEvent"]).to.equal(testEventFunction);
+      expect(questions[0]["testEvent"]).to.equal(testEventFunction);
     });
   });
 
@@ -1764,7 +1765,7 @@ describe("yeomanui unit test", () => {
         flowPromise.state
       );
       yeomanUiInstance["gen"] = Object.create({});
-      yeomanUiInstance["gen"].options = {};
+      (yeomanUiInstance["gen"] as any).options = {};
       yeomanUiInstance["currentQuestions"] = [
         {
           name: "question1",
@@ -1790,7 +1791,7 @@ describe("yeomanui unit test", () => {
         flowPromise.state
       );
       yeomanUiInstance["gen"] = Object.create({});
-      yeomanUiInstance["gen"].options = {};
+      (yeomanUiInstance["gen"] as any).options = {};
       yeomanUiInstance["currentQuestions"] = undefined;
       try {
         await yeomanUiInstance["evaluateMethod"](null, "question1", "method1");
