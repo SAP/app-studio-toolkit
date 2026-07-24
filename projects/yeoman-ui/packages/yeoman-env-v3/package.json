@@ -1,6 +1,6 @@
 {
   "name": "yeoman-env-v3",
-  "version": "3.19.3",
+  "version": "3.19.4",
   "private": true,
   "description": "TypeScript wrapper that bundles yeoman-environment v3 for the yeoman-ui extension's legacy-generator code path",
   "license": "Apache 2.0",

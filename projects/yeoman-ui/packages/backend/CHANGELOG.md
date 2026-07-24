@@ -1,5 +1,18 @@
 # yeoman-ui
 
+## 1.26.0
+
+### Minor Changes
+
+- a47e506: Support yeoman environment v3 and v6
+
+  This makes the extension work with both legacy and modern yeoman generators (v3-v8).
+
+### Patch Changes
+
+- Updated dependencies [a47e506]
+  - yeoman-env-v3@3.19.4
+
 ## 1.25.2
 
 ### Patch Changes
