@@ -1,19 +1,18 @@
-import { vscode } from "./mockUtil.js";
+import { vscode } from "./mockUtil";
 import { expect } from "chai";
 import { createSandbox, SinonSandbox, SinonMock } from "sinon";
-import _ from "lodash";
-import type {
+import * as _ from "lodash";
+import {
   IMethod,
   IPromiseCallbacks,
   IRpc,
-} from "@sap-devx/webview-rpc/out.ext/rpc-common.js";
-import * as messages from "../src/messages.js";
+} from "@sap-devx/webview-rpc/out.ext/rpc-common";
+import * as messages from "../src/messages";
 import { MessageType, Severity, IBannerProps } from "@sap-devx/yeoman-ui-types";
-import { GeneratorOutput } from "../src/vscode-output.js";
-import { Constants } from "../src/utils/constants.js";
-import * as loggerWrapper from "../src/logger/logger-wrapper.js";
-import { VSCodeYouiEvents } from "../src/vscode-youi-events.js";
-import { WorkspaceFile } from "../src/utils/workspaceFile.js";
+import { GeneratorOutput } from "../src/vscode-output";
+import { Constants } from "../src/utils/constants";
+import * as loggerWrapper from "../src/logger/logger-wrapper";
+import { VSCodeYouiEvents } from "../src/vscode-youi-events";
 import * as fs from "fs";
 
 describe("vscode-youi-events unit test", () => {
@@ -23,12 +22,12 @@ describe("vscode-youi-events unit test", () => {
   let commandsMock: SinonMock;
   let workspaceMock: SinonMock;
   let eventsMock: SinonMock;
+  let loggerWrapperMock: SinonMock;
   let generatorOutputMock: SinonMock;
   let rpcMock: SinonMock;
   let loggerMock: SinonMock;
   let uriMock: SinonMock;
   let fsMock: SinonMock;
-  let wsFileMockUri: any;
 
   const testLogger = {
     debug: () => true,
@@ -82,15 +81,16 @@ describe("vscode-youi-events unit test", () => {
 
   before(() => {
     sandbox = createSandbox();
-    loggerWrapper.internalApi.setLogger(testLogger);
   });
 
   after(() => {
-    loggerWrapper.internalApi.resetLogger();
+    sandbox.restore();
   });
 
   beforeEach(() => {
     const webViewPanel: any = { dispose: () => true };
+    loggerWrapperMock = sandbox.mock(loggerWrapper);
+    loggerWrapperMock.expects("getClassLogger").returns(testLogger);
     events = new VSCodeYouiEvents(
       rpc,
       webViewPanel,
@@ -106,9 +106,6 @@ describe("vscode-youi-events unit test", () => {
     rpcMock = sandbox.mock(rpc);
     uriMock = sandbox.mock(vscode.Uri);
     fsMock = sandbox.mock(fs);
-    wsFileMockUri = vscode.Uri.file("/tmp/workspace.code-workspace");
-    sandbox.stub(WorkspaceFile, "createWsWithPath").returns(wsFileMockUri);
-    sandbox.stub(WorkspaceFile, "createWsWithUri").returns(wsFileMockUri);
   });
 
   afterEach(() => {
@@ -116,14 +113,12 @@ describe("vscode-youi-events unit test", () => {
     eventsMock.verify();
     commandsMock.verify();
     workspaceMock.verify();
+    loggerWrapperMock.verify();
     generatorOutputMock.verify();
     loggerMock.verify();
     rpcMock.verify();
     uriMock.verify();
     fsMock.verify();
-    sandbox.restore();
-    sandbox = createSandbox();
-    loggerWrapper.internalApi.setLogger(testLogger);
   });
 
   describe("getAppWizard", () => {
@@ -267,10 +262,84 @@ describe("vscode-youi-events unit test", () => {
       .expects("withProgress")
       .withArgs({
         location: 15,
-        title: "Installing dependencies...",
+        title: "Application Generator",
+        cancellable: false,
       })
       .resolves();
     events.doGeneratorInstall();
+  });
+
+  describe("doGeneratorProgress", () => {
+    it("writing phase - initializes notification with project name", async () => {
+      const projectName = "testProject";
+      _.set(vscode, "ProgressLocation.Notification", 15);
+      eventsMock.expects("doClose");
+      windowMock
+        .expects("withProgress")
+        .withArgs({
+          location: 15,
+          title: "Generating testProject",
+          cancellable: false,
+        })
+        .resolves();
+      await events.doGeneratorProgress(projectName, "writing");
+    });
+
+    it("writing phase - uses default title when no project name", async () => {
+      _.set(vscode, "ProgressLocation.Notification", 15);
+      eventsMock.expects("doClose");
+      windowMock
+        .expects("withProgress")
+        .withArgs({
+          location: 15,
+          title: "Application Generator",
+          cancellable: false,
+        })
+        .resolves();
+      await events.doGeneratorProgress(undefined, "writing");
+    });
+
+    it("install phase - updates progress message", async () => {
+      const mockProgressReporter = {
+        report: sandbox.stub(),
+      };
+      events["progressReporter"] = mockProgressReporter;
+
+      await events.doGeneratorProgress("testProject", "install");
+
+      // Should be called with the install message after delay
+      expect(mockProgressReporter.report.called).to.be.true;
+      expect(mockProgressReporter.report.firstCall.args[0]).to.deep.equal({
+        message: "Installing dependencies...",
+      });
+
+      events["progressReporter"] = null;
+    });
+
+    it("end phase - updates progress message", async () => {
+      const mockProgressReporter = {
+        report: sandbox.stub(),
+      };
+      events["progressReporter"] = mockProgressReporter;
+
+      await events.doGeneratorProgress("testProject", "end");
+
+      // Should be called with the end message
+      expect(mockProgressReporter.report.called).to.be.true;
+      expect(mockProgressReporter.report.firstCall.args[0]).to.deep.equal({
+        message: "Finalising...",
+      });
+
+      events["progressReporter"] = null;
+    });
+
+    it("install/end phases - does nothing when progressReporter is null", async () => {
+      events["progressReporter"] = null;
+
+      // Should not throw when progressReporter is null
+      await events.doGeneratorProgress("testProject", "install");
+      await events.doGeneratorProgress("testProject", "end");
+    });
   });
 
   it("setAppWizardHeaderTitle", () => {
@@ -489,7 +558,9 @@ describe("vscode-youi-events unit test", () => {
         .withArgs("vscode.openFolder")
         .resolves();
       workspaceMock.expects("updateWorkspaceFolders").withArgs(0, null);
-      uriMock.expects("file").once().returns({ fsPath: "testFsPath" });
+      fsMock.expects("existsSync").returns(false);
+      fsMock.expects("writeFileSync");
+      uriMock.expects("file").twice().returns({ fsPath: "testFsPath" });
       return events.doGeneratorDone(
         true,
         "success message",
@@ -515,7 +586,10 @@ describe("vscode-youi-events unit test", () => {
         .resolves();
       workspaceMock.expects("updateWorkspaceFolders").withArgs(0, null);
 
-      events.doGeneratorDone(
+      fsMock.expects("existsSync").returns(false);
+      fsMock.expects("writeFileSync");
+
+      return events.doGeneratorDone(
         true,
         "success message",
         "Open the project in a multi-root workspace",
@@ -539,7 +613,10 @@ describe("vscode-youi-events unit test", () => {
         .withArgs("vscode.openFolder")
         .resolves();
 
-      events.doGeneratorDone(
+      fsMock.expects("existsSync").returns(false);
+      fsMock.expects("writeFileSync");
+
+      return events.doGeneratorDone(
         true,
         "success message",
         "Open the project in a stand-alone",
@@ -559,7 +636,10 @@ describe("vscode-youi-events unit test", () => {
         )
         .resolves();
 
-      events.doGeneratorDone(
+      fsMock.expects("existsSync").returns(false);
+      fsMock.expects("writeFileSync");
+
+      return events.doGeneratorDone(
         true,
         "success message",
         "Create the project and close it for future use",

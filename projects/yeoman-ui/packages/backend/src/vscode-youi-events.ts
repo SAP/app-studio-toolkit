@@ -61,6 +61,8 @@ export class VSCodeYouiEvents implements YouiEvents {
   private webviewPanel: WebviewPanel;
   private readonly messages: any;
   private resolveFunc: any;
+  private progressReporter: any; // Store progress reporter to update it
+  private currentProjectName: string | undefined; // Store project name for success message
   public output: GeneratorOutput;
   private readonly logger: IChildLogger;
   private readonly appWizard: AppWizard;
@@ -94,21 +96,69 @@ export class VSCodeYouiEvents implements YouiEvents {
     selectedWorkspace: string,
     type: string,
     targetFolderPath?: string
-  ): void {
-    set(this.webviewPanel, Constants.GENERATOR_COMPLETED, success);
-    this.doClose();
-    void this.showDoneMessage(
-      success,
-      message,
-      selectedWorkspace,
-      type,
-      targetFolderPath
-    );
+  ): Promise<void> {
+    // Show "Finalising..." before closing
+    if (this.progressReporter) {
+      this.progressReporter.report({ message: "Finalising..." });
+    }
+
+    // Hold the "Finalising..." message for 1 second before closing notification
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        this.resolveInstallingProgress();
+        set(this.webviewPanel, Constants.GENERATOR_COMPLETED, success);
+        this.doClose();
+        void this.showDoneMessage(
+          success,
+          message,
+          selectedWorkspace,
+          type,
+          targetFolderPath,
+          true // Skip resolving progress since we already did it
+        );
+        resolve();
+      }, 1000);
+    });
   }
 
-  public doGeneratorInstall(): void {
+  public doGeneratorInstall(projectName?: string): void {
     this.doClose();
-    this.showInstallMessage();
+    this.showInstallMessage(projectName);
+  }
+
+  public async doGeneratorProgress(
+    projectName: string | undefined,
+    phase: "writing" | "install" | "end"
+  ): Promise<void> {
+    // Map phases to user-friendly messages
+    const phaseMessages = {
+      writing: "Creating project files...",
+      install: "Installing dependencies...",
+      end: "Finalising...",
+    };
+
+    const message = phaseMessages[phase];
+
+    // If this is the first phase (writing), initialize the notification with the message
+    if (phase === "writing") {
+      this.doClose();
+      this.showInstallMessage(projectName, message);
+
+      // Wait for the progress reporter to be initialized
+      await new Promise((resolve) => setTimeout(resolve, 50));
+    } else {
+      if (this.progressReporter) {
+        // Artificial delay for "install" phase to ensure "Creating project files..." is visible for 2 seconds
+        if (phase === "install") {
+          await new Promise((resolve) => setTimeout(resolve, 2000));
+        }
+
+        // Give VS Code time to render the previous state before updating
+        await new Promise((resolve) => setTimeout(resolve, 10));
+        // Don't use increment to get a continuous spinner instead of a stuck progress bar
+        this.progressReporter.report({ message });
+      }
+    }
   }
 
   public getAppWizard(): AppWizard {
@@ -182,16 +232,36 @@ export class VSCodeYouiEvents implements YouiEvents {
     }
   }
 
-  private showInstallMessage(): void {
+  private showInstallMessage(
+    projectName?: string,
+    initialMessage: string = "Preparing..."
+  ): void {
+    // Store project name for later use in success message
+    this.currentProjectName = projectName;
+
+    // Use "Generating {projectName}" as the title
+    const title = projectName
+      ? `Generating ${projectName}`
+      : "Application Generator";
+
     void vscode.window.withProgress(
       {
         location: vscode.ProgressLocation.Notification,
-        title: "Installing dependencies...",
+        title: title,
+        cancellable: false,
       },
-      async () => {
+      async (progress) => {
+        // Store the progress reporter so we can update it
+        this.progressReporter = progress;
+        progress.report({ message: initialMessage });
+
+        // Keep the notification open until generation completes
         await new Promise((resolve) => {
           this.resolveFunc = resolve;
         });
+
+        // Clean up the progress reporter
+        this.progressReporter = null;
       }
     );
   }
@@ -207,9 +277,12 @@ export class VSCodeYouiEvents implements YouiEvents {
     errorMmessage: string,
     selectedWorkspace: string,
     type: string,
-    targetFolderPath?: string
+    targetFolderPath?: string,
+    skipResolve: boolean = false
   ): Thenable<any> {
-    this.resolveInstallingProgress();
+    if (!skipResolve) {
+      this.resolveInstallingProgress();
+    }
 
     if (success) {
       if (!isNil(targetFolderPath)) {
@@ -319,17 +392,33 @@ export class VSCodeYouiEvents implements YouiEvents {
     selectedWorkspace: string,
     type: string
   ): string {
-    let successInfoMessage: string = this.messages.artifact_generated_files;
+    // Default message with project name if available
+    let successInfoMessage: string = this.currentProjectName
+      ? `Project ${this.currentProjectName} has been generated.`
+      : this.messages.artifact_generated_files;
+
     if (type === "project") {
-      if (selectedWorkspace === this.messages.open_in_a_new_workspace) {
-        successInfoMessage =
-          this.messages.artifact_generated_project_open_in_a_new_workspace;
-      } else if (selectedWorkspace === this.messages.add_to_workspace) {
-        successInfoMessage =
-          this.messages.artifact_generated_project_add_to_workspace;
+      // For project type, use project name and add workspace-specific detail
+      if (this.currentProjectName) {
+        if (selectedWorkspace === this.messages.open_in_a_new_workspace) {
+          successInfoMessage = `Project ${this.currentProjectName} has been generated. The project will be opened in a new workspace.`;
+        } else if (selectedWorkspace === this.messages.add_to_workspace) {
+          successInfoMessage = `Project ${this.currentProjectName} has been generated. The project has been added to workspace.`;
+        } else {
+          successInfoMessage = `Project ${this.currentProjectName} has been generated.`;
+        }
       } else {
-        successInfoMessage =
-          this.messages.artifact_generated_project_saved_for_future;
+        // Fallback to original messages if no project name
+        if (selectedWorkspace === this.messages.open_in_a_new_workspace) {
+          successInfoMessage =
+            this.messages.artifact_generated_project_open_in_a_new_workspace;
+        } else if (selectedWorkspace === this.messages.add_to_workspace) {
+          successInfoMessage =
+            this.messages.artifact_generated_project_add_to_workspace;
+        } else {
+          successInfoMessage =
+            this.messages.artifact_generated_project_saved_for_future;
+        }
       }
     } else if (type === "module") {
       successInfoMessage = this.messages.artifact_generated_module;

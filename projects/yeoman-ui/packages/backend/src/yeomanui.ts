@@ -548,7 +548,7 @@ export class YeomanUI {
     );
     AnalyticsWrapper.updateGeneratorEnded(generatorName);
     // when targetFolderPath is undefined and no files are generated, send type = '' to get the empty toast message
-    this.youiEvents.doGeneratorDone(
+    void this.youiEvents.doGeneratorDone(
       true,
       message,
       selectedWorkspace,
@@ -570,7 +570,7 @@ export class YeomanUI {
     const messagePrefix = `${generatorName} generator failed`;
     const errorMsg = error?.message || error;
     this.logError(error, messagePrefix);
-    this.youiEvents.doGeneratorDone(
+    void this.youiEvents.doGeneratorDone(
       false,
       `${messagePrefix} - ${errorMsg}`,
       "",
@@ -582,8 +582,43 @@ export class YeomanUI {
   }
 
   private onGenInstall(gen: any) {
+    console.log(
+      "[YeomanUI] Registering lifecycle listeners for generator:",
+      gen.constructor.name
+    );
+    console.log(
+      "[YeomanUI] Generator state at registration time:",
+      _.get(gen, "state")
+    );
+
+    // Extract project name
+    const getProjectName = () => {
+      return (
+        _.get(gen, "state.project.name") ||
+        _.get(gen, "options.projectName") ||
+        _.get(gen, "answers.projectName") ||
+        _.get(gen, "answers.app.name") ||
+        _.get(gen, "props.projectName") ||
+        _.get(gen, "props.app.name")
+      );
+    };
+
+    // Listen to writing phase
+    gen.on("method:writing", () => {
+      const projectName = getProjectName();
+      void this.youiEvents.doGeneratorProgress(projectName, "writing");
+    });
+
+    // Listen to install phase
     gen.on("method:install", () => {
-      this.youiEvents.doGeneratorInstall();
+      const projectName = getProjectName();
+      void this.youiEvents.doGeneratorProgress(projectName, "install");
+    });
+
+    // Listen to end phase
+    gen.on("method:end", () => {
+      const projectName = getProjectName();
+      void this.youiEvents.doGeneratorProgress(projectName, "end");
     });
   }
 
