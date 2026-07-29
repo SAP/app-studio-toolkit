@@ -747,7 +747,7 @@ describe("vscode-youi-events unit test", () => {
         eventsMock.expects("doClose");
         sandbox.stub(vscode.workspace, "workspaceFolders").value([]);
         sandbox.stub(vscode.workspace, "workspaceFile").value(undefined);
-      // Note: fs operations in WorkspaceFile cannot be mocked due to ES module imports
+        // Note: fs operations in WorkspaceFile cannot be mocked due to ES module imports
         windowMock
           .expects("showInformationMessage")
           .withExactArgs(
