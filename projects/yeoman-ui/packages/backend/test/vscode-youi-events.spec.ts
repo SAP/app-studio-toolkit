@@ -269,6 +269,20 @@ describe("vscode-youi-events unit test", () => {
     events.doGeneratorInstall();
   });
 
+  it("doGeneratorInstall with project name", () => {
+    _.set(vscode, "ProgressLocation.Notification", 15);
+    eventsMock.expects("doClose");
+    windowMock
+      .expects("withProgress")
+      .withArgs({
+        location: 15,
+        title: "Generating myProject",
+        cancellable: false,
+      })
+      .resolves();
+    events.doGeneratorInstall("myProject");
+  });
+
   describe("doGeneratorProgress", () => {
     it("writing phase - initializes notification with project name", async () => {
       const projectName = "testProject";
@@ -720,6 +734,109 @@ describe("vscode-youi-events unit test", () => {
         createAndClose,
         "files"
       );
+    });
+
+    describe("with project name in notification", () => {
+      beforeEach(() => {
+        // Set currentProjectName by calling doGeneratorInstall
+        events["currentProjectName"] = "myTestProject";
+      });
+
+      afterEach(() => {
+        events["currentProjectName"] = undefined;
+      });
+
+      it("shows project name in success message for add to workspace", () => {
+        eventsMock.expects("doClose");
+        sandbox.stub(vscode.workspace, "workspaceFolders").value([]);
+        sandbox.stub(vscode.workspace, "workspaceFile").value(undefined);
+        windowMock
+          .expects("showInformationMessage")
+          .withExactArgs(
+            "Project myTestProject has been generated. The project has been added to workspace."
+          )
+          .resolves();
+        commandsMock
+          .expects("executeCommand")
+          .withArgs("vscode.openFolder")
+          .resolves();
+        workspaceMock.expects("updateWorkspaceFolders").withArgs(0, null);
+        fsMock.expects("existsSync").returns(false);
+        fsMock.expects("writeFileSync");
+        return events.doGeneratorDone(
+          true,
+          "success message",
+          addToWorkspace,
+          "project",
+          "testDestinationRoot"
+        );
+      });
+
+      it("shows project name in success message for open in new workspace", () => {
+        eventsMock.expects("doClose");
+        sandbox.stub(vscode.workspace, "workspaceFolders").value([]);
+        windowMock
+          .expects("showInformationMessage")
+          .withExactArgs(
+            "Project myTestProject has been generated. The project will be opened in a new workspace."
+          )
+          .resolves();
+        commandsMock
+          .expects("executeCommand")
+          .withArgs("vscode.openFolder")
+          .resolves();
+        return events.doGeneratorDone(
+          true,
+          "success message",
+          openNewWorkspace,
+          "project",
+          "testDestinationRoot"
+        );
+      });
+
+      it("shows project name in success message for save for future use", () => {
+        eventsMock.expects("doClose");
+        sandbox.stub(vscode.workspace, "workspaceFolders").value([]);
+        windowMock
+          .expects("showInformationMessage")
+          .withExactArgs("Project myTestProject has been generated.")
+          .resolves();
+        return events.doGeneratorDone(
+          true,
+          "success message",
+          createAndClose,
+          "project",
+          "testDestinationRoot"
+        );
+      });
+
+      it("shows project name in success message for module type", () => {
+        eventsMock.expects("doClose");
+        windowMock
+          .expects("showInformationMessage")
+          .withExactArgs("Project myTestProject has been generated.")
+          .resolves();
+        return events.doGeneratorDone(
+          true,
+          "success message",
+          createAndClose,
+          "module"
+        );
+      });
+
+      it("shows project name in success message for files type", () => {
+        eventsMock.expects("doClose");
+        windowMock
+          .expects("showInformationMessage")
+          .withExactArgs("Project myTestProject has been generated.")
+          .resolves();
+        return events.doGeneratorDone(
+          true,
+          "success message",
+          createAndClose,
+          "files"
+        );
+      });
     });
   });
 
