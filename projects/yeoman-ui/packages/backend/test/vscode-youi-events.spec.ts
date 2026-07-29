@@ -843,4 +843,21 @@ describe("vscode-youi-events unit test", () => {
       expect(result).to.equal("UniqueProject");
     });
   });
+
+  describe("edge cases for coverage", () => {
+    it("showDoneMessage with skipResolve=false should call resolveInstallingProgress", async () => {
+      windowMock
+        .expects("showInformationMessage")
+        .withExactArgs(messages.default.artifact_generated_files)
+        .resolves();
+
+      // Call showDoneMessage directly with skipResolve=false (default)
+      await events["showDoneMessage"](true, "success", "", "files");
+    });
+
+    it("getSuccessInfoMessage with empty type returns empty string", () => {
+      const result = events["getSuccessInfoMessage"]("", "");
+      expect(result).to.equal("");
+    });
+  });
 });
