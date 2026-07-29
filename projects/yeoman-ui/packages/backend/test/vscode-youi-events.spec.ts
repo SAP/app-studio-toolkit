@@ -1,7 +1,7 @@
 import { vscode } from "./mockUtil.js";
 import { expect } from "chai";
 import { createSandbox, SinonSandbox, SinonMock } from "sinon";
-import * as _ from "lodash";
+import lodash from "lodash";
 import {
   IMethod,
   IPromiseCallbacks,
@@ -255,7 +255,7 @@ describe("vscode-youi-events unit test", () => {
   });
 
   it("doGeneratorInstall", () => {
-    _.set(vscode, "ProgressLocation.Notification", 15);
+    lodash.set(vscode, "ProgressLocation.Notification", 15);
     windowMock
       .expects("withProgress")
       .withArgs({
@@ -268,7 +268,7 @@ describe("vscode-youi-events unit test", () => {
   });
 
   it("doGeneratorInstall with project name", () => {
-    _.set(vscode, "ProgressLocation.Notification", 15);
+    lodash.set(vscode, "ProgressLocation.Notification", 15);
     eventsMock.expects("doClose");
     windowMock
       .expects("withProgress")
@@ -284,7 +284,7 @@ describe("vscode-youi-events unit test", () => {
   describe("doGeneratorProgress", () => {
     it("writing phase - initializes notification with project name", async () => {
       const projectName = "testProject";
-      _.set(vscode, "ProgressLocation.Notification", 15);
+      lodash.set(vscode, "ProgressLocation.Notification", 15);
       eventsMock.expects("doClose");
       windowMock
         .expects("withProgress")
@@ -298,7 +298,7 @@ describe("vscode-youi-events unit test", () => {
     });
 
     it("writing phase - uses default title when no project name", async () => {
-      _.set(vscode, "ProgressLocation.Notification", 15);
+      lodash.set(vscode, "ProgressLocation.Notification", 15);
       eventsMock.expects("doClose");
       windowMock
         .expects("withProgress")
