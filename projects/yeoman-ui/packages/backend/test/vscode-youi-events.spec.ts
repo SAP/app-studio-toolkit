@@ -13,6 +13,7 @@ import { GeneratorOutput } from "../src/vscode-output.js";
 import { Constants } from "../src/utils/constants.js";
 import * as loggerWrapper from "../src/logger/logger-wrapper.js";
 import { VSCodeYouiEvents } from "../src/vscode-youi-events.js";
+import { WorkspaceFile } from "../src/utils/workspaceFile.js";
 import { createRequire } from "node:module";
 
 const require = createRequire(import.meta.url);
@@ -602,9 +603,11 @@ describe("vscode-youi-events unit test", () => {
         .withArgs("vscode.openFolder")
         .resolves();
       workspaceMock.expects("updateWorkspaceFolders").withArgs(0, null);
-      // Stub writeFileSync to prevent actual filesystem writes in CI
-      sandbox.stub(fs, "writeFileSync");
-      uriMock.expects("file").twice().returns({ fsPath: "testFsPath" });
+      // Stub WorkspaceFile.createWsWithPath to prevent filesystem writes in CI
+      sandbox
+        .stub(WorkspaceFile, "createWsWithPath")
+        .returns(vscode.Uri.file("mocked"));
+      uriMock.expects("file").once().returns({ fsPath: "testFsPath" });
       return events.doGeneratorDone(
         true,
         "success message",
@@ -630,8 +633,10 @@ describe("vscode-youi-events unit test", () => {
         .resolves();
       workspaceMock.expects("updateWorkspaceFolders").withArgs(0, null);
 
-      // Stub writeFileSync to prevent actual filesystem writes in CI
-      sandbox.stub(fs, "writeFileSync");
+      // Stub WorkspaceFile.createWsWithUri to prevent filesystem writes in CI
+      sandbox
+        .stub(WorkspaceFile, "createWsWithUri")
+        .returns(vscode.Uri.file("mocked"));
 
       return events.doGeneratorDone(
         true,
@@ -657,8 +662,10 @@ describe("vscode-youi-events unit test", () => {
         .withArgs("vscode.openFolder")
         .resolves();
 
-      // Stub writeFileSync to prevent actual filesystem writes in CI
-      sandbox.stub(fs, "writeFileSync");
+      // Stub WorkspaceFile.createWsWithUri to prevent filesystem writes in CI
+      sandbox
+        .stub(WorkspaceFile, "createWsWithUri")
+        .returns(vscode.Uri.file("mocked"));
 
       return events.doGeneratorDone(
         true,
@@ -680,8 +687,10 @@ describe("vscode-youi-events unit test", () => {
         )
         .resolves();
 
-      // Stub writeFileSync to prevent actual filesystem writes in CI
-      sandbox.stub(fs, "writeFileSync");
+      // Stub WorkspaceFile.createWsWithUri to prevent filesystem writes in CI
+      sandbox
+        .stub(WorkspaceFile, "createWsWithUri")
+        .returns(vscode.Uri.file("mocked"));
 
       return events.doGeneratorDone(
         true,
@@ -780,8 +789,10 @@ describe("vscode-youi-events unit test", () => {
         eventsMock.expects("doClose");
         sandbox.stub(vscode.workspace, "workspaceFolders").value([]);
         sandbox.stub(vscode.workspace, "workspaceFile").value(undefined);
-        // Stub writeFileSync to prevent actual filesystem writes in CI
-        sandbox.stub(fs, "writeFileSync");
+        // Stub WorkspaceFile.createWsWithPath to prevent filesystem writes in CI
+        sandbox
+          .stub(WorkspaceFile, "createWsWithPath")
+          .returns(vscode.Uri.file("mocked"));
         windowMock
           .expects("showInformationMessage")
           .withExactArgs(
