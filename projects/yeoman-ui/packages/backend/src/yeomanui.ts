@@ -582,15 +582,6 @@ export class YeomanUI {
   }
 
   private onGenInstall(gen: any) {
-    console.log(
-      "[YeomanUI] Registering lifecycle listeners for generator:",
-      gen.constructor.name
-    );
-    console.log(
-      "[YeomanUI] Generator state at registration time:",
-      _.get(gen, "state")
-    );
-
     // Extract project name
     const getProjectName = () => {
       return (
