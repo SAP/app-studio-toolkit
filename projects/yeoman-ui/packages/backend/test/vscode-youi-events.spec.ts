@@ -570,8 +570,8 @@ describe("vscode-youi-events unit test", () => {
         .withArgs("vscode.openFolder")
         .resolves();
       workspaceMock.expects("updateWorkspaceFolders").withArgs(0, null);
-      fsMock.expects("existsSync").returns(false);
-      fsMock.expects("writeFileSync");
+      sandbox.stub(fs, "existsSync").returns(false);
+      sandbox.stub(fs, "writeFileSync");
       uriMock.expects("file").twice().returns({ fsPath: "testFsPath" });
       return events.doGeneratorDone(
         true,
@@ -598,8 +598,8 @@ describe("vscode-youi-events unit test", () => {
         .resolves();
       workspaceMock.expects("updateWorkspaceFolders").withArgs(0, null);
 
-      fsMock.expects("existsSync").returns(false);
-      fsMock.expects("writeFileSync");
+      sandbox.stub(fs, "existsSync").returns(false);
+      sandbox.stub(fs, "writeFileSync");
 
       return events.doGeneratorDone(
         true,
@@ -625,8 +625,8 @@ describe("vscode-youi-events unit test", () => {
         .withArgs("vscode.openFolder")
         .resolves();
 
-      fsMock.expects("existsSync").returns(false);
-      fsMock.expects("writeFileSync");
+      sandbox.stub(fs, "existsSync").returns(false);
+      sandbox.stub(fs, "writeFileSync");
 
       return events.doGeneratorDone(
         true,
@@ -648,8 +648,8 @@ describe("vscode-youi-events unit test", () => {
         )
         .resolves();
 
-      fsMock.expects("existsSync").returns(false);
-      fsMock.expects("writeFileSync");
+      sandbox.stub(fs, "existsSync").returns(false);
+      sandbox.stub(fs, "writeFileSync");
 
       return events.doGeneratorDone(
         true,
