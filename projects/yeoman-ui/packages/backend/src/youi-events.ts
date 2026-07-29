@@ -7,7 +7,7 @@ export interface YouiEvents {
     selectedWorkspace: string,
     type: string,
     targetFolderPath?: string
-  ): Promise<void>;
+  ): Thenable<any>;
   doGeneratorInstall(projectName?: string): void;
   doGeneratorProgress(
     projectName: string | undefined,
