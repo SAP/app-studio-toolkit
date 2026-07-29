@@ -602,7 +602,8 @@ describe("vscode-youi-events unit test", () => {
         .withArgs("vscode.openFolder")
         .resolves();
       workspaceMock.expects("updateWorkspaceFolders").withArgs(0, null);
-      // Note: fs operations in WorkspaceFile cannot be mocked due to ES module imports
+      // Stub writeFileSync to prevent actual filesystem writes in CI
+      sandbox.stub(fs, "writeFileSync");
       uriMock.expects("file").twice().returns({ fsPath: "testFsPath" });
       return events.doGeneratorDone(
         true,
@@ -629,7 +630,8 @@ describe("vscode-youi-events unit test", () => {
         .resolves();
       workspaceMock.expects("updateWorkspaceFolders").withArgs(0, null);
 
-      // Note: fs operations in WorkspaceFile cannot be mocked due to ES module imports
+      // Stub writeFileSync to prevent actual filesystem writes in CI
+      sandbox.stub(fs, "writeFileSync");
 
       return events.doGeneratorDone(
         true,
@@ -655,7 +657,8 @@ describe("vscode-youi-events unit test", () => {
         .withArgs("vscode.openFolder")
         .resolves();
 
-      // Note: fs operations in WorkspaceFile cannot be mocked due to ES module imports
+      // Stub writeFileSync to prevent actual filesystem writes in CI
+      sandbox.stub(fs, "writeFileSync");
 
       return events.doGeneratorDone(
         true,
@@ -677,7 +680,8 @@ describe("vscode-youi-events unit test", () => {
         )
         .resolves();
 
-      // Note: fs operations in WorkspaceFile cannot be mocked due to ES module imports
+      // Stub writeFileSync to prevent actual filesystem writes in CI
+      sandbox.stub(fs, "writeFileSync");
 
       return events.doGeneratorDone(
         true,
@@ -776,7 +780,8 @@ describe("vscode-youi-events unit test", () => {
         eventsMock.expects("doClose");
         sandbox.stub(vscode.workspace, "workspaceFolders").value([]);
         sandbox.stub(vscode.workspace, "workspaceFile").value(undefined);
-        // Note: fs operations in WorkspaceFile cannot be mocked due to ES module imports
+        // Stub writeFileSync to prevent actual filesystem writes in CI
+        sandbox.stub(fs, "writeFileSync");
         windowMock
           .expects("showInformationMessage")
           .withExactArgs(
