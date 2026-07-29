@@ -106,14 +106,16 @@ export class VSCodeYouiEvents implements YouiEvents {
     this.resolveInstallingProgress();
     set(this.webviewPanel, Constants.GENERATOR_COMPLETED, success);
     this.doClose();
-    return this.showDoneMessage(
-      success,
-      message,
-      selectedWorkspace,
-      type,
-      targetFolderPath,
-      true // Skip resolving progress since we already did it
-    );
+    return Promise.resolve(
+      this.showDoneMessage(
+        success,
+        message,
+        selectedWorkspace,
+        type,
+        targetFolderPath,
+        true // Skip resolving progress since we already did it
+      )
+    ).then(() => undefined);
   }
 
   public doGeneratorInstall(projectName?: string): void {
