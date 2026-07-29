@@ -115,7 +115,7 @@ export class VSCodeYouiEvents implements YouiEvents {
         targetFolderPath,
         true // Skip resolving progress since we already did it
       )
-    ).then(() => undefined);
+    ).then((): void => undefined);
   }
 
   public doGeneratorInstall(projectName?: string): void {
