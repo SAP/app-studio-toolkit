@@ -91,7 +91,7 @@ export class VSCodeYouiEvents implements YouiEvents {
     void this.rpc.invoke("setBanner", [bannerProps]);
   }
 
-  public doGeneratorDone(
+  public async doGeneratorDone(
     success: boolean,
     message: string,
     selectedWorkspace: string,
@@ -103,23 +103,17 @@ export class VSCodeYouiEvents implements YouiEvents {
       this.progressReporter.report({ message: "Finalising..." });
     }
 
-    // Hold the "Finalising..." message briefly before closing notification
-    return new Promise((resolve) => {
-      setTimeout(async () => {
-        this.resolveInstallingProgress();
-        set(this.webviewPanel, Constants.GENERATOR_COMPLETED, success);
-        this.doClose();
-        await this.showDoneMessage(
-          success,
-          message,
-          selectedWorkspace,
-          type,
-          targetFolderPath,
-          true // Skip resolving progress since we already did it
-        );
-        resolve();
-      }, 100);
-    });
+    this.resolveInstallingProgress();
+    set(this.webviewPanel, Constants.GENERATOR_COMPLETED, success);
+    this.doClose();
+    await this.showDoneMessage(
+      success,
+      message,
+      selectedWorkspace,
+      type,
+      targetFolderPath,
+      true // Skip resolving progress since we already did it
+    );
   }
 
   public doGeneratorInstall(projectName?: string): void {
