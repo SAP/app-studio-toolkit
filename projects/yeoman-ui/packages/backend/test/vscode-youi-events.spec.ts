@@ -11,7 +11,6 @@ import * as messages from "../src/messages.js";
 import { MessageType, Severity, IBannerProps } from "@sap-devx/yeoman-ui-types";
 import { GeneratorOutput } from "../src/vscode-output.js";
 import { Constants } from "../src/utils/constants.js";
-import * as loggerWrapper from "../src/logger/logger-wrapper.js";
 import { VSCodeYouiEvents } from "../src/vscode-youi-events.js";
 import * as fs from "fs";
 
@@ -22,7 +21,6 @@ describe("vscode-youi-events unit test", () => {
   let commandsMock: SinonMock;
   let workspaceMock: SinonMock;
   let eventsMock: SinonMock;
-  let loggerWrapperMock: SinonMock;
   let generatorOutputMock: SinonMock;
   let rpcMock: SinonMock;
   let loggerMock: SinonMock;
@@ -89,8 +87,6 @@ describe("vscode-youi-events unit test", () => {
 
   beforeEach(() => {
     const webViewPanel: any = { dispose: () => true };
-    loggerWrapperMock = sandbox.mock(loggerWrapper);
-    loggerWrapperMock.expects("getClassLogger").returns(testLogger);
     events = new VSCodeYouiEvents(
       rpc,
       webViewPanel,
@@ -113,7 +109,6 @@ describe("vscode-youi-events unit test", () => {
     eventsMock.verify();
     commandsMock.verify();
     workspaceMock.verify();
-    loggerWrapperMock.verify();
     generatorOutputMock.verify();
     loggerMock.verify();
     rpcMock.verify();
