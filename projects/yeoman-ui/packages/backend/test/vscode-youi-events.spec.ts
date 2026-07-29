@@ -6,7 +6,7 @@ import {
   IMethod,
   IPromiseCallbacks,
   IRpc,
-} from "@sap-devx/webview-rpc/out.ext/rpc-common";
+} from "@sap-devx/webview-rpc/out.ext/rpc-common.js";
 import * as messages from "../src/messages.js";
 import { MessageType, Severity, IBannerProps } from "@sap-devx/yeoman-ui-types";
 import { GeneratorOutput } from "../src/vscode-output.js";
