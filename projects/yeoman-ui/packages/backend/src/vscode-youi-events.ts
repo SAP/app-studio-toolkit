@@ -25,6 +25,7 @@ import { getFileSchemeWorkspaceFolders } from "./utils/workspaceFolders.js";
 
 const { isEmpty, isNil, set } = lodash;
 
+// App Wizard wrapper that delegates to VSCodeYouiEvents
 class YoUiAppWizard extends AppWizard {
   constructor(private readonly events: VSCodeYouiEvents) {
     super();
