@@ -91,7 +91,7 @@ export class VSCodeYouiEvents implements YouiEvents {
     void this.rpc.invoke("setBanner", [bannerProps]);
   }
 
-  public async doGeneratorDone(
+  public doGeneratorDone(
     success: boolean,
     message: string,
     selectedWorkspace: string,
@@ -106,7 +106,7 @@ export class VSCodeYouiEvents implements YouiEvents {
     this.resolveInstallingProgress();
     set(this.webviewPanel, Constants.GENERATOR_COMPLETED, success);
     this.doClose();
-    await this.showDoneMessage(
+    return this.showDoneMessage(
       success,
       message,
       selectedWorkspace,
