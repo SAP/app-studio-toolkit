@@ -13,7 +13,10 @@ import { GeneratorOutput } from "../src/vscode-output.js";
 import { Constants } from "../src/utils/constants.js";
 import * as loggerWrapper from "../src/logger/logger-wrapper.js";
 import { VSCodeYouiEvents } from "../src/vscode-youi-events.js";
-import * as fs from "fs";
+import { createRequire } from "node:module";
+
+const require = createRequire(import.meta.url);
+const fs = require("fs");
 
 describe("vscode-youi-events unit test", () => {
   let events: VSCodeYouiEvents;
@@ -79,16 +82,15 @@ describe("vscode-youi-events unit test", () => {
   const generatorOutput = new GeneratorOutput();
 
   before(() => {
-    sandbox = createSandbox();
     loggerWrapper.internalApi.setLogger(testLogger);
   });
 
   after(() => {
     loggerWrapper.internalApi.resetLogger();
-    sandbox.restore();
   });
 
   beforeEach(() => {
+    sandbox = createSandbox();
     const webViewPanel: any = { dispose: () => true };
     events = new VSCodeYouiEvents(
       rpc,
@@ -117,6 +119,7 @@ describe("vscode-youi-events unit test", () => {
     rpcMock.verify();
     uriMock.verify();
     fsMock.verify();
+    sandbox.restore();
   });
 
   describe("getAppWizard", () => {
@@ -570,8 +573,7 @@ describe("vscode-youi-events unit test", () => {
         .withArgs("vscode.openFolder")
         .resolves();
       workspaceMock.expects("updateWorkspaceFolders").withArgs(0, null);
-      sandbox.stub(fs, "existsSync").returns(false);
-      sandbox.stub(fs, "writeFileSync");
+      // Note: fs operations in WorkspaceFile cannot be mocked due to ES module imports
       uriMock.expects("file").twice().returns({ fsPath: "testFsPath" });
       return events.doGeneratorDone(
         true,
@@ -598,8 +600,7 @@ describe("vscode-youi-events unit test", () => {
         .resolves();
       workspaceMock.expects("updateWorkspaceFolders").withArgs(0, null);
 
-      sandbox.stub(fs, "existsSync").returns(false);
-      sandbox.stub(fs, "writeFileSync");
+      // Note: fs operations in WorkspaceFile cannot be mocked due to ES module imports
 
       return events.doGeneratorDone(
         true,
@@ -625,8 +626,7 @@ describe("vscode-youi-events unit test", () => {
         .withArgs("vscode.openFolder")
         .resolves();
 
-      sandbox.stub(fs, "existsSync").returns(false);
-      sandbox.stub(fs, "writeFileSync");
+      // Note: fs operations in WorkspaceFile cannot be mocked due to ES module imports
 
       return events.doGeneratorDone(
         true,
@@ -648,8 +648,7 @@ describe("vscode-youi-events unit test", () => {
         )
         .resolves();
 
-      sandbox.stub(fs, "existsSync").returns(false);
-      sandbox.stub(fs, "writeFileSync");
+      // Note: fs operations in WorkspaceFile cannot be mocked due to ES module imports
 
       return events.doGeneratorDone(
         true,
@@ -748,8 +747,7 @@ describe("vscode-youi-events unit test", () => {
         eventsMock.expects("doClose");
         sandbox.stub(vscode.workspace, "workspaceFolders").value([]);
         sandbox.stub(vscode.workspace, "workspaceFile").value(undefined);
-        sandbox.stub(fs, "existsSync").returns(false);
-        sandbox.stub(fs, "writeFileSync");
+      // Note: fs operations in WorkspaceFile cannot be mocked due to ES module imports
         windowMock
           .expects("showInformationMessage")
           .withExactArgs(

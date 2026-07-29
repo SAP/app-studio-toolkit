@@ -104,11 +104,11 @@ export class VSCodeYouiEvents implements YouiEvents {
 
     // Hold the "Finalising..." message for 1 second before closing notification
     return new Promise((resolve) => {
-      setTimeout(() => {
+      setTimeout(async () => {
         this.resolveInstallingProgress();
         set(this.webviewPanel, Constants.GENERATOR_COMPLETED, success);
         this.doClose();
-        void this.showDoneMessage(
+        await this.showDoneMessage(
           success,
           message,
           selectedWorkspace,
