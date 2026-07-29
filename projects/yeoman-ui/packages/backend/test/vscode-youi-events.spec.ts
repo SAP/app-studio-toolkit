@@ -11,6 +11,7 @@ import * as messages from "../src/messages.js";
 import { MessageType, Severity, IBannerProps } from "@sap-devx/yeoman-ui-types";
 import { GeneratorOutput } from "../src/vscode-output.js";
 import { Constants } from "../src/utils/constants.js";
+import * as loggerWrapper from "../src/logger/logger-wrapper.js";
 import { VSCodeYouiEvents } from "../src/vscode-youi-events.js";
 import * as fs from "fs";
 
@@ -79,9 +80,11 @@ describe("vscode-youi-events unit test", () => {
 
   before(() => {
     sandbox = createSandbox();
+    loggerWrapper.internalApi.setLogger(testLogger);
   });
 
   after(() => {
+    loggerWrapper.internalApi.resetLogger();
     sandbox.restore();
   });
 
