@@ -97,7 +97,7 @@ export class VSCodeYouiEvents implements YouiEvents {
     selectedWorkspace: string,
     type: string,
     targetFolderPath?: string
-  ): Promise<void> {
+  ): Thenable<any> {
     // Show "Finalising..." before closing
     if (this.progressReporter) {
       this.progressReporter.report({ message: "Finalising..." });
@@ -113,7 +113,7 @@ export class VSCodeYouiEvents implements YouiEvents {
       type,
       targetFolderPath,
       true // Skip resolving progress since we already did it
-    ) as unknown as Promise<void>;
+    );
   }
 
   public doGeneratorInstall(projectName?: string): void {
