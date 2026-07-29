@@ -284,6 +284,35 @@ describe("vscode-youi-events unit test", () => {
     events.doGeneratorInstall("myProject");
   });
 
+  it("doGeneratorInstall - executes withProgress callback", async () => {
+    lodash.set(vscode, "ProgressLocation.Notification", 15);
+    eventsMock.expects("doClose");
+
+    const mockProgress = { report: sandbox.stub() };
+
+    windowMock
+      .expects("withProgress")
+      .withArgs({
+        location: 15,
+        title: "Generating testProject",
+        cancellable: false,
+      })
+      .callsFake(async (_options, callback) => {
+        await callback(mockProgress);
+      });
+
+    events.doGeneratorInstall("testProject");
+
+    // Give it time to execute
+    await new Promise((resolve) => setTimeout(resolve, 10));
+
+    // Verify progress reporter was set up
+    expect(mockProgress.report.called).to.be.true;
+    expect(mockProgress.report.firstCall.args[0]).to.deep.equal({
+      message: "Preparing...",
+    });
+  });
+
   describe("doGeneratorProgress", () => {
     it("writing phase - initializes notification with project name", async () => {
       const projectName = "testProject";
