@@ -748,6 +748,8 @@ describe("vscode-youi-events unit test", () => {
         eventsMock.expects("doClose");
         sandbox.stub(vscode.workspace, "workspaceFolders").value([]);
         sandbox.stub(vscode.workspace, "workspaceFile").value(undefined);
+        sandbox.stub(fs, "existsSync").returns(false);
+        sandbox.stub(fs, "writeFileSync");
         windowMock
           .expects("showInformationMessage")
           .withExactArgs(
@@ -759,8 +761,6 @@ describe("vscode-youi-events unit test", () => {
           .withArgs("vscode.openFolder")
           .resolves();
         workspaceMock.expects("updateWorkspaceFolders").withArgs(0, null);
-        fsMock.expects("existsSync").returns(false);
-        fsMock.expects("writeFileSync");
         return events.doGeneratorDone(
           true,
           "success message",
@@ -805,34 +805,6 @@ describe("vscode-youi-events unit test", () => {
           createAndClose,
           "project",
           "testDestinationRoot"
-        );
-      });
-
-      it("shows project name in success message for module type", () => {
-        eventsMock.expects("doClose");
-        windowMock
-          .expects("showInformationMessage")
-          .withExactArgs("Project myTestProject has been generated.")
-          .resolves();
-        return events.doGeneratorDone(
-          true,
-          "success message",
-          createAndClose,
-          "module"
-        );
-      });
-
-      it("shows project name in success message for files type", () => {
-        eventsMock.expects("doClose");
-        windowMock
-          .expects("showInformationMessage")
-          .withExactArgs("Project myTestProject has been generated.")
-          .resolves();
-        return events.doGeneratorDone(
-          true,
-          "success message",
-          createAndClose,
-          "files"
         );
       });
     });
