@@ -240,18 +240,16 @@ describe("yeomanui unit test", () => {
     it("flow is successfull", async () => {
       envUtilsMock.expects("getGeneratorsData").resolves(gensMeta);
       envUtilsMock
-        .expects("createEnvAndGen")
+        .expects("createRunGen")
         .withArgs("test1-project:app")
-        .resolves({
-          env: {
-            on: () => "",
-            runGenerator: () => "",
-          },
-          gen: {
-            destinationRoot: () => "",
-            on: () => "",
-          },
-        });
+        .callsFake(
+          async (_ns: string, _options: any, _adapter: any, prepare: any) => {
+            await prepare(
+              { on: () => "", removeListener: () => "" },
+              { destinationRoot: () => "", on: () => "" }
+            );
+          }
+        );
       youiEventsMock.expects("setAppWizardHeaderTitle").withArgs(undefined);
       wsConfigMock
         .expects("get")
@@ -289,18 +287,16 @@ describe("yeomanui unit test", () => {
     it("single generator", async () => {
       yeomanUi["uiOptions"].generator = "test4:app";
       envUtilsMock
-        .expects("createEnvAndGen")
+        .expects("createRunGen")
         .withArgs("test4:app")
-        .resolves({
-          env: {
-            on: () => "",
-            runGenerator: () => "",
-          },
-          gen: {
-            destinationRoot: () => "",
-            on: () => "",
-          },
-        });
+        .callsFake(
+          async (_ns: string, _options: any, _adapter: any, prepare: any) => {
+            await prepare(
+              { on: () => "", removeListener: () => "" },
+              { destinationRoot: () => "", on: () => "" }
+            );
+          }
+        );
       wsConfigMock
         .expects("get")
         .withExactArgs(yeomanUi["TARGET_FOLDER_CONFIG_PROP"])

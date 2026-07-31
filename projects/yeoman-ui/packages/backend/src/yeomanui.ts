@@ -16,12 +16,7 @@ import { IPrompt, MessageType } from "@sap-devx/yeoman-ui-types";
 import { AnalyticsWrapper } from "./usage-report/usage-analytics-wrapper.js";
 import { Output } from "./output.js";
 import { resolve } from "path";
-import {
-  Env,
-  EnvGen,
-  GeneratorData,
-  GeneratorNotFoundError,
-} from "./utils/env.js";
+import { Env, GeneratorData, GeneratorNotFoundError } from "./utils/env.js";
 import { namespaceToName } from "./utils/namespace.js";
 import { vscode, getVscode } from "./utils/vscodeProxy.js";
 import Generator from "yeoman-generator";
@@ -238,32 +233,35 @@ export class YeomanUI {
         appWizard: this.youiEvents.getAppWizard(),
       };
 
-      const envGen: EnvGen = await Env.createEnvAndGen(
+      const prepare = (env: Environment, gen: any) => {
+        this.errorThrown = false;
+
+        // check if generator defined a helper function called setPromptsCallback()
+        const setPromptsCallback = _.get(gen, "setPromptsCallback");
+        if (setPromptsCallback) {
+          setPromptsCallback(this.setPromptList.bind(this));
+        }
+
+        this.promptCount = 0;
+        this.gen = gen as Generator;
+        // do not add second parameter with value true
+        // some generators rely on fact that this.env.cwd and
+        // the current working directory is changed.
+        this.gen.destinationRoot(targetFolder);
+        // notifies ui wether generator is in writing state
+        this.setGenInWriting(this.gen);
+        // handles generator install step if exists
+        this.onGenInstall(this.gen);
+        // handles generator errors
+        this.handleErrors(env, this.gen, generatorNamespace);
+      };
+
+      await Env.createRunGen(
         generatorNamespace,
         options,
-        this.youiAdapter
+        this.youiAdapter,
+        prepare
       );
-
-      // check if generator defined a helper function called setPromptsCallback()
-      const setPromptsCallback = _.get(envGen.gen, "setPromptsCallback");
-      if (setPromptsCallback) {
-        setPromptsCallback(this.setPromptList.bind(this));
-      }
-
-      this.promptCount = 0;
-      this.gen = envGen.gen as Generator;
-      // do not add second parameter with value true
-      // some generators rely on fact that this.env.cwd and
-      // the current working directory is changed.
-      this.gen.destinationRoot(targetFolder);
-      // notifies ui wether generator is in writing state
-      this.setGenInWriting(this.gen);
-      // handles generator install step if exists
-      this.onGenInstall(this.gen);
-      // handles generator errors
-      this.handleErrors(envGen.env, this.gen, generatorNamespace);
-
-      await envGen.env.runGenerator(envGen.gen);
       if (!this.errorThrown) {
         // Without resolve this code worked only for absolute paths without / at the end.
         // Generator can put a relative path, path including . and .. and / at the end.
@@ -316,7 +314,6 @@ export class YeomanUI {
         generatorName,
         this.getErrorWithAdditionalInfo(error, `env.on(${errorEventName})`)
       );
-      env.emit(errorEventName, error);
     });
 
     gen.on(errorEventName, (error: any) =>

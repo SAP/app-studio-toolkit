@@ -24,6 +24,11 @@ export type EnvGen = {
   gen: any;
 };
 
+export type PrepareEnvGen = (
+  env: Environment,
+  gen: any
+) => void | Promise<void>;
+
 export type GeneratorData = {
   generatorMeta: LookupGeneratorMeta;
   generatorPackageJson: any;
@@ -57,9 +62,17 @@ class EnvUtil {
 
   public isEnvIncompatibilityError(error: unknown): boolean {
     return (
-      (error as Error)?.message?.startsWith(
+      (error as Error)?.message?.includes(
         Constants.ENV_INCOMPATIBILITY_MESSAGE_PREFIX
       ) ?? false
+    );
+  }
+
+  private isV3RuntimeIncompatibilityError(error: unknown): boolean {
+    const message = (error as Error)?.message ?? "";
+    return (
+      message.includes("requires yeoman-environment") ||
+      message.includes("object is not extensible")
     );
   }
 
@@ -180,19 +193,7 @@ class EnvUtil {
     );
 
     try {
-      const v6Env: Environment = this.createEnvInstance(
-        { sharedOptions: { forwardErrorToEnvironment: true } as any },
-        adapter
-      );
-
-      v6Env.register(meta.resolved!, {
-        namespace: genNamespace,
-        packagePath: meta.packagePath,
-      });
-
-      const gen: any = await v6Env.create(genNamespace, { options } as any);
-
-      return { env: v6Env, gen };
+      return await this.createV6EnvAndGen(genNamespace, meta, options, adapter);
     } catch (v6Error) {
       const shouldFallbackToV3 = this.isEnvIncompatibilityError(v6Error);
       if (!shouldFallbackToV3) {
@@ -227,6 +228,91 @@ class EnvUtil {
         throw v3Error;
       }
     }
+  }
+
+  public async createRunGen(
+    genNamespace: string,
+    options: any,
+    adapter: any,
+    prepare: PrepareEnvGen
+  ): Promise<void> {
+    const meta: LookupGeneratorMeta = await this.getGenMetadata(genNamespace);
+
+    this.unloadGeneratorModules(genNamespace);
+    let v3EnvGen: EnvGen | undefined;
+    try {
+      v3EnvGen = this.createLegacyV3EnvAndGen(
+        genNamespace,
+        meta,
+        options,
+        adapter
+      );
+    } catch (v3CreateError) {
+      if (this.isV3RuntimeIncompatibilityError(v3CreateError)) {
+        this.logger?.info(
+          `generator ${genNamespace} needs yeoman-environment v6; instantiation on v3 was rejected`,
+          { error: (v3CreateError as Error)?.message }
+        );
+      } else {
+        this.logger?.debug(
+          `generator ${genNamespace} failed to instantiate on yeoman-environment v3; surfacing the error (not a v6-runtime signal)`,
+          { error: (v3CreateError as Error)?.message }
+        );
+        throw v3CreateError;
+      }
+    }
+
+    if (v3EnvGen) {
+      this.logger?.debug(
+        `routing generator ${genNamespace} to yeoman-environment v3`
+      );
+      await this.prepareAndRun(v3EnvGen.env, v3EnvGen.gen, adapter, prepare);
+      return;
+    }
+
+    this.logger?.debug(
+      `routing generator ${genNamespace} to yeoman-environment v6`
+    );
+    this.unloadGeneratorModules(genNamespace);
+    const { env, gen } = await this.createV6EnvAndGen(
+      genNamespace,
+      meta,
+      options,
+      adapter
+    );
+    await this.prepareAndRun(env, gen, adapter, prepare);
+  }
+
+  private async prepareAndRun(
+    env: Environment,
+    gen: any,
+    adapter: any,
+    prepare: PrepareEnvGen
+  ): Promise<void> {
+    adapter?.resetSignal?.();
+    await prepare(env, gen);
+    await Promise.resolve(env.runGenerator(gen));
+  }
+
+  private async createV6EnvAndGen(
+    genNamespace: string,
+    meta: LookupGeneratorMeta,
+    options: any,
+    adapter: any
+  ): Promise<EnvGen> {
+    const v6Env: Environment = this.createEnvInstance(
+      { sharedOptions: { forwardErrorToEnvironment: true } as any },
+      adapter
+    );
+
+    v6Env.register(meta.resolved!, {
+      namespace: genNamespace,
+      packagePath: meta.packagePath,
+    });
+
+    const gen: any = await v6Env.create(genNamespace, { options } as any);
+
+    return { env: v6Env, gen };
   }
 
   private createLegacyV3EnvAndGen(
