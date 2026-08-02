@@ -69,6 +69,7 @@ tsconfig.tsbuildinfo
 
 # Built VSCode exts
 *.vsix
+*.vsix.zst
 
 # generated artifacts
 dist

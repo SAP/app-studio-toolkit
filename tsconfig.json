@@ -25,6 +25,9 @@
       "path": "./packages/webide-client-tools"
     },
     {
+      "path": "./packages/vsix-zst"
+    },
+    {
       "path": "./examples/sample-action-client"
     },
     {
