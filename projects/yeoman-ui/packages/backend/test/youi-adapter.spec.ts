@@ -128,4 +128,41 @@ describe("YouiAdapter", () => {
       expect(response.lastName).to.equal(lastName);
     });
   });
+
+  describe("#v6 adapter contract", () => {
+    it("aborts the signal with the given reason", () => {
+      const adapter: any = new YouiAdapter(youiEvents, outputChannel);
+      const reason = new Error("boom");
+      expect(adapter.signal.aborted).to.equal(false);
+      adapter.abort(reason);
+      expect(adapter.signal.aborted).to.equal(true);
+      expect(adapter.signal.reason).to.equal(reason);
+    });
+
+    it("abort() is idempotent (v6 may call it more than once per failure)", () => {
+      const adapter: any = new YouiAdapter(youiEvents, outputChannel);
+      adapter.abort(new Error("first"));
+      // A second abort on an already-aborted controller would otherwise throw.
+      expect(() => adapter.abort(new Error("second"))).to.not.throw();
+    });
+
+    it("resetSignal() yields a fresh, un-aborted signal per run", () => {
+      const adapter: any = new YouiAdapter(youiEvents, outputChannel);
+      adapter.abort(new Error("boom"));
+      expect(adapter.signal.aborted).to.equal(true);
+      adapter.resetSignal();
+      expect(adapter.signal.aborted).to.equal(false);
+    });
+
+    it("progress() runs the provided step function", async () => {
+      const adapter: any = new YouiAdapter(youiEvents, outputChannel);
+      const result = await adapter.progress(() => "done");
+      expect(result).to.equal("done");
+    });
+
+    it("onIdle() resolves to undefined", async () => {
+      const adapter: any = new YouiAdapter(youiEvents, outputChannel);
+      expect(await adapter.onIdle()).to.equal(undefined);
+    });
+  });
 });

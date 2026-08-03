@@ -11,6 +11,7 @@ const { get, isFunction } = lodash;
 
 export class YouiAdapter {
   private yeomanui: YeomanUI;
+  private abortController = new AbortController();
 
   constructor(
     private readonly youiEvents: YouiEvents,
@@ -24,6 +25,32 @@ export class YouiAdapter {
   public setYeomanUI(yeomanui: YeomanUI) {
     this.yeomanui = yeomanui;
     this.log = yoUiLog(this.output, this.yeomanui);
+  }
+
+  // --- yeoman-environment v6 adapter contract ---
+
+  get signal(): AbortSignal {
+    return this.abortController.signal;
+  }
+
+  public resetSignal(): void {
+    this.abortController = new AbortController();
+  }
+
+  public abort(reason?: unknown): void {
+    if (!this.abortController.signal.aborted) {
+      this.abortController.abort(reason);
+    }
+  }
+
+  public onIdle(): Promise<void> {
+    return Promise.resolve();
+  }
+
+  public async progress<T>(
+    fn: (progress: { step: (...args: any[]) => void }) => T | Promise<T>
+  ): Promise<T> {
+    return fn({ step: () => undefined });
   }
 
   get colorDiffAdded() {
