@@ -1,5 +1,9 @@
 "use strict";
 
+// A legacy (yeoman-generator v5) top generator that composes a legacy
+// sub-generator. It instantiates on the v3 runtime, so the whole run routes to
+// v3 and its composed sub-generator runs to completion - the happy-path
+// baseline for legacy composition
 const Generator = require("yeoman-generator-v5");
 const Base = Generator.default || Generator;
 

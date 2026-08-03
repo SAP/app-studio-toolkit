@@ -179,57 +179,6 @@ class EnvUtil {
     return _.map(gensMeta, (genMeta) => genMeta.namespace);
   }
 
-  public async createEnvAndGen(
-    genNamespace: string,
-    options: any,
-    adapter: any
-  ): Promise<EnvGen> {
-    const meta: LookupGeneratorMeta = await this.getGenMetadata(genNamespace);
-    this.unloadGeneratorModules(genNamespace);
-
-    // v6 is the default runtime; retry with v3 only on an env-incompatibility error
-    this.logger?.debug(
-      `routing generator ${genNamespace} to default yeoman-environment v6`
-    );
-
-    try {
-      return await this.createV6EnvAndGen(genNamespace, meta, options, adapter);
-    } catch (v6Error) {
-      const shouldFallbackToV3 = this.isEnvIncompatibilityError(v6Error);
-      if (!shouldFallbackToV3) {
-        this.logger?.debug(
-          `yeoman-environment v6 failed to create ${genNamespace}; rethrowing original generator error without v3 fallback`,
-          { error: (v6Error as Error)?.message }
-        );
-        throw v6Error;
-      }
-
-      this.logger?.info(
-        `yeoman-environment v6 rejected ${genNamespace} as incompatible; retrying with yeoman-environment v3`,
-        { error: (v6Error as Error)?.message }
-      );
-      try {
-        return this.createLegacyV3EnvAndGen(
-          genNamespace,
-          meta,
-          options,
-          adapter
-        );
-      } catch (v3Error) {
-        this.logger?.error(
-          `yeoman-environment v3 fallback failed for ${genNamespace}; throwing v3 error with v6 incompatibility attached`,
-          {
-            v6Error: (v6Error as Error)?.message,
-            v3Error: (v3Error as Error)?.message,
-          }
-        );
-
-        v3Error.v6Error = v6Error;
-        throw v3Error;
-      }
-    }
-  }
-
   public async createRunGen(
     genNamespace: string,
     options: any,
@@ -291,7 +240,7 @@ class EnvUtil {
   ): Promise<void> {
     adapter?.resetSignal?.();
     await prepare(env, gen);
-    await Promise.resolve(env.runGenerator(gen));
+    await env.runGenerator(gen);
   }
 
   private async createV6EnvAndGen(

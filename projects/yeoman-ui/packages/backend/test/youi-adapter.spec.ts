@@ -160,9 +160,9 @@ describe("YouiAdapter", () => {
       expect(result).to.equal("done");
     });
 
-    it("onIdle() resolves", async () => {
+    it("onIdle() resolves to undefined", async () => {
       const adapter: any = new YouiAdapter(youiEvents, outputChannel);
-      await adapter.onIdle();
+      expect(await adapter.onIdle()).to.equal(undefined);
     });
   });
 });

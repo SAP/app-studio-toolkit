@@ -23,28 +23,46 @@ const envV6Fixture = {
   ),
 };
 
-const envV3Fixture = {
-  namespace: "env-v3-fixture:app",
-  packagePath: resolve(FIXTURES, "generator-env-v3-fixture"),
-  resolved: resolve(
-    FIXTURES,
-    "generator-env-v3-fixture/generators/app/index.js"
-  ),
-};
-
-const envV6InitErrorFixture = {
-  namespace: "env-v6-init-error-fixture:app",
-  packagePath: resolve(FIXTURES, "generator-env-v6-init-error-fixture"),
-  resolved: resolve(
-    FIXTURES,
-    "generator-env-v6-init-error-fixture/generators/app/index.js"
-  ),
-};
-
 const composeTopFixture = {
   namespace: "compose-top:app",
   packagePath: resolve(FIXTURES, "generator-compose-top"),
   resolved: resolve(FIXTURES, "generator-compose-top/generators/app/index.js"),
+};
+
+const composeV6TopFixture = {
+  namespace: "compose-v6-top:app",
+  packagePath: resolve(FIXTURES, "generator-compose-v6-top"),
+  resolved: resolve(
+    FIXTURES,
+    "generator-compose-v6-top/generators/app/index.js"
+  ),
+};
+
+const composeV6TopV3SubFixture = {
+  namespace: "compose-v6-top-v3sub:app",
+  packagePath: resolve(FIXTURES, "generator-compose-v6-top-v3sub"),
+  resolved: resolve(
+    FIXTURES,
+    "generator-compose-v6-top-v3sub/generators/app/index.js"
+  ),
+};
+
+const composeV3TopV6SubFixture = {
+  namespace: "compose-v3-top-v6sub:app",
+  packagePath: resolve(FIXTURES, "generator-compose-v3-top-v6sub"),
+  resolved: resolve(
+    FIXTURES,
+    "generator-compose-v3-top-v6sub/generators/app/index.js"
+  ),
+};
+
+const composeTopFailingFixture = {
+  namespace: "compose-top-failing:app",
+  packagePath: resolve(FIXTURES, "generator-compose-top-failing"),
+  resolved: resolve(
+    FIXTURES,
+    "generator-compose-top-failing/generators/app/index.js"
+  ),
 };
 
 /** Build a LookupGeneratorMeta the way env.ts consumes it. */
@@ -61,151 +79,8 @@ function metaFor(fixture: {
   } as unknown as LookupGeneratorMeta;
 }
 
-describe("Env.createEnvAndGen()", () => {
-  let sandbox: SinonSandbox;
-
-  beforeEach(() => {
-    sandbox = createSandbox();
-  });
-
-  afterEach(() => {
-    sandbox.restore();
-  });
-
-  it("loads a generator through yeoman-environment v6", async () => {
-    // Point metadata resolution at the v6 fixture; let the real v6 env
-    // register + create it (no fallback).
-    sandbox.stub(Env as any, "getGenMetadata").resolves(metaFor(envV6Fixture));
-
-    const { env, gen } = await Env.createEnvAndGen(
-      envV6Fixture.namespace,
-      { silent: true },
-      undefined
-    );
-
-    expect(env, "a v6 environment instance is returned").to.be.an("object");
-    expect(
-      (env as any).getVersion(),
-      "the returned env is yeoman-environment v6"
-    ).to.match(/^6\./);
-    expect(gen, "a generator instance is returned").to.be.an("object");
-    expect(
-      gen.constructor.name,
-      "the v6 fixture class was instantiated"
-    ).to.equal("EnvV6FixtureGenerator");
-  });
-
-  it("falls back to yeoman-environment v3 when v6 cannot create the generator", async () => {
-    sandbox.stub(Env as any, "getGenMetadata").resolves(metaFor(envV3Fixture));
-
-    // Force the v6 path to fail with the exact env-incompatibility message
-    // yeoman-generator throws when a generator is run on the wrong runtime —
-    // this is the only signal that triggers the v3 fallback.
-    const failingV6Env: any = {
-      register(): void {
-        return undefined;
-      },
-      create(): never {
-        throw new Error(`${Constants.ENV_INCOMPATIBILITY_MESSAGE_PREFIX}.`);
-      },
-    };
-    sandbox.stub(Env as any, "createEnvInstance").returns(failingV6Env);
-
-    sandbox
-      .stub(Env as any, "loadLegacyV3Compat")
-      .returns(require("yeoman-env-v3"));
-
-    const { env, gen } = await Env.createEnvAndGen(
-      envV3Fixture.namespace,
-      { silent: true },
-      undefined
-    );
-
-    expect(env, "a v3 environment instance is returned").to.be.an("object");
-    expect(gen, "a generator instance is returned").to.be.an("object");
-    expect(
-      gen.constructor.name,
-      "the v3 fixture class was instantiated by the v3 runtime"
-    ).to.equal("EnvV3FixtureGenerator");
-    expect(
-      gen.envV3FixtureLoaded,
-      "the v3 fixture's constructor actually ran"
-    ).to.equal(true);
-  });
-
-  it("does not fall back to v3 when v6 fails with a generator domain error", async () => {
-    sandbox
-      .stub(Env as any, "getGenMetadata")
-      .resolves(metaFor(envV6InitErrorFixture));
-
-    const v3Fallback = sandbox.stub(Env as any, "createLegacyV3EnvAndGen");
-
-    const { V6_INIT_ERROR } = require(envV6InitErrorFixture.resolved);
-
-    let thrown: any;
-    try {
-      await Env.createEnvAndGen(
-        envV6InitErrorFixture.namespace,
-        { silent: true },
-        undefined
-      );
-    } catch (error) {
-      thrown = error;
-    }
-
-    expect(thrown, "createEnvAndGen should reject").to.be.instanceOf(Error);
-    expect(
-      thrown?.message,
-      "the original v6 domain error is surfaced as-is"
-    ).to.contain(V6_INIT_ERROR);
-    expect(
-      v3Fallback.called,
-      "the v3 fallback must NOT run for a v6 domain error"
-    ).to.equal(false);
-  });
-
-  it("surfaces the v3 fallback error (with the v6 error attached) when the incompatible generator also fails on v3", async () => {
-    sandbox.stub(Env as any, "getGenMetadata").resolves(metaFor(envV3Fixture));
-
-    const failingV6Env: any = {
-      register(): void {
-        return undefined;
-      },
-      create(): never {
-        throw new Error(`${Constants.ENV_INCOMPATIBILITY_MESSAGE_PREFIX}.`);
-      },
-    };
-    sandbox.stub(Env as any, "createEnvInstance").returns(failingV6Env);
-
-    const V3_FALLBACK_ERROR = "v3 fallback failed for its own reason";
-    sandbox
-      .stub(Env as any, "createLegacyV3EnvAndGen")
-      .throws(new Error(V3_FALLBACK_ERROR));
-
-    let thrown: any;
-    try {
-      await Env.createEnvAndGen(
-        envV3Fixture.namespace,
-        { silent: true },
-        undefined
-      );
-    } catch (error) {
-      thrown = error;
-    }
-
-    expect(thrown, "createEnvAndGen should reject").to.be.instanceOf(Error);
-    expect(
-      thrown?.message,
-      "the v3 fallback error is surfaced to the user, not the v6 error"
-    ).to.contain(V3_FALLBACK_ERROR);
-    // The v6 error is preserved as context for diagnostics.
-    expect(
-      thrown?.v6Error?.message,
-      "the original v6 incompatibility error is attached for diagnostics"
-    ).to.contain(`${Constants.ENV_INCOMPATIBILITY_MESSAGE_PREFIX}.`);
-  });
-
-  it("isEnvIncompatibilityError matches the incompatibility text even when wrapped", () => {
+describe("Env.isEnvIncompatibilityError()", () => {
+  it("matches the incompatibility text even when wrapped", () => {
     const wrapped = new Error(
       `Could not call '@bas-dev/generator-extensibility-sub' sub-generator: ${Constants.ENV_INCOMPATIBILITY_MESSAGE_PREFIX}.`
     );
@@ -426,9 +301,6 @@ describe("Env.createRunGen() - real compose regression", () => {
 
   beforeEach(() => {
     sandbox = createSandbox();
-    sandbox
-      .stub(Env as any, "getGenMetadata")
-      .resolves(metaFor(composeTopFixture));
     // Use the bundled v3 runtime for the real v3 path.
     sandbox
       .stub(Env as any, "loadLegacyV3Compat")
@@ -439,48 +311,149 @@ describe("Env.createRunGen() - real compose regression", () => {
     sandbox.restore();
   });
 
-  it("routes a legacy top generator to v3 and runs its composed sub-generator to completion", async function () {
-    this.timeout(15000);
-
-    const marker = { subRan: false };
-    const options = { silent: true, composeMarker: marker };
-    // Minimal adapter; v3 ignores the v6 hooks.
+  function makeAdapter(): any {
     const log: any = (): void => undefined;
     log.info = (): void => undefined;
     log.error = (): void => undefined;
     log.writeln = (): void => undefined;
-    const adapter: any = {
+    let ac = new AbortController();
+    return {
       log,
       prompt: (): Promise<any> => Promise.resolve({}),
       diff: (): string => "",
       colorDiffAdded: (s: string): string => s,
       colorDiffRemoved: (s: string): string => s,
-      resetSignal: (): void => undefined,
+      resetSignal: (): void => {
+        ac = new AbortController();
+      },
+      get signal(): AbortSignal {
+        return ac.signal;
+      },
+      abort: (reason?: unknown): void => {
+        if (!ac.signal.aborted) {
+          ac.abort(reason);
+        }
+      },
+      onIdle: (): Promise<void> => Promise.resolve(),
+      progress: (fn: any): Promise<any> =>
+        Promise.resolve(fn({ step: (): void => undefined })),
     };
+  }
 
-    const v6Create = sandbox.spy(Env as any, "createV6EnvAndGen");
+  // Run a fixture through createRunGen and report the runtime + outcome
+  async function runFixture(fixture: {
+    namespace: string;
+    packagePath: string;
+    resolved: string;
+  }): Promise<{ envVersion?: string; subRan: boolean; error?: Error }> {
+    sandbox.stub(Env as any, "getGenMetadata").resolves(metaFor(fixture));
 
+    const marker = { subRan: false };
     let capturedEnv: any;
-    await Env.createRunGen(
-      composeTopFixture.namespace,
-      options,
-      adapter,
-      (env: any): void => {
-        capturedEnv = env;
-      }
-    );
+    let error: Error | undefined;
+    try {
+      await Env.createRunGen(
+        fixture.namespace,
+        { silent: true, composeMarker: marker },
+        makeAdapter(),
+        (env: any): void => {
+          capturedEnv = env;
+        }
+      );
+    } catch (e) {
+      error = e as Error;
+    }
 
+    return {
+      envVersion: capturedEnv?.getVersion?.(),
+      subRan: marker.subRan,
+      error,
+    };
+  }
+
+  it("routes a legacy top generator to v3 and runs its composed sub-generator to completion", async () => {
+    const v6Create = sandbox.spy(Env as any, "createV6EnvAndGen");
+    const { envVersion, subRan, error } = await runFixture(composeTopFixture);
+
+    expect(error, "the legacy v3 compose runs without error").to.equal(
+      undefined
+    );
     expect(
-      (capturedEnv as any)?.getVersion?.(),
+      envVersion,
       "the top generator ran on the yeoman-environment v3 runtime"
     ).to.match(/^3\./);
     expect(
-      marker.subRan,
+      subRan,
       "the composed sub-generator's writing phase actually ran"
     ).to.equal(true);
     expect(
       v6Create.called,
       "a legacy generator does not touch the v6 runtime"
     ).to.equal(false);
+  });
+
+  it("routes a modern top generator to v6 and runs its composed v6 sub-generator to completion", async () => {
+    const { envVersion, subRan, error } = await runFixture(composeV6TopFixture);
+
+    expect(error, "the v6→v6 compose runs without error").to.equal(undefined);
+    expect(
+      envVersion,
+      "the top generator ran on the yeoman-environment v6 runtime"
+    ).to.match(/^6\./);
+    expect(
+      subRan,
+      "the composed v6 sub-generator's writing phase actually ran"
+    ).to.equal(true);
+  });
+
+  it("surfaces the sub-generator error when a v6 generator composes a v3-only sub-generator", async () => {
+    const { envVersion, subRan, error } = await runFixture(
+      composeV6TopV3SubFixture
+    );
+
+    expect(
+      envVersion,
+      "the modern top generator ran on the v6 runtime"
+    ).to.match(/^6\./);
+    expect(subRan, "the v3-only sub-generator did not complete").to.equal(
+      false
+    );
+    expect(error, "the run fails").to.be.instanceOf(Error);
+    expect(
+      error?.message,
+      "the v3-only feature error surfaces (matches the real @sap/fiori:adp regression)"
+    ).to.contain("necessary feature");
+  });
+
+  it("surfaces the sub-generator error when a v3 generator composes a v6-only sub-generator", async () => {
+    const { envVersion, subRan, error } = await runFixture(
+      composeV3TopV6SubFixture
+    );
+
+    expect(
+      envVersion,
+      "the legacy top generator ran on the v3 runtime"
+    ).to.match(/^3\./);
+    expect(subRan, "the v6-only sub-generator did not complete").to.equal(
+      false
+    );
+    expect(error, "the run fails").to.be.instanceOf(Error);
+    expect(
+      error?.message,
+      "the v6-only sub-generator's version guard surfaces"
+    ).to.contain("requires yeoman-environment");
+  });
+
+  it("surfaces a composed sub-generator's own writing-phase error", async () => {
+    const { subRan, error } = await runFixture(composeTopFailingFixture);
+
+    expect(subRan, "the failing sub-generator did not complete").to.equal(
+      false
+    );
+    expect(error, "the run fails").to.be.instanceOf(Error);
+    expect(
+      error?.message,
+      "the sub-generator's writing() error surfaces to the caller"
+    ).to.contain("blew up on purpose");
   });
 });
