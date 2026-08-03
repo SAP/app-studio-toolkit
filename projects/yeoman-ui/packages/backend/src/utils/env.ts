@@ -68,6 +68,27 @@ class EnvUtil {
     );
   }
 
+  // A generator that fails to instantiate on the legacy yeoman-environment v3
+  // runtime for one of these two reasons actually needs the modern (v6) runtime,
+  // so createRunGen falls back to v6 when it sees either signal:
+  //
+  // 1. "requires yeoman-environment" - yeoman-generator v7+ ships an explicit
+  //    version guard that throws before construction, e.g.:
+  //      "This generator (foo:app) requires yeoman-environment at least
+  //       4.0.0-rc.0, current version is 3.19.3, try reinstalling latest
+  //       version of 'yo' or use '--ignore-version-check' option"
+  //    The "yeoman-environment" package name is hardcoded in that template, so
+  //    the "requires yeoman-environment" substring is stable across generator
+  //    versions; only the version numbers vary.
+  //    NOTE for future multi-version support: if we ever ship more than two
+  //    runtimes, we could parse the required version out of this message and
+  //    jump straight to the matching env instead of probing v3 first.
+  //
+  // 2. "object is not extensible" - not a yeoman-specific string. It surfaces
+  //    when an ESM generator is instantiated on the v3 environment: v3 tries to
+  //    write a "resolved" property onto the generator module's frozen ESM
+  //    namespace object, which throws. This is an ESM/CJS incompatibility, not
+  //    a version guard.
   private isV3RuntimeIncompatibilityError(error: unknown): boolean {
     const message = (error as Error)?.message ?? "";
     return (
@@ -189,6 +210,22 @@ class EnvUtil {
 
     this.unloadGeneratorModules(genNamespace);
     let v3EnvGen: EnvGen | undefined;
+    // Try the LOWER runtime (yeoman-environment v3) first. A generator composes
+    // sub-generators onto the same environment it runs on, so the whole tree has
+    // to share one runtime; probing the lowest supported version first finds the
+    // lowest runtime that every generator in the composition can run on.
+    //
+    // Concrete example: @sap/fiori:adp composes @bas-dev/generator-extensibility-sub.
+    // The sub-generator needs a yeoman-environment v3-only feature and breaks on
+    // v6. Both instantiate on v3, so probing v3 first keeps the whole run on v3
+    // and the composition succeeds. If we probed v6 first, adp would run on v6
+    // and the sub-generator would fail at writing() time - and because prompts
+    // are already spent by then, an in-run retry on v3 is not possible.
+    //
+    // A generator that genuinely needs v6 (v7/v8 base, or ESM) cannot instantiate
+    // on v3 and throws a runtime-incompatibility signal here, so we fall back to
+    // v6 below. env.create() only constructs the generator (no prompting), so the
+    // extra v3 probe is cheap and never double-prompts.
     try {
       v3EnvGen = this.createLegacyV3EnvAndGen(
         genNamespace,

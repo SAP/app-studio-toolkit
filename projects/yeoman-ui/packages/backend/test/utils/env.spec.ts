@@ -14,63 +14,88 @@ const require = createRequire(import.meta.url);
 
 const FIXTURES = resolve(__dirname, "../fixtures");
 
-const envV6Fixture = {
-  namespace: "env-v6-fixture:app",
-  packagePath: resolve(FIXTURES, "generator-env-v6-fixture"),
-  resolved: resolve(
-    FIXTURES,
-    "generator-env-v6-fixture/generators/app/index.js"
-  ),
+type Fixture = { namespace: string; packagePath: string; resolved: string };
+
+const standaloneGenV8Fixture: Fixture = {
+  namespace: "standalone-gen-v8:app",
+  packagePath: resolve(FIXTURES, "standalone/gen-v8"),
+  resolved: resolve(FIXTURES, "standalone/gen-v8/generators/app/index.js"),
 };
 
-const composeTopFixture = {
-  namespace: "compose-top:app",
-  packagePath: resolve(FIXTURES, "generator-compose-top"),
-  resolved: resolve(FIXTURES, "generator-compose-top/generators/app/index.js"),
+// The real compose regression scenarios, discovered from the
+// fixtures/compose/{positive,negative}/<name>/top package layout (see the
+// README there). Each scenario's `top` generator composes its sibling `sub`.
+// The table drives the data-generated tests below: every scenario asserts the
+// runtime it lands on, whether the composed sub ran, and (for negatives) the
+// substring the surfaced error must contain
+type ComposeScenario = {
+  name: string;
+  outcome: "positive" | "negative";
+  // The yeoman-environment major the whole composition should route to
+  runtime: 3 | 6;
+  // Whether the composed sub-generator's writing phase is expected to complete
+  subRan: boolean;
+  // For negatives, a substring the surfaced error message must contain
+  errorContains?: string;
+  // Human-readable description of what the scenario proves
+  it: string;
+  fixture: Fixture;
 };
 
-const composeV6TopFixture = {
-  namespace: "compose-v6-top:app",
-  packagePath: resolve(FIXTURES, "generator-compose-v6-top"),
-  resolved: resolve(
-    FIXTURES,
-    "generator-compose-v6-top/generators/app/index.js"
-  ),
-};
+function composeScenario(
+  outcome: "positive" | "negative",
+  name: string,
+  expected: {
+    runtime: 3 | 6;
+    subRan: boolean;
+    errorContains?: string;
+    it: string;
+  }
+): ComposeScenario {
+  const dir = `compose/${outcome}/${name}/top`;
+  return {
+    name,
+    outcome,
+    ...expected,
+    fixture: {
+      namespace: `${name}:app`,
+      packagePath: resolve(FIXTURES, dir),
+      resolved: resolve(FIXTURES, dir, "generators/app/index.js"),
+    },
+  };
+}
 
-const composeV6TopV3SubFixture = {
-  namespace: "compose-v6-top-v3sub:app",
-  packagePath: resolve(FIXTURES, "generator-compose-v6-top-v3sub"),
-  resolved: resolve(
-    FIXTURES,
-    "generator-compose-v6-top-v3sub/generators/app/index.js"
-  ),
-};
-
-const composeV3TopV6SubFixture = {
-  namespace: "compose-v3-top-v6sub:app",
-  packagePath: resolve(FIXTURES, "generator-compose-v3-top-v6sub"),
-  resolved: resolve(
-    FIXTURES,
-    "generator-compose-v3-top-v6sub/generators/app/index.js"
-  ),
-};
-
-const composeTopFailingFixture = {
-  namespace: "compose-top-failing:app",
-  packagePath: resolve(FIXTURES, "generator-compose-top-failing"),
-  resolved: resolve(
-    FIXTURES,
-    "generator-compose-top-failing/generators/app/index.js"
-  ),
-};
-
-/** Build a LookupGeneratorMeta the way env.ts consumes it. */
-function metaFor(fixture: {
-  namespace: string;
-  packagePath: string;
-  resolved: string;
-}): LookupGeneratorMeta {
+const COMPOSE_SCENARIOS: ComposeScenario[] = [
+  composeScenario("positive", "top-gen-v5-sub-gen-v5", {
+    runtime: 3,
+    subRan: true,
+    it: "routes a legacy (v5) top generator to v3 and runs its composed v5 sub-generator to completion",
+  }),
+  composeScenario("positive", "top-gen-v8-sub-gen-v8", {
+    runtime: 6,
+    subRan: true,
+    it: "routes a modern (v8) top generator to v6 and runs its composed v8 sub-generator to completion",
+  }),
+  composeScenario("negative", "top-gen-v8-sub-gen-v3-only", {
+    runtime: 6,
+    subRan: false,
+    errorContains: "necessary feature",
+    it: "surfaces the sub-generator error when a modern (v8) top composes a v3-only sub-generator on v6",
+  }),
+  composeScenario("negative", "top-gen-v3-sub-gen-v8-only", {
+    runtime: 3,
+    subRan: false,
+    errorContains: "requires yeoman-environment",
+    it: "surfaces the sub-generator error when a legacy (v3) top composes a v8-only sub-generator on v3",
+  }),
+  composeScenario("negative", "top-gen-v5-sub-throws", {
+    runtime: 3,
+    subRan: false,
+    errorContains: "blew up on purpose",
+    it: "surfaces a composed sub-generator's own writing-phase error",
+  }),
+]; /** Build a LookupGeneratorMeta the way env.ts consumes it. */
+function metaFor(fixture: Fixture): LookupGeneratorMeta {
   return {
     namespace: fixture.namespace,
     packagePath: fixture.packagePath,
@@ -98,7 +123,9 @@ describe("Env.createRunGen()", () => {
   beforeEach(() => {
     sandbox = createSandbox();
     // createRunGen resolves metadata + reloads modules; keep those inert
-    sandbox.stub(Env as any, "getGenMetadata").resolves(metaFor(envV6Fixture));
+    sandbox
+      .stub(Env as any, "getGenMetadata")
+      .resolves(metaFor(standaloneGenV8Fixture));
     sandbox.stub(Env as any, "unloadGeneratorModules");
   });
 
@@ -133,7 +160,7 @@ describe("Env.createRunGen()", () => {
 
     const prepare = sandbox.stub();
     await Env.createRunGen(
-      envV6Fixture.namespace,
+      standaloneGenV8Fixture.namespace,
       { silent: true },
       fakeAdapter(),
       prepare
@@ -157,7 +184,7 @@ describe("Env.createRunGen()", () => {
 
     const resetSignal = sandbox.stub();
     await Env.createRunGen(
-      envV6Fixture.namespace,
+      standaloneGenV8Fixture.namespace,
       { silent: true },
       { resetSignal },
       sandbox.stub()
@@ -180,7 +207,7 @@ describe("Env.createRunGen()", () => {
 
     const prepare = sandbox.stub();
     await Env.createRunGen(
-      envV6Fixture.namespace,
+      standaloneGenV8Fixture.namespace,
       { silent: true },
       fakeAdapter(),
       prepare
@@ -202,7 +229,7 @@ describe("Env.createRunGen()", () => {
     let thrown: any;
     try {
       await Env.createRunGen(
-        envV6Fixture.namespace,
+        standaloneGenV8Fixture.namespace,
         { silent: true },
         fakeAdapter(),
         sandbox.stub()
@@ -224,7 +251,7 @@ describe("Env.createRunGen()", () => {
     let thrown: any;
     try {
       await Env.createRunGen(
-        envV6Fixture.namespace,
+        standaloneGenV8Fixture.namespace,
         { silent: true },
         fakeAdapter(),
         sandbox.stub()
@@ -257,7 +284,7 @@ describe("Env.createRunGen()", () => {
     let thrown: any;
     try {
       await Env.createRunGen(
-        envV6Fixture.namespace,
+        standaloneGenV8Fixture.namespace,
         { silent: true },
         fakeAdapter(),
         sandbox.stub()
@@ -285,7 +312,7 @@ describe("Env.createRunGen()", () => {
 
     const prepare = sandbox.stub();
     await Env.createRunGen(
-      envV6Fixture.namespace,
+      standaloneGenV8Fixture.namespace,
       { silent: true },
       fakeAdapter(),
       prepare
@@ -340,20 +367,21 @@ describe("Env.createRunGen() - real compose regression", () => {
     };
   }
 
-  // Run a fixture through createRunGen and report the runtime + outcome
-  async function runFixture(fixture: {
-    namespace: string;
-    packagePath: string;
-    resolved: string;
-  }): Promise<{ envVersion?: string; subRan: boolean; error?: Error }> {
-    sandbox.stub(Env as any, "getGenMetadata").resolves(metaFor(fixture));
+  // Run a scenario's top generator through createRunGen and report the runtime
+  // it landed on + whether the composed sub ran + any surfaced error.
+  async function runScenario(
+    scenario: ComposeScenario
+  ): Promise<{ envVersion?: string; subRan: boolean; error?: Error }> {
+    sandbox
+      .stub(Env as any, "getGenMetadata")
+      .resolves(metaFor(scenario.fixture));
 
     const marker = { subRan: false };
     let capturedEnv: any;
     let error: Error | undefined;
     try {
       await Env.createRunGen(
-        fixture.namespace,
+        scenario.fixture.namespace,
         { silent: true, composeMarker: marker },
         makeAdapter(),
         (env: any): void => {
@@ -371,89 +399,39 @@ describe("Env.createRunGen() - real compose regression", () => {
     };
   }
 
-  it("routes a legacy top generator to v3 and runs its composed sub-generator to completion", async () => {
-    const v6Create = sandbox.spy(Env as any, "createV6EnvAndGen");
-    const { envVersion, subRan, error } = await runFixture(composeTopFixture);
+  for (const scenario of COMPOSE_SCENARIOS) {
+    it(scenario.it, async () => {
+      const v6Create = sandbox.spy(Env as any, "createV6EnvAndGen");
+      const { envVersion, subRan, error } = await runScenario(scenario);
 
-    expect(error, "the legacy v3 compose runs without error").to.equal(
-      undefined
-    );
-    expect(
-      envVersion,
-      "the top generator ran on the yeoman-environment v3 runtime"
-    ).to.match(/^3\./);
-    expect(
-      subRan,
-      "the composed sub-generator's writing phase actually ran"
-    ).to.equal(true);
-    expect(
-      v6Create.called,
-      "a legacy generator does not touch the v6 runtime"
-    ).to.equal(false);
-  });
+      expect(
+        envVersion,
+        `the composition ran on the yeoman-environment v${scenario.runtime} runtime`
+      ).to.match(new RegExp(`^${scenario.runtime}\\.`));
 
-  it("routes a modern top generator to v6 and runs its composed v6 sub-generator to completion", async () => {
-    const { envVersion, subRan, error } = await runFixture(composeV6TopFixture);
+      expect(
+        v6Create.called,
+        scenario.runtime === 6
+          ? "a modern composition is created on the v6 runtime"
+          : "a legacy composition does not touch the v6 runtime"
+      ).to.equal(scenario.runtime === 6);
 
-    expect(error, "the v6→v6 compose runs without error").to.equal(undefined);
-    expect(
-      envVersion,
-      "the top generator ran on the yeoman-environment v6 runtime"
-    ).to.match(/^6\./);
-    expect(
-      subRan,
-      "the composed v6 sub-generator's writing phase actually ran"
-    ).to.equal(true);
-  });
+      expect(
+        subRan,
+        scenario.subRan
+          ? "the composed sub-generator's writing phase actually ran"
+          : "the composed sub-generator did not complete"
+      ).to.equal(scenario.subRan);
 
-  it("surfaces the sub-generator error when a v6 generator composes a v3-only sub-generator", async () => {
-    const { envVersion, subRan, error } = await runFixture(
-      composeV6TopV3SubFixture
-    );
-
-    expect(
-      envVersion,
-      "the modern top generator ran on the v6 runtime"
-    ).to.match(/^6\./);
-    expect(subRan, "the v3-only sub-generator did not complete").to.equal(
-      false
-    );
-    expect(error, "the run fails").to.be.instanceOf(Error);
-    expect(
-      error?.message,
-      "the v3-only feature error surfaces (matches the real @sap/fiori:adp regression)"
-    ).to.contain("necessary feature");
-  });
-
-  it("surfaces the sub-generator error when a v3 generator composes a v6-only sub-generator", async () => {
-    const { envVersion, subRan, error } = await runFixture(
-      composeV3TopV6SubFixture
-    );
-
-    expect(
-      envVersion,
-      "the legacy top generator ran on the v3 runtime"
-    ).to.match(/^3\./);
-    expect(subRan, "the v6-only sub-generator did not complete").to.equal(
-      false
-    );
-    expect(error, "the run fails").to.be.instanceOf(Error);
-    expect(
-      error?.message,
-      "the v6-only sub-generator's version guard surfaces"
-    ).to.contain("requires yeoman-environment");
-  });
-
-  it("surfaces a composed sub-generator's own writing-phase error", async () => {
-    const { subRan, error } = await runFixture(composeTopFailingFixture);
-
-    expect(subRan, "the failing sub-generator did not complete").to.equal(
-      false
-    );
-    expect(error, "the run fails").to.be.instanceOf(Error);
-    expect(
-      error?.message,
-      "the sub-generator's writing() error surfaces to the caller"
-    ).to.contain("blew up on purpose");
-  });
+      if (scenario.outcome === "positive") {
+        expect(error, "the composition runs without error").to.equal(undefined);
+      } else {
+        expect(error, "the run fails").to.be.instanceOf(Error);
+        expect(
+          error?.message,
+          `the surfaced error contains "${scenario.errorContains}"`
+        ).to.contain(scenario.errorContains);
+      }
+    });
+  }
 });
