@@ -62,7 +62,9 @@ export class VSCodeYouiEvents implements YouiEvents {
   private webviewPanel: WebviewPanel;
   private readonly messages: any;
   private resolveFunc: (() => void) | undefined;
-  private progressReporter: vscode.Progress<{ message?: string; increment?: number }> | null = null;
+  private progressReporter: {
+    report(value: { message?: string; increment?: number }): void;
+  } | null = null;
   private currentProjectName: string | undefined;
   public output: GeneratorOutput;
   private readonly logger: IChildLogger;
@@ -100,7 +102,9 @@ export class VSCodeYouiEvents implements YouiEvents {
   ): Thenable<any> {
     // Show "Finalising..." before closing
     if (this.progressReporter) {
-      this.progressReporter.report({ message: this.messages.progress_finalising });
+      this.progressReporter.report({
+        message: this.messages.progress_finalising,
+      });
     }
 
     this.resolveInstallingProgress();
@@ -116,14 +120,17 @@ export class VSCodeYouiEvents implements YouiEvents {
     );
   }
 
-  public async doGeneratorProgress(
+  public doGeneratorProgress(
     projectName: string | undefined,
     phase: "writing" | "install" | "end",
     showProgress: boolean = false
-  ): Promise<void> {
+  ): void {
     // Check VS Code setting (default: true)
     const config = vscode.workspace.getConfiguration();
-    const settingEnabled = config.get<boolean>("ApplicationWizard.showGeneratorProgress", true);
+    const settingEnabled = config.get<boolean>(
+      "ApplicationWizard.showGeneratorProgress",
+      true
+    );
 
     // Only show if both the setting is enabled AND the generator opts in
     if (!settingEnabled || !showProgress) {
@@ -245,7 +252,7 @@ export class VSCodeYouiEvents implements YouiEvents {
         progress.report({ message: initialMessage });
 
         // Keep the notification open until generation completes
-        await new Promise((resolve) => {
+        await new Promise<void>((resolve) => {
           this.resolveFunc = resolve;
         });
 

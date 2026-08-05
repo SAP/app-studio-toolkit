@@ -12,7 +12,7 @@ export interface YouiEvents {
     projectName: string | undefined,
     phase: "writing" | "install" | "end",
     showProgress?: boolean
-  ): Promise<void>;
+  ): void;
   showProgress(message?: string): void;
   getAppWizard(): AppWizard;
   executeCommand(id: string, ...args: any[]): Thenable<any>;

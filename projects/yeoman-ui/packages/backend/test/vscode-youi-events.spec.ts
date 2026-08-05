@@ -259,7 +259,7 @@ describe("vscode-youi-events unit test", () => {
   });
 
   describe("doGeneratorProgress", () => {
-    it("writing phase - initializes notification with project name", async () => {
+    it("writing phase - initializes notification with project name", () => {
       const projectName = "testProject";
       lodash.set(vscode, "ProgressLocation.Notification", 15);
       eventsMock.expects("doClose");
@@ -278,10 +278,10 @@ describe("vscode-youi-events unit test", () => {
           cancellable: false,
         })
         .resolves();
-      await events.doGeneratorProgress(projectName, "writing", true);
+      events.doGeneratorProgress(projectName, "writing", true);
     });
 
-    it("writing phase - uses default title when no project name", async () => {
+    it("writing phase - uses default title when no project name", () => {
       lodash.set(vscode, "ProgressLocation.Notification", 15);
       eventsMock.expects("doClose");
       // Stub getConfiguration to enable progress notification
@@ -299,10 +299,10 @@ describe("vscode-youi-events unit test", () => {
           cancellable: false,
         })
         .resolves();
-      await events.doGeneratorProgress(undefined, "writing", true);
+      events.doGeneratorProgress(undefined, "writing", true);
     });
 
-    it("install phase - updates progress message", async () => {
+    it("install phase - updates progress message", () => {
       // Stub getConfiguration to enable progress notification
       sandbox.stub(vscode.workspace, "getConfiguration").returns({
         get: sandbox
@@ -315,7 +315,7 @@ describe("vscode-youi-events unit test", () => {
       };
       events["progressReporter"] = mockProgressReporter;
 
-      await events.doGeneratorProgress("testProject", "install", true);
+      events.doGeneratorProgress("testProject", "install", true);
 
       // Should be called with the install message after delay
       expect(mockProgressReporter.report.called).to.be.true;
@@ -326,7 +326,7 @@ describe("vscode-youi-events unit test", () => {
       events["progressReporter"] = null;
     });
 
-    it("end phase - updates progress message", async () => {
+    it("end phase - updates progress message", () => {
       // Stub getConfiguration to enable progress notification
       sandbox.stub(vscode.workspace, "getConfiguration").returns({
         get: sandbox
@@ -339,7 +339,7 @@ describe("vscode-youi-events unit test", () => {
       };
       events["progressReporter"] = mockProgressReporter;
 
-      await events.doGeneratorProgress("testProject", "end", true);
+      events.doGeneratorProgress("testProject", "end", true);
 
       // Should be called with the end message
       expect(mockProgressReporter.report.called).to.be.true;
@@ -350,7 +350,7 @@ describe("vscode-youi-events unit test", () => {
       events["progressReporter"] = null;
     });
 
-    it("install/end phases - does nothing when progressReporter is null", async () => {
+    it("install/end phases - does nothing when progressReporter is null", () => {
       // Stub getConfiguration to enable progress notification
       sandbox.stub(vscode.workspace, "getConfiguration").returns({
         get: sandbox
@@ -361,11 +361,11 @@ describe("vscode-youi-events unit test", () => {
       events["progressReporter"] = null;
 
       // Should not throw when progressReporter is null
-      await events.doGeneratorProgress("testProject", "install", true);
-      await events.doGeneratorProgress("testProject", "end", true);
+      events.doGeneratorProgress("testProject", "install", true);
+      events.doGeneratorProgress("testProject", "end", true);
     });
 
-    it("phases fire in correct order without race condition", async () => {
+    it("phases fire in correct order without race condition", () => {
       // Stub getConfiguration to enable progress notification
       sandbox.stub(vscode.workspace, "getConfiguration").returns({
         get: sandbox
@@ -398,12 +398,12 @@ describe("vscode-youi-events unit test", () => {
         });
 
       // Fire writing phase (creates progress notification)
-      await events.doGeneratorProgress("testProject", "writing", true);
+      events.doGeneratorProgress("testProject", "writing", true);
 
       // Simulate rapid install and end phases (as yeoman emits them)
       events["progressReporter"] = mockProgressReporter;
-      await events.doGeneratorProgress("testProject", "install", true);
-      await events.doGeneratorProgress("testProject", "end", true);
+      events.doGeneratorProgress("testProject", "install", true);
+      events.doGeneratorProgress("testProject", "end", true);
 
       // Verify messages appear in correct order
       expect(reportCalls).to.have.lengthOf(3);
