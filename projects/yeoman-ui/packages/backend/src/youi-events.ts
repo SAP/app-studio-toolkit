@@ -8,10 +8,11 @@ export interface YouiEvents {
     type: string,
     targetFolderPath?: string
   ): Thenable<any>;
-  doGeneratorInstall(projectName?: string): void;
+  doGeneratorInstall(projectName?: string, showProgress?: boolean): void;
   doGeneratorProgress(
     projectName: string | undefined,
-    phase: "writing" | "install" | "end"
+    phase: "writing" | "install" | "end",
+    showProgress?: boolean
   ): Promise<void>;
   showProgress(message?: string): void;
   getAppWizard(): AppWizard;

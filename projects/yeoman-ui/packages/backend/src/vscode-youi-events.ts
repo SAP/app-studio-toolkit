@@ -100,7 +100,7 @@ export class VSCodeYouiEvents implements YouiEvents {
   ): Thenable<any> {
     // Show "Finalising..." before closing
     if (this.progressReporter) {
-      this.progressReporter.report({ message: "Finalising..." });
+      this.progressReporter.report({ message: this.messages.progress_finalising });
     }
 
     this.resolveInstallingProgress();
@@ -116,20 +116,39 @@ export class VSCodeYouiEvents implements YouiEvents {
     );
   }
 
-  public doGeneratorInstall(projectName?: string): void {
+  public doGeneratorInstall(projectName?: string, showProgress: boolean = false): void {
+    // Check VS Code setting (default: true)
+    const config = vscode.workspace.getConfiguration();
+    const settingEnabled = config.get<boolean>("ApplicationWizard.showGeneratorProgress", true);
+
+    // Only show if both the setting is enabled AND the generator opts in
+    if (!settingEnabled || !showProgress) {
+      return; // Don't show progress notification if disabled or not opted in
+    }
+
     this.doClose();
     this.showInstallMessage(projectName);
   }
 
   public async doGeneratorProgress(
     projectName: string | undefined,
-    phase: "writing" | "install" | "end"
+    phase: "writing" | "install" | "end",
+    showProgress: boolean = false
   ): Promise<void> {
-    // Map phases to user-friendly messages
+    // Check VS Code setting (default: true)
+    const config = vscode.workspace.getConfiguration();
+    const settingEnabled = config.get<boolean>("ApplicationWizard.showGeneratorProgress", true);
+
+    // Only show if both the setting is enabled AND the generator opts in
+    if (!settingEnabled || !showProgress) {
+      return; // Don't show progress notification if disabled or not opted in
+    }
+
+    // Map phases to localized messages
     const phaseMessages = {
-      writing: "Creating project files...",
-      install: "Installing dependencies...",
-      end: "Finalising...",
+      writing: this.messages.progress_writing_files,
+      install: this.messages.progress_installing,
+      end: this.messages.progress_finalising,
     };
 
     const message = phaseMessages[phase];
@@ -229,7 +248,7 @@ export class VSCodeYouiEvents implements YouiEvents {
 
   private showInstallMessage(
     projectName?: string,
-    initialMessage: string = "Preparing..."
+    initialMessage: string = this.messages.progress_preparing
   ): void {
     // Store project name for later use in success message
     this.currentProjectName = projectName;
