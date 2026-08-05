@@ -246,6 +246,24 @@ describe("vscode-youi-events unit test", () => {
         ]);
       appWizard.showInformation(message, MessageType.prompt);
     });
+
+    it("setHeaderTitle via AppWizard", () => {
+      const appWizard = events.getAppWizard();
+      rpcMock
+        .expects("invoke")
+        .withExactArgs("setHeaderTitle", ["Test Title", "Test Info"]);
+      appWizard.setHeaderTitle("Test Title", "Test Info");
+    });
+
+    it("setBanner via AppWizard", () => {
+      const appWizard = events.getAppWizard();
+      const bannerProps: IBannerProps = {
+        text: "Test Banner",
+        ariaLabel: "Test Label",
+      };
+      rpcMock.expects("invoke").withExactArgs("setBanner", [bannerProps]);
+      appWizard.setBanner(bannerProps);
+    });
   });
 
   it("executeCommand", () => {
@@ -365,6 +383,70 @@ describe("vscode-youi-events unit test", () => {
       events.doGeneratorProgress("testProject", "end", true);
     });
 
+    it("does nothing when setting is disabled", () => {
+      // Stub getConfiguration to return false
+      sandbox.stub(vscode.workspace, "getConfiguration").returns({
+        get: sandbox
+          .stub()
+          .withArgs("ApplicationWizard.showGeneratorProgress", true)
+          .returns(false),
+      } as any);
+
+      // Should not call doClose or showInstallMessage
+      eventsMock.expects("doClose").never();
+      windowMock.expects("withProgress").never();
+
+      events.doGeneratorProgress("testProject", "writing", true);
+      events.doGeneratorProgress("testProject", "install", true);
+      events.doGeneratorProgress("testProject", "end", true);
+    });
+
+    it("does nothing when showProgress parameter is false", () => {
+      // Even if setting is enabled, showProgress=false should skip everything
+      sandbox.stub(vscode.workspace, "getConfiguration").returns({
+        get: sandbox
+          .stub()
+          .withArgs("ApplicationWizard.showGeneratorProgress", true)
+          .returns(true),
+      } as any);
+
+      // Should not call doClose or showInstallMessage
+      eventsMock.expects("doClose").never();
+      windowMock.expects("withProgress").never();
+
+      events.doGeneratorProgress("testProject", "writing", false);
+      events.doGeneratorProgress("testProject", "install", false);
+      events.doGeneratorProgress("testProject", "end", false);
+    });
+
+    it("writing phase with existing progressReporter - does not call doClose", () => {
+      // Stub getConfiguration to enable progress notification
+      sandbox.stub(vscode.workspace, "getConfiguration").returns({
+        get: sandbox
+          .stub()
+          .withArgs("ApplicationWizard.showGeneratorProgress", true)
+          .returns(true),
+      } as any);
+
+      const mockProgressReporter = {
+        report: sandbox.stub(),
+      };
+      events["progressReporter"] = mockProgressReporter;
+
+      // Should not call doClose when progressReporter already exists
+      eventsMock.expects("doClose").never();
+
+      events.doGeneratorProgress("testProject", "writing", true);
+
+      // Should update the progress reporter
+      expect(mockProgressReporter.report.called).to.be.true;
+      expect(mockProgressReporter.report.firstCall.args[0]).to.deep.equal({
+        message: messages.default.progress_writing_files,
+      });
+
+      events["progressReporter"] = null;
+    });
+
     it("phases fire in correct order without race condition", () => {
       // Stub getConfiguration to enable progress notification
       sandbox.stub(vscode.workspace, "getConfiguration").returns({
@@ -412,6 +494,44 @@ describe("vscode-youi-events unit test", () => {
       expect(reportCalls[2]).to.equal(messages.default.progress_finalising);
 
       events["progressReporter"] = null;
+    });
+
+    it("resolves progress notification properly when generation completes", async () => {
+      // Stub getConfiguration
+      sandbox.stub(vscode.workspace, "getConfiguration").returns({
+        get: sandbox
+          .stub()
+          .withArgs("ApplicationWizard.showGeneratorProgress", true)
+          .returns(true),
+      } as any);
+
+      // Stub WorkspaceFile methods
+      sandbox
+        .stub(WorkspaceFile, "createWsWithPath")
+        .returns(vscode.Uri.file("mocked"));
+
+      windowMock
+        .expects("withProgress")
+        .callsFake((_options: any, callback: any) => {
+          return callback({
+            report: sandbox.stub(),
+          });
+        });
+
+      // Start progress notification
+      events.doGeneratorProgress("testProject", "writing", true);
+
+      // Verify resolveFunc was set
+      expect(events["resolveFunc"]).to.not.be.undefined;
+
+      // Call resolveInstallingProgress (simulating doGeneratorDone)
+      events["resolveInstallingProgress"]();
+
+      // Wait a tick for the promise to resolve
+      await new Promise((resolve) => setTimeout(resolve, 10));
+
+      // progressReporter should be cleaned up after resolution
+      expect(events["progressReporter"]).to.be.null;
     });
   });
 
@@ -801,6 +921,36 @@ describe("vscode-youi-events unit test", () => {
         createAndClose,
         "files"
       );
+    });
+
+    it("shows finalising message when progressReporter is active", async () => {
+      // Set up a mock progress reporter
+      const mockProgressReporter = {
+        report: sandbox.stub(),
+      };
+      events["progressReporter"] = mockProgressReporter;
+
+      eventsMock.expects("doClose");
+      windowMock
+        .expects("showInformationMessage")
+        .withExactArgs(messages.default.artifact_generated_files)
+        .resolves();
+
+      await events.doGeneratorDone(
+        true,
+        "success message",
+        createAndClose,
+        "files",
+        null
+      );
+
+      // Verify progressReporter.report was called with finalising message
+      expect(mockProgressReporter.report.called).to.be.true;
+      expect(mockProgressReporter.report.firstCall.args[0]).to.deep.equal({
+        message: messages.default.progress_finalising,
+      });
+
+      events["progressReporter"] = null;
     });
 
     describe("with project name in notification", () => {
