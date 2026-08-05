@@ -175,8 +175,7 @@ describe("yeoman-generator × yeoman-environment compatibility matrix", () => {
     for (const { label: genLabel, pkg } of GENERATOR_MAJORS) {
       for (const env of ENVIRONMENTS) {
         for (const moduleType of MODULE_TYPES) {
-          it(`generator ${genLabel} (${moduleType.label}) on ${env.label}`, async function () {
-            this.timeout(15000);
+          it(`generator ${genLabel} (${moduleType.label}) on ${env.label}`, async () => {
             const { resolved, packagePath } = makeGenerator(
               pkg,
               moduleType.type

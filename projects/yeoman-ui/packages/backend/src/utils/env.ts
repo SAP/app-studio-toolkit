@@ -24,6 +24,11 @@ export type EnvGen = {
   gen: any;
 };
 
+export type PrepareEnvGen = (
+  env: Environment,
+  gen: any
+) => void | Promise<void>;
+
 export type GeneratorData = {
   generatorMeta: LookupGeneratorMeta;
   generatorPackageJson: any;
@@ -57,9 +62,38 @@ class EnvUtil {
 
   public isEnvIncompatibilityError(error: unknown): boolean {
     return (
-      (error as Error)?.message?.startsWith(
+      (error as Error)?.message?.includes(
         Constants.ENV_INCOMPATIBILITY_MESSAGE_PREFIX
       ) ?? false
+    );
+  }
+
+  // A generator that fails to instantiate on the legacy yeoman-environment v3
+  // runtime for one of these two reasons actually needs the modern (v6) runtime,
+  // so createRunGen falls back to v6 when it sees either signal:
+  //
+  // 1. "requires yeoman-environment" - yeoman-generator v7+ ships an explicit
+  //    version guard that throws before construction, e.g.:
+  //      "This generator (foo:app) requires yeoman-environment at least
+  //       4.0.0-rc.0, current version is 3.19.3, try reinstalling latest
+  //       version of 'yo' or use '--ignore-version-check' option"
+  //    The "yeoman-environment" package name is hardcoded in that template, so
+  //    the "requires yeoman-environment" substring is stable across generator
+  //    versions; only the version numbers vary.
+  //    NOTE for future multi-version support: if we ever ship more than two
+  //    runtimes, we could parse the required version out of this message and
+  //    jump straight to the matching env instead of probing v3 first.
+  //
+  // 2. "object is not extensible" - not a yeoman-specific string. It surfaces
+  //    when an ESM generator is instantiated on the v3 environment: v3 tries to
+  //    write a "resolved" property onto the generator module's frozen ESM
+  //    namespace object, which throws. This is an ESM/CJS incompatibility, not
+  //    a version guard.
+  private isV3RuntimeIncompatibilityError(error: unknown): boolean {
+    const message = (error as Error)?.message ?? "";
+    return (
+      message.includes("requires yeoman-environment") ||
+      message.includes("object is not extensible")
     );
   }
 
@@ -166,67 +200,105 @@ class EnvUtil {
     return _.map(gensMeta, (genMeta) => genMeta.namespace);
   }
 
-  public async createEnvAndGen(
+  public async createRunGen(
     genNamespace: string,
+    options: any,
+    adapter: any,
+    prepare: PrepareEnvGen
+  ): Promise<void> {
+    const meta: LookupGeneratorMeta = await this.getGenMetadata(genNamespace);
+
+    this.unloadGeneratorModules(genNamespace);
+    let v3EnvGen: EnvGen | undefined;
+    // Try the LOWER runtime (yeoman-environment v3) first. A generator composes
+    // sub-generators onto the same environment it runs on, so the whole tree has
+    // to share one runtime; probing the lowest supported version first finds the
+    // lowest runtime that every generator in the composition can run on.
+    //
+    // Concrete example: @sap/fiori:adp composes @bas-dev/generator-extensibility-sub.
+    // The sub-generator needs a yeoman-environment v3-only feature and breaks on
+    // v6. Both instantiate on v3, so probing v3 first keeps the whole run on v3
+    // and the composition succeeds. If we probed v6 first, adp would run on v6
+    // and the sub-generator would fail at writing() time - and because prompts
+    // are already spent by then, an in-run retry on v3 is not possible.
+    //
+    // A generator that genuinely needs v6 (v7/v8 base, or ESM) cannot instantiate
+    // on v3 and throws a runtime-incompatibility signal here, so we fall back to
+    // v6 below. env.create() only constructs the generator (no prompting), so the
+    // extra v3 probe is cheap and never double-prompts.
+    try {
+      v3EnvGen = this.createLegacyV3EnvAndGen(
+        genNamespace,
+        meta,
+        options,
+        adapter
+      );
+    } catch (v3CreateError) {
+      if (this.isV3RuntimeIncompatibilityError(v3CreateError)) {
+        this.logger?.info(
+          `generator ${genNamespace} needs yeoman-environment v6; instantiation on v3 was rejected`,
+          { error: (v3CreateError as Error)?.message }
+        );
+      } else {
+        this.logger?.debug(
+          `generator ${genNamespace} failed to instantiate on yeoman-environment v3; surfacing the error (not a v6-runtime signal)`,
+          { error: (v3CreateError as Error)?.message }
+        );
+        throw v3CreateError;
+      }
+    }
+
+    if (v3EnvGen) {
+      this.logger?.debug(
+        `routing generator ${genNamespace} to yeoman-environment v3`
+      );
+      await this.prepareAndRun(v3EnvGen.env, v3EnvGen.gen, adapter, prepare);
+      return;
+    }
+
+    this.logger?.debug(
+      `routing generator ${genNamespace} to yeoman-environment v6`
+    );
+    this.unloadGeneratorModules(genNamespace);
+    const { env, gen } = await this.createV6EnvAndGen(
+      genNamespace,
+      meta,
+      options,
+      adapter
+    );
+    await this.prepareAndRun(env, gen, adapter, prepare);
+  }
+
+  private async prepareAndRun(
+    env: Environment,
+    gen: any,
+    adapter: any,
+    prepare: PrepareEnvGen
+  ): Promise<void> {
+    adapter?.resetSignal?.();
+    await prepare(env, gen);
+    await env.runGenerator(gen);
+  }
+
+  private async createV6EnvAndGen(
+    genNamespace: string,
+    meta: LookupGeneratorMeta,
     options: any,
     adapter: any
   ): Promise<EnvGen> {
-    const meta: LookupGeneratorMeta = await this.getGenMetadata(genNamespace);
-    this.unloadGeneratorModules(genNamespace);
-
-    // v6 is the default runtime; retry with v3 only on an env-incompatibility error
-    this.logger?.debug(
-      `routing generator ${genNamespace} to default yeoman-environment v6`
+    const v6Env: Environment = this.createEnvInstance(
+      { sharedOptions: { forwardErrorToEnvironment: true } as any },
+      adapter
     );
 
-    try {
-      const v6Env: Environment = this.createEnvInstance(
-        { sharedOptions: { forwardErrorToEnvironment: true } as any },
-        adapter
-      );
+    v6Env.register(meta.resolved!, {
+      namespace: genNamespace,
+      packagePath: meta.packagePath,
+    });
 
-      v6Env.register(meta.resolved!, {
-        namespace: genNamespace,
-        packagePath: meta.packagePath,
-      });
+    const gen: any = await v6Env.create(genNamespace, { options } as any);
 
-      const gen: any = await v6Env.create(genNamespace, { options } as any);
-
-      return { env: v6Env, gen };
-    } catch (v6Error) {
-      const shouldFallbackToV3 = this.isEnvIncompatibilityError(v6Error);
-      if (!shouldFallbackToV3) {
-        this.logger?.debug(
-          `yeoman-environment v6 failed to create ${genNamespace}; rethrowing original generator error without v3 fallback`,
-          { error: (v6Error as Error)?.message }
-        );
-        throw v6Error;
-      }
-
-      this.logger?.info(
-        `yeoman-environment v6 rejected ${genNamespace} as incompatible; retrying with yeoman-environment v3`,
-        { error: (v6Error as Error)?.message }
-      );
-      try {
-        return this.createLegacyV3EnvAndGen(
-          genNamespace,
-          meta,
-          options,
-          adapter
-        );
-      } catch (v3Error) {
-        this.logger?.error(
-          `yeoman-environment v3 fallback failed for ${genNamespace}; throwing v3 error with v6 incompatibility attached`,
-          {
-            v6Error: (v6Error as Error)?.message,
-            v3Error: (v3Error as Error)?.message,
-          }
-        );
-
-        v3Error.v6Error = v6Error;
-        throw v3Error;
-      }
-    }
+    return { env: v6Env, gen };
   }
 
   private createLegacyV3EnvAndGen(
