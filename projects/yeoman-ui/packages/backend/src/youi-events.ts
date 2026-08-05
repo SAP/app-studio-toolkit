@@ -8,7 +8,6 @@ export interface YouiEvents {
     type: string,
     targetFolderPath?: string
   ): Thenable<any>;
-  doGeneratorInstall(projectName?: string, showProgress?: boolean): void;
   doGeneratorProgress(
     projectName: string | undefined,
     phase: "writing" | "install" | "end",

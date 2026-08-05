@@ -61,9 +61,9 @@ export class VSCodeYouiEvents implements YouiEvents {
   private readonly rpc: IRpc;
   private webviewPanel: WebviewPanel;
   private readonly messages: any;
-  private resolveFunc: any;
-  private progressReporter: any; // Store progress reporter to update it
-  private currentProjectName: string | undefined; // Store project name for success message
+  private resolveFunc: (() => void) | undefined;
+  private progressReporter: vscode.Progress<{ message?: string; increment?: number }> | null = null;
+  private currentProjectName: string | undefined;
   public output: GeneratorOutput;
   private readonly logger: IChildLogger;
   private readonly appWizard: AppWizard;
@@ -116,20 +116,6 @@ export class VSCodeYouiEvents implements YouiEvents {
     );
   }
 
-  public doGeneratorInstall(projectName?: string, showProgress: boolean = false): void {
-    // Check VS Code setting (default: true)
-    const config = vscode.workspace.getConfiguration();
-    const settingEnabled = config.get<boolean>("ApplicationWizard.showGeneratorProgress", true);
-
-    // Only show if both the setting is enabled AND the generator opts in
-    if (!settingEnabled || !showProgress) {
-      return; // Don't show progress notification if disabled or not opted in
-    }
-
-    this.doClose();
-    this.showInstallMessage(projectName);
-  }
-
   public async doGeneratorProgress(
     projectName: string | undefined,
     phase: "writing" | "install" | "end",
@@ -153,25 +139,14 @@ export class VSCodeYouiEvents implements YouiEvents {
 
     const message = phaseMessages[phase];
 
-    // If this is the first phase (writing), initialize the notification with the message
-    if (phase === "writing") {
+    // If this is the first phase (writing) AND no progress notification exists yet
+    if (phase === "writing" && !this.progressReporter) {
+      // Close the webview panel (showing the question form) before showing progress
       this.doClose();
       this.showInstallMessage(projectName, message);
-
-      // Wait for the progress reporter to be initialized
-      await new Promise((resolve) => setTimeout(resolve, 50));
-    } else {
-      if (this.progressReporter) {
-        // Artificial delay for "install" phase to ensure "Creating project files..." is visible for 2 seconds
-        if (phase === "install") {
-          await new Promise((resolve) => setTimeout(resolve, 2000));
-        }
-
-        // Give VS Code time to render the previous state before updating
-        await new Promise((resolve) => setTimeout(resolve, 10));
-        // Don't use increment to get a continuous spinner instead of a stuck progress bar
-        this.progressReporter.report({ message });
-      }
+    } else if (this.progressReporter) {
+      // Update existing progress reporter
+      this.progressReporter.report({ message });
     }
   }
 
