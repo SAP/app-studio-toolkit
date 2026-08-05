@@ -6,7 +6,7 @@ import { convertVsixFolder } from "./index";
 async function main(): Promise<void> {
   const program = new Command()
     .name("vsix-zst")
-    .description("Convert VSIX files from zip to tar.zstd")
+    .description("Repackage VSIX archives as Zstandard-compressed TAR files")
     .argument("<folder>", "folder containing .vsix files")
     .option("--keep", "keep original .vsix files")
     .parse(process.argv);
