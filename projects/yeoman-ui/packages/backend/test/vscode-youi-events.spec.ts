@@ -260,6 +260,11 @@ describe("vscode-youi-events unit test", () => {
       const bannerProps: IBannerProps = {
         text: "Test Banner",
         ariaLabel: "Test Label",
+        action: {
+          text: "Learn More",
+          url: "https://example.com",
+        },
+        triggerActionFrom: "link",
       };
       rpcMock.expects("invoke").withExactArgs("setBanner", [bannerProps]);
       appWizard.setBanner(bannerProps);
