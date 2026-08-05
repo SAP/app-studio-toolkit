@@ -447,7 +447,7 @@ describe("vscode-youi-events unit test", () => {
       events["progressReporter"] = null;
     });
 
-    it("phases fire in correct order without race condition", () => {
+    it("phases fire in correct order without race condition", async () => {
       // Stub getConfiguration to enable progress notification
       sandbox.stub(vscode.workspace, "getConfiguration").returns({
         get: sandbox
@@ -484,8 +484,14 @@ describe("vscode-youi-events unit test", () => {
 
       // Simulate rapid install and end phases (as yeoman emits them)
       events["progressReporter"] = mockProgressReporter;
+      events["currentPhase"] = "writing";
+      events["phaseStartTime"] = Date.now();
+
       events.doGeneratorProgress("testProject", "install", true);
       events.doGeneratorProgress("testProject", "end", true);
+
+      // Wait for all setTimeout delays to complete (2000ms for writing + 0ms for install + 1000ms for end)
+      await new Promise((resolve) => setTimeout(resolve, 3500));
 
       // Verify messages appear in correct order
       expect(reportCalls).to.have.lengthOf(3);

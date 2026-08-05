@@ -66,6 +66,8 @@ export class VSCodeYouiEvents implements YouiEvents {
     report(value: { message?: string; increment?: number }): void;
   } | null = null;
   private currentProjectName: string | undefined;
+  private phaseStartTime: number = 0;
+  private currentPhase: "writing" | "install" | "end" | null = null;
   public output: GeneratorOutput;
   private readonly logger: IChildLogger;
   private readonly appWizard: AppWizard;
@@ -144,16 +146,45 @@ export class VSCodeYouiEvents implements YouiEvents {
       end: this.messages.progress_finalising,
     };
 
+    // Minimum duration for each phase (milliseconds)
+    const MIN_DURATIONS = {
+      writing: 2000, // 2 seconds
+      install: 0, // No minimum - let npm install take as long as it needs
+      end: 1000, // 1 second
+    };
+
     const message = phaseMessages[phase];
 
     // If this is the first phase (writing) AND no progress notification exists yet
     if (phase === "writing" && !this.progressReporter) {
       // Close the webview panel (showing the question form) before showing progress
       this.doClose();
+      this.currentPhase = phase;
+      this.phaseStartTime = Date.now();
       this.showInstallMessage(projectName, message);
     } else if (this.progressReporter) {
-      // Update existing progress reporter
-      this.progressReporter.report({ message });
+      // Calculate time elapsed in current phase
+      const elapsed = Date.now() - this.phaseStartTime;
+      const minDuration = this.currentPhase
+        ? MIN_DURATIONS[this.currentPhase]
+        : 0;
+      const remainingTime = Math.max(0, minDuration - elapsed);
+
+      if (remainingTime > 0) {
+        // Wait for minimum duration before showing next phase
+        setTimeout(() => {
+          if (this.progressReporter) {
+            this.progressReporter.report({ message });
+            this.currentPhase = phase;
+            this.phaseStartTime = Date.now();
+          }
+        }, remainingTime);
+      } else {
+        // Minimum duration already elapsed, update immediately
+        this.progressReporter.report({ message });
+        this.currentPhase = phase;
+        this.phaseStartTime = Date.now();
+      }
     }
   }
 
