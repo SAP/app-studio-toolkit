@@ -1,7 +1,7 @@
 import { mkdir, readdir, writeFile } from "fs/promises";
 import { basename, join } from "path";
 import { expect } from "chai";
-import { convertVsix, convertVsixFolder } from "../src";
+import { convertVsix, convertVsixFolder } from "../src/converter";
 import { downloadVsix, THEMES_VSIX } from "./helpers/downloads";
 import { createTempTracker } from "./helpers/temp";
 

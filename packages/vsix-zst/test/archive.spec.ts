@@ -1,6 +1,6 @@
 import { join } from "path";
 import { expect } from "chai";
-import { convertVsix, convertVsixFolder } from "../src";
+import { convertVsix, convertVsixFolder } from "../src/converter";
 import { zipToTar } from "../src/tar";
 import { validateEntryName } from "../src/zip";
 import {

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { Command } from "commander";
-import { convertVsixFolder } from "./index";
+import { convertVsixFolder } from "./converter";
 
 async function main(): Promise<void> {
   const program = new Command()
