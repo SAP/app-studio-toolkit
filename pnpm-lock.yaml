@@ -193,7 +193,7 @@ importers:
         version: 2.0.8
       copy-webpack-plugin:
         specifier: 11.0.0
-        version: 11.0.0(webpack@5.104.1(webpack-cli@6.0.1))
+        version: 11.0.0(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1)))
       fs-extra:
         specifier: 11.1.1
         version: 11.1.1
@@ -205,10 +205,10 @@ importers:
         version: 3.0.0
       string-replace-loader:
         specifier: 3.1.0
-        version: 3.1.0(webpack@5.104.1(webpack-cli@6.0.1))
+        version: 3.1.0(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1)))
       ts-loader:
         specifier: 9.4.2
-        version: 9.4.2(typescript@5.7.3)(webpack@5.104.1(webpack-cli@6.0.1))
+        version: 9.4.2(typescript@5.7.3)(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1)))
 
   packages/app-studio-toolkit:
     dependencies:
@@ -287,7 +287,7 @@ importers:
         version: 2.0.8
       copy-webpack-plugin:
         specifier: 11.0.0
-        version: 11.0.0(webpack@5.104.1(webpack-cli@6.0.1))
+        version: 11.0.0(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1)))
       fs-extra:
         specifier: 11.1.1
         version: 11.1.1
@@ -299,10 +299,10 @@ importers:
         version: 3.0.0
       string-replace-loader:
         specifier: 3.1.0
-        version: 3.1.0(webpack@5.104.1(webpack-cli@6.0.1))
+        version: 3.1.0(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1)))
       ts-loader:
         specifier: 9.4.2
-        version: 9.4.2(typescript@5.7.3)(webpack@5.104.1(webpack-cli@6.0.1))
+        version: 9.4.2(typescript@5.7.3)(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1)))
 
   packages/app-studio-toolkit-themes: {}
 
@@ -562,7 +562,7 @@ importers:
         version: 2.25.3(@typescript-eslint/parser@8.60.1(eslint@8.57.1)(typescript@5.7.3))(eslint@8.57.1)
       jest:
         specifier: 27.5.1
-        version: 27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@16.11.10)(typescript@5.7.3))(utf-8-validate@5.0.10)
+        version: 27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@25.9.1)(typescript@5.7.3))(utf-8-validate@5.0.10)
 
   projects/vscode-mta-tools:
     dependencies:
@@ -608,7 +608,7 @@ importers:
         version: 0.2.6
       copy-webpack-plugin:
         specifier: 9.0.1
-        version: 9.0.1(webpack@5.104.1(webpack-cli@6.0.1))
+        version: 9.0.1(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1)))
       mock-spawn:
         specifier: 0.2.6
         version: 0.2.6
@@ -620,7 +620,7 @@ importers:
         version: 0.2.3
       ts-loader:
         specifier: 8.0.16
-        version: 8.0.16(typescript@5.7.3)(webpack@5.104.1(webpack-cli@6.0.1))
+        version: 8.0.16(typescript@5.7.3)(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1)))
       vscode-test:
         specifier: 1.5.2
         version: 1.5.2
@@ -747,7 +747,7 @@ importers:
         version: 11.0.0
       copy-webpack-plugin:
         specifier: ^12.0.2
-        version: 12.0.2(webpack@5.104.1(webpack-cli@6.0.1))
+        version: 12.0.2(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1)))
       cross-env:
         specifier: ^10.1.0
         version: 10.1.0
@@ -13451,7 +13451,7 @@ snapshots:
       jest-util: 29.7.0
       slash: 3.0.0
 
-  '@jest/core@27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@16.11.10)(typescript@5.7.3))(utf-8-validate@5.0.10)':
+  '@jest/core@27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@25.9.1)(typescript@5.7.3))(utf-8-validate@5.0.10)':
     dependencies:
       '@jest/console': 27.5.1
       '@jest/reporters': 27.5.1
@@ -13465,7 +13465,7 @@ snapshots:
       exit: 0.1.2
       graceful-fs: 4.2.11
       jest-changed-files: 27.5.1
-      jest-config: 27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@16.11.10)(typescript@5.7.3))(utf-8-validate@5.0.10)
+      jest-config: 27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@25.9.1)(typescript@5.7.3))(utf-8-validate@5.0.10)
       jest-haste-map: 27.5.1
       jest-message-util: 27.5.1
       jest-regex-util: 27.5.1
@@ -17110,7 +17110,7 @@ snapshots:
 
   copy-descriptor@0.1.1: {}
 
-  copy-webpack-plugin@11.0.0(webpack@5.104.1(webpack-cli@6.0.1)):
+  copy-webpack-plugin@11.0.0(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1))):
     dependencies:
       fast-glob: 3.2.12
       glob-parent: 6.0.2
@@ -17118,9 +17118,9 @@ snapshots:
       normalize-path: 3.0.0
       schema-utils: 4.0.0
       serialize-javascript: 6.0.0
-      webpack: 5.104.1(webpack-cli@6.0.1)
+      webpack: 5.106.2(webpack-cli@6.0.1(webpack@5.104.1))
 
-  copy-webpack-plugin@12.0.2(webpack@5.104.1(webpack-cli@6.0.1)):
+  copy-webpack-plugin@12.0.2(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1))):
     dependencies:
       fast-glob: 3.3.3
       glob-parent: 6.0.2
@@ -17128,9 +17128,9 @@ snapshots:
       normalize-path: 3.0.0
       schema-utils: 4.3.3
       serialize-javascript: 6.0.2
-      webpack: 5.104.1(webpack-cli@6.0.1)
+      webpack: 5.106.2(webpack-cli@6.0.1(webpack@5.104.1))
 
-  copy-webpack-plugin@9.0.1(webpack@5.104.1(webpack-cli@6.0.1)):
+  copy-webpack-plugin@9.0.1(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1))):
     dependencies:
       fast-glob: 3.3.3
       glob-parent: 6.0.2
@@ -17139,7 +17139,7 @@ snapshots:
       p-limit: 3.1.0
       schema-utils: 3.1.1
       serialize-javascript: 6.0.2
-      webpack: 5.104.1(webpack-cli@6.0.1)
+      webpack: 5.106.2(webpack-cli@6.0.1(webpack@5.104.1))
 
   core-js-compat@3.49.0:
     dependencies:
@@ -19978,16 +19978,16 @@ snapshots:
       - babel-plugin-macros
       - supports-color
 
-  jest-cli@27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@16.11.10)(typescript@5.7.3))(utf-8-validate@5.0.10):
+  jest-cli@27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@25.9.1)(typescript@5.7.3))(utf-8-validate@5.0.10):
     dependencies:
-      '@jest/core': 27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@16.11.10)(typescript@5.7.3))(utf-8-validate@5.0.10)
+      '@jest/core': 27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@25.9.1)(typescript@5.7.3))(utf-8-validate@5.0.10)
       '@jest/test-result': 27.5.1
       '@jest/types': 27.5.1
       chalk: 4.1.2
       exit: 0.1.2
       graceful-fs: 4.2.11
       import-local: 3.0.3
-      jest-config: 27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@16.11.10)(typescript@5.7.3))(utf-8-validate@5.0.10)
+      jest-config: 27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@25.9.1)(typescript@5.7.3))(utf-8-validate@5.0.10)
       jest-util: 27.5.1
       jest-validate: 27.5.1
       prompts: 2.4.2
@@ -20037,7 +20037,7 @@ snapshots:
       - supports-color
       - ts-node
 
-  jest-config@27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@16.11.10)(typescript@5.7.3))(utf-8-validate@5.0.10):
+  jest-config@27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@25.9.1)(typescript@5.7.3))(utf-8-validate@5.0.10):
     dependencies:
       '@babel/core': 7.29.0
       '@jest/test-sequencer': 27.5.1
@@ -20064,7 +20064,7 @@ snapshots:
       slash: 3.0.0
       strip-json-comments: 3.1.1
     optionalDependencies:
-      ts-node: 10.9.2(@types/node@16.11.10)(typescript@5.7.3)
+      ts-node: 10.9.2(@types/node@25.9.1)(typescript@5.7.3)
     transitivePeerDependencies:
       - bufferutil
       - canvas
@@ -20667,11 +20667,11 @@ snapshots:
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
-  jest@27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@16.11.10)(typescript@5.7.3))(utf-8-validate@5.0.10):
+  jest@27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@25.9.1)(typescript@5.7.3))(utf-8-validate@5.0.10):
     dependencies:
-      '@jest/core': 27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@16.11.10)(typescript@5.7.3))(utf-8-validate@5.0.10)
+      '@jest/core': 27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@25.9.1)(typescript@5.7.3))(utf-8-validate@5.0.10)
       import-local: 3.0.3
-      jest-cli: 27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@16.11.10)(typescript@5.7.3))(utf-8-validate@5.0.10)
+      jest-cli: 27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@25.9.1)(typescript@5.7.3))(utf-8-validate@5.0.10)
     transitivePeerDependencies:
       - bufferutil
       - canvas
@@ -24135,11 +24135,11 @@ snapshots:
       schema-utils: 3.1.1
       webpack: 5.106.2(webpack-cli@5.1.4)
 
-  string-replace-loader@3.1.0(webpack@5.104.1(webpack-cli@6.0.1)):
+  string-replace-loader@3.1.0(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1))):
     dependencies:
       loader-utils: 2.0.4
       schema-utils: 3.1.1
-      webpack: 5.104.1(webpack-cli@6.0.1)
+      webpack: 5.106.2(webpack-cli@6.0.1(webpack@5.104.1))
 
   string-similarity@4.0.4: {}
 
@@ -24562,7 +24562,7 @@ snapshots:
       babel-jest: 29.7.0(@babel/core@7.29.0)
       jest-util: 29.7.0
 
-  ts-loader@8.0.16(typescript@5.7.3)(webpack@5.104.1(webpack-cli@6.0.1)):
+  ts-loader@8.0.16(typescript@5.7.3)(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1))):
     dependencies:
       chalk: 4.1.2
       enhanced-resolve: 4.5.0
@@ -24570,16 +24570,16 @@ snapshots:
       micromatch: 4.0.8
       semver: 7.6.3
       typescript: 5.7.3
-      webpack: 5.104.1(webpack-cli@6.0.1)
+      webpack: 5.106.2(webpack-cli@6.0.1(webpack@5.104.1))
 
-  ts-loader@9.4.2(typescript@5.7.3)(webpack@5.104.1(webpack-cli@6.0.1)):
+  ts-loader@9.4.2(typescript@5.7.3)(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1))):
     dependencies:
       chalk: 4.1.2
       enhanced-resolve: 5.21.1
       micromatch: 4.0.8
       semver: 7.6.3
       typescript: 5.7.3
-      webpack: 5.104.1(webpack-cli@6.0.1)
+      webpack: 5.106.2(webpack-cli@6.0.1(webpack@5.104.1))
 
   ts-loader@9.6.2(loader-utils@2.0.4)(typescript@5.7.3)(webpack@5.106.2):
     dependencies:

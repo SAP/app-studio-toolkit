@@ -28,7 +28,7 @@
     "clean": "rimraf ./dist ./coverage ./.nyc_output *.vsix *.vsix.zst",
     "compile": "tsc -p ./",
     "test": "mocha",
-    "coverage": "nyc --all=false --check-coverage=false mocha"
+    "coverage": "nyc mocha"
   },
   "dependencies": {
     "tar-stream": "3.2.0",
