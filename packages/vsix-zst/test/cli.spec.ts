@@ -30,6 +30,15 @@ describe("cli", () => {
   });
 
   it("returns non-zero when the folder argument is missing", async () => {
-    await expect(runCli([])).to.be.rejectedWith("Usage: vsix-zst");
+    await expect(runCli([])).to.be.rejectedWith("missing required argument");
+  });
+
+  it("prints help", async () => {
+    const result = await runCli(["--help"]);
+
+    expect(result.stdout).to.contain("Usage: vsix-zst [options] <folder>");
+    expect(result.stdout).to.contain("--keep");
+    expect(result.stdout).to.contain("keep original .vsix files");
+    expect(result.stderr).to.equal("");
   });
 });

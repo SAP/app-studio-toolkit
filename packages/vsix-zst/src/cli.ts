@@ -1,17 +1,17 @@
 #!/usr/bin/env node
 
+import { Command } from "commander";
 import { convertVsixFolder } from "./index";
 
 async function main(): Promise<void> {
-  const args = process.argv.slice(2);
-  const keep = args.includes("--keep");
-  const folders = args.filter((arg) => arg !== "--keep");
+  const program = new Command()
+    .name("vsix-zst")
+    .description("Convert VSIX files from zip to tar.zstd")
+    .argument("<folder>", "folder containing .vsix files")
+    .option("--keep", "keep original .vsix files")
+    .parse(process.argv);
 
-  if (folders.length !== 1) {
-    throw new Error("Usage: vsix-zst <folder> [--keep]");
-  }
-
-  const outputs = await convertVsixFolder(folders[0], { keep });
+  const outputs = await convertVsixFolder(program.args[0], program.opts());
   for (const output of outputs) {
     console.log(output);
   }
