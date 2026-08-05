@@ -1,7 +1,7 @@
 import { readFile, writeFile } from "fs/promises";
+import { zstdDecompressSync } from "zlib";
 import { extract } from "tar-stream";
 import { Entry, open, ZipFile } from "yauzl";
-import { ZstdCodec, ZstdModule } from "zstd-codec";
 
 export interface ArchiveEntry {
   name: string;
@@ -33,7 +33,7 @@ export async function readZipEntries(
 }
 
 export async function readZstTarEntries(path: string): Promise<ArchiveEntry[]> {
-  const tarBuffer = await zstdDecompress(await readFile(path));
+  const tarBuffer = zstdDecompressSync(await readFile(path));
   return readTarEntries(tarBuffer);
 }
 
@@ -175,20 +175,6 @@ function readEntryData(zip: ZipFile, entry: Entry): Promise<Buffer> {
       stream.once("error", reject);
       stream.once("end", () => resolve(Buffer.concat(chunks)));
     });
-  });
-}
-
-function zstdDecompress(input: Uint8Array): Promise<Uint8Array> {
-  return withZstd((zstd) => new zstd.Streaming().decompress(input));
-}
-
-function withZstd<T>(callback: (zstd: ZstdModule) => T): Promise<T> {
-  return new Promise((resolve, reject) => {
-    try {
-      ZstdCodec.run((zstd) => resolve(callback(zstd)));
-    } catch (error) {
-      reject(error instanceof Error ? error : new Error(String(error)));
-    }
   });
 }
 

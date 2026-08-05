@@ -1,11 +1,5 @@
-import { ZstdCodec, ZstdModule } from "zstd-codec";
+import { zstdCompressSync } from "zlib";
 
-export function zstdCompress(input: Uint8Array): Promise<Uint8Array> {
-  return withZstd((zstd) => new zstd.Streaming().compress(input));
-}
-
-function withZstd<T>(callback: (zstd: ZstdModule) => T): Promise<T> {
-  return new Promise((resolve) => {
-    ZstdCodec.run((zstd) => resolve(callback(zstd)));
-  });
+export function zstdCompress(input: Uint8Array): Promise<Buffer> {
+  return Promise.resolve().then(() => zstdCompressSync(input));
 }

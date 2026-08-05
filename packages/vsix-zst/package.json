@@ -4,6 +4,9 @@
   "private": true,
   "description": "Repackage VSIX archives as Zstandard-compressed TAR files",
   "license": "Apache-2.0",
+  "engines": {
+    "node": ">=22.15"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/SAP/app-studio-toolkit",
@@ -33,10 +36,10 @@
   "dependencies": {
     "commander": "14.0.3",
     "tar-stream": "3.2.0",
-    "yauzl": "3.4.0",
-    "zstd-codec": "0.1.5"
+    "yauzl": "3.4.0"
   },
   "devDependencies": {
+    "@types/node": "22.15.35",
     "@types/tar-stream": "3.1.4",
     "@types/yauzl": "3.4.0"
   }

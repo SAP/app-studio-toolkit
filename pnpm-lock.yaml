@@ -474,10 +474,10 @@ importers:
       yauzl:
         specifier: 3.4.0
         version: 3.4.0
-      zstd-codec:
-        specifier: 0.1.5
-        version: 0.1.5
     devDependencies:
+      '@types/node':
+        specifier: 22.15.35
+        version: 22.15.35
       '@types/tar-stream':
         specifier: 3.1.4
         version: 3.1.4
@@ -3314,6 +3314,9 @@ packages:
 
   '@types/node@16.18.126':
     resolution: {integrity: sha512-OTcgaiwfGFBKacvfwuHzzn1KLxH/er8mluiy8/uM3sGXHaRe73RrSIj01jow9t4kJEW633Ov+cOexXeiApTyAw==}
+
+  '@types/node@22.15.35':
+    resolution: {integrity: sha512-stV91mHxlWpDksiUiivmFfQzjy2JLlb2NUTxKipiANEbxBZsdbDU9fSrT7SHY4uoCXAxYfJZVasn3x2/hqpd3g==}
 
   '@types/node@22.19.1':
     resolution: {integrity: sha512-LCCV0HdSZZZb34qifBsyWlUmok6W7ouER+oQIGBScS8EsZsQbrtFTUrDX4hOl+CS6p7cnNC4td+qrSVGSCTUfQ==}
@@ -11811,9 +11814,6 @@ packages:
     resolution: {integrity: sha512-CzhO+pFNo8ajLM2d2IW/R93ipy99LWjtwblvC1RsoSUMZgyLbYFr221TnSNT7GjGdYui6P459mw9JH/g/zW2ug==}
     engines: {node: '>=18'}
 
-  zstd-codec@0.1.5:
-    resolution: {integrity: sha512-v3fyjpK8S/dpY/X5WxqTK3IoCnp/ZOLxn144GZVlNUjtwAchzrVo03h+oMATFhCIiJ5KTr4V3vDQQYz4RU684g==}
-
 snapshots:
 
   '@asamuzakjp/css-color@3.2.0':
@@ -15164,6 +15164,10 @@ snapshots:
   '@types/node@16.11.10': {}
 
   '@types/node@16.18.126': {}
+
+  '@types/node@22.15.35':
+    dependencies:
+      undici-types: 6.21.0
 
   '@types/node@22.19.1':
     dependencies:
@@ -26065,5 +26069,3 @@ snapshots:
   yocto-queue@1.1.1: {}
 
   yoctocolors@2.1.2: {}
-
-  zstd-codec@0.1.5: {}
