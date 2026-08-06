@@ -1,4 +1,5 @@
 import { execFile } from "node:child_process";
+import { existsSync } from "node:fs";
 import { mkdtemp, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { basename, join } from "node:path";
@@ -52,21 +53,24 @@ async function readTarFiles(path: string): Promise<Record<string, string>> {
 }
 
 describe("vsix-zst CLI", () => {
-  let folder: string;
+  let tempWorkFolder: string;
 
   beforeEach(async () => {
-    folder = await mkdtemp(join(tmpdir(), "vsix-zst-"));
+    tempWorkFolder = await mkdtemp(join(tmpdir(), "vsix-zst-"));
   });
 
   afterEach(async () => {
-    await rm(folder, { recursive: true, force: true });
+    await rm(tempWorkFolder, { recursive: true, force: true });
   });
 
   it("converts direct VSIX files with --keep and preserves their contents", async () => {
-    const sourcePaths = [join(folder, "one.vsix"), join(folder, "two.vsix")];
+    const sourcePaths = [
+      join(tempWorkFolder, "one.vsix"),
+      join(tempWorkFolder, "two.vsix"),
+    ];
     await Promise.all(sourcePaths.map(writeVsix));
 
-    const { stdout, stderr } = await runCli(folder, "--keep");
+    const { stdout, stderr } = await runCli(tempWorkFolder, "--keep");
     const outputPaths = sourcePaths.map((path) => `${path}.zst`);
 
     expect(stderr).to.equal("");
@@ -74,7 +78,7 @@ describe("vsix-zst CLI", () => {
       ...outputPaths,
       "Finished converting 2 VSIX archive(s).",
     ]);
-    expect((await readdir(folder)).sort()).to.deep.equal(
+    expect((await readdir(tempWorkFolder)).sort()).to.deep.equal(
       [...sourcePaths, ...outputPaths].map((path) => basename(path)).sort()
     );
     for (const outputPath of outputPaths) {
@@ -86,25 +90,38 @@ describe("vsix-zst CLI", () => {
   });
 
   it("deletes the source VSIX by default", async () => {
-    const sourcePath = join(folder, "delete.vsix");
+    const sourcePath = join(tempWorkFolder, "delete.vsix");
+    const outputPath = `${sourcePath}.zst`;
     await writeVsix(sourcePath);
 
-    await runCli(folder);
+    expect(
+      existsSync(sourcePath),
+      "source VSIX should exist before conversion"
+    ).to.equal(true);
 
-    expect(await readdir(folder)).to.deep.equal(["delete.vsix.zst"]);
+    await runCli(tempWorkFolder);
+
+    expect(
+      existsSync(sourcePath),
+      "source VSIX should be deleted after conversion"
+    ).to.equal(false);
+    expect(
+      existsSync(outputPath),
+      "converted archive should be created"
+    ).to.equal(true);
   });
 
   it("rejects a folder without VSIX files", async () => {
-    await expect(runCli(folder)).to.be.rejectedWith(
-      `No *.vsix files found in ${folder}`
+    await expect(runCli(tempWorkFolder)).to.be.rejectedWith(
+      `No *.vsix files found in ${tempWorkFolder}`
     );
   });
 
   it("rejects a corrupt VSIX without deleting it", async () => {
-    const sourcePath = join(folder, "broken.vsix");
+    const sourcePath = join(tempWorkFolder, "broken.vsix");
     await writeFile(sourcePath, "not a zip");
 
-    await expect(runCli(folder)).to.be.rejectedWith(
+    await expect(runCli(tempWorkFolder)).to.be.rejectedWith(
       "End of central directory record signature not found"
     );
 
