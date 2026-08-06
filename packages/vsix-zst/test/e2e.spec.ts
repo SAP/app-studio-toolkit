@@ -4,20 +4,25 @@ import { tmpdir } from "node:os";
 import { basename, join } from "node:path";
 import { text } from "node:stream/consumers";
 import { promisify } from "node:util";
-import { zstdDecompressSync } from "node:zlib";
+import { zstdDecompress } from "node:zlib";
 import { expect } from "chai";
 import { strToU8, zipSync } from "fflate";
 import { extract } from "tar-stream";
 
 const execFileAsync = promisify(execFile);
+const zstdDecompressAsync = promisify(zstdDecompress);
 const cliPath = join(__dirname, "..", "src", "cli.js");
 const fixtureContents = {
   "extension/package.json": '{"name":"fixture"}',
   "extension/readme.txt": "hello",
+  "extension/dist/index.js": "module.exports = {};",
 };
 const fixtureArchive = zipSync({
   "extension/package.json": strToU8(fixtureContents["extension/package.json"]),
   "extension/readme.txt": strToU8(fixtureContents["extension/readme.txt"]),
+  "extension/dist/index.js": strToU8(
+    fixtureContents["extension/dist/index.js"]
+  ),
 });
 
 async function writeVsix(path: string): Promise<void> {
@@ -41,7 +46,7 @@ async function readTarFiles(path: string): Promise<Record<string, string>> {
     }
   })();
 
-  tar.end(zstdDecompressSync(await readFile(path)));
+  tar.end(await zstdDecompressAsync(await readFile(path)));
   await readEntries;
   return files;
 }
@@ -73,7 +78,10 @@ describe("vsix-zst CLI", () => {
       [...sourcePaths, ...outputPaths].map((path) => basename(path)).sort()
     );
     for (const outputPath of outputPaths) {
-      expect(await readTarFiles(outputPath)).to.deep.equal(fixtureContents);
+      expect(
+        await readTarFiles(outputPath),
+        `Unexpected archive contents in ${outputPath}`
+      ).to.deep.equal(fixtureContents);
     }
   });
 
@@ -87,14 +95,18 @@ describe("vsix-zst CLI", () => {
   });
 
   it("rejects a folder without VSIX files", async () => {
-    await expect(runCli(folder)).to.be.rejected;
+    await expect(runCli(folder)).to.be.rejectedWith(
+      `No *.vsix files found in ${folder}`
+    );
   });
 
   it("rejects a corrupt VSIX without deleting it", async () => {
     const sourcePath = join(folder, "broken.vsix");
     await writeFile(sourcePath, "not a zip");
 
-    await expect(runCli(folder)).to.be.rejected;
+    await expect(runCli(folder)).to.be.rejectedWith(
+      "End of central directory record signature not found"
+    );
 
     expect(await readFile(sourcePath, "utf8")).to.equal("not a zip");
   });
