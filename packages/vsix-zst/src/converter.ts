@@ -3,8 +3,8 @@ import { readdir, stat, unlink } from "node:fs/promises";
 import { join } from "node:path";
 import { pipeline } from "node:stream/promises";
 import { createZstdCompress } from "node:zlib";
-import { pack as createPack } from "tar-stream";
-import { openPromise } from "yauzl";
+import { pack as createTarPack, Pack } from "tar-stream";
+import { openPromise as openZip, ZipFile } from "yauzl";
 
 export interface ConvertOptions {
   keep?: boolean;
@@ -47,51 +47,64 @@ export async function convertVsixFolder(
 
 async function streamVsixToZst(
   vsixPath: string,
-  outputPath: string
+  vsixZstPath: string
 ): Promise<void> {
-  const zip = await openPromise(vsixPath);
-  const pack = createPack();
-  const output = pipeline(
-    pack,
-    createZstdCompress(),
-    createWriteStream(outputPath)
-  );
+  const zipFile = await openZip(vsixPath);
+  const tarPack = createTarPack();
 
-  const feed = (async () => {
-    for await (const entry of zip.eachEntry()) {
-      if (entry.fileName === "") {
+  // Start consuming TAR output before producing entries so backpressure and
+  // output errors are connected for the entire conversion.
+  const writeCompressedArchive = pipeline(
+    tarPack,
+    createZstdCompress(),
+    createWriteStream(vsixZstPath)
+  );
+  const addEntries = addZipEntriesToTar(zipFile, tarPack);
+
+  try {
+    await Promise.all([addEntries, writeCompressedArchive]);
+  } finally {
+    zipFile.close();
+  }
+}
+
+async function addZipEntriesToTar(
+  zipFile: ZipFile,
+  tarPack: Pack
+): Promise<void> {
+  try {
+    for await (const zipEntry of zipFile.eachEntry()) {
+      if (zipEntry.fileName === "") {
         throw new Error("Unsafe archive entry in VSIX: empty filename");
       }
 
-      const name = entry.fileName.replace(/\/$/, "");
-      if (entry.fileName.endsWith("/")) {
-        pack.entry({ name, type: "directory" }, Buffer.alloc(0));
+      const tarEntryName = zipEntry.fileName.replace(/\/$/, "");
+      if (zipEntry.fileName.endsWith("/")) {
+        tarPack.entry(
+          { name: tarEntryName, type: "directory" },
+          Buffer.alloc(0)
+        );
         continue;
       }
 
-      const source = await zip.openReadStreamPromise(entry);
+      const zipEntryStream = await zipFile.openReadStreamPromise(zipEntry);
       try {
-        await pipeline(
-          source,
-          pack.entry({ name, size: entry.uncompressedSize })
-        );
+        const tarEntryStream = tarPack.entry({
+          name: tarEntryName,
+          size: zipEntry.uncompressedSize,
+        });
+        await pipeline(zipEntryStream, tarEntryStream);
       } catch (error) {
         /* istanbul ignore next -- requires output failure after opening the ZIP source but before attaching its TAR target. */
-        source.destroy();
+        zipEntryStream.destroy();
         /* istanbul ignore next -- rethrows the same untestable race failure. */
         throw error;
       }
     }
 
-    pack.finalize();
-  })().catch((error: unknown) => {
-    pack.destroy(error as Error);
+    tarPack.finalize();
+  } catch (error) {
+    tarPack.destroy(error as Error);
     throw error;
-  });
-
-  try {
-    await Promise.all([feed, output]);
-  } finally {
-    zip.close();
   }
 }
