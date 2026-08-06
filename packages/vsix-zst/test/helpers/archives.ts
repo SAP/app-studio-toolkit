@@ -79,6 +79,10 @@ export function createVsixWithDirectory(path: string): Promise<void> {
   return writeFile(path, createZip(name, 0x10));
 }
 
+export function createVsixWithEntry(path: string, name: string): Promise<void> {
+  return writeFile(path, createZip(Buffer.from(name), 0));
+}
+
 export function createUnsupportedCompressionVsix(path: string): Promise<void> {
   const name = Buffer.from("extension/file.txt");
   return writeFile(path, createZip(name, 0, 0, 99));

@@ -1,10 +1,10 @@
 import { join } from "node:path";
 import { expect } from "chai";
 import { convertVsixFolder } from "../src/converter";
-import { validateEntryName } from "../src/zip";
 import {
   createUnsupportedCompressionVsix,
   createVsixWithDirectory,
+  createVsixWithEntry,
   readZipEntries,
   readZstTarEntries,
 } from "./helpers/archives";
@@ -61,15 +61,21 @@ describe("archive conversion", () => {
     await expect(convertVsixFolder(folder)).to.be.rejected;
   });
 
-  it("validates archive entry names", () => {
-    expect(validateEntryName("extension/file.txt")).to.equal(
-      "extension/file.txt"
+  it("rejects an empty archive entry name", async () => {
+    const folder = await temp.tempFolder();
+    await createVsixWithEntry(join(folder, "empty-name.vsix"), "");
+
+    await expect(convertVsixFolder(folder)).to.be.rejectedWith(
+      "Unsafe archive entry in VSIX: empty filename"
     );
-    expect(validateEntryName("extension/")).to.equal("extension");
-    for (const unsafeName of ["", "/absolute", "..", "../x", "x/../y"]) {
-      expect(() => validateEntryName(unsafeName)).to.throw(
-        "Unsafe archive entry"
-      );
-    }
+  });
+
+  it("rejects an unsafe archive entry path", async () => {
+    const folder = await temp.tempFolder();
+    await createVsixWithEntry(join(folder, "unsafe-name.vsix"), "../x");
+
+    await expect(convertVsixFolder(folder)).to.be.rejectedWith(
+      "invalid relative path"
+    );
   });
 });
