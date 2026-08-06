@@ -24,10 +24,11 @@
     "dist/src/**/*.d.ts"
   ],
   "scripts": {
-    "ci": "npm-run-all clean compile test",
+    "ci": "npm-run-all clean compile test:e2e",
     "clean": "rimraf ./dist ./coverage ./.nyc_output",
     "compile": "tsc -p ./",
-    "test": "mocha"
+    "test": "pnpm run test:e2e",
+    "test:e2e": "mocha"
   },
   "dependencies": {
     "commander": "15.0.0",

@@ -122,6 +122,7 @@ use the top-level compilation scripts to avoid forgetting to (re-)compile a sub-
 
 - Specific statements/functions may be [excluded][ignore_coverage] from the report.
   - However, the reason for each exclusion must be documented.
+- `packages/vsix-zst` is validated by a small end-to-end CLI suite; coverage is intentionally not collected for this package.
 
 [ignore_coverage]: https://github.com/gotwarlost/istanbul/blob/master/ignoring-code-for-coverage.md
 
