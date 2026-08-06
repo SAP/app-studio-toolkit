@@ -92,9 +92,8 @@ async function addZipEntriesToTar(
       });
       await pipeline(zipEntryStream, tarEntryStream);
     } catch (error) {
-      /* istanbul ignore next -- requires output failure after opening the ZIP source but before attaching its TAR target. */
+      // The TAR entry may fail before pipeline() takes ownership of the ZIP stream.
       zipEntryStream.destroy();
-      /* istanbul ignore next -- rethrows the same untestable race failure. */
       throw error;
     }
   }
