@@ -50,61 +50,54 @@ async function streamVsixToZst(
   vsixZstPath: string
 ): Promise<void> {
   const zipFile = await openZip(vsixPath);
-  const tarPack = createTarPack();
-
-  // Start consuming TAR output before producing entries so backpressure and
-  // output errors are connected for the entire conversion.
-  const writeCompressedArchive = pipeline(
-    tarPack,
-    createZstdCompress(),
-    createWriteStream(vsixZstPath)
-  );
-  const addEntries = addZipEntriesToTar(zipFile, tarPack);
-
   try {
-    await Promise.all([addEntries, writeCompressedArchive]);
+    await pipeline(
+      createTarStream(zipFile),
+      createZstdCompress(),
+      createWriteStream(vsixZstPath)
+    );
   } finally {
     zipFile.close();
   }
+}
+
+function createTarStream(zipFile: ZipFile): Pack {
+  const tarPack = createTarPack();
+  void addZipEntriesToTar(zipFile, tarPack).catch((error: unknown) => {
+    tarPack.destroy(error as Error);
+  });
+  return tarPack;
 }
 
 async function addZipEntriesToTar(
   zipFile: ZipFile,
   tarPack: Pack
 ): Promise<void> {
-  try {
-    for await (const zipEntry of zipFile.eachEntry()) {
-      if (zipEntry.fileName === "") {
-        throw new Error("Unsafe archive entry in VSIX: empty filename");
-      }
-
-      const tarEntryName = zipEntry.fileName.replace(/\/$/, "");
-      if (zipEntry.fileName.endsWith("/")) {
-        tarPack.entry(
-          { name: tarEntryName, type: "directory" },
-          Buffer.alloc(0)
-        );
-        continue;
-      }
-
-      const zipEntryStream = await zipFile.openReadStreamPromise(zipEntry);
-      try {
-        const tarEntryStream = tarPack.entry({
-          name: tarEntryName,
-          size: zipEntry.uncompressedSize,
-        });
-        await pipeline(zipEntryStream, tarEntryStream);
-      } catch (error) {
-        /* istanbul ignore next -- requires output failure after opening the ZIP source but before attaching its TAR target. */
-        zipEntryStream.destroy();
-        /* istanbul ignore next -- rethrows the same untestable race failure. */
-        throw error;
-      }
+  for await (const zipEntry of zipFile.eachEntry()) {
+    if (zipEntry.fileName === "") {
+      throw new Error("Unsafe archive entry in VSIX: empty filename");
     }
 
-    tarPack.finalize();
-  } catch (error) {
-    tarPack.destroy(error as Error);
-    throw error;
+    const tarEntryName = zipEntry.fileName.replace(/\/$/, "");
+    if (zipEntry.fileName.endsWith("/")) {
+      tarPack.entry({ name: tarEntryName, type: "directory" }, Buffer.alloc(0));
+      continue;
+    }
+
+    const zipEntryStream = await zipFile.openReadStreamPromise(zipEntry);
+    try {
+      const tarEntryStream = tarPack.entry({
+        name: tarEntryName,
+        size: zipEntry.uncompressedSize,
+      });
+      await pipeline(zipEntryStream, tarEntryStream);
+    } catch (error) {
+      /* istanbul ignore next -- requires output failure after opening the ZIP source but before attaching its TAR target. */
+      zipEntryStream.destroy();
+      /* istanbul ignore next -- rethrows the same untestable race failure. */
+      throw error;
+    }
   }
+
+  tarPack.finalize();
 }
