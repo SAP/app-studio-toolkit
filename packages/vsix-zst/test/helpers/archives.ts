@@ -122,10 +122,6 @@ function openZip(vsixPath: string): Promise<ZipFile> {
         reject(error);
         return;
       }
-      if (zip === undefined) {
-        reject(new Error(`Failed to open ${vsixPath}`));
-        return;
-      }
       resolve(zip);
     });
   });
@@ -163,10 +159,6 @@ function readEntryData(zip: ZipFile, entry: Entry): Promise<Buffer> {
     zip.openReadStream(entry, (error, stream) => {
       if (error !== null) {
         reject(error);
-        return;
-      }
-      if (stream === undefined) {
-        reject(new Error(`Failed to read ${entry.fileName}`));
         return;
       }
 
