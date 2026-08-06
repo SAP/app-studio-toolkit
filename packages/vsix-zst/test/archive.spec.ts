@@ -1,6 +1,6 @@
-import { join } from "path";
+import { join } from "node:path";
 import { expect } from "chai";
-import { convertVsix, convertVsixFolder } from "../src/converter";
+import { convertVsixFolder } from "../src/converter";
 import { validateEntryName } from "../src/zip";
 import {
   createUnsupportedCompressionVsix,
@@ -27,9 +27,9 @@ describe("archive conversion", () => {
       await downloadVsix(UPGRADE_TOOL_VSIX, folder),
     ];
 
-    const outputs = await convertVsixFolder(folder, { keep: true });
+    const createdArchivePaths = await convertVsixFolder(folder, { keep: true });
 
-    expect(outputs).to.deep.equal(
+    expect(createdArchivePaths.sort()).to.deep.equal(
       vsixFiles.map((file) => `${file}.zst`).sort()
     );
     for (const vsix of vsixFiles) {
@@ -44,9 +44,11 @@ describe("archive conversion", () => {
     const vsix = join(folder, "directory-entry.vsix");
     await createVsixWithDirectory(vsix);
 
-    const out = await convertVsix(vsix, { keep: true });
+    const [createdArchivePath] = await convertVsixFolder(folder, {
+      keep: true,
+    });
 
-    expect(await readZstTarEntries(out, true)).to.deep.equal([
+    expect(await readZstTarEntries(createdArchivePath, true)).to.deep.equal([
       { name: "extension", data: Buffer.alloc(0) },
     ]);
   });
@@ -56,7 +58,7 @@ describe("archive conversion", () => {
     const vsix = join(folder, "unsupported-compression.vsix");
     await createUnsupportedCompressionVsix(vsix);
 
-    await expect(convertVsix(vsix)).to.be.rejected;
+    await expect(convertVsixFolder(folder)).to.be.rejected;
   });
 
   it("validates archive entry names", () => {

@@ -1,7 +1,7 @@
-import { createWriteStream } from "fs";
-import { get } from "https";
-import { basename, join } from "path";
-import { URL } from "url";
+import { createWriteStream } from "node:fs";
+import { get } from "node:https";
+import { basename, join } from "node:path";
+import { URL } from "node:url";
 
 export const THEMES_VSIX =
   "https://github.com/SAP/app-studio-toolkit/releases/download/app-studio-toolkit-themes%406.0.1/app-studio-toolkit-themes-6.0.1.vsix";

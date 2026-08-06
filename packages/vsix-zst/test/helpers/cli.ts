@@ -1,5 +1,5 @@
-import { execFile } from "child_process";
-import { join } from "path";
+import { execFile } from "node:child_process";
+import { join } from "node:path";
 
 export function runCli(
   args: string[]

@@ -1,5 +1,5 @@
-import { readFile, writeFile } from "fs/promises";
-import { zstdDecompressSync } from "zlib";
+import { readFile, writeFile } from "node:fs/promises";
+import { zstdDecompressSync } from "node:zlib";
 import { extract } from "tar-stream";
 import { Entry, open, ZipFile } from "yauzl";
 

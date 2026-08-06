@@ -1,5 +1,5 @@
-import { readdir } from "fs/promises";
-import { basename } from "path";
+import { readdir } from "node:fs/promises";
+import { basename } from "node:path";
 import { expect } from "chai";
 import { runCli } from "./helpers/cli";
 import { downloadVsix, THEMES_VSIX } from "./helpers/downloads";
@@ -16,7 +16,10 @@ describe("cli", () => {
 
     const result = await runCli([folder, "--keep"]);
 
-    expect(result.stdout.trim()).to.equal(`${vsix}.zst`);
+    expect(result.stdout.trim().split("\n")).to.deep.equal([
+      `${vsix}.zst`,
+      "Finished converting 1 VSIX archive(s).",
+    ]);
     expect(result.stderr).to.equal("");
     expect((await readdir(folder)).sort()).to.deep.equal(
       [basename(vsix), `${basename(vsix)}.zst`].sort()
@@ -26,7 +29,7 @@ describe("cli", () => {
   it("rejects when the folder has no VSIX files", async () => {
     const folder = await temp.tempFolder();
 
-    await expect(runCli([folder])).to.be.rejectedWith("No .vsix files");
+    await expect(runCli([folder])).to.be.rejectedWith("No *.vsix files");
   });
 
   it("returns non-zero when the folder argument is missing", async () => {

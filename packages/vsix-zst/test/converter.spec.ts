@@ -1,7 +1,7 @@
-import { mkdir, readdir, writeFile } from "fs/promises";
-import { basename, join } from "path";
+import { mkdir, readdir, writeFile } from "node:fs/promises";
+import { basename, join } from "node:path";
 import { expect } from "chai";
-import { convertVsix, convertVsixFolder } from "../src/converter";
+import { convertVsixFolder } from "../src/converter";
 import { downloadVsix, THEMES_VSIX } from "./helpers/downloads";
 import { createTempTracker } from "./helpers/temp";
 
@@ -14,9 +14,9 @@ describe("converter", () => {
     const folder = await temp.tempFolder();
     const vsix = await downloadVsix(THEMES_VSIX, folder);
 
-    const outputs = await convertVsixFolder(folder);
+    const createdArchivePaths = await convertVsixFolder(folder);
 
-    expect(outputs).to.deep.equal([`${vsix}.zst`]);
+    expect(createdArchivePaths).to.deep.equal([`${vsix}.zst`]);
     expect(await readdir(folder)).to.deep.equal([`${basename(vsix)}.zst`]);
   });
 
@@ -28,10 +28,11 @@ describe("converter", () => {
     await expect(convertVsixFolder(file)).to.be.rejectedWith("Not a folder");
   });
 
-  it("rejects when the source VSIX is missing", async () => {
+  it("rejects when a direct VSIX entry cannot be opened", async () => {
     const folder = await temp.tempFolder();
+    await mkdir(join(folder, "not-a-zip.vsix"));
 
-    await expect(convertVsix(join(folder, "missing.vsix"))).to.be.rejected;
+    await expect(convertVsixFolder(folder)).to.be.rejected;
   });
 
   it("rejects when the output path cannot be written", async () => {
@@ -39,6 +40,6 @@ describe("converter", () => {
     const vsix = await downloadVsix(THEMES_VSIX, folder);
     await mkdir(`${vsix}.zst`);
 
-    await expect(convertVsix(vsix)).to.be.rejected;
+    await expect(convertVsixFolder(folder)).to.be.rejected;
   });
 });

@@ -11,10 +11,16 @@ async function main(): Promise<void> {
     .option("--keep", "keep original .vsix files")
     .parse(process.argv);
 
-  const outputs = await convertVsixFolder(program.args[0], program.opts());
-  for (const output of outputs) {
-    console.log(output);
+  const createdArchivePaths = await convertVsixFolder(
+    program.args[0],
+    program.opts()
+  );
+  for (const createdArchivePath of createdArchivePaths) {
+    console.log(createdArchivePath);
   }
+  console.log(
+    `Finished converting ${createdArchivePaths.length} VSIX archive(s).`
+  );
 }
 
 main().catch((error: Error) => {

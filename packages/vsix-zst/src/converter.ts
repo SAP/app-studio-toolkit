@@ -1,8 +1,8 @@
-import { createWriteStream } from "fs";
-import { readdir, stat, unlink } from "fs/promises";
-import { join } from "path";
-import { pipeline } from "stream/promises";
-import { createZstdCompress } from "zlib";
+import { createWriteStream } from "node:fs";
+import { readdir, stat, unlink } from "node:fs/promises";
+import { join } from "node:path";
+import { pipeline } from "node:stream/promises";
+import { createZstdCompress } from "node:zlib";
 import { pack as createPack, Pack } from "tar-stream";
 import { Entry, ZipFile } from "yauzl";
 import { openZip, readEntry, validateEntryName } from "./zip";
@@ -11,6 +11,11 @@ export interface ConvertOptions {
   keep?: boolean;
 }
 
+/**
+ * Repackage all direct `*.vsix` files in a folder as `.vsix.zst` archives.
+ *
+ * @returns Paths of the created `.vsix.zst` files, using the same folder path form as the input.
+ */
 export async function convertVsixFolder(
   folder: string,
   options: ConvertOptions = {}
@@ -20,31 +25,25 @@ export async function convertVsixFolder(
     throw new Error(`Not a folder: ${folder}`);
   }
 
-  const vsixFiles = (await readdir(folder))
-    .filter((file) => file.endsWith(".vsix"))
-    .sort();
+  const vsixFiles = (await readdir(folder)).filter((file) =>
+    file.endsWith(".vsix")
+  );
 
   if (vsixFiles.length === 0) {
-    throw new Error(`No .vsix files found in ${folder}`);
+    throw new Error(`No *.vsix files found in ${folder}`);
   }
 
-  const outputs: string[] = [];
+  const createdArchivePaths: string[] = [];
   for (const file of vsixFiles) {
-    outputs.push(await convertVsix(join(folder, file), options));
+    const vsixPath = join(folder, file);
+    const createdArchivePath = `${vsixPath}.zst`;
+    await streamVsixToZst(vsixPath, createdArchivePath);
+    if (!options.keep) {
+      await unlink(vsixPath);
+    }
+    createdArchivePaths.push(createdArchivePath);
   }
-  return outputs;
-}
-
-export async function convertVsix(
-  vsixPath: string,
-  options: ConvertOptions = {}
-): Promise<string> {
-  const outputPath = `${vsixPath}.zst`;
-  await streamVsixToZst(vsixPath, outputPath);
-  if (!options.keep) {
-    await unlink(vsixPath);
-  }
-  return outputPath;
+  return createdArchivePaths;
 }
 
 async function streamVsixToZst(

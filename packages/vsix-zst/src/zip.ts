@@ -1,4 +1,4 @@
-import { isAbsolute, normalize, sep } from "path";
+import { isAbsolute, normalize, sep } from "node:path";
 import { Entry, open, ZipFile } from "yauzl";
 
 export function validateEntryName(name: string): string {
