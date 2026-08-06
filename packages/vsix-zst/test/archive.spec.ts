@@ -1,12 +1,10 @@
 import { join } from "path";
 import { expect } from "chai";
 import { convertVsix, convertVsixFolder } from "../src/converter";
-import { zipToTar } from "../src/tar";
 import { validateEntryName } from "../src/zip";
 import {
   createUnsupportedCompressionVsix,
   createVsixWithDirectory,
-  readTarEntries,
   readZipEntries,
   readZstTarEntries,
 } from "./helpers/archives";
@@ -46,9 +44,9 @@ describe("archive conversion", () => {
     const vsix = join(folder, "directory-entry.vsix");
     await createVsixWithDirectory(vsix);
 
-    const tar = await zipToTar(vsix);
+    const out = await convertVsix(vsix, { keep: true });
 
-    expect(await readTarEntries(tar, true)).to.deep.equal([
+    expect(await readZstTarEntries(out, true)).to.deep.equal([
       { name: "extension", data: Buffer.alloc(0) },
     ]);
   });

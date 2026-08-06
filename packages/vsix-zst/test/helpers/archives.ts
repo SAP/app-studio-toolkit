@@ -32,9 +32,12 @@ export async function readZipEntries(
   }
 }
 
-export async function readZstTarEntries(path: string): Promise<ArchiveEntry[]> {
+export async function readZstTarEntries(
+  path: string,
+  includeDirectories = false
+): Promise<ArchiveEntry[]> {
   const tarBuffer = zstdDecompressSync(await readFile(path));
-  return readTarEntries(tarBuffer);
+  return readTarEntries(tarBuffer, includeDirectories);
 }
 
 export function readTarEntries(
