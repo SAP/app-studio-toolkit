@@ -101,6 +101,13 @@ module.exports = class extends Generator {
       required: false,
       default: silent ? "password123" : undefined,
     });
+    this.argument("dietaryPreferences", {
+      type: Object,
+      required: false,
+      default: silent
+        ? { allergies: "None", spiceLevel: "Medium", vegetarian: false }
+        : undefined,
+    });
 
     this.setPromptsCallback = (fn) => {
       if (this.prompts) {
@@ -278,6 +285,45 @@ module.exports = class extends Generator {
       },
       {
         type: "input",
+        guiOptions: {
+          type: "questionnaire",
+          hint: "Answer a few quick questions to help us personalize your experience.",
+        },
+        name: "dietaryPreferences",
+        message: "Dietary Preferences Survey",
+        questions: [
+          {
+            name: "allergies",
+            message: "Do you have any food allergies?",
+            type: "list",
+            choices: ["None", "Nuts", "Dairy", "Gluten", "Shellfish"],
+          },
+          {
+            name: "spiceLevel",
+            message: "Preferred spice level?",
+            type: "list",
+            choices: ["Mild", "Medium", "Hot", "Extra Hot"],
+          },
+          {
+            name: "vegetarian",
+            message: "Are you vegetarian?",
+            type: "confirm",
+          },
+        ],
+        default: {
+          allergies: "None",
+          spiceLevel: "Medium",
+          vegetarian: false,
+        },
+        validate: (answers) => {
+          if (answers.vegetarian && answers.spiceLevel === "Extra Hot") {
+            return "Extra hot vegetarian dishes are limited. Consider Medium or Hot.";
+          }
+          return true;
+        },
+      },
+      {
+        type: "input",
         name: "favColor",
         message: "What's your favorite napkin color?",
         placeholder: "Drake's Neck Green",
@@ -403,6 +449,10 @@ module.exports = class extends Generator {
     this.answers.favColor = this._getAnswer("favColor", this.answers);
     this.answers.number = this._getAnswer("number", this.answers);
     this.answers.beers = this._getAnswer("beers", this.answers);
+    this.answers.dietaryPreferences = this._getAnswer(
+      "dietaryPreferences",
+      this.answers
+    );
 
     prompts = [
       {
