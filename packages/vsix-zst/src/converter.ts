@@ -123,6 +123,7 @@ function pipeFileEntry(
             resolve();
           }
         );
+        /* istanbul ignore next -- requires pipeline sink failure racing with yauzl's openReadStream callback. */
       } catch (err) {
         // Pack was destroyed (e.g., pipeline sink failed) between the
         // openReadStream request and its callback. Drain the source so
