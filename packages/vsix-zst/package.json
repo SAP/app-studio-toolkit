@@ -32,12 +32,12 @@
     "coverage": "nyc mocha"
   },
   "dependencies": {
-    "commander": "14.0.3",
+    "commander": "15.0.0",
     "tar-stream": "3.2.0",
     "yauzl": "3.4.0"
   },
   "devDependencies": {
-    "@types/node": "22.15.35",
+    "@types/node": "22.20.1",
     "@types/tar-stream": "3.1.4",
     "@types/yauzl": "3.4.0"
   }
