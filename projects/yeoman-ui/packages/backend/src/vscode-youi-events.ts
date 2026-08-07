@@ -95,18 +95,20 @@ export class VSCodeYouiEvents implements YouiEvents {
     void this.rpc.invoke("setBanner", [bannerProps]);
   }
 
-  public doGeneratorDone(
+  public async doGeneratorDone(
     success: boolean,
     message: string,
     selectedWorkspace: string,
     type: string,
     targetFolderPath?: string
-  ): Thenable<any> {
+  ): Promise<any> {
     // Show "Finalising..." before closing
     if (this.progressReporter) {
       this.progressReporter.report({
         message: this.messages.progress_finalising,
       });
+      // Add a brief delay so "Finalising..." is visible to users
+      await new Promise((resolve) => setTimeout(resolve, 1000));
     }
 
     this.resolveInstallingProgress();
