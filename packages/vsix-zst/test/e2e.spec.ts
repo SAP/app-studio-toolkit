@@ -21,9 +21,10 @@ const fixtureContents = {
 const fixtureArchive = zipSync({
   "extension/package.json": strToU8(fixtureContents["extension/package.json"]),
   "extension/readme.txt": strToU8(fixtureContents["extension/readme.txt"]),
-  "extension/dist/index.js": strToU8(
-    fixtureContents["extension/dist/index.js"]
-  ),
+  "extension/dist/index.js": [
+    strToU8(fixtureContents["extension/dist/index.js"]),
+    { os: 3, attrs: 0o755 << 16 },
+  ],
 });
 
 async function writeVsix(path: string): Promise<void> {
@@ -34,13 +35,18 @@ function runCli(...args: string[]) {
   return execFileAsync(process.execPath, [cliPath, ...args]);
 }
 
-async function readTarFiles(path: string): Promise<Record<string, string>> {
+async function readTarFiles(path: string): Promise<{
+  contents: Record<string, string>;
+  modes: Record<string, number | undefined>;
+}> {
   const tar = extract();
-  const files: Record<string, string> = {};
+  const contents: Record<string, string> = {};
+  const modes: Record<string, number | undefined> = {};
   const readEntries = (async () => {
     for await (const entry of tar) {
       if (entry.header.type === "file") {
-        files[entry.header.name] = await text(entry);
+        contents[entry.header.name] = await text(entry);
+        modes[entry.header.name] = entry.header.mode;
       } else {
         entry.resume();
       }
@@ -49,7 +55,7 @@ async function readTarFiles(path: string): Promise<Record<string, string>> {
 
   tar.end(await zstdDecompressAsync(await readFile(path)));
   await readEntries;
-  return files;
+  return { contents, modes };
 }
 
 describe("vsix-zst CLI", () => {
@@ -82,10 +88,15 @@ describe("vsix-zst CLI", () => {
       [...sourcePaths, ...outputPaths].map((path) => basename(path)).sort()
     );
     for (const outputPath of outputPaths) {
+      const tarFiles = await readTarFiles(outputPath);
       expect(
-        await readTarFiles(outputPath),
+        tarFiles.contents,
         `Unexpected archive contents in ${outputPath}`
       ).to.deep.equal(fixtureContents);
+      expect(
+        tarFiles.modes["extension/dist/index.js"],
+        `Executable mode was not preserved in ${outputPath}`
+      ).to.equal(0o755);
     }
   });
 
@@ -119,12 +130,21 @@ describe("vsix-zst CLI", () => {
 
   it("rejects a corrupt VSIX without deleting it", async () => {
     const sourcePath = join(tempWorkFolder, "broken.vsix");
-    await writeFile(sourcePath, "not a zip");
+    const outputPath = `${sourcePath}.zst`;
+    const corruptArchive = Buffer.from(fixtureArchive);
+    const fileDataOffset =
+      30 + corruptArchive.readUInt16LE(26) + corruptArchive.readUInt16LE(28);
+    corruptArchive[fileDataOffset] = 0x07; // Invalid DEFLATE block type.
+    await writeFile(sourcePath, corruptArchive);
 
     await expect(runCli(tempWorkFolder)).to.be.rejectedWith(
-      "End of central directory record signature not found"
+      "invalid block type"
     );
 
-    expect(await readFile(sourcePath, "utf8")).to.equal("not a zip");
+    expect(await readFile(sourcePath)).to.deep.equal(corruptArchive);
+    expect(
+      existsSync(outputPath),
+      "partial output should be deleted after conversion failure"
+    ).to.equal(false);
   });
 });

@@ -1,5 +1,5 @@
 import { createWriteStream } from "node:fs";
-import { readdir, stat, unlink } from "node:fs/promises";
+import { readdir, rm, stat, unlink } from "node:fs/promises";
 import { join } from "node:path";
 import { pipeline } from "node:stream/promises";
 import { createZstdCompress } from "node:zlib";
@@ -51,11 +51,16 @@ async function streamVsixToZst(
 ): Promise<void> {
   const zipFile = await openZip(vsixPath);
   try {
-    await pipeline(
-      createTarStream(zipFile),
-      createZstdCompress(),
-      createWriteStream(vsixZstPath)
-    );
+    try {
+      await pipeline(
+        createTarStream(zipFile),
+        createZstdCompress(),
+        createWriteStream(vsixZstPath)
+      );
+    } catch (error) {
+      await rm(vsixZstPath, { force: true });
+      throw error;
+    }
   } finally {
     zipFile.close();
   }
@@ -79,8 +84,16 @@ async function addZipEntriesToTar(
     }
 
     const tarEntryName = zipEntry.fileName.replace(/\/$/, "");
+    // Unix ZIP entries store mode bits in the upper half of external attributes.
+    const tarEntryMode =
+      zipEntry.versionMadeBy >>> 8 === 3
+        ? (zipEntry.externalFileAttributes >>> 16) & 0o7777
+        : undefined;
     if (zipEntry.fileName.endsWith("/")) {
-      tarPack.entry({ name: tarEntryName, type: "directory" }, Buffer.alloc(0));
+      tarPack.entry(
+        { name: tarEntryName, type: "directory", mode: tarEntryMode },
+        Buffer.alloc(0)
+      );
       continue;
     }
 
@@ -89,6 +102,7 @@ async function addZipEntriesToTar(
       const tarEntryStream = tarPack.entry({
         name: tarEntryName,
         size: zipEntry.uncompressedSize,
+        mode: tarEntryMode,
       });
       await pipeline(zipEntryStream, tarEntryStream);
     } catch (error) {
