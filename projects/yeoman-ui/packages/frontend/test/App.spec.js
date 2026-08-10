@@ -560,7 +560,7 @@ describe("App.vue", () => {
 
     wrapper.vm.showPrompt = jest.fn();
     wrapper.vm.setPrompts = jest.fn();
-    wrapper.vm.generatorInstall = jest.fn();
+    wrapper.vm.generatorProgress = jest.fn();
     wrapper.vm.generatorDone = jest.fn();
     wrapper.vm.log = jest.fn();
 
@@ -574,9 +574,9 @@ describe("App.vue", () => {
       name: "showPrompt",
     });
     expect(registerMethodSpy).toHaveBeenCalledWith({
-      func: wrapper.vm.generatorInstall,
+      func: wrapper.vm.generatorProgress,
       thisArg: wrapper.vm,
-      name: "generatorInstall",
+      name: "generatorProgress",
     });
     expect(registerMethodSpy).toHaveBeenCalledWith({
       func: wrapper.vm.generatorDone,
@@ -965,6 +965,83 @@ describe("App.vue", () => {
       wrapper.vm.generatorInstall();
 
       expect(wrapper.vm.isDone).toBeTruthy();
+    });
+  });
+
+  describe("generatorProgress - method", () => {
+    it("updates notification with project name and phase message for writing phase", () => {
+      wrapper = initComponent(App, {}, false, ["vscode-textfield"]);
+
+      wrapper.vm.prompts = [{}, {}];
+      wrapper.vm.promptIndex = 1;
+      wrapper.vm.currentPrompt.status = "pending";
+
+      wrapper.vm.generatorProgress("testProject", "writing");
+
+      expect(wrapper.vm.currentPrompt.name).toBe("Generating testProject");
+      expect(wrapper.vm.doneMessage).toBe("Creating project files...");
+      expect(wrapper.vm.isDone).toBeTruthy();
+      expect(wrapper.vm.doneStatus).toBeTruthy();
+    });
+
+    it("updates notification with project name and phase message for install phase", () => {
+      wrapper = initComponent(App, {}, false, ["vscode-textfield"]);
+
+      wrapper.vm.prompts = [{}, {}];
+      wrapper.vm.promptIndex = 1;
+      wrapper.vm.currentPrompt.status = "pending";
+
+      wrapper.vm.generatorProgress("myApp", "install");
+
+      expect(wrapper.vm.currentPrompt.name).toBe("Generating myApp");
+      expect(wrapper.vm.doneMessage).toBe("Installing dependencies...");
+      expect(wrapper.vm.isDone).toBeTruthy();
+      expect(wrapper.vm.doneStatus).toBeTruthy();
+    });
+
+    it("updates notification with project name and phase message for end phase", () => {
+      wrapper = initComponent(App, {}, false, ["vscode-textfield"]);
+
+      wrapper.vm.prompts = [{}, {}];
+      wrapper.vm.promptIndex = 1;
+      wrapper.vm.currentPrompt.status = "pending";
+
+      wrapper.vm.generatorProgress("finalProject", "end");
+
+      expect(wrapper.vm.currentPrompt.name).toBe("Generating finalProject");
+      expect(wrapper.vm.doneMessage).toBe("Finalising...");
+      expect(wrapper.vm.isDone).toBeTruthy();
+      expect(wrapper.vm.doneStatus).toBeTruthy();
+    });
+
+    it("uses default title when no project name provided", () => {
+      wrapper = initComponent(App, {}, false, ["vscode-textfield"]);
+
+      wrapper.vm.prompts = [{}, {}];
+      wrapper.vm.promptIndex = 1;
+      wrapper.vm.currentPrompt.status = "pending";
+
+      wrapper.vm.generatorProgress(undefined, "install");
+
+      expect(wrapper.vm.currentPrompt.name).toBe("Generating");
+      expect(wrapper.vm.doneMessage).toBe("Installing dependencies...");
+      expect(wrapper.vm.isDone).toBeTruthy();
+      expect(wrapper.vm.doneStatus).toBeTruthy();
+    });
+
+    it("uses generic message for unknown phase", () => {
+      wrapper = initComponent(App, {}, false, ["vscode-textfield"]);
+
+      wrapper.vm.prompts = [{}, {}];
+      wrapper.vm.promptIndex = 1;
+      wrapper.vm.currentPrompt.status = "pending";
+
+      wrapper.vm.generatorProgress("testProject", "unknown");
+
+      expect(wrapper.vm.currentPrompt.name).toBe("Generating testProject");
+      expect(wrapper.vm.doneMessage).toBe("Generating...");
+      expect(wrapper.vm.isDone).toBeTruthy();
+      expect(wrapper.vm.doneStatus).toBeTruthy();
     });
   });
 

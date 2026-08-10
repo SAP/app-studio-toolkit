@@ -625,6 +625,29 @@ export default {
       this.doneStatus = true;
       this.isDone = true;
     },
+    generatorProgress(projectName, phase) {
+      // Update UI to show progress notification
+      // Map phases to display messages
+      const phaseMessages = {
+        writing: "Creating project files...",
+        install: "Installing dependencies...",
+        end: "Finalising...",
+      };
+
+      const message = phaseMessages[phase] || "Generating...";
+
+      // Update the prompt name to show progress
+      if (this.currentPrompt) {
+        this.currentPrompt.name = projectName
+          ? `Generating ${projectName}`
+          : "Generating";
+      }
+
+      // Show status message
+      this.doneMessage = message;
+      this.isDone = true;
+      this.doneStatus = true;
+    },
     generatorDone(succeeded, message, targetPath) {
       this.currentPrompt.name = "Summary";
       this.doneMessage = message;
@@ -666,7 +689,7 @@ export default {
       const functions = [
         "showPrompt",
         "setPromptList",
-        "generatorInstall",
+        "generatorProgress",
         "generatorDone",
         "log",
         "updateGeneratorsPrompt",
