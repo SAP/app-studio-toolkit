@@ -1,0 +1,44 @@
+{
+  "name": "@sap-devx/vsix-zst",
+  "version": "0.0.1",
+  "description": "Repackage VSIX archives as Zstandard-compressed TAR files",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=22.15"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/app-studio-toolkit",
+    "directory": "packages/vsix-zst"
+  },
+  "bin": {
+    "vsix-zst": "./dist/src/cli.js"
+  },
+  "files": [
+    ".reuse",
+    "LICENSES",
+    "README.md",
+    "CHANGELOG.md",
+    "dist/src/**/*.js",
+    "dist/src/**/*.js.map",
+    "dist/src/**/*.d.ts"
+  ],
+  "scripts": {
+    "ci": "npm-run-all clean compile test:e2e",
+    "clean": "rimraf ./dist ./coverage ./.nyc_output",
+    "compile": "tsc -p ./",
+    "test": "pnpm run test:e2e",
+    "test:e2e": "mocha"
+  },
+  "dependencies": {
+    "commander": "15.0.0",
+    "tar-stream": "3.2.0",
+    "yauzl": "3.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.1",
+    "@types/tar-stream": "3.1.4",
+    "@types/yauzl": "3.4.0",
+    "fflate": "0.8.3"
+  }
+}

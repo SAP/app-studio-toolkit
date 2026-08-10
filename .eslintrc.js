@@ -86,6 +86,13 @@ module.exports = {
       },
     },
     {
+      // Use this package's tsconfig so type-aware linting sees its newer (@types/node) typings.
+      files: ["packages/vsix-zst/**/*.ts"],
+      parserOptions: {
+        project: ["./packages/vsix-zst/tsconfig.json"],
+      },
+    },
+    {
       // These packages pre-date strict type-checked linting and have many existing violations.
       // Rules are relaxed to match the historical behaviour before the ESLint crash was fixed.
       // TODO: clean up violations and tighten these rules incrementally.
