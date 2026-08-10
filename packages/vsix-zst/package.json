@@ -1,6 +1,6 @@
 {
   "name": "@sap-devx/vsix-zst",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Repackage VSIX archives as Zstandard-compressed TAR files",
   "license": "Apache-2.0",
   "engines": {
