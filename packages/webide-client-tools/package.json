@@ -11,7 +11,7 @@
     "connect": "3.7.0",
     "fs-extra": "10.0.0",
     "glob": "11.1.0",
-    "http-proxy-middleware": "2.0.9",
+    "http-proxy-middleware": "2.0.10",
     "js-string-escape": "1.0.1",
     "lodash": "4.18.1",
     "optional-require": "1.1.8",
