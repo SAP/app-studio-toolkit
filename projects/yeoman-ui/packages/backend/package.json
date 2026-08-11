@@ -221,7 +221,7 @@
     "spdx-license-ids": "^3.0.20",
     "terser": "^5.48.0",
     "ts-node": "^10.9.2",
-    "ws": "8.17.1",
+    "ws": "8.20.1",
     "yeoman-generator-v3": "npm:yeoman-generator@3.2.0",
     "yeoman-generator-v4": "npm:yeoman-generator@4.13.0",
     "yeoman-generator-v5": "npm:yeoman-generator@5.10.0",
