@@ -1,0 +1,24 @@
+{
+  "name": "@vscode-logging/types",
+  "version": "2.0.8",
+  "description": "Common Type Signatures for @vscode-logging/logger",
+  "keywords": [
+    "vscode",
+    "logger"
+  ],
+  "files": [
+    ".reuse",
+    "LICENSES",
+    "api.d.ts"
+  ],
+  "repository": "https://github.com/SAP/vscode-logging/",
+  "license": "Apache-2.0",
+  "typings": "./api.d.ts",
+  "scripts": {
+    "ci": "npm-run-all type-check",
+    "type-check": "tsc"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
