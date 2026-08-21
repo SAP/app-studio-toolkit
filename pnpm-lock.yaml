@@ -570,6 +570,38 @@ importers:
         specifier: 27.5.1
         version: 27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@25.9.1)(typescript@5.7.3))(utf-8-validate@5.0.10)
 
+  projects/vscode-logging/examples/extension:
+    dependencies:
+      '@vscode-logging/library-example':
+        specifier: workspace:*
+        version: link:../library
+      '@vscode-logging/logger':
+        specifier: workspace:^
+        version: link:../../packages/logger
+    devDependencies:
+      '@types/vscode':
+        specifier: ^1.32.0
+        version: 1.75.0
+
+  projects/vscode-logging/examples/extension-wrapper:
+    dependencies:
+      '@vscode-logging/wrapper':
+        specifier: workspace:^
+        version: link:../../packages/wrapper
+    devDependencies:
+      '@types/vscode':
+        specifier: ^1.52.0
+        version: 1.75.0
+      '@vscode-logging/types':
+        specifier: workspace:^
+        version: link:../../packages/types
+
+  projects/vscode-logging/examples/library:
+    devDependencies:
+      '@vscode-logging/types':
+        specifier: workspace:^
+        version: link:../../packages/types
+
   projects/vscode-logging/packages/logger:
     dependencies:
       '@vscode-logging/types':
