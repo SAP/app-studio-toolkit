@@ -11,7 +11,7 @@ const expect = chai.expect;
 
 const TESTS_LOG_PATH = resolve(__dirname, ".log-out");
 
-describe("VSCode Extension Logger", function() {
+describe("VSCode Extension Logger", function () {
   let vsCodeStub;
   /**
    * @type {typeof import("../api").getExtensionLogger}
@@ -22,7 +22,7 @@ describe("VSCode Extension Logger", function() {
   beforeEach(() => {
     streamRollerStub = new StreamRollerStub();
     const mainModuleStubbed = proxyquire("../lib/api.js", {
-      streamroller: streamRollerStub
+      streamroller: streamRollerStub,
     });
     getExtensionLogger = mainModuleStubbed.getExtensionLogger;
     errSpy = sinon.spy(console, "error");
@@ -30,18 +30,18 @@ describe("VSCode Extension Logger", function() {
     logSpy = sinon.spy(console, "log");
   });
 
-  afterEach(function() {
+  afterEach(function () {
     console.error.restore();
     console.warn.restore();
     console.log.restore();
   });
 
-  describe("Console Logging - check that the output stream match the message type and log level - error/warn/info and stdout/stderr", function() {
-    it("should log to console in info level", function() {
+  describe("Console Logging - check that the output stream match the message type and log level - error/warn/info and stdout/stderr", function () {
+    it("should log to console in info level", function () {
       const extLogger = getExtensionLogger({
         extName: "MyExtName",
         level: "info",
-        logConsole: true
+        logConsole: true,
       });
       extLogger.fatal("Oy Vey!");
       extLogger.error("Oh Dear...");
@@ -55,11 +55,11 @@ describe("VSCode Extension Logger", function() {
       expect(logSpy.args[0][0]).to.include("Oh Wow...");
     });
 
-    it("should log to console in error level", function() {
+    it("should log to console in error level", function () {
       const extLogger = getExtensionLogger({
         extName: "MyExtName",
         level: "error",
-        logConsole: true
+        logConsole: true,
       });
       extLogger.fatal("Oy Vey!");
       extLogger.error("Oh Dear...");
@@ -72,11 +72,11 @@ describe("VSCode Extension Logger", function() {
       expect(errSpy.args[1][0]).to.include("Oh Dear...");
     });
 
-    it("should log to console in warn level", function() {
+    it("should log to console in warn level", function () {
       const extLogger = getExtensionLogger({
         extName: "MyExtName",
         level: "warn",
-        logConsole: true
+        logConsole: true,
       });
       extLogger.warn("Oy Might...");
       extLogger.error("Oh Dear...");
@@ -89,11 +89,11 @@ describe("VSCode Extension Logger", function() {
       expect(warnSpy.args[0][0]).to.include("Oy Might...");
     });
 
-    it("should not log to console when consoleOutput is false", function() {
+    it("should not log to console when consoleOutput is false", function () {
       const extLogger = getExtensionLogger({
         extName: "MyExtName",
         logPath: TESTS_LOG_PATH,
-        level: "info"
+        level: "info",
       });
       extLogger.fatal("Oy Vey!");
       extLogger.info("Oy Wow!");

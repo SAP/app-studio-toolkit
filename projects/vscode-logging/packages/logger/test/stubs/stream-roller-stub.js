@@ -20,5 +20,5 @@ class StreamRollerStub {
 }
 
 module.exports = {
-  StreamRollerStub: StreamRollerStub
+  StreamRollerStub: StreamRollerStub,
 };

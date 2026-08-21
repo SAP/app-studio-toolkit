@@ -3,7 +3,7 @@ import {
   ConfigurationChangeEvent,
   Disposable,
   ExtensionContext,
-  WorkspaceConfiguration
+  WorkspaceConfiguration,
 } from "vscode";
 import { LogLevel } from "@vscode-logging/logger";
 import { IChildLogger, IVSCodeExtLogger } from "@vscode-logging/types";
@@ -44,7 +44,7 @@ describe("The `listenToLogSettingsChanges` utility function", () => {
       warn(): void {},
       info(): void {},
       debug(): void {},
-      trace(): void {}
+      trace(): void {},
     };
 
     loggingLevelProp = "my_vscode_ext.loggingLevel";
@@ -56,19 +56,19 @@ describe("The `listenToLogSettingsChanges` utility function", () => {
     before(() => {
       const settingsMap = new Map<string, string | boolean>([
         [loggingLevelProp, "info"],
-        [sourceLocationProp, true]
+        [sourceLocationProp, true],
       ]);
       // don't worry be happy (or unknown)...
-      getConfiguration = _ =>
-        (settingsMap as unknown) as WorkspaceConfiguration;
+      getConfiguration = (_) =>
+        settingsMap as unknown as WorkspaceConfiguration;
 
-      onDidChangeConfiguration = function(
+      onDidChangeConfiguration = function (
         cb: (e: ConfigurationChangeEvent) => void
       ): Disposable {
         const e: ConfigurationChangeEvent = {
           affectsConfiguration(): boolean {
             return true;
-          }
+          },
         };
         cb(e);
         return { dispose(): any {} };
@@ -84,7 +84,7 @@ describe("The `listenToLogSettingsChanges` utility function", () => {
         logger,
         logPath,
         onDidChangeConfiguration,
-        subscriptions
+        subscriptions,
       });
       expect(currentLogLevel).to.equal("info");
     });
@@ -98,7 +98,7 @@ describe("The `listenToLogSettingsChanges` utility function", () => {
         logger,
         logPath,
         onDidChangeConfiguration,
-        subscriptions
+        subscriptions,
       });
       expect(currentSourceLocationTracking).to.be.true;
     });
@@ -108,19 +108,19 @@ describe("The `listenToLogSettingsChanges` utility function", () => {
     before(() => {
       const settingsMap = new Map<string, string | number>([
         ["someOtherProp", "blue"],
-        ["someOtherProp2", 666]
+        ["someOtherProp2", 666],
       ]);
       // don't worry be happy (or unknown)...
-      getConfiguration = _ =>
-        (settingsMap as unknown) as WorkspaceConfiguration;
+      getConfiguration = (_) =>
+        settingsMap as unknown as WorkspaceConfiguration;
 
-      onDidChangeConfiguration = function(
+      onDidChangeConfiguration = function (
         cb: (e: ConfigurationChangeEvent) => void
       ): Disposable {
         const e: ConfigurationChangeEvent = {
           affectsConfiguration(): boolean {
             return false;
-          }
+          },
         };
         cb(e);
         return { dispose(): any {} };
@@ -136,7 +136,7 @@ describe("The `listenToLogSettingsChanges` utility function", () => {
         logger,
         logPath,
         onDidChangeConfiguration,
-        subscriptions
+        subscriptions,
       });
       expect(currentLogLevel).to.equal("error");
     });
@@ -150,7 +150,7 @@ describe("The `listenToLogSettingsChanges` utility function", () => {
         logger,
         logPath,
         onDidChangeConfiguration,
-        subscriptions
+        subscriptions,
       });
       expect(currentSourceLocationTracking).to.be.false;
     });

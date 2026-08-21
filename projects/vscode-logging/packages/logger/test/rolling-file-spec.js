@@ -21,7 +21,7 @@ describe("VSCode Extension Logger", () => {
     beforeEach(() => {
       streamRollerStub = new StreamRollerStub();
       const mainModuleStubbed = proxyquire("../lib/api.js", {
-        streamroller: streamRollerStub
+        streamroller: streamRollerStub,
       });
       getExtensionLogger = mainModuleStubbed.getExtensionLogger;
     });
@@ -30,7 +30,7 @@ describe("VSCode Extension Logger", () => {
       const extLogger = getExtensionLogger({
         extName: "MyExtName",
         logPath: TESTS_LOG_PATH,
-        level: "error"
+        level: "error",
       });
       extLogger.fatal("Oy Vey!");
       extLogger.error("Oh Dear...");
@@ -42,13 +42,13 @@ describe("VSCode Extension Logger", () => {
           {
             label: "MyExtName",
             level: "fatal",
-            message: "Oy Vey!"
+            message: "Oy Vey!",
           },
           {
             label: "MyExtName",
             level: "error",
-            message: "Oh Dear..."
-          }
+            message: "Oh Dear...",
+          },
         ]);
     });
 
@@ -57,7 +57,7 @@ describe("VSCode Extension Logger", () => {
         extName: "MyExtName",
         sourceLocationTracking: true,
         logPath: TESTS_LOG_PATH,
-        level: "error"
+        level: "error",
       });
       extLogger.fatal("Oy Vey!");
       const logEntries = map(streamRollerStub.lines, JSON.parse);

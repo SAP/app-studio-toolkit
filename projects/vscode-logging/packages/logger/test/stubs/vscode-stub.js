@@ -9,13 +9,13 @@ class VSCodeStub {
       show: () => {
         that.shown = true;
       },
-      appendLine: txt => {
+      appendLine: (txt) => {
         that.lines.push(txt);
-      }
+      },
     };
   }
 }
 
 module.exports = {
-  VSCodeStub: VSCodeStub
+  VSCodeStub: VSCodeStub,
 };

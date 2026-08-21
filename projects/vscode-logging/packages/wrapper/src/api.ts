@@ -20,6 +20,6 @@ export function configureLogger(opts: {
   return configureLoggerInternal({
     ...opts,
     getConfiguration: workspace.getConfiguration,
-    onDidChangeConfiguration: workspace.onDidChangeConfiguration
+    onDidChangeConfiguration: workspace.onDidChangeConfiguration,
   });
 }

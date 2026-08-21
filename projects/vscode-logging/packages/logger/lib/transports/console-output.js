@@ -35,5 +35,5 @@ class ConsoleTransport extends Transport {
 }
 
 module.exports = {
-  ConsoleTransport: ConsoleTransport
+  ConsoleTransport: ConsoleTransport,
 };

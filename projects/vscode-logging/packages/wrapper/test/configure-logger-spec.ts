@@ -26,7 +26,7 @@ describe("The `configureLogger` main wrapper utility function", () => {
         loggedLines.push(JSON.parse(value));
       },
       dispose(): void {},
-      show(): void {}
+      show(): void {},
     };
 
     // we are not testing configuration changes in this spec, these will be tested
@@ -40,23 +40,23 @@ describe("The `configureLogger` main wrapper utility function", () => {
     configLogLevel = "debug";
     const settingsMap = new Map<string, string | boolean>([
       [loggingLevelProp, configLogLevel],
-      [sourceLocationProp, false]
+      [sourceLocationProp, false],
     ]);
     // don't worry be happy (or unknown)...
-    getConfiguration = _ => (settingsMap as unknown) as WorkspaceConfiguration;
+    getConfiguration = (_) => settingsMap as unknown as WorkspaceConfiguration;
   });
 
   function configureLoggerHelper(): IChildLogger {
     return configureLoggerInternal({
       extName: "my_vscode_ext",
       // only logging "in memory" during our test.
-      logPath: (undefined as unknown) as string,
+      logPath: undefined as unknown as string,
       loggingLevelProp: "my_vscode_ext.loggingLevel",
       sourceLocationProp: "my_vscode_ext.sourceLocationTracking",
       logOutputChannel: outputChannelMock,
       subscriptions,
       getConfiguration,
-      onDidChangeConfiguration
+      onDidChangeConfiguration,
     });
   }
 

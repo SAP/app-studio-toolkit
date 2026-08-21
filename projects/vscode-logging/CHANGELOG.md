@@ -3,7 +3,6 @@
 > **Note:** This is the historic changelog from before vscode-logging was integrated into the app-studio-toolkit monorepo.
 > Going forward, changes are tracked in the individual package changelogs under [`packages/`](./packages/).
 
-
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 

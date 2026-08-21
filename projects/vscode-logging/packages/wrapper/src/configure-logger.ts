@@ -4,11 +4,11 @@ import { IVSCodeExtLogger } from "@vscode-logging/types";
 import { ConfigureLoggerOpts } from "../api";
 import {
   getLoggingLevelSetting,
-  getSourceLocationTrackingSetting
+  getSourceLocationTrackingSetting,
 } from "./settings";
 import {
   listenToLogSettingsChanges,
-  logLoggerDetails
+  logLoggerDetails,
 } from "./settings-changes-handler";
 
 export type ConfigureLoggerDIOpts = {
@@ -32,12 +32,12 @@ export function configureLoggerInternal(
 ): IVSCodeExtLogger {
   const logLevelSetting = getLoggingLevelSetting({
     getConfiguration: opts.getConfiguration,
-    loggingLevelProp: opts.loggingLevelProp
+    loggingLevelProp: opts.loggingLevelProp,
   });
 
   const sourceLocationTrackingSettings = getSourceLocationTrackingSetting({
     getConfiguration: opts.getConfiguration,
-    sourceLocationProp: opts.sourceLocationProp
+    sourceLocationProp: opts.sourceLocationProp,
   });
 
   const extensionLogger = getExtensionLogger({
@@ -46,13 +46,13 @@ export function configureLoggerInternal(
     logPath: opts.logPath,
     sourceLocationTracking: sourceLocationTrackingSettings,
     logConsole: opts.logConsole,
-    logOutputChannel: opts.logOutputChannel
+    logOutputChannel: opts.logOutputChannel,
   });
 
   logLoggerDetails({
     logger: extensionLogger,
     logPath: opts.logPath,
-    logLevel: logLevelSetting
+    logLevel: logLevelSetting,
   });
 
   listenToLogSettingsChanges({
@@ -62,7 +62,7 @@ export function configureLoggerInternal(
     loggingLevelProp: opts.loggingLevelProp,
     sourceLocationProp: opts.sourceLocationProp,
     logger: extensionLogger,
-    logPath: opts.logPath
+    logPath: opts.logPath,
   });
 
   return extensionLogger;

@@ -11,7 +11,7 @@ describe("VSCode Extension Logger", () => {
       expect(() => {
         getExtensionLogger({
           extName: "MyExtName",
-          level: "error"
+          level: "error",
         });
       }).to.throw("logOutputChannel, logPath and logConsole");
     });

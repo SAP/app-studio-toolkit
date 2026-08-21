@@ -16,7 +16,7 @@ describe("VSCode Extension Logger", () => {
     beforeEach(() => {
       vsCodeStub = new VSCodeStub();
       const mainModuleStubbed = proxyquire("../lib/api.js", {
-        vscode: vsCodeStub
+        vscode: vsCodeStub,
       });
       getExtensionLogger = mainModuleStubbed.getExtensionLogger;
     });
@@ -25,7 +25,7 @@ describe("VSCode Extension Logger", () => {
       const extLogger = getExtensionLogger({
         extName: "MyExtName",
         logOutputChannel: vsCodeStub.OutputChannel,
-        level: "error"
+        level: "error",
       });
       extLogger.fatal("Oy Vey!");
       extLogger.error("Oh Dear...");
@@ -37,13 +37,13 @@ describe("VSCode Extension Logger", () => {
           {
             label: "MyExtName",
             level: "fatal",
-            message: "Oy Vey!"
+            message: "Oy Vey!",
           },
           {
             label: "MyExtName",
             level: "error",
-            message: "Oh Dear..."
-          }
+            message: "Oh Dear...",
+          },
         ]);
     });
 
@@ -52,7 +52,7 @@ describe("VSCode Extension Logger", () => {
         extName: "MyExtName",
         sourceLocationTracking: true,
         logOutputChannel: vsCodeStub.OutputChannel,
-        level: "error"
+        level: "error",
       });
       extLogger.fatal("Oh dear");
       const logEntries = map(vsCodeStub.lines, JSON.parse);
@@ -76,7 +76,7 @@ describe("VSCode Extension Logger", () => {
             extName: "MyExtName",
             sourceLocationTracking: true,
             logOutputChannel: vsCodeStub.OutputChannel,
-            level: "warn"
+            level: "warn",
           });
           expect(vsCodeStub.shown).to.be.true;
         });
@@ -85,7 +85,7 @@ describe("VSCode Extension Logger", () => {
           const extLogger = getExtensionLogger({
             extName: "MyExtName",
             logOutputChannel: vsCodeStub.OutputChannel,
-            level: "error"
+            level: "error",
           });
           expect(vsCodeStub.shown).to.be.false;
           extLogger.changeSourceLocationTracking(true);

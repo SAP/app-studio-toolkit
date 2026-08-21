@@ -13,7 +13,7 @@ export const NOOP_LOGGER: IVSCodeExtLogger = {
   },
   info: noop,
   trace: noop,
-  warn: noop
+  warn: noop,
 };
 
 Object.freeze(NOOP_LOGGER);

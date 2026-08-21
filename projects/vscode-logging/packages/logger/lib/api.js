@@ -16,7 +16,7 @@ const { RollingFileStream } = require("streamroller");
 const { buildLoggerFormat } = require("./format");
 const { VSCodeExtLogger } = require("./logger");
 const {
-  VscodeOutChannelTransport
+  VscodeOutChannelTransport,
 } = require("./transports/vscode-out-channel");
 const { RollingFileTransport } = require("./transports/rolling-file");
 const { levelsConfig, isValidLogLevel, levels } = require("./levels");
@@ -53,7 +53,7 @@ function getExtensionLogger(opts) {
   if (opts.logOutputChannel) {
     transports.push(
       new VscodeOutChannelTransport({
-        outChannel: opts.logOutputChannel
+        outChannel: opts.logOutputChannel,
       })
     );
   }
@@ -63,7 +63,7 @@ function getExtensionLogger(opts) {
       new RollingFileTransport({
         logPath: opts.logPath,
         extName: opts.extName,
-        RollingFileStream: RollingFileStream
+        RollingFileStream: RollingFileStream,
       })
     );
   }
@@ -76,7 +76,7 @@ function getExtensionLogger(opts) {
     // - Winston does not have a minimal API to change **only** the level...
     level: levels.trace,
     format: format,
-    transports: transports
+    transports: transports,
   });
 
   return new VSCodeExtLogger({
@@ -85,7 +85,7 @@ function getExtensionLogger(opts) {
     loggerImpel: rootWinstonLogger,
     outChannel: opts.logOutputChannel,
     sourceLocationTracking: opts.sourceLocationTracking,
-    consoleOutput: opts.logConsole
+    consoleOutput: opts.logConsole,
   });
 }
 
@@ -94,7 +94,7 @@ function getExtensionLogger(opts) {
  * @type {typeof import("../api")}
  */
 const publicApi = {
-  getExtensionLogger: getExtensionLogger
+  getExtensionLogger: getExtensionLogger,
 };
 
 module.exports = publicApi;

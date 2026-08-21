@@ -2,7 +2,7 @@ import { LogLevel } from "@vscode-logging/types";
 import { ListenToLogSettingsOpts, LogLoggerDetailsOpts } from "./helper-types";
 import {
   getLoggingLevelSetting,
-  getSourceLocationTrackingSetting
+  getSourceLocationTrackingSetting,
 } from "./settings";
 
 export function logLoggerDetails(opts: LogLoggerDetailsOpts): void {
@@ -14,31 +14,30 @@ export function listenToLogSettingsChanges(
   opts: ListenToLogSettingsOpts
 ): void {
   opts.subscriptions.push(
-    opts.onDidChangeConfiguration(e => {
+    opts.onDidChangeConfiguration((e) => {
       if (e.affectsConfiguration(opts.loggingLevelProp)) {
         const logLevel: LogLevel = getLoggingLevelSetting({
           loggingLevelProp: opts.loggingLevelProp,
-          getConfiguration: opts.getConfiguration
+          getConfiguration: opts.getConfiguration,
         });
         opts.logger.changeLevel(logLevel);
         logLoggerDetails({
           logger: opts.logger,
           logPath: opts.logPath,
-          logLevel
+          logLevel,
         });
       }
     })
   );
 
   opts.subscriptions.push(
-    opts.onDidChangeConfiguration(e => {
+    opts.onDidChangeConfiguration((e) => {
       if (e.affectsConfiguration(opts.sourceLocationProp)) {
-        const newSourceLocationTracking: boolean = getSourceLocationTrackingSetting(
-          {
+        const newSourceLocationTracking: boolean =
+          getSourceLocationTrackingSetting({
             sourceLocationProp: opts.sourceLocationProp,
-            getConfiguration: opts.getConfiguration
-          }
-        );
+            getConfiguration: opts.getConfiguration,
+          });
         opts.logger.changeSourceLocationTracking(newSourceLocationTracking);
       }
     })

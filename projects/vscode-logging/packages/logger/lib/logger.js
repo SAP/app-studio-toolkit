@@ -50,8 +50,8 @@ class BaseLogger {
       label: newLabel,
       sourceLocationTracking: this[SOURCE_LOCATION_TRACKING],
       consoleOutput: this[CONSOLE_OUTPUT],
-      level: findKey(levelsConfig, val => val === this[LEVEL_INT]),
-      loggerImpel: this[LOGGER_IMPEL]
+      level: findKey(levelsConfig, (val) => val === this[LEVEL_INT]),
+      loggerImpel: this[LOGGER_IMPEL],
     });
 
     this[CHILD_LOGGERS].set(newLabel, newChildLoggerImpel);
@@ -111,28 +111,28 @@ class BaseLogger {
 }
 
 // private methods using Symbols to hide it, need to be added directly on the prototype
-BaseLogger.prototype[CHANGE_LEVEL] = function(newLevel) {
+BaseLogger.prototype[CHANGE_LEVEL] = function (newLevel) {
   this[LEVEL_INT] = levelsConfig[newLevel];
   // @ts-ignore
-  forEach([...this[CHILD_LOGGERS].values()], childLogger => {
+  forEach([...this[CHILD_LOGGERS].values()], (childLogger) => {
     // Recursive Call
     childLogger[CHANGE_LEVEL](newLevel);
   });
 };
 
 // private methods using Symbols to hide it, need to be added directly on the prototype
-BaseLogger.prototype[CHANGE_SOURCE_LOCATION_TRACKING] = function(
+BaseLogger.prototype[CHANGE_SOURCE_LOCATION_TRACKING] = function (
   isSourceLocTrack
 ) {
   this[SOURCE_LOCATION_TRACKING] = isSourceLocTrack;
   // @ts-ignore
-  forEach([...this[CHILD_LOGGERS].values()], childLogger => {
+  forEach([...this[CHILD_LOGGERS].values()], (childLogger) => {
     // Recursive Call
     childLogger[CHANGE_SOURCE_LOCATION_TRACKING](isSourceLocTrack);
   });
 };
 
-BaseLogger.prototype[ADD_SOURCE_LOCATION_INFO] = function(args) {
+BaseLogger.prototype[ADD_SOURCE_LOCATION_INFO] = function (args) {
   if (this[SOURCE_LOCATION_TRACKING] === true) {
     const stack = stacktrace.getSync();
     // we need to go 2 levels up the stack to get to the end user's code
@@ -142,8 +142,8 @@ BaseLogger.prototype[ADD_SOURCE_LOCATION_INFO] = function(args) {
     args.push({
       source: {
         function: userFrame.functionName,
-        location: sourceLocMsg
-      }
+        location: sourceLocMsg,
+      },
     });
   }
 };
@@ -184,7 +184,7 @@ class VSCodeExtLogger extends BaseLogger {
 }
 
 // private method using Symbols to hide it, need to be added directly on the prototype
-VSCodeExtLogger.prototype[WARN_IF_LOCATION_TRACKING_IS_ENABLED] = function() {
+VSCodeExtLogger.prototype[WARN_IF_LOCATION_TRACKING_IS_ENABLED] = function () {
   if (this[SOURCE_LOCATION_TRACKING] === true) {
     this.fatal(
       "SourceLocationTracking is Enabled, This must only be used during debugging flows as it causes performance regressions"
@@ -197,5 +197,5 @@ VSCodeExtLogger.prototype[WARN_IF_LOCATION_TRACKING_IS_ENABLED] = function() {
 };
 
 module.exports = {
-  VSCodeExtLogger: VSCodeExtLogger
+  VSCodeExtLogger: VSCodeExtLogger,
 };

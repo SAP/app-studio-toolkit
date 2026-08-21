@@ -7,7 +7,7 @@ const levelsConfig = {
   warn: 2,
   info: 3,
   debug: 4,
-  trace: 5
+  trace: 5,
 };
 
 const logLevelsKeys = mapValues(levelsConfig, (val, key) => key);
@@ -17,5 +17,5 @@ const isValidLogLevel = partial(includes, keys(levelsConfig));
 module.exports = {
   levelsConfig: levelsConfig,
   levels: logLevelsKeys,
-  isValidLogLevel: isValidLogLevel
+  isValidLogLevel: isValidLogLevel,
 };

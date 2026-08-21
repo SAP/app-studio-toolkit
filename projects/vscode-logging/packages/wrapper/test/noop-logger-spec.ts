@@ -5,7 +5,7 @@ import { noop, NOOP_LOGGER } from "../src/noop-logger";
 describe("The no-operation logger", () => {
   const noopFuncProps = difference(keys(NOOP_LOGGER), ["getChildLogger"]);
 
-  forEach(noopFuncProps, funcPropName => {
+  forEach(noopFuncProps, (funcPropName) => {
     it(`exposes a no operation method for <${funcPropName}>`, () => {
       // @ts-expect-error -- runtime reflection
       expect(NOOP_LOGGER[funcPropName]).to.eql(noop);

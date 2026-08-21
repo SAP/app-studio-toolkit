@@ -1,7 +1,7 @@
 import {
   IChildLogger,
   IVSCodeExtLogger,
-  LogLevel
+  LogLevel,
 } from "@vscode-logging/types";
 // importing "vscode" in a **d.ts** files avoids a actual runtime dependency to vscode.
 import { ExtensionContext, workspace } from "vscode";

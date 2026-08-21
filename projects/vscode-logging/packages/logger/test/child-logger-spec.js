@@ -18,7 +18,7 @@ describe("VSCode Extension Logger", () => {
       // in order to test its functionality
       vsCodeStub = new VSCodeStub();
       const mainModuleStubbed = proxyquire("../lib/api.js", {
-        vscode: vsCodeStub
+        vscode: vsCodeStub,
       });
       getExtensionLogger = mainModuleStubbed.getExtensionLogger;
     });
@@ -27,7 +27,7 @@ describe("VSCode Extension Logger", () => {
       const extLogger = getExtensionLogger({
         extName: "MyExtName",
         logOutputChannel: vsCodeStub.OutputChannel,
-        level: "error"
+        level: "error",
       });
 
       const childLogger = extLogger.getChildLogger({ label: "myLibName" });
@@ -40,8 +40,8 @@ describe("VSCode Extension Logger", () => {
           {
             label: "MyExtName.myLibName",
             level: "fatal",
-            message: "Oops I did it again!"
-          }
+            message: "Oops I did it again!",
+          },
         ]);
     });
 
@@ -49,7 +49,7 @@ describe("VSCode Extension Logger", () => {
       const extLogger = getExtensionLogger({
         extName: "MyExtName",
         logOutputChannel: vsCodeStub.OutputChannel,
-        level: "error"
+        level: "error",
       });
 
       const childLogger = extLogger.getChildLogger({ label: "myLibName" });
@@ -68,8 +68,8 @@ describe("VSCode Extension Logger", () => {
           {
             label: "MyExtName.myLibName",
             level: "warn",
-            message: "Oops I did it again!"
-          }
+            message: "Oops I did it again!",
+          },
         ]);
     });
 
@@ -77,12 +77,12 @@ describe("VSCode Extension Logger", () => {
       const extLogger = getExtensionLogger({
         extName: "MyExtName",
         logOutputChannel: vsCodeStub.OutputChannel,
-        level: "info"
+        level: "info",
       });
 
       const childLogger = extLogger.getChildLogger({ label: "myLibName" });
       const grandChildLogger = childLogger.getChildLogger({
-        label: "myClassName"
+        label: "myClassName",
       });
 
       childLogger.warn("Oops I did it again!");
@@ -106,12 +106,12 @@ describe("VSCode Extension Logger", () => {
       const extLogger = getExtensionLogger({
         extName: "MyExtName",
         logOutputChannel: vsCodeStub.OutputChannel,
-        level: "error"
+        level: "error",
       });
 
       const childLogger = extLogger.getChildLogger({ label: "myLibName" });
       const childLoggerSameLabel = extLogger.getChildLogger({
-        label: "myLibName"
+        label: "myLibName",
       });
       expect(childLogger).to.equal(childLoggerSameLabel);
     });
@@ -132,7 +132,7 @@ describe("VSCode Extension Logger", () => {
       const extLogger = getExtensionLogger({
         extName: "MainLoggerExtension",
         logPath: TESTS_LOG_PATH,
-        level: "error"
+        level: "error",
       });
 
       for (
@@ -141,7 +141,7 @@ describe("VSCode Extension Logger", () => {
         childLoggerNumber++
       ) {
         extLogger.getChildLogger({
-          label: "ChildLoggerClass" + childLoggerNumber
+          label: "ChildLoggerClass" + childLoggerNumber,
         });
       }
     }
@@ -188,7 +188,7 @@ describe("VSCode Extension Logger", () => {
         // in order to test its functionality
         vsCodeStub = new VSCodeStub();
         const mainModuleStubbed = proxyquire("../lib/api.js", {
-          vscode: vsCodeStub
+          vscode: vsCodeStub,
         });
         getExtensionLogger = mainModuleStubbed.getExtensionLogger;
       });
@@ -197,7 +197,7 @@ describe("VSCode Extension Logger", () => {
         const extLogger = getExtensionLogger({
           extName: "MyExtName",
           logOutputChannel: vsCodeStub.OutputChannel,
-          level: "trace"
+          level: "trace",
         });
 
         const classLogger = extLogger.getChildLogger({ label: "myClassName" });
@@ -210,8 +210,8 @@ describe("VSCode Extension Logger", () => {
             {
               label: "MyExtName.myClassName",
               level: "fatal",
-              message: "Oops I did it again!"
-            }
+              message: "Oops I did it again!",
+            },
           ]);
       });
 
@@ -219,7 +219,7 @@ describe("VSCode Extension Logger", () => {
         const extLogger = getExtensionLogger({
           extName: "MyExtName",
           logOutputChannel: vsCodeStub.OutputChannel,
-          level: "trace"
+          level: "trace",
         });
 
         const libLogger = extLogger.getChildLogger({ label: "myLibName" });
@@ -234,8 +234,8 @@ describe("VSCode Extension Logger", () => {
             {
               label: "MyExtName.myLibName.myClassName",
               level: "error",
-              message: "Oops I did it again!"
-            }
+              message: "Oops I did it again!",
+            },
           ]);
       });
 
@@ -243,7 +243,7 @@ describe("VSCode Extension Logger", () => {
         const extLogger = getExtensionLogger({
           extName: "MyExtName",
           logOutputChannel: vsCodeStub.OutputChannel,
-          level: "trace"
+          level: "trace",
         });
 
         const lib1Logger = extLogger.getChildLogger({ label: "myLib1Name" });
@@ -258,8 +258,8 @@ describe("VSCode Extension Logger", () => {
             {
               label: "MyExtName.myLib1Name.myLib2Name.myClassName",
               level: "warn",
-              message: "Oops I did it again!"
-            }
+              message: "Oops I did it again!",
+            },
           ]);
       });
 
@@ -267,7 +267,7 @@ describe("VSCode Extension Logger", () => {
         const extLogger = getExtensionLogger({
           extName: "MyExtName",
           logOutputChannel: vsCodeStub.OutputChannel,
-          level: "trace"
+          level: "trace",
         });
 
         const lib1Logger = extLogger.getChildLogger({ label: "myLib1Name" });
@@ -283,15 +283,15 @@ describe("VSCode Extension Logger", () => {
             {
               label: "MyExtName.myLib1Name.myLib2Name.myLib3Name.myClassName",
               level: "info",
-              message: "Oops I did it again!"
-            }
+              message: "Oops I did it again!",
+            },
           ]);
       });
       it("in debug log message for extension internal library class", () => {
         const extLogger = getExtensionLogger({
           extName: "MyExtName",
           logOutputChannel: vsCodeStub.OutputChannel,
-          level: "trace"
+          level: "trace",
         });
 
         const lib1Logger = extLogger.getChildLogger({ label: "myLib1Name" });
@@ -309,15 +309,15 @@ describe("VSCode Extension Logger", () => {
               label:
                 "MyExtName.myLib1Name.myLib2Name.myLib3Name.myLib4Name.myClassName",
               level: "debug",
-              message: "Oops I did it again!"
-            }
+              message: "Oops I did it again!",
+            },
           ]);
       });
       it("in trace log message for extension internal library class", () => {
         const extLogger = getExtensionLogger({
           extName: "MyExtName",
           logOutputChannel: vsCodeStub.OutputChannel,
-          level: "trace"
+          level: "trace",
         });
 
         const lib1Logger = extLogger.getChildLogger({ label: "myLib1Name" });
@@ -336,8 +336,8 @@ describe("VSCode Extension Logger", () => {
               label:
                 "MyExtName.myLib1Name.myLib2Name.myLib3Name.myLib4Name.myLib5Name.myClassName",
               level: "trace",
-              message: "Oops I did it again!"
-            }
+              message: "Oops I did it again!",
+            },
           ]);
       });
     }

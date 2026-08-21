@@ -44,5 +44,5 @@ class VscodeOutChannelTransport extends Transport {
 }
 
 module.exports = {
-  VscodeOutChannelTransport: VscodeOutChannelTransport
+  VscodeOutChannelTransport: VscodeOutChannelTransport,
 };

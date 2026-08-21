@@ -16,7 +16,7 @@ describe("VSCode Extension Logger", () => {
     // in order to test its functionality
     vsCodeStub = new VSCodeStub();
     const mainModuleStubbed = proxyquire("../lib/api.js", {
-      vscode: vsCodeStub
+      vscode: vsCodeStub,
     });
     getExtensionLogger = mainModuleStubbed.getExtensionLogger;
   });
@@ -27,7 +27,7 @@ describe("VSCode Extension Logger", () => {
         getExtensionLogger({
           extName: "MyExtName",
           logOutputChannel: vsCodeStub.OutputChannel,
-          level: "Emergency" // This is a sysLog severity
+          level: "Emergency", // This is a sysLog severity
         });
       }).to.throw("Attempt to use unknown logging level: <Emergency>!");
     });
@@ -36,7 +36,7 @@ describe("VSCode Extension Logger", () => {
       const extLogger = getExtensionLogger({
         extName: "MyExtName",
         logOutputChannel: vsCodeStub.OutputChannel,
-        level: "fatal"
+        level: "fatal",
       });
 
       extLogger.changeLevel("Emergency");
@@ -56,45 +56,45 @@ describe("VSCode Extension Logger", () => {
   });
 
   context("Specific logging Levels Support", () => {
-    const allLevelsExceptOff = pickBy(levels, levelKey => levelKey !== "off");
+    const allLevelsExceptOff = pickBy(levels, (levelKey) => levelKey !== "off");
 
     const fullExpectedLogEntries = [
       {
         level: "fatal",
-        message: "fatal"
+        message: "fatal",
       },
       {
         level: "error",
-        message: "error"
+        message: "error",
       },
       {
         level: "warn",
-        message: "warn"
+        message: "warn",
       },
       {
         level: "info",
-        message: "info"
+        message: "info",
       },
       {
         level: "debug",
-        message: "debug"
+        message: "debug",
       },
       {
         level: "trace",
-        message: "trace"
-      }
+        message: "trace",
+      },
     ];
 
-    forEach(levels, currLevel => {
+    forEach(levels, (currLevel) => {
       it(`will only log correct levels in '${currLevel}'`, () => {
         const extLogger = getExtensionLogger({
           extName: "MyExtName",
           logOutputChannel: vsCodeStub.OutputChannel,
-          level: currLevel
+          level: currLevel,
         });
 
         // try logging using all the possible levels
-        forEach(allLevelsExceptOff, level => {
+        forEach(allLevelsExceptOff, (level) => {
           extLogger[level](level);
         });
 

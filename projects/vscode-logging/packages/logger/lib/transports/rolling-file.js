@@ -19,7 +19,7 @@ class RollingFileTransport extends Transport {
 
     const actualOpts = defaults(opts, {
       maxFiles: 10,
-      maxFileSize: 1024 * 1024
+      maxFileSize: 1024 * 1024,
     });
 
     // better safe then sorry
@@ -71,5 +71,5 @@ class RollingFileTransport extends Transport {
 }
 
 module.exports = {
-  RollingFileTransport: RollingFileTransport
+  RollingFileTransport: RollingFileTransport,
 };

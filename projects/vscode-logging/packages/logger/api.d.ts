@@ -7,7 +7,7 @@ import { IVSCodeExtLogger, LogLevel } from "@vscode-logging/types";
 export {
   IVSCodeExtLogger,
   IChildLogger,
-  LogLevel
+  LogLevel,
 } from "@vscode-logging/types";
 
 /**

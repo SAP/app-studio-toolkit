@@ -16,7 +16,7 @@ module.exports = {
     // - Implementing a test with proxyquire would not test real VSCode scenarios
     // - The existing `configureLogger` tests are fairly complex and we are better off avoiding duplicating them.
     //   - See: `configure-logger-spec.ts`.
-    "dist/src/api.js"
+    "dist/src/api.js",
   ],
-  excludeAfterRemap: false
+  excludeAfterRemap: false,
 };
