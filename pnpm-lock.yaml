@@ -681,8 +681,8 @@ importers:
         specifier: 1.2.15
         version: 1.2.15
       '@vscode-logging/logger':
-        specifier: 1.2.3
-        version: 1.2.3
+        specifier: 2.0.9
+        version: 2.0.9
       comment-json:
         specifier: 4.1.1
         version: 4.1.1
@@ -3647,17 +3647,11 @@ packages:
   '@vscode-elements/elements@1.11.0':
     resolution: {integrity: sha512-vC1QDaelqERypHinavJbe4Bl4/g66CVJWKFWFXZyp1seBvTxkgscayDTiE//H95V8b75BgLPDAS1y3pbSIKXag==}
 
-  '@vscode-logging/logger@1.2.3':
-    resolution: {integrity: sha512-kQgRjbZmBBUktklaEat8YtTBuddCNRJezjJTk0Y+4VIs49KWjYkfF02GoyiCYASvCSMSqw9bBTQN3ijCO2aq+A==}
-
   '@vscode-logging/logger@2.0.9':
     resolution: {integrity: sha512-Kq7dmziSHej+6yADxoHCZU8Tspf7ucJeNjH+QPMAQlRfT0uaXlh1q5DpWnzSgznWIBrMc7lX82meThDKBxL+oA==}
 
   '@vscode-logging/types@0.1.3':
     resolution: {integrity: sha512-1mV/aMVXpm50PyJ4XYD0qPUREv6QcmPwuDtzdMcKeiXN5Tt/WmnyEHfUxENQr1Aes8Hr+EVtNK4tvrUXXco/5A==}
-
-  '@vscode-logging/types@0.1.4':
-    resolution: {integrity: sha512-uxuHQfpX9RbkgSj5unJFmciXRczyFSaAI2aA829MYYkE8jxlhZLRLoiJLymTNiojNVdV7fFE3CILF5Q6M+EBsA==}
 
   '@vscode-logging/types@2.0.8':
     resolution: {integrity: sha512-9mc5+Iob1BqJ00QExLwdz4+w0A1odSYjvzpKYfP0lVzr7Tdf4iWGspLADyTSC7DtJVQQ+tu411cBju+cYJxE/g==}
@@ -4278,10 +4272,6 @@ packages:
 
   asynckit@0.4.0:
     resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
-
-  at-least-node@1.0.0:
-    resolution: {integrity: sha512-+q/t7Ekv1EDY2l6Gda6LLiX14rU9TV20Wa3ofeQmwPFZbOMo9DXrLbOjFaaclkXKWidIaopwAObQDqwWtGUjqg==}
-    engines: {node: '>= 4.0.0'}
 
   atob@2.1.2:
     resolution: {integrity: sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==}
@@ -5228,11 +5218,6 @@ packages:
     resolution: {integrity: sha512-y17kh32+I82G+ED9MNWFkZiP/Cq/vO1hN9+tSZsT9C9qn3NrvcBnh7crSepg0AQPge1hXx2Ca44s1FRdv0gFWA==}
     engines: {node: '>= 10'}
 
-  date-format@2.1.0:
-    resolution: {integrity: sha512-bYQuGLeFxhkxNOF3rcMtiZxvCBAquGzZm6oWA1oZ0g2THUzivaRhv8uOhdr19LmoobSOLoIAxeUK2RdbM8IFTA==}
-    engines: {node: '>=4.0'}
-    deprecated: 2.x is no longer supported. Please upgrade to 4.x or higher.
-
   date-format@4.0.14:
     resolution: {integrity: sha512-39BOQLs9ZjKh0/patS9nrT8wc3ioX3/eA/zgbKNopnF2wCqJEoxywwwElATYvRsXdnOxA/OQeQoFZ3rFjVajhg==}
     engines: {node: '>=4.0'}
@@ -6103,9 +6088,6 @@ packages:
     resolution: {integrity: sha512-FChq8hbz65WMj4rstcQsFB0O7Cy++nmbNfLYnD9cYv2cRn8EG6k/MGn9kO/tjO66t09DLDugj3yL+V2o6Qftrg==}
     engines: {node: '>=10.0'}
 
-  fast-safe-stringify@2.0.7:
-    resolution: {integrity: sha512-Utm6CdzT+6xsDk2m8S6uL8VHxNwI6Jub+e9NYTcAms28T84pTa25GJQV9j0CY0N1rM8hK4x6grpF2BQf+2qwVA==}
-
   fast-safe-stringify@2.1.1:
     resolution: {integrity: sha512-W+KJc2dmILlPplD/H4K9l9LcAHAfPtP6BY84uVLXQ6Evcz9Lcg33Y2z1IVblT6xdY54PXYVHEv+0Wpq8Io6zkA==}
 
@@ -6357,10 +6339,6 @@ packages:
   fs-extra@8.1.0:
     resolution: {integrity: sha512-yhlQgA6mnOJUKOsRUFsgJdQCvkKhcz8tlZG5HBQfReYZy46OwLcY+Zia0mtdHsOo9y/hP+CxMN0TU9QxoOtG4g==}
     engines: {node: '>=6 <7 || >=8'}
-
-  fs-extra@9.1.0:
-    resolution: {integrity: sha512-hcg3ZmepS30/7BSFqRvoo3DOMQu7IjqxO5nCDt+zM9XWjb33Wg7ziNT+Qvqbuc3+gWpzO02JubVyk2G4Zvo1OQ==}
-    engines: {node: '>=10'}
 
   fs-minipass@2.1.0:
     resolution: {integrity: sha512-V/JgOLFCS+R6Vcq0slCuaeWEdNC3ouDlJMNIsacH2VtALiu9mV4LPrHc5cDl8k5aw6J8jwgWWpiTo5RYhmIzvg==}
@@ -10465,11 +10443,6 @@ packages:
     resolution: {integrity: sha512-eLoXW/DHyl62zxY4SCaIgnRhuMr6ri4juEYARS8E6sCEqzKpOiE521Ucofdx+KnDZl5xmvGYaaKCk5FEOxJCoQ==}
     engines: {node: '>= 0.4'}
 
-  streamroller@2.2.3:
-    resolution: {integrity: sha512-AegmvQsscTRhHVO46PhCDerjIpxi7E+d2GxgUDu+nzw/HuLnUdxHWr6WQ+mVn/4iJgMKKFFdiUwFcFRDvcjCtw==}
-    engines: {node: '>=8.0'}
-    deprecated: 2.x is no longer supported. Please upgrade to 3.x or higher.
-
   streamroller@3.1.5:
     resolution: {integrity: sha512-KFxaM7XT+irxvdqSP1LGLgNWbYN7ay5owZ3r/8t77p+EtSUAfUgtl7be3xtqtOmGUl9K9YPO2ca8133RlTjvKw==}
     engines: {node: '>=8.0'}
@@ -10861,9 +10834,6 @@ packages:
   trim-newlines@1.0.0:
     resolution: {integrity: sha512-Nm4cF79FhSTzrLKGDMi3I4utBtFv8qKy4sq1enftf2gMdpqI8oVQTAfySkTz5r49giVzDj88SVZXP4CeYQwjaw==}
     engines: {node: '>=0.10.0'}
-
-  triple-beam@1.3.0:
-    resolution: {integrity: sha512-XrHUvV5HpdLmIj4uVMxHggLbFSZYIn7HEWsqePZcI50pco+MPqJ50wMGY794X7AOOhxOBAjbkqfAbEe/QMp2Lw==}
 
   triple-beam@1.4.1:
     resolution: {integrity: sha512-aZbgViZrg1QNcG+LULa7nhZpJTZSLm/mXnHXnbAbjmN5aSa0y7V+wvv6+4WaBtpISJzThKy+PIPxc1Nq1EJ9mg==}
@@ -11653,10 +11623,6 @@ packages:
     peerDependencies:
       winston: ^3
 
-  winston-transport@4.3.0:
-    resolution: {integrity: sha512-B2wPuwUi3vhzn/51Uukcao4dIduEiPOcOt9HJ3QeaXgkJ5Z7UwpBzxS4ZGNHtrxrUvTwemsQiSys0ihOf8Mp1A==}
-    engines: {node: '>= 6.4.0'}
-
   winston-transport@4.6.0:
     resolution: {integrity: sha512-wbBA9PbPAHxKiygo7ub7BYRiKxms0tpfU2ljtWzb3SjRjv5yl6Ozuy/TkXf00HTAt+Uylo3gSkNwzc4ME0wiIg==}
     engines: {node: '>= 12.0.0'}
@@ -11672,10 +11638,6 @@ packages:
   winston@3.15.0:
     resolution: {integrity: sha512-RhruH2Cj0bV0WgNL+lOfoUBI4DVfdUNjVnJGVovWZmrcKtrFTTRzgXYK2O9cymSGjrERCtaAeHwMNnUWXlwZow==}
     engines: {node: '>= 12.0.0'}
-
-  winston@3.3.3:
-    resolution: {integrity: sha512-oEXTISQnC8VlSAKf1KYSSd7J6IWuRPQqDdo8eoRNaYKLvwSb5+79Z3Yi1lrl6KDpU6/VWaxpakDAtb1oQ4n9aw==}
-    engines: {node: '>= 6.4.0'}
 
   with-open-file@0.1.7:
     resolution: {integrity: sha512-ecJS2/oHtESJ1t3ZfMI3B7KIDKyfN0O16miWxdn30zdh66Yd3LsRFebXZXq6GU4xfxLf6nVxp9kIqElb5fqczA==}
@@ -15590,20 +15552,6 @@ snapshots:
     dependencies:
       lit: 3.3.3
 
-  '@vscode-logging/logger@1.2.3':
-    dependencies:
-      '@vscode-logging/types': 0.1.4
-      fast-safe-stringify: 2.0.7
-      fs-extra: 9.1.0
-      lodash: 4.18.1
-      stacktrace-js: 2.0.2
-      streamroller: 2.2.3
-      triple-beam: 1.3.0
-      winston: 3.3.3
-      winston-transport: 4.3.0
-    transitivePeerDependencies:
-      - supports-color
-
   '@vscode-logging/logger@2.0.9':
     dependencies:
       '@vscode-logging/types': 2.0.8
@@ -15619,8 +15567,6 @@ snapshots:
       - supports-color
 
   '@vscode-logging/types@0.1.3': {}
-
-  '@vscode-logging/types@0.1.4': {}
 
   '@vscode-logging/types@2.0.8': {}
 
@@ -16351,8 +16297,6 @@ snapshots:
   async@3.2.6: {}
 
   asynckit@0.4.0: {}
-
-  at-least-node@1.0.0: {}
 
   atob@2.1.2: {}
 
@@ -17518,8 +17462,6 @@ snapshots:
       image-size: 1.0.0
       mimer: 2.0.2
 
-  date-format@2.1.0: {}
-
   date-format@4.0.14: {}
 
   dateformat@1.0.12:
@@ -18581,8 +18523,6 @@ snapshots:
     dependencies:
       boolean: 3.2.0
 
-  fast-safe-stringify@2.0.7: {}
-
   fast-safe-stringify@2.1.1: {}
 
   fast-string-truncated-width@3.0.3: {}
@@ -18867,13 +18807,6 @@ snapshots:
       graceful-fs: 4.2.11
       jsonfile: 4.0.0
       universalify: 0.1.2
-
-  fs-extra@9.1.0:
-    dependencies:
-      at-least-node: 1.0.0
-      graceful-fs: 4.2.11
-      jsonfile: 6.1.0
-      universalify: 2.0.0
 
   fs-minipass@2.1.0:
     dependencies:
@@ -24276,14 +24209,6 @@ snapshots:
       es-errors: 1.3.0
       internal-slot: 1.1.0
 
-  streamroller@2.2.3:
-    dependencies:
-      date-format: 2.1.0
-      debug: 4.4.3
-      fs-extra: 8.1.0
-    transitivePeerDependencies:
-      - supports-color
-
   streamroller@3.1.5:
     dependencies:
       date-format: 4.0.14
@@ -24706,8 +24631,6 @@ snapshots:
   treeverse@3.0.0: {}
 
   trim-newlines@1.0.0: {}
-
-  triple-beam@1.3.0: {}
 
   triple-beam@1.4.1: {}
 
@@ -25626,12 +25549,6 @@ snapshots:
       winston: 3.15.0
       winston-transport: 4.8.0
 
-  winston-transport@4.3.0:
-    dependencies:
-      logform: 2.7.0
-      readable-stream: 2.3.8
-      triple-beam: 1.4.1
-
   winston-transport@4.6.0:
     dependencies:
       logform: 2.7.0
@@ -25671,18 +25588,6 @@ snapshots:
       stack-trace: 0.0.10
       triple-beam: 1.4.1
       winston-transport: 4.8.0
-
-  winston@3.3.3:
-    dependencies:
-      '@dabh/diagnostics': 2.0.8
-      async: 3.2.6
-      is-stream: 2.0.1
-      logform: 2.7.0
-      one-time: 1.0.0
-      readable-stream: 3.6.2
-      stack-trace: 0.0.10
-      triple-beam: 1.4.1
-      winston-transport: 4.6.0
 
   with-open-file@0.1.7:
     dependencies:
