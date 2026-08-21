@@ -30,6 +30,9 @@ coverage
 # nyc test coverage
 .nyc_output
 
+# logger test log output
+.log-out
+
 # Dependency directories
 node_modules/
 
