@@ -13,9 +13,9 @@ const noopLogger = {
   info: NO_OPERATION,
   debug: NO_OPERATION,
   trace: NO_OPERATION,
-  getChildLogger: function(opts) {
+  getChildLogger: function (opts) {
     return noopLogger;
-  }
+  },
 };
 
 class Calculator {
@@ -47,5 +47,5 @@ class Calculator {
 }
 
 module.exports = {
-  Calculator: Calculator
+  Calculator: Calculator,
 };

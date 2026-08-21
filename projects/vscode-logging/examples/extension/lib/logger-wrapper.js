@@ -33,5 +33,5 @@ function initLogger(newLogger) {
 
 module.exports = {
   getLogger,
-  initLogger
+  initLogger,
 };

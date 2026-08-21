@@ -24,5 +24,5 @@ module.exports = {
   LOGGING_LEVEL_CONFIG_PROP,
   SOURCE_TRACKING_CONFIG_PROP,
   getLoggingLevelSetting,
-  getSourceLocationTrackingSetting
+  getSourceLocationTrackingSetting,
 };

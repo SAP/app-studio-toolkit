@@ -6,7 +6,7 @@ const { getLogger } = require("./logger-wrapper");
 function callLibraryAndPassLogger() {
   // Using a childLogger will add a suffix to the `label` information in each logEntry.
   const calculatorChildLogger = getLogger().getChildLogger({
-    label: "Calculator"
+    label: "Calculator",
   });
 
   const calc = new Calculator(calculatorChildLogger);
@@ -18,5 +18,5 @@ function callLibraryAndPassLogger() {
 }
 
 module.exports = {
-  callLibraryAndPassLogger
+  callLibraryAndPassLogger,
 };

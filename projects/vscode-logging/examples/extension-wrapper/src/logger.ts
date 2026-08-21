@@ -47,7 +47,7 @@ export async function initLogger(context: ExtensionContext): Promise<void> {
     logConsole: false,
     loggingLevelProp: LOGGING_LEVEL_PROP,
     sourceLocationProp: SOURCE_LOCATION_PROP,
-    subscriptions: context.subscriptions
+    subscriptions: context.subscriptions,
   });
 
   setLogger(extLogger);

@@ -3,7 +3,7 @@ const vscode = require("vscode");
 const { getExtensionLogger } = require("@vscode-logging/logger");
 const {
   getLoggingLevelSetting,
-  getSourceLocationTrackingSetting
+  getSourceLocationTrackingSetting,
 } = require("./settings");
 const { registerCommands } = require("./commands");
 const { listenToLogSettingsChanges } = require("./settings-changes-handler");
@@ -30,7 +30,7 @@ function activate(context) {
     logPath: logPath,
     logOutputChannel: logOutputChannel,
     sourceLocationTracking: sourceLocationTrackingSettings,
-    logConsole: true
+    logConsole: true,
   });
 
   // Update our logger-wrapper with a reference to the extLogger.
@@ -66,5 +66,5 @@ function deactivate() {
 
 module.exports = {
   activate,
-  deactivate
+  deactivate,
 };

@@ -24,5 +24,5 @@ function registerCommands(context) {
 }
 
 module.exports = {
-  registerCommands: registerCommands
+  registerCommands: registerCommands,
 };
