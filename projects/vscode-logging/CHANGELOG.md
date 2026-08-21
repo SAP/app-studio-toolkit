@@ -1,0 +1,95 @@
+# Change Log
+
+> **Note:** This is the historic changelog from before vscode-logging was integrated into the app-studio-toolkit monorepo.
+> Going forward, changes are tracked in the individual package changelogs under [`packages/`](./packages/).
+
+
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+## [2.0.9](https://github.com/SAP/vscode-logging/compare/v2.0.8...v2.0.9) (2026-04-16)
+
+**Note:** Version bump only for package root
+
+## [2.0.8](https://github.com/SAP/vscode-logging/compare/v2.0.7...v2.0.8) (2026-02-18)
+
+### Bug Fixes
+
+- correct repository URL case (SAP instead of sap) for npm provenance ([00a91ca](https://github.com/SAP/vscode-logging/commit/00a91ca002ba88ed27278f756b7aca8865eee1ee))
+
+## [2.0.7](https://github.com/SAP/vscode-logging/compare/v2.0.6...v2.0.7) (2026-02-18)
+
+### Bug Fixes
+
+- upgrade lerna to 9.0.3 for better npm trusted publishers support ([396a9f1](https://github.com/SAP/vscode-logging/commit/396a9f1ebd27dbba01d41c6b299561d849d47a5b))
+
+## [2.0.6](https://github.com/SAP/vscode-logging/compare/v2.0.5...v2.0.6) (2026-02-18)
+
+### Bug Fixes
+
+- add verbose logging to lerna publish ([7330c6e](https://github.com/SAP/vscode-logging/commit/7330c6e326446f867c22ba391e79077375190d11))
+
+## [2.0.5](https://github.com/SAP/vscode-logging/compare/v2.0.4...v2.0.5) (2026-02-18)
+
+### Bug Fixes
+
+- add NPM_CONFIG_PROVENANCE for trusted publishers ([10d22fa](https://github.com/SAP/vscode-logging/commit/10d22faeef072af6fdb82f344d9496979b13279e))
+
+## [2.0.4](https://github.com/SAP/vscode-logging/compare/v2.0.3...v2.0.4) (2026-02-18)
+
+### Bug Fixes
+
+- add registry-url for npm trusted publishers ([6937c19](https://github.com/SAP/vscode-logging/commit/6937c1902bfed6b02527c608fd011fab102818ee))
+
+## [2.0.3](https://github.com/SAP/vscode-logging/compare/v2.0.2...v2.0.3) (2026-02-17)
+
+### Bug Fixes
+
+- pnpm.lock ([#245](https://github.com/SAP/vscode-logging/issues/245)) ([cba23f4](https://github.com/SAP/vscode-logging/commit/cba23f4c6169ac48f38ca1514b94210fc6fddf2e))
+
+## [2.0.2](https://github.com/SAP/vscode-logging/compare/v2.0.1...v2.0.2) (2026-02-17)
+
+**Note:** Version bump only for package root
+
+## [2.0.1](https://github.com/SAP/vscode-logging/compare/v2.0.0...v2.0.1) (2026-02-15)
+
+### Bug Fixes
+
+- examples fix ([#242](https://github.com/SAP/vscode-logging/issues/242)) ([09afea5](https://github.com/SAP/vscode-logging/commit/09afea515f76238e2761c9cf5849bda589204794))
+- upgrade lodash to version 4.17.23 ([#241](https://github.com/SAP/vscode-logging/issues/241)) ([69fc2ce](https://github.com/SAP/vscode-logging/commit/69fc2ce233e960219efca1118027638cc115874c))
+- workspace protocol ([#243](https://github.com/SAP/vscode-logging/issues/243)) ([3091351](https://github.com/SAP/vscode-logging/commit/30913512554b29590b16bce4ad2a1eb3890b5dc9))
+
+# 2.0.0 (2024-01-05)
+
+### Bug Fixes
+
+- add .npmignore files to remove unneeded contents in published pkgs ([998b1f8](https://github.com/SAP/vscode-logging/commit/998b1f8341352af2bba9a640f425c66c2d3a8a74))
+- convert timestamp format according to ISO-8601 ([b4ab3e4](https://github.com/SAP/vscode-logging/commit/b4ab3e48829df42bd73c67de3f068385aabd1259))
+- source Location Tracking not affecting ChildLoggers ([72b151a](https://github.com/SAP/vscode-logging/commit/72b151a773ba2707cb131d59799389a7cfe93c85)), closes [#15](https://github.com/SAP/vscode-logging/issues/15)
+- typo in the logging.level configuration description ([#181](https://github.com/SAP/vscode-logging/issues/181)) ([c05b17d](https://github.com/SAP/vscode-logging/commit/c05b17d4348e89f27a3cb86f2e20bc190cdf1afb))
+- update yarn.lock ([#144](https://github.com/SAP/vscode-logging/issues/144)) ([33ec5ac](https://github.com/SAP/vscode-logging/commit/33ec5acfda275b9717a5986012667b8e854c6c5e))
+- upgrade lodash version due to CVE-2021-23337 ([c514c16](https://github.com/SAP/vscode-logging/commit/c514c169ae5941cea9ebd5ae0dcb4eef8fc431d8))
+- **logger:** vscode-logging/types package should be a dependency ([e2ea6c7](https://github.com/SAP/vscode-logging/commit/e2ea6c7d26efed219f2b983ad7e601eeb9f4704f))
+
+### Features
+
+- **wrapper:** remove dep to @types/vscode ([#167](https://github.com/SAP/vscode-logging/issues/167)) ([b362e5c](https://github.com/SAP/vscode-logging/commit/b362e5c3b11020ab09a5e705d7834fa53e8bd48e))
+- logger wrapper package ([#163](https://github.com/SAP/vscode-logging/issues/163)) ([fc6abc5](https://github.com/SAP/vscode-logging/commit/fc6abc5ea43403c3039edb8589c68a0a339e5ebc))
+- support console as log target ([#109](https://github.com/SAP/vscode-logging/issues/109)) ([ea16211](https://github.com/SAP/vscode-logging/commit/ea16211a5e2fbcdc86f4e96c8c60eaaf440d2431))
+- **logger:** a memory leak when creating 9 or more ChildLogger's ([#76](https://github.com/SAP/vscode-logging/issues/76)) ([482c708](https://github.com/SAP/vscode-logging/commit/482c708e9b8643849f6a14253c51650ffac70416))
+- aPI Fixes (dummy change to force minor version) ([0fb0fb6](https://github.com/SAP/vscode-logging/commit/0fb0fb624def760bb1a1cf4a7b46b18133d85cf0))
+- initial Commit ([ee780af](https://github.com/SAP/vscode-logging/commit/ee780afa90dc17cfac91a28cb2921728c1cc4489))
+
+### Reverts
+
+- Revert "chore: include release number in release commit" ([d9d9c68](https://github.com/SAP/vscode-logging/commit/d9d9c68471476be517a06b3dd8712d573d3f7fa6))
+
+* Make OutputChannel optional. (#55) ([b7fa564](https://github.com/SAP/vscode-logging/commit/b7fa56436693df9787f8ea720559beb3b0566612)), closes [#55](https://github.com/SAP/vscode-logging/issues/55) [#55](https://github.com/SAP/vscode-logging/issues/55)
+
+### BREAKING CHANGES
+
+- **wrapper:** `getConfigurations` and `onDidChangeConfiguration` properties
+  were removed from the `configureLogger` public API
+- OutputChannel will not be created inside the logger as today. Alternatively, it
+  will be added as an optional parameter. The VS Code Extension will be able to create the
+  OutputChannel and send it to the logger as a parameter.

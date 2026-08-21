@@ -11,7 +11,14 @@
     "LICENSES",
     "api.d.ts"
   ],
-  "repository": "https://github.com/SAP/vscode-logging/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/app-studio-toolkit.git",
+    "directory": "projects/vscode-logging/packages/types"
+  },
+  "bugs": {
+    "url": "https://github.com/SAP/app-studio-toolkit/issues"
+  },
   "license": "Apache-2.0",
   "typings": "./api.d.ts",
   "scripts": {

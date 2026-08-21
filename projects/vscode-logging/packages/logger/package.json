@@ -13,7 +13,14 @@
     "api.d.ts"
   ],
   "main": "lib/api.js",
-  "repository": "https://github.com/SAP/vscode-logging/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/app-studio-toolkit.git",
+    "directory": "projects/vscode-logging/packages/logger"
+  },
+  "bugs": {
+    "url": "https://github.com/SAP/app-studio-toolkit/issues"
+  },
   "license": "Apache-2.0",
   "typings": "./api.d.ts",
   "dependencies": {
@@ -43,14 +50,5 @@
   },
   "publishConfig": {
     "access": "public"
-  },
-  "nyc": {
-    "include": [
-      "lib/**/*.js"
-    ],
-    "reporter": [
-      "text",
-      "lcov"
-    ]
   }
 }

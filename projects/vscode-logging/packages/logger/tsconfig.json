@@ -3,7 +3,8 @@
     "module": "commonjs",
     "noEmit": true,
     "checkJs": true,
-    "allowJs": true
+    "allowJs": true,
+    "skipLibCheck": true
   },
   "include": ["./lib/**/*.js", "./api.d.ts", "./test/output-channel-spec.ts"]
 }

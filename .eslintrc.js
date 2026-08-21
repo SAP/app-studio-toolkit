@@ -86,6 +86,17 @@ module.exports = {
       },
     },
     {
+      // vscode-logging was integrated with these rules relaxed for the migrated code.
+      // TODO: clean up violations and tighten incrementally.
+      files: ["projects/vscode-logging/**"],
+      rules: {
+        "eslint-comments/require-description": "off",
+        // base rule for .js sources/tests (the @typescript-eslint variant is
+        // handled in the projects/vscode-logging/**/*.ts override below)
+        "no-unused-vars": "off",
+      },
+    },
+    {
       // Use this package's tsconfig so type-aware linting sees its newer (@types/node) typings.
       files: ["packages/vsix-zst/**/*.ts"],
       parserOptions: {
@@ -176,6 +187,19 @@ module.exports = {
         ],
         "@typescript-eslint/no-unused-expressions": "off",
         "@typescript-eslint/no-misused-promises": "off",
+      },
+    },
+    {
+      // Additional TypeScript rules for vscode-logging packages.
+      // TODO: clean up violations and tighten incrementally.
+      files: ["projects/vscode-logging/**/*.ts"],
+      rules: {
+        // public API surface (api.d.ts) intentionally exposes `any`
+        "@typescript-eslint/no-explicit-any": "off",
+        // chai assertions (e.g. expect(x).to.be.true) read as unused expressions
+        "@typescript-eslint/no-unused-expressions": "off",
+        "@typescript-eslint/no-unused-vars": "off",
+        "@typescript-eslint/no-unsafe-argument": "off",
       },
     },
     {
