@@ -1,7 +1,7 @@
 {
   "name": "yeoman-ui",
   "displayName": "Application Wizard",
-  "version": "1.27.0-local",
+  "version": "1.27.0",
   "private": true,
   "description": "Provides rich user experience for Yeoman generators.",
   "categories": [
@@ -146,12 +146,6 @@
           "description": "Show progress notification during project generation with project name and phase updates.",
           "scope": "resource"
         },
-        "ApplicationWizard.autoOpenApplicationInfoPage": {
-          "type": "boolean",
-          "default": true,
-          "description": "Launch 'Application Info Page' as soon as the application has been generated.",
-          "scope": "resource"
-        },
         "ApplicationWizard.searchQuery": {
           "type": "array",
           "default": [
@@ -189,9 +183,7 @@
       ]
     }
   },
-  "activationEvents": [
-    "*"
-  ],
+  "activationEvents": [],
   "dependencies": {
     "@sap-devx/webview-rpc": "0.4.1",
     "@sap-devx/yeoman-ui-types": "workspace:^",

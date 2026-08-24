@@ -65,9 +65,6 @@ describe("yeomanui unit test", () => {
     public doGeneratorDone(): Promise<void> {
       return Promise.resolve();
     }
-    public doGeneratorInstall(): void {
-      return;
-    }
     public doGeneratorProgress(): Promise<void> {
       return Promise.resolve();
     }
