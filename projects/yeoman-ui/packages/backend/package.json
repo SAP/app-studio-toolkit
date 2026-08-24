@@ -140,12 +140,6 @@
           "default": true,
           "description": "Automatically update installed generators."
         },
-        "ApplicationWizard.showGeneratorProgress": {
-          "type": "boolean",
-          "default": true,
-          "description": "Show progress notification during project generation with project name and phase updates.",
-          "scope": "resource"
-        },
         "ApplicationWizard.searchQuery": {
           "type": "array",
           "default": [
