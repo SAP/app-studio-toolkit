@@ -638,6 +638,9 @@ importers:
       '@types/vscode':
         specifier: 1.51.0
         version: 1.51.0
+      chai-exclude:
+        specifier: 2.1.0
+        version: 2.1.0(chai@4.5.0)
       proxyquire:
         specifier: 2.1.3
         version: 2.1.3
@@ -4670,6 +4673,11 @@ packages:
     peerDependencies:
       chai: '>= 2.1.2 < 6'
 
+  chai-exclude@2.1.0:
+    resolution: {integrity: sha512-IBnm50Mvl3O1YhPpTgbU8MK0Gw7NHcb18WT2TxGdPKOMtdtZVKLHmQwdvOF7mTlHVQStbXuZKFwkevFtbHjpVg==}
+    peerDependencies:
+      chai: '>= 4.0.0 < 5'
+
   chai-string@1.6.0:
     resolution: {integrity: sha512-sXV7whDmpax+8H++YaZelgin7aur1LGf9ZhjZa3ojETFJ0uPVuS4XEXuIagpZ/c8uVOtsSh4MwOjy5CBLjJSXA==}
     peerDependencies:
@@ -6111,6 +6119,9 @@ packages:
 
   fb-watchman@2.0.2:
     resolution: {integrity: sha512-p5161BqbuCaSnB8jIbzQHOlpgsPmK5rJVDfDKO91Axs5NC1uu3HRQm6wt9cd9/+GtQQIO53JdGXXoyDpTAsgYA==}
+
+  fclone@1.0.11:
+    resolution: {integrity: sha512-GDqVQezKzRABdeqflsgMr7ktzgF9CyS+p2oe0jJqUY6izSSbhPIQJDpoU4PtGcD7VPM9xh/dVrTu6z1nwgmEGw==}
 
   fd-slicer@1.1.0:
     resolution: {integrity: sha512-cE1qsB/VwyQozZ+q1dGxR8LBYNZeofhEdUNGSMbQD3Gw2lAzX9Zb3uIU6Ebc/Fmyjo9AWWfnn0AUCHqtevs/8g==}
@@ -16834,6 +16845,11 @@ snapshots:
       chai: 4.5.0
       check-error: 1.0.3
 
+  chai-exclude@2.1.0(chai@4.5.0):
+    dependencies:
+      chai: 4.5.0
+      fclone: 1.0.11
+
   chai-string@1.6.0(chai@4.4.1):
     dependencies:
       chai: 4.4.1
@@ -18546,6 +18562,8 @@ snapshots:
   fb-watchman@2.0.2:
     dependencies:
       bser: 2.1.1
+
+  fclone@1.0.11: {}
 
   fd-slicer@1.1.0:
     dependencies:
