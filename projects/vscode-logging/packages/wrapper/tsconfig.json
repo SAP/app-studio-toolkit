@@ -1,16 +1,9 @@
 {
-  "compileOnSave": true,
+  "extends": "../../../../tsconfig.base.json",
   "compilerOptions": {
     "rootDir": ".",
     "outDir": "dist",
     "baseUrl": ".",
-    "module": "commonjs",
-    "lib": ["es7"],
-    "target": "es2017",
-    "declaration": true,
-    "sourceMap": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
     "skipLibCheck": true
   },
   "include": ["./src/**/*.ts", "./test/**/*.ts", "./api.d.ts"]
