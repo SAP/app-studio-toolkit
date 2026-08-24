@@ -495,8 +495,24 @@ describe("vscode-youi-events unit test", () => {
       events.doGeneratorProgress("testProject", "install", true);
       events.doGeneratorProgress("testProject", "end", true);
 
-      // Wait for all setTimeout delays to complete (2000ms for writing + 0ms for install + 1000ms for end)
-      await new Promise((resolve) => setTimeout(resolve, 3500));
+      // Wait for all setTimeout delays to complete with polling
+      // (2000ms for writing + 0ms for install + 1000ms for end)
+      const waitForMessages = async (
+        expectedCount: number,
+        timeoutMs: number = 5000
+      ) => {
+        const startTime = Date.now();
+        while (reportCalls.length < expectedCount) {
+          if (Date.now() - startTime > timeoutMs) {
+            throw new Error(
+              `Timeout waiting for ${expectedCount} messages, got ${reportCalls.length}`
+            );
+          }
+          await new Promise((resolve) => setTimeout(resolve, 100));
+        }
+      };
+
+      await waitForMessages(3, 5000);
 
       // Verify messages appear in correct order
       expect(reportCalls).to.have.lengthOf(3);
