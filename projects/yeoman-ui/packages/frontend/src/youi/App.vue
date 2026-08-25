@@ -627,14 +627,14 @@ export default {
     },
     generatorProgress(projectName, phase) {
       // Update UI to show progress notification
-      // Map phases to display messages
+      // Map phases to localized messages from backend
       const phaseMessages = {
-        writing: "Creating project files...",
-        install: "Installing dependencies...",
-        end: "Finalising...",
+        writing: _get(this.messages, "progress_writing_files", "Creating project files..."),
+        install: _get(this.messages, "progress_installing", "Installing dependencies..."),
+        end: _get(this.messages, "progress_finalising", "Finalising..."),
       };
 
-      const message = phaseMessages[phase] || "Generating...";
+      const message = phaseMessages[phase] || _get(this.messages, "show_progress_message", "Generating...");
 
       // Update the prompt name to show progress
       if (this.currentPrompt) {

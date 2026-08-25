@@ -130,6 +130,10 @@ export class VSCodeYouiEvents implements YouiEvents {
     showProgress: boolean = false
   ): void {
     // Check VS Code setting (default: true)
+    // Note: This setting is not declared in yeoman-ui's package.json - consumers
+    // (e.g., application-modeler, app-generator) declare it in their package.json
+    // if they want users to control it. The true default is safe - actual gating
+    // happens via the per-generator showProgress option passed by consumers.
     const config = vscode.workspace.getConfiguration();
     const settingEnabled = config.get<boolean>(
       "ApplicationWizard.showGeneratorProgress",

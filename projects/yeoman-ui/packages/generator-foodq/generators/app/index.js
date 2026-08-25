@@ -776,8 +776,6 @@ module.exports = class extends Generator {
 
   writing() {
     this.log("FoodQ is in writing stage.");
-    // Note: showProgress is now automatic via showGeneratorProgress option
-    // this.appWizard.showProgress("Generating the FoodQ project.");
 
     this.log("The following choices were chosen:");
     !_.isNil(this.answers.hungry) &&
