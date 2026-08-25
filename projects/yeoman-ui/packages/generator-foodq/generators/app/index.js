@@ -16,6 +16,7 @@ module.exports = class extends Generator {
     this.appWizard = types.AppWizard.create(opts);
 
     this.option("silent", { type: Boolean });
+    this.option("showGeneratorProgress", { type: Boolean, default: true });
 
     const silent = _.get(this.options, "silent", false);
 
@@ -775,7 +776,6 @@ module.exports = class extends Generator {
 
   writing() {
     this.log("FoodQ is in writing stage.");
-    this.appWizard.showProgress("Generating the FoodQ project.");
 
     this.log("The following choices were chosen:");
     !_.isNil(this.answers.hungry) &&
