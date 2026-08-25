@@ -769,8 +769,8 @@ importers:
         specifier: 2.0.16
         version: 2.0.16(bufferutil@4.1.0)(utf-8-validate@5.0.10)
       '@vscode-logging/logger':
-        specifier: 2.0.9
-        version: 2.0.9
+        specifier: workspace:*
+        version: link:../../../vscode-logging/packages/logger
       chalk:
         specifier: 4.1.2
         version: 4.1.2
