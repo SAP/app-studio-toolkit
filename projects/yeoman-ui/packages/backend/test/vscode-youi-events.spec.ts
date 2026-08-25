@@ -1,8 +1,8 @@
 import { vscode } from "./mockUtil.js";
 import { expect } from "chai";
 import { createSandbox, SinonSandbox, SinonMock } from "sinon";
-import _ from "lodash";
-import type {
+import lodash from "lodash";
+import {
   IMethod,
   IPromiseCallbacks,
   IRpc,
@@ -14,7 +14,10 @@ import { Constants } from "../src/utils/constants.js";
 import * as loggerWrapper from "../src/logger/logger-wrapper.js";
 import { VSCodeYouiEvents } from "../src/vscode-youi-events.js";
 import { WorkspaceFile } from "../src/utils/workspaceFile.js";
-import * as fs from "fs";
+import { createRequire } from "node:module";
+
+const require = createRequire(import.meta.url);
+const fs = require("fs");
 
 describe("vscode-youi-events unit test", () => {
   let events: VSCodeYouiEvents;
@@ -28,7 +31,6 @@ describe("vscode-youi-events unit test", () => {
   let loggerMock: SinonMock;
   let uriMock: SinonMock;
   let fsMock: SinonMock;
-  let wsFileMockUri: any;
 
   const testLogger = {
     debug: () => true,
@@ -81,7 +83,6 @@ describe("vscode-youi-events unit test", () => {
   const generatorOutput = new GeneratorOutput();
 
   before(() => {
-    sandbox = createSandbox();
     loggerWrapper.internalApi.setLogger(testLogger);
   });
 
@@ -90,6 +91,7 @@ describe("vscode-youi-events unit test", () => {
   });
 
   beforeEach(() => {
+    sandbox = createSandbox();
     const webViewPanel: any = { dispose: () => true };
     events = new VSCodeYouiEvents(
       rpc,
@@ -106,9 +108,6 @@ describe("vscode-youi-events unit test", () => {
     rpcMock = sandbox.mock(rpc);
     uriMock = sandbox.mock(vscode.Uri);
     fsMock = sandbox.mock(fs);
-    wsFileMockUri = vscode.Uri.file("/tmp/workspace.code-workspace");
-    sandbox.stub(WorkspaceFile, "createWsWithPath").returns(wsFileMockUri);
-    sandbox.stub(WorkspaceFile, "createWsWithUri").returns(wsFileMockUri);
   });
 
   afterEach(() => {
@@ -122,8 +121,6 @@ describe("vscode-youi-events unit test", () => {
     uriMock.verify();
     fsMock.verify();
     sandbox.restore();
-    sandbox = createSandbox();
-    loggerWrapper.internalApi.setLogger(testLogger);
   });
 
   describe("getAppWizard", () => {
@@ -249,6 +246,29 @@ describe("vscode-youi-events unit test", () => {
         ]);
       appWizard.showInformation(message, MessageType.prompt);
     });
+
+    it("setHeaderTitle via AppWizard", () => {
+      const appWizard = events.getAppWizard();
+      rpcMock
+        .expects("invoke")
+        .withExactArgs("setHeaderTitle", ["Test Title", "Test Info"]);
+      appWizard.setHeaderTitle("Test Title", "Test Info");
+    });
+
+    it("setBanner via AppWizard", () => {
+      const appWizard = events.getAppWizard();
+      const bannerProps: IBannerProps = {
+        text: "Test Banner",
+        ariaLabel: "Test Label",
+        action: {
+          text: "Learn More",
+          url: "https://example.com",
+        },
+        triggerActionFrom: "link",
+      };
+      rpcMock.expects("invoke").withExactArgs("setBanner", [bannerProps]);
+      appWizard.setBanner(bannerProps);
+    });
   });
 
   it("executeCommand", () => {
@@ -261,16 +281,285 @@ describe("vscode-youi-events unit test", () => {
     return events.executeCommand(commandId, commandArgs);
   });
 
-  it("doGeneratorInstall", () => {
-    _.set(vscode, "ProgressLocation.Notification", 15);
-    windowMock
-      .expects("withProgress")
-      .withArgs({
-        location: 15,
-        title: "Installing dependencies...",
-      })
-      .resolves();
-    events.doGeneratorInstall();
+  describe("doGeneratorProgress", () => {
+    it("writing phase - initializes notification with project name", () => {
+      const projectName = "testProject";
+      lodash.set(vscode, "ProgressLocation.Notification", 15);
+      eventsMock.expects("doClose");
+      // Stub getConfiguration to enable progress notification
+      sandbox.stub(vscode.workspace, "getConfiguration").returns({
+        get: sandbox
+          .stub()
+          .withArgs("ApplicationWizard.showGeneratorProgress", true)
+          .returns(true),
+      } as any);
+      windowMock
+        .expects("withProgress")
+        .withArgs({
+          location: 15,
+          title: "Generating testProject",
+          cancellable: false,
+        })
+        .resolves();
+      events.doGeneratorProgress(projectName, "writing", true);
+    });
+
+    it("writing phase - uses default title when no project name", () => {
+      lodash.set(vscode, "ProgressLocation.Notification", 15);
+      eventsMock.expects("doClose");
+      // Stub getConfiguration to enable progress notification
+      sandbox.stub(vscode.workspace, "getConfiguration").returns({
+        get: sandbox
+          .stub()
+          .withArgs("ApplicationWizard.showGeneratorProgress", true)
+          .returns(true),
+      } as any);
+      windowMock
+        .expects("withProgress")
+        .withArgs({
+          location: 15,
+          title: "Application Generator",
+          cancellable: false,
+        })
+        .resolves();
+      events.doGeneratorProgress(undefined, "writing", true);
+    });
+
+    it("install phase - updates progress message", () => {
+      // Stub getConfiguration to enable progress notification
+      sandbox.stub(vscode.workspace, "getConfiguration").returns({
+        get: sandbox
+          .stub()
+          .withArgs("ApplicationWizard.showGeneratorProgress", true)
+          .returns(true),
+      } as any);
+      const mockProgressReporter = {
+        report: sandbox.stub(),
+      };
+      events["progressReporter"] = mockProgressReporter;
+
+      events.doGeneratorProgress("testProject", "install", true);
+
+      // Should be called with the install message after delay
+      expect(mockProgressReporter.report.called).to.be.true;
+      expect(mockProgressReporter.report.firstCall.args[0]).to.deep.equal({
+        message: messages.default.progress_installing,
+      });
+
+      events["progressReporter"] = null;
+    });
+
+    it("end phase - updates progress message", () => {
+      // Stub getConfiguration to enable progress notification
+      sandbox.stub(vscode.workspace, "getConfiguration").returns({
+        get: sandbox
+          .stub()
+          .withArgs("ApplicationWizard.showGeneratorProgress", true)
+          .returns(true),
+      } as any);
+      const mockProgressReporter = {
+        report: sandbox.stub(),
+      };
+      events["progressReporter"] = mockProgressReporter;
+
+      events.doGeneratorProgress("testProject", "end", true);
+
+      // Should be called with the end message
+      expect(mockProgressReporter.report.called).to.be.true;
+      expect(mockProgressReporter.report.firstCall.args[0]).to.deep.equal({
+        message: messages.default.progress_finalising,
+      });
+
+      events["progressReporter"] = null;
+    });
+
+    it("install/end phases - does nothing when progressReporter is null", () => {
+      // Stub getConfiguration to enable progress notification
+      sandbox.stub(vscode.workspace, "getConfiguration").returns({
+        get: sandbox
+          .stub()
+          .withArgs("ApplicationWizard.showGeneratorProgress", true)
+          .returns(true),
+      } as any);
+      events["progressReporter"] = null;
+
+      // Should not throw when progressReporter is null
+      events.doGeneratorProgress("testProject", "install", true);
+      events.doGeneratorProgress("testProject", "end", true);
+    });
+
+    it("does nothing when setting is disabled", () => {
+      // Stub getConfiguration to return false
+      sandbox.stub(vscode.workspace, "getConfiguration").returns({
+        get: sandbox
+          .stub()
+          .withArgs("ApplicationWizard.showGeneratorProgress", true)
+          .returns(false),
+      } as any);
+
+      // Should not call doClose or showInstallMessage
+      eventsMock.expects("doClose").never();
+      windowMock.expects("withProgress").never();
+
+      events.doGeneratorProgress("testProject", "writing", true);
+      events.doGeneratorProgress("testProject", "install", true);
+      events.doGeneratorProgress("testProject", "end", true);
+    });
+
+    it("does nothing when showProgress parameter is false", () => {
+      // Even if setting is enabled, showProgress=false should skip everything
+      sandbox.stub(vscode.workspace, "getConfiguration").returns({
+        get: sandbox
+          .stub()
+          .withArgs("ApplicationWizard.showGeneratorProgress", true)
+          .returns(true),
+      } as any);
+
+      // Should not call doClose or showInstallMessage
+      eventsMock.expects("doClose").never();
+      windowMock.expects("withProgress").never();
+
+      events.doGeneratorProgress("testProject", "writing", false);
+      events.doGeneratorProgress("testProject", "install", false);
+      events.doGeneratorProgress("testProject", "end", false);
+    });
+
+    it("writing phase with existing progressReporter - does not call doClose", () => {
+      // Stub getConfiguration to enable progress notification
+      sandbox.stub(vscode.workspace, "getConfiguration").returns({
+        get: sandbox
+          .stub()
+          .withArgs("ApplicationWizard.showGeneratorProgress", true)
+          .returns(true),
+      } as any);
+
+      const mockProgressReporter = {
+        report: sandbox.stub(),
+      };
+      events["progressReporter"] = mockProgressReporter;
+
+      // Should not call doClose when progressReporter already exists
+      eventsMock.expects("doClose").never();
+
+      events.doGeneratorProgress("testProject", "writing", true);
+
+      // Should update the progress reporter
+      expect(mockProgressReporter.report.called).to.be.true;
+      expect(mockProgressReporter.report.firstCall.args[0]).to.deep.equal({
+        message: messages.default.progress_writing_files,
+      });
+
+      events["progressReporter"] = null;
+    });
+
+    it("phases fire in correct order without race condition", async () => {
+      // Stub getConfiguration to enable progress notification
+      sandbox.stub(vscode.workspace, "getConfiguration").returns({
+        get: sandbox
+          .stub()
+          .withArgs("ApplicationWizard.showGeneratorProgress", true)
+          .returns(true),
+      } as any);
+
+      // Stub WorkspaceFile methods
+      sandbox
+        .stub(WorkspaceFile, "createWsWithPath")
+        .returns(vscode.Uri.file("mocked"));
+      sandbox
+        .stub(WorkspaceFile, "createWsWithUri")
+        .returns(vscode.Uri.file("mocked"));
+
+      const reportCalls: string[] = [];
+      const mockProgressReporter = {
+        report: sandbox.stub().callsFake((args: any) => {
+          reportCalls.push(args.message);
+        }),
+      };
+
+      // Stub withProgress to track all report calls
+      windowMock
+        .expects("withProgress")
+        .callsFake((_options: any, callback: any) => {
+          callback(mockProgressReporter);
+          return Promise.resolve();
+        });
+
+      // Fire writing phase (creates progress notification)
+      events.doGeneratorProgress("testProject", "writing", true);
+
+      // Simulate rapid install and end phases (as yeoman emits them)
+      events["progressReporter"] = mockProgressReporter;
+      events["currentPhase"] = "writing";
+      events["phaseStartTime"] = Date.now();
+
+      events.doGeneratorProgress("testProject", "install", true);
+      events.doGeneratorProgress("testProject", "end", true);
+
+      // Wait for all setTimeout delays to complete with polling
+      // (2000ms for writing + 0ms for install + 1000ms for end)
+      const waitForMessages = async (
+        expectedCount: number,
+        timeoutMs: number = 5000
+      ) => {
+        const startTime = Date.now();
+        while (reportCalls.length < expectedCount) {
+          if (Date.now() - startTime > timeoutMs) {
+            throw new Error(
+              `Timeout waiting for ${expectedCount} messages, got ${reportCalls.length}`
+            );
+          }
+          await new Promise((resolve) => setTimeout(resolve, 100));
+        }
+      };
+
+      await waitForMessages(3, 5000);
+
+      // Verify messages appear in correct order
+      expect(reportCalls).to.have.lengthOf(3);
+      expect(reportCalls[0]).to.equal(messages.default.progress_writing_files);
+      expect(reportCalls[1]).to.equal(messages.default.progress_installing);
+      expect(reportCalls[2]).to.equal(messages.default.progress_finalising);
+
+      events["progressReporter"] = null;
+    });
+
+    it("resolves progress notification properly when generation completes", async () => {
+      // Stub getConfiguration
+      sandbox.stub(vscode.workspace, "getConfiguration").returns({
+        get: sandbox
+          .stub()
+          .withArgs("ApplicationWizard.showGeneratorProgress", true)
+          .returns(true),
+      } as any);
+
+      // Stub WorkspaceFile methods
+      sandbox
+        .stub(WorkspaceFile, "createWsWithPath")
+        .returns(vscode.Uri.file("mocked"));
+
+      windowMock
+        .expects("withProgress")
+        .callsFake((_options: any, callback: any) => {
+          return callback({
+            report: sandbox.stub(),
+          });
+        });
+
+      // Start progress notification
+      events.doGeneratorProgress("testProject", "writing", true);
+
+      // Verify resolveFunc was set
+      expect(events["resolveFunc"]).to.not.be.undefined;
+
+      // Call resolveInstallingProgress (simulating doGeneratorDone)
+      events["resolveInstallingProgress"]();
+
+      // Wait a tick for the promise to resolve
+      await new Promise((resolve) => setTimeout(resolve, 10));
+
+      // progressReporter should be cleaned up after resolution
+      expect(events["progressReporter"]).to.be.null;
+    });
   });
 
   it("setAppWizardHeaderTitle", () => {
@@ -489,6 +778,10 @@ describe("vscode-youi-events unit test", () => {
         .withArgs("vscode.openFolder")
         .resolves();
       workspaceMock.expects("updateWorkspaceFolders").withArgs(0, null);
+      // Stub WorkspaceFile.createWsWithPath to prevent filesystem writes in CI
+      sandbox
+        .stub(WorkspaceFile, "createWsWithPath")
+        .returns(vscode.Uri.file("mocked"));
       uriMock.expects("file").once().returns({ fsPath: "testFsPath" });
       return events.doGeneratorDone(
         true,
@@ -515,7 +808,12 @@ describe("vscode-youi-events unit test", () => {
         .resolves();
       workspaceMock.expects("updateWorkspaceFolders").withArgs(0, null);
 
-      events.doGeneratorDone(
+      // Stub WorkspaceFile.createWsWithUri to prevent filesystem writes in CI
+      sandbox
+        .stub(WorkspaceFile, "createWsWithUri")
+        .returns(vscode.Uri.file("mocked"));
+
+      return events.doGeneratorDone(
         true,
         "success message",
         "Open the project in a multi-root workspace",
@@ -539,7 +837,12 @@ describe("vscode-youi-events unit test", () => {
         .withArgs("vscode.openFolder")
         .resolves();
 
-      events.doGeneratorDone(
+      // Stub WorkspaceFile.createWsWithUri to prevent filesystem writes in CI
+      sandbox
+        .stub(WorkspaceFile, "createWsWithUri")
+        .returns(vscode.Uri.file("mocked"));
+
+      return events.doGeneratorDone(
         true,
         "success message",
         "Open the project in a stand-alone",
@@ -559,7 +862,12 @@ describe("vscode-youi-events unit test", () => {
         )
         .resolves();
 
-      events.doGeneratorDone(
+      // Stub WorkspaceFile.createWsWithUri to prevent filesystem writes in CI
+      sandbox
+        .stub(WorkspaceFile, "createWsWithUri")
+        .returns(vscode.Uri.file("mocked"));
+
+      return events.doGeneratorDone(
         true,
         "success message",
         "Create the project and close it for future use",
@@ -641,6 +949,142 @@ describe("vscode-youi-events unit test", () => {
         "files"
       );
     });
+
+    it("shows finalising message when progressReporter is active", async () => {
+      // Set up a mock progress reporter
+      const mockProgressReporter = {
+        report: sandbox.stub(),
+      };
+      events["progressReporter"] = mockProgressReporter;
+
+      eventsMock.expects("doClose");
+      windowMock
+        .expects("showInformationMessage")
+        .withExactArgs(messages.default.artifact_generated_files)
+        .resolves();
+
+      await events.doGeneratorDone(
+        true,
+        "success message",
+        createAndClose,
+        "files",
+        null
+      );
+
+      // Verify progressReporter.report was called with finalising message
+      expect(mockProgressReporter.report.called).to.be.true;
+      expect(mockProgressReporter.report.firstCall.args[0]).to.deep.equal({
+        message: messages.default.progress_finalising,
+      });
+
+      events["progressReporter"] = null;
+    });
+
+    describe("with project name in notification", () => {
+      beforeEach(() => {
+        // Set currentProjectName by calling doGeneratorInstall
+        events["currentProjectName"] = "myTestProject";
+      });
+
+      afterEach(() => {
+        events["currentProjectName"] = undefined;
+      });
+
+      it("shows project name in success message for add to workspace", () => {
+        eventsMock.expects("doClose");
+        sandbox.stub(vscode.workspace, "workspaceFolders").value([]);
+        sandbox.stub(vscode.workspace, "workspaceFile").value(undefined);
+        // Stub WorkspaceFile.createWsWithPath to prevent filesystem writes in CI
+        sandbox
+          .stub(WorkspaceFile, "createWsWithPath")
+          .returns(vscode.Uri.file("mocked"));
+        windowMock
+          .expects("showInformationMessage")
+          .withExactArgs(
+            "Project myTestProject has been generated. The project has been added to workspace."
+          )
+          .resolves();
+        commandsMock
+          .expects("executeCommand")
+          .withArgs("vscode.openFolder")
+          .resolves();
+        workspaceMock.expects("updateWorkspaceFolders").withArgs(0, null);
+        return events.doGeneratorDone(
+          true,
+          "success message",
+          addToWorkspace,
+          "project",
+          "testDestinationRoot"
+        );
+      });
+
+      it("shows project name in success message for open in new workspace", () => {
+        eventsMock.expects("doClose");
+        sandbox.stub(vscode.workspace, "workspaceFolders").value([]);
+        windowMock
+          .expects("showInformationMessage")
+          .withExactArgs(
+            "Project myTestProject has been generated. The project will be opened in a new workspace."
+          )
+          .resolves();
+        commandsMock
+          .expects("executeCommand")
+          .withArgs("vscode.openFolder")
+          .resolves();
+        return events.doGeneratorDone(
+          true,
+          "success message",
+          openNewWorkspace,
+          "project",
+          "testDestinationRoot"
+        );
+      });
+
+      it("shows project name in success message for save for future use", () => {
+        eventsMock.expects("doClose");
+        sandbox.stub(vscode.workspace, "workspaceFolders").value([]);
+        windowMock
+          .expects("showInformationMessage")
+          .withExactArgs("Project myTestProject has been generated.")
+          .resolves();
+        return events.doGeneratorDone(
+          true,
+          "success message",
+          createAndClose,
+          "project",
+          "testDestinationRoot"
+        );
+      });
+    });
+
+    it("sets GENERATOR_COMPLETED flag before disposal", async () => {
+      // Setup: verify flag is set before doClose is called
+      let flagSetBeforeClose = false;
+
+      eventsMock.expects("doClose").callsFake(() => {
+        // Check if flag was already set when doClose is called
+        const flagValue = (events["webviewPanel"] as any)?.[
+          Constants.GENERATOR_COMPLETED
+        ];
+        flagSetBeforeClose = flagValue === true;
+      });
+
+      windowMock
+        .expects("showInformationMessage")
+        .withExactArgs(messages.default.artifact_generated_files)
+        .resolves();
+
+      await events.doGeneratorDone(
+        true,
+        "success message",
+        createAndClose,
+        "files",
+        null
+      );
+
+      // Verify flag was set before doClose was called
+      expect(flagSetBeforeClose).to.be.true;
+    });
   });
 
   describe("getUniqueProjectName", () => {
@@ -676,6 +1120,23 @@ describe("vscode-youi-events unit test", () => {
       sandbox.stub(vscode.workspace, "workspaceFolders").value(undefined);
       const result = events["getUniqueProjectName"]("UniqueProject");
       expect(result).to.equal("UniqueProject");
+    });
+  });
+
+  describe("edge cases for coverage", () => {
+    it("showDoneMessage with skipResolve=false should call resolveInstallingProgress", async () => {
+      windowMock
+        .expects("showInformationMessage")
+        .withExactArgs(messages.default.artifact_generated_files)
+        .resolves();
+
+      // Call showDoneMessage directly with skipResolve=false (default)
+      await events["showDoneMessage"](true, "success", "", "files");
+    });
+
+    it("getSuccessInfoMessage with empty type returns empty string", () => {
+      const result = events["getSuccessInfoMessage"]("", "");
+      expect(result).to.equal("");
     });
   });
 });
