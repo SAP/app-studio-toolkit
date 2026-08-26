@@ -10,7 +10,9 @@
     ".reuse",
     "LICENSES",
     "lib",
-    "api.d.ts"
+    "api.d.ts",
+    "CHANGELOG.md",
+    "CHANGELOG.old.md"
   ],
   "main": "lib/api.js",
   "repository": {

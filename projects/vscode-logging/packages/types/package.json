@@ -9,7 +9,9 @@
   "files": [
     ".reuse",
     "LICENSES",
-    "api.d.ts"
+    "api.d.ts",
+    "CHANGELOG.md",
+    "CHANGELOG.old.md"
   ],
   "repository": {
     "type": "git",
