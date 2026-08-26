@@ -53,11 +53,11 @@
     }
   },
   "dependencies": {
-    "@vscode-logging/wrapper": "workspace:^"
+    "@vscode-logging/wrapper": "workspace:*"
   },
   "//@types/vscode": "Pinned to the minimum VS Code API version supported here (kept from the standalone vscode-logging repo). Intentionally not raised to the monorepo root version, which would allow newer APIs and break support for older VS Code.",
   "devDependencies": {
     "@types/vscode": "^1.52.0",
-    "@vscode-logging/types": "workspace:^"
+    "@vscode-logging/types": "workspace:*"
   }
 }

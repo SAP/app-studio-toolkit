@@ -576,7 +576,7 @@ importers:
         specifier: workspace:*
         version: link:../library
       '@vscode-logging/logger':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/logger
     devDependencies:
       '@types/vscode':
@@ -586,26 +586,26 @@ importers:
   projects/vscode-logging/examples/extension-wrapper:
     dependencies:
       '@vscode-logging/wrapper':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/wrapper
     devDependencies:
       '@types/vscode':
         specifier: ^1.52.0
         version: 1.75.0
       '@vscode-logging/types':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/types
 
   projects/vscode-logging/examples/library:
     devDependencies:
       '@vscode-logging/types':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/types
 
   projects/vscode-logging/packages/logger:
     dependencies:
       '@vscode-logging/types':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../types
       fast-safe-stringify:
         specifier: 2.1.1
@@ -656,10 +656,10 @@ importers:
   projects/vscode-logging/packages/wrapper:
     dependencies:
       '@vscode-logging/logger':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../logger
       '@vscode-logging/types':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../types
     devDependencies:
       '@types/lodash':
