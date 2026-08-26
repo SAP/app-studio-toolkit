@@ -43,7 +43,7 @@
     "@types/deep-equal-in-any-order": "1.0.4",
     "@types/lodash": "4.14.177",
     "@types/mocha": "10.0.7",
-    "@types/node": "16.11.10",
+    "@types/node": "22.20.1",
     "@types/sinon": "17.0.4",
     "@types/vscode": "1.75.0",
     "@typescript-eslint/eslint-plugin": "8.60.1",

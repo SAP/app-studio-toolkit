@@ -1,8 +1,6 @@
 {
   "compilerOptions": {
-    "noEmit": true,
-    "target": "ES2015",
-    "skipLibCheck": true
+    "noEmit": true
   },
   "include": ["./"]
 }
