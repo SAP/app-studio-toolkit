@@ -1,0 +1,58 @@
+{
+  "name": "@vscode-logging/wrapper",
+  "version": "2.0.9",
+  "description": "opinionated DI based wrapper for @vscode-logging/logger",
+  "keywords": [
+    "vscode",
+    "logger"
+  ],
+  "files": [
+    ".reuse",
+    "LICENSES",
+    "dist/src",
+    "api.d.ts",
+    "CHANGELOG.md",
+    "CHANGELOG.old.md"
+  ],
+  "main": "dist/src/api.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/app-studio-toolkit.git",
+    "directory": "projects/vscode-logging/packages/wrapper"
+  },
+  "bugs": {
+    "url": "https://github.com/SAP/app-studio-toolkit/issues"
+  },
+  "license": "Apache-2.0",
+  "typings": "./api.d.ts",
+  "dependencies": {
+    "@vscode-logging/logger": "workspace:*",
+    "@vscode-logging/types": "workspace:*"
+  },
+  "//@types/vscode": "Pinned to the minimum VS Code API version supported here (kept from the standalone vscode-logging repo). Intentionally not raised to the monorepo root version, which would allow newer APIs and break support for older VS Code.",
+  "devDependencies": {
+    "@types/lodash": "4.14.202",
+    "@types/vscode": "1.52.0",
+    "lodash": "4.18.1"
+  },
+  "scripts": {
+    "ci": "npm-run-all clean compile coverage:*",
+    "clean": "rimraf ./dist ./coverage",
+    "compile": "tsc",
+    "test": "mocha \"./dist/test/**/*spec.js\"",
+    "coverage:run": "nyc mocha \"./dist/test/**/*spec.js\"",
+    "coverage:check": "nyc check-coverage --lines 100 --branches 100 --statements 100 --functions 100"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "nyc": {
+    "include": [
+      "dist/src/**/*.js"
+    ],
+    "reporter": [
+      "text",
+      "lcov"
+    ]
+  }
+}

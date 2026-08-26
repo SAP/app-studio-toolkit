@@ -20,7 +20,7 @@ const LBL_ADD_LANDSCAPE = "Add another landscape";
 const DEFAULT_REFRESH_RATE = 10 * 1000; // 10 sec default
 const DEFAULT_TIMEOUT = 2 * 60 * 1000; // 2 min default
 
-const autoRefreshTimerArray: NodeJS.Timer[] = [];
+const autoRefreshTimerArray: NodeJS.Timeout[] = [];
 
 export function clearAutoRefreshTimers(): void {
   autoRefreshTimerArray.forEach((interval) => {
@@ -34,7 +34,7 @@ export function autoRefresh(
   timeOut = DEFAULT_TIMEOUT
 ): void {
   let refreshedTime = 0;
-  const refreshInterval: NodeJS.Timer = setInterval(() => {
+  const refreshInterval: NodeJS.Timeout = setInterval(() => {
     getLandscapes()
       .then((landscapes) => {
         if (refreshedTime < timeOut && !isEmpty(landscapes)) {

@@ -11,7 +11,12 @@
       "sample-action-client",
       "vscode-using-workspace-api"
     ],
-    ["yeoman-ui", "yeoman-ui-frontend"]
+    ["yeoman-ui", "yeoman-ui-frontend"],
+    [
+      "@vscode-logging/logger",
+      "@vscode-logging/types",
+      "@vscode-logging/wrapper"
+    ]
   ],
   "linked": [],
   "access": "restricted",

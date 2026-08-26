@@ -2,6 +2,7 @@ packages:
   - 'packages/*'
   - 'projects/*/packages/*'
   - 'projects/*'
+  - 'projects/*/examples/*'
   - 'examples/*'
 overrides:
   'mem-fs': '4.1.4'
