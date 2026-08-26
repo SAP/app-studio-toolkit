@@ -22,6 +22,12 @@
   "access": "restricted",
   "baseBranch": "origin/main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@sap-devx/yeoman-ui-root", "yeoman-env-v3"],
+  "ignore": [
+    "@sap-devx/yeoman-ui-root",
+    "yeoman-env-v3",
+    "vscode-logging-extension-example",
+    "vscode-logging-extension-wrapper-example",
+    "@vscode-logging/library-example"
+  ],
   "privatePackages": { "version": true, "tag": true }
 }
