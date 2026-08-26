@@ -139,4 +139,3 @@ Please report issues [here](https://github.com/SAP/app-studio-toolkit/issues/new
 ## Contributing
 
 See [CONTRIBUTING.md](https://github.com/SAP/app-studio-toolkit/blob/main/CONTRIBUTING.md).
-This file is licensed under the Apache Software License, v. 2 except as noted otherwise in the [LICENSE file](../../LICENSE).
