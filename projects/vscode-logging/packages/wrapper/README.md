@@ -18,17 +18,13 @@ Please see the [TypeScript Definitions](./api.d.ts) for full API details.
 
 ## Example
 
-An example VSCode extension is available in the [examples' folder](https://github.com/SAP/vscode-logging/tree/master/examples/extension-wrapper).
+An example VSCode extension is available in the [examples' folder](https://github.com/SAP/app-studio-toolkit/tree/main/projects/vscode-logging/examples/extension-wrapper).
 
 ## Support
 
-Please open [issues](https://github.com/SAP/vscode-logging/issues) on github.
+Please report issues [here](https://github.com/SAP/app-studio-toolkit/issues/new/choose) and label them with `project:vscode-logging`.
 
 ## Contributing
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md).
-
-## License
-
-Copyright (c) 2021 SAP SE or an SAP affiliate company. All rights reserved.
+See [CONTRIBUTING.md](https://github.com/SAP/app-studio-toolkit/blob/main/CONTRIBUTING.md).
 This file is licensed under the Apache Software License, v. 2 except as noted otherwise in the [LICENSE file](../../LICENSE).
