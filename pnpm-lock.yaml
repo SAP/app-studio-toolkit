@@ -3037,7 +3037,7 @@ packages:
     engines: {node: '>=8.0.0'}
 
   '@sap/swa-for-sapbas-vsx@1.2.15':
-    resolution: {integrity: sha1-0xug0G19EFjw7W/LvQke25ckgvE=, tarball: https://int.repositories.cloud.sap/artifactory/api/npm/build-milestones-npm/@sap/swa-for-sapbas-vsx/-/@sap/swa-for-sapbas-vsx-1.2.15.tgz}
+    resolution: {integrity: sha512-5mZTzFTl4/ER/ZHIOQJAQPpuTj4uYmh9bogj2B78cDG0jPhwHZzcu1fk6jasDpUX6Pb8vnq0VxdYLk3j+goBJg==}
 
   '@sap/swa-for-sapbas-vsx@2.0.16':
     resolution: {integrity: sha512-aEp/NYhvYUnoYrKUJvWDA3icfgXDyEsM3YHGrYDoGI/YmdZDjSVOLuYWl4DabO0x+gxpZREQEVS3thSyuyawgg==}
