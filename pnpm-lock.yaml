@@ -905,29 +905,29 @@ importers:
         specifier: 5.9.55
         version: 5.9.55
       '@sap-devx/inquirer-gui':
-        specifier: 3.4.13
-        version: 3.4.13(typescript@5.7.3)
+        specifier: 3.4.14
+        version: 3.4.14(typescript@5.7.3)
       '@sap-devx/inquirer-gui-auto-complete-plugin':
-        specifier: 3.4.13
-        version: 3.4.13(typescript@5.7.3)(vite@4.5.11(@types/node@22.20.1)(sass@1.56.1)(terser@5.48.0))
+        specifier: 3.4.14
+        version: 3.4.14(typescript@5.7.3)(vite@4.5.11(@types/node@22.20.1)(sass@1.56.1)(terser@5.48.0))
       '@sap-devx/inquirer-gui-file-browser-plugin':
-        specifier: 3.4.13
-        version: 3.4.13(typescript@5.7.3)
+        specifier: 3.4.14
+        version: 3.4.14(@sap-devx/inquirer-gui@3.4.14(typescript@5.7.3))(typescript@5.7.3)
       '@sap-devx/inquirer-gui-folder-browser-plugin':
-        specifier: 3.4.13
-        version: 3.4.13(typescript@5.7.3)
+        specifier: 3.4.14
+        version: 3.4.14(@sap-devx/inquirer-gui@3.4.14(typescript@5.7.3))(typescript@5.7.3)
       '@sap-devx/inquirer-gui-label-plugin':
-        specifier: 3.4.13
-        version: 3.4.13(typescript@5.7.3)
+        specifier: 3.4.14
+        version: 3.4.14(typescript@5.7.3)
       '@sap-devx/inquirer-gui-login-plugin':
-        specifier: 3.4.13
-        version: 3.4.13(typescript@5.7.3)
+        specifier: 3.4.14
+        version: 3.4.14(@sap-devx/inquirer-gui@3.4.14(typescript@5.7.3))(typescript@5.7.3)
       '@sap-devx/inquirer-gui-radio-plugin':
-        specifier: 3.4.13
-        version: 3.4.13(typescript@5.7.3)
+        specifier: 3.4.14
+        version: 3.4.14(typescript@5.7.3)
       '@sap-devx/inquirer-gui-tiles-plugin':
-        specifier: 3.4.13
-        version: 3.4.13(typescript@5.7.3)
+        specifier: 3.4.14
+        version: 3.4.14(typescript@5.7.3)
       '@sap-devx/webview-rpc':
         specifier: 0.4.1
         version: 0.4.1(bufferutil@4.1.0)(utf-8-validate@5.0.10)
@@ -2970,29 +2970,35 @@ packages:
     resolution: {integrity: sha512-OxdJigAFybeZH9Uxm14EXp0NAb+pWzU4U0CvttJgmrRx+NL1loL0/o8gb/Vqk8wHAtNTqXjhz7GvLZ4tfDjUrA==}
     engines: {node: '>=14.21.2'}
 
-  '@sap-devx/inquirer-gui-auto-complete-plugin@3.4.13':
-    resolution: {integrity: sha512-/mHFa8GMGg+7v9bb0Oi6mlAVOjWWOn9uTyUpac0KId3ly2Cakm2q+ZQayamcPWuhFEUophT9BiE+fE/qmDTdrg==}
+  '@sap-devx/inquirer-gui-auto-complete-plugin@3.4.14':
+    resolution: {integrity: sha512-ZWLep9z7S3I3d49O2E7pX9Lhx5aVoTonriZ0GedgxoZetQeg7BU7IBRZwaErlggirFMODWmT1OtMIH0hwDtSAQ==}
 
-  '@sap-devx/inquirer-gui-file-browser-plugin@3.4.13':
-    resolution: {integrity: sha512-mhvrjvGXapdXOxhvv/HEzIjD4HzsTR7mdC8euUovc2htbJqWTKY77fAjRqXUs15B8aU59kJNOHqL80Fgglxiww==}
+  '@sap-devx/inquirer-gui-file-browser-plugin@3.4.14':
+    resolution: {integrity: sha512-F0Mb4VYYOxAA5UygR5AlpVug5//14ftn7Q0iPTbteoeajCxNmhk7jpIvss427eJWOJ+JbNIrIXeq/S6fVEPraQ==}
+    peerDependencies:
+      '@sap-devx/inquirer-gui': ^3.4.13
 
-  '@sap-devx/inquirer-gui-folder-browser-plugin@3.4.13':
-    resolution: {integrity: sha512-7yNRZbs8j1oRwquo4OmOiZ3Uho4TWdzvCEb/MDPNNq7WM2cTZhR9JOyXomkXKGWsaXthPYlDItJn06qT3MPtjw==}
+  '@sap-devx/inquirer-gui-folder-browser-plugin@3.4.14':
+    resolution: {integrity: sha512-29ugVkqRX/E+FHZSme9nGfA/hHqDziqJiptWM1wpbY8o87+mCIRV0kjQVW967n+lwStgMk+5C0wAnuXJvnqwqw==}
+    peerDependencies:
+      '@sap-devx/inquirer-gui': ^3.4.13
 
-  '@sap-devx/inquirer-gui-label-plugin@3.4.13':
-    resolution: {integrity: sha512-DEbwqpzDk6EBzOSEsMq2UJbMocnOxWrpOVNW8HHiYQRU9to7LLCs2hoqBWHzp6fvpSbQYNqE9MXpfPv9v3DcCQ==}
+  '@sap-devx/inquirer-gui-label-plugin@3.4.14':
+    resolution: {integrity: sha512-K56dlPFyn8ucdYZ4LdOIWcAuJsFX/wRhyxXT/GOuMqzR5P5bJ+2l8q7SlIQy4MKz2PG3CylntFyWK/GDx1O98w==}
 
-  '@sap-devx/inquirer-gui-login-plugin@3.4.13':
-    resolution: {integrity: sha512-HHJLw7kQMlJEK4PKvcmNCdINBCAWyvpXoTVs9JyCx3IBFiTkKQ7yfwsyL1o8+QgaJk3+PtXy4z3eAm+aO/jZOQ==}
+  '@sap-devx/inquirer-gui-login-plugin@3.4.14':
+    resolution: {integrity: sha512-m5yfO8iHQ0MP1futpGVhSpE+WgOBKQ8CP/OEttZhJ3JxVHxaqcNcQ7m3KuOTlaX2YBqe2a+y0di+vIP8zZK1Eg==}
+    peerDependencies:
+      '@sap-devx/inquirer-gui': ^3.4.13
 
-  '@sap-devx/inquirer-gui-radio-plugin@3.4.13':
-    resolution: {integrity: sha512-gzGRSrjdoZJR4Ks01HyyqByZXSUbVNRUXvXHMGYp6+a1bgjRznW7WmkklnLqiKc46K65yhtK92rig/050O6PRg==}
+  '@sap-devx/inquirer-gui-radio-plugin@3.4.14':
+    resolution: {integrity: sha512-J1jqsD0F5gGsvyT/qJbq9o9CyK2SimoteAGrEJ5DY1LBDUFi0y1LXUlKbfGHCU7+zXy3ToaiXaLIAptGeWQAyg==}
 
-  '@sap-devx/inquirer-gui-tiles-plugin@3.4.13':
-    resolution: {integrity: sha512-s0KupNE9ALGM9lap+BsSCvHmzlT0IA356BnPuxpW8iVH76rv1T95+J1qiewyVnB7WbeuhyOUFiVf23n/ptKFEA==}
+  '@sap-devx/inquirer-gui-tiles-plugin@3.4.14':
+    resolution: {integrity: sha512-blVGNafyxC8nzSoZc49JIItsgYTk4LYsHPPUemSWbXKC+X9mvyAAVhI56Q7tywMgPutPEbMUVftQOS/EnUuzCg==}
 
-  '@sap-devx/inquirer-gui@3.4.13':
-    resolution: {integrity: sha512-HiX4leGf8ndoBY/zz46haiuaHDlEORvEO01d0Wu5V/yOJgbIVt4FFvTHEAdqiEhSLo2fSHFlSDXuU0U2sd6myg==}
+  '@sap-devx/inquirer-gui@3.4.14':
+    resolution: {integrity: sha512-hB0PK4/bX8ritk1+CL8cNiUfkvAEN/XxgNHgwALFeb6WfiutLyrJTfdjiji7QHQsDfDPrwTgGUD/erqaNY0dNw==}
 
   '@sap-devx/webview-rpc@0.4.1':
     resolution: {integrity: sha512-FznAh7u1qZh4VWle6wxCmXL2/qI0QigRx67jsL/Eyn7lW1e+6CO2vShond5IjS6+YKpXL7WFwK2MnU08kqqM6A==}
@@ -14577,7 +14583,7 @@ snapshots:
     dependencies:
       node-cache: 5.1.2
 
-  '@sap-devx/inquirer-gui-auto-complete-plugin@3.4.13(typescript@5.7.3)(vite@4.5.11(@types/node@22.20.1)(sass@1.56.1)(terser@5.48.0))':
+  '@sap-devx/inquirer-gui-auto-complete-plugin@3.4.14(typescript@5.7.3)(vite@4.5.11(@types/node@22.20.1)(sass@1.56.1)(terser@5.48.0))':
     dependencies:
       strip-ansi: 6.0.0
       vite-plugin-css-injected-by-js: 3.5.2(vite@4.5.11(@types/node@22.20.1)(sass@1.56.1)(terser@5.48.0))
@@ -14586,43 +14592,46 @@ snapshots:
       - typescript
       - vite
 
-  '@sap-devx/inquirer-gui-file-browser-plugin@3.4.13(typescript@5.7.3)':
+  '@sap-devx/inquirer-gui-file-browser-plugin@3.4.14(@sap-devx/inquirer-gui@3.4.14(typescript@5.7.3))(typescript@5.7.3)':
+    dependencies:
+      '@sap-devx/inquirer-gui': 3.4.14(typescript@5.7.3)
+      vue: 3.5.34(typescript@5.7.3)
+    transitivePeerDependencies:
+      - typescript
+
+  '@sap-devx/inquirer-gui-folder-browser-plugin@3.4.14(@sap-devx/inquirer-gui@3.4.14(typescript@5.7.3))(typescript@5.7.3)':
+    dependencies:
+      '@sap-devx/inquirer-gui': 3.4.14(typescript@5.7.3)
+      vue: 3.5.34(typescript@5.7.3)
+    transitivePeerDependencies:
+      - typescript
+
+  '@sap-devx/inquirer-gui-label-plugin@3.4.14(typescript@5.7.3)':
     dependencies:
       vue: 3.5.34(typescript@5.7.3)
     transitivePeerDependencies:
       - typescript
 
-  '@sap-devx/inquirer-gui-folder-browser-plugin@3.4.13(typescript@5.7.3)':
+  '@sap-devx/inquirer-gui-login-plugin@3.4.14(@sap-devx/inquirer-gui@3.4.14(typescript@5.7.3))(typescript@5.7.3)':
+    dependencies:
+      '@sap-devx/inquirer-gui': 3.4.14(typescript@5.7.3)
+      vue: 3.5.34(typescript@5.7.3)
+    transitivePeerDependencies:
+      - typescript
+
+  '@sap-devx/inquirer-gui-radio-plugin@3.4.14(typescript@5.7.3)':
     dependencies:
       vue: 3.5.34(typescript@5.7.3)
     transitivePeerDependencies:
       - typescript
 
-  '@sap-devx/inquirer-gui-label-plugin@3.4.13(typescript@5.7.3)':
+  '@sap-devx/inquirer-gui-tiles-plugin@3.4.14(typescript@5.7.3)':
     dependencies:
       vue: 3.5.34(typescript@5.7.3)
     transitivePeerDependencies:
       - typescript
 
-  '@sap-devx/inquirer-gui-login-plugin@3.4.13(typescript@5.7.3)':
-    dependencies:
-      vue: 3.5.34(typescript@5.7.3)
-    transitivePeerDependencies:
-      - typescript
-
-  '@sap-devx/inquirer-gui-radio-plugin@3.4.13(typescript@5.7.3)':
-    dependencies:
-      vue: 3.5.34(typescript@5.7.3)
-    transitivePeerDependencies:
-      - typescript
-
-  '@sap-devx/inquirer-gui-tiles-plugin@3.4.13(typescript@5.7.3)':
-    dependencies:
-      vue: 3.5.34(typescript@5.7.3)
-    transitivePeerDependencies:
-      - typescript
-
-  '@sap-devx/inquirer-gui@3.4.13(typescript@5.7.3)':
+  '@sap-devx/inquirer-gui@3.4.14(typescript@5.7.3)':
     dependencies:
       '@vscode-elements/elements': 1.11.0
       lodash: 4.18.1
