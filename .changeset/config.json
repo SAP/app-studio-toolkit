@@ -29,5 +29,9 @@
     "vscode-logging-extension-wrapper-example",
     "@vscode-logging/library-example"
   ],
-  "privatePackages": { "version": true, "tag": true }
+  "privatePackages": {
+    "version": true,
+    "tag": true
+  },
+  "bumpVersionsWithWorkspaceProtocolOnly": true
 }
