@@ -22,6 +22,7 @@
   "access": "restricted",
   "baseBranch": "origin/main",
   "updateInternalDependencies": "patch",
+  "bumpVersionsWithWorkspaceProtocolOnly": true,
   "ignore": [
     "@sap-devx/yeoman-ui-root",
     "yeoman-env-v3",
