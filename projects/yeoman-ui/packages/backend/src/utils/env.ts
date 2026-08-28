@@ -1,5 +1,6 @@
 import _ from "lodash";
 import { createRequire } from "module";
+import { fileURLToPath } from "url";
 import { NpmCommand } from "./npm.js";
 import * as customLocation from "./customLocation.js";
 import Environment, { createEnv } from "yeoman-environment";
@@ -69,7 +70,7 @@ class EnvUtil {
   }
 
   // A generator that fails to instantiate on the legacy yeoman-environment v3
-  // runtime for one of these two reasons actually needs the modern (v6) runtime,
+  // runtime for one of these reasons actually needs the modern (v6) runtime,
   // so createRunGen falls back to v6 when it sees either signal:
   //
   // 1. "requires yeoman-environment" - yeoman-generator v7+ ships an explicit
@@ -89,12 +90,28 @@ class EnvUtil {
   //    write a "resolved" property onto the generator module's frozen ESM
   //    namespace object, which throws. This is an ESM/CJS incompatibility, not
   //    a version guard.
+  //
+  // 3. "Cannot find module 'file://.../*.mjs'" - the bundled v3 compatibility
+  //    runtime can surface this while probing an ESM generator because webpack
+  //    rewrites v3's native dynamic import into a CommonJS module lookup. Treat
+  //    only file-URL ESM module failures as a v3-runtime signal; ordinary missing
+  //    package errors must still surface as real generator errors.
   private isV3RuntimeIncompatibilityError(error: unknown): boolean {
     const message = (error as Error)?.message ?? "";
+    const isFrozenEsmNamespaceError =
+      message.includes("object is not extensible") &&
+      message.includes("resolved");
+    const isBundledV3EsmImportError =
+      /Cannot find module ['"]file:\/\/.*\.(mjs|mts)['"]/.test(message);
     return (
       message.includes("requires yeoman-environment") ||
-      message.includes("object is not extensible")
+      isFrozenEsmNamespaceError ||
+      isBundledV3EsmImportError
     );
+  }
+
+  private toLegacyResolvedPath(resolved: string): string {
+    return resolved.startsWith("file://") ? fileURLToPath(resolved) : resolved;
   }
 
   public loadNpmPath(_force = false) {
@@ -227,7 +244,7 @@ class EnvUtil {
     // v6 below. env.create() only constructs the generator (no prompting), so the
     // extra v3 probe is cheap and never double-prompts.
     try {
-      v3EnvGen = this.createLegacyV3EnvAndGen(
+      v3EnvGen = await this.createLegacyV3EnvAndGen(
         genNamespace,
         meta,
         options,
@@ -236,13 +253,21 @@ class EnvUtil {
     } catch (v3CreateError) {
       if (this.isV3RuntimeIncompatibilityError(v3CreateError)) {
         this.logger?.info(
-          `generator ${genNamespace} needs yeoman-environment v6; instantiation on v3 was rejected`,
-          { error: (v3CreateError as Error)?.message }
+          `generator ${genNamespace} needs yeoman-environment v6; falling back after yeoman-environment v3 rejected it`,
+          {
+            error: (v3CreateError as Error)?.message,
+            resolved: meta.resolved,
+            packagePath: meta.packagePath,
+          }
         );
       } else {
         this.logger?.debug(
           `generator ${genNamespace} failed to instantiate on yeoman-environment v3; surfacing the error (not a v6-runtime signal)`,
-          { error: (v3CreateError as Error)?.message }
+          {
+            error: (v3CreateError as Error)?.message,
+            resolved: meta.resolved,
+            packagePath: meta.packagePath,
+          }
         );
         throw v3CreateError;
       }
@@ -296,31 +321,49 @@ class EnvUtil {
       packagePath: meta.packagePath,
     });
 
+    this.logger?.debug(
+      `creating generator ${genNamespace} on yeoman-environment v6`,
+      {
+        resolved: meta.resolved,
+        packagePath: meta.packagePath,
+      }
+    );
+
     const gen: any = await v6Env.create(genNamespace, { options } as any);
 
     return { env: v6Env, gen };
   }
 
-  private createLegacyV3EnvAndGen(
+  private async createLegacyV3EnvAndGen(
     genNamespace: string,
     meta: LookupGeneratorMeta,
     options: any,
     adapter: any
-  ): EnvGen {
+  ): Promise<EnvGen> {
     const legacyCompat = this.loadLegacyV3Compat();
+    const resolved = this.toLegacyResolvedPath(meta.resolved!);
 
     const v3Env = legacyCompat.createV3Env(
       undefined,
       { sharedOptions: { forwardErrorToEnvironment: true } },
       adapter
     );
-    v3Env.register(meta.resolved, {
+    this.logger?.debug(
+      `creating generator ${genNamespace} on yeoman-environment v3`,
+      {
+        resolved,
+        packagePath: meta.packagePath,
+      }
+    );
+    v3Env.register(resolved, {
       namespace: genNamespace,
       packagePath: meta.packagePath,
     } as any);
-    const gen = v3Env.create(genNamespace, {
-      options,
-    } as unknown as string[]);
+    const gen = await Promise.resolve(
+      v3Env.create(genNamespace, {
+        options,
+      } as unknown as string[])
+    );
 
     return { env: v3Env as unknown as Environment, gen };
   }
