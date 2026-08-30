@@ -89,14 +89,14 @@ module.exports = {
       // esm.js uses native dynamic import() for ESM generators. Webpack rewrites
       // dynamic imports in a CommonJS bundle into a module lookup, which breaks
       // runtime loading of generator .mjs files from disk ("Cannot find module
-      // 'file://...'"). Hide import() from webpack so Node handles it natively.
+      // 'file://...'"). Ignore it so Node handles it natively.
       {
         test: /yeoman-environment[/\\]lib[/\\]util[/\\]esm\.js$/,
         loader: "string-replace-loader",
         options: {
           search: "return import\\(pathToFileURL\\(fileToImport\\)\\);",
           replace:
-            "return new Function('specifier', 'return import(specifier)')(pathToFileURL(fileToImport).href);",
+            "return import(/* webpackIgnore: true */ pathToFileURL(fileToImport));",
           flags: "g",
         },
       },

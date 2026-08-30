@@ -269,57 +269,6 @@ describe("Env.createRunGen()", () => {
     expect(prepare.firstCall.args[1]).to.deep.equal({ id: "v6" });
   });
 
-  it("runs on v6 when bundled v3 cannot load an ESM generator file URL", async () => {
-    sandbox
-      .stub(Env as any, "createLegacyV3EnvAndGen")
-      .rejects(
-        Object.assign(
-          new Error(
-            "Cannot find module 'file:///extbin/globals/bun/global/install/node_modules/@ext-mdkvsc-npm-rel/generator-mdk/generators/app/index.mjs'"
-          ),
-          { code: "MODULE_NOT_FOUND" }
-        )
-      );
-    const v6Create = sandbox
-      .stub(Env as any, "createV6EnvAndGen")
-      .resolves({ env: fakeEnv({}), gen: { id: "v6" } });
-
-    const prepare = sandbox.stub();
-    await Env.createRunGen(
-      standaloneGenV8Fixture.namespace,
-      { silent: true },
-      fakeAdapter(),
-      prepare
-    );
-
-    expect(v6Create.calledOnce, "the generator fell back to v6").to.equal(true);
-    expect(prepare.firstCall.args[1]).to.deep.equal({ id: "v6" });
-  });
-
-  it("runs on v6 when the bundled v3 ESM load error arrives wrapped", async () => {
-    sandbox
-      .stub(Env as any, "createLegacyV3EnvAndGen")
-      .rejects(
-        new Error(
-          "Error: Cannot find module 'file:///extbin/globals/bun/global/install/node_modules/@ext-mdkvsc-npm-rel/generator-mdk/generators/app/index.mjs'"
-        )
-      );
-    const v6Create = sandbox
-      .stub(Env as any, "createV6EnvAndGen")
-      .resolves({ env: fakeEnv({}), gen: { id: "v6" } });
-
-    const prepare = sandbox.stub();
-    await Env.createRunGen(
-      standaloneGenV8Fixture.namespace,
-      { silent: true },
-      fakeAdapter(),
-      prepare
-    );
-
-    expect(v6Create.calledOnce, "the generator fell back to v6").to.equal(true);
-    expect(prepare.firstCall.args[1]).to.deep.equal({ id: "v6" });
-  });
-
   it("surfaces the v6 error when the generator fails on v3 create AND on v6", async () => {
     sandbox
       .stub(Env as any, "createLegacyV3EnvAndGen")

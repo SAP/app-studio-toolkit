@@ -90,23 +90,14 @@ class EnvUtil {
   //    write a "resolved" property onto the generator module's frozen ESM
   //    namespace object, which throws. This is an ESM/CJS incompatibility, not
   //    a version guard.
-  //
-  // 3. "Cannot find module 'file://.../*.mjs'" - the bundled v3 compatibility
-  //    runtime can surface this while probing an ESM generator because webpack
-  //    rewrites v3's native dynamic import into a CommonJS module lookup. Treat
-  //    only file-URL ESM module failures as a v3-runtime signal; ordinary missing
-  //    package errors must still surface as real generator errors.
   private isV3RuntimeIncompatibilityError(error: unknown): boolean {
     const message = (error as Error)?.message ?? "";
     const isFrozenEsmNamespaceError =
       message.includes("object is not extensible") &&
       message.includes("resolved");
-    const isBundledV3EsmImportError =
-      /Cannot find module ['"]file:\/\/.*\.(mjs|mts)['"]/.test(message);
     return (
       message.includes("requires yeoman-environment") ||
-      isFrozenEsmNamespaceError ||
-      isBundledV3EsmImportError
+      isFrozenEsmNamespaceError
     );
   }
 
