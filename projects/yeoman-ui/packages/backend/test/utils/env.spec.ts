@@ -177,6 +177,34 @@ describe("Env.createRunGen()", () => {
     expect(prepare.firstCall.args[1]).to.deep.equal({ id: "v3" });
   });
 
+  it("awaits async v3 generator creation before preparing the run", async () => {
+    const v3Env = fakeEnv({});
+    const v3Gen = { id: "async-v3" };
+    sandbox
+      .stub(Env as any, "createLegacyV3EnvAndGen")
+      .resolves({ env: v3Env, gen: v3Gen });
+    const v6Create = sandbox.stub(Env as any, "createV6EnvAndGen");
+
+    const prepare = sandbox.stub();
+    await Env.createRunGen(
+      standaloneGenV8Fixture.namespace,
+      { silent: true },
+      fakeAdapter(),
+      prepare
+    );
+
+    expect(
+      v6Create.called,
+      "v6 is not attempted when async v3 create succeeds"
+    ).to.equal(false);
+    expect(
+      prepare.calledOnce,
+      "prepare received the resolved v3 env/gen"
+    ).to.equal(true);
+    expect(prepare.firstCall.args[0]).to.equal(v3Env);
+    expect(prepare.firstCall.args[1]).to.equal(v3Gen);
+  });
+
   it("resets the adapter signal before the run", async () => {
     sandbox
       .stub(Env as any, "createLegacyV3EnvAndGen")
@@ -216,6 +244,28 @@ describe("Env.createRunGen()", () => {
     expect(v3Create.calledOnce, "v3 create was probed first").to.equal(true);
     expect(v6Create.calledOnce, "the generator ran on v6").to.equal(true);
     expect(prepare.calledOnce, "prepare wired the v6 env/gen").to.equal(true);
+    expect(prepare.firstCall.args[1]).to.deep.equal({ id: "v6" });
+  });
+
+  it("runs on v6 when async v3 generator creation rejects with a runtime incompatibility", async () => {
+    sandbox
+      .stub(Env as any, "createLegacyV3EnvAndGen")
+      .rejects(
+        new Error("Cannot add property resolved, object is not extensible")
+      );
+    const v6Create = sandbox
+      .stub(Env as any, "createV6EnvAndGen")
+      .resolves({ env: fakeEnv({}), gen: { id: "v6" } });
+
+    const prepare = sandbox.stub();
+    await Env.createRunGen(
+      standaloneGenV8Fixture.namespace,
+      { silent: true },
+      fakeAdapter(),
+      prepare
+    );
+
+    expect(v6Create.calledOnce, "the generator fell back to v6").to.equal(true);
     expect(prepare.firstCall.args[1]).to.deep.equal({ id: "v6" });
   });
 
@@ -299,6 +349,64 @@ describe("Env.createRunGen()", () => {
     expect(
       v6Create.called,
       "a non-incompatibility v3 error must NOT trigger a v6 attempt"
+    ).to.equal(false);
+  });
+
+  it("does not route to v6 for ordinary missing module errors from v3", async () => {
+    const MISSING_MODULE_ERROR =
+      "Cannot find module 'missing-generator-helper'";
+    sandbox
+      .stub(Env as any, "createLegacyV3EnvAndGen")
+      .rejects(new Error(MISSING_MODULE_ERROR));
+    const v6Create = sandbox.stub(Env as any, "createV6EnvAndGen");
+
+    let thrown: any;
+    try {
+      await Env.createRunGen(
+        standaloneGenV8Fixture.namespace,
+        { silent: true },
+        fakeAdapter(),
+        sandbox.stub()
+      );
+    } catch (error) {
+      thrown = error;
+    }
+
+    expect(
+      thrown?.message,
+      "the original missing module error is surfaced"
+    ).to.contain(MISSING_MODULE_ERROR);
+    expect(
+      v6Create.called,
+      "ordinary missing modules must NOT trigger a v6 attempt"
+    ).to.equal(false);
+  });
+
+  it("does not route to v6 for unrelated object extensibility errors from v3", async () => {
+    const V3_ERROR = "Cannot add property foo, object is not extensible";
+    sandbox
+      .stub(Env as any, "createLegacyV3EnvAndGen")
+      .rejects(new Error(V3_ERROR));
+    const v6Create = sandbox.stub(Env as any, "createV6EnvAndGen");
+
+    let thrown: any;
+    try {
+      await Env.createRunGen(
+        standaloneGenV8Fixture.namespace,
+        { silent: true },
+        fakeAdapter(),
+        sandbox.stub()
+      );
+    } catch (error) {
+      thrown = error;
+    }
+
+    expect(thrown?.message, "the original v3 error is surfaced").to.contain(
+      V3_ERROR
+    );
+    expect(
+      v6Create.called,
+      "unrelated object extensibility errors must NOT trigger a v6 attempt"
     ).to.equal(false);
   });
 
