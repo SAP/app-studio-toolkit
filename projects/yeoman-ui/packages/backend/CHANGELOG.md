@@ -1,5 +1,11 @@
 # yeoman-ui
 
+## 1.27.1
+
+### Patch Changes
+
+- 865247c: support dynamic module loading in yo-env v3 wrapper
+
 ## 1.26.1
 
 ### Patch Changes
