@@ -119,7 +119,7 @@
         "Guided Development.sourceLocationTracking": {
           "type": "boolean",
           "default": false,
-          "description": "If chosen, the location of the source code is added to log entries. Warning – this action may slow your extension. We recommend you use it only for debugging.",
+          "description": "If chosen, the location of the source code is added to log entries. Warning \u2013 this action may slow your extension. We recommend you use it only for debugging.",
           "scope": "resource"
         }
       }
@@ -142,7 +142,7 @@
     "ws:run": "node ./out/src/webSocketServer/index.js"
   },
   "dependencies": {
-    "@sap-devx/app-studio-toolkit-types": "1.2.1",
+    "@sap-devx/app-studio-toolkit-types": "workspace:*",
     "@sap-devx/webview-rpc": "0.3.1",
     "@sap_oss/guided-development-types": "workspace:*",
     "@vscode-logging/logger": "workspace:*",

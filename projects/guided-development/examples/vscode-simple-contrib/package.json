@@ -36,7 +36,7 @@
     "SAPOSS.app-studio-toolkit"
   ],
   "dependencies": {
-    "@sap-devx/app-studio-toolkit-types": "1.2.1",
+    "@sap-devx/app-studio-toolkit-types": "workspace:*",
     "@sap_oss/guided-development-types": "workspace:*"
   }
 }

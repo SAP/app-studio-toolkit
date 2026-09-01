@@ -32,7 +32,7 @@
     "package": "vsce package"
   },
   "dependencies": {
-    "@sap-devx/app-studio-toolkit-types": "1.2.1",
+    "@sap-devx/app-studio-toolkit-types": "workspace:*",
     "@sap_oss/guided-development-types": "workspace:*",
     "comment-json": "2.1.0",
     "datauri": "^2.0.0",
@@ -44,7 +44,8 @@
     "@types/glob": "^7.1.1",
     "@types/vscode": "^1.40.0",
     "glob": "^7.1.5",
-    "vscode-test": "^1.2.2"
+    "vscode-test": "^1.2.2",
+    "@types/minimatch": "^3.0.5"
   },
   "extensionDependencies": [
     "SAPOSS.app-studio-toolkit"

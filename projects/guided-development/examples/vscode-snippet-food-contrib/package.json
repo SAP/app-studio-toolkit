@@ -42,7 +42,7 @@
   "dependencies": {
     "@sap-devx/code-snippet-types": "1.1.3",
     "@sap_oss/guided-development-types": "workspace:*",
-    "@sap-devx/app-studio-toolkit-types": "1.2.1",
+    "@sap-devx/app-studio-toolkit-types": "workspace:*",
     "comment-json": "2.1.0",
     "datauri": "^2.0.0",
     "fs-extra": "7.0.1",
@@ -54,6 +54,7 @@
     "@types/glob": "^7.1.1",
     "@types/vscode": "^1.40.0",
     "glob": "^7.1.5",
-    "vscode-test": "^1.2.2"
+    "vscode-test": "^1.2.2",
+    "@types/minimatch": "^3.0.5"
   }
 }

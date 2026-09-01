@@ -39,7 +39,7 @@
     "compile:cjs": "esbuild ./src/index.ts --bundle --outfile=./dist/cjs/index.cjs --format=cjs --target=es2022 --sourcemap --external:vscode --external:@sap-devx/app-studio-toolkit-types"
   },
   "dependencies": {
-    "@sap-devx/app-studio-toolkit-types": "1.2.1"
+    "@sap-devx/app-studio-toolkit-types": "workspace:*"
   },
   "devDependencies": {
     "@types/vscode": "^1.46.0",
