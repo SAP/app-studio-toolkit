@@ -2,9 +2,7 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "allowJs": false,
-    "lib": [
-      "es6"
-    ],
+    "lib": ["es6"],
     "module": "commonjs",
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
@@ -13,17 +11,11 @@
     "removeComments": true,
     "experimentalDecorators": true,
     "rootDir": ".",
-    "rootDirs": [
-      "./src",
-      "./tests"
-    ],
+    "rootDirs": ["./src", "./tests"],
     "sourceMap": true,
     "target": "es6",
     "declaration": true,
     "alwaysStrict": true
   },
-  "include": [
-    "./src/**/*",
-    "./tests/**/*"
-  ]
+  "include": ["./src/**/*", "./tests/**/*"]
 }

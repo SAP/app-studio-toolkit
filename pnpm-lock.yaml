@@ -575,8 +575,8 @@ importers:
   projects/guided-development/examples/vscode-contrib-cake:
     dependencies:
       '@sap-devx/app-studio-toolkit-types':
-        specifier: 1.2.1
-        version: 1.2.1
+        specifier: workspace:*
+        version: link:../../../../packages/app-studio-toolkit-types
       '@sap_oss/guided-development-types':
         specifier: workspace:*
         version: link:../../packages/types
@@ -596,6 +596,9 @@ importers:
       '@types/glob':
         specifier: ^7.1.1
         version: 7.2.0
+      '@types/minimatch':
+        specifier: ^3.0.5
+        version: 3.0.5
       '@types/vscode':
         specifier: ^1.40.0
         version: 1.75.0
@@ -609,8 +612,8 @@ importers:
   projects/guided-development/examples/vscode-contrib1:
     dependencies:
       '@sap-devx/app-studio-toolkit-types':
-        specifier: 1.2.1
-        version: 1.2.1
+        specifier: workspace:*
+        version: link:../../../../packages/app-studio-toolkit-types
       '@sap_oss/guided-development-types':
         specifier: workspace:*
         version: link:../../packages/types
@@ -633,6 +636,9 @@ importers:
       '@types/glob':
         specifier: ^7.1.1
         version: 7.2.0
+      '@types/minimatch':
+        specifier: ^3.0.5
+        version: 3.0.5
       '@types/vscode':
         specifier: ^1.40.0
         version: 1.75.0
@@ -646,8 +652,8 @@ importers:
   projects/guided-development/examples/vscode-contrib2:
     dependencies:
       '@sap-devx/app-studio-toolkit-types':
-        specifier: 1.2.1
-        version: 1.2.1
+        specifier: workspace:*
+        version: link:../../../../packages/app-studio-toolkit-types
       '@sap_oss/guided-development-types':
         specifier: workspace:*
         version: link:../../packages/types
@@ -667,6 +673,9 @@ importers:
       '@types/glob':
         specifier: ^7.1.1
         version: 7.2.0
+      '@types/minimatch':
+        specifier: ^3.0.5
+        version: 3.0.5
       '@types/vscode':
         specifier: ^1.40.0
         version: 1.75.0
@@ -680,8 +689,8 @@ importers:
   projects/guided-development/examples/vscode-contrib3:
     dependencies:
       '@sap-devx/app-studio-toolkit-types':
-        specifier: 1.2.1
-        version: 1.2.1
+        specifier: workspace:*
+        version: link:../../../../packages/app-studio-toolkit-types
       '@sap_oss/guided-development-types':
         specifier: workspace:*
         version: link:../../packages/types
@@ -704,6 +713,9 @@ importers:
       '@types/glob':
         specifier: ^7.1.1
         version: 7.2.0
+      '@types/minimatch':
+        specifier: ^3.0.5
+        version: 3.0.5
       '@types/vscode':
         specifier: ^1.40.0
         version: 1.75.0
@@ -717,8 +729,8 @@ importers:
   projects/guided-development/examples/vscode-simple-contrib:
     dependencies:
       '@sap-devx/app-studio-toolkit-types':
-        specifier: 1.2.1
-        version: 1.2.1
+        specifier: workspace:*
+        version: link:../../../../packages/app-studio-toolkit-types
       '@sap_oss/guided-development-types':
         specifier: workspace:*
         version: link:../../packages/types
@@ -730,8 +742,8 @@ importers:
   projects/guided-development/examples/vscode-snippet-food-contrib:
     dependencies:
       '@sap-devx/app-studio-toolkit-types':
-        specifier: 1.2.1
-        version: 1.2.1
+        specifier: workspace:*
+        version: link:../../../../packages/app-studio-toolkit-types
       '@sap-devx/code-snippet-types':
         specifier: 1.1.3
         version: 1.1.3
@@ -760,6 +772,9 @@ importers:
       '@types/glob':
         specifier: ^7.1.1
         version: 7.2.0
+      '@types/minimatch':
+        specifier: ^3.0.5
+        version: 3.0.5
       '@types/vscode':
         specifier: ^1.40.0
         version: 1.75.0
@@ -773,8 +788,8 @@ importers:
   projects/guided-development/packages/backend:
     dependencies:
       '@sap-devx/app-studio-toolkit-types':
-        specifier: 1.2.1
-        version: 1.2.1
+        specifier: workspace:*
+        version: link:../../../../packages/app-studio-toolkit-types
       '@sap-devx/webview-rpc':
         specifier: 0.3.1
         version: 0.3.1(bufferutil@4.1.0)(utf-8-validate@5.0.10)
@@ -955,8 +970,8 @@ importers:
   projects/guided-development/packages/types:
     dependencies:
       '@sap-devx/app-studio-toolkit-types':
-        specifier: 1.2.1
-        version: 1.2.1
+        specifier: workspace:*
+        version: link:../../../../packages/app-studio-toolkit-types
     devDependencies:
       '@types/vscode':
         specifier: ^1.46.0
@@ -3858,9 +3873,6 @@ packages:
   '@polka/url@1.0.0-next.29':
     resolution: {integrity: sha512-wwQAWhWSuHaag8c4q/KN/vCoeOJYshAIvMQwD4GpSb3OiZklFfvAgmj0VCBBImRpuF/aFgIRzllXlVX93Jevww==}
 
-  '@sap-devx/app-studio-toolkit-types@1.2.1':
-    resolution: {integrity: sha512-b8Ts+5gOI9J9jeBHeiHcmwbiqL07Hm91cJnWS7kG51i6At6C8SJxMQpvWYYmj/Gz6DGZzCUrumQqcgcs3uAzxg==}
-
   '@sap-devx/code-snippet-types@1.1.3':
     resolution: {integrity: sha512-/Rc+RhsY5JphBsguVYEasxxDY8hwSURhZ0dwvEWuBiKnplcmf/GQqoLmfebb+05tVl9gPiLepzmdPsn0dqZGbA==}
 
@@ -3937,10 +3949,6 @@ packages:
 
   '@sap/artifact-management-types@1.53.4':
     resolution: {integrity: sha512-wa3H4pknnS+AciVxuq8mthqm7ULhkuWB4kHZ4vNtud6xZrtkNUBZztEFUtldA7bJ681+lqONj0mBlr/3lDhj6g==}
-
-  '@sap/artifact-management@1.0.1':
-    resolution: {integrity: sha512-ihOCLTMDfPT1itR8rlw8I2UxF+0/7qh7J2cZZGBsS/10owtJE65T9F0g6EWj3LKEG/9KMUaHKbVuoo/2ykaaHg==}
-    hasBin: true
 
   '@sap/artifact-management@1.53.4':
     resolution: {integrity: sha512-zOWCNpQVj2IYPpS2oAFDJEzGU2rlkgNoM8Cb6xbaJxv9L/RA+sagbN42AElkuAJqyoXmBktOfnuCQ82jtfwOng==}
@@ -4360,10 +4368,6 @@ packages:
   '@types/minimatch@3.0.5':
     resolution: {integrity: sha512-Klz949h02Gz2uZCMGwDUSDS1YBlTdDDgbWHi+81l29tQALUtvz4rAYi5uoVhE5Lagoq6DeqAUlbrHvW/mXDgdQ==}
 
-  '@types/minimatch@6.0.0':
-    resolution: {integrity: sha512-zmPitbQ8+6zNutpwgcQuLcsEpn/Cj54Kbn7L5pX0Os5kdWplB7xPgEh/g+SWOB/qmows2gpuCaPyduq8ZZRnxA==}
-    deprecated: This is a stub types definition. minimatch provides its own type definitions, so you do not need this installed.
-
   '@types/minimist@1.2.5':
     resolution: {integrity: sha512-hov8bUuiLiyFPGyFPE1lwWhmzYbirOXQNNo40+y3zow8aFVTeyn3VWL0VFFfdNddA8S4Vf0Tc062rzyNr7Paag==}
 
@@ -4690,9 +4694,6 @@ packages:
 
   '@vscode-logging/types@0.1.3':
     resolution: {integrity: sha512-1mV/aMVXpm50PyJ4XYD0qPUREv6QcmPwuDtzdMcKeiXN5Tt/WmnyEHfUxENQr1Aes8Hr+EVtNK4tvrUXXco/5A==}
-
-  '@vscode-logging/types@0.1.4':
-    resolution: {integrity: sha512-uxuHQfpX9RbkgSj5unJFmciXRczyFSaAI2aA829MYYkE8jxlhZLRLoiJLymTNiojNVdV7fFE3CILF5Q6M+EBsA==}
 
   '@vscode-logging/types@2.0.8':
     resolution: {integrity: sha512-9mc5+Iob1BqJ00QExLwdz4+w0A1odSYjvzpKYfP0lVzr7Tdf4iWGspLADyTSC7DtJVQQ+tu411cBju+cYJxE/g==}
@@ -5255,9 +5256,6 @@ packages:
   ajv@6.15.0:
     resolution: {integrity: sha512-fgFx7Hfoq60ytK2c7DhnF8jIvzYgOMxfugjLOSMHjLIPgenqa7S7oaagATUq99mV6IYvN2tRmC0wnTYX6iPbMw==}
 
-  ajv@7.0.3:
-    resolution: {integrity: sha512-R50QRlXSxqXcQP5SvKUrw8VZeypvo12i2IX0EeR5PiZ7bEKeHWgzgo264LDadUsCU42lTJVhFikTqJwNeH34gQ==}
-
   ajv@8.18.0:
     resolution: {integrity: sha512-PlXPeEWMXMZ7sPYOHqmDyCJzcfNrUr3fGNKtezX14ykXOEIvyK81d+qydx89KY5O71FKMPaQ2vBfBFI5NHR63A==}
 
@@ -5375,9 +5373,6 @@ packages:
 
   arg@4.1.3:
     resolution: {integrity: sha512-58S9QDqG0Xx27YwPSt9fJxivjYl432YCwfDMfZ+71RAqUrZef7LrKQZ3LHLOwCS4FLNBplP533Zx895SeOCHvA==}
-
-  arg@5.0.0:
-    resolution: {integrity: sha512-4P8Zm2H+BRS+c/xX1LrHw0qKpEhdlZjLCgWy+d78T9vqa2Z2SiD2wMrYuWIAFy5IZUD7nnNXroRttz+0RzlrzQ==}
 
   argparse@1.0.10:
     resolution: {integrity: sha512-o5Roy6tNG4SL/FOkCAN6RzjiakZS25RLYFrcMttJqbdd8BWrnA+fGz57iN5Pb06pvBGvl5gQ0B48dJlslXvoTg==}
@@ -5508,9 +5503,6 @@ packages:
 
   async@2.6.4:
     resolution: {integrity: sha512-mzo5dfJYwAn29PeiJ0zvwTo04zj8HDJj0Mn8TD7sno7q12prdbnasKJHhkm2c1LgrhlJ0teaea8860oxi51mGA==}
-
-  async@3.2.0:
-    resolution: {integrity: sha512-TR2mEZFVOj2pLStYxLht7TyfuRzaydfpxr3k9RpHIzMgw7A64dzsdqCxH1WJyQdoe8T10nDXd9wnEigmiuHIZw==}
 
   async@3.2.6:
     resolution: {integrity: sha512-htCUDlxyyCLMgaM3xXg0C0LW2xqfuQ6p05pCEIsXuyQ+a1koYKTuBMzRNwmybfLgvJDMd0r1LTn4+E0Ti6C2AA==}
@@ -6069,10 +6061,6 @@ packages:
   cheerio@1.2.0:
     resolution: {integrity: sha512-WDrybc/gKFpTYQutKIK6UvfcuxijIZfMfXaYm8NMsPQxSYvf+13fXUJ4rztGGbJcBQ/GF55gvrZ0Bc0bj/mqvg==}
     engines: {node: '>=20.18.1'}
-
-  chokidar@3.5.1:
-    resolution: {integrity: sha512-9+s+Od+W0VJJzawDma/gvBNQqkTiqYTWLuZoyAsivsI4AaWTCzHG06/TMjsf1cYe9Cb97UCEhjz7HvnPk2p/tw==}
-    engines: {node: '>= 8.10.0'}
 
   chokidar@3.6.0:
     resolution: {integrity: sha512-7VT13fmjotKpGipCW9JEQAusEPE+Ei8nl6/g4FBAmIm0GOOLMua9NDDo/DWp0ZAxCr3cPq5ZpBqmPAQgDda2Pw==}
@@ -7249,11 +7237,6 @@ packages:
     engines: {node: '>=0.10.0'}
     hasBin: true
 
-  ejs@3.1.6:
-    resolution: {integrity: sha512-9lt9Zse4hPucPkoP7FHDF0LQAlGyF9JVpnClFLFH3aSSbxmyoqINRpp/9wePWJTUl4KOQwRL72Iw3InHPDkoGw==}
-    engines: {node: '>=0.10.0'}
-    hasBin: true
-
   ejs@5.0.2:
     resolution: {integrity: sha512-IpbUaI/CAW86l3f+T8zN0iggSc0LmMZLcIW5eRVStLVNCoTXkE0YlncbbH50fp8Cl6zHIky0sW2uUbhBqGw0Jw==}
     engines: {node: '>=0.12.18'}
@@ -7792,10 +7775,6 @@ packages:
     resolution: {integrity: sha512-DVj4CQIYYow0BlaelwK1pHl5n5cRSJfM60UA0zK891sVInoPri2Ekj7+e1CT3/3qxXenpI+nBBmQAcJPJgaj4w==}
     engines: {node: '>=8.6.0'}
 
-  fast-glob@3.2.5:
-    resolution: {integrity: sha512-2DtFcgT68wiTTiwZ2hNdJfcHNke9XOfnwmBRWXhmeKM8rF0TGwmC/Qto3S7RoZKp5cilZbxzO5iTNTQsJ+EeDg==}
-    engines: {node: '>=8'}
-
   fast-glob@3.3.2:
     resolution: {integrity: sha512-oX2ruAFQwf/Orj8m737Y5adxDQO0LAB7/S5MnxCdTNDd4p6BsyIVsv9JQsATbTSq8KHRpLwIHbVlUNatxd+1Ow==}
     engines: {node: '>=8.6.0'}
@@ -7888,9 +7867,6 @@ packages:
     engines: {node: '>= 10.13.0'}
     peerDependencies:
       webpack: ^4.0.0 || ^5.0.0
-
-  file-stream-rotator@0.5.7:
-    resolution: {integrity: sha512-VYb3HZ/GiAGUCrfeakO8Mp54YGswNUHvL7P09WQcXAJNSj3iQ5QraYSp3cIn1MUyw6uzfgN/EFOarCNa4JvUHQ==}
 
   file-stream-rotator@0.6.1:
     resolution: {integrity: sha512-u+dBid4PvZw17PmDeRcNOtCP9CCK/9lRN2w+r1xIS7yOL9JFrIBKTvrYsxT4P0pGtThYTn++QS5ChHaUov3+zQ==}
@@ -8303,10 +8279,6 @@ packages:
     resolution: {integrity: sha512-c9IPMazfRITpmAAKi22dK1VKxGDX9ehhqfABDriL/lzO92xcUKEJPQHrVA/2YHSNFB4iFlykVmWvwo48nr3OxA==}
     deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
 
-  glob@7.1.6:
-    resolution: {integrity: sha512-LwaxwyZ72Lk7vZINtNNrywX0ZuLyStrdDtabefZKAY5ZGJhVtgdznluResxNmPitE0SAO+O26sWTHeKSI2wMBA==}
-    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
-
   glob@7.2.0:
     resolution: {integrity: sha512-lmLf6gtyrPq8tTjSmrO94wBeQbFR3HbLHbuyD69wuyQkImp2hWqMGB47OX65FBkPffO641IP9jWa1z4ivqG26Q==}
     deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
@@ -8716,10 +8688,6 @@ packages:
 
   ignore@4.0.6:
     resolution: {integrity: sha512-cyFDKrqc/YdcWFniJhzI42+AzS+gNwmUzOSFcRCQYwySuBBBy/KjuxWLZ/FHEH6Moq1NizMOBWyTcv8O4OZIMg==}
-    engines: {node: '>= 4'}
-
-  ignore@5.1.8:
-    resolution: {integrity: sha512-BMpfD7PpiETpBl/A6S498BaIJ6Y/ABT93ETbby2fP00v4EbvPBXWEoaR1UBPKs3iR53pJY7EtZk5KACI57i1Uw==}
     engines: {node: '>= 4'}
 
   ignore@5.1.9:
@@ -9617,10 +9585,6 @@ packages:
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
 
-  js-yaml@3.14.0:
-    resolution: {integrity: sha512-/4IbIeHcD9VMHFqDR/gQ7EdZdLimOvW2DdcxFjdyyZ9NsbS+ccrXqVWDtab/lRl5AlUqmpBx8EhPaWR+OtY17A==}
-    hasBin: true
-
   js-yaml@3.14.1:
     resolution: {integrity: sha512-okMH7OXXJ7YrN9Ok3/SXrnu4iX9yOk+25nqX4imS2npuvTYDmo/QEZoqwZkYaIDk3jVvBOTOIEgEhaLOynBS9g==}
     hasBin: true
@@ -10286,10 +10250,6 @@ packages:
     resolution: {integrity: sha512-MWikgl9n9M3w+bpsY3He8L+w9eF9338xRl8IAO5viDizwSzziFEyUzo2xrrloB64ADbTf8uA8vRqqttDTOmccg==}
     engines: {node: '>=0.10.0'}
 
-  micromatch@4.0.2:
-    resolution: {integrity: sha512-y7FpHSbMUMoyPbYUSzO6PaZ6FyRnQOpHuKwbo1G+Knck95XVU4QAiKdGEnj5wwoS7PlOgthX/09u5iFJ+aYf5Q==}
-    engines: {node: '>=8'}
-
   micromatch@4.0.4:
     resolution: {integrity: sha512-pRmzw/XUcwXGpD9aI9q/0XOwLNygjETJ8y0ao0wdqprrzDa4YnxLcz7fQRZr8voh8V10kGhABbNcHVk5wHgWwg==}
     engines: {node: '>=8.6'}
@@ -10683,10 +10643,6 @@ packages:
     resolution: {integrity: sha512-Pzr3rol8fvhG/oJjIq2NTVB0vmdNNlz22FENhhPojYRZ4/ee08CfK4YuKmuL54V9MLhI1kpzxfOJ/63LzmZzDg==}
     engines: {node: '>=14'}
 
-  node-watch@0.7.1:
-    resolution: {integrity: sha512-UWblPYuZYrkCQCW5PxAwYSxaELNBLUckrTBBk8xr1/bUgyOkYYTsUcV4e3ytcazFEOyiRyiUrsG37pu6I0I05g==}
-    engines: {node: '>=6'}
-
   nopt@3.0.6:
     resolution: {integrity: sha512-4GUt3kSEYmk4ITxzB/b9vaIDfUVWN/Ml1Fwl11IlnIG2iaJ9O6WXZ9SrYM9NLI8OCBieN2Y8SWC2oJV0RQ7qYg==}
     hasBin: true
@@ -10999,10 +10955,6 @@ packages:
     resolution: {integrity: sha512-ur5UIdyw5Y7yEj9wLzhqXiy6GZ3Mwx0yGI+5sMn2r0N0v3cKJvUmFH5yPP+WXh9e0xfyzyJX95D8l088DNFj7A==}
     hasBin: true
 
-  optional-require@1.0.3:
-    resolution: {integrity: sha512-RV2Zp2MY2aeYK5G+B/Sps8lW5NHAzE5QClbFP15j+PWmP+T9PxlJXBOOLoSAdgwFvS4t0aMR4vpedMkbHfh0nA==}
-    engines: {node: '>=4'}
-
   optional-require@1.1.8:
     resolution: {integrity: sha512-jq83qaUb0wNg9Krv1c5OQ+58EK+vHde6aBPzLvPPqJm89UQWsvSuFy9X/OSNJnFeSOKo7btE0n8Nl2+nE+z5nA==}
     engines: {node: '>=4'}
@@ -11205,10 +11157,6 @@ packages:
   parse-conflict-json@5.0.1:
     resolution: {integrity: sha512-ZHEmNKMq1wyJXNwLxyHnluPfRAFSIliBvbK/UiOceROt4Xh9Pz0fq49NytIaeaCUf5VR86hwQ/34FCcNU5/LKQ==}
     engines: {node: ^20.17.0 || >=22.9.0}
-
-  parse-gitignore@1.0.1:
-    resolution: {integrity: sha512-UGyowyjtx26n65kdAMWhm6/3uy5uSrpcuH7tt+QEVudiBoVS+eqHxD5kbi9oWVRwj7sCzXqwuM+rUGw7earl6A==}
-    engines: {node: '>=6'}
 
   parse-json@2.2.0:
     resolution: {integrity: sha512-QR/GGaKCkhwk1ePQNYDRKYZ3mwU9ypsKhB0XyFnLQdomyEqk3e8wpW3V5Jp88zbxK4n5ST1nqo+g9juTpownhQ==}
@@ -11966,10 +11914,6 @@ packages:
   readdir-scoped-modules@1.1.0:
     resolution: {integrity: sha512-asaikDeqAQg7JifRsZn1NJZXo9E+VwlyCfbkZhwyISinqk5zNS6266HS5kah6P0SaQKGF6SkNnZVHUzHFYxYDw==}
     deprecated: This functionality has been moved to @npmcli/fs
-
-  readdirp@3.5.0:
-    resolution: {integrity: sha512-cMhu7c/8rdhkHXWsY+osBhfSy0JikwpHK/5+imo+LpeasTF8ouErHrlYkwT0++njiyuDvc7OFY5T3ukvZ8qmFQ==}
-    engines: {node: '>=8.10.0'}
 
   readdirp@3.6.0:
     resolution: {integrity: sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==}
@@ -13809,15 +13753,8 @@ packages:
     resolution: {integrity: sha512-perEnXQdQOJMTDFNv+UF3h1Y0z4iSiaN9jIlb0OqIYgosPCZGYh/MCUlkFtV2668PL69lRDO32hmvL2yiidUYg==}
     engines: {node: '>=8.0.0 || >=10.0.0'}
 
-  vscode-jsonrpc@6.0.0:
-    resolution: {integrity: sha512-wnJA4BnEjOSyFMvjZdpiOwhSq9uDoK8e/kpRJDTaMYzwlkrhG1fwDIZI94CLsLzlCK5cIbMMtFlJlfR57Lavmg==}
-    engines: {node: '>=8.0.0 || >=10.0.0'}
-
   vscode-languageserver-textdocument@1.0.4:
     resolution: {integrity: sha512-/xhqXP/2A2RSs+J8JNXpiiNVvvNM0oTosNVmQnunlKvq9o4mupHOBAnnzH0lwIPKazXKvAKsVp1kr+H/K4lgoQ==}
-
-  vscode-languageserver-types@3.16.0:
-    resolution: {integrity: sha512-k8luDIWJWyenLc5ToFQQMaSrqCHiLwyKPHKPQZ5zz21vM+vIVUSvsRpcbiECH4WR88K2XZqc4ScRcZ7nk/jbeA==}
 
   vscode-languageserver-types@3.17.5:
     resolution: {integrity: sha512-Ld1VelNuX9pdF39h2Hgaeb5hEZM2Z3jUrrMgWQAu82jMtZp7p3vJT3BzToKtZI7NgQssZje5o0zryOrhQvzQAg==}
@@ -14186,12 +14123,6 @@ packages:
   wildcard@2.0.1:
     resolution: {integrity: sha512-CC1bOL87PIWSBhDcTrdeLo6eGT7mCFtrg0uIJtqJUFyK+eJnzl8A1niH56uu7KMa5XFrtiV+AQuHO3n7DsHnLQ==}
 
-  winston-daily-rotate-file@4.5.5:
-    resolution: {integrity: sha512-ds0WahIjiDhKCiMXmY799pDBW+58ByqIBtUcsqr4oDoXrAI3Zn+hbgFdUxzMfqA93OG0mPLYVMiotqTgE/WeWQ==}
-    engines: {node: '>=8'}
-    peerDependencies:
-      winston: ^3
-
   winston-daily-rotate-file@5.0.0:
     resolution: {integrity: sha512-JDjiXXkM5qvwY06733vf09I2wnMXpZEhxEVOSPenZMii+g7pcDcTBt2MRugnoi8BwVSuCT2jfRXBUy+n1Zz/Yw==}
     engines: {node: '>=8'}
@@ -14213,10 +14144,6 @@ packages:
   winston@3.15.0:
     resolution: {integrity: sha512-RhruH2Cj0bV0WgNL+lOfoUBI4DVfdUNjVnJGVovWZmrcKtrFTTRzgXYK2O9cymSGjrERCtaAeHwMNnUWXlwZow==}
     engines: {node: '>= 12.0.0'}
-
-  winston@3.3.3:
-    resolution: {integrity: sha512-oEXTISQnC8VlSAKf1KYSSd7J6IWuRPQqDdo8eoRNaYKLvwSb5+79Z3Yi1lrl6KDpU6/VWaxpakDAtb1oQ4n9aw==}
-    engines: {node: '>= 6.4.0'}
 
   with-open-file@0.1.7:
     resolution: {integrity: sha512-ecJS2/oHtESJ1t3ZfMI3B7KIDKyfN0O16miWxdn30zdh66Yd3LsRFebXZXq6GU4xfxLf6nVxp9kIqElb5fqczA==}
@@ -17853,12 +17780,6 @@ snapshots:
 
   '@polka/url@1.0.0-next.29': {}
 
-  '@sap-devx/app-studio-toolkit-types@1.2.1':
-    dependencies:
-      '@sap/artifact-management': 1.0.1
-      '@types/vscode': 1.75.0
-      '@vscode-logging/types': 0.1.4
-
   '@sap-devx/code-snippet-types@1.1.3':
     dependencies:
       '@types/vscode': 1.75.0
@@ -18020,28 +17941,6 @@ snapshots:
   '@sap/artifact-management-types@1.53.4':
     dependencies:
       '@sap/artifact-management-base-types': 1.53.4
-
-  '@sap/artifact-management@1.0.1':
-    dependencies:
-      ajv: 7.0.3
-      arg: 5.0.0
-      async: 3.2.0
-      chokidar: 3.5.1
-      ejs: 3.1.6
-      fast-glob: 3.2.5
-      glob: 7.1.6
-      ignore: 5.1.8
-      js-yaml: 3.14.0
-      lodash: 4.17.21
-      micromatch: 4.0.2
-      node-watch: 0.7.1
-      optional-require: 1.0.3
-      parse-gitignore: 1.0.1
-      vscode-jsonrpc: 6.0.0
-      vscode-languageserver-types: 3.16.0
-      winston: 3.3.3
-      winston-daily-rotate-file: 4.5.5(winston@3.3.3)
-      yargs: 16.2.0
 
   '@sap/artifact-management@1.53.4(bufferutil@4.1.0)(utf-8-validate@5.0.10)':
     dependencies:
@@ -18517,7 +18416,7 @@ snapshots:
 
   '@types/glob@7.2.0':
     dependencies:
-      '@types/minimatch': 6.0.0
+      '@types/minimatch': 3.0.5
       '@types/node': 22.20.1
 
   '@types/graceful-fs@4.1.9':
@@ -18601,10 +18500,6 @@ snapshots:
   '@types/mime@3.0.1': {}
 
   '@types/minimatch@3.0.5': {}
-
-  '@types/minimatch@6.0.0':
-    dependencies:
-      minimatch: 10.2.5
 
   '@types/minimist@1.2.5': {}
 
@@ -19023,8 +18918,6 @@ snapshots:
       - supports-color
 
   '@vscode-logging/types@0.1.3': {}
-
-  '@vscode-logging/types@0.1.4': {}
 
   '@vscode-logging/types@2.0.8': {}
 
@@ -19972,13 +19865,6 @@ snapshots:
       json-schema-traverse: 0.4.1
       uri-js: 4.4.1
 
-  ajv@7.0.3:
-    dependencies:
-      fast-deep-equal: 3.1.3
-      json-schema-traverse: 1.0.0
-      require-from-string: 2.0.2
-      uri-js: 4.4.1
-
   ajv@8.18.0:
     dependencies:
       fast-deep-equal: 3.1.3
@@ -20093,8 +19979,6 @@ snapshots:
 
   arg@4.1.3: {}
 
-  arg@5.0.0: {}
-
   argparse@1.0.10:
     dependencies:
       sprintf-js: 1.0.3
@@ -20207,8 +20091,6 @@ snapshots:
   async@2.6.4:
     dependencies:
       lodash: 4.18.1
-
-  async@3.2.0: {}
 
   async@3.2.6: {}
 
@@ -20969,18 +20851,6 @@ snapshots:
       parse5-parser-stream: 7.1.2
       undici: 7.25.0
       whatwg-mimetype: 4.0.0
-
-  chokidar@3.5.1:
-    dependencies:
-      anymatch: 3.1.3
-      braces: 3.0.3
-      glob-parent: 5.1.2
-      is-binary-path: 2.1.0
-      is-glob: 4.0.3
-      normalize-path: 3.0.0
-      readdirp: 3.5.0
-    optionalDependencies:
-      fsevents: 2.3.3
 
   chokidar@3.6.0:
     dependencies:
@@ -21989,10 +21859,6 @@ snapshots:
     dependencies:
       jake: 10.9.4
 
-  ejs@3.1.6:
-    dependencies:
-      jake: 10.9.4
-
   ejs@5.0.2: {}
 
   electron-to-chromium@1.5.352: {}
@@ -22814,15 +22680,6 @@ snapshots:
       merge2: 1.4.1
       micromatch: 4.0.6
 
-  fast-glob@3.2.5:
-    dependencies:
-      '@nodelib/fs.stat': 2.0.5
-      '@nodelib/fs.walk': 1.2.8
-      glob-parent: 5.1.2
-      merge2: 1.4.1
-      micromatch: 4.0.8
-      picomatch: 2.3.2
-
   fast-glob@3.3.2:
     dependencies:
       '@nodelib/fs.stat': 2.0.5
@@ -22917,10 +22774,6 @@ snapshots:
       loader-utils: 2.0.4
       schema-utils: 3.1.1
       webpack: 5.106.2(webpack-cli@6.0.1(webpack@5.104.1))
-
-  file-stream-rotator@0.5.7:
-    dependencies:
-      moment: 2.30.1
 
   file-stream-rotator@0.6.1:
     dependencies:
@@ -23402,15 +23255,6 @@ snapshots:
 
   glob@5.0.15:
     dependencies:
-      inflight: 1.0.6
-      inherits: 2.0.4
-      minimatch: 3.1.2
-      once: 1.4.0
-      path-is-absolute: 1.0.1
-
-  glob@7.1.6:
-    dependencies:
-      fs.realpath: 1.0.0
       inflight: 1.0.6
       inherits: 2.0.4
       minimatch: 3.1.2
@@ -23931,8 +23775,6 @@ snapshots:
   ignore@3.3.10: {}
 
   ignore@4.0.6: {}
-
-  ignore@5.1.8: {}
 
   ignore@5.1.9: {}
 
@@ -25264,11 +25106,6 @@ snapshots:
 
   js-tokens@4.0.0: {}
 
-  js-yaml@3.14.0:
-    dependencies:
-      argparse: 1.0.10
-      esprima: 4.0.1
-
   js-yaml@3.14.1:
     dependencies:
       argparse: 1.0.10
@@ -26208,11 +26045,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  micromatch@4.0.2:
-    dependencies:
-      braces: 3.0.3
-      picomatch: 2.3.2
-
   micromatch@4.0.4:
     dependencies:
       braces: 3.0.3
@@ -26635,8 +26467,6 @@ snapshots:
     dependencies:
       '@types/sarif': 2.1.7
       fs-extra: 10.0.1
-
-  node-watch@0.7.1: {}
 
   nopt@3.0.6:
     dependencies:
@@ -27061,8 +26891,6 @@ snapshots:
 
   opener@1.5.2: {}
 
-  optional-require@1.0.3: {}
-
   optional-require@1.1.8:
     dependencies:
       require-at: 1.0.6
@@ -27349,8 +27177,6 @@ snapshots:
       json-parse-even-better-errors: 5.0.0
       just-diff: 6.0.2
       just-diff-apply: 5.5.0
-
-  parse-gitignore@1.0.1: {}
 
   parse-json@2.2.0:
     dependencies:
@@ -28093,10 +27919,6 @@ snapshots:
       dezalgo: 1.0.4
       graceful-fs: 4.2.11
       once: 1.4.0
-
-  readdirp@3.5.0:
-    dependencies:
-      picomatch: 2.3.2
 
   readdirp@3.6.0:
     dependencies:
@@ -30140,11 +29962,7 @@ snapshots:
 
   vscode-jsonrpc@4.0.0: {}
 
-  vscode-jsonrpc@6.0.0: {}
-
   vscode-languageserver-textdocument@1.0.4: {}
-
-  vscode-languageserver-types@3.16.0: {}
 
   vscode-languageserver-types@3.17.5: {}
 
@@ -30731,14 +30549,6 @@ snapshots:
 
   wildcard@2.0.1: {}
 
-  winston-daily-rotate-file@4.5.5(winston@3.3.3):
-    dependencies:
-      file-stream-rotator: 0.5.7
-      object-hash: 2.2.0
-      triple-beam: 1.4.1
-      winston: 3.3.3
-      winston-transport: 4.6.0
-
   winston-daily-rotate-file@5.0.0(winston@3.15.0):
     dependencies:
       file-stream-rotator: 0.6.1
@@ -30786,18 +30596,6 @@ snapshots:
       stack-trace: 0.0.10
       triple-beam: 1.4.1
       winston-transport: 4.8.0
-
-  winston@3.3.3:
-    dependencies:
-      '@dabh/diagnostics': 2.0.8
-      async: 3.2.6
-      is-stream: 2.0.1
-      logform: 2.7.0
-      one-time: 1.0.0
-      readable-stream: 3.6.2
-      stack-trace: 0.0.10
-      triple-beam: 1.4.1
-      winston-transport: 4.6.0
 
   with-open-file@0.1.7:
     dependencies:

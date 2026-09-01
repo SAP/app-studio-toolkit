@@ -119,7 +119,7 @@
         "Guided Development.sourceLocationTracking": {
           "type": "boolean",
           "default": false,
-          "description": "If chosen, the location of the source code is added to log entries. Warning \u2013 this action may slow your extension. We recommend you use it only for debugging.",
+          "description": "If chosen, the location of the source code is added to log entries. Warning – this action may slow your extension. We recommend you use it only for debugging.",
           "scope": "resource"
         }
       }
