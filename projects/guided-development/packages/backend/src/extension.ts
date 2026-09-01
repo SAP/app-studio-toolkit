@@ -5,8 +5,8 @@ import { Contributors } from "./contributors";
 import { GuidedDevelopmentPanel } from "./panels/GuidedDevelopmentPanel";
 import { AbstractWebviewPanel } from "./panels/AbstractWebviewPanel";
 import { VSCodeEvents } from "./vscode-events";
-import { bas } from "@sap-devx/app-studio-toolkit-types";
 import { setSetData, managerApi } from "./api";
+import { BasToolkit } from "@sap-devx/app-studio-toolkit-types";
 
 import GuideViewProvider from "./center/guideViewProvider";
 
@@ -40,7 +40,7 @@ export async function activate(context: vscode.ExtensionContext) {
   registerWebviewPanelSerializer(guidedDevelopmentPanel);
 
   const vscodeEvents = VSCodeEvents.getInstance();
-  const basAPI: typeof bas = await vscode.extensions.getExtension(
+  const basAPI: BasToolkit = await vscode.extensions.getExtension(
     "SAPOSS.app-studio-toolkit"
   )?.exports;
   vscodeEvents.setBasAPI(basAPI);

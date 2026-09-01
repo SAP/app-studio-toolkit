@@ -5,7 +5,7 @@ import {
   IItem,
   ITurotial,
 } from "@sap_oss/guided-development-types";
-import { bas, BasAction } from "@sap-devx/app-studio-toolkit-types";
+import { BasAction, BasToolkit } from "@sap-devx/app-studio-toolkit-types";
 
 export class VSCodeEvents implements AppEvents {
   basAPI: any;
@@ -21,7 +21,7 @@ export class VSCodeEvents implements AppEvents {
     return this.vsCodeEvents;
   }
 
-  public setBasAPI(basAPI: typeof bas): void {
+  public setBasAPI(basAPI: BasToolkit): void {
     this.basAPI = basAPI;
   }
 

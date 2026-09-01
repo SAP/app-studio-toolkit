@@ -5,7 +5,7 @@ import * as _ from "lodash";
 import { mockVscode } from "./mockUtil";
 import { Contributors } from "../src/contributors";
 import { VSCodeEvents } from "../src/vscode-events";
-import { bas } from "@sap-devx/app-studio-toolkit-types";
+import { BasToolkit } from "@sap-devx/app-studio-toolkit-types";
 
 const oRegisteredCommands = {};
 const oRegisteredWebviewViewProviders = {};
@@ -87,7 +87,7 @@ describe("extension unit test", () => {
         "createExtensionLoggerAndSubscribeToLogSettingsChanges"
       );
       loggerWrapperMock.expects("getLogger").once();
-      const res: typeof bas = eventMock
+      const res: BasToolkit = eventMock
         .expects("getExtension")
         .withExactArgs("SAPOSS.app-studio-toolkit")?.exports;
       vscodeEventMock.expects("setBasAPI").withExactArgs(res);

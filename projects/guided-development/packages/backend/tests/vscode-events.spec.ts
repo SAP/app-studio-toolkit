@@ -9,10 +9,10 @@ import {
   IUriAction,
   IFileAction,
   ISnippetAction,
-  bas,
   IAction,
   ActionType,
   BasAction,
+  BasToolkit,
 } from "@sap-devx/app-studio-toolkit-types";
 
 import { VSCodeEvents } from "../src/vscode-events";
@@ -108,12 +108,11 @@ class MockFileAction extends MockAction implements IFileAction {
   }
 }
 
-const mockBasAPI: typeof bas = {
+const mockBasAPI: BasToolkit = {
   getExtensionAPI: <T>(extensionId: string): Promise<T> => {
     return Promise.resolve(undefined);
   },
-  getAction: (id: string) => undefined,
-
+  getAction: (id: string): undefined => undefined,
   performAction: mockPerformAction,
   actions: {
     performAction: mockPerformAction,
@@ -126,23 +125,23 @@ const mockBasAPI: typeof bas = {
     return Promise.resolve(true);
   },
   workspaceAPI: undefined,
-};
+} as unknown as BasToolkit;
 
-const mockBasAPINoAction: typeof bas = {
+const mockBasAPINoAction: BasToolkit = {
   getExtensionAPI: <T>(extensionId: string): Promise<T> => {
     return Promise.resolve(undefined);
   },
-  getAction: (id: string) => undefined,
+  getAction: (id: string): undefined => undefined,
   performAction: <T = void>(
     action: BasAction,
     options?: { schedule?: boolean }
-  ) => undefined,
+  ): undefined => undefined,
   actions: undefined,
   isLCAPEnabled: function (): Promise<boolean> {
     return Promise.resolve(true);
   },
   workspaceAPI: undefined,
-};
+} as unknown as BasToolkit;
 
 describe("vscode-events unit test", () => {
   let events: VSCodeEvents;
