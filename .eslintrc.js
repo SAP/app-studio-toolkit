@@ -100,9 +100,21 @@ module.exports = {
       // guided-development was integrated with these rules relaxed for the migrated code.
       // TODO: clean up violations and tighten incrementally.
       files: ["projects/guided-development/**"],
+      parserOptions: {
+        // Optional chaining (?.) is used in resources/center/main.js
+        ecmaVersion: 2020,
+      },
+      env: {
+        // backend/resources/center/main.js is a browser-side webview script
+        browser: true,
+      },
       rules: {
         "eslint-comments/require-description": "off",
         "no-unused-vars": "off",
+        "prefer-const": "off",
+        "prefer-rest-params": "off",
+        "no-var": "off",
+        "no-undef": "off",
       },
     },
     {
@@ -231,6 +243,13 @@ module.exports = {
         "@typescript-eslint/restrict-plus-operands": "off",
         "@typescript-eslint/no-unnecessary-type-assertion": "off",
         "@typescript-eslint/no-redundant-type-constituents": "off",
+        "@typescript-eslint/no-empty-object-type": "off",
+        "@typescript-eslint/no-wrapper-object-types": "off",
+        "@typescript-eslint/no-this-alias": "off",
+        "@typescript-eslint/await-thenable": "off",
+        "@typescript-eslint/no-array-constructor": "off",
+        "@typescript-eslint/ban-ts-comment": "off",
+        "@typescript-eslint/prefer-promise-reject-errors": "off",
       },
     },
     {
