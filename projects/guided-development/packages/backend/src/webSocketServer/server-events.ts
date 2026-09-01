@@ -1,6 +1,6 @@
 import { BasAction, ICommandAction, IExecuteAction, IFileAction, ISnippetAction } from "@sap-devx/app-studio-toolkit-types";
 import { AppEvents } from "../app-events";
-import { ICollection, IItem, ITurotial } from '../types';
+import { ICollection, IItem, ITurotial } from '@sap_oss/guided-development-types';
 
 export class ServerEvents implements AppEvents {
     public async performAction(action: BasAction): Promise<any> {

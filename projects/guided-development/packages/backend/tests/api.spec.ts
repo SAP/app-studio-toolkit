@@ -2,7 +2,7 @@ import { expect } from "chai";
 import * as sinon from "sinon";
 import * as _ from "lodash";
 import * as api from "../src/api";
-import { IItem, ICollection, CollectionType } from "../src/types";
+import { IItem, ICollection, CollectionType } from "@sap_oss/guided-development-types";
 import { IInternalItem, IInternalCollection } from "./Collection";
 
 describe('api unit test', () => {

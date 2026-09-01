@@ -3,16 +3,27 @@
   "displayName": "Guided Development Frontend",
   "version": "0.1.2",
   "publisher": "SAP",
-  "license": "Apache 2.0",
+  "license": "Apache-2.0",
   "description": "Frontend for the Guided Development framework",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/app-studio-toolkit.git",
+    "directory": "projects/guided-development/packages/frontend"
+  },
+  "bugs": {
+    "url": "https://github.com/SAP/app-studio-toolkit/issues"
+  },
   "scripts": {
+    "ci": "npm-run-all clean build coverage coverage:copy",
+    "clean": "shx rm -rf ./dist ./coverage",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "build-dev": "vue-cli-service build --mode development",
     "lint": "vue-cli-service lint",
     "test": "vue-cli-service test:unit",
-    "precommit": "lint-staged"
+    "coverage": "vue-cli-service test:unit",
+    "coverage:copy": "shx mkdir -p ../../../../coverage && shx cp -u ./coverage/lcov.info ../../../../coverage/lcov_frontend.info"
   },
   "dependencies": {
     "@mdi/font": "^5.1.45",
@@ -42,10 +53,8 @@
     "babel-jest": "^27.0.5",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
-    "husky": "1.2.1",
     "jest": "^27.0.5",
     "jest-serializer-vue": "^2.0.2",
-    "lint-staged": "^15.0.2",
     "mock-socket": "^9.0.2",
     "sass": "^1.26.3",
     "sass-loader": "^8.0.2",
@@ -59,10 +68,7 @@
       "node": true,
       "jest": true
     },
-    "extends": [
-      "plugin:vue/vue3-essential",
-      "eslint:recommended"
-    ],
+    "extends": ["plugin:vue/vue3-essential", "eslint:recommended"],
     "rules": {
       "vue/multi-word-component-names": "off"
     },
@@ -70,15 +76,6 @@
       "parser": "babel-eslint"
     },
     "overrides": [
-      {
-        "files": [
-          "**/__tests__/*.{j,t}s?(x)",
-          "**/tests/unit/**/*.spec.{j,t}s?(x)"
-        ],
-        "env": {
-          "jest": true
-        }
-      },
       {
         "files": [
           "**/__tests__/*.{j,t}s?(x)",
@@ -95,19 +92,5 @@
       "autoprefixer": {}
     }
   },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions"
-  ],
-  "lint-staged": {
-    "*.{js,vue}": [
-      "vue-cli-service lint",
-      "git add"
-    ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run precommit"
-    }
-  }
+  "browserslist": ["> 1%", "last 2 versions"]
 }

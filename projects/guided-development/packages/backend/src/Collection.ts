@@ -1,4 +1,4 @@
-import { ICollection, IItem, ITurotial } from "./types";
+import { ICollection, IItem, ITurotial } from "@sap_oss/guided-development-types";
 
 export interface IInternalCollection extends ICollection {
     items: IInternalItem[];

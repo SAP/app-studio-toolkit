@@ -4,7 +4,7 @@ import { IRpc } from "@sap-devx/webview-rpc/out.ext/rpc-common";
 import { IChildLogger } from "@vscode-logging/logger";
 import { AppEvents } from "./app-events";
 import { IInternalItem, IInternalCollection } from "./Collection";
-import { ItemAction, ItemContext, IItemCommandContext, IItemExecuteContext, IItemUriContext, IItemSnippetContext } from "./types";
+import { ItemAction, ItemContext, IItemCommandContext, IItemExecuteContext, IItemUriContext, IItemSnippetContext } from "@sap_oss/guided-development-types";
 import { ICommandAction, IExecuteAction, IFileAction, ISnippetAction } from "@sap-devx/app-studio-toolkit-types";
 
 export class GuidedDevelopment {

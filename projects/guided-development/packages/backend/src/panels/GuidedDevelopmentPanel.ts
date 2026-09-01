@@ -10,7 +10,7 @@ import { VSCodeEvents } from '../vscode-events';
 import { AbstractWebviewPanel } from './AbstractWebviewPanel';
 import { Contributors } from "../contributors";
 import { IInternalCollection } from "../Collection";
-import { IconList } from '../types';
+import { IconList } from '@sap_oss/guided-development-types';
 
 export class GuidedDevelopmentPanel extends AbstractWebviewPanel {
 	public static GUIDED_DEVELOPMENT = "Guided Development";

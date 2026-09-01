@@ -1,5 +1,5 @@
 import { BasAction } from "@sap-devx/app-studio-toolkit-types";
-import { ICollection, IItem, ITurotial } from "./types";
+import { ICollection, IItem, ITurotial } from "@sap_oss/guided-development-types";
 
 export interface AppEvents {
   performAction(action: BasAction): Promise<any>;

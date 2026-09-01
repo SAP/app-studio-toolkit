@@ -6,7 +6,7 @@ import { ServerLog } from './server-log';
 import backendMessages from "../messages";
 import { IChildLogger } from "@vscode-logging/logger";
 import { AppEvents } from '../app-events';
-import { CollectionType, IconCode } from "../types";
+import { CollectionType, IconCode } from "@sap_oss/guided-development-types";
 import { IInternalItem, IInternalCollection } from "../Collection";
 import { ServerEvents } from './server-events';
 

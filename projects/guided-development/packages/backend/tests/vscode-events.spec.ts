@@ -6,7 +6,7 @@ import { Contributors } from "../src/contributors";
 import { ICommandAction, IExecuteAction, IUriAction, IFileAction, ISnippetAction, bas, IAction, ActionType, BasAction } from "@sap-devx/app-studio-toolkit-types";
 
 import { VSCodeEvents } from "../src/vscode-events";
-import { CollectionType, ICollection, IItem } from "../src/types";
+import { CollectionType, ICollection, IItem } from "@sap_oss/guided-development-types";
 
 async function mockPerformAction(action: BasAction): Promise<any> {
     // <T = void>(action: BasAction, options?: { schedule?: boolean }): Thenable<T> {

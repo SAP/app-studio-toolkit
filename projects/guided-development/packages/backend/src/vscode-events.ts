@@ -1,6 +1,6 @@
 import { AppEvents } from "./app-events";
 import { Contributors } from './contributors';
-import { ICollection, IItem, ITurotial } from './types';
+import { ICollection, IItem, ITurotial } from '@sap_oss/guided-development-types';
 import { bas, BasAction } from "@sap-devx/app-studio-toolkit-types";
 
 export class VSCodeEvents implements AppEvents {

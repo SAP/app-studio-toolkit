@@ -15,7 +15,7 @@ const testVscode = {
 
 mockVscode(testVscode, "src/contributors.ts");
 import { Contributors } from "../src/contributors";
-import { IItem, CollectionType, ITurotial, IconCode } from "../src/types";
+import { IItem, CollectionType, ITurotial, IconCode } from "@sap_oss/guided-development-types";
 import { IInternalItem, IInternalCollection } from "./Collection";
 
 describe('Contributors unit test', () => {

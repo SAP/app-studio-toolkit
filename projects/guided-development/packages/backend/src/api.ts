@@ -1,4 +1,4 @@
-import { ICollection, IItem, ITurotial, ManagerAPI } from './types';
+import { ICollection, IItem, ITurotial, ManagerAPI } from '@sap_oss/guided-development-types';
 
 let _setData: any;
 let _thisArg: any;

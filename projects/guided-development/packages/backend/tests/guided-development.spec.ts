@@ -8,7 +8,7 @@ import { AppEvents } from '../src/app-events';
 import { IMethod, IPromiseCallbacks, IRpc } from "@sap-devx/webview-rpc/out.ext/rpc-common";
 import { IChildLogger } from "@vscode-logging/logger";
 import { fail } from "assert";
-import { IItem, ICollection, CollectionType, IItemExecuteContext, IItemCommandContext, IItemUriContext, IItemSnippetContext } from "../src/types";
+import { IItem, ICollection, CollectionType, IItemExecuteContext, IItemCommandContext, IItemUriContext, IItemSnippetContext } from "@sap_oss/guided-development-types";
 import { IInternalCollection, IInternalItem } from "./Collection";
 import { BasAction, ICommandAction, IExecuteAction, IUriAction, ISnippetAction } from "@sap-devx/app-studio-toolkit-types";
 

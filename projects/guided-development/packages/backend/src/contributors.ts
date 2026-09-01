@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as _ from 'lodash';
 import { IInternalItem, IInternalCollection } from "./Collection";
-import { IItem, ICollection, ITurotial, IconList } from './types';
+import { IItem, ICollection, ITurotial, IconList } from '@sap_oss/guided-development-types';
 
 export class Contributors {
     private onChangedCallback: (collections: Array<IInternalCollection>) => void;
