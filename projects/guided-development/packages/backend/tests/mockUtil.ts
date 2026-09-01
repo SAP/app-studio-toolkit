@@ -4,22 +4,22 @@ const Module = require("module"); // eslint-disable-line @typescript-eslint/no-v
 const originalRequire = Module.prototype.require;
 
 export function mockVscode(oVscodeMock: any, testModulePath?: string) {
-    clearModuleCache(testModulePath);
+  clearModuleCache(testModulePath);
 
-    Module.prototype.require = function (request: any) {
-        if (request === "vscode") {
-            return oVscodeMock;
-        }
+  Module.prototype.require = function (request: any) {
+    if (request === "vscode") {
+      return oVscodeMock;
+    }
 
-        return originalRequire.apply(this, arguments);
-    };
+    return originalRequire.apply(this, arguments);
+  };
 }
 
 export function clearModuleCache(testModulePath?: string) {
-    if (testModulePath) {
-        const key = path.resolve(testModulePath);
-        if (require.cache[key]) {
-            delete require.cache[key];
-        }
+  if (testModulePath) {
+    const key = path.resolve(testModulePath);
+    if (require.cache[key]) {
+      delete require.cache[key];
     }
+  }
 }

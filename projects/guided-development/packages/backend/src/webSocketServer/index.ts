@@ -1,26 +1,31 @@
-import * as WebSocket from 'ws';
-import { RpcExtensionWebSockets } from '@sap-devx/webview-rpc/out.ext/rpc-extension-ws';
-import { GuidedDevelopment } from '../guided-development';
+import * as WebSocket from "ws";
+import { RpcExtensionWebSockets } from "@sap-devx/webview-rpc/out.ext/rpc-extension-ws";
+import { GuidedDevelopment } from "../guided-development";
 import { AppLog } from "../app-log";
-import { ServerLog } from './server-log';
+import { ServerLog } from "./server-log";
 import backendMessages from "../messages";
 import { IChildLogger } from "@vscode-logging/logger";
-import { AppEvents } from '../app-events';
+import { AppEvents } from "../app-events";
 import { CollectionType, IconCode } from "@sap_oss/guided-development-types";
 import { IInternalItem, IInternalCollection } from "../Collection";
-import { ServerEvents } from './server-events';
+import { ServerEvents } from "./server-events";
 
-import { ICommandAction, IExecuteAction, ISnippetAction } from "@sap-devx/app-studio-toolkit-types";
+import {
+  ICommandAction,
+  IExecuteAction,
+  ISnippetAction,
+} from "@sap-devx/app-studio-toolkit-types";
 
 import * as api from "../api";
 
 const collectionAdditionalInfo = {
-  tool: 'BAS CDS Modeler',
+  tool: "BAS CDS Modeler",
   projectName: "Test",
   isStandalone: false,
   estimatedTime: "5 mins",
-  longDescription: 'This guide is part of the <a href="">Golden Path</a> and is recommended because of your current project configuration.',
-  iconCode: IconCode.Star
+  longDescription:
+    'This guide is part of the <a href="">Golden Path</a> and is recommended because of your current project configuration.',
+  iconCode: IconCode.Star,
 };
 
 class GuidedDevelopmentWebSocketServer {
@@ -35,29 +40,54 @@ class GuidedDevelopmentWebSocketServer {
 
   init() {
     // web socket server
-    const port = (process.env.PORT ? Number.parseInt(process.env.PORT) : 8081);
+    const port = process.env.PORT ? Number.parseInt(process.env.PORT) : 8081;
     const wss = new WebSocket.Server({ port: port }, () => {
-      console.log('started websocket server');
+      console.log("started websocket server");
     });
-    wss.on('listening', () => {
+    wss.on("listening", () => {
       console.log(`listening to websocket on port ${port}`);
     });
 
-    wss.on('error', (error) => {
+    wss.on("error", (error) => {
       console.error(error);
     });
 
-    wss.on('connection', (ws) => {
-      console.log('new ws connection');
+    wss.on("connection", (ws) => {
+      console.log("new ws connection");
 
       this.rpc = new RpcExtensionWebSockets(ws);
       //TODO: Use RPC to send it to the browser log (as a collapsed pannel in Vue)
       const logger: AppLog = new ServerLog(this.rpc);
-      const childLogger = { debug: () => '', error: () => '', fatal: () => '', warn: () => '', info: () => '', trace: () => '', getChildLogger: () => { return {} as IChildLogger; } };
+      const childLogger = {
+        debug: () => "",
+        error: () => "",
+        fatal: () => "",
+        warn: () => "",
+        info: () => "",
+        trace: () => "",
+        getChildLogger: () => {
+          return {} as IChildLogger;
+        },
+      };
       const collections = createCollections();
       const guide = collections[0];
-      const uiOptions = {renderType: "collection", extensionId: '', id: guide.id, title: guide.title, description: guide.description, additionalInfo: guide.additionalInfo};
-      this.guidedDevelopment = new GuidedDevelopment(this.rpc, this.appEvents, logger, childLogger as IChildLogger, {...backendMessages, collectionAdditionalInfo}, collections, uiOptions);
+      const uiOptions = {
+        renderType: "collection",
+        extensionId: "",
+        id: guide.id,
+        title: guide.title,
+        description: guide.description,
+        additionalInfo: guide.additionalInfo,
+      };
+      this.guidedDevelopment = new GuidedDevelopment(
+        this.rpc,
+        this.appEvents,
+        logger,
+        childLogger as IChildLogger,
+        { ...backendMessages, collectionAdditionalInfo },
+        collections,
+        uiOptions
+      );
 
       // demonstrate updating of items (mimics contributors calling the onChange callback)
       setTimeout(() => {
@@ -68,28 +98,29 @@ class GuidedDevelopmentWebSocketServer {
           executeAction: () => {
             console.log("workbench.action.openGlobalSettings");
             return Promise.resolve();
-          }
+          },
         };
 
         const item: IInternalItem = {
           id: "new",
           fqid: "saposs.vscode-contrib1.new",
           title: "New Item",
-          description: "It is easy to configure Visual Studio Code to your liking through its various settings.",
+          description:
+            "It is easy to configure Visual Studio Code to your liking through its various settings.",
           image: {
             image: getImage(),
-            note: "image note of new item"
+            note: "image note of new item",
           },
           action1: {
             title: "Open Title",
             name: "Open",
-            action: openAction
+            action: openAction,
           },
           labels: [
             { "Project Name": "cap1" },
             { "Project Path": "/home/user/projects/cap1" },
             { "Project Type": "CAP" },
-          ]
+          ],
         };
 
         collections[0].items.push(item);
@@ -108,39 +139,37 @@ function createCollections(): IInternalCollection[] {
     executeAction: (params?: any[]) => {
       console.log(`Performing execute action with params ${params.join()}`);
       return Promise.resolve();
-    }
+    },
   };
 
   const openViaCommandAction: ICommandAction = {
     actionType: "COMMAND",
-    name: "workbench.action.openGlobalSettings"
+    name: "workbench.action.openGlobalSettings",
   };
 
   const showInfoMessageAction: ICommandAction = {
     actionType: "COMMAND",
-    name: "workbench.action.openGlobalSettings"
+    name: "workbench.action.openGlobalSettings",
   };
 
   const snippet1Action: ISnippetAction = {
     actionType: "SNIPPET",
     contributorId: "SAPOSS.vscode-snippet-food-contrib",
     snippetName: "snippet_1",
-    context: { uri: "uri" }
+    context: { uri: "uri" },
   };
 
-  /** 
+  /**
    * Collections
    */
   const collections: IInternalCollection[] = [];
   let collection: IInternalCollection = {
     id: "collection1",
     title: "Demo collection [Scenario]",
-    description: "This is a demo collection. It contains a self-contributed item and and items contributed by a different contributor.",
+    description:
+      "This is a demo collection. It contains a self-contributed item and and items contributed by a different contributor.",
     type: CollectionType.Scenario,
-    itemIds: [
-      "saposs.vscode-contrib1.open",
-      "saposs.vscode-contrib2.clone"
-    ],
+    itemIds: ["saposs.vscode-contrib1.open", "saposs.vscode-contrib2.clone"],
     additionalInfo: collectionAdditionalInfo,
     items: [
       {
@@ -150,7 +179,7 @@ function createCollections(): IInternalCollection[] {
         description: `It is easy to configure Visual Studio Code to your liking through its various settings. Example of composite a hyperlink into description: <a href="https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax">Github Basic Formating Sintax</a>`,
         image: {
           image: getImage(),
-          note: ""
+          note: "",
         },
         action1: {
           name: "Execute",
@@ -158,13 +187,13 @@ function createCollections(): IInternalCollection[] {
           contexts: [
             {
               project: "P1",
-              params: ["p1"]
+              params: ["p1"],
             },
             {
               project: "P2",
-              params: ["p2"]
-            }
-          ]
+              params: ["p2"],
+            },
+          ],
         },
         labels: [
           { "Project Name": "cap1" },
@@ -176,26 +205,29 @@ function createCollections(): IInternalCollection[] {
         id: "open-snippet",
         fqid: "SAPOSS.vscode-contrib3.open-snippet",
         title: "Open Snippet (via snippet)",
-        description: "It is easy to configure Visual Studio Code to your liking through its various settings.",
+        description:
+          "It is easy to configure Visual Studio Code to your liking through its various settings.",
         labels: [],
-        items: [{
-          id: "sub-open-snippet",
-          fqid: "SAPOSS.vscode-contrib3.sub-open-snippet",
-          title: "subitem1",
-          description: "",
-          action1: {
-            title: "Snippet Action Title",
-            name: "Snippet",
-            action: snippet1Action
+        items: [
+          {
+            id: "sub-open-snippet",
+            fqid: "SAPOSS.vscode-contrib3.sub-open-snippet",
+            title: "subitem1",
+            description: "",
+            action1: {
+              title: "Snippet Action Title",
+              name: "Snippet",
+              action: snippet1Action,
+            },
+            labels: [
+              { "Project Name": "cap3" },
+              { "Project Path": "/home/user/projects/cap3" },
+              { "Project Type": "CAP" },
+            ],
           },
-          labels: [
-            { "Project Name": "cap3" },
-            { "Project Path": "/home/user/projects/cap3" },
-            { "Project Type": "CAP" },
-          ]
-        }]
+        ],
       },
-    ]
+    ],
   };
   collections.push(collection);
 
@@ -204,46 +236,43 @@ function createCollections(): IInternalCollection[] {
     title: "Another demo collection [Platform]",
     description: "This is another demo collection.",
     type: CollectionType.Platform,
-    itemIds: [
-      "saposs.vscode-contrib2.show-items"
-    ],
+    itemIds: ["saposs.vscode-contrib2.show-items"],
     items: [
       {
         id: "show-items",
         title: "Show items",
         description: "Shows list of items",
         fqid: "saposs.vscode-contrib2.show-items",
-        itemIds: [
-          "saposs.vscode-contrib2.open-command"
-        ],
+        itemIds: ["saposs.vscode-contrib2.open-command"],
         items: [
           {
             id: "open-command",
             fqid: "saposs.vscode-contrib2.open-command",
             title: "Open Global Settings (via command)",
-            description: "It is easy to configure Visual Studio Code to your liking through its various settings.",
+            description:
+              "It is easy to configure Visual Studio Code to your liking through its various settings.",
             action1: {
               name: "Open via command",
-              action: openViaCommandAction
+              action: openViaCommandAction,
             },
             action2: {
               name: "Show info message",
-              action: showInfoMessageAction
+              action: showInfoMessageAction,
             },
             labels: [
               { "Project Name": "cap2" },
               { "Project Path": "/home/user/projects/cap2" },
               { "Project Type": "CAP" },
-            ]
-          }
+            ],
+          },
         ],
         labels: [
           { "Project Name": "cap1" },
           { "Project Path": "/home/user/projects/cap1" },
           { "Project Type": "CAP" },
-        ]
-      }
-    ]
+        ],
+      },
+    ],
   };
   collections.push(collection);
 

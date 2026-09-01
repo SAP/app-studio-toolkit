@@ -54,10 +54,12 @@
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
     "jest": "^27.0.5",
+    "jest-environment-jsdom": "^27.0.5",
     "jest-serializer-vue": "^2.0.2",
     "mock-socket": "^9.0.2",
     "sass": "^1.26.3",
     "sass-loader": "^8.0.2",
+    "ts-jest": "^27.0.4",
     "vue-template-compiler": "^2.6.10",
     "webpack-plugin-vuetify": "^2.0.0",
     "webpack": "^5.0.0"
@@ -68,7 +70,10 @@
       "node": true,
       "jest": true
     },
-    "extends": ["plugin:vue/vue3-essential", "eslint:recommended"],
+    "extends": [
+      "plugin:vue/vue3-essential",
+      "eslint:recommended"
+    ],
     "rules": {
       "vue/multi-word-component-names": "off"
     },
@@ -92,5 +97,8 @@
       "autoprefixer": {}
     }
   },
-  "browserslist": ["> 1%", "last 2 versions"]
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ]
 }

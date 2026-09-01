@@ -1,5 +1,5 @@
-import {createApp, h} from "vue";
-import App from './App'
+import { createApp, h } from "vue";
+import App from "./App";
 
 import vuetify from "./plugins/vuetify";
 import "material-design-icons-iconfont/dist/material-design-icons.css";
@@ -11,13 +11,12 @@ import Form from "@sap-devx/inquirer-gui";
 
 let options = {};
 const app = createApp({
-  render: () => 
+  render: () =>
     h(App, {
-    ref: 'appRef',
-    
-  }),
+      ref: "appRef",
+    }),
 });
 app.use(Form, options);
 app.use(options.vuetify ?? vuetify);
 app.config.productionTip = false;
-export default app.mount('#app');
+export default app.mount("#app");

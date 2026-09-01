@@ -1,8 +1,20 @@
 import * as vscode from "vscode"; // NOSONAR
-import { getExtensionLogger, getExtensionLoggerOpts, IChildLogger, IVSCodeExtLogger, LogLevel } from "@vscode-logging/logger";
-import { listenToLogSettingsChanges, logLoggerDetails } from "./settings-changes-handler";
+import {
+  getExtensionLogger,
+  getExtensionLoggerOpts,
+  IChildLogger,
+  IVSCodeExtLogger,
+  LogLevel,
+} from "@vscode-logging/logger";
+import {
+  listenToLogSettingsChanges,
+  logLoggerDetails,
+} from "./settings-changes-handler";
 // import {resolve} from "path";
-import { getLoggingLevelSetting, getSourceLocationTrackingSetting} from "./settings";
+import {
+  getLoggingLevelSetting,
+  getSourceLocationTrackingSetting,
+} from "./settings";
 
 // const PACKAGE_JSON = "package.json";
 const GUIDED_DEVELOPMENT_LOGGER_NAME = "guidedDevelopment";
@@ -13,7 +25,8 @@ const GUIDED_DEVELOPMENT = "Guided Development";
  * implementation.
  */
 
-export const ERROR_LOGGER_NOT_INITIALIZED = 'Logger has not yet been initialized!';
+export const ERROR_LOGGER_NOT_INITIALIZED =
+  "Logger has not yet been initialized!";
 
 /**
  * @type {IVSCodeExtLogger}
@@ -21,7 +34,7 @@ export const ERROR_LOGGER_NOT_INITIALIZED = 'Logger has not yet been initialized
 let logger: any;
 
 function isInitialized(): boolean {
-  return (logger !== undefined ) ? true : false;
+  return logger !== undefined ? true : false;
 }
 
 /**
@@ -38,21 +51,23 @@ export function getLogger(): IVSCodeExtLogger {
 }
 
 export function getClassLogger(className: string): IChildLogger {
-	return getLogger().getChildLogger({label:className});
+  return getLogger().getChildLogger({ label: className });
 }
 
 export function getGuidedDevelopmentLibraryLogger(): IChildLogger {
-	return getLibraryLogger(GUIDED_DEVELOPMENT_LOGGER_NAME);
+  return getLibraryLogger(GUIDED_DEVELOPMENT_LOGGER_NAME);
 }
 
 function getLibraryLogger(libraryName: string): IChildLogger {
-	return getLogger().getChildLogger({label:libraryName});
+  return getLogger().getChildLogger({ label: libraryName });
 }
 
-export function createExtensionLoggerAndSubscribeToLogSettingsChanges(context: vscode.ExtensionContext) {
-	createExtensionLogger(context);
-	// Subscribe to Logger settings changes.
-	listenToLogSettingsChanges(context);	
+export function createExtensionLoggerAndSubscribeToLogSettingsChanges(
+  context: vscode.ExtensionContext
+) {
+  createExtensionLogger(context);
+  // Subscribe to Logger settings changes.
+  listenToLogSettingsChanges(context);
 }
 
 /**
@@ -64,26 +79,28 @@ function initLoggerWrapper(newLogger: any) {
 }
 
 function createExtensionLogger(context: vscode.ExtensionContext) {
-	const contextLogPath = context.logPath;
-	const logLevelSetting: LogLevel = getLoggingLevelSetting();
-	const sourceLocationTrackingSettings: boolean = getSourceLocationTrackingSetting();
-	const logOutputChannel = vscode.window.createOutputChannel(GUIDED_DEVELOPMENT);
+  const contextLogPath = context.logPath;
+  const logLevelSetting: LogLevel = getLoggingLevelSetting();
+  const sourceLocationTrackingSettings: boolean =
+    getSourceLocationTrackingSetting();
+  const logOutputChannel =
+    vscode.window.createOutputChannel(GUIDED_DEVELOPMENT);
 
-	//TODO:  const meta = require(resolve(context.extensionPath, PACKAGE_JSON));
-	const extensionLoggerOpts: getExtensionLoggerOpts = {
-		extName: GUIDED_DEVELOPMENT,
-		level: logLevelSetting,
-		logPath: contextLogPath,
-		logOutputChannel: logOutputChannel,
-		sourceLocationTracking: sourceLocationTrackingSettings,
-		logConsole: true
-	};
+  //TODO:  const meta = require(resolve(context.extensionPath, PACKAGE_JSON));
+  const extensionLoggerOpts: getExtensionLoggerOpts = {
+    extName: GUIDED_DEVELOPMENT,
+    level: logLevelSetting,
+    logPath: contextLogPath,
+    logOutputChannel: logOutputChannel,
+    sourceLocationTracking: sourceLocationTrackingSettings,
+    logConsole: true,
+  };
 
-	// The Logger must first be initialized before any logging commands may be invoked.
-	const extensionLogger = getExtensionLogger(extensionLoggerOpts);
-	// Update the logger-wrapper with a reference to the extLogger.
-	initLoggerWrapper(extensionLogger);
-	logLoggerDetails(context, logLevelSetting);
+  // The Logger must first be initialized before any logging commands may be invoked.
+  const extensionLogger = getExtensionLogger(extensionLoggerOpts);
+  // Update the logger-wrapper with a reference to the extLogger.
+  initLoggerWrapper(extensionLogger);
+  logLoggerDetails(context, logLevelSetting);
 }
 
 module.exports = {
@@ -91,5 +108,5 @@ module.exports = {
   createExtensionLoggerAndSubscribeToLogSettingsChanges,
   getClassLogger,
   getGuidedDevelopmentLibraryLogger,
-  ERROR_LOGGER_NOT_INITIALIZED
-}; 
+  ERROR_LOGGER_NOT_INITIALIZED,
+};

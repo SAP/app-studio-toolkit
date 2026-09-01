@@ -4,11 +4,22 @@ import { IRpc } from "@sap-devx/webview-rpc/out.ext/rpc-common";
 import { IChildLogger } from "@vscode-logging/logger";
 import { AppEvents } from "./app-events";
 import { IInternalItem, IInternalCollection } from "./Collection";
-import { ItemAction, ItemContext, IItemCommandContext, IItemExecuteContext, IItemUriContext, IItemSnippetContext } from "@sap_oss/guided-development-types";
-import { ICommandAction, IExecuteAction, IFileAction, ISnippetAction } from "@sap-devx/app-studio-toolkit-types";
+import {
+  ItemAction,
+  ItemContext,
+  IItemCommandContext,
+  IItemExecuteContext,
+  IItemUriContext,
+  IItemSnippetContext,
+} from "@sap_oss/guided-development-types";
+import {
+  ICommandAction,
+  IExecuteAction,
+  IFileAction,
+  ISnippetAction,
+} from "@sap-devx/app-studio-toolkit-types";
 
 export class GuidedDevelopment {
-
   private readonly messages: any;
   private readonly rpc: IRpc;
   private readonly appEvents: AppEvents;
@@ -17,7 +28,15 @@ export class GuidedDevelopment {
   private readonly uiOptions: any;
   private collections: Array<IInternalCollection>;
 
-  constructor(rpc: IRpc, appEvents: AppEvents, outputChannel: AppLog, logger: IChildLogger, messages: any, collections: IInternalCollection[], uiOptions?: any) {
+  constructor(
+    rpc: IRpc,
+    appEvents: AppEvents,
+    outputChannel: AppLog,
+    logger: IChildLogger,
+    messages: any,
+    collections: IInternalCollection[],
+    uiOptions?: any
+  ) {
     this.rpc = rpc;
     if (!this.rpc) {
       throw new Error("rpc must be set");
@@ -52,10 +71,9 @@ export class GuidedDevelopment {
           for (const subItem of item.items) {
             if (subItem.fqid === itemFqid) {
               return subItem;
-            }  
-            else if( subItem.items ){
-              const deepSubitem =  this.getDeepSubitem(itemFqid, subItem);
-              if(deepSubitem){
+            } else if (subItem.items) {
+              const deepSubitem = this.getDeepSubitem(itemFqid, subItem);
+              if (deepSubitem) {
                 return deepSubitem;
               }
             }
@@ -66,21 +84,23 @@ export class GuidedDevelopment {
     // TODO - console log: item does not exist
   }
 
-  private getDeepSubitem( itemFqId: string, item:IInternalItem ): IInternalItem{
-    
-    if( item.items ){
+  private getDeepSubitem(itemFqId: string, item: IInternalItem): IInternalItem {
+    if (item.items) {
       for (const subItem of item.items) {
         if (subItem.fqid === itemFqId) {
           return subItem;
-        } else if(subItem.items){
-            return this.getDeepSubitem(itemFqId, subItem);
-        } 
+        } else if (subItem.items) {
+          return this.getDeepSubitem(itemFqId, subItem);
+        }
       }
     }
-
   }
 
-  private async performAction(itemFqid: string, index: number, context?: ItemContext) {
+  private async performAction(
+    itemFqid: string,
+    index: number,
+    context?: ItemContext
+  ) {
     const item: IInternalItem = this.getItem(itemFqid);
 
     let itemAction: ItemAction;
@@ -93,15 +113,19 @@ export class GuidedDevelopment {
       if (context) {
         switch (itemAction.action.actionType) {
           case "COMMAND":
-            let commandActionParameters: any = (context as IItemCommandContext)?.params;
+            let commandActionParameters: any = (context as IItemCommandContext)
+              ?.params;
             if (commandActionParameters) {
-              (itemAction.action as ICommandAction).params = commandActionParameters;
+              (itemAction.action as ICommandAction).params =
+                commandActionParameters;
             }
             break;
           case "EXECUTE":
-            let executeActionParameters: any = (context as IItemExecuteContext)?.params;
+            let executeActionParameters: any = (context as IItemExecuteContext)
+              ?.params;
             if (executeActionParameters) {
-              (itemAction.action as IExecuteAction).params = executeActionParameters;
+              (itemAction.action as IExecuteAction).params =
+                executeActionParameters;
             }
             break;
           case "FILE":
@@ -112,9 +136,11 @@ export class GuidedDevelopment {
             }
             break;
           case "SNIPPET":
-            let snippetActionContext: any = (context as IItemSnippetContext)?.context;
+            let snippetActionContext: any = (context as IItemSnippetContext)
+              ?.context;
             if (snippetActionContext) {
-              (itemAction.action as ISnippetAction).context = snippetActionContext;
+              (itemAction.action as ISnippetAction).context =
+                snippetActionContext;
             }
             break;
         }
@@ -139,7 +165,10 @@ export class GuidedDevelopment {
 
   private async onFrontendReady() {
     try {
-      await this.rpc.invoke("showCollections", [this.collections, this.uiOptions]);
+      await this.rpc.invoke("showCollections", [
+        this.collections,
+        this.uiOptions,
+      ]);
     } catch (error) {
       this.logError(error);
     }

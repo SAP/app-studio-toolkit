@@ -1,14 +1,16 @@
 import { AppEvents } from "./app-events";
-import { Contributors } from './contributors';
-import { ICollection, IItem, ITurotial } from '@sap_oss/guided-development-types';
+import { Contributors } from "./contributors";
+import {
+  ICollection,
+  IItem,
+  ITurotial,
+} from "@sap_oss/guided-development-types";
 import { bas, BasAction } from "@sap-devx/app-studio-toolkit-types";
 
 export class VSCodeEvents implements AppEvents {
   basAPI: any;
 
-  private constructor() {
-
-  }
+  private constructor() {}
 
   private static vsCodeEvents: VSCodeEvents;
 
@@ -27,7 +29,17 @@ export class VSCodeEvents implements AppEvents {
     this.basAPI?.actions?.performAction(action);
   }
 
-  public setData(extensionId: string, collections: ICollection[], items: IItem[], tutorials?: ITurotial[]): void {
-    Contributors.getInstance().setData(extensionId, collections, items, tutorials);
+  public setData(
+    extensionId: string,
+    collections: ICollection[],
+    items: IItem[],
+    tutorials?: ITurotial[]
+  ): void {
+    Contributors.getInstance().setData(
+      extensionId,
+      collections,
+      items,
+      tutorials
+    );
   }
 }

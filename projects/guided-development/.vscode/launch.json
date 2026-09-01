@@ -12,11 +12,11 @@
       "runtimeExecutable": "${execPath}",
       "args": [
         "--extensionDevelopmentPath=${workspaceFolder}/backend",
-        "--extensionDevelopmentPath=${workspaceFolder}/vscode-simple-contrib",
-    ],
+        "--extensionDevelopmentPath=${workspaceFolder}/vscode-simple-contrib"
+      ],
       "outFiles": [
         "${workspaceFolder}/backend/out/**/*.js",
-        "${workspaceFolder/vscode-simple-contrib/out/**/*.js",
+        "${workspaceFolder/vscode-simple-contrib/out/**/*.js"
       ],
       "preLaunchTask": "watch backend (webpack)"
     },
@@ -29,8 +29,8 @@
         "--extensionDevelopmentPath=${workspaceFolder}/backend",
         "--extensionDevelopmentPath=${workspaceFolder}/vscode-contrib1",
         "--extensionDevelopmentPath=${workspaceFolder}/vscode-contrib2",
-        "--extensionDevelopmentPath=${workspaceFolder}/vscode-contrib3",
-    ],
+        "--extensionDevelopmentPath=${workspaceFolder}/vscode-contrib3"
+      ],
       "outFiles": [
         "${workspaceFolder}/backend/out/**/*.js",
         "${workspaceFolder/vscode-contrib1/out/**/*.js",
@@ -46,11 +46,11 @@
       "runtimeExecutable": "${execPath}",
       "args": [
         "--extensionDevelopmentPath=${workspaceFolder}/backend",
-        "--extensionDevelopmentPath=${workspaceFolder}/vscode-contrib-cake",
+        "--extensionDevelopmentPath=${workspaceFolder}/vscode-contrib-cake"
       ],
       "outFiles": [
         "${workspaceFolder}/backend/out/**/*.js",
-        "${workspaceFolder/vscode-contrib-cake/out/**/*.js",
+        "${workspaceFolder/vscode-contrib-cake/out/**/*.js"
       ],
       "preLaunchTask": "watch backend (webpack)"
     },
@@ -61,11 +61,11 @@
       "runtimeExecutable": "${execPath}",
       "args": [
         "--extensionDevelopmentPath=${workspaceFolder}/backend",
-        "--extensionDevelopmentPath=${workspaceFolder}/vscode-snippet-food-contrib",
+        "--extensionDevelopmentPath=${workspaceFolder}/vscode-snippet-food-contrib"
       ],
       "outFiles": [
         "${workspaceFolder}/backend/out/**/*.js",
-        "${workspaceFolder/vscode-snippet-food-contrib/out/**/*.js",
+        "${workspaceFolder/vscode-snippet-food-contrib/out/**/*.js"
       ],
       "preLaunchTask": "watch backend (webpack)"
     },
@@ -74,9 +74,7 @@
       "request": "launch",
       "name": "Guided-dev: WebSocket server",
       "program": "${workspaceFolder}/backend/src/webSocketServer/index.ts",
-      "outFiles": [
-        "${workspaceFolder}/backend/out/**/*.js"
-      ],
+      "outFiles": ["${workspaceFolder}/backend/out/**/*.js"],
       "env": {
         "PORT": "8081"
       },
@@ -121,9 +119,7 @@
       "disableOptimisticBPs": true,
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
-      "outFiles": [
-        "${workspaceFolder}/frontend/src/**/*.js"
-      ],
+      "outFiles": ["${workspaceFolder}/frontend/src/**/*.js"],
       "port": 9229
     },
     {
@@ -135,10 +131,8 @@
         "--extensionDevelopmentPath=${workspaceFolder}/backend",
         "--extensionTestsPath=${workspaceFolder}/backend/out/tests"
       ],
-      "outFiles": [
-        "${workspaceFolder}/backend/dist/**/*.js"
-      ],
+      "outFiles": ["${workspaceFolder}/backend/dist/**/*.js"],
       "preLaunchTask": "watch backend"
-    },
+    }
   ]
 }

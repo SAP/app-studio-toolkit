@@ -1,13 +1,16 @@
-import { ICollection, IItem, ITurotial } from "@sap_oss/guided-development-types";
+import {
+  ICollection,
+  IItem,
+  ITurotial,
+} from "@sap_oss/guided-development-types";
 
 export interface IInternalCollection extends ICollection {
-    items: IInternalItem[];
+  items: IInternalItem[];
 }
 
 export interface IInternalItem extends IItem {
-    fqid?: string;
-    items?: IInternalItem[];
+  fqid?: string;
+  items?: IInternalItem[];
 }
 
-export interface IInternalTutorial extends ITurotial {
-}
+export interface IInternalTutorial extends ITurotial {}

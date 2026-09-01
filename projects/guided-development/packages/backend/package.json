@@ -126,7 +126,7 @@
     }
   },
   "scripts": {
-    "ci": "npm-run-all clean compile coverage bundle frontend:copy package coverage:copy",
+    "ci": "npm-run-all clean compile coverage bundle frontend:build frontend:copy package coverage:copy",
     "clean": "shx rm -rf ./dist ./coverage ./reports *.vsix",
     "compile": "tsc -p ./",
     "compile:watch": "tsc -watch -p ./",
@@ -136,6 +136,7 @@
     "bundle": "webpack --mode production",
     "webpack": "webpack --mode development",
     "webpack-dev:watch": "webpack --mode development --watch",
+    "frontend:build": "pnpm --filter guided-development-frontend run build",
     "frontend:copy": "shx mkdir -p ./dist/media && shx cp -r ../frontend/dist/. ./dist/media/",
     "package": "vsce package --no-dependencies",
     "ws:run": "node ./out/src/webSocketServer/index.js"
@@ -159,6 +160,7 @@
     "@types/fs-extra": "^9.0.11",
     "@types/object-hash": "^2.1.0",
     "@types/ws": "^7.4.4",
+    "@vscode/vsce": "2.24.0",
     "bufferutil": "^4.0.1",
     "source-map-support": "^0.5.21",
     "string-replace-loader": "^3.0.1",

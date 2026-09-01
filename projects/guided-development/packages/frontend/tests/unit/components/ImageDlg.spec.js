@@ -1,22 +1,21 @@
-import {initComponent, destroy} from '../Utils'
-import ImageDlg from '../../../src/components/ImageDlg.vue'
-import _ from 'lodash'
+import { initComponent, destroy } from "../Utils";
+import ImageDlg from "../../../src/components/ImageDlg.vue";
+import _ from "lodash";
 
-let wrapper
+let wrapper;
 
-describe('IImageDlg.vue', () => {
+describe("IImageDlg.vue", () => {
+  afterEach(() => {
+    destroy(wrapper);
+  });
 
-    afterEach(() => {
-        destroy(wrapper)
-    });
+  test("component name", () => {
+    wrapper = initComponent(ImageDlg, { image: "" }, true);
+    //expect(wrapper.name()).toBe('ImageDlg')
+  });
 
-    test('component name', () => {
-        wrapper = initComponent(ImageDlg, {image: ""}, true)
-        //expect(wrapper.name()).toBe('ImageDlg')
-    })
-
-    test('component props', () => {
-        wrapper = initComponent(ImageDlg, {image: ""}, true)
-        expect(_.keys(wrapper.props())).toHaveLength(1)
-    })
-})
+  test("component props", () => {
+    wrapper = initComponent(ImageDlg, { image: "" }, true);
+    expect(_.keys(wrapper.props())).toHaveLength(1);
+  });
+});

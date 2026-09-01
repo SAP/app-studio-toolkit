@@ -5,7 +5,8 @@ import { LogLevel } from "@vscode-logging/logger";
  * Note that the values of these configuration properties must match those defined in the package.json
  */
 export const LOGGING_LEVEL_CONFIG_PROP = "Guided Development.loggingLevel";
-export const SOURCE_TRACKING_CONFIG_PROP = "Guided Development.sourceLocationTracking";
+export const SOURCE_TRACKING_CONFIG_PROP =
+  "Guided Development.sourceLocationTracking";
 
 /**
  * @returns {LogLevel}
@@ -27,5 +28,5 @@ module.exports = {
   LOGGING_LEVEL_CONFIG_PROP,
   SOURCE_TRACKING_CONFIG_PROP,
   getLoggingLevelSetting,
-  getSourceLocationTrackingSetting
-}; 
+  getSourceLocationTrackingSetting,
+};
