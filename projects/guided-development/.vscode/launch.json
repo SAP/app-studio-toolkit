@@ -1,0 +1,144 @@
+// A launch configuration that compiles the extension and then opens it inside a new window
+// Use IntelliSense to learn about possible attributes.
+// Hover to view descriptions of existing attributes.
+// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Guided-dev: Simple example",
+      "type": "extensionHost",
+      "request": "launch",
+      "runtimeExecutable": "${execPath}",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}/backend",
+        "--extensionDevelopmentPath=${workspaceFolder}/vscode-simple-contrib",
+    ],
+      "outFiles": [
+        "${workspaceFolder}/backend/out/**/*.js",
+        "${workspaceFolder/vscode-simple-contrib/out/**/*.js",
+      ],
+      "preLaunchTask": "watch backend (webpack)"
+    },
+    {
+      "name": "Guided-dev: Complex example",
+      "type": "extensionHost",
+      "request": "launch",
+      "runtimeExecutable": "${execPath}",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}/backend",
+        "--extensionDevelopmentPath=${workspaceFolder}/vscode-contrib1",
+        "--extensionDevelopmentPath=${workspaceFolder}/vscode-contrib2",
+        "--extensionDevelopmentPath=${workspaceFolder}/vscode-contrib3",
+    ],
+      "outFiles": [
+        "${workspaceFolder}/backend/out/**/*.js",
+        "${workspaceFolder/vscode-contrib1/out/**/*.js",
+        "${workspaceFolder/vscode-contrib2/out/**/*.js",
+        "${workspaceFolder/vscode-contrib3/out/**/*.js"
+      ],
+      "preLaunchTask": "watch backend (webpack)"
+    },
+    {
+      "name": "Guided-dev: Dynamic content example",
+      "type": "extensionHost",
+      "request": "launch",
+      "runtimeExecutable": "${execPath}",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}/backend",
+        "--extensionDevelopmentPath=${workspaceFolder}/vscode-contrib-cake",
+      ],
+      "outFiles": [
+        "${workspaceFolder}/backend/out/**/*.js",
+        "${workspaceFolder/vscode-contrib-cake/out/**/*.js",
+      ],
+      "preLaunchTask": "watch backend (webpack)"
+    },
+    {
+      "name": "Guided-dev: Code-Snippet example",
+      "type": "extensionHost",
+      "request": "launch",
+      "runtimeExecutable": "${execPath}",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}/backend",
+        "--extensionDevelopmentPath=${workspaceFolder}/vscode-snippet-food-contrib",
+      ],
+      "outFiles": [
+        "${workspaceFolder}/backend/out/**/*.js",
+        "${workspaceFolder/vscode-snippet-food-contrib/out/**/*.js",
+      ],
+      "preLaunchTask": "watch backend (webpack)"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Guided-dev: WebSocket server",
+      "program": "${workspaceFolder}/backend/src/webSocketServer/index.ts",
+      "outFiles": [
+        "${workspaceFolder}/backend/out/**/*.js"
+      ],
+      "env": {
+        "PORT": "8081"
+      },
+      "preLaunchTask": "watch backend (tsc)"
+    },
+    {
+      "name": "Client: chrome (8080)",
+      "request": "launch",
+      "type": "pwa-chrome",
+      "url": "http://localhost:8080",
+      "webRoot": "${workspaceFolder}"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Tests: Backend unit tests",
+      "program": "${workspaceFolder}/backend/node_modules/mocha/bin/mocha",
+      "args": [
+        "-r",
+        "ts-node/register",
+        "--timeout",
+        "999999",
+        "--colors",
+        "${workspaceFolder}/backend/tests/**/*.spec.ts"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "protocol": "inspector"
+    },
+    {
+      "name": "Tests: Frontend unit tests",
+      "type": "node",
+      "request": "launch",
+      "runtimeArgs": [
+        "--inspect-brk",
+        "./node_modules/@vue/cli-service/bin/vue-cli-service.js",
+        "test:unit",
+        "--runInBand"
+      ],
+      "cwd": "${workspaceFolder}/frontend",
+      "protocol": "inspector",
+      "disableOptimisticBPs": true,
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "outFiles": [
+        "${workspaceFolder}/frontend/src/**/*.js"
+      ],
+      "port": 9229
+    },
+    {
+      "name": "Tests: Test extension",
+      "type": "extensionHost",
+      "request": "launch",
+      "runtimeExecutable": "${execPath}",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}/backend",
+        "--extensionTestsPath=${workspaceFolder}/backend/out/tests"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/backend/dist/**/*.js"
+      ],
+      "preLaunchTask": "watch backend"
+    },
+  ]
+}

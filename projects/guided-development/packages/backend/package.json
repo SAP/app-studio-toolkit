@@ -1,0 +1,215 @@
+{
+	"name": "guided-development",
+	"version": "0.2.8",
+	"displayName": "Guided Development",
+	"publisher": "SAPOSS",
+	"author": {
+		"name": "SAP SE"
+	},
+	"license": "Apache-2.0",
+	"description": "A VSCode extension that provides a simple way to guide a developer.",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/SAP/guided-development.git"
+	},
+	"bugs": {
+		"url": "https://github.com/SAP/guided-development/issues"
+	},
+	"icon": "icon.png",
+	"engines": {
+		"vscode": "^1.46.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"keywords": [
+		"guided",
+		"development",
+		"guide",
+		"developer",
+		"tool",
+		"sap"
+	],
+	"activationEvents": [
+		"*"
+	],
+	"main": "./dist/extension",
+	"contributes": {
+		"commands": [
+			{
+				"command": "loadGuidedDevelopment",
+				"title": "Guided Development"
+			},
+			{
+				"command": "guidedDevelopment.toggleOutput",
+				"title": "Show Output",
+				"icon": {
+					"light": "./resources/images/icons/console_light.svg",
+					"dark": "./resources/images/icons/console_dark.svg"
+				}
+			},
+			{
+				"command": "guidedDevelopment.refreshCenter",
+				"category": "Guide Center",
+				"title": "Refresh"
+			}
+		],
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "guideCenterActivityBar",
+					"title": "Guide Center",
+					"icon": "resources/images/icons/center.svg"
+				}
+			]
+		},
+		"views": {
+			"guideCenterActivityBar": [
+				{
+					"id": "guide.sapAllGuidesViewSection",
+					"name": "",
+					"contextualTitle": "All Guides View contextualTitle",
+					"type": "webview"
+				}
+			]
+		},
+		"menus": {
+			"commandPalette": [
+				{
+					"command": "loadGuidedDevelopment",
+					"when": "false"
+				},
+				{
+					"command": "guidedDevelopment.toggleOutput",
+					"when": "false"
+				},
+				{
+					"command": "guidedDevelopment.refreshCenter",
+					"when": "false"
+				}
+			],
+			"editor/title": [
+				{
+					"command": "guidedDevelopment.toggleOutput",
+					"group": "navigation",
+					"when": "false"
+				}
+			]
+		},
+		"configuration": {
+			"type": "object",
+			"title": "Guided Development",
+			"properties": {
+				"Guided Development.loggingLevel": {
+					"type": "string",
+					"enum": [
+						"off",
+						"fatal",
+						"error",
+						"warn",
+						"info",
+						"debug",
+						"trace"
+					],
+					"default": "error",
+					"description": "The verbosity of logging according to the following order: trace > debug > info > warn > error > fatal > off.",
+					"scope": "resource"
+				},
+				"Guided Development.sourceLocationTracking": {
+					"type": "boolean",
+					"default": false,
+					"description": "If chosen, the location of the source code is added to log entries. Warning – this action may slow your extension. We recommend you use it only for debugging.",
+					"scope": "resource"
+				}
+			}
+		}
+	},
+	"scripts": {
+		"backend": "npm i && npm run compile",
+		"types": "cd ../types && npm i && npm run compile",
+		"frontend": "npm run frontend:install && npm run frontend:build && npm run frontend:copy",
+		"frontend:install": "cd ../frontend && npm i",
+		"frontend:build": "cd ../frontend && npm run build",
+		"frontend:copy": "webpack --mode none --config ./copy.frontend.webpack.config.js",
+		"webpack": "webpack --mode development",
+		"webpack-dev": "webpack --mode development --watch",
+		"webpack-prod": "webpack --mode production",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"package": "npm run webpack && vsce package",
+		"test": "nyc mocha -p tsconfig.json --opts ./mocha.opts",
+		"ws:run": "node ./out/src/webSocketServer/index.js",
+		"lint": "eslint . --ext .ts,.tsx --cache",
+		"lint:fix": "eslint . --ext .ts,.tsx --cache --fix"
+	},
+	"dependencies": {
+		"@sap-devx/app-studio-toolkit-types": "1.2.1",
+		"@sap-devx/webview-rpc": "0.3.1",
+		"@sap-devx/yeoman-ui-types": "0.0.1",
+		"@vscode-logging/logger": "1.2.3",
+		"chalk": "^4.0.0",
+		"datauri": "^3.0.0",
+		"fs-extra": "10.0.0",
+		"humanize-string": "^2.1.0",
+		"lodash": "4.17.21",
+		"object-hash": "2.2.0",
+		"strip-ansi": "^6.0.0",
+		"titleize": "^2.1.0",
+		"ws": "7.4.6"
+	},
+	"devDependencies": {
+		"@commitlint/cli": "11.0.0",
+		"@commitlint/config-conventional": "12.0.1",
+		"@types/chai": "^4.2.9",
+		"@types/fs-extra": "^9.0.11",
+		"@types/inquirer": "^7.3.1",
+		"@types/lodash": "^4.14.170",
+		"@types/mocha": "^5.2.7",
+		"@types/node": "^10.17.21",
+		"@types/object-hash": "^2.1.0",
+		"@types/sinon": "^9.0.10",
+		"@types/vscode": "^1.46.0",
+		"@types/ws": "^7.4.4",
+		"@typescript-eslint/eslint-plugin": "^5.4.0",
+		"@typescript-eslint/parser": "^5.4.0",
+		"bufferutil": "^4.0.1",
+		"chai": "^4.2.0",
+		"copy-webpack-plugin": "^5.0.5",
+		"coveralls": "3.1.0",
+		"cz-conventional-changelog": "3.3.0",
+		"eslint": "^7.21.0",
+		"eslint-config-prettier": "^8.1.0",
+		"husky": "4.3.8",
+		"lcov-result-merger": "3.1.0",
+		"mocha": "^6.2.2",
+		"nyc": "^15.1.0",
+		"prettier": "^2.0.5",
+		"sinon": "^9.2.1",
+		"string-replace-loader": "^3.0.1",
+		"ts-loader": "^8.0.17",
+		"ts-node": "^9.1.1",
+		"typescript": "^4.2.3",
+		"utf-8-validate": "^5.0.2",
+		"vsce": "1.88.0",
+		"webpack": "5.38.1",
+		"webpack-cli": "^4.7.2"
+	},
+	"husky": {
+		"hooks": {
+			"commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+		}
+	},
+	"config": {
+		"commitizen": {
+			"path": "cz-conventional-changelog"
+		}
+	},
+	"commitlint": {
+		"extends": [
+			"@commitlint/config-conventional"
+		]
+	},
+	"extensionDependencies": [
+		"SAPOSS.app-studio-toolkit"
+	]
+}

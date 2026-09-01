@@ -1,0 +1,5 @@
+dummy
+LICENSES
+
+# Optional eslint cache
+.eslintcache

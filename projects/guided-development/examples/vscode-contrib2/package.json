@@ -1,0 +1,54 @@
+{
+	"name": "vscode-contrib2",
+	"displayName": "vscode-guided-dev-contrib2",
+	"description": "",
+	"version": "0.0.3",
+	"publisher": "SAPOSS",
+	"engines": {
+		"vscode": "^1.44.2"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/SAP/guided-development",
+		"directory": "vscode-contrib2"
+	},
+	"categories": [
+		"Other"
+	],
+	"main": "./out/extension.js",
+	"activationEvents": [],
+	"BASContributes": {
+		"guided-development": {}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile",
+		"test": "node ./out/test/runTest.js",
+		"package": "vsce package"
+	},
+	"dependencies": {
+		"@sap-devx/app-studio-toolkit-types": "1.2.1",
+		"@sap-devx/guided-development-types": "0.0.14",
+		"comment-json": "2.1.0",
+		"lodash": "4.17.21"
+	},
+	"devDependencies": {
+		"@types/comment-json": "1.1.1",
+		"@types/fs-extra": "5.0.5",
+		"@types/glob": "^7.1.1",
+		"@types/lodash": "^4.14.150",
+		"@types/mocha": "^5.2.7",
+		"@types/node": "^12.11.7",
+		"@types/vscode": "^1.40.0",
+		"glob": "^7.1.5",
+		"mocha": "^6.2.2",
+		"typescript": "^3.9.7",
+		"vsce": "^1.100.1",
+		"vscode-test": "^1.2.2"
+	},
+	"extensionDependencies": [
+		"SAPOSS.app-studio-toolkit"
+	]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "@sap_oss/guided-development-types",
+  "publisher": "SAPOSS",
+  "version": "0.0.15",
+  "author": "",
+  "license": "Apache-2.0",
+  "description": "An npm package that includes Guided Development declarations",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/guided-development.git",
+    "directory": "guided-development-types"
+  },
+  "main": "./out/src/types",
+  "types": "./out/src/types",
+  "scripts": {
+    "prep": "npm i && cd ../backend && npm i && npm run compile",
+    "copy": "ncp ../backend/out out",
+    "prepublishOnly": "npm run prep && npm run copy"
+  },
+  "devDependencies": {
+    "@sap-devx/app-studio-toolkit-types": "1.2.1",
+    "ncp": "^2.0.0"
+  }
+}
