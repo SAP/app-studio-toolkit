@@ -16,6 +16,13 @@
   "bugs": {
     "url": "https://github.com/SAP/app-studio-toolkit/issues"
   },
+  "files": [
+    ".reuse",
+    "LICENSES",
+    "dist",
+    "CHANGELOG.md",
+    "CHANGELOG.old.md"
+  ],
   "icon": "icon.png",
   "engines": {
     "vscode": "^1.46.0"
