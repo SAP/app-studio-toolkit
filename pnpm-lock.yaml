@@ -193,7 +193,7 @@ importers:
         version: 2.0.8
       copy-webpack-plugin:
         specifier: 11.0.0
-        version: 11.0.0(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1)))
+        version: 11.0.0(webpack@5.104.1(webpack-cli@6.0.1))
       fs-extra:
         specifier: 11.1.1
         version: 11.1.1
@@ -205,10 +205,10 @@ importers:
         version: 3.0.0
       string-replace-loader:
         specifier: 3.1.0
-        version: 3.1.0(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1)))
+        version: 3.1.0(webpack@5.104.1(webpack-cli@6.0.1))
       ts-loader:
         specifier: 9.4.2
-        version: 9.4.2(typescript@5.7.3)(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1)))
+        version: 9.4.2(typescript@5.7.3)(webpack@5.104.1(webpack-cli@6.0.1))
 
   packages/app-studio-toolkit:
     dependencies:
@@ -222,8 +222,8 @@ importers:
         specifier: 2.0.9
         version: 2.0.9
       applicationinsights:
-        specifier: 2.9.6
-        version: 2.9.6
+        specifier: 2.9.8
+        version: 2.9.8
       axios:
         specifier: 1.15.2
         version: 1.15.2
@@ -287,7 +287,7 @@ importers:
         version: 2.0.8
       copy-webpack-plugin:
         specifier: 11.0.0
-        version: 11.0.0(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1)))
+        version: 11.0.0(webpack@5.104.1(webpack-cli@6.0.1))
       fs-extra:
         specifier: 11.1.1
         version: 11.1.1
@@ -299,10 +299,10 @@ importers:
         version: 3.0.0
       string-replace-loader:
         specifier: 3.1.0
-        version: 3.1.0(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1)))
+        version: 3.1.0(webpack@5.104.1(webpack-cli@6.0.1))
       ts-loader:
         specifier: 9.4.2
-        version: 9.4.2(typescript@5.7.3)(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1)))
+        version: 9.4.2(typescript@5.7.3)(webpack@5.104.1(webpack-cli@6.0.1))
 
   packages/app-studio-toolkit-themes: {}
 
@@ -716,7 +716,7 @@ importers:
         version: 0.2.6
       copy-webpack-plugin:
         specifier: 9.0.1
-        version: 9.0.1(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1)))
+        version: 9.0.1(webpack@5.104.1(webpack-cli@6.0.1))
       mock-spawn:
         specifier: 0.2.6
         version: 0.2.6
@@ -728,7 +728,7 @@ importers:
         version: 0.2.3
       ts-loader:
         specifier: 8.0.16
-        version: 8.0.16(typescript@5.7.3)(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1)))
+        version: 8.0.16(typescript@5.7.3)(webpack@5.104.1(webpack-cli@6.0.1))
       vscode-test:
         specifier: 1.5.2
         version: 1.5.2
@@ -855,7 +855,7 @@ importers:
         version: 11.0.0
       copy-webpack-plugin:
         specifier: ^12.0.2
-        version: 12.0.2(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1)))
+        version: 12.0.2(webpack@5.104.1(webpack-cli@6.0.1))
       cross-env:
         specifier: ^10.1.0
         version: 10.1.0
@@ -4100,15 +4100,6 @@ packages:
     resolution: {integrity: sha512-7yeyCEurROLQJFv5Xj4lEGTy0borxepjFv1g22oAdqFu//SrAlDl1O1Nxx15SH1RoliUml6p8dwJW9jvZughhg==}
     engines: {node: '>=8'}
 
-  applicationinsights@2.9.6:
-    resolution: {integrity: sha512-BLeBYJUZaKmnzqG/6Q/IFSCqpiVECjSTIvwozLex/1ZZpSxOjPiBxGMev+iIBfNZ2pc7vvnV7DuPOtsoG2DJeQ==}
-    engines: {node: '>=8.0.0'}
-    peerDependencies:
-      applicationinsights-native-metrics: '*'
-    peerDependenciesMeta:
-      applicationinsights-native-metrics:
-        optional: true
-
   applicationinsights@2.9.8:
     resolution: {integrity: sha512-eB/EtAXJ6mDLLvHrtZj/7h31qUfnC2Npr2pHGqds5+1OP7BFLsn5us+HCkwTj7Q+1sHXujLphE5Cyvq5grtV6g==}
     engines: {node: '>=8.0.0'}
@@ -6825,10 +6816,6 @@ packages:
   https-proxy-agent@5.0.1:
     resolution: {integrity: sha512-dFcAjpTQFgoLMzC2VwU+C/CbS7uRL0lWmxDITmqm7C+7F0Odmj6s9l6alZc6AELXhrnggM2CeWSXHGOdX2YtwA==}
     engines: {node: '>= 6'}
-
-  https-proxy-agent@7.0.5:
-    resolution: {integrity: sha512-1e4Wqeblerz+tMKPIq2EMGiiWW1dIjZOksyHWSUm1rmuvw/how9hBHZ38lAGj5ID4Ik6EdkOw7NmWPy6LAwalw==}
-    engines: {node: '>= 14'}
 
   https-proxy-agent@7.0.6:
     resolution: {integrity: sha512-vK9P5/iUfdl95AI+JVyUuIcVtd4ofvtrOr3HNtM2yxC9bnMbEdp3x01OhQNnjb8IJYi38VlTE3mBXwcfvywuSw==}
@@ -11963,7 +11950,7 @@ snapshots:
       '@azure/core-util': 1.11.0
       '@azure/logger': 1.1.4
       http-proxy-agent: 7.0.2
-      https-proxy-agent: 7.0.5
+      https-proxy-agent: 7.0.6
       tslib: 2.8.1
     transitivePeerDependencies:
       - supports-color
@@ -16086,23 +16073,6 @@ snapshots:
     dependencies:
       default-require-extensions: 3.0.0
 
-  applicationinsights@2.9.6:
-    dependencies:
-      '@azure/core-auth': 1.7.2
-      '@azure/core-rest-pipeline': 1.16.3
-      '@azure/opentelemetry-instrumentation-azure-sdk': 1.0.0-beta.8
-      '@microsoft/applicationinsights-web-snippet': 1.0.1
-      '@opentelemetry/api': 1.9.0
-      '@opentelemetry/core': 1.30.1(@opentelemetry/api@1.9.0)
-      '@opentelemetry/sdk-trace-base': 1.30.1(@opentelemetry/api@1.9.0)
-      '@opentelemetry/semantic-conventions': 1.30.0
-      cls-hooked: 4.2.2
-      continuation-local-storage: 3.2.1
-      diagnostic-channel: 1.1.1
-      diagnostic-channel-publishers: 1.0.8(diagnostic-channel@1.1.1)
-    transitivePeerDependencies:
-      - supports-color
-
   applicationinsights@2.9.8:
     dependencies:
       '@azure/core-auth': 1.7.2
@@ -17169,7 +17139,7 @@ snapshots:
 
   copy-descriptor@0.1.1: {}
 
-  copy-webpack-plugin@11.0.0(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1))):
+  copy-webpack-plugin@11.0.0(webpack@5.104.1(webpack-cli@6.0.1)):
     dependencies:
       fast-glob: 3.2.12
       glob-parent: 6.0.2
@@ -17177,9 +17147,9 @@ snapshots:
       normalize-path: 3.0.0
       schema-utils: 4.0.0
       serialize-javascript: 6.0.0
-      webpack: 5.106.2(webpack-cli@6.0.1(webpack@5.104.1))
+      webpack: 5.104.1(webpack-cli@6.0.1)
 
-  copy-webpack-plugin@12.0.2(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1))):
+  copy-webpack-plugin@12.0.2(webpack@5.104.1(webpack-cli@6.0.1)):
     dependencies:
       fast-glob: 3.3.3
       glob-parent: 6.0.2
@@ -17187,9 +17157,9 @@ snapshots:
       normalize-path: 3.0.0
       schema-utils: 4.3.3
       serialize-javascript: 6.0.2
-      webpack: 5.106.2(webpack-cli@6.0.1(webpack@5.104.1))
+      webpack: 5.104.1(webpack-cli@6.0.1)
 
-  copy-webpack-plugin@9.0.1(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1))):
+  copy-webpack-plugin@9.0.1(webpack@5.104.1(webpack-cli@6.0.1)):
     dependencies:
       fast-glob: 3.3.3
       glob-parent: 6.0.2
@@ -17198,7 +17168,7 @@ snapshots:
       p-limit: 3.1.0
       schema-utils: 3.1.1
       serialize-javascript: 6.0.2
-      webpack: 5.106.2(webpack-cli@6.0.1(webpack@5.104.1))
+      webpack: 5.104.1(webpack-cli@6.0.1)
 
   core-js-compat@3.49.0:
     dependencies:
@@ -19355,13 +19325,6 @@ snapshots:
   https-proxy-agent@5.0.1:
     dependencies:
       agent-base: 6.0.2
-      debug: 4.4.3
-    transitivePeerDependencies:
-      - supports-color
-
-  https-proxy-agent@7.0.5:
-    dependencies:
-      agent-base: 7.1.1
       debug: 4.4.3
     transitivePeerDependencies:
       - supports-color
@@ -24069,11 +24032,11 @@ snapshots:
       schema-utils: 3.1.1
       webpack: 5.106.2(webpack-cli@5.1.4)
 
-  string-replace-loader@3.1.0(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1))):
+  string-replace-loader@3.1.0(webpack@5.104.1(webpack-cli@6.0.1)):
     dependencies:
       loader-utils: 2.0.4
       schema-utils: 3.1.1
-      webpack: 5.106.2(webpack-cli@6.0.1(webpack@5.104.1))
+      webpack: 5.104.1(webpack-cli@6.0.1)
 
   string-similarity@4.0.4: {}
 
@@ -24494,7 +24457,7 @@ snapshots:
       babel-jest: 29.7.0(@babel/core@7.29.0)
       jest-util: 29.7.0
 
-  ts-loader@8.0.16(typescript@5.7.3)(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1))):
+  ts-loader@8.0.16(typescript@5.7.3)(webpack@5.104.1(webpack-cli@6.0.1)):
     dependencies:
       chalk: 4.1.2
       enhanced-resolve: 4.5.0
@@ -24502,16 +24465,16 @@ snapshots:
       micromatch: 4.0.8
       semver: 7.6.3
       typescript: 5.7.3
-      webpack: 5.106.2(webpack-cli@6.0.1(webpack@5.104.1))
+      webpack: 5.104.1(webpack-cli@6.0.1)
 
-  ts-loader@9.4.2(typescript@5.7.3)(webpack@5.106.2(webpack-cli@6.0.1(webpack@5.104.1))):
+  ts-loader@9.4.2(typescript@5.7.3)(webpack@5.104.1(webpack-cli@6.0.1)):
     dependencies:
       chalk: 4.1.2
       enhanced-resolve: 5.21.1
       micromatch: 4.0.8
       semver: 7.6.3
       typescript: 5.7.3
-      webpack: 5.106.2(webpack-cli@6.0.1(webpack@5.104.1))
+      webpack: 5.104.1(webpack-cli@6.0.1)
 
   ts-loader@9.6.2(loader-utils@2.0.4)(typescript@5.7.3)(webpack@5.106.2):
     dependencies:
