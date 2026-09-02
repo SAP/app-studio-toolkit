@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["es2017", "es7", "es6", "dom"],
+    "rootDir": "./src",
+    "outDir": "./dist/types",
+    "baseUrl": ".",
+    "target": "es2022",
+    "esModuleInterop": true,
+    "strict": true,
+    "declaration": true,
+    "emitDeclarationOnly": true
+  },
+  "include": ["src/index.ts", "src/types.ts"]
+}

@@ -1,0 +1,181 @@
+{
+  "name": "guided-development",
+  "version": "0.2.8",
+  "displayName": "Guided Development",
+  "publisher": "SAPOSS",
+  "author": {
+    "name": "SAP SE"
+  },
+  "license": "Apache-2.0",
+  "description": "A VSCode extension that provides a simple way to guide a developer.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/app-studio-toolkit.git",
+    "directory": "projects/guided-development/packages/backend"
+  },
+  "bugs": {
+    "url": "https://github.com/SAP/app-studio-toolkit/issues"
+  },
+  "files": [
+    ".reuse",
+    "LICENSES",
+    "dist",
+    "CHANGELOG.md",
+    "CHANGELOG.old.md"
+  ],
+  "icon": "icon.png",
+  "engines": {
+    "vscode": "^1.46.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "guided",
+    "development",
+    "guide",
+    "developer",
+    "tool",
+    "sap"
+  ],
+  "activationEvents": [
+    "*"
+  ],
+  "main": "./dist/extension",
+  "contributes": {
+    "commands": [
+      {
+        "command": "loadGuidedDevelopment",
+        "title": "Guided Development"
+      },
+      {
+        "command": "guidedDevelopment.toggleOutput",
+        "title": "Show Output",
+        "icon": {
+          "light": "./resources/images/icons/console_light.svg",
+          "dark": "./resources/images/icons/console_dark.svg"
+        }
+      },
+      {
+        "command": "guidedDevelopment.refreshCenter",
+        "category": "Guide Center",
+        "title": "Refresh"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "guideCenterActivityBar",
+          "title": "Guide Center",
+          "icon": "resources/images/icons/center.svg"
+        }
+      ]
+    },
+    "views": {
+      "guideCenterActivityBar": [
+        {
+          "id": "guide.sapAllGuidesViewSection",
+          "name": "",
+          "contextualTitle": "All Guides View contextualTitle",
+          "type": "webview"
+        }
+      ]
+    },
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "loadGuidedDevelopment",
+          "when": "false"
+        },
+        {
+          "command": "guidedDevelopment.toggleOutput",
+          "when": "false"
+        },
+        {
+          "command": "guidedDevelopment.refreshCenter",
+          "when": "false"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "guidedDevelopment.toggleOutput",
+          "group": "navigation",
+          "when": "false"
+        }
+      ]
+    },
+    "configuration": {
+      "type": "object",
+      "title": "Guided Development",
+      "properties": {
+        "Guided Development.loggingLevel": {
+          "type": "string",
+          "enum": [
+            "off",
+            "fatal",
+            "error",
+            "warn",
+            "info",
+            "debug",
+            "trace"
+          ],
+          "default": "error",
+          "description": "The verbosity of logging according to the following order: trace > debug > info > warn > error > fatal > off.",
+          "scope": "resource"
+        },
+        "Guided Development.sourceLocationTracking": {
+          "type": "boolean",
+          "default": false,
+          "description": "If chosen, the location of the source code is added to log entries. Warning – this action may slow your extension. We recommend you use it only for debugging.",
+          "scope": "resource"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "ci": "npm-run-all clean compile coverage bundle frontend:build frontend:copy package coverage:copy",
+    "clean": "shx rm -rf ./dist ./coverage ./reports *.vsix",
+    "compile": "tsc -p ./",
+    "compile:watch": "tsc -watch -p ./",
+    "coverage": "nyc mocha",
+    "coverage:copy": "shx mkdir -p ../../../../coverage && shx cp -u ./reports/coverage/lcov.info ../../../../coverage/lcov_backend.info",
+    "test": "mocha",
+    "bundle": "webpack --mode production",
+    "webpack": "webpack --mode development",
+    "webpack-dev:watch": "webpack --mode development --watch",
+    "frontend:build": "pnpm --filter guided-development-frontend run build",
+    "frontend:copy": "shx mkdir -p ./dist/media && shx cp -r ../frontend/dist/. ./dist/media/",
+    "package": "vsce package --no-dependencies",
+    "ws:run": "node ./out/src/webSocketServer/index.js"
+  },
+  "dependencies": {
+    "@sap-devx/app-studio-toolkit-types": "workspace:*",
+    "@sap-devx/webview-rpc": "0.3.1",
+    "@sap_oss/guided-development-types": "workspace:*",
+    "@vscode-logging/logger": "workspace:*",
+    "chalk": "^4.0.0",
+    "datauri": "^3.0.0",
+    "fs-extra": "10.0.0",
+    "humanize-string": "^2.1.0",
+    "lodash": "4.17.21",
+    "object-hash": "2.2.0",
+    "strip-ansi": "^6.0.0",
+    "titleize": "^2.1.0",
+    "ws": "7.4.6"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^9.0.11",
+    "@types/object-hash": "^2.1.0",
+    "@types/ws": "^7.4.4",
+    "@vscode/vsce": "2.24.0",
+    "bufferutil": "^4.0.1",
+    "source-map-support": "^0.5.21",
+    "string-replace-loader": "^3.0.1",
+    "ts-loader": "^8.0.17",
+    "ts-node": "^9.1.1",
+    "utf-8-validate": "^5.0.2"
+  },
+  "extensionDependencies": [
+    "SAPOSS.app-studio-toolkit"
+  ]
+}

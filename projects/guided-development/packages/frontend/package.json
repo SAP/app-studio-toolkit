@@ -1,0 +1,104 @@
+{
+  "name": "guided-development-frontend",
+  "displayName": "Guided Development Frontend",
+  "version": "0.1.2",
+  "publisher": "SAP",
+  "license": "Apache-2.0",
+  "description": "Frontend for the Guided Development framework",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/app-studio-toolkit.git",
+    "directory": "projects/guided-development/packages/frontend"
+  },
+  "bugs": {
+    "url": "https://github.com/SAP/app-studio-toolkit/issues"
+  },
+  "scripts": {
+    "ci": "npm-run-all clean build coverage coverage:copy",
+    "clean": "shx rm -rf ./dist ./coverage",
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "build-dev": "vue-cli-service build --mode development",
+    "lint": "vue-cli-service lint",
+    "test": "vue-cli-service test:unit",
+    "coverage": "vue-cli-service test:unit",
+    "coverage:copy": "shx mkdir -p ../../../../coverage && shx cp -u ./coverage/lcov.info ../../../../coverage/lcov_frontend.info"
+  },
+  "dependencies": {
+    "@mdi/font": "^5.1.45",
+    "@sap-devx/inquirer-gui": "3.0.0",
+    "@sap-devx/inquirer-gui-file-browser-plugin": "3.0.0",
+    "@sap-devx/inquirer-gui-folder-browser-plugin": "3.0.0",
+    "@sap-devx/inquirer-gui-login-plugin": "3.0.0",
+    "@sap-devx/inquirer-gui-tiles-plugin": "3.0.0",
+    "core-js": "^3.18.3",
+    "material-design-icons-iconfont": "^5.0.1",
+    "vue": "^3.3.4",
+    "vue-loading-overlay": "^6.0.3",
+    "vuetify": "^3.3.10"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.2.0",
+    "@typescript-eslint/parser": "^6.2.0",
+    "@babel/preset-env": "^7.9.5",
+    "@sap-devx/webview-rpc": "^0.3.1",
+    "@vue/cli-plugin-babel": "^5.0.0",
+    "@vue/cli-plugin-eslint": "^5.0.0",
+    "@vue/cli-plugin-unit-jest": "~5.0.0",
+    "@vue/cli-service": "^5.0.0",
+    "@vue/test-utils": "^2.4.0",
+    "@vue/vue3-jest": "^27.0.0-alpha.1",
+    "babel-eslint": "^10.0.1",
+    "babel-jest": "^27.0.5",
+    "eslint": "^7.32.0",
+    "eslint-plugin-vue": "^8.0.3",
+    "jest": "^27.0.5",
+    "jest-environment-jsdom": "^27.0.5",
+    "jest-serializer-vue": "^2.0.2",
+    "mock-socket": "^9.0.2",
+    "sass": "^1.26.3",
+    "sass-loader": "^8.0.2",
+    "ts-jest": "^27.0.4",
+    "vue-template-compiler": "^2.6.10",
+    "webpack-plugin-vuetify": "^2.0.0",
+    "webpack": "^5.0.0"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true,
+      "jest": true
+    },
+    "extends": [
+      "plugin:vue/vue3-essential",
+      "eslint:recommended"
+    ],
+    "rules": {
+      "vue/multi-word-component-names": "off"
+    },
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "overrides": [
+      {
+        "files": [
+          "**/__tests__/*.{j,t}s?(x)",
+          "**/tests/unit/**/*.spec.{j,t}s?(x)"
+        ],
+        "env": {
+          "jest": true
+        }
+      }
+    ]
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ]
+}

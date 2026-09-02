@@ -1,0 +1,51 @@
+{
+  "name": "@sap_oss/guided-development-types",
+  "version": "0.0.15",
+  "displayName": "guided-development-types",
+  "description": "An npm package that includes Guided Development declarations",
+  "publisher": "SAPOSS",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/app-studio-toolkit.git",
+    "directory": "projects/guided-development/packages/types"
+  },
+  "bugs": {
+    "url": "https://github.com/SAP/app-studio-toolkit/issues"
+  },
+  "license": "Apache-2.0",
+  "author": "SAP SE",
+  "main": "./dist/cjs/index.cjs",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs"
+    }
+  },
+  "files": [
+    ".reuse",
+    "LICENSES",
+    "dist",
+    "CHANGELOG.md",
+    "CHANGELOG.old.md"
+  ],
+  "scripts": {
+    "ci": "npm-run-all clean compile",
+    "clean": "shx rm -rf ./dist",
+    "compile": "npm-run-all compile:types compile:esm compile:cjs",
+    "compile:types": "tsc",
+    "compile:esm": "esbuild ./src/index.ts --bundle --outfile=./dist/esm/index.mjs --format=esm --target=es2022 --sourcemap --external:vscode --external:@sap-devx/app-studio-toolkit-types",
+    "compile:cjs": "esbuild ./src/index.ts --bundle --outfile=./dist/cjs/index.cjs --format=cjs --target=es2022 --sourcemap --external:vscode --external:@sap-devx/app-studio-toolkit-types"
+  },
+  "dependencies": {
+    "@sap-devx/app-studio-toolkit-types": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.46.0",
+    "esbuild": "0.25.5"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
