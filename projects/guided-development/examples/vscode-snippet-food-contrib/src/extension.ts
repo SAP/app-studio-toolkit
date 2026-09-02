@@ -8,7 +8,7 @@ import {
   IItemExecuteContext,
 } from "@sap_oss/guided-development-types";
 import {
-  bas,
+  BasToolkit,
   IExecuteAction,
   ISnippetAction,
   IFileAction,
@@ -182,7 +182,7 @@ function getInitialItems(): Array<IItem> {
 export async function activate(context: vscode.ExtensionContext) {
   extensionPath = context.extensionPath;
 
-  const basAPI: typeof bas = vscode.extensions.getExtension(
+  const basAPI: BasToolkit = vscode.extensions.getExtension(
     "SAPOSS.app-studio-toolkit"
   )?.exports;
   basAPI
@@ -220,7 +220,7 @@ export async function activate(context: vscode.ExtensionContext) {
   return api;
 }
 
-function createGuidedDevActions(basAPI: typeof bas) {
+function createGuidedDevActions(basAPI: BasToolkit) {
   foodqAction = new basAPI.actions.ExecuteAction();
   foodqAction.executeAction = (params) => {
     return vscode.commands.executeCommand("loadYeomanUI", {

@@ -8,7 +8,7 @@ import {
   IItemExecuteAction,
   IItemExecuteContext,
 } from "@sap_oss/guided-development-types";
-import { bas, IExecuteAction } from "@sap-devx/app-studio-toolkit-types";
+import { BasToolkit, IExecuteAction } from "@sap-devx/app-studio-toolkit-types";
 // @ts-ignore
 import * as datauri from "datauri";
 
@@ -26,7 +26,7 @@ let eatAction: IExecuteAction,
 
 let bakeItemAction: IItemExecuteAction;
 
-function initActions(basAPI: typeof bas) {
+function initActions(basAPI: BasToolkit) {
   eatAction = new basAPI.actions.ExecuteAction();
   eatAction.executeAction = () => {
     return vscode.window.showInformationMessage(
@@ -219,7 +219,7 @@ function removeBakeCollection(dirPath: string): void {
 export async function activate(context: vscode.ExtensionContext) {
   extensionPath = context.extensionPath;
 
-  const basAPI: typeof bas = vscode.extensions.getExtension(
+  const basAPI: BasToolkit = vscode.extensions.getExtension(
     "SAPOSS.app-studio-toolkit"
   )?.exports;
   basAPI

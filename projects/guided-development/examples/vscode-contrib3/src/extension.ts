@@ -10,7 +10,7 @@ import {
   ICommandAction,
   IFileAction,
   ISnippetAction,
-  bas,
+  BasToolkit,
 } from "@sap-devx/app-studio-toolkit-types";
 
 const datauri = require("datauri");
@@ -291,7 +291,7 @@ export async function activate(context: vscode.ExtensionContext) {
   console.log(
     'Congratulations, your extension "vscode-contrib3" is now active!'
   );
-  const basAPI: typeof bas = vscode.extensions.getExtension(
+  const basAPI: BasToolkit = vscode.extensions.getExtension(
     "SAPOSS.app-studio-toolkit"
   )?.exports;
 

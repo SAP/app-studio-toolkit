@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { bas, ICommandAction } from "@sap-devx/app-studio-toolkit-types";
+import { BasToolkit, ICommandAction } from "@sap-devx/app-studio-toolkit-types";
 import {
   ICollection,
   CollectionType,
@@ -27,7 +27,7 @@ export async function activate(context: vscode.ExtensionContext) {
    * This indicates to the guided-development manager extension to activate your extension
    * when the user executes the Guided Development command.
    */
-  const basAPI: typeof bas = vscode.extensions.getExtension(
+  const basAPI: BasToolkit = vscode.extensions.getExtension(
     "SAPOSS.app-studio-toolkit"
   )?.exports;
 

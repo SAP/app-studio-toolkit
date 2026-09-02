@@ -7,7 +7,7 @@ import {
   ManagerAPI,
 } from "@sap_oss/guided-development-types";
 import {
-  bas,
+  BasToolkit,
   ICommandAction,
   IExecuteAction,
 } from "@sap-devx/app-studio-toolkit-types";
@@ -152,7 +152,7 @@ export async function activate(context: vscode.ExtensionContext) {
   console.log(
     'Congratulations, your extension "vscode-contrib1" is now active!'
   );
-  const basAPI: typeof bas = vscode.extensions.getExtension(
+  const basAPI: BasToolkit = vscode.extensions.getExtension(
     "SAPOSS.app-studio-toolkit"
   )?.exports;
 
