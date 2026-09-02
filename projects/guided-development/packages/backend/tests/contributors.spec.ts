@@ -7,7 +7,7 @@ const testVscode = {
   extensions: {
     all: new Array(),
   },
-  Extension: [] as any[],
+  Extension: {} as any,
   commands: {
     executeCommand: () => Promise.resolve(),
   },
