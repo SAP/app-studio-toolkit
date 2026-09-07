@@ -31,7 +31,6 @@
     "vscode-logging-extension-wrapper-example",
     "@vscode-logging/library-example",
     "@sap-devx/guided-development-root",
-    "guided-development-frontend",
     "vscode-contrib-cake",
     "vscode-contrib1",
     "vscode-contrib2",

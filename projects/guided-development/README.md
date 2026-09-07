@@ -1,7 +1,3 @@
-[![Continuous Integration](https://github.com/SAP/app-studio-toolkit/actions/workflows/ci.yml/badge.svg)](https://github.com/SAP/app-studio-toolkit/actions/workflows/ci.yml)
-![GitHub license](https://img.shields.io/badge/license-Apache_2.0-blue.svg)
-[![REUSE status](https://api.reuse.software/badge/github.com/SAP/app-studio-toolkit)](https://api.reuse.software/info/github.com/SAP/app-studio-toolkit)
-
 # Guided Development
 
 ![](screenshot.png)
