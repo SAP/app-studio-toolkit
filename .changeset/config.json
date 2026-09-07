@@ -16,8 +16,7 @@
       "@vscode-logging/logger",
       "@vscode-logging/types",
       "@vscode-logging/wrapper"
-    ],
-    ["guided-development", "@sap_oss/guided-development-types"]
+    ]
   ],
   "linked": [],
   "access": "restricted",
@@ -31,6 +30,8 @@
     "vscode-logging-extension-wrapper-example",
     "@vscode-logging/library-example",
     "vscode-contrib-cake",
+    "@sap_oss/guided-development-types",
+    "guided-development",
     "vscode-contrib1",
     "vscode-contrib2",
     "vscode-contrib3",

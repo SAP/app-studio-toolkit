@@ -1,6 +1,7 @@
 {
   "name": "@sap_oss/guided-development-types",
   "version": "0.0.15",
+  "private": true,
   "displayName": "guided-development-types",
   "description": "An npm package that includes Guided Development declarations",
   "publisher": "SAPOSS",
