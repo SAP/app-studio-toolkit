@@ -1,0 +1,5 @@
+# tsc output
+**/out
+
+# nyc coverage reports
+**/reports

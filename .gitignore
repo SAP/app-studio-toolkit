@@ -77,9 +77,5 @@ tsconfig.tsbuildinfo
 # generated artifacts
 dist
 
-# guided-development: tsc `out/` output and nyc `reports/` coverage
-projects/guided-development/**/out
-projects/guided-development/**/reports
-
 # Other
 .DS_store

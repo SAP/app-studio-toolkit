@@ -1,6 +1,7 @@
 {
   "name": "guided-development",
   "version": "0.2.8",
+  "private": true,
   "displayName": "Guided Development",
   "publisher": "SAPOSS",
   "author": {
@@ -152,12 +153,12 @@
     "@sap-devx/app-studio-toolkit-types": "workspace:*",
     "@sap-devx/webview-rpc": "0.3.1",
     "@sap_oss/guided-development-types": "workspace:*",
-    "@vscode-logging/logger": "workspace:*",
+    "@vscode-logging/logger": "2.0.10",
     "chalk": "^4.0.0",
     "datauri": "^3.0.0",
     "fs-extra": "10.0.0",
     "humanize-string": "^2.1.0",
-    "lodash": "4.17.21",
+    "lodash": "4.18.1",
     "object-hash": "2.2.0",
     "strip-ansi": "^6.0.0",
     "titleize": "^2.1.0",
