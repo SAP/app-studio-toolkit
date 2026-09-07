@@ -18,8 +18,6 @@
     "url": "https://github.com/SAP/app-studio-toolkit/issues"
   },
   "files": [
-    ".reuse",
-    "LICENSES",
     "dist",
     "CHANGELOG.md",
     "CHANGELOG.old.md"
@@ -150,7 +148,7 @@
     "ws:run": "node ./out/src/webSocketServer/index.js"
   },
   "dependencies": {
-    "@sap-devx/app-studio-toolkit-types": "workspace:*",
+    "@sap-devx/app-studio-toolkit-types": "2.11.4",
     "@sap-devx/webview-rpc": "0.3.1",
     "@sap_oss/guided-development-types": "workspace:*",
     "@vscode-logging/logger": "2.0.10",
