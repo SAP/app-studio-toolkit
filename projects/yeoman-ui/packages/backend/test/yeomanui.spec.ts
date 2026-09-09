@@ -62,11 +62,11 @@ describe("yeomanui unit test", () => {
   }
   const appWizard: AppWizard = new TestAppWizard();
   class TestEvents implements YouiEvents {
-    public doGeneratorDone(): Promise<void> {
-      return Promise.resolve();
+    public doGeneratorDone(): void {
+      return;
     }
-    public doGeneratorProgress(): Promise<void> {
-      return Promise.resolve();
+    public doGeneratorInstall(): void {
+      return;
     }
     public showProgress(): void {
       return;
@@ -1364,15 +1364,10 @@ describe("yeomanui unit test", () => {
       GeneratorFilter.create(),
       flowPromise.state
     );
-    const gen: any = {
-      on: () => "",
-      state: { project: { name: "testProject" } },
-    };
+    const gen: any = { on: () => "" };
     const genMock = sandbox.mock(gen);
 
-    genMock.expects("on").withArgs("method:writing");
     genMock.expects("on").withArgs("method:install");
-    genMock.expects("on").withArgs("method:end");
     yeomanUiInstance["onGenInstall"](gen);
     genMock.verify();
   });

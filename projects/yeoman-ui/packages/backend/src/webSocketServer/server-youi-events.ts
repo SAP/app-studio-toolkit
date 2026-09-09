@@ -30,27 +30,18 @@ export class ServerYouiEvents implements YouiEvents {
     selectedWorkspace: string,
     type: string,
     targetPath = ""
-  ): Promise<void> {
-    return this.rpc.invoke("generatorDone", [
+  ): void {
+    void this.rpc.invoke("generatorDone", [
       suceeded,
       message,
       selectedWorkspace,
       type,
       targetPath,
-    ]) as Promise<void>;
+    ]);
   }
 
-  public doGeneratorProgress(
-    projectName: string | undefined,
-    phase: "writing" | "install" | "end",
-    showProgress: boolean = false
-  ): void {
-    // Only invoke if generator opts in (WebSocket doesn't have VS Code settings)
-    if (!showProgress) {
-      return;
-    }
-    // WebSocket implementation - invoke RPC method with progress info
-    void this.rpc.invoke("generatorProgress", [projectName, phase]);
+  public doGeneratorInstall(): void {
+    void this.rpc.invoke("generatorInstall");
   }
 
   public showProgress(): void {
