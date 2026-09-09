@@ -140,9 +140,11 @@ export class VSCodeYouiEvents implements YouiEvents {
       true
     );
 
-    // Only show if both the setting is enabled AND the generator opts in
-    if (!settingEnabled || !showProgress) {
-      return; // Don't show progress notification if disabled or not opted in
+    // The install phase is always shown (backward-compatible with old doGeneratorInstall).
+    // Other phases only show if both the VS Code setting and the generator's showProgress opt-in are enabled.
+    const isInstallPhase = phase === "install";
+    if (!isInstallPhase && (!settingEnabled || !showProgress)) {
+      return;
     }
 
     // Map phases to localized messages
@@ -164,6 +166,12 @@ export class VSCodeYouiEvents implements YouiEvents {
     // If this is the first phase (writing) AND no progress notification exists yet
     if (phase === "writing" && !this.progressReporter) {
       // Close the webview panel (showing the question form) before showing progress
+      this.doClose();
+      this.currentPhase = phase;
+      this.phaseStartTime = Date.now();
+      this.showInstallMessage(projectName, message);
+    } else if (isInstallPhase && !this.progressReporter) {
+      // Install phase but no prior writing notification — open one now (backward-compatible behavior)
       this.doClose();
       this.currentPhase = phase;
       this.phaseStartTime = Date.now();
