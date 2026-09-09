@@ -1,0 +1,42 @@
+{
+  "name": "vscode-simple-contrib",
+  "displayName": "vscode-simple-contrib",
+  "description": "",
+  "version": "0.0.3",
+  "private": true,
+  "publisher": "SAPOSS",
+  "engines": {
+    "vscode": "^1.44.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/app-studio-toolkit.git",
+    "directory": "projects/guided-development/examples/vscode-simple-contrib"
+  },
+  "categories": [
+    "Other"
+  ],
+  "main": "./out/extension.js",
+  "activationEvents": [],
+  "BASContributes": {
+    "guided-development": {}
+  },
+  "scripts": {
+    "ci": "npm-run-all clean compile",
+    "clean": "shx rm -rf out *.vsix",
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.40.0"
+  },
+  "extensionDependencies": [
+    "SAPOSS.app-studio-toolkit"
+  ],
+  "dependencies": {
+    "@sap-devx/app-studio-toolkit-types": "workspace:*",
+    "@sap_oss/guided-development-types": "workspace:*"
+  }
+}

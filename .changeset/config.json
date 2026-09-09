@@ -16,7 +16,8 @@
       "@vscode-logging/logger",
       "@vscode-logging/types",
       "@vscode-logging/wrapper"
-    ]
+    ],
+    ["guided-development", "guided-development-frontend"]
   ],
   "linked": [],
   "access": "restricted",
@@ -28,7 +29,17 @@
     "yeoman-env-v3",
     "vscode-logging-extension-example",
     "vscode-logging-extension-wrapper-example",
-    "@vscode-logging/library-example"
+    "@vscode-logging/library-example",
+    "vscode-contrib-cake",
+    "@sap_oss/guided-development-types",
+    "vscode-contrib1",
+    "vscode-contrib2",
+    "vscode-contrib3",
+    "vscode-simple-contrib",
+    "vscode-snippet-food-contrib"
   ],
-  "privatePackages": { "version": true, "tag": true }
+  "privatePackages": {
+    "version": true,
+    "tag": true
+  }
 }
