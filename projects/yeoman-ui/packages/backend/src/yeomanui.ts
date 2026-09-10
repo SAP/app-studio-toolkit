@@ -604,14 +604,10 @@ export class YeomanUI {
       );
     });
 
-    // Listen to install phase
+    // Listen to install phase - always show notification
     gen.on("method:install", () => {
       const projectName = getProjectName();
-      void this.youiEvents.doGeneratorProgress(
-        projectName,
-        "install",
-        showProgress
-      );
+      void this.youiEvents.doGeneratorProgress(projectName, "install", true);
     });
 
     // Listen to end phase

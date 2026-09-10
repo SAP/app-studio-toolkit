@@ -373,22 +373,34 @@ describe("vscode-youi-events unit test", () => {
       events["progressReporter"] = null;
     });
 
-    it("install/end phases - does nothing when progressReporter is null", () => {
-      // Stub getConfiguration to enable progress notification
+    it("install phase with null progressReporter - opens new notification (backward-compatible)", () => {
+      lodash.set(vscode, "ProgressLocation.Notification", 15);
+      eventsMock.expects("doClose");
       sandbox.stub(vscode.workspace, "getConfiguration").returns({
         get: sandbox
           .stub()
           .withArgs("ApplicationWizard.showGeneratorProgress", true)
           .returns(true),
       } as any);
+      windowMock
+        .expects("withProgress")
+        .withArgs({
+          location: 15,
+          title: "Generating testProject",
+          cancellable: false,
+        })
+        .resolves();
       events["progressReporter"] = null;
 
-      // Should not throw when progressReporter is null
+      // Install phase should open a notification even when progressReporter is null
       events.doGeneratorProgress("testProject", "install", true);
+
+      // End phase with null progressReporter should still do nothing (no crash)
       events.doGeneratorProgress("testProject", "end", true);
     });
 
-    it("does nothing when setting is disabled", () => {
+    it("does nothing for writing/end phases when setting is disabled, but install always shows", () => {
+      lodash.set(vscode, "ProgressLocation.Notification", 15);
       // Stub getConfiguration to return false
       sandbox.stub(vscode.workspace, "getConfiguration").returns({
         get: sandbox
@@ -397,17 +409,26 @@ describe("vscode-youi-events unit test", () => {
           .returns(false),
       } as any);
 
-      // Should not call doClose or showInstallMessage
-      eventsMock.expects("doClose").never();
-      windowMock.expects("withProgress").never();
+      // writing and end should be blocked by the disabled setting
+      eventsMock.expects("doClose").once(); // only for the install phase
+      windowMock
+        .expects("withProgress")
+        .once()
+        .withArgs({
+          location: 15,
+          title: "Generating testProject",
+          cancellable: false,
+        })
+        .resolves();
 
       events.doGeneratorProgress("testProject", "writing", true);
       events.doGeneratorProgress("testProject", "install", true);
       events.doGeneratorProgress("testProject", "end", true);
     });
 
-    it("does nothing when showProgress parameter is false", () => {
-      // Even if setting is enabled, showProgress=false should skip everything
+    it("does nothing for writing/end when showProgress parameter is false, but install always shows", () => {
+      lodash.set(vscode, "ProgressLocation.Notification", 15);
+      // Even if setting is enabled, showProgress=false should skip writing/end
       sandbox.stub(vscode.workspace, "getConfiguration").returns({
         get: sandbox
           .stub()
@@ -415,9 +436,17 @@ describe("vscode-youi-events unit test", () => {
           .returns(true),
       } as any);
 
-      // Should not call doClose or showInstallMessage
-      eventsMock.expects("doClose").never();
-      windowMock.expects("withProgress").never();
+      // install always shows; writing and end are skipped when showProgress=false
+      eventsMock.expects("doClose").once();
+      windowMock
+        .expects("withProgress")
+        .once()
+        .withArgs({
+          location: 15,
+          title: "Generating testProject",
+          cancellable: false,
+        })
+        .resolves();
 
       events.doGeneratorProgress("testProject", "writing", false);
       events.doGeneratorProgress("testProject", "install", false);
