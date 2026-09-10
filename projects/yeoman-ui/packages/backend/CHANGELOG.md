@@ -1,5 +1,11 @@
 # yeoman-ui
 
+## 1.27.2
+
+### Patch Changes
+
+- 76f8c03: Revert generator progress notifications (#576)
+
 ## 1.27.1
 
 ### Patch Changes
