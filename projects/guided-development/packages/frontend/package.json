@@ -1,7 +1,7 @@
 {
   "name": "guided-development-frontend",
   "displayName": "Guided Development Frontend",
-  "version": "0.1.2",
+  "version": "0.2.9",
   "publisher": "SAP",
   "license": "Apache-2.0",
   "description": "Frontend for the Guided Development framework",

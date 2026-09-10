@@ -1,4 +1,4 @@
-# guided-development
+# guided-development-frontend
 
 ## 0.2.9
 
