@@ -435,8 +435,8 @@ importers:
   packages/vscode-disk-usage:
     dependencies:
       '@sap-devx/feature-toggle-node':
-        specifier: 2.0.3
-        version: 2.0.3
+        specifier: 2.1.0
+        version: 2.1.0
       '@sap/bas-sdk':
         specifier: 3.13.7
         version: 3.13.7(bufferutil@4.1.0)(utf-8-validate@5.0.10)
@@ -569,6 +569,22 @@ importers:
       jest:
         specifier: 27.5.1
         version: 27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@22.20.1)(typescript@5.7.3))(utf-8-validate@5.0.10)
+
+  projects/feature-toggle-node/packages/feature-toggle-node:
+    dependencies:
+      node-cache:
+        specifier: 5.1.2
+        version: 5.1.2
+    devDependencies:
+      '@istanbuljs/nyc-config-typescript':
+        specifier: 1.0.2
+        version: 1.0.2(nyc@15.1.0)
+      source-map-support:
+        specifier: 0.5.21
+        version: 0.5.21
+      ts-node:
+        specifier: 10.9.2
+        version: 10.9.2(@types/node@22.20.1)(typescript@5.7.3)
 
   projects/guided-development/examples/vscode-contrib-cake:
     dependencies:
@@ -3241,6 +3257,12 @@ packages:
     resolution: {integrity: sha512-VjeHSlIzpv/NyD3N0YuHfXOPDIixcA1q2ZV98wsMqcYlPmv2n3Yb2lYP9XMElnaFVXg5A7YLTeLu6V84uQDjmQ==}
     engines: {node: '>=8'}
 
+  '@istanbuljs/nyc-config-typescript@1.0.2':
+    resolution: {integrity: sha512-iKGIyMoyJuFnJRSVTZ78POIRvNnwZaWIf8vG4ZS3rQq58MMDrqEX2nnzx0R28V2X8JvmKYiqY9FP2hlJsm8A0w==}
+    engines: {node: '>=8'}
+    peerDependencies:
+      nyc: '>=15'
+
   '@istanbuljs/schema@0.1.3':
     resolution: {integrity: sha512-ZXRY4jNvVgSVQ8DL3LTcakaAtXwTVUxE81hslsyD2AtoXW/wVob10HkOJ1X/pAlcI7D+2YoZKg5do8G/w6RYgA==}
     engines: {node: '>=8'}
@@ -3877,8 +3899,8 @@ packages:
   '@sap-devx/code-snippet-types@1.1.3':
     resolution: {integrity: sha512-/Rc+RhsY5JphBsguVYEasxxDY8hwSURhZ0dwvEWuBiKnplcmf/GQqoLmfebb+05tVl9gPiLepzmdPsn0dqZGbA==}
 
-  '@sap-devx/feature-toggle-node@2.0.3':
-    resolution: {integrity: sha512-OxdJigAFybeZH9Uxm14EXp0NAb+pWzU4U0CvttJgmrRx+NL1loL0/o8gb/Vqk8wHAtNTqXjhz7GvLZ4tfDjUrA==}
+  '@sap-devx/feature-toggle-node@2.1.0':
+    resolution: {integrity: sha512-MXjbREcdN4+ghj9LF0lkPLLDyb0vxxoC59CCkpz9uNUnpjSN/OWL1g/LNR1lkJ0+7MjaAhK95afo9Jhr02yQjQ==}
     engines: {node: '>=14.21.2'}
 
   '@sap-devx/inquirer-gui-auto-complete-plugin@3.4.14':
@@ -16702,6 +16724,11 @@ snapshots:
       js-yaml: 3.14.2
       resolve-from: 5.0.0
 
+  '@istanbuljs/nyc-config-typescript@1.0.2(nyc@15.1.0)':
+    dependencies:
+      '@istanbuljs/schema': 0.1.3
+      nyc: 15.1.0
+
   '@istanbuljs/schema@0.1.3': {}
 
   '@jest/console@27.5.1':
@@ -17798,7 +17825,7 @@ snapshots:
     dependencies:
       '@types/vscode': 1.75.0
 
-  '@sap-devx/feature-toggle-node@2.0.3':
+  '@sap-devx/feature-toggle-node@2.1.0':
     dependencies:
       node-cache: 5.1.2
 
@@ -29556,7 +29583,6 @@ snapshots:
       typescript: 5.7.3
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
-    optional: true
 
   ts-node@9.1.1(typescript@5.7.3):
     dependencies:

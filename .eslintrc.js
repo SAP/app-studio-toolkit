@@ -118,6 +118,14 @@ module.exports = {
       },
     },
     {
+      // feature-toggle-node was integrated with eslint-comments/require-description: "off"
+      // TODO: enable this rule once existing comments have been annotated
+      files: ["projects/feature-toggle-node/**"],
+      rules: {
+        "eslint-comments/require-description": "off",
+      },
+    },
+    {
       // Use this package's tsconfig so type-aware linting sees its newer (@types/node) typings.
       files: ["packages/vsix-zst/**/*.ts"],
       parserOptions: {
@@ -250,6 +258,22 @@ module.exports = {
         "@typescript-eslint/no-array-constructor": "off",
         "@typescript-eslint/ban-ts-comment": "off",
         "@typescript-eslint/prefer-promise-reject-errors": "off",
+      },
+    },
+    {
+      // Additional TypeScript rules for feature-toggle-node package.
+      // Legacy library + chai test suite migrated as-is; relaxed to match the
+      // historical behaviour without rewriting source logic.
+      // TODO: clean up violations and tighten incrementally.
+      files: ["projects/feature-toggle-node/**/*.ts"],
+      rules: {
+        // chai assertions (e.g. expect(x).to.be.true) read as unused expressions
+        "@typescript-eslint/no-unused-expressions": "off",
+        "@typescript-eslint/no-unnecessary-type-assertion": "off",
+        "@typescript-eslint/require-await": "off",
+        "@typescript-eslint/no-floating-promises": "off",
+        "@typescript-eslint/no-unsafe-return": "off",
+        "@typescript-eslint/no-unsafe-argument": "off",
       },
     },
     {
