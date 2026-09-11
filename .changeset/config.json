@@ -48,7 +48,13 @@
     "vscode-contrib2",
     "vscode-contrib3",
     "vscode-simple-contrib",
-    "vscode-snippet-food-contrib"
+    "vscode-snippet-food-contrib",
+    "sample-app",
+    "sample-app-vite",
+    "sample-navigator",
+    "@sap-devx/inquirer-gui-date-plugin",
+    "sample-inquirer-gui-vscode-extension",
+    "websocketserver"
   ],
   "privatePackages": {
     "version": true,
