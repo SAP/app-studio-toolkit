@@ -1,0 +1,40 @@
+{
+  "name": "@sap-devx/inquirer-gui-auto-complete-plugin",
+  "version": "3.4.13",
+  "description": "Auto-complete Vue plugin for https://github.com/mokkabonna/inquirer-autocomplete-prompt",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/inquirer-gui/tree/master/auto-complete-plugin"
+  },
+  "license": "Apache-2.0",
+  "author": "",
+  "exports": {
+    ".": {
+      "import": "./dist/autoCompletePlugin.es.js",
+      "require": "./dist/autoCompletePlugin.umd.js"
+    },
+    "./dist/autoCompletePlugin.css": {
+      "import": "./dist/autoCompletePlugin.css",
+      "require": "./dist/autoCompletePlugin.css"
+    }
+  },
+  "main": "dist/autoCompletePlugin.umd.js",
+  "module": "./dist/autoCompletePlugin.es.js",
+  "scripts": {
+    "build": "vite build",
+    "build-dev": "vite build --mode development",
+    "ci": "npm-run-all clean build test copy-coverage",
+    "copy-coverage": "rimraf ../../coverage ../../reports && shx cp -r ./coverage ../../coverage && shx cp -r ./reports ../../reports",
+    "clean": "rimraf ./dist",
+    "prepublishOnly": "npm run build",
+    "test": "jest -w 1"
+  },
+  "dependencies": {
+    "strip-ansi": "^6.0.0",
+    "vite-plugin-css-injected-by-js": "^3.2.0",
+    "vue": "^3.3.4"
+  },
+  "devDependencies": {
+    "@babel/preset-typescript": "^7.26.0"
+  }
+}
