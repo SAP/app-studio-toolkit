@@ -30,5 +30,10 @@
   "dependencies": {
     "vue": "^3.3.4"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@vitejs/plugin-vue": "5.2.4",
+    "vite": "6.3.4",
+    "@babel/preset-env": "^7.22.5",
+    "@babel/preset-typescript": "^7.26.0"
+  }
 }

@@ -1,0 +1,7 @@
+# nyc / jest coverage reports
+**/reports
+coverage
+
+# build output
+dist
+**/dist*
