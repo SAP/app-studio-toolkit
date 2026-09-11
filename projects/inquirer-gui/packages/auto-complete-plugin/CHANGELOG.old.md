@@ -1,11 +1,13 @@
-# Change Log
+# Historic Changelog
 
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+> This file preserves the changelog history from the standalone
+> [`SAP/inquirer-gui`](https://github.com/SAP/inquirer-gui) repository,
+> recorded before the packages were migrated into the `app-studio-toolkit` monorepo.
+> New entries are tracked via Changesets in `CHANGELOG.md`.
 
 ## 3.4.13 (2026-06-09)
 
-**Note:** Version bump only for package @sap-devx/inquirer-gui-radio-plugin
+**Note:** Version bump only for package @sap-devx/inquirer-gui-auto-complete-plugin
 
 ## 3.4.12 (2026-06-09)
 
@@ -27,19 +29,19 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## 3.4.9 (2026-02-09)
 
-**Note:** Version bump only for package @sap-devx/inquirer-gui-radio-plugin
+**Note:** Version bump only for package @sap-devx/inquirer-gui-auto-complete-plugin
 
 ## 3.4.8 (2025-12-08)
 
-**Note:** Version bump only for package @sap-devx/inquirer-gui-radio-plugin
+**Note:** Version bump only for package @sap-devx/inquirer-gui-auto-complete-plugin
 
 ## 3.4.7 (2025-12-08)
 
-**Note:** Version bump only for package @sap-devx/inquirer-gui-radio-plugin
+**Note:** Version bump only for package @sap-devx/inquirer-gui-auto-complete-plugin
 
 ## 3.4.6 (2025-07-15)
 
-**Note:** Version bump only for package @sap-devx/inquirer-gui-radio-plugin
+**Note:** Version bump only for package @sap-devx/inquirer-gui-auto-complete-plugin
 
 ## 3.4.5 (2025-06-10)
 
@@ -49,21 +51,31 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## 3.4.4 (2025-05-28)
 
-**Note:** Version bump only for package @sap-devx/inquirer-gui-radio-plugin
+**Note:** Version bump only for package @sap-devx/inquirer-gui-auto-complete-plugin
 
 ## 3.4.3 (2025-05-28)
 
-**Note:** Version bump only for package @sap-devx/inquirer-gui-radio-plugin
+**Note:** Version bump only for package @sap-devx/inquirer-gui-auto-complete-plugin
+
+## [3.4.1](https://github.com/SAP/inquirer-gui/compare/v3.4.0...v3.4.1) (2025-05-07)
+
+**Note:** Version bump only for package @sap-devx/inquirer-gui-auto-complete-plugin
 
 # [3.4.0](https://github.com/SAP/inquirer-gui/compare/v3.3.0...v3.4.0) (2025-04-28)
 
-**Note:** Version bump only for package @sap-devx/inquirer-gui-radio-plugin
+**Note:** Version bump only for package @sap-devx/inquirer-gui-auto-complete-plugin
 
-# [3.2.0](https://github.com/SAP/inquirer-gui/compare/v3.1.0...v3.2.0) (2025-02-26)
+## [3.0.6](https://github.com/SAP/inquirer-gui/compare/v3.0.5...v3.0.6) (2024-04-15)
 
-### Features
+### Bug Fixes
 
-- vertical orientation, disabled prop, and placeholder support ([5a355ec](https://github.com/SAP/inquirer-gui/commit/5a355ecceab7f3df213f89801c8695b2836ac8f6))
+- test ([6dcf582](https://github.com/SAP/inquirer-gui/commit/6dcf5822a596cdf75470916c9105c6f29a0298e0))
+
+## [3.0.4](https://github.com/SAP/inquirer-gui/compare/v3.0.3...v3.0.4) (2024-02-21)
+
+### Bug Fixes
+
+- typo fixing ([#693](https://github.com/SAP/inquirer-gui/issues/693)) ([29d55f5](https://github.com/SAP/inquirer-gui/commit/29d55f544239d4e3ef37c4a87cec3716ea7895b7))
 
 ## [3.0.3](https://github.com/SAP/inquirer-gui/compare/v3.0.2...v3.0.3) (2024-02-20)
 

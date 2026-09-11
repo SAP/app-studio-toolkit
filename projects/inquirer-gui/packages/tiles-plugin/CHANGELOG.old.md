@@ -1,11 +1,13 @@
-# Change Log
+# Historic Changelog
 
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+> This file preserves the changelog history from the standalone
+> [`SAP/inquirer-gui`](https://github.com/SAP/inquirer-gui) repository,
+> recorded before the packages were migrated into the `app-studio-toolkit` monorepo.
+> New entries are tracked via Changesets in `CHANGELOG.md`.
 
 ## 3.4.13 (2026-06-09)
 
-**Note:** Version bump only for package @sap-devx/inquirer-gui-label-plugin
+**Note:** Version bump only for package @sap-devx/inquirer-gui-tiles-plugin
 
 ## 3.4.12 (2026-06-09)
 
@@ -27,19 +29,19 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## 3.4.9 (2026-02-09)
 
-**Note:** Version bump only for package @sap-devx/inquirer-gui-label-plugin
+**Note:** Version bump only for package @sap-devx/inquirer-gui-tiles-plugin
 
 ## 3.4.8 (2025-12-08)
 
-**Note:** Version bump only for package @sap-devx/inquirer-gui-label-plugin
+**Note:** Version bump only for package @sap-devx/inquirer-gui-tiles-plugin
 
 ## 3.4.7 (2025-12-08)
 
-**Note:** Version bump only for package @sap-devx/inquirer-gui-label-plugin
+**Note:** Version bump only for package @sap-devx/inquirer-gui-tiles-plugin
 
 ## 3.4.6 (2025-07-15)
 
-**Note:** Version bump only for package @sap-devx/inquirer-gui-label-plugin
+**Note:** Version bump only for package @sap-devx/inquirer-gui-tiles-plugin
 
 ## 3.4.5 (2025-06-10)
 
@@ -49,24 +51,18 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## 3.4.4 (2025-05-28)
 
-**Note:** Version bump only for package @sap-devx/inquirer-gui-label-plugin
+**Note:** Version bump only for package @sap-devx/inquirer-gui-tiles-plugin
 
 ## 3.4.3 (2025-05-28)
 
-**Note:** Version bump only for package @sap-devx/inquirer-gui-label-plugin
+**Note:** Version bump only for package @sap-devx/inquirer-gui-tiles-plugin
 
 # [3.4.0](https://github.com/SAP/inquirer-gui/compare/v3.3.0...v3.4.0) (2025-04-28)
 
-**Note:** Version bump only for package @sap-devx/inquirer-gui-label-plugin
+**Note:** Version bump only for package @sap-devx/inquirer-gui-tiles-plugin
 
 ## [3.0.3](https://github.com/SAP/inquirer-gui/compare/v3.0.2...v3.0.3) (2024-02-20)
 
 ### Bug Fixes
 
 - allows selection of list separators causing crashes ([#692](https://github.com/SAP/inquirer-gui/issues/692)) ([30f2e50](https://github.com/SAP/inquirer-gui/commit/30f2e50495fad128258b6f5cbbacb2d97a0937ca))
-
-## [3.0.2](https://github.com/SAP/inquirer-gui/compare/v3.0.1...v3.0.2) (2023-08-30)
-
-### Bug Fixes
-
-- add vue to lint-staged ([#670](https://github.com/SAP/inquirer-gui/issues/670)) ([58126f4](https://github.com/SAP/inquirer-gui/commit/58126f4fa43b75d4346ef849ad1873ca7153cc49))
