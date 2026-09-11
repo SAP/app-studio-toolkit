@@ -57,5 +57,12 @@
     "@vitejs/plugin-vue": "5.2.4",
     "vite": "6.3.4",
     "@babel/preset-typescript": "^7.26.0"
-  }
+  },
+  "files": [
+    ".reuse",
+    "LICENSES",
+    "dist",
+    "CHANGELOG.md",
+    "CHANGELOG.old.md"
+  ]
 }

@@ -1,7 +1,9 @@
-# Change Log
+# Historic Changelog
 
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+> This file preserves the changelog history from the standalone
+> [`SAP/inquirer-gui`](https://github.com/SAP/inquirer-gui) repository,
+> recorded before the packages were migrated into the `app-studio-toolkit` monorepo.
+> New entries are tracked via Changesets in `CHANGELOG.md`.
 
 ## 3.4.13 (2026-06-09)
 

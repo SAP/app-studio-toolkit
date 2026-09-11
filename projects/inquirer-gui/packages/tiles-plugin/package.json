@@ -35,5 +35,12 @@
     "vite": "6.3.4",
     "@babel/preset-env": "^7.22.5",
     "@babel/preset-typescript": "^7.26.0"
-  }
+  },
+  "files": [
+    ".reuse",
+    "LICENSES",
+    "dist",
+    "CHANGELOG.md",
+    "CHANGELOG.old.md"
+  ]
 }

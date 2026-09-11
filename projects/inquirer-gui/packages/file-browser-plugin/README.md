@@ -6,7 +6,7 @@ This inquirer-gui plugin enables selecting a file from a backend.
 
 It can be used in Visual Studio Code when working locally or in [remote development](https://code.visualstudio.com/docs/remote/remote-overview) or in [Theia](https://github.com/eclipse-theia/theia).
 
-See the [sample-vscode-extension](https://github.com/SAP/inquirer-gui/tree/master/sample-vscode-extension) for useage.
+See the [sample-vscode-extension](https://github.com/SAP/app-studio-toolkit/tree/main/projects/inquirer-gui/examples/sample-vscode-extension) for useage.
 
 ### Sample Question
 

@@ -1,11 +1,13 @@
-# Change Log
+# Historic Changelog
 
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+> This file preserves the changelog history from the standalone
+> [`SAP/inquirer-gui`](https://github.com/SAP/inquirer-gui) repository,
+> recorded before the packages were migrated into the `app-studio-toolkit` monorepo.
+> New entries are tracked via Changesets in `CHANGELOG.md`.
 
 ## 3.4.13 (2026-06-09)
 
-**Note:** Version bump only for package @sap-devx/inquirer-gui-tiles-plugin
+**Note:** Version bump only for package @sap-devx/inquirer-gui-radio-plugin
 
 ## 3.4.12 (2026-06-09)
 
@@ -27,19 +29,19 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## 3.4.9 (2026-02-09)
 
-**Note:** Version bump only for package @sap-devx/inquirer-gui-tiles-plugin
+**Note:** Version bump only for package @sap-devx/inquirer-gui-radio-plugin
 
 ## 3.4.8 (2025-12-08)
 
-**Note:** Version bump only for package @sap-devx/inquirer-gui-tiles-plugin
+**Note:** Version bump only for package @sap-devx/inquirer-gui-radio-plugin
 
 ## 3.4.7 (2025-12-08)
 
-**Note:** Version bump only for package @sap-devx/inquirer-gui-tiles-plugin
+**Note:** Version bump only for package @sap-devx/inquirer-gui-radio-plugin
 
 ## 3.4.6 (2025-07-15)
 
-**Note:** Version bump only for package @sap-devx/inquirer-gui-tiles-plugin
+**Note:** Version bump only for package @sap-devx/inquirer-gui-radio-plugin
 
 ## 3.4.5 (2025-06-10)
 
@@ -49,15 +51,21 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## 3.4.4 (2025-05-28)
 
-**Note:** Version bump only for package @sap-devx/inquirer-gui-tiles-plugin
+**Note:** Version bump only for package @sap-devx/inquirer-gui-radio-plugin
 
 ## 3.4.3 (2025-05-28)
 
-**Note:** Version bump only for package @sap-devx/inquirer-gui-tiles-plugin
+**Note:** Version bump only for package @sap-devx/inquirer-gui-radio-plugin
 
 # [3.4.0](https://github.com/SAP/inquirer-gui/compare/v3.3.0...v3.4.0) (2025-04-28)
 
-**Note:** Version bump only for package @sap-devx/inquirer-gui-tiles-plugin
+**Note:** Version bump only for package @sap-devx/inquirer-gui-radio-plugin
+
+# [3.2.0](https://github.com/SAP/inquirer-gui/compare/v3.1.0...v3.2.0) (2025-02-26)
+
+### Features
+
+- vertical orientation, disabled prop, and placeholder support ([5a355ec](https://github.com/SAP/inquirer-gui/commit/5a355ecceab7f3df213f89801c8695b2836ac8f6))
 
 ## [3.0.3](https://github.com/SAP/inquirer-gui/compare/v3.0.2...v3.0.3) (2024-02-20)
 
