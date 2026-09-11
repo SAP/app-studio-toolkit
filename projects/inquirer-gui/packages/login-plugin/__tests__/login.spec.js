@@ -10,7 +10,9 @@ const mountLogin = (answer = "") =>
     global: {
       stubs: {
         "vscode-textfield": { template: "<div><slot></slot></div>" },
-        "v-tooltip": { template: "<div><slot name='activator' :props='{}'></slot></div>" },
+        "v-tooltip": {
+          template: "<div><slot name='activator' :props='{}'></slot></div>",
+        },
         "v-icon": { template: "<i></i>" },
       },
     },
@@ -51,7 +53,8 @@ describe("mountLineHeightPatch in QuestionLogin", () => {
   test("injects exactly one style.line-height-patch and is idempotent", () => {
     const styleNodes = [];
     const mockShadowRoot = {
-      querySelector: () => styleNodes.find((n) => n.className === "line-height-patch") || null,
+      querySelector: () =>
+        styleNodes.find((n) => n.className === "line-height-patch") || null,
       appendChild: (node) => styleNodes.push(node),
     };
     const wrapper = mount(QuestionLogin, {
@@ -59,13 +62,21 @@ describe("mountLineHeightPatch in QuestionLogin", () => {
       global: {
         stubs: {
           "vscode-textfield": { template: "<div><slot></slot></div>" },
-          "v-tooltip": { template: "<div><slot name='activator' :props='{}'></slot></div>" },
+          "v-tooltip": {
+            template: "<div><slot name='activator' :props='{}'></slot></div>",
+          },
           "v-icon": { template: "<i></i>" },
         },
       },
     });
-    Object.defineProperty(wrapper.vm.$refs.textfield, "shadowRoot", { value: mockShadowRoot, writable: true });
-    Object.defineProperty(wrapper.vm.$refs.textfield, "updateComplete", { value: undefined, writable: true });
+    Object.defineProperty(wrapper.vm.$refs.textfield, "shadowRoot", {
+      value: mockShadowRoot,
+      writable: true,
+    });
+    Object.defineProperty(wrapper.vm.$refs.textfield, "updateComplete", {
+      value: undefined,
+      writable: true,
+    });
     wrapper.vm.$options.mounted.call(wrapper.vm);
     wrapper.vm.$options.mounted.call(wrapper.vm);
     expect(styleNodes.length).toBe(1);
@@ -76,7 +87,8 @@ describe("mountLineHeightPatch in QuestionLogin", () => {
   test("injects patch after updateComplete resolves", async () => {
     const styleNodes = [];
     const mockShadowRoot = {
-      querySelector: () => styleNodes.find((n) => n.className === "line-height-patch") || null,
+      querySelector: () =>
+        styleNodes.find((n) => n.className === "line-height-patch") || null,
       appendChild: (node) => styleNodes.push(node),
     };
     const wrapper = mount(QuestionLogin, {
@@ -84,13 +96,21 @@ describe("mountLineHeightPatch in QuestionLogin", () => {
       global: {
         stubs: {
           "vscode-textfield": { template: "<div><slot></slot></div>" },
-          "v-tooltip": { template: "<div><slot name='activator' :props='{}'></slot></div>" },
+          "v-tooltip": {
+            template: "<div><slot name='activator' :props='{}'></slot></div>",
+          },
           "v-icon": { template: "<i></i>" },
         },
       },
     });
-    Object.defineProperty(wrapper.vm.$refs.textfield, "shadowRoot", { value: mockShadowRoot, writable: true });
-    Object.defineProperty(wrapper.vm.$refs.textfield, "updateComplete", { value: Promise.resolve(), writable: true });
+    Object.defineProperty(wrapper.vm.$refs.textfield, "shadowRoot", {
+      value: mockShadowRoot,
+      writable: true,
+    });
+    Object.defineProperty(wrapper.vm.$refs.textfield, "updateComplete", {
+      value: Promise.resolve(),
+      writable: true,
+    });
     wrapper.vm.$options.mounted.call(wrapper.vm);
     await Promise.resolve();
     expect(styleNodes.length).toBe(1);

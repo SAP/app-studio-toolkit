@@ -27,7 +27,8 @@ export default defineConfig({
       output: {
         sourcemap: true,
         assetFileNames: (assetInfo) => {
-          if (assetInfo.names?.some((name) => name.endsWith(".css"))) return "form.css";
+          if (assetInfo.names?.some((name) => name.endsWith(".css")))
+            return "form.css";
           return assetInfo.names[0];
         },
         globals: {

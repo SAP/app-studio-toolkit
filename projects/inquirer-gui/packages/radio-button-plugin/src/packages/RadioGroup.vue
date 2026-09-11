@@ -44,7 +44,9 @@ export default {
     }
     // If no answer or default, auto-select the first non-disabled option
     if (!this.question.answer && this.defaultValue == null) {
-      const firstAvailable = this.convertChoices(this.question.choices)?.find((item) => !item.disabled);
+      const firstAvailable = this.convertChoices(this.question.choices)?.find(
+        (item) => !item.disabled
+      );
       if (firstAvailable) {
         this.$emit("answerChanged", this.question.name, firstAvailable.value);
       }
@@ -55,7 +57,9 @@ export default {
       return `radio_${name}`;
     },
     isChecked(value) {
-      return this.question.answer != null ? this.question.answer === value : this.defaultValue === value;
+      return this.question.answer != null
+        ? this.question.answer === value
+        : this.defaultValue === value;
     },
     onClick(answer) {
       if (answer) {

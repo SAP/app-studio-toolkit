@@ -24,7 +24,12 @@
           :key="`divider-${i}`"
           id="question-checkbox-v-divider"
         ></vscode-divider>
-        <v-list-item v-else :key="`item-${i}`" :value="item.value" id="question-checkbox-v-list-item">
+        <v-list-item
+          v-else
+          :key="`item-${i}`"
+          :value="item.value"
+          id="question-checkbox-v-list-item"
+        >
           <template v-slot:prepend="{ isActive }">
             <v-list-item-action start>
               <vscode-checkbox
@@ -70,10 +75,18 @@ div#question-checkbox-v-card.single-choice {
 }
 form.inquirer-gui > .single-choice > div.v-list,
 .single-choice > div[role="listbox"].v-theme--light.v-list {
-  background-color: var(--vscode-editor-background, var(--v-theme-background), #1f1f1f);
+  background-color: var(
+    --vscode-editor-background,
+    var(--v-theme-background),
+    #1f1f1f
+  );
 }
 .list-single > div.v-list-item--active {
-  background-color: var(--vscode-editor-background, var(--v-theme-background), #1f1f1f);
+  background-color: var(
+    --vscode-editor-background,
+    var(--v-theme-background),
+    #1f1f1f
+  );
   --v-activated-opacity: 0;
   --v-hover-opacity: 0;
 }

@@ -88,9 +88,15 @@ const questionCheckboxCheckedForceDefault = [
 ];
 
 const objectValueChoices = [
-  { name: "United States of America", value: { country: "USA", currency: "Dollar" } },
+  {
+    name: "United States of America",
+    value: { country: "USA", currency: "Dollar" },
+  },
   "Germany",
-  { name: "People's Republic of China", value: { country: "China", currency: "Yen" } },
+  {
+    name: "People's Republic of China",
+    value: { country: "China", currency: "Yen" },
+  },
 ];
 const questionCheckboxCheckedObjectValues = [
   {
@@ -248,7 +254,10 @@ describe("Question of type checkbox", () => {
     await nextTick();
     await nextTick();
 
-    expect(wrapper.props("questions")[0].answer[0]).toStrictEqual({ country: "China", currency: "Yen" });
+    expect(wrapper.props("questions")[0].answer[0]).toStrictEqual({
+      country: "China",
+      currency: "Yen",
+    });
     expect(wrapper.props("questions")[0].answer).toHaveLength(1);
   });
 

@@ -2,7 +2,11 @@
 // <input> with no CSS custom property hook. Remove this patch when the library
 // exposes one (e.g. --vscode-input-line-height).
 function applyPatch(el) {
-  if (el && el.shadowRoot && !el.shadowRoot.querySelector("style.line-height-patch")) {
+  if (
+    el &&
+    el.shadowRoot &&
+    !el.shadowRoot.querySelector("style.line-height-patch")
+  ) {
     const style = document.createElement("style");
     style.className = "line-height-patch";
     // !important needed to override the library's hardcoded constructed stylesheet

@@ -13,7 +13,9 @@
           <BreadcrumbsContainer
             :id="`breadcrumbs-${index}`"
             class="breadcrumbs"
-            :breadcrumbs="answers[prompts[index - 1] ? prompts[index - 1].name : undefined]"
+            :breadcrumbs="
+              answers[prompts[index - 1] ? prompts[index - 1].name : undefined]
+            "
             :showIconForError="showIconForError"
           />
         </div>
@@ -53,7 +55,14 @@ const props = defineProps({
   },
 });
 
-const { promptIndex, prompts, allAnswers, promptAnswers, navigationType, showIconForError } = toRefs(props);
+const {
+  promptIndex,
+  prompts,
+  allAnswers,
+  promptAnswers,
+  navigationType,
+  showIconForError,
+} = toRefs(props);
 
 const emits = defineEmits(["onGotoStep"]);
 
@@ -80,7 +89,11 @@ watchEffect(() => {
 });
 
 watchEffect(() => {
-  if (unref(promptAnswers) && unref(promptAnswers).promptName && unref(promptAnswers).answers) {
+  if (
+    unref(promptAnswers) &&
+    unref(promptAnswers).promptName &&
+    unref(promptAnswers).answers
+  ) {
     // Vue 2 requires a new object for reactivity to trigger updates
     answers.value = Object.assign({}, unref(answers), {
       [unref(promptAnswers).promptName]: unref(promptAnswers).answers,
@@ -95,7 +108,8 @@ watchEffect(() => {
 });
 const getStepClass = (currentStep, index) => {
   return {
-    "step-linkable": navigationType.value === "tab" ? true : currentStep > index,
+    "step-linkable":
+      navigationType.value === "tab" ? true : currentStep > index,
   };
 };
 const gotoStep = (index) => {
@@ -115,7 +129,9 @@ const isTraveled = (index) => {
   return index !== currentStep.value && !!travel.value[index];
 };
 const getNavigateClass = () => {
-  return navigationType.value === "tab" ? "NavigationTabClass" : "NavigationStepperClass";
+  return navigationType.value === "tab"
+    ? "NavigationTabClass"
+    : "NavigationStepperClass";
 };
 const getComplete = (index) => {
   // numOfSteps is number of steps to go back
@@ -187,7 +203,10 @@ div.NavigationTabClass {
         transition: 0.3s ease-in-out;
       }
       .v-stepper-item__avatar {
-        background-color: var(--vscode-pickerGroup-foreground, #0066bf) !important;
+        background-color: var(
+          --vscode-pickerGroup-foreground,
+          #0066bf
+        ) !important;
         border-color: var(
           --vscode-pickerGroup-foreground,
           #0066bf

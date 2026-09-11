@@ -11,14 +11,16 @@ export default defineConfig({
       entry: path.resolve(__dirname, "src/index.js"),
       name: CONTROL_NAME,
       formats: ["cjs", "umd", "es"],
-      fileName: (format) => `${CONTROL_NAME}.${format === "cjs" ? "control" : format}.js`,
+      fileName: (format) =>
+        `${CONTROL_NAME}.${format === "cjs" ? "control" : format}.js`,
     },
     rollupOptions: {
       external: ["vue"],
       output: {
         sourcemap: true,
         assetFileNames: (assetInfo) => {
-          if (assetInfo.names?.some((name) => name.endsWith(".css"))) return `${CONTROL_NAME}.css`;
+          if (assetInfo.names?.some((name) => name.endsWith(".css")))
+            return `${CONTROL_NAME}.css`;
           return assetInfo.names[0];
         },
         globals: {

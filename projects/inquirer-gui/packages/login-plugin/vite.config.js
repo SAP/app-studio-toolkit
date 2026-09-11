@@ -12,14 +12,16 @@ export default defineConfig({
       entry: path.resolve(__dirname, "src/index.js"),
       name: PACKAGE_NAME,
       formats: ["cjs", "umd", "es"],
-      fileName: (format) => `${PACKAGE_NAME}.${format === "cjs" ? "common" : format}.js`,
+      fileName: (format) =>
+        `${PACKAGE_NAME}.${format === "cjs" ? "common" : format}.js`,
     },
     rollupOptions: {
       external: ["vue", "@sap-devx/inquirer-gui"],
       output: {
         sourcemap: true,
         assetFileNames: (assetInfo) => {
-          if (assetInfo.names?.some((name) => name.endsWith(".css"))) return `${PACKAGE_NAME}.css`;
+          if (assetInfo.names?.some((name) => name.endsWith(".css")))
+            return `${PACKAGE_NAME}.css`;
           return assetInfo.names[0];
         },
         globals: {

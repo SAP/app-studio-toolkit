@@ -1,9 +1,15 @@
 <template>
-  <vscode-textfield ref="textfield" @change="onAnswerChanged" :value="question.answer">
+  <vscode-textfield
+    ref="textfield"
+    @change="onAnswerChanged"
+    :value="question.answer"
+  >
     <template slot="content-after">
       <v-tooltip location="top">
         <template v-slot:activator="{ props }">
-          <v-icon v-bind="props" @click="onSelectFolder">mdi-folder-outline</v-icon>
+          <v-icon v-bind="props" @click="onSelectFolder"
+            >mdi-folder-outline</v-icon
+          >
         </template>
         <span>Browse for folder</span>
       </v-tooltip>
@@ -31,7 +37,13 @@ export default {
       this.$emit("answerChanged", this.question.name, path);
     },
     onSelectFolder() {
-      this.$emit("customEvent", this.question.name, "getPath", this.setFolderPath, this.question.answer);
+      this.$emit(
+        "customEvent",
+        this.question.name,
+        "getPath",
+        this.setFolderPath,
+        this.question.answer
+      );
     },
     onAnswerChanged(answer) {
       if (answer !== undefined) {

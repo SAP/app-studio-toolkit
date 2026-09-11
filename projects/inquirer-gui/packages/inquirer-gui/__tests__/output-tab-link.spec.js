@@ -108,7 +108,11 @@ describe("OutputTabLink — function-based showOutputTabLink", () => {
 
   test("initializes _showOutputTabLink and _outputTabLinkMessage to defaults in 1st pass", async () => {
     const wrapper = mount(FormVue, {
-      global: { plugins: [vuetify], stubs: vscodeStubs, components: { QuestionInput: InputVue } },
+      global: {
+        plugins: [vuetify],
+        stubs: vscodeStubs,
+        components: { QuestionInput: InputVue },
+      },
       attachTo: document.body,
     });
     wrapper.setProps({ questions: questionWithFunctionOutputTabLink });
@@ -122,7 +126,11 @@ describe("OutputTabLink — function-based showOutputTabLink", () => {
 
   test("output tab link not visible by default (showOutputTabLink returns false)", async () => {
     const wrapper = mount(FormVue, {
-      global: { plugins: [vuetify], stubs: vscodeStubs, components: { QuestionInput: InputVue } },
+      global: {
+        plugins: [vuetify],
+        stubs: vscodeStubs,
+        components: { QuestionInput: InputVue },
+      },
       attachTo: document.body,
     });
     wrapper.setProps({ questions: questionWithFunctionOutputTabLink });
@@ -133,7 +141,11 @@ describe("OutputTabLink — function-based showOutputTabLink", () => {
 
   test("output tab link appears and has custom message when showOutputTabLink returns { show: true, linkMessage }", async () => {
     const wrapper = mount(FormVue, {
-      global: { plugins: [vuetify], stubs: vscodeStubs, components: { QuestionInput: InputVue } },
+      global: {
+        plugins: [vuetify],
+        stubs: vscodeStubs,
+        components: { QuestionInput: InputVue },
+      },
       attachTo: document.body,
     });
     wrapper.setProps({ questions: questionWithFunctionOutputTabLink });
@@ -145,12 +157,18 @@ describe("OutputTabLink — function-based showOutputTabLink", () => {
     await flushPromises();
 
     expect(wrapper.findComponent(OutputTabLink).exists()).toBe(true);
-    expect(wrapper.findComponent(OutputTabLink).props("linkMessage")).toBe("Custom link message");
+    expect(wrapper.findComponent(OutputTabLink).props("linkMessage")).toBe(
+      "Custom link message"
+    );
   });
 
   test("output tab link appears with default message when showOutputTabLink returns plain true", async () => {
     const wrapper = mount(FormVue, {
-      global: { plugins: [vuetify], stubs: vscodeStubs, components: { QuestionInput: InputVue } },
+      global: {
+        plugins: [vuetify],
+        stubs: vscodeStubs,
+        components: { QuestionInput: InputVue },
+      },
       attachTo: document.body,
     });
     wrapper.setProps({ questions: questionWithFunctionOutputTabLink });
@@ -161,12 +179,18 @@ describe("OutputTabLink — function-based showOutputTabLink", () => {
     await flushPromises();
 
     expect(wrapper.findComponent(OutputTabLink).exists()).toBe(true);
-    expect(wrapper.findComponent(OutputTabLink).props("linkMessage")).toBeUndefined();
+    expect(
+      wrapper.findComponent(OutputTabLink).props("linkMessage")
+    ).toBeUndefined();
   });
 
   test("output tab link disappears when showOutputTabLink returns false again", async () => {
     const wrapper = mount(FormVue, {
-      global: { plugins: [vuetify], stubs: vscodeStubs, components: { QuestionInput: InputVue } },
+      global: {
+        plugins: [vuetify],
+        stubs: vscodeStubs,
+        components: { QuestionInput: InputVue },
+      },
       attachTo: document.body,
     });
     wrapper.setProps({ questions: questionWithFunctionOutputTabLink });
@@ -186,7 +210,11 @@ describe("OutputTabLink — function-based showOutputTabLink", () => {
 
   test("emits showOutputTabLink event when the link is clicked", async () => {
     const wrapper = mount(FormVue, {
-      global: { plugins: [vuetify], stubs: vscodeStubs, components: { QuestionInput: InputVue } },
+      global: {
+        plugins: [vuetify],
+        stubs: vscodeStubs,
+        components: { QuestionInput: InputVue },
+      },
       attachTo: document.body,
     });
     wrapper.setProps({ questions: questionWithFunctionOutputTabLink });
@@ -211,7 +239,11 @@ describe("OutputTabLink — validationMessageOverflow mode", () => {
 
   test("output tab link not shown when no overflow detected", async () => {
     const wrapper = mount(FormVue, {
-      global: { plugins: [vuetify], stubs: vscodeStubs, components: { QuestionInput: InputVue } },
+      global: {
+        plugins: [vuetify],
+        stubs: vscodeStubs,
+        components: { QuestionInput: InputVue },
+      },
       attachTo: document.body,
     });
     wrapper.setProps({ questions: questionWithOverflowOutputTabLink });
@@ -228,7 +260,11 @@ describe("OutputTabLink — validationMessageOverflow mode", () => {
 
   test("output tab link shown when overflow is detected", async () => {
     const wrapper = mount(FormVue, {
-      global: { plugins: [vuetify], stubs: vscodeStubs, components: { QuestionInput: InputVue } },
+      global: {
+        plugins: [vuetify],
+        stubs: vscodeStubs,
+        components: { QuestionInput: InputVue },
+      },
       attachTo: document.body,
     });
     wrapper.setProps({ questions: questionWithOverflowOutputTabLink });
@@ -246,7 +282,11 @@ describe("OutputTabLink — validationMessageOverflow mode", () => {
 
   test("output tab link not shown for overflow mode when validation message is hidden (hint+not-dirty guard)", async () => {
     const wrapper = mount(FormVue, {
-      global: { plugins: [vuetify], stubs: vscodeStubs, components: { QuestionInput: InputVue } },
+      global: {
+        plugins: [vuetify],
+        stubs: vscodeStubs,
+        components: { QuestionInput: InputVue },
+      },
       attachTo: document.body,
     });
     wrapper.setProps({ questions: questionWithOverflowAndHint });
@@ -264,18 +304,30 @@ describe("OutputTabLink — validationMessageOverflow mode", () => {
 
   test("shouldShowOutputTabLink returns false when no showOutputTabLink property", async () => {
     const wrapper = mount(FormVue, {
-      global: { plugins: [vuetify], stubs: vscodeStubs, components: { QuestionInput: InputVue } },
+      global: {
+        plugins: [vuetify],
+        stubs: vscodeStubs,
+        components: { QuestionInput: InputVue },
+      },
       attachTo: document.body,
     });
-    wrapper.setProps({ questions: [{ type: "input", name: "plain", message: "Plain" }] });
+    wrapper.setProps({
+      questions: [{ type: "input", name: "plain", message: "Plain" }],
+    });
     await nextTick();
 
-    expect(wrapper.vm.shouldShowOutputTabLink(wrapper.vm.questions[0])).toBe(false);
+    expect(wrapper.vm.shouldShowOutputTabLink(wrapper.vm.questions[0])).toBe(
+      false
+    );
   });
 
   test("_updateErrorTextOverflow sets overflow to false when content fits (clientHeight >= scrollHeight)", async () => {
     const wrapper = mount(FormVue, {
-      global: { plugins: [vuetify], stubs: vscodeStubs, components: { QuestionInput: InputVue } },
+      global: {
+        plugins: [vuetify],
+        stubs: vscodeStubs,
+        components: { QuestionInput: InputVue },
+      },
       attachTo: document.body,
     });
     wrapper.setProps({ questions: questionWithOverflowOutputTabLink });
@@ -298,7 +350,11 @@ describe("OutputTabLink — validationMessageOverflow mode", () => {
 
   test("_updateErrorTextOverflow sets overflow to true when content exceeds clamped height", async () => {
     const wrapper = mount(FormVue, {
-      global: { plugins: [vuetify], stubs: vscodeStubs, components: { QuestionInput: InputVue } },
+      global: {
+        plugins: [vuetify],
+        stubs: vscodeStubs,
+        components: { QuestionInput: InputVue },
+      },
       attachTo: document.body,
     });
     wrapper.setProps({ questions: questionWithOverflowOutputTabLink });
@@ -321,7 +377,11 @@ describe("OutputTabLink — validationMessageOverflow mode", () => {
 
   test("ResizeObserver callback triggers _updateErrorTextOverflow on width change", async () => {
     const wrapper = mount(FormVue, {
-      global: { plugins: [vuetify], stubs: vscodeStubs, components: { QuestionInput: InputVue } },
+      global: {
+        plugins: [vuetify],
+        stubs: vscodeStubs,
+        components: { QuestionInput: InputVue },
+      },
       attachTo: document.body,
     });
     wrapper.setProps({ questions: questionWithOverflowOutputTabLink });
