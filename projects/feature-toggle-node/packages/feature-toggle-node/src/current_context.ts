@@ -19,7 +19,10 @@ export type ContextData = {
 };
 
 function getEnvWithNotFoundError(envVar: string): string {
-  return getEnvWithError(envVar, `Feature toggle env ${envVar} was NOT found in the environment variables`);
+  return getEnvWithError(
+    envVar,
+    `Feature toggle env ${envVar} was NOT found in the environment variables`
+  );
 }
 
 export function createContextEntity(): ContextData {

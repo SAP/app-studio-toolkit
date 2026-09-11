@@ -16,7 +16,7 @@
 
 ### Features
 
-- Updated dependencies 
+- Updated dependencies
 - Sanitize user input for log
 
 ### BREAKING CHANGES
@@ -41,8 +41,8 @@
 
 - Cache interval chagned to 15 minutes
 - Environment variables support
-    - Removed FT_TOKEN, FT_SERVER_ENDPOINT
-    - Added LANDSCAPE_INFRASTRUCTURE and FTM_HOST
+  - Removed FT_TOKEN, FT_SERVER_ENDPOINT
+  - Added LANDSCAPE_INFRASTRUCTURE and FTM_HOST
 
 ### BREAKING CHANGES
 
@@ -92,7 +92,7 @@
 
 ### Features
 
-- Added support for "tenant id" strategy 
+- Added support for "tenant id" strategy
 
 ### BREAKING CHANGES
 
@@ -104,7 +104,7 @@
 
 ### Features
 
-- Added support for "ready" and "registered" events of the unleash-client dependency 
+- Added support for "ready" and "registered" events of the unleash-client dependency
 
 ### BREAKING CHANGES
 
@@ -116,7 +116,7 @@
 
 ### Features
 
-- Added support for "environments" and "landscapes" strategies 
+- Added support for "environments" and "landscapes" strategies
 
 ### BREAKING CHANGES
 
@@ -140,12 +140,11 @@
 
 ### Features
 
-- Returning false on any failure 
+- Returning false on any failure
 
 ### BREAKING CHANGES
 
 - None
-
 
 <a name="1.0.1"></a>
 

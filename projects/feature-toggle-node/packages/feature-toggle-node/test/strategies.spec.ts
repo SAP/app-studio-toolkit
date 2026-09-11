@@ -2,7 +2,11 @@ import { afterEach, describe, it } from "mocha";
 import * as sinon from "sinon";
 import * as CurrentContext from "../src/current_context";
 import { expect } from "chai";
-import { IterateableContext, isToggleEnabled, isMatchStrategies } from "../src/strategies";
+import {
+  IterateableContext,
+  isToggleEnabled,
+  isMatchStrategies,
+} from "../src/strategies";
 import { Toggle } from "../src/client";
 import { ContextData } from "../src/current_context";
 
@@ -19,7 +23,9 @@ describe("isToggleEnabled", () => {
       disabled: false,
     } as Toggle;
 
-    sinon.stub(CurrentContext, "createContextEntity").returns({} as IterateableContext);
+    sinon
+      .stub(CurrentContext, "createContextEntity")
+      .returns({} as IterateableContext);
 
     const isEnabled = isToggleEnabled(toggle);
     expect(isEnabled).to.be.true;
@@ -33,7 +39,9 @@ describe("isToggleEnabled", () => {
       disabled: true,
     } as Toggle;
 
-    sinon.stub(CurrentContext, "createContextEntity").returns({} as IterateableContext);
+    sinon
+      .stub(CurrentContext, "createContextEntity")
+      .returns({} as IterateableContext);
 
     const isEnabled = isToggleEnabled(toggle);
     expect(isEnabled).to.be.false;
@@ -58,7 +66,9 @@ describe("isToggleEnabled", () => {
       tenantid: "",
     } as ContextData;
 
-    sinon.stub(CurrentContext, "createContextEntity").returns(contextParams as ContextData);
+    sinon
+      .stub(CurrentContext, "createContextEntity")
+      .returns(contextParams as ContextData);
 
     const isEnabled = isToggleEnabled(toggle);
     expect(isEnabled).to.be.false;
@@ -84,7 +94,9 @@ describe("isToggleEnabled", () => {
       tenantid: "",
     } as ContextData;
 
-    sinon.stub(CurrentContext, "createContextEntity").returns(contextParams as ContextData);
+    sinon
+      .stub(CurrentContext, "createContextEntity")
+      .returns(contextParams as ContextData);
 
     const isEnabled = isToggleEnabled(toggle);
     expect(isEnabled).to.be.true;
@@ -109,7 +121,9 @@ describe("isToggleEnabled", () => {
       tenantid: "",
     } as ContextData;
 
-    sinon.stub(CurrentContext, "createContextEntity").returns(contextParams as ContextData);
+    sinon
+      .stub(CurrentContext, "createContextEntity")
+      .returns(contextParams as ContextData);
 
     const isEnabled = isToggleEnabled(toggle);
     expect(isEnabled).to.be.false;
@@ -139,7 +153,9 @@ describe("isToggleEnabled", () => {
       tenantid: "wrongId",
     } as ContextData;
 
-    sinon.stub(CurrentContext, "createContextEntity").returns(contextParams as ContextData);
+    sinon
+      .stub(CurrentContext, "createContextEntity")
+      .returns(contextParams as ContextData);
 
     const isEnabled = isToggleEnabled(toggle);
     expect(isEnabled).to.be.true;
@@ -169,7 +185,9 @@ describe("isToggleEnabled", () => {
       tenantid: "tenantid",
     } as ContextData;
 
-    sinon.stub(CurrentContext, "createContextEntity").returns(contextParams as ContextData);
+    sinon
+      .stub(CurrentContext, "createContextEntity")
+      .returns(contextParams as ContextData);
 
     const isEnabled = isToggleEnabled(toggle);
     expect(isEnabled).to.be.true;
@@ -201,7 +219,9 @@ describe("isMatchStrategies", () => {
       tenantid: "",
     } as ContextData;
 
-    sinon.stub(CurrentContext, "createContextEntity").returns(contextParams as ContextData);
+    sinon
+      .stub(CurrentContext, "createContextEntity")
+      .returns(contextParams as ContextData);
 
     const isEnabled = isMatchStrategies(toggle);
     expect(isEnabled).to.be.false;
@@ -225,7 +245,9 @@ describe("isMatchStrategies", () => {
       tenantid: "",
     } as ContextData;
 
-    sinon.stub(CurrentContext, "createContextEntity").returns(contextParams as ContextData);
+    sinon
+      .stub(CurrentContext, "createContextEntity")
+      .returns(contextParams as ContextData);
 
     const isEnabled = isMatchStrategies(toggle);
     expect(isEnabled).to.be.false;
@@ -241,7 +263,9 @@ describe("isMatchStrategies", () => {
 
     const contextParams = null;
 
-    sinon.stub(CurrentContext, "createContextEntity").returns((contextParams as unknown) as ContextData);
+    sinon
+      .stub(CurrentContext, "createContextEntity")
+      .returns(contextParams as unknown as ContextData);
 
     const isEnabled = isMatchStrategies(toggle);
     expect(isEnabled).to.be.false;
@@ -259,7 +283,9 @@ describe("isMatchStrategies", () => {
     const contextParams = {
       environment: null as unknown,
     } as ContextData;
-    sinon.stub(CurrentContext, "createContextEntity").returns((contextParams as unknown) as ContextData);
+    sinon
+      .stub(CurrentContext, "createContextEntity")
+      .returns(contextParams as unknown as ContextData);
 
     const isEnabled = isMatchStrategies(toggle);
     expect(isEnabled).to.be.false;

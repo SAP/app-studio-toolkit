@@ -107,7 +107,9 @@ describe("findToggleAndReturnState", () => {
     const ftName = "ext.ftName";
 
     sinon.stub(Cache, "getToggleByKey").returns(false);
-    sinon.stub(Request, "requestFeatureToggles").resolves({} as Client.Features);
+    sinon
+      .stub(Request, "requestFeatureToggles")
+      .resolves({} as Client.Features);
 
     const isEnabled = await Client.findToggleAndReturnState(ftName);
     expect(isEnabled).to.be.false;
@@ -116,7 +118,7 @@ describe("findToggleAndReturnState", () => {
   it("gets null from requestFeatureToggles return false", async () => {
     // flow should not happen
     const ftName = "ext.ftName";
-    const features: Client.Features = (null as unknown) as Client.Features;
+    const features: Client.Features = null as unknown as Client.Features;
 
     sinon.stub(Request, "requestFeatureToggles").resolves(features);
     sinon.stub(Strategies, "isToggleEnabled").returns(false);
@@ -181,7 +183,7 @@ describe("requestTogglesAndSaveNewCache", () => {
   it("undefined features not call flush and set Cache", async () => {
     sinon.stub(Request, "requestFeatureToggles").callsFake(() => {
       return new Promise((resolve) => {
-        resolve((null as unknown) as Client.Features);
+        resolve(null as unknown as Client.Features);
       });
     });
 

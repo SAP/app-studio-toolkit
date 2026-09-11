@@ -10,9 +10,16 @@ describe("isFeatureEnabled", () => {
     sinon.restore();
   });
 
-  const testFailure = async (extensionName: string, featureToggleName: string, errMessage: string): Promise<void> => {
+  const testFailure = async (
+    extensionName: string,
+    featureToggleName: string,
+    errMessage: string
+  ): Promise<void> => {
     const loggerSpy = sinon.stub(logger, "log");
-    const isFeatureEnabled = await API.isFeatureEnabled(extensionName, featureToggleName);
+    const isFeatureEnabled = await API.isFeatureEnabled(
+      extensionName,
+      featureToggleName
+    );
 
     expect(isFeatureEnabled).to.be.false; // on error return false
     expect(loggerSpy.callCount).to.equal(2);

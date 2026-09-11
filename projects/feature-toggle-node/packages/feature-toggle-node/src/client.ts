@@ -49,7 +49,10 @@ async function getFeatureToggles(): Promise<Features | undefined> {
   return toggles;
 }
 
-function findToggleByName(toggles: Features, ftName: string): Toggle | undefined {
+function findToggleByName(
+  toggles: Features,
+  ftName: string
+): Toggle | undefined {
   return toggles.features.find((toggle) => toggle.name == ftName);
 }
 
@@ -61,7 +64,9 @@ function findToggleByName(toggles: Features, ftName: string): Toggle | undefined
  * in case cache with toggles empty
  * makes request to server, update cache and calculate toggle value
  * */
-export async function findToggleAndReturnState(ftName: string): Promise<boolean> {
+export async function findToggleAndReturnState(
+  ftName: string
+): Promise<boolean> {
   if (!isCched) {
     await refreshCacheByInterval();
     isCched = true;

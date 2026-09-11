@@ -22,11 +22,15 @@ describe("createContextEntity", () => {
 
     const currentContext = createContextEntity();
     expect(currentContext.landscape).to.equal(envValues.LANDSCAPE_NAME);
-    expect(currentContext.environment).to.equal(envValues.LANDSCAPE_ENVIRONMENT);
+    expect(currentContext.environment).to.equal(
+      envValues.LANDSCAPE_ENVIRONMENT
+    );
     expect(currentContext.subaccount).to.equal(envValues.TENANT_NAME);
     expect(currentContext.user).to.equal(envValues.USER_NAME);
     expect(currentContext.ws).to.equal(envValues.WORKSPACE_ID);
     expect(currentContext.tenantid).to.equal(envValues.TENANT_ID);
-    expect(currentContext.infrastructure).to.equal(envValues.LANDSCAPE_INFRASTRUCTURE);
+    expect(currentContext.infrastructure).to.equal(
+      envValues.LANDSCAPE_INFRASTRUCTURE
+    );
   });
 });

@@ -1,15 +1,25 @@
 import { log } from "./logger";
 import { findToggleAndReturnState } from "./client";
 
-function validateFeatureToggleName(extensionName: string, toggleName: string): void {
+function validateFeatureToggleName(
+  extensionName: string,
+  toggleName: string
+): void {
   if (!extensionName || !toggleName) {
     const errStr = !extensionName ? "extension " : "";
-    throw new Error(`Feature toggle ${errStr}name can not be empty, null or undefined`);
+    throw new Error(
+      `Feature toggle ${errStr}name can not be empty, null or undefined`
+    );
   }
 }
 
-export async function isFeatureEnabled(extensionName: string, toggleName: string): Promise<boolean> {
-  log(`Checking if Extension Name: "${extensionName}", Feature Toggle Name: "${toggleName}" is enabled`);
+export async function isFeatureEnabled(
+  extensionName: string,
+  toggleName: string
+): Promise<boolean> {
+  log(
+    `Checking if Extension Name: "${extensionName}", Feature Toggle Name: "${toggleName}" is enabled`
+  );
 
   const ftName = `${extensionName}.${toggleName}`;
 

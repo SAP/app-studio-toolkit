@@ -3,7 +3,8 @@ import * as https from "http";
 import { Features } from "./client";
 
 const ENV_FTM_HOST = "FTM_HOST";
-const DEFAULT_SERVER_ENDPOINT = "http://ft-manager.feature-toggle.svc.cluster.local";
+const DEFAULT_SERVER_ENDPOINT =
+  "http://ft-manager.feature-toggle.svc.cluster.local";
 const API_ENDPOINT = "/v1/features";
 
 function getEndpoint(): string {

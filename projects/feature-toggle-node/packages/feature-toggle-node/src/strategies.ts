@@ -30,7 +30,11 @@ export function isMatchStrategies(toggle: Toggle): boolean {
       const singularParamName = convertPluralNameToSingular(parameterName);
       const currentContextParamValue = currentContext[singularParamName];
 
-      if (currentContextParamValue && parameterValue?.length && parameterValue.includes(currentContextParamValue)) {
+      if (
+        currentContextParamValue &&
+        parameterValue?.length &&
+        parameterValue.includes(currentContextParamValue)
+      ) {
         return true;
       }
     }
@@ -40,5 +44,7 @@ export function isMatchStrategies(toggle: Toggle): boolean {
 }
 
 export function isToggleEnabled(toggle: Toggle): boolean {
-  return !toggle.disabled && toggle.strategies ? isMatchStrategies(toggle) : !toggle.disabled;
+  return !toggle.disabled && toggle.strategies
+    ? isMatchStrategies(toggle)
+    : !toggle.disabled;
 }
