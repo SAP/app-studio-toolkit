@@ -34,21 +34,6 @@
     "prepublishOnly": "npm run build",
     "test": "jest -w 1"
   },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -V -E HUSKY_GIT_PARAMS"
-    }
-  },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ]
-  },
-  "config": {
-    "commitizen": {
-      "path": "cz-conventional-changelog"
-    }
-  },
   "browserslist": [
     "> 1%",
     "last 2 versions"
@@ -68,6 +53,9 @@
     "jest-environment-jsdom": "^29.5.0",
     "jest-junit": "^16.0.0",
     "jest-serializer-vue": "^3.1.0",
-    "jest-transform-stub": "^2.0.0"
+    "jest-transform-stub": "^2.0.0",
+    "@vitejs/plugin-vue": "5.2.4",
+    "vite": "6.3.4",
+    "@babel/preset-typescript": "^7.26.0"
   }
 }

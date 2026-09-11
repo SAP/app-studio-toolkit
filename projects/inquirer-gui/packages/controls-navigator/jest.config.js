@@ -31,18 +31,22 @@ module.exports = {
   ],
   moduleFileExtensions: ["js", "vue", "json"],
   transformIgnorePatterns: [
-    "../../node_modules/(?!(@sap-devx|vuetify|material-design-icons-iconfont|@mdi/font)/)",
+    // pnpm stores deps under node_modules/.pnpm/<dir>/node_modules/<name>, where <dir>
+    // is "<name>@<version>" for unscoped and "@<scope>+<name>@<version>" for scoped
+    // packages (the "/" in a scope becomes "+"). Jest matches against the REAL
+    // (symlink-resolved) path, so ESM deps are allow-listed by their .pnpm dir form.
+    "/node_modules/.pnpm/(?!(@sap-devx\\+|vuetify@|@vscode-elements\\+|material-design-icons-iconfont@|@mdi\\+font@))",
   ],
-  modulePaths: ["<rootDir>/src", "../../node_modules"],
+  modulePaths: ["<rootDir>/src", "node_modules"],
   transform: {
     ".*\\.(vue)$": "@vue/vue3-jest",
     "^.+\\.vue$": "@vue/vue3-jest",
     ".+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$":
       "jest-transform-stub",
-    "^.+\\.js$": "../../node_modules/babel-jest",
-    "^.+\\.mjs$": "../../node_modules/babel-jest",
+    "^.+\\.js$": "babel-jest",
+    "^.+\\.mjs$": "babel-jest",
   },
-  snapshotSerializers: ["../../node_modules/jest-serializer-vue"],
+  snapshotSerializers: ["jest-serializer-vue"],
   coverageThreshold: {
     global: {
       branches: 96,
