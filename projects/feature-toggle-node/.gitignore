@@ -1,0 +1,6 @@
+# tsc output
+**/lib
+
+# nyc coverage output
+**/coverage
+**/.nyc_output

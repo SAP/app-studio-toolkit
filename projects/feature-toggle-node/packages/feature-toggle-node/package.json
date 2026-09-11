@@ -1,106 +1,44 @@
 {
   "name": "@sap-devx/feature-toggle-node",
   "version": "2.1.0",
-  "description": "",
+  "description": "A Node.js module for enabling or disabling Node.js-based SAP Business Application Studio features.",
   "main": "lib/api.js",
-  "types": "lib/api.js",
-  "files": [
-    "lib",
-    "src"
-  ],
-  "engines": {
-    "node": ">=14.21.2"
-  },
-  "scripts": {
-    "ci": "npm-run-all compile lint coverage",
-    "ci_t": "npm-run-all compile lint",
-    "compile": "npm run clean && tsc -p .",
-    "test": "mocha",
-    "lint": "eslint . --max-warnings 0 --ext .ts",
-    "coverage": "nyc mocha",
-    "clean": "rimraf ./lib",
-    "watch": "tsc -p . --watch",
-    "preversion": "npm run ci"
-  },
+  "types": "lib/api.d.ts",
   "repository": {
     "type": "git",
-    "url": "git@github.com/SAP/feature-toggle-node.git"
+    "url": "https://github.com/SAP/app-studio-toolkit.git",
+    "directory": "projects/feature-toggle-node/packages/feature-toggle-node"
   },
-  "author": "SAP SE",
+  "bugs": {
+    "url": "https://github.com/SAP/app-studio-toolkit/issues"
+  },
   "license": "Apache-2.0",
+  "author": "SAP SE",
+  "files": [
+    ".reuse",
+    "LICENSES",
+    "lib",
+    "src",
+    "CHANGELOG.md",
+    "CHANGELOG.old.md"
+  ],
   "dependencies": {
     "node-cache": "5.1.2"
   },
   "devDependencies": {
-    "@commitlint/cli": "11.0.0",
-    "@commitlint/config-conventional": "12.0.1",
-    "@istanbuljs/nyc-config-typescript": "1.0.1",
-    "@types/chai": "4.2.15",
-    "@types/mocha": "8.2.1",
-    "@types/node": "^22.13.9",
-    "@types/rimraf": "3.0.0",
-    "@types/sinon": "9.0.11",
-    "@typescript-eslint/eslint-plugin": "2.34.0",
-    "@typescript-eslint/parser": "2.34.0",
-    "chai": "4.3.4",
-    "coveralls": "3.1.0",
-    "cz-conventional-changelog": "3.3.0",
-    "eslint": "6.8.0",
-    "eslint-config-prettier": "6.15.0",
-    "eslint-plugin-prettier": "3.3.1",
-    "husky": "4.3.7",
-    "mocha": "10.2.0",
-    "npm-run-all": "4.1.5",
-    "nyc": "15.1.0",
-    "prettier": "2.2.1",
-    "rimraf": "3.0.2",
-    "sinon": "9.2.4",
-    "source-map-support": "0.5.19",
-    "ts-node": "9.1.1",
-    "typescript": "^5.8.2"
+    "@istanbuljs/nyc-config-typescript": "1.0.2",
+    "source-map-support": "0.5.21",
+    "ts-node": "10.9.2"
   },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
+  "scripts": {
+    "ci": "npm-run-all clean compile coverage",
+    "clean": "shx rm -rf ./lib ./coverage ./.nyc_output",
+    "compile": "tsc -p .",
+    "compile:watch": "tsc -p . --watch",
+    "test": "mocha",
+    "coverage": "nyc mocha"
   },
-  "mocha": {
-    "require": [
-      "ts-node/register/transpile-only",
-      "source-map-support/register"
-    ],
-    "spec": "./test/**/*spec.ts"
-  },
-  "nyc": {
-    "extends": "@istanbuljs/nyc-config-typescript",
-    "include": [
-      "src/**/*.ts"
-    ],
-    "exclude": [
-      "src/example/example.ts",
-      "src/example/example_simple.ts",
-      "src/request.ts",
-      "src/utils.ts"
-    ],
-    "reporter": [
-      "text",
-      "lcov"
-    ],
-    "check-coverage": true,
-    "all": true,
-    "branches": 100,
-    "lines": 100,
-    "functions": 100,
-    "statements": 100
-  },
-  "config": {
-    "commitizen": {
-      "path": "cz-conventional-changelog"
-    }
-  },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ]
+  "publishConfig": {
+    "access": "public"
   }
 }
