@@ -86,7 +86,14 @@ const questionListWithSeparator = [
     type: "list",
     name: "country",
     message: "The country where you live",
-    choices: ["USA", Inquirer_Default_Separator, "Germany", Inquirer_Sample_Separator, "China", "Israel"],
+    choices: [
+      "USA",
+      Inquirer_Default_Separator,
+      "Germany",
+      Inquirer_Sample_Separator,
+      "China",
+      "Israel",
+    ],
   },
 ];
 
@@ -361,13 +368,23 @@ describe("Question of type list", () => {
 
     const labels = wrapper.findAll("p.question-label");
 
-    expect(labels.at(0).findAll("span.question-message").at(0).element.innerHTML).toBe(questionListWithHint[0].message);
-    expect(labels.at(0).findAll("span.question-hint").at(0).element.innerHTML).toContain("v-tooltip");
+    expect(
+      labels.at(0).findAll("span.question-message").at(0).element.innerHTML
+    ).toBe(questionListWithHint[0].message);
+    expect(
+      labels.at(0).findAll("span.question-hint").at(0).element.innerHTML
+    ).toContain("v-tooltip");
 
-    expect(labels.at(1).findAll("span.question-message").at(0).element.innerHTML).toBe(questionListWithHint[1].message);
-    expect(labels.at(1).findAll("span.question-hint").at(0).element.innerHTML).toContain("v-tooltip");
+    expect(
+      labels.at(1).findAll("span.question-message").at(0).element.innerHTML
+    ).toBe(questionListWithHint[1].message);
+    expect(
+      labels.at(1).findAll("span.question-hint").at(0).element.innerHTML
+    ).toContain("v-tooltip");
 
-    expect(labels.at(2).findAll("span.question-message").at(0).element.innerHTML).toBe(questionListWithHint[2].message);
+    expect(
+      labels.at(2).findAll("span.question-message").at(0).element.innerHTML
+    ).toBe(questionListWithHint[2].message);
     expect(labels.at(2).findAll("span.question-hint").length).toBe(0);
   });
 
@@ -393,7 +410,9 @@ describe("Question of type list", () => {
     expect(errorValidationText.length).toEqual(1);
     let mandatoryAsterisk = wrapper.findAll("span.mandatory-asterisk");
     expect(mandatoryAsterisk.length).toEqual(2);
-    expect(errorValidationText.at(0).element.innerHTML).toBe(questionListValidate[1].validate());
+    expect(errorValidationText.at(0).element.innerHTML).toBe(
+      questionListValidate[1].validate()
+    );
 
     // answer on list2 question
     await wrapper.vm.onAnswerChanged("list2", "item22");
@@ -404,7 +423,9 @@ describe("Question of type list", () => {
     expect(errorValidationText.length).toEqual(1);
     mandatoryAsterisk = wrapper.findAll("span.mandatory-asterisk");
     expect(mandatoryAsterisk.length).toEqual(3);
-    expect(errorValidationText.at(0).element.innerHTML).toBe(questionListValidate[2].validate());
+    expect(errorValidationText.at(0).element.innerHTML).toBe(
+      questionListValidate[2].validate()
+    );
 
     // answer on list2 question
     await wrapper.vm.onAnswerChanged("list3", "item23");

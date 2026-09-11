@@ -108,7 +108,8 @@ describe("mountLineHeightPatch in QuestionFileBrowser", () => {
   test("injects exactly one style.line-height-patch and is idempotent", () => {
     const styleNodes = [];
     const mockShadowRoot = {
-      querySelector: () => styleNodes.find((n) => n.className === "line-height-patch") || null,
+      querySelector: () =>
+        styleNodes.find((n) => n.className === "line-height-patch") || null,
       appendChild: (node) => styleNodes.push(node),
     };
     const wrapper = mount(QuestionFileBrowser, {
@@ -116,13 +117,21 @@ describe("mountLineHeightPatch in QuestionFileBrowser", () => {
       global: {
         stubs: {
           "vscode-textfield": { template: "<div><slot></slot></div>" },
-          "v-tooltip": { template: "<div><slot name='activator' :props='{}'></slot></div>" },
+          "v-tooltip": {
+            template: "<div><slot name='activator' :props='{}'></slot></div>",
+          },
           "v-icon": { template: "<i></i>" },
         },
       },
     });
-    Object.defineProperty(wrapper.vm.$refs.textfield, "shadowRoot", { value: mockShadowRoot, writable: true });
-    Object.defineProperty(wrapper.vm.$refs.textfield, "updateComplete", { value: undefined, writable: true });
+    Object.defineProperty(wrapper.vm.$refs.textfield, "shadowRoot", {
+      value: mockShadowRoot,
+      writable: true,
+    });
+    Object.defineProperty(wrapper.vm.$refs.textfield, "updateComplete", {
+      value: undefined,
+      writable: true,
+    });
     wrapper.vm.$options.mounted.call(wrapper.vm);
     wrapper.vm.$options.mounted.call(wrapper.vm);
     expect(styleNodes.length).toBe(1);
@@ -133,7 +142,8 @@ describe("mountLineHeightPatch in QuestionFileBrowser", () => {
   test("injects patch after updateComplete resolves", async () => {
     const styleNodes = [];
     const mockShadowRoot = {
-      querySelector: () => styleNodes.find((n) => n.className === "line-height-patch") || null,
+      querySelector: () =>
+        styleNodes.find((n) => n.className === "line-height-patch") || null,
       appendChild: (node) => styleNodes.push(node),
     };
     const wrapper = mount(QuestionFileBrowser, {
@@ -141,13 +151,21 @@ describe("mountLineHeightPatch in QuestionFileBrowser", () => {
       global: {
         stubs: {
           "vscode-textfield": { template: "<div><slot></slot></div>" },
-          "v-tooltip": { template: "<div><slot name='activator' :props='{}'></slot></div>" },
+          "v-tooltip": {
+            template: "<div><slot name='activator' :props='{}'></slot></div>",
+          },
           "v-icon": { template: "<i></i>" },
         },
       },
     });
-    Object.defineProperty(wrapper.vm.$refs.textfield, "shadowRoot", { value: mockShadowRoot, writable: true });
-    Object.defineProperty(wrapper.vm.$refs.textfield, "updateComplete", { value: Promise.resolve(), writable: true });
+    Object.defineProperty(wrapper.vm.$refs.textfield, "shadowRoot", {
+      value: mockShadowRoot,
+      writable: true,
+    });
+    Object.defineProperty(wrapper.vm.$refs.textfield, "updateComplete", {
+      value: Promise.resolve(),
+      writable: true,
+    });
     wrapper.vm.$options.mounted.call(wrapper.vm);
     await Promise.resolve();
     expect(styleNodes.length).toBe(1);

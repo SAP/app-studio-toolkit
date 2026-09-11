@@ -48,7 +48,9 @@ export default {
       this.$emit("answerChanged", this.question.name, answer.target.value);
     },
     isChecked(value) {
-      return this.question.answer != null ? this.question.answer === value : this.defaultValue === value;
+      return this.question.answer != null
+        ? this.question.answer === value
+        : this.defaultValue === value;
     },
   },
 };

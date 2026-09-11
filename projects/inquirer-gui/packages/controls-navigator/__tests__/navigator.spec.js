@@ -55,17 +55,23 @@ describe("Test navigator common control", () => {
     expect(items[0].textContent).toEqual("group1");
     expect(items[1].textContent).toEqual("group2");
 
-    let itemSumValues = document.body.querySelectorAll(".NavigatorSummaryValueClass");
+    let itemSumValues = document.body.querySelectorAll(
+      ".NavigatorSummaryValueClass"
+    );
     expect(itemSumValues).toHaveLength(3);
     expect(itemSumValues[0].textContent).toEqual("aType");
     expect(itemSumValues[1].textContent).toEqual("bType");
     expect(itemSumValues[2].textContent).toEqual("b");
 
-    let itemWarnings = document.body.querySelectorAll(".NavigatorSummaryWarningValueClass");
+    let itemWarnings = document.body.querySelectorAll(
+      ".NavigatorSummaryWarningValueClass"
+    );
     expect(itemWarnings).toHaveLength(1);
     expect(itemWarnings[0].textContent).toEqual("a");
 
-    let itemSumKeys = document.body.querySelectorAll(".NavigatorSummaryKeyClass");
+    let itemSumKeys = document.body.querySelectorAll(
+      ".NavigatorSummaryKeyClass"
+    );
     expect(itemSumKeys).toHaveLength(4);
     expect(itemSumKeys[0].textContent).toEqual("akey1:");
     expect(itemSumKeys[1].textContent).toEqual("akey2:");
@@ -89,7 +95,9 @@ describe("Test navigator common control", () => {
       },
     });
     await nextTick();
-    itemSumValues = document.body.querySelectorAll(".NavigatorSummaryValueClass");
+    itemSumValues = document.body.querySelectorAll(
+      ".NavigatorSummaryValueClass"
+    );
     expect(itemSumValues).toHaveLength(4);
     expect(itemSumValues[0].textContent).toEqual("aTypeNew");
     expect(itemSumValues[1].textContent).toEqual("aNew");
@@ -116,12 +124,16 @@ describe("Test navigator common control", () => {
     expect(items[0].textContent).toEqual("group1");
     expect(items[1].textContent).toEqual("group2");
 
-    let itemSumValues = document.body.querySelectorAll(".NavigatorSummaryValueClass");
+    let itemSumValues = document.body.querySelectorAll(
+      ".NavigatorSummaryValueClass"
+    );
     expect(itemSumValues).toHaveLength(2);
     expect(itemSumValues[0].textContent).toEqual("aType");
     expect(itemSumValues[1].textContent).toEqual("a");
 
-    let itemSumKeys = document.body.querySelectorAll(".NavigatorSummaryKeyClass");
+    let itemSumKeys = document.body.querySelectorAll(
+      ".NavigatorSummaryKeyClass"
+    );
     expect(itemSumKeys).toHaveLength(2);
     expect(itemSumKeys[0].textContent).toEqual("akey1:");
     expect(itemSumKeys[1].textContent).toEqual("");
@@ -167,7 +179,9 @@ describe("Test navigator common control", () => {
 
     await nextTick();
 
-    let itemWarnings = document.body.querySelectorAll(".NavigatorSummaryWarningValueClass");
+    let itemWarnings = document.body.querySelectorAll(
+      ".NavigatorSummaryWarningValueClass"
+    );
     expect(itemWarnings).toHaveLength(1);
     expect(itemWarnings[0].textContent).toEqual("");
     itemWarnings = document.body.querySelectorAll(".mdi-close-circle-outline");

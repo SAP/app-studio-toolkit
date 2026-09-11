@@ -3,33 +3,21 @@
   "changelog": "@changesets/cli/changelog",
   "commit": false,
   "fixed": [
-    [
-      "vscode-deps-upgrade-tool",
-      "vscode-using-upgrade-tool"
-    ],
-    [
-      "@sap-devx/npm-dependencies-validation",
-      "vscode-dependencies-validation"
-    ],
+    ["vscode-deps-upgrade-tool", "vscode-using-upgrade-tool"],
+    ["@sap-devx/npm-dependencies-validation", "vscode-dependencies-validation"],
     [
       "app-studio-toolkit",
       "@sap-devx/app-studio-toolkit-types",
       "sample-action-client",
       "vscode-using-workspace-api"
     ],
-    [
-      "yeoman-ui",
-      "yeoman-ui-frontend"
-    ],
+    ["yeoman-ui", "yeoman-ui-frontend"],
     [
       "@vscode-logging/logger",
       "@vscode-logging/types",
       "@vscode-logging/wrapper"
     ],
-    [
-      "guided-development",
-      "guided-development-frontend"
-    ],
+    ["guided-development", "guided-development-frontend"],
     [
       "@sap-devx/inquirer-gui",
       "@sap-devx/inquirer-gui-auto-complete-plugin",

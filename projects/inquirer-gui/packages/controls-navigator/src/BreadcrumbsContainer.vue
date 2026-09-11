@@ -7,10 +7,20 @@
       :class="{ 'show-more': !showMore }"
       data-test="answerBox"
     >
-      <div v-for="(item, index) in breadcrumbs" class="answer" data-test="breadcrumbs" :key="`answer-${index}`">
-        <span class="NavigatorSummaryKeyClass">{{ item.label ? item.label + ":" : "" }} </span>
+      <div
+        v-for="(item, index) in breadcrumbs"
+        class="answer"
+        data-test="breadcrumbs"
+        :key="`answer-${index}`"
+      >
+        <span class="NavigatorSummaryKeyClass"
+          >{{ item.label ? item.label + ":" : "" }}
+        </span>
 
-        <span v-if="showIconForError && isErrorType(item.type)" :class="getValueClass(item.type)">
+        <span
+          v-if="showIconForError && isErrorType(item.type)"
+          :class="getValueClass(item.type)"
+        >
           <v-tooltip location="top" max-width="350px">
             <template v-slot:activator="{ props }">
               <v-icon v-bind="props">mdi-close-circle-outline</v-icon>
@@ -22,7 +32,12 @@
         <span v-else :class="getValueClass(item.type)">{{ item.value }}</span>
       </div>
     </div>
-    <div v-if="showMoreLess" class="more" data-test="moreLessButton" @click="showMore = !showMore">
+    <div
+      v-if="showMoreLess"
+      class="more"
+      data-test="moreLessButton"
+      @click="showMore = !showMore"
+    >
       {{ showMore ? "More..." : "Less" }}
     </div>
   </div>
@@ -62,14 +77,15 @@ watch(
   },
   {
     flush: "post",
-  },
+  }
 );
 
 const calcIsMore = () => {
   if (unref(answerBox).clientHeight < unref(answerBox).scrollHeight - 8) {
     answerBoxOverflowHeight.value = unref(answerBox).clientHeight;
   }
-  showMoreLess.value = unref(answerBoxOverflowHeight) < unref(answerBox).scrollHeight - 8;
+  showMoreLess.value =
+    unref(answerBoxOverflowHeight) < unref(answerBox).scrollHeight - 8;
 };
 const getValueClass = (type) => {
   if (type === "warning") {

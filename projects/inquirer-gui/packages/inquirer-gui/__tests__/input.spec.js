@@ -187,7 +187,9 @@ const questionInputHint = [
       hint: "hint for input 0",
     },
     validate: function (input) {
-      return input.length >= 2 ? true : "Name must be at least 2 characters long";
+      return input.length >= 2
+        ? true
+        : "Name must be at least 2 characters long";
     },
   },
   {
@@ -199,7 +201,9 @@ const questionInputHint = [
     },
     default: "default input",
     validate: function (input) {
-      return input.length >= 2 ? true : "Name must be at least 2 characters long";
+      return input.length >= 2
+        ? true
+        : "Name must be at least 2 characters long";
     },
   },
   {
@@ -207,7 +211,9 @@ const questionInputHint = [
     name: "no_hint_no_deault_validation",
     message: "message for input 2",
     validate: function (input) {
-      return input.length >= 2 ? true : "Name must be at least 2 characters long";
+      return input.length >= 2
+        ? true
+        : "Name must be at least 2 characters long";
     },
   },
 ];
@@ -297,9 +303,12 @@ const questionAddMsgAndValidation = [
     type: "input",
     name: "addmsg_then_validation",
     message: "message for addmsg_then_validation",
-    validate: (input) => (input === "triggerVal" ? "Some validation message" : true),
+    validate: (input) =>
+      input === "triggerVal" ? "Some validation message" : true,
     additionalMessages: (input) =>
-      input === "triggerWarn" ? { message: "Some warning message", severity: 1 } : undefined,
+      input === "triggerWarn"
+        ? { message: "Some warning message", severity: 1 }
+        : undefined,
   },
 ];
 
@@ -339,7 +348,10 @@ const questionsWithAdditionalMessages = [
           severity: 0,
         };
       }
-      if (input === "warn1" && answers.inputToUpdateAddMsg === "another value") {
+      if (
+        input === "warn1" &&
+        answers.inputToUpdateAddMsg === "another value"
+      ) {
         return {
           message: "Some dependant warning message",
           severity: 1,
@@ -555,7 +567,13 @@ describe("Questions of type input, password and number", () => {
     await nextTick();
 
     const callback = jest.fn();
-    await wrapper.vm.onCustomEvent("testQuestion", "customMethod", callback, "param1", "param2");
+    await wrapper.vm.onCustomEvent(
+      "testQuestion",
+      "customMethod",
+      callback,
+      "param1",
+      "param2"
+    );
 
     expect(mockMethod).toHaveBeenCalledWith("param1", "param2");
     expect(callback).toHaveBeenCalledWith("mock response");
@@ -582,13 +600,23 @@ describe("Questions of type input, password and number", () => {
 
     await nextTick();
 
-    const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    const consoleErrorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
     const callback = jest.fn();
-    await wrapper.vm.onCustomEvent("testQuestion", "customMethod", callback, "param1", "param2");
+    await wrapper.vm.onCustomEvent(
+      "testQuestion",
+      "customMethod",
+      callback,
+      "param1",
+      "param2"
+    );
 
     expect(mockMethod).toHaveBeenCalledWith("param1", "param2");
     expect(callback).not.toHaveBeenCalled();
-    expect(consoleErrorSpy).toHaveBeenCalledWith("Could not evaluate customMethod() for testQuestion");
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      "Could not evaluate customMethod() for testQuestion"
+    );
 
     consoleErrorSpy.mockRestore();
   });
@@ -812,20 +840,32 @@ describe("Questions of type input, password and number", () => {
 
     const labels = wrapper.findAll("p.question-label");
 
-    expect(labels.at(0).findAll("span.question-message")[0].element.innerHTML).toBe(questionInputHint[0].message);
-    expect(labels.at(0).findAll("span.question-hint")[0].element.innerHTML).toContain("v-tooltip");
+    expect(
+      labels.at(0).findAll("span.question-message")[0].element.innerHTML
+    ).toBe(questionInputHint[0].message);
+    expect(
+      labels.at(0).findAll("span.question-hint")[0].element.innerHTML
+    ).toContain("v-tooltip");
 
-    expect(labels.at(1).findAll("span.question-message")[0].element.innerHTML).toBe(questionInputHint[1].message);
-    expect(labels.at(1).findAll("span.question-hint")[0].element.innerHTML).toContain("v-tooltip");
+    expect(
+      labels.at(1).findAll("span.question-message")[0].element.innerHTML
+    ).toBe(questionInputHint[1].message);
+    expect(
+      labels.at(1).findAll("span.question-hint")[0].element.innerHTML
+    ).toContain("v-tooltip");
 
-    expect(labels.at(2).findAll("span.question-message")[0].element.innerHTML).toBe(questionInputHint[2].message);
+    expect(
+      labels.at(2).findAll("span.question-message")[0].element.innerHTML
+    ).toBe(questionInputHint[2].message);
     expect(labels.at(2).findAll("span.question-hint").length).toBe(0);
 
     labels.at(0).findComponent({ name: "v-icon" }).trigger("mouseenter");
 
     await nextTick();
     await new Promise((resolve) => requestAnimationFrame(resolve));
-    expect(document.body.textContent).toContain(questionInputHint[0].guiOptions.hint);
+    expect(document.body.textContent).toContain(
+      questionInputHint[0].guiOptions.hint
+    );
   });
 
   test("Input with link", async () => {
@@ -845,21 +885,41 @@ describe("Questions of type input, password and number", () => {
 
     const labels = wrapper.findAll("p.question-label");
 
-    expect(labels.at(0).findAll("span.question-message")[0].element.innerHTML).toBe(questionInputLink[0].message);
-    expect(labels.at(0).findAll("span.question-link")[0].element.innerHTML).toContain("a");
-    expect(labels.at(0).findAll("span.question-link")[0].element.innerHTML).toContain("href");
-    expect(labels.at(0).findAll("a")[0].element.innerHTML).toBe(questionInputLink[0].guiOptions.link.text);
-    expect(labels.at(0).findAll("a")[0].element.href).toContain(questionInputLink[0].guiOptions.link.url);
-
-    expect(labels.at(1).findAll("span.question-message")[0].element.innerHTML).toBe(questionInputLink[1].message);
-    expect(labels.at(1).findAll("span.question-link")[0].element.innerHTML).toContain("a");
-    expect(labels.at(1).findAll("span.question-link")[0].element.innerHTML).toContain("command");
-    expect(labels.at(1).findAll("a")[0].element.innerHTML).toBe(questionInputLink[1].guiOptions.link.text);
-    expect(labels.at(1).findAll("a")[0].element.attributes.command.value).toBe(
-      questionInputLink[1].guiOptions.link.command.id,
+    expect(
+      labels.at(0).findAll("span.question-message")[0].element.innerHTML
+    ).toBe(questionInputLink[0].message);
+    expect(
+      labels.at(0).findAll("span.question-link")[0].element.innerHTML
+    ).toContain("a");
+    expect(
+      labels.at(0).findAll("span.question-link")[0].element.innerHTML
+    ).toContain("href");
+    expect(labels.at(0).findAll("a")[0].element.innerHTML).toBe(
+      questionInputLink[0].guiOptions.link.text
+    );
+    expect(labels.at(0).findAll("a")[0].element.href).toContain(
+      questionInputLink[0].guiOptions.link.url
     );
 
-    expect(labels.at(2).findAll("span.question-message")[0].element.innerHTML).toBe(questionInputLink[2].message);
+    expect(
+      labels.at(1).findAll("span.question-message")[0].element.innerHTML
+    ).toBe(questionInputLink[1].message);
+    expect(
+      labels.at(1).findAll("span.question-link")[0].element.innerHTML
+    ).toContain("a");
+    expect(
+      labels.at(1).findAll("span.question-link")[0].element.innerHTML
+    ).toContain("command");
+    expect(labels.at(1).findAll("a")[0].element.innerHTML).toBe(
+      questionInputLink[1].guiOptions.link.text
+    );
+    expect(labels.at(1).findAll("a")[0].element.attributes.command.value).toBe(
+      questionInputLink[1].guiOptions.link.command.id
+    );
+
+    expect(
+      labels.at(2).findAll("span.question-message")[0].element.innerHTML
+    ).toBe(questionInputLink[2].message);
     expect(labels.at(2).findAll("span.question-link").length).toBe(0);
   });
 
@@ -891,18 +951,26 @@ describe("Questions of type input, password and number", () => {
     // Check validation messages
     const validationMsgWithLink = wrapper.find("#validation-msg-" + 0);
 
-    expect(validationMsgWithLink.find("span.error-validation-text").element.innerHTML).toEqual(
-      validationWithLink.message,
+    expect(
+      validationMsgWithLink.find("span.error-validation-text").element.innerHTML
+    ).toEqual(validationWithLink.message);
+
+    expect(validationMsgWithLink.find("span.question-link").exists()).toBe(
+      true
     );
 
-    expect(validationMsgWithLink.find("span.question-link").exists()).toBe(true);
+    expect(
+      validationMsgWithLink
+        .find("img.validation-link-icon")
+        .element.getAttribute("src")
+    ).toEqual(validationWithLink.link.icon);
 
-    expect(validationMsgWithLink.find("img.validation-link-icon").element.getAttribute("src")).toEqual(
-      validationWithLink.link.icon,
+    expect(
+      validationMsgWithLink.find("a").element.getAttribute("href")
+    ).toEqual(validationWithLink.link.url);
+    expect(validationMsgWithLink.find("#urlLinkText").text()).toEqual(
+      validationWithLink.link.text
     );
-
-    expect(validationMsgWithLink.find("a").element.getAttribute("href")).toEqual(validationWithLink.link.url);
-    expect(validationMsgWithLink.find("#urlLinkText").text()).toEqual(validationWithLink.link.text);
 
     // Question at index 1 is validation with command link
     let valWithCmdInput = allInputs.at(1);
@@ -910,14 +978,18 @@ describe("Questions of type input, password and number", () => {
     await utils.sleep(300);
 
     let validationMsgWithCmd = wrapper.find("#validation-msg-" + 1);
-    expect(validationMsgWithCmd.find("span.error-validation-text").element.innerHTML).toEqual(
-      validationWithCommand.message,
-    );
+    expect(
+      validationMsgWithCmd.find("span.error-validation-text").element.innerHTML
+    ).toEqual(validationWithCommand.message);
 
     expect(validationMsgWithCmd.find("span.question-link").exists()).toBe(true);
 
-    expect(validationMsgWithCmd.find("img.validation-link-icon").exists()).toBe(false);
-    expect(validationMsgWithCmd.find("#cmdLinkText").text()).toEqual(validationWithCommand.link.text);
+    expect(validationMsgWithCmd.find("img.validation-link-icon").exists()).toBe(
+      false
+    );
+    expect(validationMsgWithCmd.find("#cmdLinkText").text()).toEqual(
+      validationWithCommand.link.text
+    );
 
     // Ensure link is removed from dom when re-validated with non-link validation message
     // There is an issue with this test. Running the actual code in-situ works as expected.
@@ -953,7 +1025,9 @@ describe("Questions of type input, password and number", () => {
     await utils.sleep(300);
 
     expect(wrapper.find(".add-messages").exists()).toBe(true);
-    expect(wrapper.find(".add-messages span.messages-text").text()).toEqual("Some warning message");
+    expect(wrapper.find(".add-messages span.messages-text").text()).toEqual(
+      "Some warning message"
+    );
     expect(wrapper.find("#validation-msg-0").exists()).toBe(false);
 
     // When: input value changes to one that fails validation
@@ -963,7 +1037,9 @@ describe("Questions of type input, password and number", () => {
     // Then: validation message is shown AND the additional message is gone
     const validationMsg = wrapper.find("#validation-msg-0");
     expect(validationMsg.exists()).toBe(true);
-    expect(validationMsg.find("span.error-validation-text").element.innerHTML).toEqual("Some validation message");
+    expect(
+      validationMsg.find("span.error-validation-text").element.innerHTML
+    ).toEqual("Some validation message");
     expect(wrapper.find(".add-messages").exists()).toBe(false);
   });
 
@@ -995,23 +1071,41 @@ describe("Questions of type input, password and number", () => {
     expect(wrapper.find("#validation-msg-1").exists()).toBe(false);
     let addMessage = wrapper.find(".add-messages");
 
-    expect(addMessage.find("i.v-icon.messages-icon.severity-warn.mdi-alert-outline").exists()).toBe(true);
+    expect(
+      addMessage
+        .find("i.v-icon.messages-icon.severity-warn.mdi-alert-outline")
+        .exists()
+    ).toBe(true);
 
-    expect(addMessage.find("span.messages-text").text()).toEqual("Some warning message");
+    expect(addMessage.find("span.messages-text").text()).toEqual(
+      "Some warning message"
+    );
 
     inputWithAddMsgs.setValue("info");
     await utils.sleep(300);
 
-    expect(addMessage.find("i.v-icon.messages-icon.severity-info.mdi-information-outline").exists()).toBe(true);
+    expect(
+      addMessage
+        .find("i.v-icon.messages-icon.severity-info.mdi-information-outline")
+        .exists()
+    ).toBe(true);
 
-    expect(addMessage.find("span.messages-text").text()).toEqual("Some info message");
+    expect(addMessage.find("span.messages-text").text()).toEqual(
+      "Some info message"
+    );
 
     inputWithAddMsgs.setValue("error");
     await utils.sleep(300);
 
-    expect(addMessage.find("i.v-icon.messages-icon.severity-error.mdi-close-circle-outline").exists()).toBe(true);
+    expect(
+      addMessage
+        .find("i.v-icon.messages-icon.severity-error.mdi-close-circle-outline")
+        .exists()
+    ).toBe(true);
 
-    expect(addMessage.find("span.messages-text").text()).toEqual("Some error message");
+    expect(addMessage.find("span.messages-text").text()).toEqual(
+      "Some error message"
+    );
 
     // Test that other answers (previous answers) can be used to trigger updates
     inputWithAddMsgs.setValue("warn1");
@@ -1026,9 +1120,15 @@ describe("Questions of type input, password and number", () => {
     const addMessageDependant = wrapper.find("#add-msg-1");
     expect(addMessageDependant.exists()).toBe(true);
 
-    expect(addMessageDependant.find("i.v-icon.messages-icon.severity-warn.mdi-alert-outline").exists()).toBe(true);
+    expect(
+      addMessageDependant
+        .find("i.v-icon.messages-icon.severity-warn.mdi-alert-outline")
+        .exists()
+    ).toBe(true);
 
-    expect(addMessageDependant.find("span.messages-text").text()).toEqual("Some dependant warning message");
+    expect(addMessageDependant.find("span.messages-text").text()).toEqual(
+      "Some dependant warning message"
+    );
   });
 
   test("should return _default for input type", async () => {
@@ -1047,7 +1147,9 @@ describe("Questions of type input, password and number", () => {
     wrapper.setProps({ questions: questionInput });
     await nextTick();
 
-    expect(wrapper.vm.getInitialAnswer({ type: "input", _default: "hello" })).toBe("hello");
+    expect(
+      wrapper.vm.getInitialAnswer({ type: "input", _default: "hello" })
+    ).toBe("hello");
   });
 
   test("should return empty string if _default is undefined for input type", async () => {
@@ -1066,7 +1168,9 @@ describe("Questions of type input, password and number", () => {
     wrapper.setProps({ questions: questionInput });
     await nextTick();
 
-    expect(wrapper.vm.getInitialAnswer({ type: "input", _default: undefined })).toBe("");
+    expect(
+      wrapper.vm.getInitialAnswer({ type: "input", _default: undefined })
+    ).toBe("");
   });
 
   test("should return _default for number type", async () => {
@@ -1085,7 +1189,9 @@ describe("Questions of type input, password and number", () => {
     wrapper.setProps({ questions: questionInput });
     await nextTick();
 
-    expect(wrapper.vm.getInitialAnswer({ type: "number", _default: 42 })).toBe(42);
+    expect(wrapper.vm.getInitialAnswer({ type: "number", _default: 42 })).toBe(
+      42
+    );
   });
 
   test("should return 0 if _default is undefined for number type", async () => {
@@ -1104,7 +1210,9 @@ describe("Questions of type input, password and number", () => {
     wrapper.setProps({ questions: questionInput });
     await nextTick();
 
-    expect(wrapper.vm.getInitialAnswer({ type: "number", _default: undefined })).toBe(0);
+    expect(
+      wrapper.vm.getInitialAnswer({ type: "number", _default: undefined })
+    ).toBe(0);
   });
 
   test("should return _default for confirm type if it is false", async () => {
@@ -1123,7 +1231,9 @@ describe("Questions of type input, password and number", () => {
     wrapper.setProps({ questions: questionInput });
     await nextTick();
 
-    expect(wrapper.vm.getInitialAnswer({ type: "confirm", _default: false })).toBe(false);
+    expect(
+      wrapper.vm.getInitialAnswer({ type: "confirm", _default: false })
+    ).toBe(false);
   });
 
   test("should return true if _default is undefined or true for confirm type", async () => {
@@ -1142,8 +1252,12 @@ describe("Questions of type input, password and number", () => {
     wrapper.setProps({ questions: questionInput });
     await nextTick();
 
-    expect(wrapper.vm.getInitialAnswer({ type: "confirm", _default: undefined })).toBe(true);
-    expect(wrapper.vm.getInitialAnswer({ type: "confirm", _default: true })).toBe(true);
+    expect(
+      wrapper.vm.getInitialAnswer({ type: "confirm", _default: undefined })
+    ).toBe(true);
+    expect(
+      wrapper.vm.getInitialAnswer({ type: "confirm", _default: true })
+    ).toBe(true);
   });
 
   test("should call setInvalid if _choices is not an array for list type", async () => {
@@ -1182,7 +1296,11 @@ describe("Questions of type input, password and number", () => {
     wrapper.setProps({ questions: questionInput });
     await nextTick();
 
-    wrapper.vm.getInitialAnswer({ type: "list", _choices: ["a"], _default: undefined });
+    wrapper.vm.getInitialAnswer({
+      type: "list",
+      _choices: ["a"],
+      _default: undefined,
+    });
     expect(wrapper.vm.setInvalid).toHaveBeenCalled();
   });
 
@@ -1207,7 +1325,7 @@ describe("Questions of type input, password and number", () => {
         type: "list",
         _choices: [{ value: "a" }, { value: "b" }],
         _default: "b",
-      }),
+      })
     ).toBe("b");
   });
 
@@ -1232,7 +1350,7 @@ describe("Questions of type input, password and number", () => {
         type: "expand",
         _choices: [{ value: "x" }, { value: "y" }],
         _default: "x",
-      }),
+      })
     ).toBe("x");
   });
 
@@ -1257,7 +1375,7 @@ describe("Questions of type input, password and number", () => {
         type: "checkbox",
         _choices: [{ value: "a" }, { value: "b", checked: true }],
         _default: ["a"],
-      }),
+      })
     ).toEqual(["a", "b"]);
   });
 
@@ -1277,7 +1395,12 @@ describe("Questions of type input, password and number", () => {
     wrapper.setProps({ questions: questionInput });
     await nextTick();
 
-    expect(wrapper.vm.getInitialAnswer({ type: "checkbox", _choices: [{ value: "a" }, { value: "b" }] })).toEqual([]);
+    expect(
+      wrapper.vm.getInitialAnswer({
+        type: "checkbox",
+        _choices: [{ value: "a" }, { value: "b" }],
+      })
+    ).toEqual([]);
   });
 
   test("should call setInvalid for unrecognized type without _default", async () => {
@@ -1316,7 +1439,9 @@ describe("Questions of type input, password and number", () => {
     wrapper.setProps({ questions: questionInput });
     await nextTick();
 
-    expect(wrapper.vm.getInitialAnswer({ type: "unknown", _default: "custom" })).toBe("custom");
+    expect(
+      wrapper.vm.getInitialAnswer({ type: "unknown", _default: "custom" })
+    ).toBe("custom");
   });
 
   // Additional tests to cover complex choice cases
@@ -1341,7 +1466,7 @@ describe("Questions of type input, password and number", () => {
         type: "list",
         _choices: [{ value: "a" }, { value: "b" }],
         _default: 1,
-      }),
+      })
     ).toBe("b");
   });
 
@@ -1361,7 +1486,11 @@ describe("Questions of type input, password and number", () => {
     wrapper.setProps({ questions: questionInput });
     await nextTick();
 
-    wrapper.vm.getInitialAnswer({ type: "list", _choices: [{ value: "a" }], _default: 2 });
+    wrapper.vm.getInitialAnswer({
+      type: "list",
+      _choices: [{ value: "a" }],
+      _default: 2,
+    });
     expect(wrapper.vm.setInvalid).toHaveBeenCalled();
   });
 
@@ -1386,7 +1515,7 @@ describe("Questions of type input, password and number", () => {
         type: "expand",
         _choices: [{ value: "x" }, { value: "y" }],
         _default: 1,
-      }),
+      })
     ).toBe("y");
   });
 
@@ -1406,7 +1535,11 @@ describe("Questions of type input, password and number", () => {
     wrapper.setProps({ questions: questionInput });
     await nextTick();
 
-    wrapper.vm.getInitialAnswer({ type: "expand", _choices: [{ value: "x" }], _default: 2 });
+    wrapper.vm.getInitialAnswer({
+      type: "expand",
+      _choices: [{ value: "x" }],
+      _default: 2,
+    });
     expect(wrapper.vm.setInvalid).toHaveBeenCalled();
   });
 
@@ -1434,7 +1567,7 @@ describe("Questions of type input, password and number", () => {
           { value: "b", checked: true },
         ],
         _default: [],
-      }),
+      })
     ).toEqual(["a", "b"]);
   });
 
@@ -1463,7 +1596,7 @@ describe("Questions of type input, password and number", () => {
         ],
         _default: ["a"],
         __ForceDefault: true,
-      }),
+      })
     ).toEqual(["a"]);
   });
 
@@ -1505,15 +1638,22 @@ describe("mountLineHeightPatch shadow DOM injection", () => {
   test("injects exactly one style.line-height-patch and does not inject again on repeat calls", () => {
     const styleNodes = [];
     const mockShadowRoot = {
-      querySelector: () => styleNodes.find((n) => n.className === "line-height-patch") || null,
+      querySelector: () =>
+        styleNodes.find((n) => n.className === "line-height-patch") || null,
       appendChild: (node) => styleNodes.push(node),
     };
     const wrapper = mount(InputVue, {
       props: { question: { name: "test", answer: "", type: "input" } },
       global: { stubs: vscodeStubs },
     });
-    Object.defineProperty(wrapper.vm.$refs.textfield, "shadowRoot", { value: mockShadowRoot, writable: true });
-    Object.defineProperty(wrapper.vm.$refs.textfield, "updateComplete", { value: undefined, writable: true });
+    Object.defineProperty(wrapper.vm.$refs.textfield, "shadowRoot", {
+      value: mockShadowRoot,
+      writable: true,
+    });
+    Object.defineProperty(wrapper.vm.$refs.textfield, "updateComplete", {
+      value: undefined,
+      writable: true,
+    });
     wrapper.vm.$options.mounted.call(wrapper.vm);
     wrapper.vm.$options.mounted.call(wrapper.vm);
     expect(styleNodes.length).toBe(1);
@@ -1524,15 +1664,22 @@ describe("mountLineHeightPatch shadow DOM injection", () => {
   test("injects patch after updateComplete resolves", async () => {
     const styleNodes = [];
     const mockShadowRoot = {
-      querySelector: () => styleNodes.find((n) => n.className === "line-height-patch") || null,
+      querySelector: () =>
+        styleNodes.find((n) => n.className === "line-height-patch") || null,
       appendChild: (node) => styleNodes.push(node),
     };
     const wrapper = mount(InputVue, {
       props: { question: { name: "test", answer: "", type: "input" } },
       global: { stubs: vscodeStubs },
     });
-    Object.defineProperty(wrapper.vm.$refs.textfield, "shadowRoot", { value: mockShadowRoot, writable: true });
-    Object.defineProperty(wrapper.vm.$refs.textfield, "updateComplete", { value: Promise.resolve(), writable: true });
+    Object.defineProperty(wrapper.vm.$refs.textfield, "shadowRoot", {
+      value: mockShadowRoot,
+      writable: true,
+    });
+    Object.defineProperty(wrapper.vm.$refs.textfield, "updateComplete", {
+      value: Promise.resolve(),
+      writable: true,
+    });
     wrapper.vm.$options.mounted.call(wrapper.vm);
     await Promise.resolve();
     expect(styleNodes.length).toBe(1);

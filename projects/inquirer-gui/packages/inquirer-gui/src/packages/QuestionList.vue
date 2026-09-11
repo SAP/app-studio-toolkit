@@ -21,11 +21,15 @@
         :title="item?.raw?.name"
         :value="item?.raw?.value"
       >
-        <vscode-divider v-if="getDividerType(item.raw) === 'divider'"></vscode-divider>
+        <vscode-divider
+          v-if="getDividerType(item.raw) === 'divider'"
+        ></vscode-divider>
         <v-list-subheader v-else-if="getDividerType(item.raw) === 'header'">{{
           stripEscapeChars(item.raw.line)
         }}</v-list-subheader>
-        <v-list-item-title v-else :id="props['aria-labelledby']">{{ item.name }}</v-list-item-title>
+        <v-list-item-title v-else :id="props['aria-labelledby']">{{
+          item.name
+        }}</v-list-item-title>
       </v-list-item>
     </template>
   </v-autocomplete>
@@ -53,7 +57,8 @@ export default {
       let type = undefined;
       if (item.type === "separator") {
         type =
-          item.line === Inquirer_Default_Separator || item.line === this.stripEscapeChars(Inquirer_Default_Separator)
+          item.line === Inquirer_Default_Separator ||
+          item.line === this.stripEscapeChars(Inquirer_Default_Separator)
             ? "divider"
             : "header";
       }

@@ -19,7 +19,11 @@ export default {
   normalizeChoices(choices) {
     if (Array.isArray(choices)) {
       const mappedChoices = choices.map((value) => {
-        if (value === undefined || typeof value === "string" || typeof value === "number") {
+        if (
+          value === undefined ||
+          typeof value === "string" ||
+          typeof value === "number"
+        ) {
           return { name: value, value: value };
         } else {
           // eslint-disable-next-line no-prototype-builtins

@@ -62,7 +62,8 @@ const autocompleteQuestions = [
       lastInput = input;
       return result;
     },
-    additionalInfo: () => (lastInput !== "5" ? `${numResults} results returned` : ""),
+    additionalInfo: () =>
+      lastInput !== "5" ? `${numResults} results returned` : "",
   },
 ];
 
@@ -130,7 +131,9 @@ describe("Tests autocomplete question", () => {
 
     await nextTick();
 
-    expect(wrapper.findAll(".question-message").at(1).text()).toEqual(autocompleteQuestions[1].message);
+    expect(wrapper.findAll(".question-message").at(1).text()).toEqual(
+      autocompleteQuestions[1].message
+    );
 
     const autocompleteComp = wrapper.findComponent({
       name: "QuestionAutocomplete",
@@ -242,7 +245,9 @@ describe("Tests autocomplete question", () => {
     wrapper.setProps({ questions: emptyTextQuestion });
     await nextTick();
 
-    const autocompleteCompDefault = wrapper.findAllComponents({ name: "QuestionAutocomplete" }).at(0);
+    const autocompleteCompDefault = wrapper
+      .findAllComponents({ name: "QuestionAutocomplete" })
+      .at(0);
     const searchInput1 = autocompleteCompDefault.find("input");
     searchInput1.trigger("mousedown");
     await nextTick();
@@ -250,7 +255,9 @@ describe("Tests autocomplete question", () => {
     const items1 = document.body.querySelectorAll(".v-list-item");
     expect(items1[0].textContent).toEqual("No data available");
 
-    const autocompleteCompEmptyText = wrapper.findAllComponents({ name: "QuestionAutocomplete" }).at(1);
+    const autocompleteCompEmptyText = wrapper
+      .findAllComponents({ name: "QuestionAutocomplete" })
+      .at(1);
     const searchInput2 = autocompleteCompEmptyText.find("input");
     searchInput2.trigger("mousedown");
     await nextTick();
