@@ -23,7 +23,11 @@ module.exports = {
       },
     ],
   ],
-  coverageReporters: [["lcov", { projectRoot: "/" }], ["html", { projectRoot: "/" }], "text-summary"],
+  coverageReporters: [
+    ["lcov", { projectRoot: "/" }],
+    ["html", { projectRoot: "/" }],
+    "text-summary",
+  ],
   moduleFileExtensions: ["js", "vue", "json"],
   transformIgnorePatterns: [
     // pnpm stores deps under node_modules/.pnpm/<dir>/node_modules/<name>, where <dir>
@@ -37,7 +41,8 @@ module.exports = {
   transform: {
     ".*\\.(vue)$": "@vue/vue3-jest",
     "^.+\\.vue$": "@vue/vue3-jest",
-    ".+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$": "jest-transform-stub",
+    ".+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$":
+      "jest-transform-stub",
     "^.+\\.js$": "babel-jest",
     "^.+\\.mjs$": "babel-jest",
   },
