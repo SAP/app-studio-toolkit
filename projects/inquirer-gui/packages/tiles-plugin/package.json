@@ -1,0 +1,46 @@
+{
+  "name": "@sap-devx/inquirer-gui-tiles-plugin",
+  "version": "3.4.13",
+  "description": "Tiles plugin for inquirer-gui",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/inquirer-gui/tree/tiles/tiles-plugin"
+  },
+  "license": "Apache-2.0",
+  "author": "Tomer Epstein",
+  "exports": {
+    ".": {
+      "import": "./dist/tilesPlugin.es.js",
+      "require": "./dist/tilesPlugin.umd.js"
+    },
+    "./dist/tilesPlugin.css": {
+      "import": "./dist/tilesPlugin.css",
+      "require": "./dist/tilesPlugin.css"
+    }
+  },
+  "main": "dist/tilesPlugin.umd.js",
+  "module": "./dist/tilesPlugin.es.js",
+  "scripts": {
+    "build": "vite build",
+    "build-dev": "vite build --mode development",
+    "ci": "npm-run-all clean build",
+    "clean": "rimraf ./dist",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "vue": "^3.3.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "5.2.4",
+    "vite": "6.3.4",
+    "@babel/preset-env": "^7.22.5",
+    "@babel/preset-typescript": "^7.26.0"
+  },
+  "files": [
+    ".reuse",
+    "LICENSES",
+    "dist",
+    "CHANGELOG.md",
+    "CHANGELOG.old.md"
+  ]
+}

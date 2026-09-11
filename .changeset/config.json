@@ -17,7 +17,19 @@
       "@vscode-logging/types",
       "@vscode-logging/wrapper"
     ],
-    ["guided-development", "guided-development-frontend"]
+    ["guided-development", "guided-development-frontend"],
+    [
+      "@sap-devx/inquirer-gui",
+      "@sap-devx/inquirer-gui-auto-complete-plugin",
+      "@sap-devx/inquirer-gui-file-browser-plugin",
+      "@sap-devx/inquirer-gui-folder-browser-plugin",
+      "@sap-devx/inquirer-gui-label-plugin",
+      "@sap-devx/inquirer-gui-login-plugin",
+      "@sap-devx/inquirer-gui-radio-plugin",
+      "@sap-devx/inquirer-gui-single-checkbox-plugin",
+      "@sap-devx/inquirer-gui-tiles-plugin",
+      "@sap-devx/controls-navigator"
+    ]
   ],
   "linked": [],
   "access": "restricted",
@@ -36,7 +48,13 @@
     "vscode-contrib2",
     "vscode-contrib3",
     "vscode-simple-contrib",
-    "vscode-snippet-food-contrib"
+    "vscode-snippet-food-contrib",
+    "sample-app",
+    "sample-app-vite",
+    "sample-navigator",
+    "@sap-devx/inquirer-gui-date-plugin",
+    "sample-inquirer-gui-vscode-extension",
+    "websocketserver"
   ],
   "privatePackages": {
     "version": true,

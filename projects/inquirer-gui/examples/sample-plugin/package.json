@@ -1,0 +1,38 @@
+{
+  "name": "@sap-devx/inquirer-gui-date-plugin",
+  "version": "3.4.13",
+  "private": true,
+  "description": "Sample date plugin for inquirer-gui",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/inquirer-gui/sample-plugin"
+  },
+  "license": "Apache-2.0",
+  "author": "Eyal Barlev",
+  "exports": {
+    ".": {
+      "import": "./dist/datePlugin.es.js",
+      "require": "./dist/datePlugin.umd.js"
+    },
+    "./dist/datePlugin.css": {
+      "import": "./dist/datePlugin.css",
+      "require": "./dist/datePlugin.css"
+    }
+  },
+  "main": "dist/datePlugin.umd.js",
+  "module": "./dist/datePlugin.es.js",
+  "scripts": {
+    "build": "vite build",
+    "build-dev": "vite build --mode development",
+    "ci": "npm-run-all clean build",
+    "clean": "rimraf ./dist",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "vue": "^3.3.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "5.2.4",
+    "vite": "6.3.4"
+  }
+}
