@@ -1,0 +1,5 @@
+{
+    "printWidth": 250,
+    "bracketSpacing": true,
+    "require-pragma": true
+  }
