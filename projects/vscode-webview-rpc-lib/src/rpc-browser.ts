@@ -80,5 +80,5 @@ export class RpcBrowser extends RpcCommon {
 }
 
 interface WebviewFrame {
-  postMessage(message: any, host?: string): Thenable<boolean>;
+  postMessage(message: any, host?: string): PromiseLike<boolean>;
 }

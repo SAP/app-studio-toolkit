@@ -260,5 +260,34 @@ module.exports = {
       // as formatting is handled by prettier **directly**.
       extends: ["plugin:vue/vue3-essential"],
     },
+    {
+      // vscode-webview-rpc-lib was integrated with these rules relaxed for the migrated code.
+      // TODO: clean up violations and tighten incrementally.
+      files: ["projects/vscode-webview-rpc-lib/**"],
+      rules: {
+        "eslint-comments/require-description": "off",
+      },
+    },
+    {
+      // Additional TypeScript rules for vscode-webview-rpc-lib packages.
+      // Legacy code migrated as-is; relaxed to match historical behaviour.
+      // TODO: clean up violations and tighten incrementally.
+      files: ["projects/vscode-webview-rpc-lib/**/*.ts"],
+      rules: {
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-floating-promises": "off",
+        "@typescript-eslint/no-unsafe-function-type": "off",
+        "@typescript-eslint/no-unused-vars": "off",
+        "@typescript-eslint/no-misused-promises": "off",
+        "@typescript-eslint/no-unsafe-argument": "off",
+        "@typescript-eslint/no-unsafe-return": "off",
+        "@typescript-eslint/no-unsafe-call": "off",
+        "@typescript-eslint/no-unsafe-member-access": "off",
+        "@typescript-eslint/only-throw-error": "off",
+        "@typescript-eslint/require-await": "off",
+        "@typescript-eslint/unbound-method": "off",
+        "@typescript-eslint/no-unused-expressions": "off",
+      },
+    },
   ],
 };

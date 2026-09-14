@@ -1,6 +1,11 @@
 module.exports = {
   transform: {
-    "^.+\\.ts$": "ts-jest",
+    "^.+\\.ts$": [
+      "ts-jest",
+      {
+        tsconfig: "tsconfig.test.json",
+      },
+    ],
   },
   moduleFileExtensions: ["ts", "js", "json", "node"],
   roots: ["<rootDir>/src"],

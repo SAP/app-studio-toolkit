@@ -1,13 +1,10 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es6",
     "outDir": "out.ext",
-    "lib": ["es6"],
-    "sourceMap": true,
     "rootDir": "src",
-    "strict": true,
-    "declaration": true
+    "declaration": true,
+    "types": ["node", "vscode"]
   },
   "exclude": [
     "node_modules",
@@ -15,7 +12,6 @@
     "src/rpc-browser-ws.ts",
     "src/rpc-browser-ws-multi.ts",
     "src/test",
-    "example",
-    "example-ws"
+    "examples"
   ]
 }

@@ -1,20 +1,21 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es6",
     "outDir": "out.test",
-    "lib": ["es6"],
-    "sourceMap": true,
     "rootDir": "src",
-    "strict": true
+    "noEmit": true,
+    "types": ["jest", "node"],
+    "lib": ["es2017", "dom"]
   },
-  "exclude": ["node_modules", "example", "example-ws"],
+  "exclude": ["node_modules", "examples"],
   "include": [
     "src/rpc-common.ts",
     "src/noop-logger.ts",
     "src/rpc-server-ws-multi.ts",
+    "src/rpc-browser-ws-multi.ts",
     "src/test/rpc-mock.ts",
     "src/test/rpc.test.ts",
-    "src/test/logger.spec.ts"
+    "src/test/logger.spec.ts",
+    "src/test/rpc-multi.test.ts"
   ]
 }
