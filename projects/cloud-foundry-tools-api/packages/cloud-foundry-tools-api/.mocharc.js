@@ -1,5 +1,7 @@
+const baseConfig = require("../../../../.mocharc.js");
+
 module.exports = {
-  // require: ["source-map-support/register"],
+  ...baseConfig,
   spec: "./out/tests/**/*spec.js",
   timeout: 80000,
 };

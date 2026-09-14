@@ -2,14 +2,14 @@ module.exports = {
   reporter: ["text", "lcov"],
   "check-coverage": true,
   all: true,
-  "temp-dir": "./reports/.nyc_output",
-  "report-dir": "./reports/coverage",
-  include: "**/src/**",
+  include: ["out/src/**"],
   exclude: [],
+  // compiled tests + source-map remap; mirrors vscode-mta-tools' config so nyc
+  // does not drop remapped files and report a false-green.
+  excludeAfterRemap: false,
   branches: 99,
   lines: 99,
   functions: 98,
   statements: 99,
-  // To enable **merged** coverage report all relevant file extensions must be listed.
   extension: [".js", ".ts"],
 };
