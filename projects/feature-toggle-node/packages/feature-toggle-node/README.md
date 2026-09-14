@@ -71,7 +71,7 @@ import { isFeatureEnabled } from "@sap-devx/feature-toggle-node";
 ## Support
 
 To get more help, support, and information please open a GitHub
-[issue](https://github.com/SAP/app-studio-toolkit/issues/new).
+[issue](https://github.com/SAP/app-studio-toolkit/issues/new/choose) and label it with `project:feature-toggle-node`.
 
 ## Contributing
 

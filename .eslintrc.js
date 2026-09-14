@@ -118,14 +118,6 @@ module.exports = {
       },
     },
     {
-      // feature-toggle-node was integrated with eslint-comments/require-description: "off"
-      // TODO: enable this rule once existing comments have been annotated
-      files: ["projects/feature-toggle-node/**"],
-      rules: {
-        "eslint-comments/require-description": "off",
-      },
-    },
-    {
       // Use this package's tsconfig so type-aware linting sees its newer (@types/node) typings.
       files: ["packages/vsix-zst/**/*.ts"],
       parserOptions: {
