@@ -5,7 +5,7 @@
   "description": "Inquirer Graphical User Interface",
   "repository": {
     "type": "git",
-    "url": "https://github.com/SAP/inquirer-gui"
+    "url": "https://github.com/SAP/app-studio-toolkit/tree/main/projects/inquirer-gui/packages/inquirer-gui"
   },
   "license": "Apache-2.0",
   "author": {

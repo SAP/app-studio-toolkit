@@ -5,7 +5,7 @@
   "description": "Sample date plugin for inquirer-gui",
   "repository": {
     "type": "git",
-    "url": "https://github.com/SAP/inquirer-gui/sample-plugin"
+    "url": "https://github.com/SAP/app-studio-toolkit/tree/main/projects/inquirer-gui/examples/sample-plugin"
   },
   "license": "Apache-2.0",
   "author": "Eyal Barlev",

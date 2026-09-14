@@ -4,7 +4,7 @@
   "description": "Sample single checkbox plugin for inquirer-gui",
   "repository": {
     "type": "git",
-    "url": "https://github.com/SAP/inquirer-gui/tree/master/single-checkbox-plugin"
+    "url": "https://github.com/SAP/app-studio-toolkit/tree/main/projects/inquirer-gui/packages/single-checkbox-plugin"
   },
   "license": "Apache-2.0",
   "author": "Lucy Liu",

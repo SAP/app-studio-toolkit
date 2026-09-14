@@ -5,7 +5,7 @@
   "description": "Navigator control",
   "repository": {
     "type": "git",
-    "url": "https://github.com/SAP/inquirer-gui"
+    "url": "https://github.com/SAP/app-studio-toolkit/tree/main/projects/inquirer-gui/packages/controls-navigator"
   },
   "license": "Apache-2.0",
   "author": {

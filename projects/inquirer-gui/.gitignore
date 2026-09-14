@@ -1,7 +1,41 @@
+# dependencies
+node_modules
+**/node_modules
+
 # nyc / jest coverage reports
-**/reports
 coverage
+**/coverage
+reports
+**/reports
 
 # build output
 dist
 **/dist*
+out
+**/out
+form
+**/form
+
+# local env files
+.env.local
+.env.*.local
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# editor / OS files
+.DS_Store
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# packages
+*.tgz
+*.vsix

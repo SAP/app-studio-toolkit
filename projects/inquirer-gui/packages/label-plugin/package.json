@@ -4,7 +4,7 @@
   "description": "Label plugin for inquirer-gui",
   "repository": {
     "type": "git",
-    "url": "https://github.com/SAP/inquirer-gui/tree/label-plugin"
+    "url": "https://github.com/SAP/app-studio-toolkit/tree/main/projects/inquirer-gui/packages/label-plugin"
   },
   "license": "Apache-2.0",
   "author": "Tomer Epstein",

@@ -24,5 +24,9 @@
     "material-design-icons-iconfont": "^5.0.1",
     "vue": "^3.3.4",
     "vuetify": "^3.3.10"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.5.2",
+    "vite": "^4.5.14"
   }
 }

@@ -4,7 +4,7 @@
   "description": "Auto-complete Vue plugin for https://github.com/mokkabonna/inquirer-autocomplete-prompt",
   "repository": {
     "type": "git",
-    "url": "https://github.com/SAP/inquirer-gui/tree/master/auto-complete-plugin"
+    "url": "https://github.com/SAP/app-studio-toolkit/tree/main/projects/inquirer-gui/packages/auto-complete-plugin"
   },
   "license": "Apache-2.0",
   "author": "",

@@ -163,7 +163,7 @@ const questions1 = [
     name: "label",
     message: "Label-Plugin",
     default:
-      '<p style="color:green">Default value for <a href="https://github.com/SAP/inquirer-gui/tree/master/label-plugin">Label-Plugin</a> with html tags.</p>',
+      '<p style="color:green">Default value for <a href="https://github.com/SAP/app-studio-toolkit/tree/main/projects/inquirer-gui/packages/label-plugin">Label-Plugin</a> with html tags.</p>',
   },
   {
     type: "password",
