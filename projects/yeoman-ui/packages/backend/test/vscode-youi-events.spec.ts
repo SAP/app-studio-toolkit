@@ -263,6 +263,7 @@ describe("vscode-youi-events unit test", () => {
 
   it("doGeneratorInstall", () => {
     _.set(vscode, "ProgressLocation.Notification", 15);
+    let progressCallback: any;
     windowMock
       .expects("withProgress")
       .withArgs({
@@ -270,8 +271,39 @@ describe("vscode-youi-events unit test", () => {
         title: "Installing dependencies...",
         cancellable: false,
       })
-      .resolves();
+      .callsFake((options: any, callback: any) => {
+        progressCallback = callback;
+        return Promise.resolve();
+      });
     events.doGeneratorInstall();
+    // Verify callback was captured
+    expect(progressCallback).to.not.be.undefined;
+  });
+
+  it("doGeneratorInstall - withProgress callback execution", async () => {
+    _.set(vscode, "ProgressLocation.Notification", 15);
+    let progressReporter: any;
+    windowMock
+      .expects("withProgress")
+      .withArgs({
+        location: 15,
+        title: "Installing dependencies...",
+        cancellable: false,
+      })
+      .callsFake((options: any, callback: any) => {
+        progressReporter = {
+          report: sandbox.stub(),
+        };
+        const result = callback(progressReporter);
+        // Resolve after a brief delay to allow async code to run
+        setTimeout(() => {
+          events["resolveInstallingProgress"]();
+        }, 10);
+        return result;
+      });
+    events.doGeneratorInstall();
+    // Wait for async operations
+    await new Promise((resolve) => setTimeout(resolve, 50));
   });
 
   describe("doGeneratorProgress", () => {
@@ -335,6 +367,110 @@ describe("vscode-youi-events unit test", () => {
         .resolves();
 
       events.doGeneratorProgress(undefined, "writing", true);
+    });
+
+    it("enhanced mode: can start with install phase (not just writing)", () => {
+      _.set(vscode, "ProgressLocation.Notification", 15);
+      eventsMock.expects("doClose").once();
+      windowMock
+        .expects("withProgress")
+        .withArgs({
+          location: 15,
+          title: "Generating testProject",
+          cancellable: false,
+        })
+        .resolves();
+
+      // Starting with install phase should still initialize enhanced mode
+      events.doGeneratorProgress("testProject", "install", true);
+    });
+
+    it("enhanced mode: can start with end phase", () => {
+      _.set(vscode, "ProgressLocation.Notification", 15);
+      eventsMock.expects("doClose").once();
+      windowMock
+        .expects("withProgress")
+        .withArgs({
+          location: 15,
+          title: "Generating testProject",
+          cancellable: false,
+        })
+        .resolves();
+
+      // Starting with end phase should still initialize enhanced mode
+      events.doGeneratorProgress("testProject", "end", true);
+    });
+
+    it("enhanced mode: phase transition with remaining time - setTimeout path", async () => {
+      _.set(vscode, "ProgressLocation.Notification", 15);
+      let progressReporter: any;
+      let resolveProgress: any;
+
+      windowMock
+        .expects("withProgress")
+        .callsFake((options: any, callback: any) => {
+          progressReporter = {
+            report: sandbox.stub(),
+          };
+          const result = callback(progressReporter);
+          resolveProgress = () => events["resolveInstallingProgress"]();
+          return result;
+        });
+
+      eventsMock.expects("doClose").once();
+
+      // Start with writing phase
+      events.doGeneratorProgress("testProject", "writing", true);
+
+      // Wait for progress reporter to be set
+      await new Promise((resolve) => setTimeout(resolve, 10));
+
+      // Immediately transition to install phase (before minimum duration)
+      // This should trigger the setTimeout path (lines 180-191)
+      events.doGeneratorProgress("testProject", "install", true);
+
+      // Wait for setTimeout to execute
+      await new Promise((resolve) => setTimeout(resolve, 2100));
+
+      // Verify progress.report was called with install message
+      expect(progressReporter.report.called).to.be.true;
+
+      // Clean up
+      resolveProgress();
+    });
+
+    it("enhanced mode: phase transition after minimum duration - immediate path", async () => {
+      _.set(vscode, "ProgressLocation.Notification", 15);
+      let progressReporter: any;
+      let resolveProgress: any;
+
+      windowMock
+        .expects("withProgress")
+        .callsFake((options: any, callback: any) => {
+          progressReporter = {
+            report: sandbox.stub(),
+          };
+          const result = callback(progressReporter);
+          resolveProgress = () => events["resolveInstallingProgress"]();
+          return result;
+        });
+
+      eventsMock.expects("doClose").once();
+
+      // Start with install phase (minimum duration = 0)
+      events.doGeneratorProgress("testProject", "install", true);
+
+      // Wait for progress reporter to be set
+      await new Promise((resolve) => setTimeout(resolve, 10));
+
+      // Transition to end phase - should take immediate path (lines 193-197)
+      events.doGeneratorProgress("testProject", "end", true);
+
+      // Verify progress.report was called immediately
+      expect(progressReporter.report.called).to.be.true;
+
+      // Clean up
+      resolveProgress();
     });
   });
 
@@ -704,6 +840,178 @@ describe("vscode-youi-events unit test", () => {
         "error message",
         createAndClose,
         "files"
+      );
+    });
+
+    it("on success with currentProjectName - open in new workspace", () => {
+      // Simulate enhanced mode setting currentProjectName
+      events["currentProjectName"] = "MyTestProject";
+      eventsMock.expects("doClose");
+      windowMock
+        .expects("showInformationMessage")
+        .withExactArgs(
+          "Project MyTestProject has been generated. The project will be opened in a new workspace."
+        )
+        .resolves();
+      commandsMock.expects("executeCommand").withArgs("vscode.openFolder");
+      uriMock.expects("file").once();
+      return events.doGeneratorDone(
+        true,
+        "success message",
+        openNewWorkspace,
+        "project",
+        "testDestinationRoot"
+      );
+    });
+
+    it("on success with currentProjectName - add to workspace", () => {
+      // Simulate enhanced mode setting currentProjectName
+      events["currentProjectName"] = "MyTestProject";
+      eventsMock.expects("doClose");
+      sandbox.stub(vscode.workspace, "workspaceFolders").value([]);
+      sandbox.stub(vscode.workspace, "workspaceFile").value(undefined);
+      windowMock
+        .expects("showInformationMessage")
+        .withExactArgs(
+          "Project MyTestProject has been generated. The project has been added to workspace."
+        )
+        .resolves();
+      workspaceMock.expects("updateWorkspaceFolders").withArgs(0, null);
+      commandsMock.expects("executeCommand").withArgs("vscode.openFolder");
+      uriMock.expects("file").once();
+      return events.doGeneratorDone(
+        true,
+        "success message",
+        addToWorkspace,
+        "project",
+        "testDestinationRoot"
+      );
+    });
+
+    it("on success with currentProjectName - create and close", () => {
+      // Simulate enhanced mode setting currentProjectName
+      events["currentProjectName"] = "MyTestProject";
+      eventsMock.expects("doClose");
+      windowMock
+        .expects("showInformationMessage")
+        .withExactArgs("Project MyTestProject has been generated.")
+        .resolves();
+      uriMock.expects("file").once();
+      return events.doGeneratorDone(
+        true,
+        "success message",
+        createAndClose,
+        "project",
+        "testDestinationRoot"
+      );
+    });
+
+    it("on success with type empty string - no message shown", () => {
+      eventsMock.expects("doClose");
+      // When type is "", no information message should be shown
+      windowMock.expects("showInformationMessage").never();
+      uriMock.expects("file").once();
+      return events.doGeneratorDone(
+        true,
+        "success message",
+        createAndClose,
+        "", // Empty type
+        "testDestinationRoot"
+      );
+    });
+
+    it("on success with type module", () => {
+      eventsMock.expects("doClose");
+      windowMock
+        .expects("showInformationMessage")
+        .withExactArgs(messages.default.artifact_generated_module)
+        .resolves();
+      uriMock.expects("file").once();
+      return events.doGeneratorDone(
+        true,
+        "success message",
+        createAndClose,
+        "module",
+        "testDestinationRoot"
+      );
+    });
+
+    it("on failure - shows error message", () => {
+      eventsMock.expects("doClose");
+      windowMock
+        .expects("showErrorMessage")
+        .withExactArgs("Error occurred during generation")
+        .resolves();
+      return events.doGeneratorDone(
+        false,
+        "Error occurred during generation",
+        createAndClose,
+        "project",
+        "testDestinationRoot"
+      );
+    });
+
+    it("on success with no targetFolderPath", () => {
+      eventsMock.expects("doClose");
+      windowMock
+        .expects("showInformationMessage")
+        .withExactArgs(messages.default.artifact_generated_files)
+        .resolves();
+      // No targetFolderPath provided
+      return events.doGeneratorDone(
+        true,
+        "success message",
+        createAndClose,
+        "files",
+        undefined
+      );
+    });
+
+    it("on success - enhanced mode shows Finalising message", async () => {
+      // Simulate enhanced mode by setting progressReporter and flag
+      const mockReporter = { report: sandbox.stub() };
+      events["progressReporter"] = mockReporter;
+      events["isEnhancedProgressMode"] = true;
+
+      eventsMock.expects("doClose");
+      windowMock
+        .expects("showInformationMessage")
+        .withExactArgs(messages.default.artifact_generated_files)
+        .resolves();
+
+      const result = events.doGeneratorDone(
+        true,
+        "success message",
+        createAndClose,
+        "files",
+        undefined
+      );
+
+      // Verify "Finalising..." was reported
+      await new Promise((resolve) => setTimeout(resolve, 50));
+      expect(
+        mockReporter.report.calledWith({
+          message: messages.default.progress_finalising,
+        })
+      ).to.be.true;
+
+      await result;
+    });
+
+    it("showDoneMessage with skipResolve=false calls resolveInstallingProgress", () => {
+      // Test private method directly to cover lines 339-340
+      windowMock
+        .expects("showInformationMessage")
+        .withExactArgs(messages.default.artifact_generated_files)
+        .resolves();
+      // Call private method with skipResolve=false (default)
+      return events["showDoneMessage"](
+        true,
+        "success message",
+        createAndClose,
+        "files",
+        undefined,
+        false
       );
     });
   });

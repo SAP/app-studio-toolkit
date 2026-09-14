@@ -320,14 +320,12 @@ export class YeomanUI {
       );
     });
 
-    gen.on(
-      errorEventName,
-      (error: any): void =>
-        void this.onGeneratorFailure(
-          generatorName,
-          this.getErrorWithAdditionalInfo(error, `gen.on(${errorEventName})`)
-        )
-    );
+    gen.on(errorEventName, (error: any): void => {
+      void this.onGeneratorFailure(
+        generatorName,
+        this.getErrorWithAdditionalInfo(error, `gen.on(${errorEventName})`)
+      );
+    });
 
     // when generator "restart" is selected, re-register the "uncaughtException" listener (with the updated context variables)
     this.onUncaughtException &&
