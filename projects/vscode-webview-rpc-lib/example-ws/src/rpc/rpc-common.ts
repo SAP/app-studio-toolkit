@@ -38,11 +38,11 @@ export abstract class RpcCommon implements IRpc {
   }
 
   public registerMethod(method: IMethod): void {
-    this.methods.set((method.name ? method.name : method.func.name), method);
+    this.methods.set(method.name ? method.name : method.func.name, method);
   }
 
   public unregisterMethod(method: IMethod): void {
-    this.methods.delete((method.name ? method.name : method.func.name));
+    this.methods.delete(method.name ? method.name : method.func.name);
   }
 
   public listLocalMethods(): string[] {
@@ -54,7 +54,7 @@ export abstract class RpcCommon implements IRpc {
   }
 
   invoke(method: string, ...params: any[]): Promise<any> {
-  // TODO: change to something more unique (or check to see if id doesn't alreday exist in this.promiseCallbacks)
+    // TODO: change to something more unique (or check to see if id doesn't alreday exist in this.promiseCallbacks)
     const id = Math.random();
     const promise = new Promise((resolve, reject) => {
       this.promiseCallbacks.set(id, { resolve: resolve, reject: reject });
@@ -65,7 +65,8 @@ export abstract class RpcCommon implements IRpc {
   }
 
   handleResponse(message: any): void {
-    const promiseCallbacks: IPromiseCallbacks | undefined = this.promiseCallbacks.get(message.id);
+    const promiseCallbacks: IPromiseCallbacks | undefined =
+      this.promiseCallbacks.get(message.id);
     if (promiseCallbacks) {
       if (message.success) {
         promiseCallbacks.resolve(message.response);

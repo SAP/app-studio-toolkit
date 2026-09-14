@@ -50,7 +50,9 @@ export class RpcServerWebSocketsMulti extends RpcCommon {
 
   constructor(pluginName: string, logger: IChildLogger = noopLogger) {
     super(logger.getChildLogger({ label: RpcServerWebSocketsMulti.className }));
-    this.logger = logger.getChildLogger({ label: RpcServerWebSocketsMulti.className });
+    this.logger = logger.getChildLogger({
+      label: RpcServerWebSocketsMulti.className,
+    });
     this.pluginName = pluginName;
   }
 
@@ -92,7 +94,10 @@ export class RpcServerWebSocketsMulti extends RpcCommon {
    * @param message The parsed RPC message
    * @param connectionId The connection id of the sender
    */
-  async handleMessage(message: RpcMultiMessage, connectionId: string): Promise<void> {
+  async handleMessage(
+    message: RpcMultiMessage,
+    connectionId: string
+  ): Promise<void> {
     this.logger.debug(`handleMessage: ${message.command} from ${connectionId}`);
 
     switch (message.command) {
@@ -114,11 +119,18 @@ export class RpcServerWebSocketsMulti extends RpcCommon {
   ): Promise<void> {
     const method: IMethod | undefined = this.methods.get(message.method!);
     this.logger.trace(
-      `handleRequest: processing request id: ${message.id} method: ${message.method} parameters: ${JSON.stringify(message.params)}`
+      `handleRequest: processing request id: ${message.id} method: ${
+        message.method
+      } parameters: ${JSON.stringify(message.params)}`
     );
 
     if (!method) {
-      this.sendResponseTo(connectionId, message.id, `Method not found: ${message.method}`, false);
+      this.sendResponseTo(
+        connectionId,
+        message.id,
+        `Method not found: ${message.method}`,
+        false
+      );
       return;
     }
 
@@ -169,7 +181,10 @@ export class RpcServerWebSocketsMulti extends RpcCommon {
     try {
       sendFn(JSON.stringify(responseObject));
     } catch (err) {
-      this.logger.error(`sendResponseTo: Failed to send response to ${connectionId}`, { error: err });
+      this.logger.error(
+        `sendResponseTo: Failed to send response to ${connectionId}`,
+        { error: err }
+      );
     }
   }
 
@@ -202,13 +217,17 @@ export class RpcServerWebSocketsMulti extends RpcCommon {
   sendRequest(id: number, method: string, params?: any[]): void {
     // Not used — this class only handles incoming requests from clients
     // This is required by the abstract base class
-    this.logger.warn("sendRequest called directly — not supported in multi-connection mode");
+    this.logger.warn(
+      "sendRequest called directly — not supported in multi-connection mode"
+    );
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   sendResponse(id: number, response: any, success: boolean = true): void {
     // Not used — we use sendResponseTo() which targets a specific connection
     // This is required by the abstract base class
-    this.logger.warn("sendResponse called directly — use handleMessage() flow instead");
+    this.logger.warn(
+      "sendResponse called directly — use handleMessage() flow instead"
+    );
   }
 }

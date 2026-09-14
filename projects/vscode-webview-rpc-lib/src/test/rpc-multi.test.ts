@@ -117,7 +117,11 @@ describe("RpcBrowserWebSocketsMulti — cross-plugin invoke", () => {
     });
 
     const servers = new Map([["my-plugin", server]]);
-    const client = new RpcBrowserWebSocketsMulti("my-plugin", "ws://localhost/ws", noopLogger);
+    const client = new RpcBrowserWebSocketsMulti(
+      "my-plugin",
+      "ws://localhost/ws",
+      noopLogger
+    );
 
     wireClientToServer(client, servers);
     client.connect();
@@ -145,7 +149,11 @@ describe("RpcBrowserWebSocketsMulti — cross-plugin invoke", () => {
       ["filesystem", fsServer],
     ]);
 
-    const client = new RpcBrowserWebSocketsMulti("my-plugin", "ws://localhost/ws", noopLogger);
+    const client = new RpcBrowserWebSocketsMulti(
+      "my-plugin",
+      "ws://localhost/ws",
+      noopLogger
+    );
     wireClientToServer(client, servers);
     client.connect();
 
@@ -165,7 +173,11 @@ describe("RpcBrowserWebSocketsMulti — cross-plugin invoke", () => {
     });
 
     const servers = new Map([["my-plugin", server]]);
-    const client = new RpcBrowserWebSocketsMulti("my-plugin", "ws://localhost/ws", noopLogger);
+    const client = new RpcBrowserWebSocketsMulti(
+      "my-plugin",
+      "ws://localhost/ws",
+      noopLogger
+    );
     wireClientToServer(client, servers);
     client.connect();
 
@@ -187,7 +199,11 @@ describe("RpcBrowserWebSocketsMulti — cross-plugin invoke", () => {
     });
 
     const servers = new Map([["filesystem", fsServer]]);
-    const client = new RpcBrowserWebSocketsMulti("my-plugin", "ws://localhost/ws", noopLogger);
+    const client = new RpcBrowserWebSocketsMulti(
+      "my-plugin",
+      "ws://localhost/ws",
+      noopLogger
+    );
     wireClientToServer(client, servers);
     client.connect();
 
@@ -203,7 +219,11 @@ describe("RpcBrowserWebSocketsMulti — cross-plugin invoke", () => {
   it("requests from other plugins are not processed", (done) => {
     const handler = jest.fn(() => "should not be called");
 
-    const client = new RpcBrowserWebSocketsMulti("my-plugin", "ws://localhost/ws", noopLogger);
+    const client = new RpcBrowserWebSocketsMulti(
+      "my-plugin",
+      "ws://localhost/ws",
+      noopLogger
+    );
     client.registerMethod({ func: handler, name: "secret" });
     client.connect();
 
@@ -211,13 +231,15 @@ describe("RpcBrowserWebSocketsMulti — cross-plugin invoke", () => {
       const ws = MockWebSocket.instances[0];
 
       // Simulate a request from a different plugin
-      ws.simulateMessage(JSON.stringify({
-        plugin: "other-plugin",
-        command: "rpc-request",
-        id: 0.12345,
-        method: "secret",
-        params: [],
-      }));
+      ws.simulateMessage(
+        JSON.stringify({
+          plugin: "other-plugin",
+          command: "rpc-request",
+          id: 0.12345,
+          method: "secret",
+          params: [],
+        })
+      );
 
       // Give time for any potential handling
       setTimeout(() => {
@@ -231,20 +253,26 @@ describe("RpcBrowserWebSocketsMulti — cross-plugin invoke", () => {
   it("requests addressed to own plugin are still processed", (done) => {
     const handler = jest.fn(() => "hello");
 
-    const client = new RpcBrowserWebSocketsMulti("my-plugin", "ws://localhost/ws", noopLogger);
+    const client = new RpcBrowserWebSocketsMulti(
+      "my-plugin",
+      "ws://localhost/ws",
+      noopLogger
+    );
     client.registerMethod({ func: handler, name: "greet" });
     client.connect();
 
     setTimeout(() => {
       const ws = MockWebSocket.instances[0];
 
-      ws.simulateMessage(JSON.stringify({
-        plugin: "my-plugin",
-        command: "rpc-request",
-        id: 0.99,
-        method: "greet",
-        params: [],
-      }));
+      ws.simulateMessage(
+        JSON.stringify({
+          plugin: "my-plugin",
+          command: "rpc-request",
+          id: 0.99,
+          method: "greet",
+          params: [],
+        })
+      );
 
       setTimeout(() => {
         expect(handler).toHaveBeenCalled();
@@ -255,7 +283,11 @@ describe("RpcBrowserWebSocketsMulti — cross-plugin invoke", () => {
   });
 
   it("sendRequest also parses plugin:method", (done) => {
-    const client = new RpcBrowserWebSocketsMulti("my-plugin", "ws://localhost/ws", noopLogger);
+    const client = new RpcBrowserWebSocketsMulti(
+      "my-plugin",
+      "ws://localhost/ws",
+      noopLogger
+    );
     client.connect();
 
     setTimeout(() => {
@@ -285,12 +317,19 @@ describe("RpcBrowserWebSocketsMulti — cross-plugin invoke", () => {
     });
 
     const servers = new Map([["filesystem", fsServer]]);
-    const client = new RpcBrowserWebSocketsMulti("my-plugin", "ws://localhost/ws", noopLogger);
+    const client = new RpcBrowserWebSocketsMulti(
+      "my-plugin",
+      "ws://localhost/ws",
+      noopLogger
+    );
     wireClientToServer(client, servers);
     client.connect();
 
     setTimeout(async () => {
-      const result = await client.invoke("filesystem:readFileAsync", "/bar.txt");
+      const result = await client.invoke(
+        "filesystem:readFileAsync",
+        "/bar.txt"
+      );
       expect(result).toBe("async contents of /bar.txt");
       client.disconnect();
       done();
@@ -300,12 +339,18 @@ describe("RpcBrowserWebSocketsMulti — cross-plugin invoke", () => {
   it("error from cross-plugin invoke is properly rejected", (done) => {
     const fsServer = new RpcServerWebSocketsMulti("filesystem", noopLogger);
     fsServer.registerMethod({
-      func: () => { throw new Error("file not found"); },
+      func: () => {
+        throw new Error("file not found");
+      },
       name: "readFile",
     });
 
     const servers = new Map([["filesystem", fsServer]]);
-    const client = new RpcBrowserWebSocketsMulti("my-plugin", "ws://localhost/ws", noopLogger);
+    const client = new RpcBrowserWebSocketsMulti(
+      "my-plugin",
+      "ws://localhost/ws",
+      noopLogger
+    );
     wireClientToServer(client, servers);
     client.connect();
 

@@ -8,20 +8,21 @@ export class RpcExtension extends RpcCommon {
   private readonly logger: IChildLogger;
   webview: vscode.Webview;
 
-
   constructor(webview: vscode.Webview, logger: IChildLogger = noopLogger) {
     super(logger.getChildLogger({ label: RpcExtension.className }));
     this.logger = logger.getChildLogger({ label: RpcExtension.className });
     this.webview = webview;
-    this.webview.onDidReceiveMessage(message => {
-      this.logger.debug(`Event Listener: Received event: ${JSON.stringify(message)}`);
+    this.webview.onDidReceiveMessage((message) => {
+      this.logger.debug(
+        `Event Listener: Received event: ${JSON.stringify(message)}`
+      );
       switch (message.command) {
-      case "rpc-response":
-        this.handleResponse(message);
-        break;
-      case "rpc-request":
-        this.handleRequest(message);
-        break;
+        case "rpc-response":
+          this.handleResponse(message);
+          break;
+        case "rpc-request":
+          this.handleRequest(message);
+          break;
       }
     });
   }
@@ -29,9 +30,12 @@ export class RpcExtension extends RpcCommon {
   sendRequest(id: number, method: string, params?: any[]) {
     // consider cancelling the timer if the promise if fulfilled before timeout is reached
     setTimeout(() => {
-      const promiseCallbacks: IPromiseCallbacks | undefined = this.promiseCallbacks.get(id);
+      const promiseCallbacks: IPromiseCallbacks | undefined =
+        this.promiseCallbacks.get(id);
       if (promiseCallbacks) {
-        this.logger.warn(`sendRequest: Request ${id} method ${method} has timed out`);
+        this.logger.warn(
+          `sendRequest: Request ${id} method ${method} has timed out`
+        );
         promiseCallbacks.reject("Request timed out");
         this.promiseCallbacks.delete(id);
       }
@@ -41,7 +45,7 @@ export class RpcExtension extends RpcCommon {
       command: "rpc-request",
       id: id,
       method: method,
-      params: params
+      params: params,
     });
   }
 
@@ -50,7 +54,7 @@ export class RpcExtension extends RpcCommon {
       command: "rpc-response",
       id: id,
       response: response,
-      success: success
+      success: success,
     });
   }
 }

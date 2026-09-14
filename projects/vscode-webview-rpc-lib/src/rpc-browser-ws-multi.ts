@@ -67,9 +67,17 @@ export class RpcBrowserWebSocketsMulti extends RpcCommon {
    * @param wsUrl Optional WebSocket URL. Defaults to `ws(s)://<current host>/ws`
    * @param logger Optional logger instance
    */
-  constructor(pluginName: string, wsUrl?: string, logger: IChildLogger = noopLogger) {
-    super(logger.getChildLogger({ label: RpcBrowserWebSocketsMulti.className }));
-    this.logger = logger.getChildLogger({ label: RpcBrowserWebSocketsMulti.className });
+  constructor(
+    pluginName: string,
+    wsUrl?: string,
+    logger: IChildLogger = noopLogger
+  ) {
+    super(
+      logger.getChildLogger({ label: RpcBrowserWebSocketsMulti.className })
+    );
+    this.logger = logger.getChildLogger({
+      label: RpcBrowserWebSocketsMulti.className,
+    });
     this.pluginName = pluginName;
     this.wsUrl = wsUrl || this.defaultWsUrl();
   }
@@ -256,9 +264,12 @@ export class RpcBrowserWebSocketsMulti extends RpcCommon {
 
     // Set timeout
     setTimeout(() => {
-      const promiseCallbacks: IPromiseCallbacks | undefined = this.promiseCallbacks.get(id);
+      const promiseCallbacks: IPromiseCallbacks | undefined =
+        this.promiseCallbacks.get(id);
       if (promiseCallbacks) {
-        this.logger.warn(`invoke: Request ${id} method ${method} has timed out`);
+        this.logger.warn(
+          `invoke: Request ${id} method ${method} has timed out`
+        );
         promiseCallbacks.reject(new Error(`Request timed out: ${method}`));
         this.promiseCallbacks.delete(id);
       }
@@ -285,9 +296,12 @@ export class RpcBrowserWebSocketsMulti extends RpcCommon {
 
     // Set timeout
     setTimeout(() => {
-      const promiseCallbacks: IPromiseCallbacks | undefined = this.promiseCallbacks.get(id);
+      const promiseCallbacks: IPromiseCallbacks | undefined =
+        this.promiseCallbacks.get(id);
       if (promiseCallbacks) {
-        this.logger.warn(`sendRequest: Request ${id} method ${method} has timed out`);
+        this.logger.warn(
+          `sendRequest: Request ${id} method ${method} has timed out`
+        );
         promiseCallbacks.reject(new Error("Request timed out"));
         this.promiseCallbacks.delete(id);
       }

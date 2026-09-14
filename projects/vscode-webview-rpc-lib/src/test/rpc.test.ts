@@ -15,13 +15,13 @@ const longFunc = (): Promise<string> => {
     }, 500);
   });
 };
-  
+
 const noParams = (): string => {
   return "no params";
 };
 
 const badFunc = (): void => {
-  throw("bad");
+  throw "bad";
 };
 
 const sum = (a: number, b: number): number => {
@@ -29,7 +29,7 @@ const sum = (a: number, b: number): number => {
 };
 
 test("One large test", () => {
-  mock1.registerMethod({func: sum});
+  mock1.registerMethod({ func: sum });
   const param1: number = 1;
   const param2: number = 2;
   mock2.invoke("sum", param1, param2).then((value) => {
@@ -51,16 +51,16 @@ test("One large test", () => {
     expect(value).toBe(param1 + param2);
   });
 
-  mock1.unregisterMethod({func: sum});
+  mock1.unregisterMethod({ func: sum });
   localMethodsMock1 = mock1.listLocalMethods();
   expect(localMethodsMock1.length).toBe(1);
 
-  mock1.registerMethod({func: noParams});
+  mock1.registerMethod({ func: noParams });
   mock2.invoke("noParams").then((value) => {
     expect(value).toBe("no params");
   });
 
-  mock1.registerMethod({func: badFunc});
+  mock1.registerMethod({ func: badFunc });
   return mock2.invoke("badFunc").catch((reason) => {
     expect(reason).toBe("bad");
   });
@@ -68,7 +68,7 @@ test("One large test", () => {
 
 test("Delayed test", () => {
   mock2.setResponseTimeout(0);
-  mock1.registerMethod({func: longFunc});
+  mock1.registerMethod({ func: longFunc });
 
   return mock2.invoke("longFunc").catch((reason) => {
     expect(reason).toBe("Request timed out");

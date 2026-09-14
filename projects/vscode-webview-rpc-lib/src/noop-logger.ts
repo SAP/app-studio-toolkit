@@ -28,5 +28,5 @@ export const noopLogger = {
   trace: NO_OPERATION,
   getChildLogger: function () {
     return noopLogger;
-  }
+  },
 };

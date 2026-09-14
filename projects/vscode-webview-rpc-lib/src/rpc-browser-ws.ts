@@ -12,18 +12,22 @@ export class RpcBrowserWebSockets extends RpcCommon {
 
   constructor(ws: WebSocket, logger: IChildLogger = noopLogger) {
     super(logger.getChildLogger({ label: RpcBrowserWebSockets.className }));
-    this.logger = logger.getChildLogger({ label: RpcBrowserWebSockets.className });
+    this.logger = logger.getChildLogger({
+      label: RpcBrowserWebSockets.className,
+    });
     this.ws = ws;
     this.ws.addEventListener("message", (event) => {
       const message: any = JSON.parse(event.data as string);
-      this.logger.debug(`Event Listener: Received event: ${JSON.stringify(message)}`);
+      this.logger.debug(
+        `Event Listener: Received event: ${JSON.stringify(message)}`
+      );
       switch (message.command) {
-      case "rpc-response":
-        this.handleResponse(message);
-        break;
-      case "rpc-request":
-        this.handleRequest(message);
-        break;
+        case "rpc-response":
+          this.handleResponse(message);
+          break;
+        case "rpc-request":
+          this.handleRequest(message);
+          break;
       }
     });
   }
@@ -31,9 +35,12 @@ export class RpcBrowserWebSockets extends RpcCommon {
   sendRequest(id: number, method: string, params?: any[]) {
     // TODO: consider cancelling the timer if the promise if fulfilled before timeout is reached
     setTimeout(() => {
-      const promiseCallbacks: IPromiseCallbacks | undefined = this.promiseCallbacks.get(id);
+      const promiseCallbacks: IPromiseCallbacks | undefined =
+        this.promiseCallbacks.get(id);
       if (promiseCallbacks) {
-        this.logger.warn(`sendRequest: Request ${id} method ${method} has timed out`);
+        this.logger.warn(
+          `sendRequest: Request ${id} method ${method} has timed out`
+        );
         promiseCallbacks.reject("Request timed out");
         this.promiseCallbacks.delete(id);
       }
@@ -44,7 +51,7 @@ export class RpcBrowserWebSockets extends RpcCommon {
       command: "rpc-request",
       id: id,
       method: method,
-      params: params
+      params: params,
     };
 
     this.ws.send(JSON.stringify(requestBody));
@@ -55,7 +62,7 @@ export class RpcBrowserWebSockets extends RpcCommon {
       command: "rpc-response",
       id: id,
       response: response,
-      success: success
+      success: success,
     };
 
     this.ws.send(JSON.stringify(responseBody));

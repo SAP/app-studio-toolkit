@@ -1,13 +1,20 @@
 {
-	"compilerOptions": {
-		"module": "commonjs",
-		"target": "es6",
-		"outDir": "out.test",
-		"lib": ["es6"],
-		"sourceMap": true,
-		"rootDir": "src",
-		"strict": true
-	},
-	"exclude": ["node_modules", "example", "example-ws"],
-	"include": ["src/rpc-common.ts", "src/noop-logger.ts", "src/rpc-server-ws-multi.ts", "src/test/rpc-mock.ts", "src/test/rpc.test.ts", "src/test/logger.spec.ts"]
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6",
+    "outDir": "out.test",
+    "lib": ["es6"],
+    "sourceMap": true,
+    "rootDir": "src",
+    "strict": true
+  },
+  "exclude": ["node_modules", "example", "example-ws"],
+  "include": [
+    "src/rpc-common.ts",
+    "src/noop-logger.ts",
+    "src/rpc-server-ws-multi.ts",
+    "src/test/rpc-mock.ts",
+    "src/test/rpc.test.ts",
+    "src/test/logger.spec.ts"
+  ]
 }

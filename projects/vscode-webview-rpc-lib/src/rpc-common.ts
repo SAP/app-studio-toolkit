@@ -66,11 +66,11 @@ export abstract class RpcCommon implements IRpc {
   }
 
   public registerMethod(method: IMethod): void {
-    this.methods.set((method.name ? method.name : method.func.name), method);
+    this.methods.set(method.name ? method.name : method.func.name, method);
   }
 
   public unregisterMethod(method: IMethod): void {
-    this.methods.delete((method.name ? method.name : method.func.name));
+    this.methods.delete(method.name ? method.name : method.func.name);
   }
 
   public listLocalMethods(): string[] {
@@ -82,7 +82,7 @@ export abstract class RpcCommon implements IRpc {
   }
 
   invoke(method: string, ...params: any[]): Promise<any> {
-  // TODO: change to something more unique (or check to see if id doesn't already exist in this.promiseCallbacks)
+    // TODO: change to something more unique (or check to see if id doesn't already exist in this.promiseCallbacks)
     const id = Math.random();
     const promise = new Promise((resolve, reject) => {
       this.promiseCallbacks.set(id, { resolve: resolve, reject: reject });
@@ -93,13 +93,18 @@ export abstract class RpcCommon implements IRpc {
   }
 
   handleResponse(message: any): void {
-    const promiseCallbacks: IPromiseCallbacks | undefined = this.promiseCallbacks.get(message.id);
+    const promiseCallbacks: IPromiseCallbacks | undefined =
+      this.promiseCallbacks.get(message.id);
     if (promiseCallbacks) {
-      this.baseLogger.trace(`handleResponse: processing response for id: ${message.id} message success flag is: ${message.success}`);
+      this.baseLogger.trace(
+        `handleResponse: processing response for id: ${message.id} message success flag is: ${message.success}`
+      );
       if (message.success) {
         promiseCallbacks.resolve(message.response);
       } else {
-        this.baseLogger.warn(`handleResponse: Message id ${message.id} rejected, response: ${message.response}`);
+        this.baseLogger.warn(
+          `handleResponse: Message id ${message.id} rejected, response: ${message.response}`
+        );
         promiseCallbacks.reject(message.response);
       }
       this.promiseCallbacks.delete(message.id);
@@ -108,7 +113,11 @@ export abstract class RpcCommon implements IRpc {
 
   async handleRequest(message: any): Promise<void> {
     const method: IMethod | undefined = this.methods.get(message.method);
-    this.baseLogger.trace(`handleRequest: processing request id: ${message.id} method: ${message.method} parameters: ${JSON.stringify(message.params)}`);
+    this.baseLogger.trace(
+      `handleRequest: processing request id: ${message.id} method: ${
+        message.method
+      } parameters: ${JSON.stringify(message.params)}`
+    );
     if (method) {
       const func: Function = method.func;
       const thisArg: any = method.thisArg;
@@ -120,7 +129,10 @@ export abstract class RpcCommon implements IRpc {
         }
         this.sendResponse(message.id, response);
       } catch (err) {
-        this.baseLogger.error(`handleRequest: Failed processing request ${message.command} id: ${message.id}`, { error: err });
+        this.baseLogger.error(
+          `handleRequest: Failed processing request ${message.command} id: ${message.id}`,
+          { error: err }
+        );
         this.sendResponse(message.id, err, false);
       }
     }

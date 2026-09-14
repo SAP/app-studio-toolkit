@@ -40,7 +40,9 @@ describe("Logger tests", () => {
   });
 
   it("When logger is passed it is used", () => {
-    const CONSOLE_LOG =  (msg: string, ...args: any[]): void => { console.log(msg, args); };
+    const CONSOLE_LOG = (msg: string, ...args: any[]): void => {
+      console.log(msg, args);
+    };
     const customLogger: IChildLogger = {
       fatal: CONSOLE_LOG,
       error: CONSOLE_LOG,
@@ -60,25 +62,27 @@ describe("Logger tests", () => {
     const trace = jest.spyOn(customLogger, "trace");
     const warn = jest.spyOn(customLogger, "warn");
     const error = jest.spyOn(customLogger, "error");
-    
-    const bad = (a: number, b: number) => { 
-      if(typeof a === "number" && typeof b ==="number") {
+
+    const bad = (a: number, b: number) => {
+      if (typeof a === "number" && typeof b === "number") {
         throw "bad parameter type";
       }
-      
     };
 
     rpc1.registerMethod({ func: bad });
     const param1: number = 1;
     const param2: number = 0;
-    rpc2.invoke("bad", ...[param1, param2]).then((value) => {
-      console.log(`result is is ${value}`);
-      expect(value).toBe(param1 + param2);
-    }).catch(e => {
-      expect(e).toBe("bad parameter type");
-    });
+    rpc2
+      .invoke("bad", ...[param1, param2])
+      .then((value) => {
+        console.log(`result is is ${value}`);
+        expect(value).toBe(param1 + param2);
+      })
+      .catch((e) => {
+        expect(e).toBe("bad parameter type");
+      });
     expect(trace).toHaveBeenCalledTimes(2);
-    
+
     expect(trace).toHaveBeenCalledWith(
       expect.stringMatching(
         /handleRequest: processing request id: \d\.\d+ method: bad parameters: \[1,0\]/
@@ -91,9 +95,17 @@ describe("Logger tests", () => {
       )
     );
 
-    expect(error).toHaveBeenCalledWith(expect.stringMatching(/handleRequest: Failed processing request rpc-request id: \d\.\d+/), {"error": "bad parameter type"});
+    expect(error).toHaveBeenCalledWith(
+      expect.stringMatching(
+        /handleRequest: Failed processing request rpc-request id: \d\.\d+/
+      ),
+      { error: "bad parameter type" }
+    );
 
-    expect(warn).toHaveBeenCalledWith(expect.stringMatching(/handleResponse: Message id \d\.\d+ rejected, response: bad parameter type/));
-
+    expect(warn).toHaveBeenCalledWith(
+      expect.stringMatching(
+        /handleResponse: Message id \d\.\d+ rejected, response: bad parameter type/
+      )
+    );
   });
 });

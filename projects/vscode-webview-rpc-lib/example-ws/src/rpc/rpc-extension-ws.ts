@@ -7,16 +7,16 @@ export class RpcExtensionWebSockets extends RpcCommon {
   constructor(ws: WebSocket) {
     super();
     this.ws = ws;
-    this.ws.on("message", message => {
+    this.ws.on("message", (message) => {
       // assuming message is a stringified JSON
       const messageObject: any = JSON.parse(message as string);
       switch (messageObject.command) {
-      case "rpc-response":
-        this.handleResponse(messageObject);
-        break;
-      case "rpc-request":
-        this.handleRequest(messageObject);
-        break;
+        case "rpc-response":
+          this.handleResponse(messageObject);
+          break;
+        case "rpc-request":
+          this.handleRequest(messageObject);
+          break;
       }
     });
   }
@@ -24,7 +24,8 @@ export class RpcExtensionWebSockets extends RpcCommon {
   sendRequest(id: number, method: string, params?: any[]) {
     // consider cancelling the timer if the promise if fulfilled before timeout is reached
     setTimeout(() => {
-      const promiseCallbacks: IPromiseCallbacks | undefined = this.promiseCallbacks.get(id);
+      const promiseCallbacks: IPromiseCallbacks | undefined =
+        this.promiseCallbacks.get(id);
       if (promiseCallbacks) {
         promiseCallbacks.reject("Request timed out");
         this.promiseCallbacks.delete(id);
@@ -35,7 +36,7 @@ export class RpcExtensionWebSockets extends RpcCommon {
       command: "rpc-request",
       id: id,
       method: method,
-      params: params
+      params: params,
     };
 
     this.ws.send(JSON.stringify(requestObject));
@@ -46,7 +47,7 @@ export class RpcExtensionWebSockets extends RpcCommon {
       command: "rpc-response",
       id: id,
       response: response,
-      success: success
+      success: success,
     };
 
     this.ws.send(JSON.stringify(responseObject));

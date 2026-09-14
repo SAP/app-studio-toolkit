@@ -19,7 +19,8 @@ export class RpcMock extends RpcCommon {
   sendRequest(id: number, method: string, params?: any[]) {
     // TODO: consider cancelling the timer if the promise if fulfilled before timeout is reached
     setTimeout(() => {
-      const promiseCallbacks: IPromiseCallbacks | undefined = this.promiseCallbacks.get(id);
+      const promiseCallbacks: IPromiseCallbacks | undefined =
+        this.promiseCallbacks.get(id);
       if (promiseCallbacks) {
         promiseCallbacks.reject("Request timed out");
         this.promiseCallbacks.delete(id);
@@ -31,7 +32,7 @@ export class RpcMock extends RpcCommon {
       command: "rpc-request",
       id: id,
       method: method,
-      params: params
+      params: params,
     };
 
     this.send(JSON.stringify(requestBody));
@@ -42,7 +43,7 @@ export class RpcMock extends RpcCommon {
       command: "rpc-response",
       id: id,
       response: response,
-      success: success
+      success: success,
     };
 
     this.send(JSON.stringify(responseBody));
@@ -57,13 +58,12 @@ export class RpcMock extends RpcCommon {
   receive(message: string) {
     const messageObject: any = JSON.parse(message);
     switch (messageObject.command) {
-    case "rpc-response":
-      this.handleResponse(messageObject);
-      break;
-    case "rpc-request":
-      this.handleRequest(messageObject);
-      break;
+      case "rpc-response":
+        this.handleResponse(messageObject);
+        break;
+      case "rpc-request":
+        this.handleRequest(messageObject);
+        break;
     }
-
   }
 }
