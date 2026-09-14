@@ -5,7 +5,13 @@ import * as fs from "fs";
 import * as cfLocal from "../src/cf-local";
 import * as cli from "../src/cli";
 import { fail } from "assert";
-import { CliResult, CF_PAGE_SIZE, eFilters, eServiceTypes, DEFAULT_TARGET } from "../src/types";
+import {
+  CliResult,
+  CF_PAGE_SIZE,
+  eFilters,
+  eServiceTypes,
+  DEFAULT_TARGET,
+} from "../src/types";
 import { stringify, parse } from "comment-json";
 import { messages } from "../src/messages";
 import { cfGetConfigFilePath } from "../src/utils";
@@ -49,7 +55,8 @@ describe("cf-local-b unit tests", () => {
     const user = "testUser";
     const apiVer = "2.146.0";
     const noSpace = "No space targeted, use 'cf target -s SPACE'";
-    const noOrgNoSpace = "No org or space targeted, use 'cf target -o ORG -s SPACE'";
+    const noOrgNoSpace =
+      "No org or space targeted, use 'cf target -o ORG -s SPACE'";
 
     it("ok:: target - no space targeted", async () => {
       cliResult.stdout = `"Api endpoint:   ${endpoint}"
@@ -57,7 +64,10 @@ describe("cf-local-b unit tests", () => {
             "user:           ${user}"
             "org:            ${org}"
             ${noSpace}`;
-      cliMock.expects("execute").withExactArgs(testArgs, testOptions, undefined).resolves(cliResult);
+      cliMock
+        .expects("execute")
+        .withExactArgs(testArgs, testOptions, undefined)
+        .resolves(cliResult);
       const result = await cfLocal.cfGetTarget(true);
       expect(result["api endpoint"]).to.be.equal(endpoint);
       expect(result["api version"]).to.be.equal(apiVer);
@@ -71,7 +81,10 @@ describe("cf-local-b unit tests", () => {
             "Api version:    ${apiVer}"
             "user:           ${user}"
             ${noOrgNoSpace}`;
-      cliMock.expects("execute").withExactArgs(testArgs, testOptions, undefined).resolves(cliResult);
+      cliMock
+        .expects("execute")
+        .withExactArgs(testArgs, testOptions, undefined)
+        .resolves(cliResult);
       const result = await cfLocal.cfGetTarget(true);
       expect(result["api endpoint"]).to.be.equal(endpoint);
       expect(result["api version"]).to.be.equal(apiVer);
@@ -87,7 +100,10 @@ describe("cf-local-b unit tests", () => {
             "org:            ${org}"
             "space:          ${space}"
             `;
-      cliMock.expects("execute").withExactArgs(testArgs, testOptions, undefined).resolves(cliResult);
+      cliMock
+        .expects("execute")
+        .withExactArgs(testArgs, testOptions, undefined)
+        .resolves(cliResult);
       const result = await cfLocal.cfGetTarget(true);
       expect(result["api endpoint"]).to.be.equal(endpoint);
       expect(result["api version"]).to.be.equal(apiVer);
@@ -102,7 +118,10 @@ describe("cf-local-b unit tests", () => {
       cliResult.stderr = `Not logged in. Use 'cf login' or 'cf login --sso' to log in.
             `;
       cliResult.exitCode = 1;
-      cliMock.expects("execute").withExactArgs(testArgs, testOptions, undefined).resolves(cliResult);
+      cliMock
+        .expects("execute")
+        .withExactArgs(testArgs, testOptions, undefined)
+        .resolves(cliResult);
       try {
         await cfLocal.cfGetTarget(true);
         fail("test should fail");
@@ -116,7 +135,10 @@ describe("cf-local-b unit tests", () => {
             `;
       cliResult.stderr = "";
       cliResult.exitCode = 1;
-      cliMock.expects("execute").withExactArgs(testArgs, testOptions, undefined).resolves(cliResult);
+      cliMock
+        .expects("execute")
+        .withExactArgs(testArgs, testOptions, undefined)
+        .resolves(cliResult);
       try {
         await cfLocal.cfGetTarget(true);
         fail("test should fail");
@@ -129,7 +151,10 @@ describe("cf-local-b unit tests", () => {
       cliResult.stdout = ``;
       cliResult.stderr = `authentication error`;
       cliResult.exitCode = 1;
-      cliMock.expects("execute").withExactArgs(["oauth-token"], undefined, undefined).resolves(cliResult);
+      cliMock
+        .expects("execute")
+        .withExactArgs(["oauth-token"], undefined, undefined)
+        .resolves(cliResult);
       try {
         await cfLocal.cfGetTarget();
         fail("test should fail");
@@ -143,7 +168,10 @@ describe("cf-local-b unit tests", () => {
       cliResult.stderr = "testError";
       cliResult.exitCode = 1;
       cliResult.error = "target error";
-      cliMock.expects("execute").withExactArgs(["targets"], undefined, undefined).resolves(cliResult);
+      cliMock
+        .expects("execute")
+        .withExactArgs(["targets"], undefined, undefined)
+        .resolves(cliResult);
       try {
         await cfLocal.cfGetTargets();
         fail("test should fail");
@@ -157,8 +185,13 @@ describe("cf-local-b unit tests", () => {
       cliResult.error = "";
       cliResult.stderr = "";
       cliResult.exitCode = 0;
-      cliMock.expects("execute").withExactArgs(["targets"], undefined, undefined).resolves(cliResult);
-      const expectedResult = [{ label: DEFAULT_TARGET, isCurrent: true, isDirty: false }];
+      cliMock
+        .expects("execute")
+        .withExactArgs(["targets"], undefined, undefined)
+        .resolves(cliResult);
+      const expectedResult = [
+        { label: DEFAULT_TARGET, isCurrent: true, isDirty: false },
+      ];
       const result = await cfLocal.cfGetTargets();
       expect(result).to.be.deep.equal(expectedResult);
     });
@@ -166,8 +199,13 @@ describe("cf-local-b unit tests", () => {
     it("ok:: is not a registered command", async () => {
       cliResult.stdout = "test - is not a registered command";
       cliResult.error = "";
-      cliMock.expects("execute").withExactArgs(["targets"], undefined, undefined).resolves(cliResult);
-      const expectedResult = [{ label: DEFAULT_TARGET, isCurrent: true, isDirty: false }];
+      cliMock
+        .expects("execute")
+        .withExactArgs(["targets"], undefined, undefined)
+        .resolves(cliResult);
+      const expectedResult = [
+        { label: DEFAULT_TARGET, isCurrent: true, isDirty: false },
+      ];
       const result = await cfLocal.cfGetTargets();
       expect(result).to.be.deep.equal(expectedResult);
     });
@@ -176,7 +214,10 @@ describe("cf-local-b unit tests", () => {
       cliResult.stdout = "";
       cliResult.error = "";
       cliResult.exitCode = 0;
-      cliMock.expects("execute").withExactArgs(["targets"], undefined, undefined).resolves(cliResult);
+      cliMock
+        .expects("execute")
+        .withExactArgs(["targets"], undefined, undefined)
+        .resolves(cliResult);
       const result = await cfLocal.cfGetTargets();
       expect(result).to.be.empty;
     });
@@ -184,17 +225,27 @@ describe("cf-local-b unit tests", () => {
     it("ok:: there is '(current' in parentthesisPos", async () => {
       cliResult.stdout = "test modified (current  test";
       cliResult.error = "";
-      cliMock.expects("execute").withExactArgs(["targets"], undefined, undefined).resolves(cliResult);
+      cliMock
+        .expects("execute")
+        .withExactArgs(["targets"], undefined, undefined)
+        .resolves(cliResult);
       const result = await cfLocal.cfGetTargets();
-      expect(result).to.be.deep.equal([{ label: "test modified", isCurrent: true, isDirty: true }]);
+      expect(result).to.be.deep.equal([
+        { label: "test modified", isCurrent: true, isDirty: true },
+      ]);
     });
 
     it("ok:: no '(current' in parentthesisPos", async () => {
       cliResult.stdout = "test substring";
       cliResult.error = "";
-      cliMock.expects("execute").withExactArgs(["targets"], undefined, undefined).resolves(cliResult);
+      cliMock
+        .expects("execute")
+        .withExactArgs(["targets"], undefined, undefined)
+        .resolves(cliResult);
       const result = await cfLocal.cfGetTargets();
-      expect(result).to.be.deep.equal([{ label: cliResult.stdout, isCurrent: false, isDirty: false }]);
+      expect(result).to.be.deep.equal([
+        { label: cliResult.stdout, isCurrent: false, isDirty: false },
+      ]);
     });
   });
 
@@ -246,7 +297,10 @@ describe("cf-local-b unit tests", () => {
       cliMock
         .expects("execute")
         .withArgs(["curl", `/v3/service_instances/${guids[1]}/credentials`])
-        .resolves({ stdout: stringify({ errors: [{ error: "error" }] }), exitCode: 0 });
+        .resolves({
+          stdout: stringify({ errors: [{ error: "error" }] }),
+          exitCode: 0,
+        });
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const query: any = {
         page: null,
@@ -304,7 +358,10 @@ describe("cf-local-b unit tests", () => {
       error: "",
     };
     const filePath = "testFilePath";
-    const instanceNames: string[] = ["name-test-i+!_@)#($*%&^&-(ups)", "name-NHY&*^%$+_*-1mznx"];
+    const instanceNames: string[] = [
+      "name-test-i+!_@)#($*%&^&-(ups)",
+      "name-NHY&*^%$+_*-1mznx",
+    ];
     const tags: string[] = ["tag1", "tag2"];
 
     it("ok:: instance names contains specials chars", async () => {
@@ -325,7 +382,7 @@ describe("cf-local-b unit tests", () => {
             tags[1],
           ],
           undefined,
-          undefined,
+          undefined
         )
         .resolves(cliResult);
       await cfLocal.cfBindLocalUps(filePath, instanceNames, tags);
@@ -350,7 +407,7 @@ describe("cf-local-b unit tests", () => {
             "-quote-vcap",
           ],
           undefined,
-          undefined,
+          undefined
         )
         .resolves(cliResult);
       await cfLocal.cfBindLocalUps(filePath, instanceNames, tags, true);
@@ -369,7 +426,10 @@ describe("cf-local-b unit tests", () => {
       cliResult.stdout = ``;
       cliResult.stderr = ``;
       cliResult.exitCode = 0;
-      cliMock.expects("execute").withExactArgs(["logout"], undefined, undefined).resolves(cliResult);
+      cliMock
+        .expects("execute")
+        .withExactArgs(["logout"], undefined, undefined)
+        .resolves(cliResult);
       await cfLocal.cfLogout();
     });
   });
@@ -414,10 +474,12 @@ describe("cf-local-b unit tests", () => {
             "POST",
           ],
           undefined,
-          undefined,
+          undefined
         )
         .resolves(cliResult);
-      expect(await cfLocal.cfCreateUpsInstance({ instanceName, tags })).to.deep.equal(parse(cliResult.stdout));
+      expect(
+        await cfLocal.cfCreateUpsInstance({ instanceName, tags })
+      ).to.deep.equal(parse(cliResult.stdout));
     });
 
     it("ok:: space value specified", async () => {
@@ -435,12 +497,15 @@ describe("cf-local-b unit tests", () => {
             "POST",
           ],
           undefined,
-          undefined,
+          undefined
         )
         .resolves(cliResult);
-      expect(await cfLocal.cfCreateUpsInstance({ instanceName: instanceName, space_guid: mySpace })).to.deep.equal(
-        parse(cliResult.stdout),
-      );
+      expect(
+        await cfLocal.cfCreateUpsInstance({
+          instanceName: instanceName,
+          space_guid: mySpace,
+        })
+      ).to.deep.equal(parse(cliResult.stdout));
     });
 
     it("exception:: space value not specified, default is unavailable", async () => {
@@ -450,7 +515,11 @@ describe("cf-local-b unit tests", () => {
         .resolves(`{ "SpaceFields": { "GUIDI": "${spaceGuid}" }}`);
       cliMock
         .expects("execute")
-        .withArgs(["curl", "/v3/service_instances", "-d", "-X", "POST"], undefined, undefined)
+        .withArgs(
+          ["curl", "/v3/service_instances", "-d", "-X", "POST"],
+          undefined,
+          undefined
+        )
         .never();
       try {
         await cfLocal.cfCreateUpsInstance({ instanceName: instanceName });
@@ -471,7 +540,7 @@ describe("cf-local-b unit tests", () => {
         { credentials: cred },
         { route_service_url: serviceUrl },
         { syslog_drain_url: drainUrl },
-        { tags: tags },
+        { tags: tags }
       );
       fsMock
         .expects("readFile")
@@ -489,7 +558,7 @@ describe("cf-local-b unit tests", () => {
             "POST",
           ],
           undefined,
-          undefined,
+          undefined
         )
         .resolves(cliResult);
       expect(
@@ -499,7 +568,7 @@ describe("cf-local-b unit tests", () => {
           route_service_url: serviceUrl,
           syslog_drain_url: drainUrl,
           tags,
-        }),
+        })
       ).to.deep.equal(parse(cliResult.stdout));
     });
   });
@@ -613,25 +682,34 @@ describe("cf-local-b unit tests", () => {
       cliMock
         .expects("execute")
         .withExactArgs(
-          ["curl", `/v3/service_credential_bindings?names=${instanceName}&type=key&per_page=${CF_PAGE_SIZE}`],
+          [
+            "curl",
+            `/v3/service_credential_bindings?names=${instanceName}&type=key&per_page=${CF_PAGE_SIZE}`,
+          ],
           undefined,
-          undefined,
+          undefined
         )
         .resolves(cliResult);
       cliMock
         .expects("execute")
         .withExactArgs(
-          ["curl", `/v3/service_credential_bindings/${result.resources[0].guid}/details`],
+          [
+            "curl",
+            `/v3/service_credential_bindings/${result.resources[0].guid}/details`,
+          ],
           undefined,
-          undefined,
+          undefined
         )
         .resolves({ exitCode: 0, stdout: stringify(details) });
       cliMock
         .expects("execute")
         .withExactArgs(
-          ["curl", `/v3/service_credential_bindings/${result.resources[1].guid}/details`],
+          [
+            "curl",
+            `/v3/service_credential_bindings/${result.resources[1].guid}/details`,
+          ],
           undefined,
-          undefined,
+          undefined
         )
         .resolves({ exitCode: 0, stdout: stringify(details) });
       const output = await cfLocal.cfGetInstanceCredentials({
@@ -652,25 +730,34 @@ describe("cf-local-b unit tests", () => {
       cliMock
         .expects("execute")
         .withExactArgs(
-          ["curl", `/v3/service_credential_bindings?names=${instanceName}&type=key&per_page=${CF_PAGE_SIZE}`],
+          [
+            "curl",
+            `/v3/service_credential_bindings?names=${instanceName}&type=key&per_page=${CF_PAGE_SIZE}`,
+          ],
           undefined,
-          undefined,
+          undefined
         )
         .resolves(cliResult);
       cliMock
         .expects("execute")
         .withExactArgs(
-          ["curl", `/v3/service_credential_bindings/${result.resources[0].guid}/details`],
+          [
+            "curl",
+            `/v3/service_credential_bindings/${result.resources[0].guid}/details`,
+          ],
           undefined,
-          undefined,
+          undefined
         )
         .resolves({ exitCode: 0, stdout: stringify(details) });
       cliMock
         .expects("execute")
         .withExactArgs(
-          ["curl", `/v3/service_credential_bindings/${result.resources[1].guid}/details`],
+          [
+            "curl",
+            `/v3/service_credential_bindings/${result.resources[1].guid}/details`,
+          ],
           undefined,
-          undefined,
+          undefined
         )
         .rejects(new Error("error"));
       const output = await cfLocal.cfGetInstanceCredentials({
@@ -693,9 +780,12 @@ describe("cf-local-b unit tests", () => {
       cliMock
         .expects("execute")
         .withExactArgs(
-          ["curl", `/v3/service_credential_bindings?names=${instanceName}&type=key&per_page=${CF_PAGE_SIZE}`],
+          [
+            "curl",
+            `/v3/service_credential_bindings?names=${instanceName}&type=key&per_page=${CF_PAGE_SIZE}`,
+          ],
           undefined,
-          undefined,
+          undefined
         )
         .resolves(cliResult);
       const output = await cfLocal.cfGetInstanceCredentials({
@@ -779,7 +869,10 @@ describe("cf-local-b unit tests", () => {
     };
 
     beforeEach(() => {
-      fsMock.expects("readFile").withExactArgs(cfGetConfigFilePath(), { encoding: "utf8" }).resolves(`{"SpaceFields": {
+      fsMock
+        .expects("readFile")
+        .withExactArgs(cfGetConfigFilePath(), { encoding: "utf8" })
+        .resolves(`{"SpaceFields": {
                 "GUID": "${spaceGuid}"
             }}`);
     });
@@ -796,11 +889,11 @@ describe("cf-local-b unit tests", () => {
           [
             "curl",
             `/v3/service_instances?names=${encodeURIComponent(
-              instanceName,
+              instanceName
             )}&type=managed&space_guids=${spaceGuid}&per_page=297`,
           ],
           undefined,
-          undefined,
+          undefined
         )
         .resolves({
           exitCode: 0,
@@ -814,15 +907,18 @@ describe("cf-local-b unit tests", () => {
             `/v3/service_credential_bindings?service_instance_guids=${instanceGuid}&type=key&per_page=${CF_PAGE_SIZE}`,
           ],
           undefined,
-          undefined,
+          undefined
         )
         .resolves(cliResult);
       cliMock
         .expects("execute")
         .withExactArgs(
-          ["curl", `/v3/service_credential_bindings/${result.resources[0].guid}/details`],
+          [
+            "curl",
+            `/v3/service_credential_bindings/${result.resources[0].guid}/details`,
+          ],
           undefined,
-          undefined,
+          undefined
         )
         .resolves({ exitCode: 0, stdout: stringify(details) });
       const params = await cfLocal.cfGetInstanceKeyParameters(instanceName);
@@ -841,11 +937,11 @@ describe("cf-local-b unit tests", () => {
           [
             "curl",
             `/v3/service_instances?names=${encodeURIComponent(
-              instanceName,
+              instanceName
             )}&type=managed&space_guids=${spaceGuid}&per_page=297`,
           ],
           undefined,
-          undefined,
+          undefined
         )
         .resolves({
           exitCode: 0,
@@ -859,17 +955,23 @@ describe("cf-local-b unit tests", () => {
             `/v3/service_credential_bindings?service_instance_guids=${instanceGuid}&type=key&per_page=${CF_PAGE_SIZE}`,
           ],
           undefined,
-          undefined,
+          undefined
         )
         .resolves(cliResult);
       cliMock
         .expects("execute")
         .withExactArgs(
-          ["curl", `/v3/service_credential_bindings/${result.resources[0].guid}/details`],
+          [
+            "curl",
+            `/v3/service_credential_bindings/${result.resources[0].guid}/details`,
+          ],
           undefined,
-          undefined,
+          undefined
         )
-        .rejects({ exitCode: 0, stdout: stringify({ errors: { error: { code: "111" } } }) });
+        .rejects({
+          exitCode: 0,
+          stdout: stringify({ errors: { error: { code: "111" } } }),
+        });
       const params = await cfLocal.cfGetInstanceKeyParameters(instanceName);
       expect(params).be.empty;
     });
@@ -881,11 +983,11 @@ describe("cf-local-b unit tests", () => {
           [
             "curl",
             `/v3/service_instances?names=${encodeURIComponent(
-              instanceName,
+              instanceName
             )}&type=managed&space_guids=${spaceGuid}&per_page=297`,
           ],
           undefined,
-          undefined,
+          undefined
         )
         .resolves({
           exitCode: 0,
@@ -913,11 +1015,11 @@ describe("cf-local-b unit tests", () => {
           [
             "curl",
             `/v3/service_instances?names=${encodeURIComponent(
-              instanceName,
+              instanceName
             )}&type=managed&space_guids=${spaceGuid}&per_page=297`,
           ],
           undefined,
-          undefined,
+          undefined
         )
         .resolves({
           exitCode: 0,
@@ -931,7 +1033,7 @@ describe("cf-local-b unit tests", () => {
             `/v3/service_credential_bindings?service_instance_guids=${instanceGuid}&type=key&per_page=${CF_PAGE_SIZE}`,
           ],
           undefined,
-          undefined,
+          undefined
         )
         .resolves({ exitCode: 0, stdout: '{"resources": []}' });
       cliMock
@@ -942,20 +1044,28 @@ describe("cf-local-b unit tests", () => {
             `/v3/service_credential_bindings?service_instance_guids=${instanceGuid}&type=key&names=key&per_page=${CF_PAGE_SIZE}`,
           ],
           undefined,
-          undefined,
+          undefined
         )
         .resolves(cliResult);
       cliMock
         .expects("execute")
         .withExactArgs(
-          ["curl", `/v3/service_credential_bindings/${result.resources[0].guid}/details`],
+          [
+            "curl",
+            `/v3/service_credential_bindings/${result.resources[0].guid}/details`,
+          ],
           undefined,
-          undefined,
+          undefined
         )
         .resolves({ exitCode: 0, stdout: stringify(details) });
       cliMock
         .expects("execute")
-        .withExactArgs(["create-service-key", encodeURIComponent(instanceName), "key", "--wait"])
+        .withExactArgs([
+          "create-service-key",
+          encodeURIComponent(instanceName),
+          "key",
+          "--wait",
+        ])
         .resolves();
       const params = await cfLocal.cfGetInstanceKeyParameters(instanceName);
       assert.deepEqual(params, details);
@@ -1126,10 +1236,16 @@ describe("cf-local-b unit tests", () => {
 
     it("exception:: no valid filters provided", async () => {
       try {
-        await cfLocal.cfGetApps({ filters: [{ key: eFilters.service_broker_names, value: "broker-name" }] });
+        await cfLocal.cfGetApps({
+          filters: [
+            { key: eFilters.service_broker_names, value: "broker-name" },
+          ],
+        });
         fail("test should fail");
       } catch (e) {
-        expect(e.message).to.be.equal(messages.not_allowed_filter(eFilters.service_broker_names, "apps"));
+        expect(e.message).to.be.equal(
+          messages.not_allowed_filter(eFilters.service_broker_names, "apps")
+        );
       }
     });
 
@@ -1145,12 +1261,17 @@ describe("cf-local-b unit tests", () => {
       cliMock
         .expects("execute")
         .withExactArgs(
-          ["curl", `/v3/apps?names=${value}&space_guids=${spaceGuid}&per_page=${CF_PAGE_SIZE}`],
+          [
+            "curl",
+            `/v3/apps?names=${value}&space_guids=${spaceGuid}&per_page=${CF_PAGE_SIZE}`,
+          ],
           undefined,
-          undefined,
+          undefined
         )
         .resolves(cliResult);
-      const answer = await cfLocal.cfGetApps({ filters: [{ key: eFilters.names, value }] });
+      const answer = await cfLocal.cfGetApps({
+        filters: [{ key: eFilters.names, value }],
+      });
       assert.deepEqual(answer, result.resources);
     });
 
@@ -1161,10 +1282,19 @@ describe("cf-local-b unit tests", () => {
       cliResult.stdout = "JSON.stringify(result);";
       cliMock
         .expects("execute")
-        .withExactArgs(["curl", `/v3/apps?space_guids=${spaceGuid}&per_page=${CF_PAGE_SIZE}`], undefined, undefined)
+        .withExactArgs(
+          [
+            "curl",
+            `/v3/apps?space_guids=${spaceGuid}&per_page=${CF_PAGE_SIZE}`,
+          ],
+          undefined,
+          undefined
+        )
         .resolves(cliResult);
       try {
-        await cfLocal.cfGetApps({ filters: [{ key: eFilters.space_guids, value: spaceGuid }] });
+        await cfLocal.cfGetApps({
+          filters: [{ key: eFilters.space_guids, value: spaceGuid }],
+        });
         fail("test should fail");
       } catch (e) {
         expect(e.message).to.be.equal(cliResult.error);

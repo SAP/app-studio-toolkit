@@ -6,13 +6,22 @@ import * as fs from "fs";
 import * as path from "path";
 import { parse } from "comment-json";
 import { messages } from "./messages";
-import { IServiceQuery, CF_PAGE_SIZE, IServiceFilters, eFilters, eServiceTypes } from "./types";
+import {
+  IServiceQuery,
+  CF_PAGE_SIZE,
+  IServiceFilters,
+  eFilters,
+  eServiceTypes,
+} from "./types";
 
 export async function dataContentAsObject(filePath: string) {
   try {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return _.reduce(
-      _.split(await fs.promises.readFile(filePath, { encoding: "utf8" }), os.EOL),
+      _.split(
+        await fs.promises.readFile(filePath, { encoding: "utf8" }),
+        os.EOL
+      ),
       (data: any, line: string) => {
         const parts = _.split(line, "=");
         if (_.size(parts) > 1) {
@@ -21,7 +30,7 @@ export async function dataContentAsObject(filePath: string) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         return data;
       },
-      {},
+      {}
     );
   } catch (error) {
     // log error
@@ -37,7 +46,10 @@ export function ensureQuery(query?: IServiceQuery): IServiceQuery {
   return query;
 }
 
-export function padQuery(query: IServiceQuery, otherFilters: IServiceFilters[]): IServiceQuery {
+export function padQuery(
+  query: IServiceQuery,
+  otherFilters: IServiceFilters[]
+): IServiceQuery {
   query = ensureQuery(query);
   _.each(otherFilters, (other) => {
     const filter = _.find(query.filters, ["key", other.key]);
@@ -82,13 +94,22 @@ export function getTags(resource: any): string[] {
  * @returns
  */
 export function cfGetConfigFilePath(target?: string): string {
-  const relatives = target ? ["targets", `${target}.config.json`] : [`config.json`];
+  const relatives = target
+    ? ["targets", `${target}.config.json`]
+    : [`config.json`];
   /* eslint-disable-next-line @typescript-eslint/no-unsafe-argument */
-  return path.join(_.get(process, "env.CF_HOME", os.homedir()), ".cf", ...relatives);
+  return path.join(
+    _.get(process, "env.CF_HOME", os.homedir()),
+    ".cf",
+    ...relatives
+  );
 }
 
 export function isUpsType(resource: any): boolean {
-  return _.get(resource, "type", eServiceTypes.managed) === eServiceTypes.user_provided;
+  return (
+    _.get(resource, "type", eServiceTypes.managed) ===
+    eServiceTypes.user_provided
+  );
 }
 
 /**
@@ -98,7 +119,11 @@ export function isUpsType(resource: any): boolean {
  */
 export async function cfGetConfigFileJson(target?: string): Promise<unknown> {
   try {
-    return parse(await fs.promises.readFile(cfGetConfigFilePath(target), { encoding: "utf8" }));
+    return parse(
+      await fs.promises.readFile(cfGetConfigFilePath(target), {
+        encoding: "utf8",
+      })
+    );
   } catch (error) {
     // empty or non existing file
   }
@@ -110,24 +135,35 @@ export async function cfGetConfigFileJson(target?: string): Promise<unknown> {
  * @param target: string (optional), in case a predefined target configuration file exists the value will be fetched from there
  * @returns object: json
  */
-export async function cfGetConfigFileField(field: string, target?: string): Promise<any> {
+export async function cfGetConfigFileField(
+  field: string,
+  target?: string
+): Promise<any> {
   return _.get(await cfGetConfigFileJson(target), `${field}`);
 }
 
 export async function getSpaceGuidThrowIfUndefined(): Promise<string> {
-  const space: string = getSpaceFieldGUID(await cfGetConfigFileField("SpaceFields"));
+  const space: string = getSpaceFieldGUID(
+    await cfGetConfigFileField("SpaceFields")
+  );
   if (!space) {
     throw new Error(messages.cf_setting_not_set);
   }
   return space;
 }
 
-export async function padQuerySpace(query: IServiceQuery, otherFilters?: IServiceFilters[]): Promise<IServiceQuery> {
+export async function padQuerySpace(
+  query: IServiceQuery,
+  otherFilters?: IServiceFilters[]
+): Promise<IServiceQuery> {
   query = padQuery(query, otherFilters);
   const filter = _.find(query.filters, ["key", eFilters.space_guids]);
   if (!_.size(filter?.value)) {
     query.filters = _.concat(query.filters, [
-      { key: eFilters.space_guids, value: await getSpaceGuidThrowIfUndefined() },
+      {
+        key: eFilters.space_guids,
+        value: await getSpaceGuidThrowIfUndefined(),
+      },
     ]);
   }
   return query;

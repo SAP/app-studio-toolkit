@@ -5,7 +5,11 @@ import * as _ from "lodash";
 import { CliResult, CF_CMD_EXIT_CODE, CancellationToken } from "./types";
 
 export class Cli {
-  public static execute(args?: string[], options?: SpawnOptions, token?: CancellationToken): Promise<CliResult> {
+  public static execute(
+    args?: string[],
+    options?: SpawnOptions,
+    token?: CancellationToken
+  ): Promise<CliResult> {
     token = token || {
       isCancellationRequested: false,
       onCancellationRequested: () => {
@@ -19,7 +23,12 @@ export class Cli {
       let stdout = "";
 
       if (token.isCancellationRequested) {
-        Cli.cliResultOnExit(stdout, resolve, stderr, CF_CMD_EXIT_CODE.CANCEL_REQ);
+        Cli.cliResultOnExit(
+          stdout,
+          resolve,
+          stderr,
+          CF_CMD_EXIT_CODE.CANCEL_REQ
+        );
         return;
       }
       const childProcess = spawn(Cli.CF_CMD, args, options);
@@ -40,9 +49,16 @@ export class Cli {
 
       childProcess.on("error", (err: any) => {
         const message = (
-          _.get(err, "code") === "ENOENT" ? `${Cli.CF_CMD}: command not found` : _.get(err, "message")
+          _.get(err, "code") === "ENOENT"
+            ? `${Cli.CF_CMD}: command not found`
+            : _.get(err, "message")
         ) as string;
-        resolve({ stdout: stdout, stderr: stderr, error: message, exitCode: CF_CMD_EXIT_CODE.ERROR });
+        resolve({
+          stdout: stdout,
+          stderr: stderr,
+          error: message,
+          exitCode: CF_CMD_EXIT_CODE.ERROR,
+        });
       });
 
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call
@@ -53,14 +69,15 @@ export class Cli {
     });
   }
 
-  private static readonly CF_LOGIN_ERROR = "Not logged in. Use 'cf login' to log in.";
+  private static readonly CF_LOGIN_ERROR =
+    "Not logged in. Use 'cf login' to log in.";
   private static readonly CF_CMD = "cf";
 
   private static cliResultOnExit(
     stdout: string,
     resolve: (value?: CliResult | PromiseLike<CliResult>) => void,
     stderr: string,
-    code: number,
+    code: number
   ) {
     if (stdout) {
       if (stdout.indexOf("error_code") > 0) {
@@ -68,16 +85,31 @@ export class Cli {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           const cfErr = parse(stdout);
           const message = (
-            _.get(cfErr, "code") === 10002 ? Cli.CF_LOGIN_ERROR : _.get(cfErr, "description", "Internal error occured")
+            _.get(cfErr, "code") === 10002
+              ? Cli.CF_LOGIN_ERROR
+              : _.get(cfErr, "description", "Internal error occured")
           ) as string;
-          resolve({ stdout: stdout, stderr: stderr, exitCode: CF_CMD_EXIT_CODE.ERROR, error: message });
+          resolve({
+            stdout: stdout,
+            stderr: stderr,
+            exitCode: CF_CMD_EXIT_CODE.ERROR,
+            error: message,
+          });
           return;
         } catch (e) {
           // ignore, as probably not an error
         }
-      } else if (stdout.startsWith("FAILED") && stdout.indexOf("Error creating request") > 0) {
+      } else if (
+        stdout.startsWith("FAILED") &&
+        stdout.indexOf("Error creating request") > 0
+      ) {
         // most probably not logged in
-        resolve({ stdout: stdout, stderr: stderr, error: Cli.CF_LOGIN_ERROR, exitCode: CF_CMD_EXIT_CODE.ERROR });
+        resolve({
+          stdout: stdout,
+          stderr: stderr,
+          error: Cli.CF_LOGIN_ERROR,
+          exitCode: CF_CMD_EXIT_CODE.ERROR,
+        });
         return;
       } else if (/failed.*\bError\b:/g.test(stdout)) {
         // lgtm [js/polynomial-redos]
@@ -85,12 +117,25 @@ export class Cli {
         try {
           parse(stdout); // ignore, well structured data - probably not an error
         } catch (e) {
-          resolve({ stdout: stdout, stderr: stderr, error: stdout, exitCode: CF_CMD_EXIT_CODE.ERROR });
+          resolve({
+            stdout: stdout,
+            stderr: stderr,
+            error: stdout,
+            exitCode: CF_CMD_EXIT_CODE.ERROR,
+          });
           return;
         }
-      } else if (stdout.startsWith("FAILED") && stdout.indexOf("No API endpoint set") > 0) {
+      } else if (
+        stdout.startsWith("FAILED") &&
+        stdout.indexOf("No API endpoint set") > 0
+      ) {
         // DEVXBUGS-6488
-        resolve({ stdout: stdout, stderr: stderr, error: stdout, exitCode: CF_CMD_EXIT_CODE.ERROR });
+        resolve({
+          stdout: stdout,
+          stderr: stderr,
+          error: stdout,
+          exitCode: CF_CMD_EXIT_CODE.ERROR,
+        });
         return;
       }
     }

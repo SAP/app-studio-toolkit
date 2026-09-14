@@ -34,40 +34,61 @@ describe("task unit tests", () => {
       const taskToSave = { label: "test" };
       fsMock
         .expects("writeFile")
-        .withExactArgs(taskJsonFilePath, stringify({ version: "2.0.0", tasks: [taskToSave] }, undefined, "  "))
+        .withExactArgs(
+          taskJsonFilePath,
+          stringify({ version: "2.0.0", tasks: [taskToSave] }, undefined, "  ")
+        )
         .resolves();
       await saveTaskConfiguration("wsPath", taskToSave);
     });
 
     it("tasks.json has invalid json content", async () => {
       const taskJsonFilePath = path.join("wsPath", ".vscode", "tasks.json");
-      fsMock.expects("readFile").withExactArgs(taskJsonFilePath, { encoding: "utf8" }).resolves("");
+      fsMock
+        .expects("readFile")
+        .withExactArgs(taskJsonFilePath, { encoding: "utf8" })
+        .resolves("");
       const taskToSave = { label: "test" };
       fsMock
         .expects("writeFile")
-        .withExactArgs(taskJsonFilePath, stringify({ version: "2.0.0", tasks: [taskToSave] }, undefined, "  "))
+        .withExactArgs(
+          taskJsonFilePath,
+          stringify({ version: "2.0.0", tasks: [taskToSave] }, undefined, "  ")
+        )
         .resolves();
       await saveTaskConfiguration("wsPath", taskToSave);
     });
 
     it("tasks.json content is empty json", async () => {
       const taskJsonFilePath = path.join("wsPath", ".vscode", "tasks.json");
-      fsMock.expects("readFile").withExactArgs(taskJsonFilePath, { encoding: "utf8" }).resolves("{}");
+      fsMock
+        .expects("readFile")
+        .withExactArgs(taskJsonFilePath, { encoding: "utf8" })
+        .resolves("{}");
       const taskToSave = { label: "test" };
       fsMock
         .expects("writeFile")
-        .withExactArgs(taskJsonFilePath, stringify({ version: "2.0.0", tasks: [taskToSave] }, undefined, "  "))
+        .withExactArgs(
+          taskJsonFilePath,
+          stringify({ version: "2.0.0", tasks: [taskToSave] }, undefined, "  ")
+        )
         .resolves();
       await saveTaskConfiguration("wsPath", taskToSave);
     });
 
     it("tasks.json content has only version property", async () => {
       const taskJsonFilePath = path.join("wsPath", ".vscode", "tasks.json");
-      fsMock.expects("readFile").withExactArgs(taskJsonFilePath, { encoding: "utf8" }).resolves(`{"version": "1.2.3"}`);
+      fsMock
+        .expects("readFile")
+        .withExactArgs(taskJsonFilePath, { encoding: "utf8" })
+        .resolves(`{"version": "1.2.3"}`);
       const taskToSave = { label: "test" };
       fsMock
         .expects("writeFile")
-        .withExactArgs(taskJsonFilePath, stringify({ version: "1.2.3", tasks: [taskToSave] }, undefined, "  "))
+        .withExactArgs(
+          taskJsonFilePath,
+          stringify({ version: "1.2.3", tasks: [taskToSave] }, undefined, "  ")
+        )
         .resolves();
       await saveTaskConfiguration("wsPath", taskToSave);
     });
@@ -83,7 +104,11 @@ describe("task unit tests", () => {
         .expects("writeFile")
         .withExactArgs(
           taskJsonFilePath,
-          stringify({ version: "1.2.3", tasks: [{ label: "test2" }, taskToSave] }, undefined, "  "),
+          stringify(
+            { version: "1.2.3", tasks: [{ label: "test2" }, taskToSave] },
+            undefined,
+            "  "
+          )
         )
         .resolves();
       await saveTaskConfiguration("wsPath", taskToSave);

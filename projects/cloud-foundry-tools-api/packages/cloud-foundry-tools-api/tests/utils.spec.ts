@@ -31,19 +31,28 @@ describe("Util unit tests", () => {
 
   describe("dataContentAsObject", () => {
     it("fs.readFile throws error", async () => {
-      fsMock.expects("readFile").withExactArgs(".env", { encoding: "utf8" }).throws(new Error("cannot read the file"));
+      fsMock
+        .expects("readFile")
+        .withExactArgs(".env", { encoding: "utf8" })
+        .throws(new Error("cannot read the file"));
       const resObj = await utils.dataContentAsObject(".env");
       expect(resObj).to.be.deep.equal({});
     });
 
     it("fs.readFile returns empty file", async () => {
-      fsMock.expects("readFile").withExactArgs(".env", { encoding: "utf8" }).resolves("");
+      fsMock
+        .expects("readFile")
+        .withExactArgs(".env", { encoding: "utf8" })
+        .resolves("");
       const resObj = await utils.dataContentAsObject(".env");
       expect(resObj).to.be.deep.equal({});
     });
 
     it("fs.readFile returns file with json content", async () => {
-      fsMock.expects("readFile").withExactArgs(".env", { encoding: "utf8" }).resolves(`{id: 123}`);
+      fsMock
+        .expects("readFile")
+        .withExactArgs(".env", { encoding: "utf8" })
+        .resolves(`{id: 123}`);
       const resObj = await utils.dataContentAsObject(".env");
       expect(resObj).to.be.deep.equal({});
     });
@@ -53,10 +62,14 @@ describe("Util unit tests", () => {
         .expects("readFile")
         .withExactArgs(".env", { encoding: "utf8" })
         .resolves(
-          `name = test       ${os.EOL}             port = 8080${os.EOL}                    company = SAP     ${os.EOL}               `,
+          `name = test       ${os.EOL}             port = 8080${os.EOL}                    company = SAP     ${os.EOL}               `
         );
       const resObj = await utils.dataContentAsObject(".env");
-      expect(resObj).to.be.deep.equal({ name: "test", port: "8080", company: "SAP" });
+      expect(resObj).to.be.deep.equal({
+        name: "test",
+        port: "8080",
+        company: "SAP",
+      });
     });
 
     it("fs.readFile returns file with dropped line .env content", async () => {
@@ -64,25 +77,33 @@ describe("Util unit tests", () => {
         .expects("readFile")
         .withExactArgs(".env", { encoding: "utf8" })
         .resolves(
-          `name = test       ${os.EOL}             port = 8080${os.EOL}       organization: DevX${os.EOL}             company = SAP     ${os.EOL}               `,
+          `name = test       ${os.EOL}             port = 8080${os.EOL}       organization: DevX${os.EOL}             company = SAP     ${os.EOL}               `
         );
       const resObj = await utils.dataContentAsObject(".env");
-      expect(resObj).to.be.deep.equal({ name: "test", port: "8080", company: "SAP" });
+      expect(resObj).to.be.deep.equal({
+        name: "test",
+        port: "8080",
+        company: "SAP",
+      });
     });
   });
 
   describe("cfGetConfigFilePath scope", () => {
     it("ok:: empty param - default config path returned", () => {
-      expect(utils.cfGetConfigFilePath("")).to.be.equal(path.join(os.homedir(), ".cf", `config.json`));
+      expect(utils.cfGetConfigFilePath("")).to.be.equal(
+        path.join(os.homedir(), ".cf", `config.json`)
+      );
     });
 
     it("ok:: undefine param - default config path returned", () => {
-      expect(utils.cfGetConfigFilePath()).to.be.equal(path.join(os.homedir(), ".cf", `config.json`));
+      expect(utils.cfGetConfigFilePath()).to.be.equal(
+        path.join(os.homedir(), ".cf", `config.json`)
+      );
     });
 
     it("ok:: param provided - target config path returned", () => {
       expect(utils.cfGetConfigFilePath("my-target")).to.be.equal(
-        path.join(os.homedir(), ".cf", "targets", `my-target.config.json`),
+        path.join(os.homedir(), ".cf", "targets", `my-target.config.json`)
       );
     });
   });
@@ -91,19 +112,28 @@ describe("Util unit tests", () => {
     const configFilePath = utils.cfGetConfigFilePath();
 
     it("ok:: required field found and exists", async () => {
-      fsMock.expects("readFile").withExactArgs(configFilePath, { encoding: "utf8" }).resolves(`{"name": "testName"}`);
+      fsMock
+        .expects("readFile")
+        .withExactArgs(configFilePath, { encoding: "utf8" })
+        .resolves(`{"name": "testName"}`);
       const result = await utils.cfGetConfigFileField("name");
       expect(result).to.be.equal("testName");
     });
 
     it("ok:: required field does not exist, undefined value returned", async () => {
-      fsMock.expects("readFile").withExactArgs(configFilePath, { encoding: "utf8" }).resolves("{}");
+      fsMock
+        .expects("readFile")
+        .withExactArgs(configFilePath, { encoding: "utf8" })
+        .resolves("{}");
       const result = await utils.cfGetConfigFileField("name");
       expect(result).to.be.undefined;
     });
 
     it("ok:: failed to read a config file, undefined value returned", async () => {
-      fsMock.expects("readFile").withExactArgs(configFilePath, { encoding: "utf8" }).throws(new Error());
+      fsMock
+        .expects("readFile")
+        .withExactArgs(configFilePath, { encoding: "utf8" })
+        .throws(new Error());
       const result = await utils.cfGetConfigFileField("name");
       expect(result).to.be.undefined;
     });
@@ -116,7 +146,9 @@ describe("Util unit tests", () => {
         .expects("readFile")
         .withExactArgs(utils.cfGetConfigFilePath(), { encoding: "utf8" })
         .resolves(stringify({ SpaceFields: { GUID: spaceValue } }));
-      expect(await utils.getSpaceGuidThrowIfUndefined()).to.be.equal(spaceValue);
+      expect(await utils.getSpaceGuidThrowIfUndefined()).to.be.equal(
+        spaceValue
+      );
     });
 
     it("exception:: unable to read value", async () => {
@@ -135,23 +167,37 @@ describe("Util unit tests", () => {
 
   describe("utilities scope", () => {
     it("ensureQuery:: nothing arg provided", () => {
-      assert.deepEqual(utils.ensureQuery(), { filters: [], per_page: CF_PAGE_SIZE });
+      assert.deepEqual(utils.ensureQuery(), {
+        filters: [],
+        per_page: CF_PAGE_SIZE,
+      });
     });
 
     it("ensureQuery:: empty object provided", () => {
-      assert.deepEqual(utils.ensureQuery({}), { filters: [], per_page: CF_PAGE_SIZE });
+      assert.deepEqual(utils.ensureQuery({}), {
+        filters: [],
+        per_page: CF_PAGE_SIZE,
+      });
     });
 
     it("ensureQuery:: resolved query provided", () => {
-      const query = { filters: [{ key: eFilters.guids, value: "some-guid-test" }], per_page: CF_PAGE_SIZE };
+      const query = {
+        filters: [{ key: eFilters.guids, value: "some-guid-test" }],
+        per_page: CF_PAGE_SIZE,
+      };
       assert.deepEqual(utils.ensureQuery(query), query);
     });
 
     it("padQuery:: verify structure", () => {
-      assert.deepEqual(utils.padQuery(utils.ensureQuery(), [{ key: eFilters.app_guids, value: "app_guids" }]), {
-        filters: [{ key: eFilters.app_guids, value: "app_guids" }],
-        per_page: CF_PAGE_SIZE,
-      });
+      assert.deepEqual(
+        utils.padQuery(utils.ensureQuery(), [
+          { key: eFilters.app_guids, value: "app_guids" },
+        ]),
+        {
+          filters: [{ key: eFilters.app_guids, value: "app_guids" }],
+          per_page: CF_PAGE_SIZE,
+        }
+      );
     });
 
     it("getName:: correct structure", () => {
@@ -163,7 +209,9 @@ describe("Util unit tests", () => {
     });
 
     it("getDescription:: correct structure", () => {
-      expect(utils.getDescription({ description: "description" })).be.equal("description");
+      expect(utils.getDescription({ description: "description" })).be.equal(
+        "description"
+      );
     });
 
     it("getDescription:: incorrect structure", () => {
@@ -214,7 +262,7 @@ describe("Util unit tests", () => {
               },
             },
           },
-        }),
+        })
       ).be.equal("guid");
     });
 
@@ -223,7 +271,10 @@ describe("Util unit tests", () => {
     });
 
     it("getTags:: correct structure", () => {
-      assert.deepEqual(utils.getTags({ tags: ["tags", "hana"] }), ["tags", "hana"]);
+      assert.deepEqual(utils.getTags({ tags: ["tags", "hana"] }), [
+        "tags",
+        "hana",
+      ]);
     });
 
     it("getTags:: incorrect structure", () => {

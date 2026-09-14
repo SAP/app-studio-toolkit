@@ -33,8 +33,14 @@ describe("index package test", () => {
       { guid: "g1", label: "s1", serviceName: `${serviceTypes[0]}` },
       { guid: "g2", label: "s2", serviceName: `${serviceTypes[1]}` },
     ];
-    mockServiceUtils.expects("getServicesInstancesFilteredByType").withExactArgs(serviceTypes).resolves(services);
-    assert.deepEqual(await index.apiGetServicesInstancesFilteredByType(serviceTypes), services);
+    mockServiceUtils
+      .expects("getServicesInstancesFilteredByType")
+      .withExactArgs(serviceTypes)
+      .resolves(services);
+    assert.deepEqual(
+      await index.apiGetServicesInstancesFilteredByType(serviceTypes),
+      services
+    );
   });
 
   it("apiGetInstanceCredentials:: verify calling the 'getInstanceCredentials'", async () => {
@@ -67,7 +73,10 @@ describe("index package test", () => {
       },
       url: "url",
     };
-    mockServiceUtils.expects("getInstanceCredentials").withExactArgs(name).resolves(serviceKey);
+    mockServiceUtils
+      .expects("getInstanceCredentials")
+      .withExactArgs(name)
+      .resolves(serviceKey);
     assert.deepEqual(await index.apiGetInstanceCredentials(name), serviceKey);
   });
 
@@ -81,13 +90,24 @@ describe("index package test", () => {
       .expects("createServiceInstance")
       .withExactArgs(serviceType, servicePlan, instanceName, config)
       .resolves(result);
-    assert.deepEqual(await index.apiCreateServiceInstance(serviceType, servicePlan, instanceName, config), result);
+    assert.deepEqual(
+      await index.apiCreateServiceInstance(
+        serviceType,
+        servicePlan,
+        instanceName,
+        config
+      ),
+      result
+    );
   });
 
   it("apiCreateServiceInstance:: verify calling the 'getInstanceMetadata'", async () => {
     const instanceName = "name";
     const result = { data: {} };
-    mockServiceUtils.expects("getInstanceMetadata").withExactArgs(instanceName).resolves(result);
+    mockServiceUtils
+      .expects("getInstanceMetadata")
+      .withExactArgs(instanceName)
+      .resolves(result);
     assert.deepEqual(await index.apiGetInstanceMetadata(instanceName), result);
   });
 });

@@ -8,8 +8,10 @@ export const messages = {
     `Could not create the entity since ${description}, consider deleting it using the 'cf delete-service ${name} command'.`,
   exceed_number_of_attempts: (name: string): string =>
     `Could not verify the service instance creation. Check its status using the 'cf service ${name}' command.`,
-  service_not_found: (instanceName: string): string => `Could not find the '${instanceName}' service instance.`,
-  service_creation_failed: (error: string): string => `Service instance creation failed: ${error}`,
+  service_not_found: (instanceName: string): string =>
+    `Could not find the '${instanceName}' service instance.`,
+  service_creation_failed: (error: string): string =>
+    `Service instance creation failed: ${error}`,
   not_allowed_filter: (param: string, query: string): string =>
     `The '${param}' parameter is not allowed in the '${query}' query.`,
 };

@@ -7,7 +7,9 @@ export * from "./utils";
 import { ServiceInstanceInfo } from "./types";
 import * as serviceUtils from "./cfServicesUtil";
 
-export async function apiGetServicesInstancesFilteredByType(serviceTypes: string[]): Promise<ServiceInstanceInfo[]> {
+export async function apiGetServicesInstancesFilteredByType(
+  serviceTypes: string[]
+): Promise<ServiceInstanceInfo[]> {
   return serviceUtils.getServicesInstancesFilteredByType(serviceTypes);
 }
 
@@ -15,7 +17,9 @@ export async function apiGetServicesInstancesFilteredByType(serviceTypes: string
  * @deprecated use cfGetInstanceKeyParameters instead of
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function apiGetInstanceCredentials(instanceName: string): Promise<any> {
+export async function apiGetInstanceCredentials(
+  instanceName: string
+): Promise<any> {
   return serviceUtils.getInstanceCredentials(instanceName);
 }
 
@@ -25,12 +29,19 @@ export async function apiCreateServiceInstance(
   servicePlan: string,
   instanceName: string,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  config?: any,
+  config?: any
 ) {
-  return serviceUtils.createServiceInstance(serviceType, servicePlan, instanceName, config);
+  return serviceUtils.createServiceInstance(
+    serviceType,
+    servicePlan,
+    instanceName,
+    config
+  );
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function apiGetInstanceMetadata(instanceName: string): Promise<any> {
+export async function apiGetInstanceMetadata(
+  instanceName: string
+): Promise<any> {
   return serviceUtils.getInstanceMetadata(instanceName);
 }
