@@ -322,7 +322,7 @@ export class YeomanUI {
 
     gen.on(
       errorEventName,
-      (error: any) =>
+      (error: any): void =>
         void this.onGeneratorFailure(
           generatorName,
           this.getErrorWithAdditionalInfo(error, `gen.on(${errorEventName})`)
