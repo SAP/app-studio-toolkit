@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "allowJs": false,
+    "lib": ["es7"],
+    "listEmittedFiles": false,
+    "listFiles": false,
+    "module": "commonjs",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "outDir": "./out",
+    "removeComments": true,
+    "experimentalDecorators": true,
+    "rootDir": ".",
+    "rootDirs": ["./src", "./tests"],
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "target": "ES2017",
+    "traceResolution": false,
+    "declaration": true,
+    "alwaysStrict": true
+  },
+  "include": ["./src/**/*", "./tests/**/*"]
+}

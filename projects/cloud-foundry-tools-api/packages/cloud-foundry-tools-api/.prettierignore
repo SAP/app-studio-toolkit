@@ -1,0 +1,15 @@
+docs
+out
+reports
+node_modules
+dist
+gen
+configIcons
+
+logs
+.nyc_output
+coverage
+
+# Optional eslint cache
+.eslintcache
+package-lock.json
