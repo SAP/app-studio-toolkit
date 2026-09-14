@@ -62,10 +62,13 @@ describe("yeomanui unit test", () => {
   }
   const appWizard: AppWizard = new TestAppWizard();
   class TestEvents implements YouiEvents {
-    public doGeneratorDone(): void {
-      return;
+    public doGeneratorDone(): Thenable<any> {
+      return Promise.resolve();
     }
     public doGeneratorInstall(): void {
+      return;
+    }
+    public doGeneratorProgress(): void {
       return;
     }
     public showProgress(): void {
@@ -1364,10 +1367,15 @@ describe("yeomanui unit test", () => {
       GeneratorFilter.create(),
       flowPromise.state
     );
-    const gen: any = { on: () => "" };
+    const gen: any = {
+      on: () => "",
+      state: { project: { name: "testProject" } },
+    };
     const genMock = sandbox.mock(gen);
 
+    genMock.expects("on").withArgs("method:writing");
     genMock.expects("on").withArgs("method:install");
+    genMock.expects("on").withArgs("method:end");
     yeomanUiInstance["onGenInstall"](gen);
     genMock.verify();
   });
@@ -1470,7 +1478,7 @@ describe("yeomanui unit test", () => {
         .expects("updateGeneratorEnded")
         .withArgs("testGenName")
         .resolves();
-      yeomanUi["onGeneratorSuccess"]("testGenName", beforeGen, afterGen);
+      void yeomanUi["onGeneratorSuccess"]("testGenName", beforeGen, afterGen);
       expect(
         doGeneratorDoneSpy.calledWith(
           true,
@@ -1499,7 +1507,7 @@ describe("yeomanui unit test", () => {
         .expects("updateGeneratorEnded")
         .withArgs("testGenName")
         .resolves();
-      yeomanUi["onGeneratorSuccess"]("testGenName", beforeGen, afterGen);
+      void yeomanUi["onGeneratorSuccess"]("testGenName", beforeGen, afterGen);
       expect(
         doGeneratorDoneSpy.calledWith(
           true,
@@ -1528,7 +1536,7 @@ describe("yeomanui unit test", () => {
         .expects("updateGeneratorEnded")
         .withArgs("testGenName")
         .resolves();
-      yeomanUi["onGeneratorSuccess"]("testGenName", beforeGen, afterGen);
+      void yeomanUi["onGeneratorSuccess"]("testGenName", beforeGen, afterGen);
       expect(
         doGeneratorDoneSpy.calledWith(
           true,
@@ -1553,7 +1561,7 @@ describe("yeomanui unit test", () => {
         .expects("updateGeneratorEnded")
         .withArgs("testGenName")
         .resolves();
-      yeomanUi["onGeneratorSuccess"]("testGenName", beforeGen, afterGen);
+      void yeomanUi["onGeneratorSuccess"]("testGenName", beforeGen, afterGen);
       expect(
         doGeneratorDoneSpy.calledWith(
           true,
@@ -1570,7 +1578,7 @@ describe("yeomanui unit test", () => {
     });
 
     it("onGeneratorFailure", () => {
-      yeomanUi["onGeneratorFailure"]("testGenName", "testError");
+      void yeomanUi["onGeneratorFailure"]("testGenName", "testError");
       expect(
         doGeneratorDoneSpy.calledWith(
           false,
@@ -1596,7 +1604,7 @@ describe("yeomanui unit test", () => {
         .expects("updateGeneratorEnded")
         .withArgs("foodq:app")
         .resolves();
-      yeomanUi["onGeneratorSuccess"]("foodq:app", beforeGen, afterGen);
+      void yeomanUi["onGeneratorSuccess"]("foodq:app", beforeGen, afterGen);
       expect(
         doGeneratorDoneSpy.calledWith(
           true,
@@ -1624,7 +1632,7 @@ describe("yeomanui unit test", () => {
         .expects("updateGeneratorEnded")
         .withArgs("fiori-generator:app")
         .resolves();
-      yeomanUi["onGeneratorSuccess"](
+      void yeomanUi["onGeneratorSuccess"](
         "fiori-generator:app",
         beforeGen,
         afterGen
