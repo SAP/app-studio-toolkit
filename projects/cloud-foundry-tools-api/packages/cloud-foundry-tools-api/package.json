@@ -29,12 +29,11 @@
     "url": "0.11.4"
   },
   "devDependencies": {
-    "@types/comment-json": "2.4.5",
     "@types/properties-reader": "2.1.3"
   },
   "scripts": {
     "ci": "npm-run-all clean compile coverage",
-    "clean": "shx rm -rf ./out ./reports ./.nyc_output",
+    "clean": "shx rm -rf ./out ./reports ./.nyc_output ./coverage",
     "compile": "tsc -p .",
     "compile:watch": "tsc -p . --watch",
     "test": "mocha",

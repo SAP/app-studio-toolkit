@@ -4,3 +4,4 @@
 # nyc coverage output
 **/reports
 **/.nyc_output
+**/coverage
