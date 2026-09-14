@@ -67,6 +67,7 @@ export class VSCodeYouiEvents implements YouiEvents {
   private currentProjectName: string | undefined;
   private phaseStartTime: number = 0;
   private currentPhase: "writing" | "install" | "end" | null = null;
+  private isEnhancedProgressMode: boolean = false; // Track if enhanced progress is active
   public output: GeneratorOutput;
   private readonly logger: IChildLogger;
   private readonly appWizard: AppWizard;
@@ -101,8 +102,8 @@ export class VSCodeYouiEvents implements YouiEvents {
     type: string,
     targetFolderPath?: string
   ): Promise<any> {
-    // Show "Finalising..." before closing (only if progress reporter is active)
-    if (this.progressReporter) {
+    // Show "Finalising..." before closing (only if enhanced progress mode is active)
+    if (this.progressReporter && this.isEnhancedProgressMode) {
       this.progressReporter.report({
         message: this.messages.progress_finalising,
       });
@@ -125,7 +126,8 @@ export class VSCodeYouiEvents implements YouiEvents {
 
   public doGeneratorInstall(): void {
     this.doClose();
-    // Classic mode: pass empty string to trigger classic behavior
+    this.isEnhancedProgressMode = false; // Classic mode
+    // Classic mode: pass empty string to avoid duplicate message
     this.showInstallMessage(undefined, "");
   }
 
@@ -159,10 +161,11 @@ export class VSCodeYouiEvents implements YouiEvents {
 
     const message = phaseMessages[phase];
 
-    // If this is the first phase (writing) AND no progress notification exists yet
-    if (phase === "writing" && !this.progressReporter) {
+    // If this is the first phase AND no progress notification exists yet
+    if (!this.progressReporter) {
       // Close the webview panel (showing the question form) before showing progress
       this.doClose();
+      this.isEnhancedProgressMode = true; // Enhanced mode active
       this.currentPhase = phase;
       this.phaseStartTime = Date.now();
       this.showInstallMessage(projectName, message);
@@ -176,8 +179,11 @@ export class VSCodeYouiEvents implements YouiEvents {
 
       if (remainingTime > 0) {
         // Wait for minimum duration before showing next phase
+        // Capture current reporter instance to prevent race conditions
+        const currentReporter = this.progressReporter;
         setTimeout(() => {
-          if (this.progressReporter) {
+          // Only update if reporter hasn't changed (generator still running)
+          if (this.progressReporter === currentReporter) {
             this.progressReporter.report({ message });
             this.currentPhase = phase;
             this.phaseStartTime = Date.now();
@@ -295,20 +301,21 @@ export class VSCodeYouiEvents implements YouiEvents {
       async (progress) => {
         // Store the progress reporter so we can update it (for new progress system)
         this.progressReporter = progress;
-        // Classic mode uses empty string as initialMessage - show installing message in body
-        const messageToShow =
-          initialMessage === ""
-            ? this.messages.progress_installing
-            : initialMessage;
-        progress.report({ message: messageToShow });
+        // Classic mode: initialMessage is empty string, keep it empty to show title only
+        // Enhanced mode: initialMessage has a message, show it in body
+        progress.report({ message: initialMessage });
 
         // Keep the notification open until generation completes
         await new Promise<void>((resolve) => {
           this.resolveFunc = resolve;
         });
 
-        // Clean up the progress reporter
+        // Clean up the progress reporter and reset state for next run
         this.progressReporter = null;
+        this.isEnhancedProgressMode = false;
+        this.currentPhase = null;
+        this.phaseStartTime = 0;
+        this.currentProjectName = undefined;
       }
     );
   }
