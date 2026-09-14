@@ -999,6 +999,66 @@ describe("cf-local-a unit tests", () => {
       expect(result[2].label).to.be.equal(serviceNames[2]);
     });
 
+    it("ok:: service plan response has no matching included service offering", async () => {
+      cliResult.exitCode = 0;
+      cliResult.error = "";
+
+      fsMock
+        .expects("readFile")
+        .withExactArgs(configFilePath, { encoding: "utf8" })
+        .resolves(`{"SpaceFields": { "GUID": "${spaceGuid}" } }`);
+      const param = `/v3/service_instances?fields[service_plan]=guid,name&type=managed&space_guids=${spaceGuid}&per_page=${CF_PAGE_SIZE}`;
+      cliResult.stdout = JSON.stringify({
+        resources: [
+          {
+            guid: serviceGuids[0],
+            name: serviceNames[0],
+            type: eServiceTypes.managed,
+            tags: [],
+            relationships: {
+              service_plan: {
+                data: {
+                  guid: planGuids[2],
+                },
+              },
+            },
+          },
+        ],
+      });
+      cliMock.expects("execute").withArgs(["curl", param]).resolves(cliResult);
+      cliMock
+        .expects("execute")
+        .withExactArgs(
+          [
+            "curl",
+            "/v3/service_plans/service_plan-guid-2?include=service_offering",
+          ],
+          undefined,
+          undefined
+        )
+        .resolves({
+          exitCode: 0,
+          stdout: JSON.stringify({
+            guid: planGuids[2],
+            name: planName,
+            included: { service_offerings: [] },
+            relationships: {
+              service_offering: {
+                data: {
+                  guid: "missing-service-offering-guid",
+                },
+              },
+            },
+          }),
+        });
+
+      const result = await cfLocal.cfGetServiceInstances();
+      expect(result).to.have.lengthOf(1);
+      expect(result[0].serviceName).to.be.equal("unknown");
+      expect(result[0].plan).to.be.equal(planName);
+      expect(result[0].plan_guid).to.be.equal(planGuids[2]);
+    });
+
     it("ok:: few calls for service plan fails or have errord -> checking wrong output and rejection in service_plan response", async () => {
       cliResult.exitCode = 0;
       cliResult.error = "";

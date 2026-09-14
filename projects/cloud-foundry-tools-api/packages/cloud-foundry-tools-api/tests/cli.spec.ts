@@ -294,6 +294,46 @@ describe("cli unit tests", () => {
       expect(result.exitCode).to.be.equal(-2);
     });
 
+    it("token cancelation callback kills the spawned process", async () => {
+      let killed = false;
+      const cancelationToken = {
+        isCancellationRequested: false,
+        onCancellationRequested: (callback: any) => callback(),
+      };
+      const cancelableExecResult = {
+        kill: () => {
+          killed = true;
+        },
+        stdin: {
+          end: () => {
+            return;
+          },
+        },
+        stdout: {
+          on: () => {
+            return;
+          },
+        },
+        stderr: {
+          on: () => {
+            return;
+          },
+        },
+        on: () => {
+          return;
+        },
+      };
+      childProcessMock
+        .expects("spawn")
+        .withExactArgs("cf", undefined, undefined)
+        .returns(cancelableExecResult);
+      const result = await Cli.execute(undefined, undefined, cancelationToken);
+      expect(killed).to.be.true;
+      expect(result.stderr).to.be.empty;
+      expect(result.stdout).to.be.empty;
+      expect(result.exitCode).to.be.equal(-3);
+    });
+
     it("stdout command succeedded but output contains instance problem description with 'failed' and 'Error:' mutiline combination", async () => {
       execResult.on = (type: string, callback: any) =>
         type === "exit" ? callback(0) : {};

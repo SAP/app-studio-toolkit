@@ -558,7 +558,7 @@ export async function cfCreateService(
     {
       cancelToken: {
         isCancellationRequested: false,
-        onCancellationRequested: () => "",
+        onCancellationRequested: _.constant(""),
       },
     }
   );
