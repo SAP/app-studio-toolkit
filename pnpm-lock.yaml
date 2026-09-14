@@ -1103,6 +1103,9 @@ importers:
       '@sap-devx/webview-rpc':
         specifier: ^0.4.1
         version: 0.4.1(bufferutil@4.1.0)(utf-8-validate@5.0.10)
+      '@vscode-logging/types':
+        specifier: 0.1.4
+        version: 0.1.4
       cheerio:
         specifier: ^1.0.0-rc.12
         version: 1.2.0
@@ -1122,9 +1125,6 @@ importers:
       '@types/vscode':
         specifier: ^1.41.0
         version: 1.75.0
-      '@vscode-logging/types':
-        specifier: ^0.1.4
-        version: 0.1.4
       glob:
         specifier: ^7.1.5
         version: 7.2.0

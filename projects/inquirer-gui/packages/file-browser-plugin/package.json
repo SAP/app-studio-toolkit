@@ -57,8 +57,6 @@
     "jest-transform-stub": "^2.0.0"
   },
   "files": [
-    ".reuse",
-    "LICENSES",
     "dist",
     "CHANGELOG.md",
     "CHANGELOG.old.md"
