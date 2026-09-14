@@ -1,0 +1,50 @@
+{
+	"name": "rpc-example",
+	"displayName": "rpc-example",
+	"description": "",
+	"version": "0.0.1",
+	"engines": {
+		"vscode": "^1.38.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:extension.openwebview",
+		"onCommand:extension.sendMessage"
+	],
+	"main": "./out/extension",
+	"contributes": {
+		"commands": [
+			{
+				"command": "extension.openwebview",
+				"title": "Open Webview"
+			},
+			{
+				"command": "extension.sendMessage",
+				"title": "Send Message to Webview"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"copy": "rimraf ./out/media && copyfiles -u 1 ./src/media/** ./out/",
+		"pretest": "npm run compile"
+	},
+	"devDependencies": {
+		"@types/glob": "^7.1.1",
+		"@types/node": "^18.11.1",
+		"@types/vscode": "^1.44.0",
+		"copyfiles": "^2.4.1",
+		"glob": "^7.1.6",
+		"mocha": "^10.4.0",
+		"rimraf": "^5.0.5",
+		"typescript": "^4.2.3",
+		"vscode-test": "^1.6.1"
+	},
+	"dependencies": {
+		"@sap-devx/webview-rpc": "1.0.0"
+	}
+}
