@@ -1478,7 +1478,7 @@ describe("yeomanui unit test", () => {
         .expects("updateGeneratorEnded")
         .withArgs("testGenName")
         .resolves();
-      yeomanUi["onGeneratorSuccess"]("testGenName", beforeGen, afterGen);
+      void yeomanUi["onGeneratorSuccess"]("testGenName", beforeGen, afterGen);
       expect(
         doGeneratorDoneSpy.calledWith(
           true,
@@ -1507,7 +1507,7 @@ describe("yeomanui unit test", () => {
         .expects("updateGeneratorEnded")
         .withArgs("testGenName")
         .resolves();
-      yeomanUi["onGeneratorSuccess"]("testGenName", beforeGen, afterGen);
+      void yeomanUi["onGeneratorSuccess"]("testGenName", beforeGen, afterGen);
       expect(
         doGeneratorDoneSpy.calledWith(
           true,
@@ -1536,7 +1536,7 @@ describe("yeomanui unit test", () => {
         .expects("updateGeneratorEnded")
         .withArgs("testGenName")
         .resolves();
-      yeomanUi["onGeneratorSuccess"]("testGenName", beforeGen, afterGen);
+      void yeomanUi["onGeneratorSuccess"]("testGenName", beforeGen, afterGen);
       expect(
         doGeneratorDoneSpy.calledWith(
           true,
@@ -1561,7 +1561,7 @@ describe("yeomanui unit test", () => {
         .expects("updateGeneratorEnded")
         .withArgs("testGenName")
         .resolves();
-      yeomanUi["onGeneratorSuccess"]("testGenName", beforeGen, afterGen);
+      void yeomanUi["onGeneratorSuccess"]("testGenName", beforeGen, afterGen);
       expect(
         doGeneratorDoneSpy.calledWith(
           true,
@@ -1578,7 +1578,7 @@ describe("yeomanui unit test", () => {
     });
 
     it("onGeneratorFailure", () => {
-      yeomanUi["onGeneratorFailure"]("testGenName", "testError");
+      void yeomanUi["onGeneratorFailure"]("testGenName", "testError");
       expect(
         doGeneratorDoneSpy.calledWith(
           false,
@@ -1604,7 +1604,7 @@ describe("yeomanui unit test", () => {
         .expects("updateGeneratorEnded")
         .withArgs("foodq:app")
         .resolves();
-      yeomanUi["onGeneratorSuccess"]("foodq:app", beforeGen, afterGen);
+      void yeomanUi["onGeneratorSuccess"]("foodq:app", beforeGen, afterGen);
       expect(
         doGeneratorDoneSpy.calledWith(
           true,
@@ -1632,7 +1632,7 @@ describe("yeomanui unit test", () => {
         .expects("updateGeneratorEnded")
         .withArgs("fiori-generator:app")
         .resolves();
-      yeomanUi["onGeneratorSuccess"](
+      void yeomanUi["onGeneratorSuccess"](
         "fiori-generator:app",
         beforeGen,
         afterGen

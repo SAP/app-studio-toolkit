@@ -268,13 +268,17 @@ export class YeomanUI {
         const destinationRoot = this.gen.destinationRoot();
         const pathAfet = this.getGeneratorDestinationPath(destinationRoot);
         const dirsAfter = await this.getChildDirectories(pathAfet);
-        this.onGeneratorSuccess(generatorNamespace, dirsBefore, dirsAfter);
+        await this.onGeneratorSuccess(
+          generatorNamespace,
+          dirsBefore,
+          dirsAfter
+        );
       }
     } catch (error) {
       if (error instanceof GeneratorNotFoundError) {
         vscode.window.showErrorMessage(error.message);
       }
-      this.onGeneratorFailure(
+      await this.onGeneratorFailure(
         generatorNamespace,
         this.getErrorWithAdditionalInfo(error, "runGenerator()")
       );
@@ -310,24 +314,26 @@ export class YeomanUI {
     const errorEventName = "error";
     env.on(errorEventName, (error) => {
       env.removeAllListeners(errorEventName);
-      this.onGeneratorFailure(
+      void this.onGeneratorFailure(
         generatorName,
         this.getErrorWithAdditionalInfo(error, `env.on(${errorEventName})`)
       );
     });
 
-    gen.on(errorEventName, (error: any) =>
-      this.onGeneratorFailure(
-        generatorName,
-        this.getErrorWithAdditionalInfo(error, `gen.on(${errorEventName})`)
-      )
+    gen.on(
+      errorEventName,
+      (error: any) =>
+        void this.onGeneratorFailure(
+          generatorName,
+          this.getErrorWithAdditionalInfo(error, `gen.on(${errorEventName})`)
+        )
     );
 
     // when generator "restart" is selected, re-register the "uncaughtException" listener (with the updated context variables)
     this.onUncaughtException &&
       process.removeListener("uncaughtException", this.onUncaughtException);
     this.onUncaughtException = (error) => {
-      this.onGeneratorFailure(
+      void this.onGeneratorFailure(
         generatorName,
         this.getErrorWithAdditionalInfo(error, "process.on(uncaughtException)")
       );
@@ -378,7 +384,7 @@ export class YeomanUI {
         this.getErrorWithAdditionalInfo(error, "evaluateMethod()"),
         questionInfo
       );
-      this.onGeneratorFailure(this.generatorName, errorMessage);
+      void this.onGeneratorFailure(this.generatorName, errorMessage);
     }
   }
 
@@ -484,7 +490,7 @@ export class YeomanUI {
       : `Step ${this.promptCount}`;
   }
 
-  private onGeneratorSuccess(
+  private async onGeneratorSuccess(
     generatorName: string,
     resourcesBeforeGen?: any,
     resourcesAfterGen?: any
@@ -545,7 +551,7 @@ export class YeomanUI {
     );
     AnalyticsWrapper.updateGeneratorEnded(generatorName);
     // when targetFolderPath is undefined and no files are generated, send type = '' to get the empty toast message
-    void this.youiEvents.doGeneratorDone(
+    await this.youiEvents.doGeneratorDone(
       true,
       message,
       selectedWorkspace,
@@ -557,7 +563,7 @@ export class YeomanUI {
     this.generatorName = ""; // reset generator name
   }
 
-  private onGeneratorFailure(generatorName: string, error: any) {
+  private async onGeneratorFailure(generatorName: string, error: any) {
     // avoid display the error multiple times due the same running
     if (this.errorThrown) {
       return;
@@ -567,7 +573,7 @@ export class YeomanUI {
     const messagePrefix = `${generatorName} generator failed`;
     const errorMsg = error?.message || error;
     this.logError(error, messagePrefix);
-    void this.youiEvents.doGeneratorDone(
+    await this.youiEvents.doGeneratorDone(
       false,
       `${messagePrefix} - ${errorMsg}`,
       "",

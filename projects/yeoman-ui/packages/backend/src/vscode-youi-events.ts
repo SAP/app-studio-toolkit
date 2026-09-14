@@ -125,7 +125,7 @@ export class VSCodeYouiEvents implements YouiEvents {
 
   public doGeneratorInstall(): void {
     this.doClose();
-    // Classic mode: pass undefined projectName and empty message to show "Installing dependencies..." title only
+    // Classic mode: pass empty string to trigger classic behavior
     this.showInstallMessage(undefined, "");
   }
 
@@ -295,7 +295,12 @@ export class VSCodeYouiEvents implements YouiEvents {
       async (progress) => {
         // Store the progress reporter so we can update it (for new progress system)
         this.progressReporter = progress;
-        progress.report({ message: initialMessage });
+        // Classic mode uses empty string as initialMessage - show installing message in body
+        const messageToShow =
+          initialMessage === ""
+            ? this.messages.progress_installing
+            : initialMessage;
+        progress.report({ message: messageToShow });
 
         // Keep the notification open until generation completes
         await new Promise<void>((resolve) => {
@@ -311,6 +316,7 @@ export class VSCodeYouiEvents implements YouiEvents {
   private resolveInstallingProgress() {
     if (this.resolveFunc) {
       this.resolveFunc();
+      this.resolveFunc = undefined; // Clear to prevent reuse
     }
   }
 
