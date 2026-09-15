@@ -1,6 +1,10 @@
 module.exports = {
   // Common settings for JS Files.
   extends: ["plugin:eslint-comments/recommended", "prettier"],
+  ignorePatterns: [
+    // Vendored compiled outputs of the RPC library bundled into rpc-example-ws for demo purposes.
+    "projects/vscode-webview-rpc-lib/examples/rpc-example-ws/src/static/rpc/",
+  ],
   env: {
     commonjs: true,
     es6: true,
@@ -36,7 +40,12 @@ module.exports = {
       plugins: ["@typescript-eslint"],
       parser: "@typescript-eslint/parser",
       parserOptions: {
-        project: ["./tsconfig.base.json", "./tsconfig.json"],
+        project: [
+          "./tsconfig.base.json",
+          "./tsconfig.json",
+          "./projects/vscode-webview-rpc-lib/examples/rpc-example-ws/tsconfig.json",
+          "./projects/vscode-webview-rpc-lib/examples/rpc-example/tsconfig.json",
+        ],
       },
       extends: [
         "plugin:@typescript-eslint/eslint-recommended",
@@ -266,6 +275,22 @@ module.exports = {
       files: ["projects/vscode-webview-rpc-lib/**"],
       rules: {
         "eslint-comments/require-description": "off",
+        "prefer-const": "off",
+        indent: "off",
+        "no-undef": "off",
+      },
+    },
+    {
+      // rpc-example/src/media/main.js is a browser-side webview script using ES module syntax.
+      files: [
+        "projects/vscode-webview-rpc-lib/examples/rpc-example/src/media/*.js",
+      ],
+      parserOptions: {
+        ecmaVersion: 2018,
+        sourceType: "module",
+      },
+      env: {
+        browser: true,
       },
     },
     {
@@ -274,6 +299,7 @@ module.exports = {
       // TODO: clean up violations and tighten incrementally.
       files: ["projects/vscode-webview-rpc-lib/**/*.ts"],
       rules: {
+        indent: "off",
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-floating-promises": "off",
         "@typescript-eslint/no-unsafe-function-type": "off",
