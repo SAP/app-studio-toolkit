@@ -1,0 +1,31 @@
+{
+  "name": "@sap-devx/code-snippet-types",
+  "version": "2.0.0",
+  "description": "code-snippet types",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/app-studio-toolkit.git",
+    "directory": "projects/code-snippet/packages/types"
+  },
+  "license": "Apache-2.0",
+  "typings": "./api.d.ts",
+  "files": [
+    "CHANGELOG.md",
+    "CHANGELOG.old.md",
+    "api.d.ts"
+  ],
+  "scripts": {
+    "ci": "npm-run-all clean compile",
+    "clean": "echo \"nothing to clean\"",
+    "compile": "tsc -p ./"
+  },
+  "dependencies": {
+    "@types/vscode": "^1.48.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "bugs": {
+    "url": "https://github.com/SAP/app-studio-toolkit/issues"
+  }
+}

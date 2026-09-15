@@ -17,7 +17,8 @@
       "@vscode-logging/types",
       "@vscode-logging/wrapper"
     ],
-    ["guided-development", "guided-development-frontend"]
+    ["guided-development", "guided-development-frontend"],
+    ["code-snippet-tool", "code-snippet-frontend"]
   ],
   "linked": [],
   "access": "restricted",
@@ -36,7 +37,9 @@
     "vscode-contrib2",
     "vscode-contrib3",
     "vscode-simple-contrib",
-    "vscode-snippet-food-contrib"
+    "vscode-snippet-food-contrib",
+    "code-snippet",
+    "vscode-snippet-contrib"
   ],
   "privatePackages": {
     "version": true,

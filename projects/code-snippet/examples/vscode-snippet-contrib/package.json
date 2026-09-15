@@ -1,0 +1,65 @@
+{
+  "name": "vscode-snippet-contrib",
+  "displayName": "vscode-snippet-contrib",
+  "version": "2.1.0",
+  "private": true,
+  "description": "",
+  "categories": [
+    "Other"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/app-studio-toolkit.git",
+    "directory": "projects/code-snippet/examples/vscode-snippet-contrib"
+  },
+  "publisher": "SAPOSS",
+  "main": "./out/src/extension.js",
+  "scripts": {
+    "ci": "npm-run-all clean compile",
+    "clean": "rimraf ./dist",
+    "compile": "tsc -p .",
+    "package": "vsce package --no-yarn",
+    "watch": "tsc -p . --watch"
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "extension.showCodeSnippetContrib",
+        "title": "Create Launch Configuration"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "extension.showCodeSnippetContrib",
+          "group": "navigation@1",
+          "when": "resourceFilename == launch.json"
+        }
+      ]
+    }
+  },
+  "activationEvents": [
+    "onCommand:extension.showCodeSnippetContrib"
+  ],
+  "dependencies": {
+    "@sap-devx/code-snippet-types": "workspace:*",
+    "comment-json": "2.1.0",
+    "fs-extra": "7.0.1",
+    "lodash": "4.17.23"
+  },
+  "devDependencies": {
+    "@types/comment-json": "1.1.1",
+    "@types/fs-extra": "7.0.0",
+    "@types/lodash": "^4.14.150",
+    "@types/vscode": "^1.48.0"
+  },
+  "extensionDependencies": [
+    "saposs.code-snippet-tool"
+  ],
+  "bugs": {
+    "url": "https://github.com/SAP/app-studio-toolkit/issues"
+  },
+  "engines": {
+    "vscode": "^1.46.0"
+  }
+}
