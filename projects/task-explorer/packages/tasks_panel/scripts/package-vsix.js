@@ -20,7 +20,7 @@ const updatedPkgContents = JSON.stringify(pkgJson, null, 2);
 writeFileSync(pkgJsonPath, updatedPkgContents);
 
 // Ensure License and copywrite related files are part of the packaged .vsix
-const rootMonoRepoDir = resolve(__dirname, "..", "..", "..");
+const rootMonoRepoDir = resolve(__dirname, "..", "..", "..", "..", "..");
 const licenseRootMonoRepoPath = resolve(rootMonoRepoDir, "LICENSE");
 const licenseExtPath = resolve(rootExtDir, "LICENSE");
 copyFileSync(licenseRootMonoRepoPath, licenseExtPath);

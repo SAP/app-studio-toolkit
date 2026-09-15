@@ -1,6 +1,12 @@
-const baseNycConfig = require("../../nyc.config");
-
-module.exports = Object.assign(baseNycConfig, {
+module.exports = {
+  reporter: ["text", "lcov"],
+  "check-coverage": true,
+  all: true,
+  branches: 99,
+  lines: 99,
+  functions: 99,
+  statements: 99,
+  extension: [".js", ".ts", ".vue"],
   exclude: [
     "src/logger/**",
     "test/**",
@@ -13,8 +19,4 @@ module.exports = Object.assign(baseNycConfig, {
     "dist/media/**",
     "src/webSocketServer/**",
   ],
-  branches: 99,
-  lines: 99,
-  functions: 99,
-  statements: 99,
-});
+};

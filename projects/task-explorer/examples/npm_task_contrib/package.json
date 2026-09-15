@@ -7,8 +7,8 @@
   "keywords": [],
   "repository": {
     "type": "git",
-    "url": "https://github.com/SAP/task-explorer",
-    "directory": "packages/npm_task_contrib"
+    "url": "https://github.com/SAP/app-studio-toolkit.git",
+    "directory": "projects/task-explorer/examples/npm_task_contrib"
   },
   "publisher": "SAPSE",
   "main": "./dist/src/extension",
@@ -51,7 +51,7 @@
     "*"
   ],
   "dependencies": {
-    "@sap_oss/task_contrib_types": "^4.7.1",
+    "@sap_oss/task_contrib_types": "workspace:*",
     "datauri": "4.1.0",
     "lodash": "^4.17.21"
   },

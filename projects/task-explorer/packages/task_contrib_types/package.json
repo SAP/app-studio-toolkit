@@ -3,15 +3,15 @@
   "version": "4.7.1",
   "repository": {
     "type": "git",
-    "url": "https://github.com/SAP/task-explorer",
-    "directory": "packages/task_contrib_types"
+    "url": "https://github.com/SAP/app-studio-toolkit.git",
+    "directory": "projects/task-explorer/packages/task_contrib_types"
   },
   "license": "Apache-2.0",
-  "typings": "./api.d.ts",
+  "types": "./api.d.ts",
   "files": [
-    ".reuse",
-    "LICENSES",
-    "api.d.ts"
+    "api.d.ts",
+    "CHANGELOG.md",
+    "CHANGELOG.old.md"
   ],
   "scripts": {
     "ci": "npm-run-all compile",

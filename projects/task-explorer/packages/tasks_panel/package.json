@@ -9,18 +9,18 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/SAP/task-explorer",
-    "directory": "packages/tasks_panel"
+    "url": "https://github.com/SAP/app-studio-toolkit.git",
+    "directory": "projects/task-explorer/packages/tasks_panel"
   },
   "license": "Apache-2.0",
   "publisher": "SAPSE",
   "main": "./dist/src/extension",
   "files": [
-    ".reuse",
-    "LICENSES",
     "dist",
     "src",
-    "*.vsix"
+    "*.vsix",
+    "CHANGELOG.md",
+    "CHANGELOG.old.md"
   ],
   "scripts": {
     "bundle": "webpack --mode production",
@@ -242,8 +242,8 @@
     "@sap-devx/webview-rpc": "0.4.1",
     "@sap/cf-tools": "3.2.0",
     "@sap/swa-for-sapbas-vsx": "2.0.4",
-    "@sap_oss/task_contrib_types": "^4.7.1",
-    "@vscode-logging/logger": "2.0.0",
+    "@sap_oss/task_contrib_types": "workspace:*",
+    "@vscode-logging/logger": "2.0.10",
     "cheerio": "^1.0.0-rc.12",
     "datauri": "4.1.0",
     "escape-string-regexp": "4.0.0",
@@ -259,7 +259,7 @@
     "@types/sinon": "17.0.2",
     "@types/vscode": "1.75.0",
     "@types/ws": "^7.2.3",
-    "@vscode-tasks-explorer/vue_frontend_rpc": "^4.8.0",
+    "@vscode-tasks-explorer/vue_frontend_rpc": "workspace:*",
     "@vscode/vsce": "2.22.0",
     "copy-webpack-plugin": "^11.0.0",
     "fs-extra": "10.1.0",

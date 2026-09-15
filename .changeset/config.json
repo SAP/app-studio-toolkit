@@ -17,7 +17,8 @@
       "@vscode-logging/types",
       "@vscode-logging/wrapper"
     ],
-    ["guided-development", "guided-development-frontend"]
+    ["guided-development", "guided-development-frontend"],
+    ["vscode-tasks-explorer-tasks-panel", "@sap_oss/task_contrib_types"]
   ],
   "linked": [],
   "access": "restricted",
@@ -36,7 +37,10 @@
     "vscode-contrib2",
     "vscode-contrib3",
     "vscode-simple-contrib",
-    "vscode-snippet-food-contrib"
+    "vscode-snippet-food-contrib",
+    "@vscode-tasks-explorer/vue_frontend_rpc",
+    "npm-task-contrib",
+    "vscode-task-contrib"
   ],
   "privatePackages": {
     "version": true,

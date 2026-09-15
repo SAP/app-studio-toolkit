@@ -11,8 +11,8 @@ const config = {
   target: "node",
   devtool: "source-map",
   resolve: {
-    // Solution for sibling package resolution inside mono-repo
-    modules: [path.resolve(__dirname, "node_modules"), path.resolve(__dirname, "../node_modules"), "node_modules"],
+    // pnpm hoists deps to the workspace root; resolve from there first
+    modules: [path.resolve(__dirname, "../../node_modules"), "node_modules"],
     extensions: [".js"],
   },
 };
