@@ -35,11 +35,11 @@
     "clean": "rimraf ./dist ./coverage *.vsix",
     "clean:frontend": "cd ./dist && shx rm -rf ./media",
     "compile": "tsc -p ./",
-    "coverage": "nyc mocha -p tsconfig.json --recursive test/**/*.spec.ts",
+    "coverage": "nyc mocha --require ts-node/register/transpile-only --recursive test/**/*.spec.ts",
     "coverage:copy": "shx mkdir -p ../../../../coverage && shx cp -u ./reports/coverage/lcov.info ../../../../coverage/lcov_backend.info",
     "frontend:copy": "npm-run-all clean:frontend && shx cp -r ../frontend/dist/. ./dist/media/",
-    "package": "vsce package --no-yarn .",
-    "test": "mocha -p tsconfig.json --recursive test/**/*.spec.ts",
+    "package": "vsce package --no-yarn",
+    "test": "mocha --require ts-node/register/transpile-only --recursive test/**/*.spec.ts",
     "watch": "tsc -watch -p ./",
     "ws:run": "node ./out/src/webSocketServer/index.js"
   },
@@ -110,20 +110,20 @@
     "@sap-devx/webview-rpc": "0.3.1",
     "@sap/swa-for-sapbas-vsx": "2.0.4",
     "@vscode-logging/logger": "2.0.10",
-    "code-snippet-frontend": "workspace:*",
     "fs-extra": "9.1.0",
     "jsdom": "23.2.0",
     "lodash": "4.17.23",
     "strip-ansi": "6.0.0",
     "ws": "7.4.4",
-    "yeoman-environment": "2.10.3"
+    "yeoman-environment": "2.10.3",
+    "inquirer": "7.3.3",
+    "yeoman-generator": "4.12.0"
   },
   "devDependencies": {
     "@types/fs-extra": "^9.0.4",
     "@types/lodash": "^4.14.165",
     "@types/sinon": "^10.0.11",
     "@types/ws": "^7.4.0",
-    "@types/yeoman-environment": "2.10.2",
     "copy-webpack-plugin": "^12.0.2",
     "datauri": "3.0.0",
     "sinon": "^9.2.1",
@@ -132,8 +132,12 @@
     "ts-node": "^10.9.2",
     "vsce": "^1.100.1",
     "webpack": "^5.89.0",
-    "webpack-cli": "5.1.4"
+    "webpack-cli": "5.1.4",
+    "@types/yeoman-generator": "4.11.3",
+    "code-snippet-frontend": "workspace:*"
   },
   "icon": "logo.png",
-  "files": []
+  "engines": {
+    "vscode": "^1.44.2"
+  }
 }

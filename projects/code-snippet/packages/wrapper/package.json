@@ -31,10 +31,10 @@
     "ci": "npm-run-all clean compile coverage bundle package coverage coverage:copy",
     "clean": "rimraf ./dist ./coverage *.vsix",
     "compile": "tsc -p ./",
-    "coverage": "nyc mocha -p tsconfig.json --recursive test/**/*.spec.ts",
+    "coverage": "nyc mocha --require ts-node/register/transpile-only --recursive test/**/*.spec.ts",
     "coverage:copy": "shx mkdir -p ../../../../coverage && shx cp -u ./reports/coverage/lcov.info ../../../../coverage/lcov_wrapper.info",
-    "package": "vsce package --no-yarn .",
-    "test": "mocha -p tsconfig.json --recursive test/**/*.spec.ts"
+    "package": "vsce package --no-yarn",
+    "test": "mocha --require ts-node/register/transpile-only --recursive test/**/*.spec.ts"
   },
   "activationEvents": [],
   "extensionDependencies": [
@@ -52,5 +52,7 @@
     "webpack-cli": "5.1.4"
   },
   "icon": "logo.png",
-  "files": []
+  "engines": {
+    "vscode": "^1.44.2"
+  }
 }

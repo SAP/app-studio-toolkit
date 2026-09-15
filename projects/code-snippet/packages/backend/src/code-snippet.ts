@@ -25,7 +25,6 @@ export class CodeSnippet {
   private snippetName: string;
   private readonly customQuestionEventHandlers: Map<
     string,
-    // eslint-disable-next-line @typescript-eslint/ban-types -- legacy code
     Map<string, Function>
   >;
   private readonly flowState: State<void>;
@@ -110,10 +109,8 @@ export class CodeSnippet {
   public registerCustomQuestionEventHandler(
     questionType: string,
     methodName: string,
-    // eslint-disable-next-line @typescript-eslint/ban-types -- legacy code
     handler: Function
   ): void {
-    // eslint-disable-next-line @typescript-eslint/ban-types -- legacy code
     let entry: Map<string, Function> =
       this.customQuestionEventHandlers.get(questionType);
     if (entry === undefined) {
@@ -179,7 +176,6 @@ export class CodeSnippet {
             "guiOptions.type",
             relevantQuestion.guiType
           );
-          // eslint-disable-next-line @typescript-eslint/ban-types -- legacy code
           const customQuestionEventHandler: Function =
             this.getCustomQuestionEventHandler(guiType, methodName);
           return _.isUndefined(customQuestionEventHandler)
@@ -238,9 +234,7 @@ export class CodeSnippet {
   private getCustomQuestionEventHandler(
     questionType: string,
     methodName: string
-    // eslint-disable-next-line @typescript-eslint/ban-types -- legacy code
   ): Function {
-    // eslint-disable-next-line @typescript-eslint/ban-types -- legacy code
     const entry: Map<string, Function> =
       this.customQuestionEventHandlers.get(questionType);
     if (entry !== undefined) {

@@ -58,5 +58,8 @@
   ],
   "bugs": {
     "url": "https://github.com/SAP/app-studio-toolkit/issues"
+  },
+  "engines": {
+    "vscode": "^1.44.2"
   }
 }

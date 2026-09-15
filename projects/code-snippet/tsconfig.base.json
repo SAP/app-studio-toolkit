@@ -9,6 +9,7 @@
     "strict": false,
     "noImplicitAny": false,
     "noImplicitThis": true,
-    "alwaysStrict": true
+    "alwaysStrict": true,
+    "skipLibCheck": true
   }
 }

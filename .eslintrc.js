@@ -224,6 +224,29 @@ module.exports = {
       },
     },
     {
+      // Additional TypeScript rules for code-snippet packages.
+      // Legacy code migrated as-is; relaxed to match the historical behaviour
+      // without rewriting source logic during relocation.
+      // TODO: clean up violations and tighten incrementally.
+      files: ["projects/code-snippet/**/*.ts"],
+      rules: {
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-require-imports": "off",
+        "@typescript-eslint/no-unused-expressions": "off",
+        "@typescript-eslint/no-unsafe-argument": "off",
+        "@typescript-eslint/no-unsafe-return": "off",
+        "@typescript-eslint/no-floating-promises": "off",
+        "@typescript-eslint/require-await": "off",
+        "@typescript-eslint/await-thenable": "off",
+        "@typescript-eslint/no-unsafe-function-type": "off",
+        "@typescript-eslint/unbound-method": "off",
+        "@typescript-eslint/no-unused-vars": "off",
+        "@typescript-eslint/prefer-promise-reject-errors": "off",
+        "@typescript-eslint/no-unnecessary-type-assertion": "off",
+        "@typescript-eslint/no-misused-promises": "off",
+      },
+    },
+    {
       // Additional TypeScript rules for guided-development packages.
       // Legacy code (formerly TSLint / ts@3.9) migrated as-is; relaxed to match
       // the historical behaviour without rewriting source logic.

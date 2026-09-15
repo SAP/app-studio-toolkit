@@ -4,7 +4,7 @@
   "reporter": ["lcov", "text"],
   "extension": [".ts"],
   "all": true,
-  "temp-dir": "./reports/.nyc_output",
+  "temp-dir": "./.nyc_output",
   "report-dir": "./reports/coverage",
   "check-coverage": true
 }
