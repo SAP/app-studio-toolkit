@@ -4,8 +4,8 @@ RPC library for VSCode WebViews — enables convenient bidirectional communicati
 
 ## Packages
 
-| Package | Description |
-|---------|-------------|
+| Package                                   | Description                                  |
+| ----------------------------------------- | -------------------------------------------- |
 | [`@sap-devx/webview-rpc`](./package.json) | The RPC library (extension + browser builds) |
 
 ## Description
