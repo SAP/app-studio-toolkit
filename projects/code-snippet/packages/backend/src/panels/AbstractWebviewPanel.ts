@@ -144,9 +144,8 @@ export abstract class AbstractWebviewPanel {
       const scriptPathOnDisk = vscode.Uri.file(
         path.join(this.mediaPath, path.sep)
       );
-      const scriptUri = this.webViewPanel.webview.asWebviewUri(
-        scriptPathOnDisk
-      );
+      const scriptUri =
+        this.webViewPanel.webview.asWebviewUri(scriptPathOnDisk);
 
       const baseUrl = scriptUri.toString();
       const dom = new JSDOM(indexHtml);

@@ -4,7 +4,7 @@
   "version": "2.1.0",
   "private": true,
   "description": "Frontend for the Code Snippet framework",
-  "license": "Apache 2.0",
+  "license": "Apache-2.0",
   "publisher": "SAP",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,7 @@
     "build-dev": "vite build --mode development",
     "ci": "npm-run-all clean build test coverage:copy",
     "clean": "rimraf ./dist ./coverage",
-    "coverage:copy": "shx mkdir -p ../../coverage && shx cp -u ./coverage/lcov.info ../../coverage/lcov_frontend.info",
+    "coverage:copy": "shx mkdir -p ../../../../coverage && shx cp -u ./coverage/lcov.info ../../../../coverage/lcov_frontend.info",
     "lint": "vue-cli-service lint",
     "serve": "vite",
     "test": "jest -w 1 --colors"
@@ -59,9 +59,47 @@
     "sass": "1.68.0",
     "ts-jest": "29.1.1",
     "vite": "5.4.20",
-    "vite-plugin-vuetify": "^1.0.2"
+    "vite-plugin-vuetify": "^1.0.2",
+    "@babel/eslint-parser": "^7.23.3"
   },
-  "engines": {
-    "node": ">= 18"
-  }
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/app-studio-toolkit.git",
+    "directory": "projects/code-snippet/packages/frontend"
+  },
+  "bugs": {
+    "url": "https://github.com/SAP/app-studio-toolkit/issues"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true,
+      "jest": true,
+      "vue/setup-compiler-macros": true
+    },
+    "extends": [
+      "plugin:vue/vue3-essential",
+      "eslint:recommended"
+    ],
+    "rules": {
+      "vue/multi-word-component-names": "off"
+    },
+    "parserOptions": {
+      "parser": "@babel/eslint-parser",
+      "requireConfigFile": false
+    },
+    "overrides": [
+      {
+        "files": [
+          "**/__tests__/*.{j,t}s?(x)",
+          "**/test/**/*.spec.{j,t}s?(x)",
+          "**/tests/unit/**/*.spec.{j,t}s?(x)"
+        ],
+        "env": {
+          "jest": true
+        }
+      }
+    ]
+  },
+  "files": []
 }

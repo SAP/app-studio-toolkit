@@ -106,7 +106,8 @@ function initLoggerWrapper(newLogger: any) {
 function createExtensionLogger(context: vscode.ExtensionContext) {
   const contextLogPath = context.logPath;
   const logLevelSetting: LogLevel = getLoggingLevelSetting();
-  const sourceLocationTrackingSettings: boolean = getSourceLocationTrackingSetting();
+  const sourceLocationTrackingSettings: boolean =
+    getSourceLocationTrackingSetting();
   const logOutputChannel = vscode.window.createOutputChannel(CODE_SNIPPET);
 
   //TODO:  const meta = require(resolve(context.extensionPath, PACKAGE_JSON));

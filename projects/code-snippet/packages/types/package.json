@@ -4,13 +4,16 @@
   "description": "code-snippet types",
   "repository": {
     "type": "git",
-    "url": "https://github.com/SAP/code-snippet.git"
+    "url": "https://github.com/SAP/app-studio-toolkit.git",
+    "directory": "projects/code-snippet/packages/types"
   },
   "license": "Apache-2.0",
   "typings": "./api.d.ts",
   "files": [
     ".reuse",
     "LICENSES",
+    "CHANGELOG.md",
+    "CHANGELOG.old.md",
     "api.d.ts"
   ],
   "scripts": {
@@ -23,5 +26,8 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "bugs": {
+    "url": "https://github.com/SAP/app-studio-toolkit/issues"
   }
 }
