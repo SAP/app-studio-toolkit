@@ -1,0 +1,90 @@
+{
+  "name": "vscode-task-contrib",
+  "displayName": "VSCode Task Contributor Sample",
+  "version": "4.8.0",
+  "private": true,
+  "categories": [],
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/task-explorer",
+    "directory": "packages/vscode_task_contrib"
+  },
+  "publisher": "SAPSE",
+  "main": "./dist/src/extension",
+  "scripts": {
+    "bundle": "webpack --mode production",
+    "ci": "npm-run-all clean compile bundle package",
+    "ci:artifacts_only": "npm-run-all clean compile bundle package",
+    "clean": "shx rm -rf dist coverage *.vsix",
+    "compile": "tsc",
+    "package": "node ./scripts/package-vsix.js"
+  },
+  "contributes": {
+    "taskDefinitions": [
+      {
+        "type": "npm-script",
+        "required": [
+          "label",
+          "taskType",
+          "packageJSONPath",
+          "script"
+        ],
+        "properties": {
+          "label": {
+            "type": "string",
+            "description": "Label"
+          },
+          "taskType": {
+            "type": "string",
+            "description": "Task Type"
+          },
+          "packageJSONPath": {
+            "type": "string",
+            "description": "Path to package.json"
+          },
+          "script": {
+            "type": "string",
+            "description": "Select script:"
+          },
+          "arguments": {
+            "type": "string",
+            "description": "Add arguments"
+          }
+        }
+      }
+    ]
+  },
+  "activationEvents": [
+    "*"
+  ],
+  "dependencies": {
+    "@sap_oss/task_contrib_types": "^4.7.1",
+    "comment-json": "4.2.3",
+    "datauri": "4.1.0",
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "@types/comment-json": "2.4.2",
+    "@types/glob": "^7.2.0",
+    "@types/lodash": "^4.14.184",
+    "@types/mocha": "^9.1.1",
+    "@types/node": "^18.0.0",
+    "@types/vscode": "1.75.0",
+    "@vscode/vsce": "2.22.0",
+    "proxyquire": "2.1.3",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4"
+  },
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "BASContributes": {
+    "tasksExplorer": [
+      {
+        "type": "npm-script",
+        "intent": "Miscellaneous"
+      }
+    ]
+  }
+}
