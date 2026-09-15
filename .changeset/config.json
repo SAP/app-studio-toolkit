@@ -36,7 +36,9 @@
     "vscode-contrib2",
     "vscode-contrib3",
     "vscode-simple-contrib",
-    "vscode-snippet-food-contrib"
+    "vscode-snippet-food-contrib",
+    "rpc-example",
+    "example-ws"
   ],
   "privatePackages": {
     "version": true,

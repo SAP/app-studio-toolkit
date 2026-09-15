@@ -1,0 +1,57 @@
+<html>
+
+<head>
+    <title>RPC WebSockets Example</title>
+    <script type="module" src="./rpc/rpc-common.js"></script>
+    <script type="module" src="./rpc/rpc-browser-ws.js"></script>
+    <script type="module">
+        import { RpcBrowserWebSockets } from "./rpc/rpc-browser-ws.js";
+
+        window.onload = () => {
+            let rpc;
+
+            function sum(a, b) {
+                return new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        resolve(a + b);
+                    }, 2000);
+                });
+            }
+
+            const ws = new WebSocket("ws://127.0.0.1:8081");
+            ws.onopen = (event) => {
+                // logger is optional second parameter, implementing interface IChildLogger:
+                // https://github.com/SAP/vscode-logging/blob/master/packages/types/api.d.ts#L17
+                rpc = new RpcBrowserWebSockets(ws);
+                rpc.setResponseTimeout(30000);
+                rpc.registerMethod({ func: sum });
+            };
+
+            const subtractButton = document.getElementById("subtractButton");
+            subtractButton.onclick = () => {
+                let param1 = document.getElementById("param1").value;
+                let param2 = document.getElementById("param2").value;
+                rpc.invoke("sub", ...[Number(param1), Number(param2)]).then((val) => {
+                    document.getElementById("result").value = val;
+                    console.log(`sub is ${val}`);
+                });
+            }
+
+        };
+    </script>
+</head>
+
+<body style="font-family: Arial, Helvetica, sans-serif;">
+    <h1>RPC WebSockets Example</h1>
+    <form>
+        <label id=param1Text>First parameter:</label><br>
+        <input id="param1" type="text" value="11" aria-describedby="param1Text"></input><br>
+        <label id=param2Text>Second parameter:</label><br>
+        <input id="param2" type="text" value="3" aria-describedby="param2Text"></input><br>
+        <input id=subtractButton type="button" value="Subtract()"></input><br>
+        <label id=resultText>Result:</label><br>
+        <input id="result" type="text" aria-describedby="resultText"></input><br>
+    </form>
+</body>
+
+</html>

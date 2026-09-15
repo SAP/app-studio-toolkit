@@ -76,6 +76,7 @@ tsconfig.tsbuildinfo
 
 # generated artifacts
 dist
+out.*
 
 # Other
 .DS_store
