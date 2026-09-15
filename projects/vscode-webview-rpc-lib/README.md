@@ -14,7 +14,7 @@ Provides a convenient way to communicate between a VSCode extension and its webv
 
 ## How to Use
 
-An example of using this library can be seen under the [`example/`](./example) folder (webview) and [`example-ws/`](./example-ws) folder (WebSocket variant).
+An example of using this library can be seen under the [`examples/rpc-example/`](./examples/rpc-example) folder (webview) and [`examples/rpc-example-ws/`](./examples/rpc-example-ws) folder (WebSocket variant).
 
 ### Installation
 
