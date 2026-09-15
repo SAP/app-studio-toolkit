@@ -1,0 +1,45 @@
+{
+  "name": "@sap/cf-tools",
+  "version": "3.3.1",
+  "description": "A set of APIs for easy application development with Cloud Foundry.",
+  "main": "out/src/index.js",
+  "types": "out/src/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/app-studio-toolkit.git",
+    "directory": "projects/cloud-foundry-tools-api/packages/cloud-foundry-tools-api"
+  },
+  "bugs": {
+    "url": "https://github.com/SAP/app-studio-toolkit/issues"
+  },
+  "license": "Apache-2.0",
+  "author": "SAP SE",
+  "files": [
+    ".reuse",
+    "LICENSES",
+    "out/src/*.js",
+    "out/src/*.d.ts",
+    "CHANGELOG.md",
+    "CHANGELOG.old.md"
+  ],
+  "dependencies": {
+    "comment-json": "4.2.5",
+    "lodash": "4.18.1",
+    "properties-reader": "2.3.0",
+    "url": "0.11.4"
+  },
+  "devDependencies": {
+    "@types/properties-reader": "2.1.3"
+  },
+  "scripts": {
+    "ci": "npm-run-all clean compile coverage",
+    "clean": "shx rm -rf ./out ./reports ./.nyc_output ./coverage",
+    "compile": "tsc -p .",
+    "compile:watch": "tsc -p . --watch",
+    "test": "mocha",
+    "coverage": "nyc mocha"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
