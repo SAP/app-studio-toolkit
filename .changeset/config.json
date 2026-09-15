@@ -17,8 +17,7 @@
       "@vscode-logging/types",
       "@vscode-logging/wrapper"
     ],
-    ["guided-development", "guided-development-frontend"],
-    ["@sap-devx/webview-rpc"]
+    ["guided-development", "guided-development-frontend"]
   ],
   "linked": [],
   "access": "restricted",
