@@ -10,8 +10,6 @@
   "license": "Apache-2.0",
   "typings": "./api.d.ts",
   "files": [
-    ".reuse",
-    "LICENSES",
     "CHANGELOG.md",
     "CHANGELOG.old.md",
     "api.d.ts"

@@ -18,7 +18,7 @@
     "ci": "npm-run-all clean compile",
     "clean": "rimraf ./dist",
     "compile": "tsc -p .",
-    "package": "vsce package --yarn .",
+    "package": "vsce package --no-yarn",
     "watch": "tsc -p . --watch"
   },
   "contributes": {
