@@ -1,0 +1,57 @@
+{
+  "name": "code-snippet",
+  "displayName": "Code Snippet wrapper",
+  "version": "2.0.1",
+  "private": true,
+  "description": "A VSCode extension that provides a simple way to add code snippets.",
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "code",
+    "snippet",
+    "snipping ",
+    "tool",
+    "sap"
+  ],
+  "bugs": {
+    "url": "https://github.com/SAP/code-snippet/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/code-snippet.git"
+  },
+  "license": "Apache 2.0",
+  "publisher": "SAPOSS",
+  "main": "./dist/extension",
+  "scripts": {
+    "bundle": "webpack --mode production",
+    "bundle-dev": "webpack --mode development --watch",
+    "ci": "npm-run-all clean compile coverage bundle package coverage coverage:copy",
+    "clean": "rimraf ./dist ./coverage *.vsix",
+    "compile": "tsc -p ./",
+    "coverage": "nyc mocha -p tsconfig.json --recursive test/**/*.spec.ts",
+    "coverage:copy": "shx mkdir -p ../../coverage && shx cp -u ./reports/coverage/lcov.info ../../coverage/lcov_backend.info",
+    "package": "vsce package --yarn .",
+    "test": "mocha -p tsconfig.json --recursive test/**/*.spec.ts"
+  },
+  "activationEvents": [],
+  "extensionDependencies": [
+    "saposs.code-snippet-tool"
+  ],
+  "devDependencies": {
+    "@types/sinon": "^10.0.11",
+    "copy-webpack-plugin": "^5.0.5",
+    "sinon": "^9.2.1",
+    "string-replace-loader": "^2.1.1",
+    "ts-loader": "^8.0.14",
+    "ts-node": "^9.1.1",
+    "vsce": "^1.73.0",
+    "webpack": "^5.89.0",
+    "webpack-cli": "5.1.4"
+  },
+  "engines": {
+    "vscode": "^1.44.2"
+  },
+  "icon": "logo.png"
+}

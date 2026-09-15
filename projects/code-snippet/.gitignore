@@ -1,0 +1,32 @@
+# sub-packages files for https://reuse.software (avoid duplication)
+.reuse
+LICENSES
+LICENSE
+
+# root files for https://reuse.software
+!/.reuse
+!/LICENSES
+!LICENSE
+
+package-lock.json
+reports
+**/node_modules
+**/dist
+**/out
+**/*.vsix
+**/coverage
+tsconfig.tsbuildinfo
+lerna-debug.log
+
+/.idea
+
+# added to root .gitignore to also ignore it in linting
+packages/backend/dummy/main.js
+
+# this folder should be initially empty when running the contributor snippet example.
+examples/dummy-scripts/.vscode
+
+# macOS
+.DS_Store
+
+yarn-error.log
