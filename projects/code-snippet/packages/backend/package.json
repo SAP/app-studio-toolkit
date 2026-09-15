@@ -134,10 +134,15 @@
     "webpack": "^5.89.0",
     "webpack-cli": "5.1.4",
     "@types/yeoman-generator": "4.11.3",
-    "code-snippet-frontend": "workspace:*"
+    "code-snippet-frontend": "workspace:*",
+    "mocha": "10.7.3",
+    "nyc": "15.1.0",
+    "rimraf": "3.0.2",
+    "shx": "0.3.3",
+    "npm-run-all2": "5.0.2"
   },
   "icon": "logo.png",
   "engines": {
-    "vscode": "^1.44.2"
+    "vscode": "^1.46.0"
   }
 }

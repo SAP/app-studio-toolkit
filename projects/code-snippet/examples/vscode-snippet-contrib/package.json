@@ -60,6 +60,6 @@
     "url": "https://github.com/SAP/app-studio-toolkit/issues"
   },
   "engines": {
-    "vscode": "^1.44.2"
+    "vscode": "^1.46.0"
   }
 }
