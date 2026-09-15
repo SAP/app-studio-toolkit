@@ -789,8 +789,8 @@ importers:
         specifier: 2.11.4
         version: 2.11.4
       '@sap-devx/webview-rpc':
-        specifier: 0.3.1
-        version: 0.3.1(bufferutil@4.1.0)(utf-8-validate@5.0.10)
+        specifier: 1.1.0
+        version: 1.1.0(bufferutil@4.1.0)(utf-8-validate@5.0.10)
       '@sap_oss/guided-development-types':
         specifier: workspace:*
         version: link:../types
@@ -896,8 +896,8 @@ importers:
         specifier: ^7.9.5
         version: 7.11.5(@babel/core@7.29.0)
       '@sap-devx/webview-rpc':
-        specifier: ^0.3.1
-        version: 0.3.1(bufferutil@4.1.0)(utf-8-validate@5.0.10)
+        specifier: 1.1.0
+        version: 1.1.0(bufferutil@4.1.0)(utf-8-validate@5.0.10)
       '@typescript-eslint/eslint-plugin':
         specifier: ^6.2.0
         version: 6.21.0(@typescript-eslint/parser@6.21.0(eslint@7.32.0)(typescript@5.7.3))(eslint@7.32.0)(typescript@5.7.3)
@@ -1249,8 +1249,8 @@ importers:
   projects/yeoman-ui/packages/backend:
     dependencies:
       '@sap-devx/webview-rpc':
-        specifier: 0.4.1
-        version: 0.4.1(bufferutil@4.1.0)(utf-8-validate@5.0.10)
+        specifier: 1.1.0
+        version: 1.1.0(bufferutil@4.1.0)(utf-8-validate@5.0.10)
       '@sap-devx/yeoman-ui-types':
         specifier: workspace:^
         version: link:../types
@@ -1421,8 +1421,8 @@ importers:
         specifier: 3.4.14
         version: 3.4.14(typescript@5.7.3)
       '@sap-devx/webview-rpc':
-        specifier: 0.4.1
-        version: 0.4.1(bufferutil@4.1.0)(utf-8-validate@5.0.10)
+        specifier: 1.1.0
+        version: 1.1.0(bufferutil@4.1.0)(utf-8-validate@5.0.10)
       '@sap-devx/yeoman-ui-types':
         specifier: workspace:^
         version: link:../types
@@ -4013,11 +4013,8 @@ packages:
   '@sap-devx/inquirer-gui@3.4.14':
     resolution: {integrity: sha512-hB0PK4/bX8ritk1+CL8cNiUfkvAEN/XxgNHgwALFeb6WfiutLyrJTfdjiji7QHQsDfDPrwTgGUD/erqaNY0dNw==}
 
-  '@sap-devx/webview-rpc@0.3.1':
-    resolution: {integrity: sha512-wBgSJzsVZ/lpRLd1v1PuGjmnVZH+OlyFY0AmQoMDULVC/nb+E3C7t6VpP5FtRGCL5WsSs1xK7r4gLI4NO3b8kA==}
-
-  '@sap-devx/webview-rpc@0.4.1':
-    resolution: {integrity: sha512-FznAh7u1qZh4VWle6wxCmXL2/qI0QigRx67jsL/Eyn7lW1e+6CO2vShond5IjS6+YKpXL7WFwK2MnU08kqqM6A==}
+  '@sap-devx/webview-rpc@1.1.0':
+    resolution: {integrity: sha512-K4h8pHSXRVLA8U19sLmEM+53DfY6A9/4UOFfTgdZh4t+hm4LCRMksjbvGM1yAJx1h6VhT0BczwPtURYjLMjCew==}
 
   '@sap/artifact-management-base-types@1.53.4':
     resolution: {integrity: sha512-zsRDy3a9TAZbWBuTDbLJ5hlkzQETEc8lmnrCmhI75R9JlsaqGut2YDvR/EanuvKaoAYJTiLrwO1FcWANtpr9YA==}
@@ -14331,18 +14328,6 @@ packages:
       utf-8-validate:
         optional: true
 
-  ws@7.5.10:
-    resolution: {integrity: sha512-+dbF1tHwZpXcbOJdVOkzLDxZP1ailvSxM6ZweXTegylPny803bFhA+vqBYw4s31NSAk4S2Qz+AKXK9a4wkdjcQ==}
-    engines: {node: '>=8.3.0'}
-    peerDependencies:
-      bufferutil: ^4.0.1
-      utf-8-validate: ^5.0.2
-    peerDependenciesMeta:
-      bufferutil:
-        optional: true
-      utf-8-validate:
-        optional: true
-
   ws@8.17.1:
     resolution: {integrity: sha512-6XQFvXTkbfUOZOKKILFG1PDK2NDQs4azKQl26T0YS5CxqWLgXajbPZ+h4gZekJyRqFU8pvnbAbbs/3TgRPy+GQ==}
     engines: {node: '>=10.0.0'}
@@ -18026,14 +18011,7 @@ snapshots:
       - vite-plugin-vuetify
       - webpack-plugin-vuetify
 
-  '@sap-devx/webview-rpc@0.3.1(bufferutil@4.1.0)(utf-8-validate@5.0.10)':
-    dependencies:
-      ws: 7.5.10(bufferutil@4.1.0)(utf-8-validate@5.0.10)
-    transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
-
-  '@sap-devx/webview-rpc@0.4.1(bufferutil@4.1.0)(utf-8-validate@5.0.10)':
+  '@sap-devx/webview-rpc@1.1.0(bufferutil@4.1.0)(utf-8-validate@5.0.10)':
     dependencies:
       ws: 7.4.6(bufferutil@4.1.0)(utf-8-validate@5.0.10)
     transitivePeerDependencies:
@@ -30861,11 +30839,6 @@ snapshots:
       signal-exit: 4.1.0
 
   ws@7.4.6(bufferutil@4.1.0)(utf-8-validate@5.0.10):
-    optionalDependencies:
-      bufferutil: 4.1.0
-      utf-8-validate: 5.0.10
-
-  ws@7.5.10(bufferutil@4.1.0)(utf-8-validate@5.0.10):
     optionalDependencies:
       bufferutil: 4.1.0
       utf-8-validate: 5.0.10
