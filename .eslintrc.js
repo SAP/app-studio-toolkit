@@ -282,6 +282,22 @@ module.exports = {
       },
     },
     {
+      // Additional TypeScript rules for feature-toggle-node package.
+      // Legacy library + chai test suite migrated as-is; relaxed to match the
+      // historical behaviour without rewriting source logic.
+      // TODO: clean up violations and tighten incrementally.
+      files: ["projects/feature-toggle-node/**/*.ts"],
+      rules: {
+        // chai assertions (e.g. expect(x).to.be.true) read as unused expressions
+        "@typescript-eslint/no-unused-expressions": "off",
+        "@typescript-eslint/no-unnecessary-type-assertion": "off",
+        "@typescript-eslint/require-await": "off",
+        "@typescript-eslint/no-floating-promises": "off",
+        "@typescript-eslint/no-unsafe-return": "off",
+        "@typescript-eslint/no-unsafe-argument": "off",
+      },
+    },
+    {
       // For Vue frontend sub-packages.
       files: ["*.vue"],
       parser: "vue-eslint-parser",
