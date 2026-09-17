@@ -1,0 +1,44 @@
+{
+  "name": "@sap-devx/feature-toggle-node",
+  "version": "2.1.0",
+  "description": "A Node.js module for enabling or disabling Node.js-based SAP Business Application Studio features.",
+  "main": "lib/api.js",
+  "types": "lib/api.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/app-studio-toolkit.git",
+    "directory": "projects/feature-toggle-node/packages/feature-toggle-node"
+  },
+  "bugs": {
+    "url": "https://github.com/SAP/app-studio-toolkit/issues"
+  },
+  "license": "Apache-2.0",
+  "author": "SAP SE",
+  "files": [
+    ".reuse",
+    "LICENSES",
+    "lib",
+    "src",
+    "CHANGELOG.md",
+    "CHANGELOG.old.md"
+  ],
+  "dependencies": {
+    "node-cache": "5.1.2"
+  },
+  "devDependencies": {
+    "@istanbuljs/nyc-config-typescript": "1.0.2",
+    "source-map-support": "0.5.21",
+    "ts-node": "10.9.2"
+  },
+  "scripts": {
+    "ci": "npm-run-all clean compile coverage",
+    "clean": "shx rm -rf ./lib ./coverage ./.nyc_output",
+    "compile": "tsc -p .",
+    "compile:watch": "tsc -p . --watch",
+    "test": "mocha",
+    "coverage": "nyc mocha"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
