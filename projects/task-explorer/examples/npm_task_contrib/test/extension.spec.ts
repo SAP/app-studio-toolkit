@@ -1,5 +1,10 @@
 import { expect } from "chai";
-import { MockVSCodeInfo, mockVscode, resetTestVSCode, testVscode } from "./utils/mockVSCode";
+import {
+  MockVSCodeInfo,
+  mockVscode,
+  resetTestVSCode,
+  testVscode,
+} from "./utils/mockVSCode";
 
 mockVscode("src/extension");
 import { activate } from "../src/extension";
@@ -13,7 +18,7 @@ describe("extension", () => {
     });
 
     it("registers relevant commands and tasks tree", async () => {
-      const taskEditorContribExtApi = await activate(testVscode.ExtensionContext);
+      const taskEditorContribExtApi = activate(testVscode.ExtensionContext);
       const contirbutors = taskEditorContribExtApi.getTaskEditorContributors();
       expect(contirbutors.size).to.be.eq(1);
       const npmContributer = contirbutors.get(NPM_TYPE);
@@ -47,7 +52,11 @@ describe("extension", () => {
       const tasksDefinition = packageJson.contributes.taskDefinitions[0];
       expect(tasksDefinition.type).to.be.equal("npm");
       expect(tasksDefinition.required).to.be.deep.equal(["label", "script"]);
-      expect(keys(tasksDefinition.properties)).to.be.deep.equal(["label", "path", "script"]);
+      expect(keys(tasksDefinition.properties)).to.be.deep.equal([
+        "label",
+        "path",
+        "script",
+      ]);
       expect(tasksDefinition.properties.label).to.be.deep.equal({
         type: "string",
         description: "Label",

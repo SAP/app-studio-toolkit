@@ -8,7 +8,9 @@ let message: string;
 export function createLoggerWrapperMock(sandbox: any): any {
   message = "";
   const loggerImpl: IVSCodeExtLogger = {
-    changeLevel(newLevel: "off" | "fatal" | "error" | "warn" | "info" | "debug" | "trace"): void {
+    changeLevel(
+      newLevel: "off" | "fatal" | "error" | "warn" | "info" | "debug" | "trace"
+    ): void {
       return;
     },
     changeSourceLocationTracking(newSourceLocation: boolean): void {

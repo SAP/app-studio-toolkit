@@ -1,12 +1,20 @@
 import { expect } from "chai";
 import { extend, find, map } from "lodash";
-import { mockVscode, resetTestVSCode, testVscode, MockVSCodeInfo } from "../utils/mockVSCode";
+import {
+  mockVscode,
+  resetTestVSCode,
+  testVscode,
+  MockVSCodeInfo,
+} from "../utils/mockVSCode";
 
 mockVscode("/src/cap-e2e-config");
 import { SinonMock, SinonSandbox, createSandbox } from "sinon";
 import * as childProcess from "child_process";
 import * as e2eConfig from "../../src/misc/e2e-config";
-import { capE2eConfig, getCapE2ePickItems } from "../../src/misc/cap-e2e-config";
+import {
+  capE2eConfig,
+  getCapE2ePickItems,
+} from "../../src/misc/cap-e2e-config";
 import { EventEmitter } from "ws";
 
 describe("cap-e2e-config scope", () => {
@@ -24,7 +32,8 @@ describe("cap-e2e-config scope", () => {
     mockWorkspace = sandbox.mock(testVscode.workspace);
     mockCommands = sandbox.mock(testVscode.commands);
 
-    fakeSpawnEventEmitter = new EventEmitter() as childProcess.ChildProcessWithoutNullStreams;
+    fakeSpawnEventEmitter =
+      new EventEmitter() as childProcess.ChildProcessWithoutNullStreams;
     (<any>fakeSpawnEventEmitter).stdout = new EventEmitter();
     (<any>fakeSpawnEventEmitter).stderr = new EventEmitter();
   });
@@ -44,7 +53,11 @@ describe("cap-e2e-config scope", () => {
     };
 
     it("getCapE2ePickItems - unexpected type", async () => {
-      expect(await getCapE2ePickItems(extend({}, info, { style: e2eConfig.ProjTypes.LCAP }))).to.be.undefined;
+      expect(
+        await getCapE2ePickItems(
+          extend({}, info, { style: e2eConfig.ProjTypes.LCAP })
+        )
+      ).to.be.undefined;
     });
 
     it("getCapE2ePickItems - cds not enabled", async () => {
@@ -66,7 +79,12 @@ describe("cap-e2e-config scope", () => {
         .stub(childProcess, "spawn")
         .withArgs("cds", ["help"], { cwd: info.wsFolder })
         .returns(fakeSpawnEventEmitter);
-      setTimeout(() => fakeSpawnEventEmitter.stderr.emit("data", "unrecognised command cds help"));
+      setTimeout(() =>
+        fakeSpawnEventEmitter.stderr.emit(
+          "data",
+          "unrecognised command cds help"
+        )
+      );
       setTimeout(() => fakeSpawnEventEmitter.emit("exit", 1), 100);
       expect(await getCapE2ePickItems(info)).to.be.undefined;
     });
@@ -89,14 +107,32 @@ describe("cap-e2e-config scope", () => {
         .withArgs("cds", ["help"], { cwd: info.wsFolder })
         .returns(fakeSpawnEventEmitter);
       setTimeout(() => fakeSpawnEventEmitter.emit("exit", 0));
-      const mtaFile = testVscode.Uri.joinPath(testVscode.Uri.file(info.wsFolder), info.project, "mta.yaml");
+      const mtaFile = testVscode.Uri.joinPath(
+        testVscode.Uri.file(info.wsFolder),
+        info.project,
+        "mta.yaml"
+      );
       sandbox.stub(e2eConfig, "doesFileExist").withArgs(mtaFile).resolves(true);
-      const tasks = map(await e2eConfig.generateMtaDeployTasks(info.wsFolder, info.project, "sequence"), (task) => {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars -- object destructuring is used to exclude the specified properties
-        const { ["label"]: excludedLabel, ["dependsOn"]: excludedDependsOn, ...copyTask } = task;
-        return copyTask;
-      });
-      sandbox.stub(e2eConfig, "isTasksSettled").withArgs(info.wsFolder, tasks).returns(true);
+      const tasks = map(
+        await e2eConfig.generateMtaDeployTasks(
+          info.wsFolder,
+          info.project,
+          "sequence"
+        ),
+        (task) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars -- object destructuring is used to exclude the specified properties
+          const {
+            ["label"]: excludedLabel,
+            ["dependsOn"]: excludedDependsOn,
+            ...copyTask
+          } = task;
+          return copyTask;
+        }
+      );
+      sandbox
+        .stub(e2eConfig, "isTasksSettled")
+        .withArgs(info.wsFolder, tasks)
+        .returns(true);
       expect(await getCapE2ePickItems(info)).to.be.undefined;
     });
 
@@ -106,7 +142,11 @@ describe("cap-e2e-config scope", () => {
         .withArgs("cds", ["help"], { cwd: info.wsFolder })
         .returns(fakeSpawnEventEmitter);
       setTimeout(() => fakeSpawnEventEmitter.emit("exit", 0));
-      const mtaFile = testVscode.Uri.joinPath(testVscode.Uri.file(info.wsFolder), info.project, "mta.yaml");
+      const mtaFile = testVscode.Uri.joinPath(
+        testVscode.Uri.file(info.wsFolder),
+        info.project,
+        "mta.yaml"
+      );
       sandbox.stub(e2eConfig, "doesFileExist").withArgs(mtaFile).resolves(true);
       sandbox.stub(e2eConfig, "isTasksSettled").returns(false);
       expect(await getCapE2ePickItems(info)).to.be.deep.equal({
@@ -122,30 +162,55 @@ describe("cap-e2e-config scope", () => {
       project: "project",
     };
 
-    const mtaFile = testVscode.Uri.joinPath(testVscode.Uri.file(data.wsFolder), data.project, "mta.yaml");
+    const mtaFile = testVscode.Uri.joinPath(
+      testVscode.Uri.file(data.wsFolder),
+      data.project,
+      "mta.yaml"
+    );
 
     it("capE2eConfig - succeed, tasks added", async () => {
-      sandbox.stub(e2eConfig, "doesFileExist").withArgs(mtaFile).resolves(false);
+      sandbox
+        .stub(e2eConfig, "doesFileExist")
+        .withArgs(mtaFile)
+        .resolves(false);
       sandbox
         .stub(e2eConfig, "waitForFileResource")
         .withArgs(
-          new testVscode.RelativePattern(data.wsFolder, `${data.project ? `${data.project}/` : ``}mta.yaml`),
+          new testVscode.RelativePattern(
+            data.wsFolder,
+            `${data.project ? `${data.project}/` : ``}mta.yaml`
+          ),
           false,
           false,
-          true,
+          true
         )
         .resolves(true);
       sandbox
         .stub(childProcess, "spawn")
         .withArgs("cds", ["add", "mta"], {
-          cwd: testVscode.Uri.joinPath(testVscode.Uri.file(data.wsFolder), data.project).fsPath,
+          cwd: testVscode.Uri.joinPath(
+            testVscode.Uri.file(data.wsFolder),
+            data.project
+          ).fsPath,
         })
         .returns(fakeSpawnEventEmitter);
       setTimeout(() => fakeSpawnEventEmitter.emit("exit", 0), 100);
 
-      const tasks = await e2eConfig.generateMtaDeployTasks(data.wsFolder, data.project, "sequence");
-      mockCommands.expects("executeCommand").withExactArgs("tasks-explorer.editTask", tasks[1]).once().resolves();
-      mockCommands.expects("executeCommand").withExactArgs("tasks-explorer.tree.select", tasks[1]).once().resolves();
+      const tasks = await e2eConfig.generateMtaDeployTasks(
+        data.wsFolder,
+        data.project,
+        "sequence"
+      );
+      mockCommands
+        .expects("executeCommand")
+        .withExactArgs("tasks-explorer.editTask", tasks[1])
+        .once()
+        .resolves();
+      mockCommands
+        .expects("executeCommand")
+        .withExactArgs("tasks-explorer.tree.select", tasks[1])
+        .once()
+        .resolves();
       expect(await capE2eConfig(data)).to.be.undefined;
       const _configuredTasks = MockVSCodeInfo.configTasks?.get(data.wsFolder);
       expect(find(_configuredTasks, { label: tasks[0].label })).to.exist;
@@ -154,15 +219,26 @@ describe("cap-e2e-config scope", () => {
 
     it("capE2eConfig - not configured, `mta` not created", async () => {
       const copyData = { ...data, ...{ project: "" } };
-      sandbox.stub(e2eConfig, "doesFileExist").withArgs(mtaFile).resolves(false);
+      sandbox
+        .stub(e2eConfig, "doesFileExist")
+        .withArgs(mtaFile)
+        .resolves(false);
       sandbox
         .stub(e2eConfig, "waitForFileResource")
-        .withArgs(new testVscode.RelativePattern(copyData.wsFolder, `mta.yaml`), false, false, true)
+        .withArgs(
+          new testVscode.RelativePattern(copyData.wsFolder, `mta.yaml`),
+          false,
+          false,
+          true
+        )
         .resolves(false);
       sandbox
         .stub(childProcess, "spawn")
         .withArgs("cds", ["add", "mta"], {
-          cwd: testVscode.Uri.joinPath(testVscode.Uri.file(copyData.wsFolder), copyData.project).fsPath,
+          cwd: testVscode.Uri.joinPath(
+            testVscode.Uri.file(copyData.wsFolder),
+            copyData.project
+          ).fsPath,
         })
         .returns(fakeSpawnEventEmitter);
       setTimeout(() => fakeSpawnEventEmitter.emit("exit", 0), 100);
@@ -171,8 +247,16 @@ describe("cap-e2e-config scope", () => {
 
     it("capE2eConfig - project configured, tasks not added", async () => {
       sandbox.stub(e2eConfig, "doesFileExist").withArgs(mtaFile).resolves(true);
-      mockCommands.expects("executeCommand").withArgs("tasks-explorer.editTask").once().resolves();
-      mockCommands.expects("executeCommand").withArgs("tasks-explorer.tree.select").once().resolves();
+      mockCommands
+        .expects("executeCommand")
+        .withArgs("tasks-explorer.editTask")
+        .once()
+        .resolves();
+      mockCommands
+        .expects("executeCommand")
+        .withArgs("tasks-explorer.tree.select")
+        .once()
+        .resolves();
       await capE2eConfig(data);
     });
   });

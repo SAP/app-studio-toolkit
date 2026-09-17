@@ -1,6 +1,9 @@
 import { commands, Extension, extensions } from "vscode";
 import { Dictionary, get, keys, map, uniq, zipObject } from "lodash";
-import { ConfiguredTask, TaskEditorContributionAPI } from "@sap_oss/task_contrib_types";
+import {
+  ConfiguredTask,
+  TaskEditorContributionAPI,
+} from "@sap_oss/task_contrib_types";
 import { getLogger } from "../logger/logger-wrapper";
 import { ITaskTypeEventHandler, IContributors } from "./definitions";
 import { messages } from "../i18n/messages";
@@ -44,17 +47,26 @@ export class Contributors implements IContributors {
     this.eventHandlers.push(eventHandler);
   }
 
-  public getTaskEditorContributor(type: string): TaskEditorContributionAPI<ConfiguredTask> {
+  public getTaskEditorContributor(
+    type: string
+  ): TaskEditorContributionAPI<ConfiguredTask> {
     return this.tasksEditorContributorsMap.get(type)?.provider;
   }
 
-  private async getApi(extension: Extension<any>, extensionId: string): Promise<any> {
+  private async getApi(
+    extension: Extension<any>,
+    extensionId: string
+  ): Promise<any> {
     let api: any;
     if (!extension.isActive) {
       try {
         api = await extension.activate();
       } catch (error: any) {
-        throw new Error(`${messages.ACTIVATE_CONTRIB_EXT_ERROR(extensionId)}:${error.toString()}`);
+        throw new Error(
+          `${messages.ACTIVATE_CONTRIB_EXT_ERROR(
+            extensionId
+          )}:${error.toString()}`
+        );
       }
     } else {
       api = extension.exports;
@@ -71,32 +83,38 @@ export class Contributors implements IContributors {
           const contributedTypes = this.getTypesInfo(currentPackageJSON);
           if (contributedTypes && contributedTypes.size > 0) {
             const extensionName: string = get(currentPackageJSON, "name");
-            return this.getApi(extension, `${get(currentPackageJSON, "publisher")}.${extensionName}`).then((api) => {
+            return this.getApi(
+              extension,
+              `${get(currentPackageJSON, "publisher")}.${extensionName}`
+            ).then((api) => {
               if (typeof api?.getTaskEditorContributors === "function") {
-                const tasksPropertyMessageMap = this.getTasksPropertyMessageMap(currentPackageJSON);
-                api.getTaskEditorContributors().forEach((provider: any, type: string) => {
-                  const typeInfo = contributedTypes.get(type);
-                  if (typeInfo) {
-                    if (!this.tasksEditorContributorsMap.has(type)) {
-                      this.tasksEditorContributorsMap.set(type, {
-                        provider: provider,
-                        intent: typeInfo["intent"],
-                        extensionName: extensionName,
-                        properties: tasksPropertyMessageMap[type].properties,
-                        requires: tasksPropertyMessageMap[type].requires,
-                      });
+                const tasksPropertyMessageMap =
+                  this.getTasksPropertyMessageMap(currentPackageJSON);
+                api
+                  .getTaskEditorContributors()
+                  .forEach((provider: any, type: string) => {
+                    const typeInfo = contributedTypes.get(type);
+                    if (typeInfo) {
+                      if (!this.tasksEditorContributorsMap.has(type)) {
+                        this.tasksEditorContributorsMap.set(type, {
+                          provider: provider,
+                          intent: typeInfo["intent"],
+                          extensionName: extensionName,
+                          properties: tasksPropertyMessageMap[type].properties,
+                          requires: tasksPropertyMessageMap[type].requires,
+                        });
+                      } else {
+                        throw new Error(messages.DUPLICATED_TYPE(type));
+                      }
                     } else {
-                      throw new Error(messages.DUPLICATED_TYPE(type));
+                      throw new Error(messages.MISSING_TYPE(type));
                     }
-                  } else {
-                    throw new Error(messages.MISSING_TYPE(type));
-                  }
-                });
+                  });
               }
             });
           }
         });
-      }),
+      })
     )
       .then(() => {
         setTimeout(() => {
@@ -109,18 +127,25 @@ export class Contributors implements IContributors {
         getLogger().error(exceptionToString(e));
       })
       .finally(() => {
-        void commands.executeCommand("setContext", "ext.isViewVisible", this.tasksEditorContributorsMap.size > 0);
+        void commands.executeCommand(
+          "setContext",
+          "ext.isViewVisible",
+          this.tasksEditorContributorsMap.size > 0
+        );
       });
   }
 
   private getTasksPropertyMessageMap(
-    packageJSON: any,
+    packageJSON: any
   ): Record<string, { properties: Dictionary<any>; requires: string[] }> {
     const tasksDefinitions = get(packageJSON.contributes, "taskDefinitions");
     const tasksTypes = map(tasksDefinitions, (_) => _.type);
     const tasksProperties = map(tasksDefinitions, (taskDefinition) => {
       const propertiesNames: string[] = keys(taskDefinition.properties);
-      const propertiesDetails: any[] = map(propertiesNames, (_) => taskDefinition.properties[_]);
+      const propertiesDetails: any[] = map(
+        propertiesNames,
+        (_) => taskDefinition.properties[_]
+      );
       return {
         properties: zipObject(propertiesNames, propertiesDetails),
         requires: taskDefinition.required,
@@ -129,7 +154,9 @@ export class Contributors implements IContributors {
     return zipObject(tasksTypes, tasksProperties);
   }
 
-  private getTypesInfo(packageJSON: Record<string, any>): Map<string, any> | undefined {
+  private getTypesInfo(
+    packageJSON: Record<string, any>
+  ): Map<string, any> | undefined {
     let info: Map<string, any> | undefined;
     const tasksExplorerContribution = packageJSON.BASContributes?.tasksExplorer;
     if (tasksExplorerContribution) {
@@ -142,6 +169,10 @@ export class Contributors implements IContributors {
   }
 
   getTaskPropertyDescription(type: string, property: string): string {
-    return get(this.tasksEditorContributorsMap.get(type).properties[property], "description", "");
+    return get(
+      this.tasksEditorContributorsMap.get(type).properties[property],
+      "description",
+      ""
+    );
   }
 }

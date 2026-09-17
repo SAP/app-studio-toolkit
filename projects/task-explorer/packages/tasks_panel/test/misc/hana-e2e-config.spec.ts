@@ -1,8 +1,16 @@
 import { expect } from "chai";
-import { MockVSCodeInfo, mockVscode, resetTestVSCode, testVscode } from "../utils/mockVSCode";
+import {
+  MockVSCodeInfo,
+  mockVscode,
+  resetTestVSCode,
+  testVscode,
+} from "../utils/mockVSCode";
 import { SinonMock, SinonSandbox, createSandbox } from "sinon";
 import * as e2eConfig from "../../src/misc/e2e-config";
-import { getHanaE2ePickItems, hanaE2eConfig } from "../../src/misc/hana-e2e-config";
+import {
+  getHanaE2ePickItems,
+  hanaE2eConfig,
+} from "../../src/misc/hana-e2e-config";
 
 mockVscode("/src/hana-e2e-config");
 
@@ -26,7 +34,8 @@ describe("hana-e2e-config scope", () => {
     };
 
     it("getHanaE2ePickItems - incorrect type", async () => {
-      expect(await getHanaE2ePickItems({ ...info, ...{ style: "cap" } })).to.be.undefined;
+      expect(await getHanaE2ePickItems({ ...info, ...{ style: "cap" } })).to.be
+        .undefined;
     });
 
     it("getHanaE2ePickItems - ok", async () => {
@@ -40,7 +49,9 @@ describe("hana-e2e-config scope", () => {
       expect(tasksPattern).to.have.lengthOf(2);
       const buildTask = tasksPattern.find((task) => task.type === "build.mta");
       expect(buildTask).to.not.have.property("label");
-      const deployTask = tasksPattern.find((task) => task.type === "deploy.mta.cf");
+      const deployTask = tasksPattern.find(
+        (task) => task.type === "deploy.mta.cf"
+      );
       expect(deployTask).to.not.have.property("dependsOn");
     });
 
@@ -67,8 +78,14 @@ describe("hana-e2e-config scope", () => {
     };
 
     it("hanaE2eConfig - tasks added", async () => {
-      mockCommands.expects("executeCommand").withArgs("tasks-explorer.editTask").resolves();
-      mockCommands.expects("executeCommand").withArgs("tasks-explorer.tree.select").resolves();
+      mockCommands
+        .expects("executeCommand")
+        .withArgs("tasks-explorer.editTask")
+        .resolves();
+      mockCommands
+        .expects("executeCommand")
+        .withArgs("tasks-explorer.tree.select")
+        .resolves();
       await hanaE2eConfig(data);
       const configuredTasks = MockVSCodeInfo.configTasks?.get(data.wsFolder);
       expect(configuredTasks).to.have.lengthOf(2);

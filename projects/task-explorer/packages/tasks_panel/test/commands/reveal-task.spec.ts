@@ -1,7 +1,13 @@
 import { expect } from "chai";
 import { createSandbox, SinonMock, SinonSandbox } from "sinon";
 import { ConfiguredTask } from "@sap_oss/task_contrib_types";
-import { MockConfigTask, mockVscode, MockVSCodeInfo, resetTestVSCode, testVscode } from "../utils/mockVSCode";
+import {
+  MockConfigTask,
+  mockVscode,
+  MockVSCodeInfo,
+  resetTestVSCode,
+  testVscode,
+} from "../utils/mockVSCode";
 import { MockTasksProvider } from "../utils/mockTasksProvider";
 
 mockVscode("../../src/panels/task-editor-panel");
@@ -72,50 +78,121 @@ describe("Command revealTask", () => {
     revealRange: () => null,
   };
 
-  const parentItem = new IntentTreeItem("dummy", testVscode.TreeItemCollapsibleState.None);
+  const parentItem = new IntentTreeItem(
+    "dummy",
+    testVscode.TreeItemCollapsibleState.None
+  );
 
   it("task already opened for editing, task panel will be disposed and task reveal in 'tasks.json'", async () => {
-    MockVSCodeInfo.configTasks?.set(wsFolder, [new MockConfigTask("aaa", "test")]);
-    const item1 = new TaskTreeItem(0, "test", label, wsFolder, TreeItemCollapsibleState.None, parentItem, command1);
+    MockVSCodeInfo.configTasks?.set(wsFolder, [
+      new MockConfigTask("aaa", "test"),
+    ]);
+    const item1 = new TaskTreeItem(
+      0,
+      "test",
+      label,
+      wsFolder,
+      TreeItemCollapsibleState.None,
+      parentItem,
+      command1
+    );
 
     await editTreeItemTask(new MockTasksProvider([task1]), readFile, task1);
     expect(MockVSCodeInfo.webViewCreated).eq(1);
 
-    const resource = Uri.joinPath(Uri.file(task1.__wsFolder), ".vscode", "tasks.json");
-    mockWindow.expects("showTextDocument").withExactArgs(resource, { preview: false }).resolves(docEditor);
+    const resource = Uri.joinPath(
+      Uri.file(task1.__wsFolder),
+      ".vscode",
+      "tasks.json"
+    );
+    mockWindow
+      .expects("showTextDocument")
+      .withExactArgs(resource, { preview: false })
+      .resolves(docEditor);
     await revealTask(item1);
     expect(MockVSCodeInfo.disposeCalled).eq(true);
   });
 
   it("task reveal in 'tasks.json'", async () => {
-    const item1 = new TaskTreeItem(0, "test", label, wsFolder, TreeItemCollapsibleState.None, parentItem, command1);
-    const resource = Uri.joinPath(Uri.file(task1.__wsFolder), ".vscode", "tasks.json");
-    mockWindow.expects("showTextDocument").withExactArgs(resource, { preview: false }).resolves(docEditor);
+    const item1 = new TaskTreeItem(
+      0,
+      "test",
+      label,
+      wsFolder,
+      TreeItemCollapsibleState.None,
+      parentItem,
+      command1
+    );
+    const resource = Uri.joinPath(
+      Uri.file(task1.__wsFolder),
+      ".vscode",
+      "tasks.json"
+    );
+    mockWindow
+      .expects("showTextDocument")
+      .withExactArgs(resource, { preview: false })
+      .resolves(docEditor);
     await revealTask(item1);
     expect(MockVSCodeInfo.disposeCalled).eq(false);
   });
 
   it("command wrong", async () => {
-    const item1 = new TaskTreeItem(0, "test", label, wsFolder, TreeItemCollapsibleState.None, parentItem);
+    const item1 = new TaskTreeItem(
+      0,
+      "test",
+      label,
+      wsFolder,
+      TreeItemCollapsibleState.None,
+      parentItem
+    );
     mockWindow.expects("showTextDocument").never();
     await revealTask(item1);
     expect(MockVSCodeInfo.disposeCalled).eq(false);
   });
 
   it("task item info wrong", async () => {
-    const item1 = new TaskTreeItem(0, "test", label, wsFolder, TreeItemCollapsibleState.None, parentItem, command1);
-    const resource = Uri.joinPath(Uri.file(task1.__wsFolder), ".vscode", "tasks.json");
-    mockWindow.expects("showTextDocument").withExactArgs(resource, { preview: false }).resolves();
+    const item1 = new TaskTreeItem(
+      0,
+      "test",
+      label,
+      wsFolder,
+      TreeItemCollapsibleState.None,
+      parentItem,
+      command1
+    );
+    const resource = Uri.joinPath(
+      Uri.file(task1.__wsFolder),
+      ".vscode",
+      "tasks.json"
+    );
+    mockWindow
+      .expects("showTextDocument")
+      .withExactArgs(resource, { preview: false })
+      .resolves();
     mockWindow
       .expects("showErrorMessage")
-      .withExactArgs(new Error(messages.resource_open_could_not_open_editor).toString())
+      .withExactArgs(
+        new Error(messages.resource_open_could_not_open_editor).toString()
+      )
       .resolves();
     await revealTask(item1);
   });
 
   it("task configuration wrong or broken", async () => {
-    const item1 = new TaskTreeItem(0, "test", label, wsFolder, TreeItemCollapsibleState.None, parentItem, command1);
-    const resource = Uri.joinPath(Uri.file(task1.__wsFolder), ".vscode", "tasks.json");
+    const item1 = new TaskTreeItem(
+      0,
+      "test",
+      label,
+      wsFolder,
+      TreeItemCollapsibleState.None,
+      parentItem,
+      command1
+    );
+    const resource = Uri.joinPath(
+      Uri.file(task1.__wsFolder),
+      ".vscode",
+      "tasks.json"
+    );
     text = JSON.stringify({
       version: "2.0.0",
       tasks: [
@@ -133,10 +210,15 @@ describe("Command revealTask", () => {
         },
       ],
     });
-    mockWindow.expects("showTextDocument").withExactArgs(resource, { preview: false }).resolves(docEditor);
+    mockWindow
+      .expects("showTextDocument")
+      .withExactArgs(resource, { preview: false })
+      .resolves(docEditor);
     mockWindow
       .expects("showErrorMessage")
-      .withExactArgs(new Error(messages.configuration_task_not_found(task1.label)).toString())
+      .withExactArgs(
+        new Error(messages.configuration_task_not_found(task1.label)).toString()
+      )
       .resolves();
     await revealTask(item1);
   });

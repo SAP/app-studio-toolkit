@@ -2,7 +2,13 @@ import { ConfiguredTask } from "@sap_oss/task_contrib_types";
 import escapeStringRegexp = require("escape-string-regexp");
 import { filter, map } from "lodash";
 import { getConfiguredTasksFromCache } from "../../src/services/tasks-provider";
-import { ConfigurationTarget, TaskDefinition, Uri, languages, workspace } from "vscode";
+import {
+  ConfigurationTarget,
+  TaskDefinition,
+  Uri,
+  languages,
+  workspace,
+} from "vscode";
 
 export function serializeTask(task: ConfiguredTask): string {
   return JSON.stringify(task);
@@ -34,7 +40,7 @@ export function getUniqueTaskLabel(label: string): string {
 
 export async function updateTasksConfiguration(
   folder: string,
-  tasks: (ConfiguredTask | TaskDefinition)[],
+  tasks: (ConfiguredTask | TaskDefinition)[]
 ): Promise<void> {
   const url = Uri.file(folder);
   // register on diagnostic notifications for this flow only

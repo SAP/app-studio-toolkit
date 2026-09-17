@@ -7,7 +7,9 @@ import { getLogger } from "../logger/logger-wrapper";
 import { exceptionToString, serializeTask } from "../utils/task-serializer";
 import { window } from "vscode";
 
-export async function terminateTaskFromTree(treeItem: TaskTreeItem): Promise<void> {
+export async function terminateTaskFromTree(
+  treeItem: TaskTreeItem
+): Promise<void> {
   try {
     if (isEmpty(treeItem.command?.arguments)) {
       throw new Error("Unexpected error: command event corrupted");

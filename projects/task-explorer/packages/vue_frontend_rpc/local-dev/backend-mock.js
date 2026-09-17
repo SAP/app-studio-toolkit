@@ -1,7 +1,9 @@
 const WebSocket = require("ws");
 const { defaults } = require("lodash");
 
-const { RpcExtensionWebSockets } = require("@sap-devx/webview-rpc/out.ext/rpc-extension-ws");
+const {
+  RpcExtensionWebSockets,
+} = require("@sap-devx/webview-rpc/out.ext/rpc-extension-ws");
 
 const ASYNC_NOOP = async () => {};
 

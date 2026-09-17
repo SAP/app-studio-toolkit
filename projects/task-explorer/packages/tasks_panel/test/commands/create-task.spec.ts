@@ -1,4 +1,9 @@
-import { mockVscode, MockVSCodeInfo, resetTestVSCode, testVscode } from "../utils/mockVSCode";
+import {
+  mockVscode,
+  MockVSCodeInfo,
+  resetTestVSCode,
+  testVscode,
+} from "../utils/mockVSCode";
 import { MockTasksProvider } from "../utils/mockTasksProvider";
 mockVscode("src/panels/panels-handler");
 import * as panelHandler from "../../src/panels/panels-handler";
@@ -87,7 +92,9 @@ describe("Command createTask", () => {
         prop1: "value 1.1",
       },
     ];
-    mockPanelHandler.expects("createTasksSelection").withExactArgs(others, readFile, undefined);
+    mockPanelHandler
+      .expects("createTasksSelection")
+      .withExactArgs(others, readFile, undefined);
     await createTask(new MockTasksProvider(others), readFile);
     // selection panel created
   });
@@ -111,7 +118,9 @@ describe("Command createTask", () => {
     const taskEditor: TaskEditor = panelHandler.getTaskEditor()!;
     taskEditor["changed"] = true;
     MockVSCodeInfo.dialogAnswer = messages.DISCARD_CHANGES_BUTTON_TEXT();
-    mockPanelHandler.expects("createTasksSelection").withExactArgs(tasks, readFile, undefined);
+    mockPanelHandler
+      .expects("createTasksSelection")
+      .withExactArgs(tasks, readFile, undefined);
     await createTask(new MockTasksProvider(tasks), readFile);
     // selection panel created
   });
@@ -126,10 +135,17 @@ describe("Command createTask", () => {
           prop1: "value 1.2",
         },
       ];
-      const projectItem = new ProjectTreeItem("project", "/root/home/test/proj");
-      mockPanelHandler.expects("createTasksSelection").withExactArgs(tasks, readFile, projectItem);
+      const projectItem = new ProjectTreeItem(
+        "project",
+        "/root/home/test/proj"
+      );
+      mockPanelHandler
+        .expects("createTasksSelection")
+        .withExactArgs(tasks, readFile, projectItem);
       mockPanelHandler.expects("disposeTaskEditorPanel").atLeast(2);
-      mockPanelHandler.expects("createTasksSelection").withExactArgs(tasks, readFile, undefined);
+      mockPanelHandler
+        .expects("createTasksSelection")
+        .withExactArgs(tasks, readFile, undefined);
       await createTask(new MockTasksProvider(tasks), readFile, projectItem);
       await panelHandler.createTaskEditorPanel(tasks[0], readFile);
       await createTask(new MockTasksProvider(tasks), readFile);

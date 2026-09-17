@@ -1,5 +1,19 @@
 import { ConfiguredTask } from "@sap_oss/task_contrib_types";
-import { compact, each, extend, filter, find, groupBy, isEmpty, isEqual, keys, map, size, sortBy, uniq } from "lodash";
+import {
+  compact,
+  each,
+  extend,
+  filter,
+  find,
+  groupBy,
+  isEmpty,
+  isEqual,
+  keys,
+  map,
+  size,
+  sortBy,
+  uniq,
+} from "lodash";
 import {
   QuickPickItem,
   window,
@@ -10,30 +24,56 @@ import {
   QuickPickItemKind,
   QuickPick,
 } from "vscode";
-import { MISC, isMatchBuild, isMatchDeploy, isPathRelatedToFolder } from "./utils/ws-folder";
+import {
+  MISC,
+  isMatchBuild,
+  isMatchDeploy,
+  isPathRelatedToFolder,
+} from "./utils/ws-folder";
 import { messages } from "./i18n/messages";
-import { ElementTreeItem, IntentTreeItem, ProjectTreeItem, RootTreeItem } from "./view/task-tree-item";
-import { ProjectConfigInfo, composeDeploymentConfigLabel, getConfigDeployPickItems } from "./misc/common-e2e-config";
+import {
+  ElementTreeItem,
+  IntentTreeItem,
+  ProjectTreeItem,
+  RootTreeItem,
+} from "./view/task-tree-item";
+import {
+  ProjectConfigInfo,
+  composeDeploymentConfigLabel,
+  getConfigDeployPickItems,
+} from "./misc/common-e2e-config";
 import { collectProjects, calculateTaskWsFolder } from "./misc/e2e-config";
 import { join } from "path";
 
-const miscItem = { label: "$(list-unordered)", description: MISC, type: "intent" };
+const miscItem = {
+  label: "$(list-unordered)",
+  description: MISC,
+  type: "intent",
+};
 
 function isMatchBuildOrDeploy(intent: string): boolean {
   return isMatchBuild(intent) || isMatchDeploy(intent);
 }
 
-function filterTasksByFolder(tasks: ConfiguredTask[], parent: string): ConfiguredTask[] {
+function filterTasksByFolder(
+  tasks: ConfiguredTask[],
+  parent: string
+): ConfiguredTask[] {
   return filter(tasks, (task) => {
     return isPathRelatedToFolder(calculateTaskWsFolder(task), parent);
   });
 }
 
-async function grabProjectItems(tasks: ConfiguredTask[], project?: string): Promise<QuickPickItem[]> {
+async function grabProjectItems(
+  tasks: ConfiguredTask[],
+  project?: string
+): Promise<QuickPickItem[]> {
   const folders: string[] = keys(groupBy(tasks, "__wsFolder"));
   let projects = [...folders];
   for (const folder of folders) {
-    const projs = map(await collectProjects(folder), (_) => join(_.wsFolder, _.project));
+    const projs = map(await collectProjects(folder), (_) =>
+      join(_.wsFolder, _.project)
+    );
     projects.push(...projs);
   }
   projects = uniq(projects);
@@ -46,9 +86,11 @@ async function grabProjectItems(tasks: ConfiguredTask[], project?: string): Prom
 async function grabTasksByGroup(
   tasks: ConfiguredTask[],
   project: string,
-  group?: string | undefined,
+  group?: string
 ): Promise<QuickPickItem[]> {
-  function toConfigDeployE2ePickItems(items: ProjectConfigInfo[]): QuickPickItem[] {
+  function toConfigDeployE2ePickItems(
+    items: ProjectConfigInfo[]
+  ): QuickPickItem[] {
     return map(items, (item) => {
       return {
         label: "Define Deployment parameters",
@@ -60,11 +102,16 @@ async function grabTasksByGroup(
 
   const pickItems: any[] = [];
   const deploymentParamItems =
-    !group || isMatchBuildOrDeploy(group) ? toConfigDeployE2ePickItems(await getConfigDeployPickItems(project)) : [];
+    !group || isMatchBuildOrDeploy(group)
+      ? toConfigDeployE2ePickItems(await getConfigDeployPickItems(project))
+      : [];
   if (!isEmpty(deploymentParamItems)) {
     const groupByType = groupBy(deploymentParamItems, "type");
     each(keys(groupByType), (key) => {
-      pickItems.push({ label: composeDeploymentConfigLabel(key), kind: QuickPickItemKind.Separator });
+      pickItems.push({
+        label: composeDeploymentConfigLabel(key),
+        kind: QuickPickItemKind.Separator,
+      });
       pickItems.push(...groupByType[key]);
     });
   }
@@ -81,10 +128,14 @@ async function grabTasksByGroup(
             ...compact(
               map(tasksByProject, (_) => {
                 if (_.__intent === intent) {
-                  return { ..._, ...{ description: _.type }, ...(_.description ? { detail: _.description } : {}) };
+                  return {
+                    ..._,
+                    ...{ description: _.type },
+                    ...(_.description ? { detail: _.description } : {}),
+                  };
                 }
-              }),
-            ),
+              })
+            )
           );
         }
       }
@@ -99,19 +150,25 @@ async function grabTasksByGroup(
   return compact(pickItems);
 }
 
-function grabMiscTasksByProject(tasks: ConfiguredTask[], project: string): QuickPickItem[] {
+function grabMiscTasksByProject(
+  tasks: ConfiguredTask[],
+  project: string
+): QuickPickItem[] {
   const tasksByProject = filterTasksByFolder(tasks, project);
   return compact(
     map(tasksByProject, (_) => {
       if (!isMatchDeploy(_.__intent) && !isMatchBuild(_.__intent)) {
         return { ..._, description: _.type };
       }
-    }),
+    })
   );
 }
 
 /* istanbul ignore next */
-export async function multiStepTaskSelect(tasks: ConfiguredTask[], treeItem?: ElementTreeItem): Promise<any> {
+export async function multiStepTaskSelect(
+  tasks: ConfiguredTask[],
+  treeItem?: ElementTreeItem
+): Promise<any> {
   interface State {
     title: string;
     step: number;
@@ -123,7 +180,10 @@ export async function multiStepTaskSelect(tasks: ConfiguredTask[], treeItem?: El
 
   function getContextProject(): string | undefined {
     let project;
-    if (treeItem instanceof ProjectTreeItem || treeItem instanceof RootTreeItem) {
+    if (
+      treeItem instanceof ProjectTreeItem ||
+      treeItem instanceof RootTreeItem
+    ) {
       project = treeItem.fqn;
     } else if (treeItem instanceof IntentTreeItem) {
       project = (treeItem.parent as ProjectTreeItem)?.fqn;
@@ -133,7 +193,8 @@ export async function multiStepTaskSelect(tasks: ConfiguredTask[], treeItem?: El
 
   function getContextIntent(): string | undefined {
     if (treeItem instanceof IntentTreeItem) {
-      return treeItem.label?.toString();
+      const label = treeItem.label;
+      return typeof label === "string" ? label : label?.label;
     }
   }
 
@@ -143,7 +204,8 @@ export async function multiStepTaskSelect(tasks: ConfiguredTask[], treeItem?: El
     let step: InputStep;
 
     if (getContextIntent() === MISC) {
-      state.project = find(projects, ["description", getContextProject()]) || projects[0];
+      state.project =
+        find(projects, ["description", getContextProject()]) || projects[0];
       state.taskByGroup = miscItem;
       step = (input) => pickMiscTask(input, state);
     } else if (size(projects) > 1) {
@@ -156,7 +218,10 @@ export async function multiStepTaskSelect(tasks: ConfiguredTask[], treeItem?: El
     return state as State;
   }
 
-  async function pickProjects(input: MultiStepSelection, state: Partial<State>) {
+  async function pickProjects(
+    input: MultiStepSelection,
+    state: Partial<State>
+  ) {
     const pickItems = await grabProjectItems(tasks, getContextProject());
     state.project = await input.showQuickPick({
       placeholder: messages.create_task_pick_project_placeholder,
@@ -167,8 +232,15 @@ export async function multiStepTaskSelect(tasks: ConfiguredTask[], treeItem?: El
     return (input: MultiStepSelection) => pickTaskByGroup(input, state);
   }
 
-  async function pickTaskByGroup(input: MultiStepSelection, state: Partial<State>) {
-    const pickItems = await grabTasksByGroup(tasks, state.project?.description ?? "", getContextIntent());
+  async function pickTaskByGroup(
+    input: MultiStepSelection,
+    state: Partial<State>
+  ) {
+    const pickItems = await grabTasksByGroup(
+      tasks,
+      state.project?.description ?? "",
+      getContextIntent()
+    );
     state.taskByGroup = await input.showQuickPick({
       placeholder: messages.create_task_pick_task_placeholder,
       items: pickItems,
@@ -182,8 +254,14 @@ export async function multiStepTaskSelect(tasks: ConfiguredTask[], treeItem?: El
     }
   }
 
-  async function pickMiscTask(input: MultiStepSelection, state: Partial<State>) {
-    const pickItems = grabMiscTasksByProject(tasks, state.project?.description ?? "");
+  async function pickMiscTask(
+    input: MultiStepSelection,
+    state: Partial<State>
+  ) {
+    const pickItems = grabMiscTasksByProject(
+      tasks,
+      state.project?.description ?? ""
+    );
     state.task = await input.showQuickPick({
       placeholder: messages.create_task_pick_task_placeholder,
       items: pickItems,
@@ -259,7 +337,10 @@ class MultiStepSelection {
     }
   }
 
-  async showQuickPick<T extends QuickPickItem, P extends QuickPickParameters<T>>({
+  async showQuickPick<
+    T extends QuickPickItem,
+    P extends QuickPickParameters<T>
+  >({
     title,
     step,
     totalSteps,
@@ -272,7 +353,9 @@ class MultiStepSelection {
   }: P) {
     const disposables: Disposable[] = [];
     try {
-      return await new Promise<T | (P extends { buttons: (infer I)[] } ? I : never)>((resolve, reject) => {
+      return await new Promise<
+        T | (P extends { buttons: (infer I)[] } ? I : never)
+      >((resolve, reject) => {
         const input: QuickPick<T> = extend(
           window.createQuickPick<T>(),
           title ? { title } : {},
@@ -281,9 +364,12 @@ class MultiStepSelection {
           ignoreFocusOut ? { ignoreFocusOut } : { ignoreFocusOut: true },
           { matchOnDescription: true },
           { placeholder, items },
-          activeItem ? { activeItems: [activeItem] } : {},
+          activeItem ? { activeItems: [activeItem] } : {}
         );
-        input.buttons = [...(this.steps.length > 1 ? [QuickInputButtons.Back] : []), ...(buttons || [])];
+        input.buttons = [
+          ...(this.steps.length > 1 ? [QuickInputButtons.Back] : []),
+          ...(buttons || []),
+        ];
         disposables.push(
           input.onDidTriggerButton((item) => {
             if (item === QuickInputButtons.Back) {
@@ -295,9 +381,13 @@ class MultiStepSelection {
           input.onDidChangeSelection((items) => resolve(items[0])),
           input.onDidHide(() => {
             (async () => {
-              reject(shouldResume && (await shouldResume()) ? InputFlowAction.resume : InputFlowAction.cancel);
+              reject(
+                shouldResume && (await shouldResume())
+                  ? InputFlowAction.resume
+                  : InputFlowAction.cancel
+              );
             })().catch(reject);
-          }),
+          })
         );
         if (this.current) {
           this.current.dispose();

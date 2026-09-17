@@ -1,4 +1,10 @@
-import { GlobPattern, TaskDefinition, Uri, extensions, workspace } from "vscode";
+import {
+  GlobPattern,
+  TaskDefinition,
+  Uri,
+  extensions,
+  workspace,
+} from "vscode";
 import { BasToolkit } from "@sap-devx/app-studio-toolkit-types";
 import {
   Dictionary,
@@ -14,8 +20,16 @@ import {
   size,
   split,
 } from "lodash";
-import { exceptionToString, getUniqueTaskLabel, updateTasksConfiguration } from "../../src/utils/task-serializer";
-import { DEFAULT_TARGET, cfGetConfigFileField, cfGetTargets } from "@sap/cf-tools";
+import {
+  exceptionToString,
+  getUniqueTaskLabel,
+  updateTasksConfiguration,
+} from "../../src/utils/task-serializer";
+import {
+  DEFAULT_TARGET,
+  cfGetConfigFileField,
+  cfGetTargets,
+} from "@sap/cf-tools";
 import { getLogger } from "../../src/logger/logger-wrapper";
 import { sep, join, relative } from "path";
 import { ConfiguredTask } from "@sap_oss/task_contrib_types";
@@ -29,7 +43,7 @@ export const ProjTypes = {
 } as const;
 
 // Convert object key in a type
-export type ProjectTypes = (typeof ProjTypes)[keyof typeof ProjTypes];
+export type ProjectTypes = typeof ProjTypes[keyof typeof ProjTypes];
 
 type CfDetails = {
   cfTarget: string;
@@ -52,14 +66,14 @@ export async function waitForFileResource(
   pattern: GlobPattern,
   ignoreCreateEvents?: boolean,
   ignoreChangeEvents?: boolean,
-  ignoreDeleteEvents?: boolean,
+  ignoreDeleteEvents?: boolean
 ): Promise<boolean> {
   return new Promise((resolve) => {
     const fileWatcher = workspace.createFileSystemWatcher(
       pattern,
       ignoreCreateEvents,
       ignoreChangeEvents,
-      ignoreDeleteEvents,
+      ignoreDeleteEvents
     );
     function endWatch() {
       fileWatcher.dispose();
@@ -71,7 +85,10 @@ export async function waitForFileResource(
   });
 }
 
-export async function areResourcesReady(promises: Promise<boolean>[], timeout = 5): Promise<boolean> {
+export async function areResourcesReady(
+  promises: Promise<boolean>[],
+  timeout = 5
+): Promise<boolean> {
   return Promise.race([
     Promise.all(promises),
     new Promise((resolve) => setTimeout(() => resolve(false), timeout * 1000)),
@@ -91,7 +108,10 @@ type ProjectInfoCache = {
   timestamp: number;
 };
 
-const _projectsInfoCache: Map<string, ProjectInfoCache> = new Map<string, ProjectInfoCache>();
+const _projectsInfoCache: Map<string, ProjectInfoCache> = new Map<
+  string,
+  ProjectInfoCache
+>();
 function getProjectsInfoFromCache(wsFolder: string): ProjectInfo[] | undefined {
   const cached = _projectsInfoCache.get(wsFolder);
   // internal usage cache of 5 seconds
@@ -100,11 +120,17 @@ function getProjectsInfoFromCache(wsFolder: string): ProjectInfo[] | undefined {
   }
 }
 
-function setProjectsInfoToCache(wsFolder: string, projects: ProjectInfo[]): void {
+function setProjectsInfoToCache(
+  wsFolder: string,
+  projects: ProjectInfo[]
+): void {
   _projectsInfoCache.set(wsFolder, { projects, timestamp: Date.now() });
 }
 
-export async function collectProjects(wsFolder: string, disableCache = false): Promise<ProjectInfo[]> {
+export async function collectProjects(
+  wsFolder: string,
+  disableCache = false
+): Promise<ProjectInfo[]> {
   // discovering projects in a workspace is a costly operation, so we cache the result for 5 seconds (assuming projects
   // don't change during this time) useful in cases where this method is called multiple times on the same flow
   const cached = getProjectsInfoFromCache(wsFolder);
@@ -117,16 +143,27 @@ export async function collectProjects(wsFolder: string, disableCache = false): P
   }
   const items: Promise<ProjectInfo | undefined>[] = [];
   const requestedFolder = Uri.file(wsFolder);
-  const btaExtension: any = extensions.getExtension("SAPOSS.app-studio-toolkit");
+  const btaExtension: any = extensions.getExtension(
+    "SAPOSS.app-studio-toolkit"
+  );
   const basToolkitAPI: BasToolkit = btaExtension?.exports;
-  const workspaceAPI = basToolkitAPI?.workspaceAPI ?? { getProjects: () => Promise.resolve([]) };
+  const workspaceAPI = basToolkitAPI?.workspaceAPI ?? {
+    getProjects: () => Promise.resolve([]),
+  };
 
   for (const project of await workspaceAPI.getProjects()) {
     items.push(
       project.getProjectInfo().then((info) => {
         if (info) {
-          const workspaceFolder = workspace.getWorkspaceFolder(Uri.file(info.path));
-          if (isPathRelatedToFolder(workspaceFolder?.uri.path ?? "", requestedFolder.path)) {
+          const workspaceFolder = workspace.getWorkspaceFolder(
+            Uri.file(info.path)
+          );
+          if (
+            isPathRelatedToFolder(
+              workspaceFolder?.uri.path ?? "",
+              requestedFolder.path
+            )
+          ) {
             let style: ProjectTypes | undefined;
             if (info.type === "com.sap.fe") {
               style = ProjTypes.FIORI_FE;
@@ -144,7 +181,7 @@ export async function collectProjects(wsFolder: string, disableCache = false): P
             }
           }
         }
-      }),
+      })
     );
   }
   const projects = compact(await Promise.all(items));
@@ -152,10 +189,17 @@ export async function collectProjects(wsFolder: string, disableCache = false): P
   return projects;
 }
 
-export async function addTaskDefinition(wsFolder: string, tasks: TaskDefinition[]): Promise<any> {
+export async function addTaskDefinition(
+  wsFolder: string,
+  tasks: TaskDefinition[]
+): Promise<any> {
   return updateTasksConfiguration(
     wsFolder,
-    concat(workspace.getConfiguration("tasks", Uri.file(wsFolder))?.get("tasks") ?? [], tasks),
+    concat(
+      workspace.getConfiguration("tasks", Uri.file(wsFolder))?.get("tasks") ??
+        [],
+      tasks
+    )
   );
 }
 
@@ -172,12 +216,15 @@ export type LabelType = "uniq" | "sequence";
 export async function generateMtaDeployTasks(
   wsFolder: string,
   project: string,
-  labelType: LabelType = "uniq",
+  labelType: LabelType = "uniq"
 ): Promise<TaskDefinition[]> {
   async function populateCfDetails(): Promise<CfDetails> {
     try {
       const targets = await cfGetTargets();
-      if (isEmpty(targets) || (size(targets) === 1 && targets[0].label === DEFAULT_TARGET)) {
+      if (
+        isEmpty(targets) ||
+        (size(targets) === 1 && targets[0].label === DEFAULT_TARGET)
+      ) {
         throw new Error("No CF targets found");
       }
       const targetName = find(targets, "isCurrent")?.label;
@@ -187,11 +234,16 @@ export async function generateMtaDeployTasks(
       return {
         cfTarget: targetName,
         cfEndpoint: (await cfGetConfigFileField("Target", targetName)) ?? "",
-        cfOrg: (await cfGetConfigFileField("OrganizationFields", targetName))?.Name ?? "",
-        cfSpace: (await cfGetConfigFileField("SpaceFields", targetName))?.Name ?? "",
+        cfOrg:
+          (await cfGetConfigFileField("OrganizationFields", targetName))
+            ?.Name ?? "",
+        cfSpace:
+          (await cfGetConfigFileField("SpaceFields", targetName))?.Name ?? "",
       };
     } catch (e: any) {
-      getLogger().debug(`Can not populate cf target details`, { reason: exceptionToString(e) });
+      getLogger().debug(`Can not populate cf target details`, {
+        reason: exceptionToString(e),
+      });
       return { cfTarget: "", cfEndpoint: "", cfOrg: "", cfSpace: "" };
     }
   }
@@ -199,7 +251,10 @@ export async function generateMtaDeployTasks(
   const buildTaskLabel = `Build ${project}`;
   const taskBuild = {
     type: "build.mta",
-    label: labelType === "uniq" ? getUniqueTaskLabel(buildTaskLabel) : buildTaskLabel,
+    label:
+      labelType === "uniq"
+        ? getUniqueTaskLabel(buildTaskLabel)
+        : buildTaskLabel,
     taskType: "Build",
     projectPath: `${projectUri.fsPath}`,
     extensions: [],
@@ -208,20 +263,31 @@ export async function generateMtaDeployTasks(
   const taskDeploy = extend(
     {
       type: "deploy.mta.cf",
-      label: labelType === "uniq" ? getUniqueTaskLabel(deployTaskLabel) : deployTaskLabel,
+      label:
+        labelType === "uniq"
+          ? getUniqueTaskLabel(deployTaskLabel)
+          : deployTaskLabel,
       taskType: "Deploy",
-      mtarPath: join(projectUri.fsPath, "mta_archives", `${project || last(compact(split(wsFolder, sep)))}_0.0.1.mtar`),
+      mtarPath: join(
+        projectUri.fsPath,
+        "mta_archives",
+        `${project || last(compact(split(wsFolder, sep)))}_0.0.1.mtar`
+      ),
       extensions: [],
       dependsOn: [`${taskBuild.label}`],
     },
-    await populateCfDetails(),
+    await populateCfDetails()
   );
 
   return [taskBuild, taskDeploy];
 }
 
-export function isTasksSettled(wsFolder: string, targetTasks: TaskDefinition[]): boolean {
-  const tasks: TaskDefinition[] = workspace.getConfiguration("tasks", Uri.file(wsFolder)).get("tasks") ?? [];
+export function isTasksSettled(
+  wsFolder: string,
+  targetTasks: TaskDefinition[]
+): boolean {
+  const tasks: TaskDefinition[] =
+    workspace.getConfiguration("tasks", Uri.file(wsFolder)).get("tasks") ?? [];
   return reduce(
     targetTasks,
     (acc, task) => {
@@ -230,7 +296,7 @@ export function isTasksSettled(wsFolder: string, targetTasks: TaskDefinition[]):
       });
       return acc;
     },
-    true,
+    true
   );
 }
 
@@ -255,7 +321,8 @@ export function calculateTaskWsFolder(task: ConfiguredTask): string {
     }
   }
   // get the task nested property value
-  let projectPath: any = key.split(".").reduce((object, property) => object[property], task) ?? "";
+  let projectPath: any =
+    key.split(".").reduce((object, property) => object[property], task) ?? "";
   // if the path includes the workspace folder, use the relative path
   // example:  task { type: "npm", path: "/home/user/ws1/project1" } and wsFolder: /home/user/ws1
   // expected projectFolder result: "project1"

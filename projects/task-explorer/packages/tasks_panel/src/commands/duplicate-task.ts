@@ -18,7 +18,10 @@ export async function duplicateTask(treeItem: TaskTreeItem): Promise<void> {
     // report telemetry event
     AnalyticsWrapper.reportTaskDuplicate({ ...task });
 
-    const tasksConfig = workspace.getConfiguration("tasks", Uri.file(task.__wsFolder));
+    const tasksConfig = workspace.getConfiguration(
+      "tasks",
+      Uri.file(task.__wsFolder)
+    );
     const tasks: ConfiguredTask[] = tasksConfig.get("tasks") ?? [];
     // clean an extra (internal) properties, that should not be copied
     cleanTasks(tasks);

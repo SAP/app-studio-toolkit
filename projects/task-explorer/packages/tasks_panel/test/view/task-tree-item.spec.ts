@@ -1,6 +1,11 @@
 import { expect } from "chai";
 import { mockVscode, resetTestVSCode, testVscode } from "../utils/mockVSCode";
-import { EmptyTaskTreeItem, IntentTreeItem, ProjectTreeItem, TaskTreeItem } from "../../src/view/task-tree-item";
+import {
+  EmptyTaskTreeItem,
+  IntentTreeItem,
+  ProjectTreeItem,
+  TaskTreeItem,
+} from "../../src/view/task-tree-item";
 import { ThemeIcon, TreeItemCollapsibleState } from "vscode";
 import { stub } from "sinon";
 import * as path from "path";
@@ -40,10 +45,20 @@ describe("TaskTreeItem class", () => {
   const type = "myType";
   const wsFolder = path.join(path.sep, "my", "path");
   const state = TreeItemCollapsibleState.Expanded;
-  const parentItem = new IntentTreeItem("dummy", testVscode.TreeItemCollapsibleState.None);
+  const parentItem = new IntentTreeItem(
+    "dummy",
+    testVscode.TreeItemCollapsibleState.None
+  );
 
   it("TaskTreeItem instance structure", () => {
-    const item = new TaskTreeItem(index, type, label, wsFolder, state, parentItem);
+    const item = new TaskTreeItem(
+      index,
+      type,
+      label,
+      wsFolder,
+      state,
+      parentItem
+    );
     expect(item.collapsibleState).to.be.equal(state);
     expect(item.label).to.be.equal(label);
     expect(item.type).to.be.equal(type);
@@ -54,29 +69,79 @@ describe("TaskTreeItem class", () => {
   });
 
   it("TaskTreeItem instance, with command", () => {
-    const command = { title: "title", command: "command", arguments: [{ name: "name", __intent: "other" }] };
-    const item = new TaskTreeItem(index, type, label, wsFolder, state, parentItem, command);
+    const command = {
+      title: "title",
+      command: "command",
+      arguments: [{ name: "name", __intent: "other" }],
+    };
+    const item = new TaskTreeItem(
+      index,
+      type,
+      label,
+      wsFolder,
+      state,
+      parentItem,
+      command
+    );
     expect(item.command).to.deep.equal(command);
     expect(item.contextValue).to.equal("task--idle");
     expect(item.iconPath).to.deep.equal(new ThemeIcon("inspect"));
   });
 
   it("TaskTreeItem instance, with command task.intent = 'deploy'", () => {
-    const command = { title: "title", command: "command", arguments: [{ name: "name", __intent: "deploy" }] };
-    const item = new TaskTreeItem(index, type, label, wsFolder, state, parentItem, command);
+    const command = {
+      title: "title",
+      command: "command",
+      arguments: [{ name: "name", __intent: "deploy" }],
+    };
+    const item = new TaskTreeItem(
+      index,
+      type,
+      label,
+      wsFolder,
+      state,
+      parentItem,
+      command
+    );
     expect(item.iconPath).to.deep.equal(new ThemeIcon("rocket"));
   });
 
   it("TaskTreeItem instance, with command task.intent = 'Build'", () => {
-    const command = { title: "title", command: "command", arguments: [{ name: "name", __intent: "build" }] };
-    const item = new TaskTreeItem(index, type, label, wsFolder, state, parentItem, command);
+    const command = {
+      title: "title",
+      command: "command",
+      arguments: [{ name: "name", __intent: "build" }],
+    };
+    const item = new TaskTreeItem(
+      index,
+      type,
+      label,
+      wsFolder,
+      state,
+      parentItem,
+      command
+    );
     expect(item.iconPath).to.deep.equal(new ThemeIcon("package"));
   });
 
   it("TaskTreeItem instance, with command, running", () => {
-    stub(testVscode.tasks, "taskExecutions").value([{ task: { name: label, definition: { type } } }]);
-    const command = { title: "title", command: "command", arguments: [{ label, type }] };
-    const item = new TaskTreeItem(index, type, label, wsFolder, state, parentItem, command);
+    stub(testVscode.tasks, "taskExecutions").value([
+      { task: { name: label, definition: { type } } },
+    ]);
+    const command = {
+      title: "title",
+      command: "command",
+      arguments: [{ label, type }],
+    };
+    const item = new TaskTreeItem(
+      index,
+      type,
+      label,
+      wsFolder,
+      state,
+      parentItem,
+      command
+    );
     expect(item.contextValue).to.equal("task--running");
   });
 
@@ -85,7 +150,7 @@ describe("TaskTreeItem class", () => {
       "dummy",
       path.join(path.sep, "home", "dummy", "project"),
       undefined,
-      TreeItemCollapsibleState.Expanded,
+      TreeItemCollapsibleState.Expanded
     );
     const item = new EmptyTaskTreeItem(parentItem);
     expect(item.contextValue).to.be.undefined;
@@ -100,7 +165,10 @@ describe("TaskTreeItem class", () => {
   });
 
   it("EmptyTreeItem instance - inpect", () => {
-    const parentItem = new ProjectTreeItem("dummy", path.join(path.sep, "home", "dummy", "project"));
+    const parentItem = new ProjectTreeItem(
+      "dummy",
+      path.join(path.sep, "home", "dummy", "project")
+    );
     const item = new EmptyTaskTreeItem(parentItem);
     expect(item.contextValue).to.be.undefined;
     expect(item.label).to.be.equal("Create a task");

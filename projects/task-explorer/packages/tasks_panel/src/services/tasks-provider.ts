@@ -1,8 +1,25 @@
 import { cloneDeep, compact, each, filter, isEmpty, map, set } from "lodash";
-import { commands, Task, tasks, TaskScope, workspace, WorkspaceFolder } from "vscode";
+import {
+  commands,
+  Task,
+  tasks,
+  TaskScope,
+  workspace,
+  WorkspaceFolder,
+} from "vscode";
 import { ConfiguredTask } from "@sap_oss/task_contrib_types";
-import { IContributors, ITasksEventHandler, ITasksProvider } from "./definitions";
-import { BUILD, DEPLOY, MISC, isMatchBuild, isMatchDeploy } from "../../src/utils/ws-folder";
+import {
+  IContributors,
+  ITasksEventHandler,
+  ITasksProvider,
+} from "./definitions";
+import {
+  BUILD,
+  DEPLOY,
+  MISC,
+  isMatchBuild,
+  isMatchDeploy,
+} from "../../src/utils/ws-folder";
 
 let configuredTasksCache: ConfiguredTask[];
 
@@ -26,7 +43,9 @@ export class TasksProvider implements ITasksProvider, ITasksEventHandler {
   public async getConfiguredTasks(): Promise<ConfiguredTask[]> {
     const getTaskIntent = (task: ConfiguredTask): string => {
       // support to 'npm' task: reassign task.__intent according to the task.script name/purpose
-      return task.type === "npm" ? asignNpmTaskType(task.script) : this.taskTypesProvider.getIntentByType(task.type);
+      return task.type === "npm"
+        ? asignNpmTaskType(task.script)
+        : this.taskTypesProvider.getIntentByType(task.type);
     };
 
     let result: ConfiguredTask[] = [];
@@ -35,7 +54,8 @@ export class TasksProvider implements ITasksProvider, ITasksEventHandler {
       for (const wsFolder of workspace.workspaceFolders) {
         const wsFolderPath = wsFolder.uri.path;
         const configuration = workspace.getConfiguration("tasks", wsFolder.uri);
-        const configuredTasks: ConfiguredTask[] | undefined = configuration.get("tasks");
+        const configuredTasks: ConfiguredTask[] | undefined =
+          configuration.get("tasks");
 
         if (configuredTasks === undefined) {
           continue;
@@ -45,19 +65,28 @@ export class TasksProvider implements ITasksProvider, ITasksEventHandler {
         // indexing all existing tasks, but not supported ones, just to provide consistent behavior
         // for managing a specific task by index when editing/deleting
         each(configuredContributedTasks, (task, i) => set(task, "__index", i));
-        const extendedConfiguredTasks = filter(configuredContributedTasks, (_) => supportedTypes.includes(_.type));
+        const extendedConfiguredTasks = filter(
+          configuredContributedTasks,
+          (_) => supportedTypes.includes(_.type)
+        );
 
         for (const task of extendedConfiguredTasks) {
           task.__wsFolder = wsFolderPath;
           task.__intent = getTaskIntent(task);
-          task.__extensionName = this.taskTypesProvider.getExtensionNameByType(task.type);
+          task.__extensionName = this.taskTypesProvider.getExtensionNameByType(
+            task.type
+          );
         }
 
         result = result.concat(extendedConfiguredTasks);
       }
     }
     configuredTasksCache = result;
-    commands.executeCommand("setContext", "ext.isNoTasksFound", isEmpty(result));
+    commands.executeCommand(
+      "setContext",
+      "ext.isNoTasksFound",
+      isEmpty(result)
+    );
     return result;
   }
 
@@ -66,9 +95,15 @@ export class TasksProvider implements ITasksProvider, ITasksEventHandler {
 
     const supportedTypes = this.taskTypesProvider.getSupportedTypes();
 
-    const allContributedTasks: Task[] = filter(allTasks, (_) => this.isTaskAutodetected(_, supportedTypes));
+    const allContributedTasks: Task[] = filter(allTasks, (_) =>
+      this.isTaskAutodetected(_, supportedTypes)
+    );
 
-    return compact(map(allContributedTasks, (_) => this.convertTaskToConfiguredTask(_, supportedTypes)));
+    return compact(
+      map(allContributedTasks, (_) =>
+        this.convertTaskToConfiguredTask(_, supportedTypes)
+      )
+    );
   }
 
   isTaskAutodetected(task: Task, supportedTypes: string[]): boolean {
@@ -87,10 +122,15 @@ export class TasksProvider implements ITasksProvider, ITasksEventHandler {
     // According to VSCode API tasks's scope can be: TaskScope.Global | TaskScope.Workspace | WorkspaceFolder
     // currently we support only WorkspaceFolder
     // in future we have to examine if we need to support another cases
-    return instanceOfWorkspaceFolder(task.scope) ? task.scope.uri.path : undefined;
+    return instanceOfWorkspaceFolder(task.scope)
+      ? task.scope.uri.path
+      : undefined;
   }
 
-  convertTaskToConfiguredTask(task: Task, supportedTypes: string[]): ConfiguredTask | undefined {
+  convertTaskToConfiguredTask(
+    task: Task,
+    supportedTypes: string[]
+  ): ConfiguredTask | undefined {
     if (supportedTypes.includes(task.definition.type)) {
       task = patchNpmTasks(task);
       return {
@@ -98,14 +138,22 @@ export class TasksProvider implements ITasksProvider, ITasksEventHandler {
         label: task.name,
         __wsFolder: TasksProvider.getTaskWorkspaceFolder(task),
         __intent: task.definition.taskType,
-        __extensionName: this.taskTypesProvider.getExtensionNameByType(task.definition.type),
+        __extensionName: this.taskTypesProvider.getExtensionNameByType(
+          task.definition.type
+        ),
       };
     }
   }
 }
 
-function instanceOfWorkspaceFolder(object: undefined | TaskScope | WorkspaceFolder): object is WorkspaceFolder {
-  return object !== undefined && object !== TaskScope.Global && object !== TaskScope.Workspace;
+function instanceOfWorkspaceFolder(
+  object: undefined | TaskScope | WorkspaceFolder
+): object is WorkspaceFolder {
+  return (
+    object !== undefined &&
+    object !== TaskScope.Global &&
+    object !== TaskScope.Workspace
+  );
 }
 
 export function getConfiguredTasksFromCache(): ConfiguredTask[] {

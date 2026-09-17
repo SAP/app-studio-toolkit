@@ -92,7 +92,10 @@ describe("the TasksSelection class", () => {
       .resolves({ task: fioriE2e });
     mockPanelHandler.expects("createTaskEditorPanel").never();
     const mockCommonE2EConfig = sandbox.mock(commonE2eConfig);
-    mockCommonE2EConfig.expects("completeDeployConfig").withExactArgs(fioriE2e).resolves();
+    mockCommonE2EConfig
+      .expects("completeDeployConfig")
+      .withExactArgs(fioriE2e)
+      .resolves();
     await taskSelection.select();
     mockCommonE2EConfig.verify();
   });
@@ -107,19 +110,28 @@ describe("the TasksSelection class", () => {
       __index: 0,
       label: getUniqueTaskLabel(tasks[0].label),
     });
-    mockPanelHandler.expects("createTaskEditorPanel").withExactArgs(expectedTask, readFile).resolves();
+    mockPanelHandler
+      .expects("createTaskEditorPanel")
+      .withExactArgs(expectedTask, readFile)
+      .resolves();
     await taskSelection.select();
   });
 
   it("select - task selection canceled", async () => {
-    sandbox.stub(multiStepSelection, "multiStepTaskSelect").withArgs(taskSelection["tasks"]).resolves({});
+    sandbox
+      .stub(multiStepSelection, "multiStepTaskSelect")
+      .withArgs(taskSelection["tasks"])
+      .resolves({});
     mockPanelHandler.expects("createTaskEditorPanel").never();
     await taskSelection.select();
   });
 
   it("select - exception thrown", async () => {
     const error = new Error("canceled");
-    sandbox.stub(multiStepSelection, "multiStepTaskSelect").withArgs(taskSelection["tasks"]).rejects(error);
+    sandbox
+      .stub(multiStepSelection, "multiStepTaskSelect")
+      .withArgs(taskSelection["tasks"])
+      .rejects(error);
     mockPanelHandler.expects("createTaskEditorPanel").never();
     mockWindow.expects("showErrorMessage").withExactArgs(error.toString());
     await taskSelection.select();
@@ -133,7 +145,7 @@ describe("the TasksSelection class", () => {
     });
 
     afterEach(async () => {
-      await panelHandler.disposeTaskEditorPanel();
+      panelHandler.disposeTaskEditorPanel();
     });
 
     it("adds task addition to configuration", async () => {

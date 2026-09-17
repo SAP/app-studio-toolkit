@@ -1,11 +1,20 @@
 import { expect } from "chai";
 import sinon = require("sinon");
-import { MockApi, mockVscode, MockVSCodeInfo, testVscode } from "../utils/mockVSCode";
+import {
+  MockApi,
+  mockVscode,
+  MockVSCodeInfo,
+  testVscode,
+} from "../utils/mockVSCode";
 mockVscode("src/services/contributors");
 import { Contributors } from "../../src/services/contributors";
 import { ITaskTypeEventHandler } from "../../src/services/definitions";
 import { messages } from "../../src/i18n/messages";
-import { createLoggerWrapperMock, getLoggerMessage, resetLoggerMessage } from "../utils/loggerWrapperMock";
+import {
+  createLoggerWrapperMock,
+  getLoggerMessage,
+  resetLoggerMessage,
+} from "../utils/loggerWrapperMock";
 
 const tasksDefinition = {
   taskDefinitions: [
@@ -50,7 +59,10 @@ describe("Contributors", () => {
 
   describe("init", () => {
     afterEach(() => {
-      Contributors.getInstance()["tasksEditorContributorsMap"] = new Map<string, any>();
+      Contributors.getInstance()["tasksEditorContributorsMap"] = new Map<
+        string,
+        any
+      >();
     });
 
     it("getTasksPropertyMessageMap = verify returning map structure/mapping", async () => {
@@ -94,13 +106,17 @@ describe("Contributors", () => {
           ],
         },
       };
-      const messageMap = Contributors.getInstance()["getTasksPropertyMessageMap"](packageJSON);
+      const messageMap =
+        Contributors.getInstance()["getTasksPropertyMessageMap"](packageJSON);
       expect(messageMap).to.be.deep.equal({
         "type-1": {
           properties: {
             label: { description: "Task Name" },
             taskType: { description: "Task Type", type: "string" },
-            extPath: { description: "Path to the Extension File", type: "string" },
+            extPath: {
+              description: "Path to the Extension File",
+              type: "string",
+            },
           },
           requires: ["label", "taskType"],
         },
@@ -139,7 +155,12 @@ describe("Contributors", () => {
       const contributor = Contributors.getInstance();
       await contributor.init();
       expect(MockVSCodeInfo.visiblePanel).to.be.true;
-      expect(contributor.getTaskPropertyDescription("test-deploy", "transportPackage")).to.eq("Transport Package");
+      expect(
+        contributor.getTaskPropertyDescription(
+          "test-deploy",
+          "transportPackage"
+        )
+      ).to.eq("Transport Package");
     });
 
     it("active extension exists that contributes to tasks explorer panel; contribution entry misses task type", async () => {
@@ -204,7 +225,8 @@ describe("Contributors", () => {
       expect(contributor.getIntentByType("test-deploy")).to.eq("Deploy");
       expect(contributor.getIntentByType("unknown_type")).to.eq("other");
       expect(contributor.getExtensionNameByType("test-deploy")).to.eq("test");
-      expect(contributor.getExtensionNameByType("test-unknown_type")).to.be.undefined;
+      expect(contributor.getExtensionNameByType("test-unknown_type")).to.be
+        .undefined;
       expect(contributor.getTaskEditorContributor("test-deploy")).to.exist;
       expect(contributor.getTaskEditorContributor("undefined-type")).not.exist;
       const supportedTypes = contributor.getSupportedTypes();
@@ -304,7 +326,9 @@ describe("Contributors", () => {
       const contributor = Contributors.getInstance();
       await contributor.init();
       expect(MockVSCodeInfo.visiblePanel).to.be.false;
-      expect(getLoggerMessage()).to.include(messages.ACTIVATE_CONTRIB_EXT_ERROR("publisher.test"));
+      expect(getLoggerMessage()).to.include(
+        messages.ACTIVATE_CONTRIB_EXT_ERROR("publisher.test")
+      );
     });
 
     it("inactive extension exists that doesn't contribute to tasks explorer panel; failing activate method is not called", async () => {
@@ -415,7 +439,9 @@ describe("Contributors", () => {
       ];
       const contributor = Contributors.getInstance();
       await contributor.init();
-      expect(contributor["tasksEditorContributorsMap"].get("test-deploy")["intent"]).to.eq("intent1");
+      expect(
+        contributor["tasksEditorContributorsMap"].get("test-deploy")["intent"]
+      ).to.eq("intent1");
     });
   });
 });

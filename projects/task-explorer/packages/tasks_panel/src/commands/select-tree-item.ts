@@ -11,19 +11,25 @@ export async function selectTreeItem(
   view: TreeView<TreeItem>,
   dataProvider: TasksTree,
   taskProvider: ITasksProvider,
-  task: ConfiguredTask,
+  task: ConfiguredTask
 ): Promise<void> {
   const _task = find(await taskProvider.getConfiguredTasks(), (_) => {
     return isMatch(_, task);
   });
   if (_task) {
-    return dataProvider.findTreeItem(_task).then((treeItem: TreeItem | undefined) => {
-      if (treeItem) {
-        return view.reveal(treeItem, { select: true, focus: true, expand: true });
-      } else {
-        getLogger().warn(messages.TASK_NOT_FOUND(serializeTask(task)));
-      }
-    });
+    return dataProvider
+      .findTreeItem(_task)
+      .then((treeItem: TreeItem | undefined) => {
+        if (treeItem) {
+          return view.reveal(treeItem, {
+            select: true,
+            focus: true,
+            expand: true,
+          });
+        } else {
+          getLogger().warn(messages.TASK_NOT_FOUND(serializeTask(task)));
+        }
+      });
   } else {
     getLogger().debug(`Task not found or unsupported.`, { label: task.label });
   }

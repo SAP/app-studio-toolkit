@@ -38,20 +38,43 @@ describe("action-deploy scope", () => {
   it("verify arguments chain", async () => {
     mockAction
       .expects("runAction")
-      .withExactArgs("deploy", dataProvider, mockTaskProvider, testVscode.ExtensionContext)
+      .withExactArgs(
+        "deploy",
+        dataProvider,
+        mockTaskProvider,
+        testVscode.ExtensionContext
+      )
       .resolves();
-    expect(await actionDeploy(dataProvider as TasksTree, mockTaskProvider, testVscode.ExtensionContext)).to.be
-      .undefined;
+    expect(
+      await actionDeploy(
+        dataProvider as TasksTree,
+        mockTaskProvider,
+        testVscode.ExtensionContext
+      )
+    ).to.be.undefined;
   });
 
   it("exception thrown", async () => {
     const error = new Error("test");
     mockAction
       .expects("runAction")
-      .withExactArgs("deploy", dataProvider, mockTaskProvider, testVscode.ExtensionContext)
+      .withExactArgs(
+        "deploy",
+        dataProvider,
+        mockTaskProvider,
+        testVscode.ExtensionContext
+      )
       .rejects(error);
-    mockWindow.expects("showErrorMessage").withExactArgs(error.toString()).resolves();
-    expect(await actionDeploy(dataProvider as TasksTree, mockTaskProvider, testVscode.ExtensionContext)).to.be
-      .undefined;
+    mockWindow
+      .expects("showErrorMessage")
+      .withExactArgs(error.toString())
+      .resolves();
+    expect(
+      await actionDeploy(
+        dataProvider as TasksTree,
+        mockTaskProvider,
+        testVscode.ExtensionContext
+      )
+    ).to.be.undefined;
   });
 });

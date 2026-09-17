@@ -1,12 +1,22 @@
 import { expect } from "chai";
-import { SinonMock, SinonSandbox, SinonStub, createSandbox, useFakeTimers } from "sinon";
+import {
+  SinonMock,
+  SinonSandbox,
+  SinonStub,
+  createSandbox,
+  useFakeTimers,
+} from "sinon";
 import { mockVscode, resetTestVSCode, testVscode } from "../utils/mockVSCode";
 import { MockTasksProvider } from "../utils/mockTasksProvider";
 mockVscode("src/commands/action");
 import * as action from "../../src/commands/action";
 import { TasksTree } from "../../src/view/tasks-tree";
 mockVscode("src/view/task-tree-item");
-import { IntentTreeItem, ProjectTreeItem, TaskTreeItem } from "../../src/view/task-tree-item";
+import {
+  IntentTreeItem,
+  ProjectTreeItem,
+  TaskTreeItem,
+} from "../../src/view/task-tree-item";
 
 describe("action module", () => {
   let sandbox: SinonSandbox;
@@ -20,7 +30,11 @@ describe("action module", () => {
   });
 
   describe("subscribeTaskRun scope", () => {
-    const task: any = { definition: { type: "test" }, name: "test", scope: "test" };
+    const task: any = {
+      definition: { type: "test" },
+      name: "test",
+      scope: "test",
+    };
     const getRunTask = () => task;
     const event: any = { execution: { task: getRunTask() } };
 
@@ -28,7 +42,9 @@ describe("action module", () => {
     let mockTask: SinonStub;
 
     beforeEach(() => {
-      mockWorkspaceState = sandbox.mock(testVscode.ExtensionContext.workspaceState);
+      mockWorkspaceState = sandbox.mock(
+        testVscode.ExtensionContext.workspaceState
+      );
       mockTask = sandbox.stub(testVscode.tasks);
     });
     afterEach(() => {
@@ -36,7 +52,10 @@ describe("action module", () => {
     });
 
     it("run a task of a group other than `build` or `deploy`", async () => {
-      mockWorkspaceState.expects("get").withExactArgs("lastTaskState").returns(undefined);
+      mockWorkspaceState
+        .expects("get")
+        .withExactArgs("lastTaskState")
+        .returns(undefined);
       action.subscribeTaskRun(testVscode.ExtensionContext);
       expect(mockTask["onDidStartTask"].calledOnce).to.have.been.true;
       const callback = mockTask["onDidStartTask"].getCall(0).args[0];
@@ -46,7 +65,10 @@ describe("action module", () => {
     it("run a task of `build` group", async () => {
       const lastRunTaskState = { build: undefined, deploy: undefined };
       task.definition.type = "build";
-      mockWorkspaceState.expects("get").withExactArgs("lastTaskState").returns(lastRunTaskState);
+      mockWorkspaceState
+        .expects("get")
+        .withExactArgs("lastTaskState")
+        .returns(lastRunTaskState);
       mockWorkspaceState
         .expects("update")
         .withExactArgs("lastTaskState", {
@@ -62,7 +84,10 @@ describe("action module", () => {
     it("run a task of `deploy` group", async () => {
       const lastRunTaskState = { build: undefined, deploy: undefined };
       task.name = "deploY test project";
-      mockWorkspaceState.expects("get").withExactArgs("lastTaskState").returns(lastRunTaskState);
+      mockWorkspaceState
+        .expects("get")
+        .withExactArgs("lastTaskState")
+        .returns(lastRunTaskState);
       mockWorkspaceState
         .expects("update")
         .withExactArgs("lastTaskState", {
@@ -76,9 +101,15 @@ describe("action module", () => {
     });
 
     it("run same task as a last run one", async () => {
-      const lastRunTaskState = { build: undefined, deploy: { ...getRunTask() } };
+      const lastRunTaskState = {
+        build: undefined,
+        deploy: { ...getRunTask() },
+      };
       task.name = "deploY test project";
-      mockWorkspaceState.expects("get").withExactArgs("lastTaskState").returns(lastRunTaskState);
+      mockWorkspaceState
+        .expects("get")
+        .withExactArgs("lastTaskState")
+        .returns(lastRunTaskState);
       mockWorkspaceState.expects("update").never();
       action.subscribeTaskRun(testVscode.ExtensionContext);
       const callback = mockTask["onDidStartTask"].getCall(0).args[0];
@@ -89,7 +120,10 @@ describe("action module", () => {
       const lastRunTaskState = { build: undefined, deploy: undefined };
       task.definition.type = "build";
       task.name = "test project";
-      mockWorkspaceState.expects("get").withExactArgs("lastTaskState").returns(lastRunTaskState);
+      mockWorkspaceState
+        .expects("get")
+        .withExactArgs("lastTaskState")
+        .returns(lastRunTaskState);
       mockWorkspaceState
         .expects("update")
         .withExactArgs("lastTaskState", {
@@ -104,7 +138,11 @@ describe("action module", () => {
   });
 
   describe("runAction scope", () => {
-    const roots = ["/user/projects/project1", "/user/projects/project2", "/user/projects/project3"];
+    const roots = [
+      "/user/projects/project1",
+      "/user/projects/project2",
+      "/user/projects/project3",
+    ];
     const task1 = {
       label: "Template: task1",
       type: "testType",
@@ -133,7 +171,9 @@ describe("action module", () => {
       clock = useFakeTimers();
       mockCommands = sandbox.mock(testVscode.commands);
       mockWindow = sandbox.mock(testVscode.window);
-      mockWorkspaceState = sandbox.mock(testVscode.ExtensionContext.workspaceState);
+      mockWorkspaceState = sandbox.mock(
+        testVscode.ExtensionContext.workspaceState
+      );
     });
 
     afterEach(() => {
@@ -145,14 +185,24 @@ describe("action module", () => {
 
     it("call `runAction` when workspace undefined", async () => {
       testVscode.workspace.workspaceFolders = undefined;
-      action.runAction("build", dataProvider, mockTaskProvider, testVscode.ExtensionContext);
+      action.runAction(
+        "build",
+        dataProvider,
+        mockTaskProvider,
+        testVscode.ExtensionContext
+      );
       // Advance time to exactly the debounce delay
       clock.tick(600);
     });
 
     it("call `runAction` when no workspace open", async () => {
       testVscode.workspace.workspaceFolders = [];
-      action.runAction("build", dataProvider, mockTaskProvider, testVscode.ExtensionContext);
+      action.runAction(
+        "build",
+        dataProvider,
+        mockTaskProvider,
+        testVscode.ExtensionContext
+      );
       clock.tick(600);
     });
 
@@ -164,28 +214,55 @@ describe("action module", () => {
         task1.label,
         task1.__wsFolder,
         testVscode.TreeItemCollapsibleState.None,
-        parentItem,
+        parentItem
       );
       sandbox.stub(dataProvider, "findTreeItem").withArgs(task1).resolves(item);
-      mockCommands.expects("executeCommand").withExactArgs("tasks-explorer.tree.select", task1).resolves();
-      mockCommands.expects("executeCommand").withExactArgs("tasks-explorer.executeTask", item).resolves();
-      action.runAction("build", dataProvider, new MockTasksProvider([task1]), testVscode.ExtensionContext);
+      mockCommands
+        .expects("executeCommand")
+        .withExactArgs("tasks-explorer.tree.select", task1)
+        .resolves();
+      mockCommands
+        .expects("executeCommand")
+        .withExactArgs("tasks-explorer.executeTask", item)
+        .resolves();
+      action.runAction(
+        "build",
+        dataProvider,
+        new MockTasksProvider([task1]),
+        testVscode.ExtensionContext
+      );
       clock.tick(600);
     });
 
     it("call `runAction` when only one task available, but a corresponding view item not found", async () => {
       testVscode.workspace.workspaceFolders = [{ uri: { path: roots[0] } }];
-      sandbox.stub(dataProvider, "findTreeItem").withArgs(task1).resolves(undefined);
+      sandbox
+        .stub(dataProvider, "findTreeItem")
+        .withArgs(task1)
+        .resolves(undefined);
       mockCommands.expects("executeCommand").never();
-      action.runAction("build", dataProvider, new MockTasksProvider([task1]), testVscode.ExtensionContext);
+      action.runAction(
+        "build",
+        dataProvider,
+        new MockTasksProvider([task1]),
+        testVscode.ExtensionContext
+      );
       clock.tick(600);
     });
 
     it("call `runAction` when only one task available, but a corresponding view item not found", async () => {
       testVscode.workspace.workspaceFolders = [{ uri: { path: roots[0] } }];
-      sandbox.stub(dataProvider, "findTreeItem").withArgs(task1).resolves(undefined);
+      sandbox
+        .stub(dataProvider, "findTreeItem")
+        .withArgs(task1)
+        .resolves(undefined);
       mockCommands.expects("executeCommand").never();
-      action.runAction("build", dataProvider, new MockTasksProvider([task1]), testVscode.ExtensionContext);
+      action.runAction(
+        "build",
+        dataProvider,
+        new MockTasksProvider([task1]),
+        testVscode.ExtensionContext
+      );
       clock.tick(600);
     });
 
@@ -195,10 +272,19 @@ describe("action module", () => {
         .expects("executeCommand")
         .withExactArgs(
           "tasks-explorer.createTask",
-          new IntentTreeItem("deploy", testVscode.TreeItemCollapsibleState.Collapsed, new ProjectTreeItem("", "")),
+          new IntentTreeItem(
+            "deploy",
+            testVscode.TreeItemCollapsibleState.Collapsed,
+            new ProjectTreeItem("", "")
+          )
         )
         .resolves();
-      action.runAction("deploy", dataProvider, new MockTasksProvider([task1]), testVscode.ExtensionContext);
+      action.runAction(
+        "deploy",
+        dataProvider,
+        new MockTasksProvider([task1]),
+        testVscode.ExtensionContext
+      );
       clock.tick(600);
     });
 
@@ -208,8 +294,16 @@ describe("action module", () => {
         .expects("showQuickPick")
         .withExactArgs(
           [
-            { ...task3, ...{ description: task3.type }, ...{ detail: task3.__wsFolder } },
-            { ...task2, ...{ description: task2.type }, ...{ detail: task2.__wsFolder } },
+            {
+              ...task3,
+              ...{ description: task3.type },
+              ...{ detail: task3.__wsFolder },
+            },
+            {
+              ...task2,
+              ...{ description: task2.type },
+              ...{ detail: task2.__wsFolder },
+            },
             { kind: -1, label: "configure" },
             { label: "Create Task..." },
           ],
@@ -218,19 +312,35 @@ describe("action module", () => {
             ignoreFocusOut: true,
             matchOnDescription: true,
             matchOnDetail: true,
-          },
+          }
         )
         .resolves();
-      action.runAction("deploy", dataProvider, new MockTasksProvider([task3, task2]), testVscode.ExtensionContext);
+      action.runAction(
+        "deploy",
+        dataProvider,
+        new MockTasksProvider([task3, task2]),
+        testVscode.ExtensionContext
+      );
       clock.tick(600);
     });
 
     it("call `runAction` on one root and several tasks available, task selected", async () => {
       testVscode.workspace.workspaceFolders = [{ uri: { path: roots[0] } }];
-      mockWorkspaceState.expects("get").withExactArgs("lastTaskState").returns(undefined);
+      mockWorkspaceState
+        .expects("get")
+        .withExactArgs("lastTaskState")
+        .returns(undefined);
       const items = [
-        { ...task3, ...{ description: task3.type }, ...{ detail: task3.__wsFolder } },
-        { ...task2, ...{ description: task2.type }, ...{ detail: task2.__wsFolder } },
+        {
+          ...task3,
+          ...{ description: task3.type },
+          ...{ detail: task3.__wsFolder },
+        },
+        {
+          ...task2,
+          ...{ description: task2.type },
+          ...{ detail: task2.__wsFolder },
+        },
         { kind: -1, label: "configure" },
         { label: "Create Task..." },
       ];
@@ -241,20 +351,42 @@ describe("action module", () => {
         task2.label,
         task2.__wsFolder,
         testVscode.TreeItemCollapsibleState.None,
-        parentItem,
+        parentItem
       );
-      sandbox.stub(dataProvider, "findTreeItem").withArgs(task2).resolves(treeItem);
-      mockCommands.expects("executeCommand").withExactArgs("tasks-explorer.tree.select", task2).resolves();
-      mockCommands.expects("executeCommand").withExactArgs("tasks-explorer.executeTask", treeItem).resolves();
-      action.runAction("deploy", dataProvider, new MockTasksProvider([task3, task2]), testVscode.ExtensionContext);
+      sandbox
+        .stub(dataProvider, "findTreeItem")
+        .withArgs(task2)
+        .resolves(treeItem);
+      mockCommands
+        .expects("executeCommand")
+        .withExactArgs("tasks-explorer.tree.select", task2)
+        .resolves();
+      mockCommands
+        .expects("executeCommand")
+        .withExactArgs("tasks-explorer.executeTask", treeItem)
+        .resolves();
+      action.runAction(
+        "deploy",
+        dataProvider,
+        new MockTasksProvider([task3, task2]),
+        testVscode.ExtensionContext
+      );
       clock.tick(600);
     });
 
     it("call `runAction` on one root and several tasks available, 'create task ...' selected", async () => {
       testVscode.workspace.workspaceFolders = [{ uri: { path: roots[0] } }];
       const items = [
-        { ...task3, ...{ description: task3.type }, ...{ detail: task3.__wsFolder } },
-        { ...task2, ...{ description: task2.type }, ...{ detail: task2.__wsFolder } },
+        {
+          ...task3,
+          ...{ description: task3.type },
+          ...{ detail: task3.__wsFolder },
+        },
+        {
+          ...task2,
+          ...{ description: task2.type },
+          ...{ detail: task2.__wsFolder },
+        },
         { kind: -1, label: "configure" },
         { label: "Create Task..." },
       ];
@@ -263,11 +395,20 @@ describe("action module", () => {
         .expects("executeCommand")
         .withExactArgs(
           "tasks-explorer.createTask",
-          new IntentTreeItem("deploy", testVscode.TreeItemCollapsibleState.Collapsed, new ProjectTreeItem("", "")),
+          new IntentTreeItem(
+            "deploy",
+            testVscode.TreeItemCollapsibleState.Collapsed,
+            new ProjectTreeItem("", "")
+          )
         )
         .resolves();
 
-      action.runAction("deploy", dataProvider, new MockTasksProvider([task3, task2]), testVscode.ExtensionContext);
+      action.runAction(
+        "deploy",
+        dataProvider,
+        new MockTasksProvider([task3, task2]),
+        testVscode.ExtensionContext
+      );
       clock.tick(600);
     });
 
@@ -288,23 +429,47 @@ describe("action module", () => {
         .expects("showQuickPick")
         .withArgs([
           { kind: -1, label: "Last Run" },
-          { ...task2, ...{ description: task2.type }, ...{ detail: task2.__wsFolder } },
+          {
+            ...task2,
+            ...{ description: task2.type },
+            ...{ detail: task2.__wsFolder },
+          },
           { kind: -1, label: "" },
-          { ...task3, ...{ description: task3.type }, ...{ detail: task3.__wsFolder } },
+          {
+            ...task3,
+            ...{ description: task3.type },
+            ...{ detail: task3.__wsFolder },
+          },
           { kind: -1, label: "configure" },
           { label: "Create Task..." },
         ])
         .resolves();
-      action.runAction("deploy", dataProvider, new MockTasksProvider([task3, task2]), testVscode.ExtensionContext);
+      action.runAction(
+        "deploy",
+        dataProvider,
+        new MockTasksProvider([task3, task2]),
+        testVscode.ExtensionContext
+      );
       clock.tick(600);
     });
 
     it("call `runAction` on one root and several tasks available, task selected but not identified", async () => {
       testVscode.workspace.workspaceFolders = [{ uri: { path: roots[0] } }];
-      mockWorkspaceState.expects("get").withExactArgs("lastTaskState").returns(undefined);
+      mockWorkspaceState
+        .expects("get")
+        .withExactArgs("lastTaskState")
+        .returns(undefined);
       const items = [
-        { ...task3, ...{ description: task3.type }, ...{ detail: task3.__wsFolder } },
-        { ...task2, ...{ description: task2.type }, ...{ detail: task2.__wsFolder } },
+        {
+          ...task3,
+          ...{ description: task3.type },
+          ...{ detail: task3.__wsFolder },
+        },
+        {
+          ...task2,
+          ...{ description: task2.type },
+          ...{ detail: task2.__wsFolder },
+        },
         { kind: -1, label: "configure" },
         { label: "Create Task..." },
       ];
@@ -312,7 +477,12 @@ describe("action module", () => {
         .expects("showQuickPick")
         .withArgs(items)
         .resolves({ ...items[2], type: "unknown" });
-      action.runAction("deploy", dataProvider, new MockTasksProvider([task3, task2]), testVscode.ExtensionContext);
+      action.runAction(
+        "deploy",
+        dataProvider,
+        new MockTasksProvider([task3, task2]),
+        testVscode.ExtensionContext
+      );
       clock.tick(600);
     });
 
@@ -321,19 +491,39 @@ describe("action module", () => {
       mockWorkspaceState
         .expects("get")
         .withExactArgs("lastTaskState")
-        .returns({ deploy: { definition: { type: task2.type }, name: task2.label, scope: "test" } });
+        .returns({
+          deploy: {
+            definition: { type: task2.type },
+            name: task2.label,
+            scope: "test",
+          },
+        });
       const treeItem = new TaskTreeItem(
         0,
         task2.type,
         task2.label,
         task2.__wsFolder,
         testVscode.TreeItemCollapsibleState.None,
-        parentItem,
+        parentItem
       );
-      sandbox.stub(dataProvider, "findTreeItem").withArgs(task2).resolves(treeItem);
-      mockCommands.expects("executeCommand").withExactArgs("tasks-explorer.tree.select", task2).resolves();
-      mockCommands.expects("executeCommand").withExactArgs("tasks-explorer.executeTask", treeItem).resolves();
-      action.runAction("deploy", dataProvider, new MockTasksProvider([task3, task2]), testVscode.ExtensionContext);
+      sandbox
+        .stub(dataProvider, "findTreeItem")
+        .withArgs(task2)
+        .resolves(treeItem);
+      mockCommands
+        .expects("executeCommand")
+        .withExactArgs("tasks-explorer.tree.select", task2)
+        .resolves();
+      mockCommands
+        .expects("executeCommand")
+        .withExactArgs("tasks-explorer.executeTask", treeItem)
+        .resolves();
+      action.runAction(
+        "deploy",
+        dataProvider,
+        new MockTasksProvider([task3, task2]),
+        testVscode.ExtensionContext
+      );
       clock.tick(600);
     });
 
@@ -343,8 +533,19 @@ describe("action module", () => {
         .expects("get")
         .withExactArgs("lastTaskState")
         .twice()
-        .returns({ deploy: { definition: { type: task2.type }, name: "task2.label", scope: "test" } });
-      action.runAction("deploy", dataProvider, new MockTasksProvider([task3, task2]), testVscode.ExtensionContext);
+        .returns({
+          deploy: {
+            definition: { type: task2.type },
+            name: "task2.label",
+            scope: "test",
+          },
+        });
+      action.runAction(
+        "deploy",
+        dataProvider,
+        new MockTasksProvider([task3, task2]),
+        testVscode.ExtensionContext
+      );
       clock.tick(600);
     });
   });

@@ -12,22 +12,32 @@ export abstract class AbstractWebviewPanel<T> {
   protected htmlFileName: string;
   protected state: any;
 
-  protected constructor(protected readonly readResource: (file: string) => Promise<string>) {
+  protected constructor(
+    protected readonly readResource: (file: string) => Promise<string>
+  ) {
     this.mediaPath = join(getExtensionPath(), "dist", "media");
     this.htmlFileName = "index.html";
   }
 
-  protected abstract setWebviewPanel(webviewPanel: WebviewPanel, state?: T): void;
+  protected abstract setWebviewPanel(
+    webviewPanel: WebviewPanel,
+    state?: T
+  ): void;
 
   public loadWebviewPanel(state?: T): void {
     if (this.webViewPanel) {
       this.dispose();
     }
-    const webViewPanel = window.createWebviewPanel(this.viewType, this.viewTitle, ViewColumn.One, {
-      // Enable javascript in the webview
-      enableScripts: true,
-      localResourceRoots: [Uri.file(this.mediaPath)],
-    });
+    const webViewPanel = window.createWebviewPanel(
+      this.viewType,
+      this.viewTitle,
+      ViewColumn.One,
+      {
+        // Enable javascript in the webview
+        enableScripts: true,
+        localResourceRoots: [Uri.file(this.mediaPath)],
+      }
+    );
     this.setWebviewPanel(webViewPanel, state);
   }
 
@@ -72,7 +82,9 @@ export abstract class AbstractWebviewPanel<T> {
     const scriptPathOnDisk = Uri.file(join(this.mediaPath, sep));
     const scriptUri = this.webViewPanel.webview.asWebviewUri(scriptPathOnDisk);
     const baseUrl = scriptUri.toString();
-    const $ = cheerio.load(await this.readResource(join(this.mediaPath, this.htmlFileName)));
+    const $ = cheerio.load(
+      await this.readResource(join(this.mediaPath, this.htmlFileName))
+    );
 
     function replaceAttributePaths(elements: any, attributeName: string) {
       elements.each((index: number, element: cheerio.Element) => {

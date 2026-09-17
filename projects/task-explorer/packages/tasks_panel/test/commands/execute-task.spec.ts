@@ -33,7 +33,10 @@ describe("Command executeTaskFromTree", () => {
     tasksMock = sandbox.mock(testVscode.tasks);
   });
 
-  const parentItem = new IntentTreeItem("dummy", testVscode.TreeItemCollapsibleState.None);
+  const parentItem = new IntentTreeItem(
+    "dummy",
+    testVscode.TreeItemCollapsibleState.None
+  );
 
   it("tree item task has valid structure and exists among fetched task -> tasks.executeTask command is called", async () => {
     const command1 = {
@@ -41,7 +44,15 @@ describe("Command executeTaskFromTree", () => {
       command: "tasks-explorer.editTask",
       arguments: [task1],
     };
-    const item1 = new TaskTreeItem(0, "test", "aaa", "wsFolder1", TreeItemCollapsibleState.None, parentItem, command1);
+    const item1 = new TaskTreeItem(
+      0,
+      "test",
+      "aaa",
+      "wsFolder1",
+      TreeItemCollapsibleState.None,
+      parentItem,
+      command1
+    );
 
     tasksMock
       .expects("fetchTasks")
@@ -54,7 +65,14 @@ describe("Command executeTaskFromTree", () => {
   });
 
   it("tree item task doesnt have command property -> tasks.fetchTasks is never called", async () => {
-    const item1 = new TaskTreeItem(0, "test", "aaa", "wsFolder1", TreeItemCollapsibleState.None, parentItem);
+    const item1 = new TaskTreeItem(
+      0,
+      "test",
+      "aaa",
+      "wsFolder1",
+      TreeItemCollapsibleState.None,
+      parentItem
+    );
 
     tasksMock.expects("fetchTasks").never();
 
@@ -69,7 +87,15 @@ describe("Command executeTaskFromTree", () => {
       arguments: [],
     };
 
-    const item1 = new TaskTreeItem(0, "test", "aaa", "wsFolder1", TreeItemCollapsibleState.None, parentItem, command1);
+    const item1 = new TaskTreeItem(
+      0,
+      "test",
+      "aaa",
+      "wsFolder1",
+      TreeItemCollapsibleState.None,
+      parentItem,
+      command1
+    );
 
     tasksMock.expects("fetchTasks").never();
 

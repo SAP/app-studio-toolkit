@@ -40,7 +40,7 @@ export type isSimpleFormPropertyValid = (
    * @param value simple value provided by the user in the form
    * @@return result of validation: error message; empty string indicates valid property
    */
-  value: string,
+  value: string
 ) => Promise<string> | string;
 
 /**
@@ -52,10 +52,12 @@ export type isArrayFormPropertyValid = (
    * @param value array value (in case of checkbox) provided by the user in the form
    * @@return result of validation: error message; empty string indicates valid property
    */
-  value: string[],
+  value: string[]
 ) => Promise<string> | string;
 
-export type isFormPropertyValid = isSimpleFormPropertyValid | isArrayFormPropertyValid;
+export type isFormPropertyValid =
+  | isSimpleFormPropertyValid
+  | isArrayFormPropertyValid;
 
 /**
  * This interface defines the form property attributes that are relevant for any kind of property

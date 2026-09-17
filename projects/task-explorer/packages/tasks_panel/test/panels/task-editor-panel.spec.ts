@@ -1,9 +1,17 @@
 /* eslint-disable eslint-comments/disable-enable-pair -- disable the next rule */
 /* eslint-disable @typescript-eslint/no-non-null-assertion -- suppress this rule for test scope */
 import { expect } from "chai";
-import { mockVscode, MockVSCodeInfo, resetTestVSCode } from "../utils/mockVSCode";
+import {
+  mockVscode,
+  MockVSCodeInfo,
+  resetTestVSCode,
+} from "../utils/mockVSCode";
 mockVscode("../../src/panels/task-editor-panel");
-import { createTaskEditorPanel, disposeTaskEditorPanel, getTaskEditorPanel } from "../../src/panels/panels-handler";
+import {
+  createTaskEditorPanel,
+  disposeTaskEditorPanel,
+  getTaskEditorPanel,
+} from "../../src/panels/panels-handler";
 import { TaskEditorPanel } from "../../src/panels/task-editor-panel";
 
 describe("TaskEditorPanel class", () => {
@@ -78,7 +86,7 @@ describe("TaskEditorPanel class", () => {
           label: "aaa",
           type: "testType",
         },
-        readFile,
+        readFile
       );
       const panel = getTaskEditorPanel();
       expect(panel).to.exist;
@@ -90,7 +98,7 @@ describe("TaskEditorPanel class", () => {
           label: "task1",
           type: "testType",
         },
-        readFile,
+        readFile
       );
       const panel = getTaskEditorPanel();
       expect(panel).to.exist;
@@ -105,7 +113,7 @@ describe("TaskEditorPanel class", () => {
           label: "aaa",
           type: "testType",
         },
-        readFile,
+        readFile
       );
       const panel1 = getTaskEditorPanel();
       expect(panel1).exist;
@@ -114,7 +122,7 @@ describe("TaskEditorPanel class", () => {
           label: "aaa1",
           type: "testType",
         },
-        readFile,
+        readFile
       );
       const panel2 = getTaskEditorPanel();
       expect(panel2).to.exist;
@@ -127,7 +135,7 @@ describe("TaskEditorPanel class", () => {
           label: "aaa",
           type: "testType",
         },
-        readFile,
+        readFile
       );
       const panel1 = getTaskEditorPanel();
       expect(panel1).exist;
@@ -136,7 +144,7 @@ describe("TaskEditorPanel class", () => {
           label: "aaa",
           type: "testType",
         },
-        readFile,
+        readFile
       );
       const panel2 = getTaskEditorPanel();
       expect(panel2).to.exist;
@@ -157,7 +165,7 @@ describe("TaskEditorPanel class", () => {
           label: "aaa",
           type: "testType",
         },
-        readFile,
+        readFile
       );
       const panel = getTaskEditorPanel();
       panel!.showOpenFileDialog("");
@@ -172,7 +180,7 @@ describe("TaskEditorPanel class", () => {
           label: "aaa",
           type: "testType",
         },
-        readFile,
+        readFile
       );
       const panel = getTaskEditorPanel();
       expect(panel).exist;
@@ -188,7 +196,7 @@ describe("TaskEditorPanel class", () => {
           label: "task1",
           type: "testType",
         },
-        readFile,
+        readFile
       );
       const panel = getTaskEditorPanel();
       expect(panel).exist;
@@ -202,7 +210,7 @@ describe("TaskEditorPanel class", () => {
           label: "task1",
           type: "testType",
         },
-        readFile,
+        readFile
       );
       const panel = getTaskEditorPanel();
       expect(panel).exist;
@@ -215,7 +223,7 @@ describe("TaskEditorPanel class", () => {
           label: "task1",
           type: "testType",
         },
-        readFile,
+        readFile
       );
       const panel = getTaskEditorPanel();
       expect(panel).exist;

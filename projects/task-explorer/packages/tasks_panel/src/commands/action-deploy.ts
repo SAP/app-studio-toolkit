@@ -7,7 +7,7 @@ import { exceptionToString } from "../utils/task-serializer";
 export async function actionDeploy(
   dataProvider: TasksTree,
   taskProvider: ITasksProvider,
-  context: ExtensionContext,
+  context: ExtensionContext
 ): Promise<void> {
   try {
     await runAction("deploy", dataProvider, taskProvider, context);

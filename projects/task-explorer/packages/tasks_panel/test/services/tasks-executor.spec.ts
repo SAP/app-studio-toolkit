@@ -1,8 +1,16 @@
 import { expect } from "chai";
 import { fail } from "assert";
-import { mockVscode, MockVSCodeInfo, resetTestVSCode, testVscode } from "../utils/mockVSCode";
+import {
+  mockVscode,
+  MockVSCodeInfo,
+  resetTestVSCode,
+  testVscode,
+} from "../utils/mockVSCode";
 mockVscode("src/services/tasks-executor");
-import { executeVScodeTask, terminateVScodeTask } from "../../src/services/tasks-executor";
+import {
+  executeVScodeTask,
+  terminateVScodeTask,
+} from "../../src/services/tasks-executor";
 import { stub } from "sinon";
 import { messages } from "../../src/i18n/messages";
 import { serializeTask } from "../../src/utils/task-serializer";
@@ -59,13 +67,18 @@ describe("tasks executor - terminateVScodeTask", () => {
 
   it("executed task not found", async () => {
     const task: any = { label: "label" };
-    stub(testVscode.tasks, "taskExecutions").value([{ task: { name: "name" } }]);
+    stub(testVscode.tasks, "taskExecutions").value([
+      { task: { name: "name" } },
+    ]);
     try {
       await terminateVScodeTask(task);
       fail("should fail");
     } catch (e: any) {
       expect(e.message).to.be.equal(
-        messages.TERMINATE_FAILURE(serializeTask(task), new Error(messages.TASK_NOT_FOUND(task.label)).toString()),
+        messages.TERMINATE_FAILURE(
+          serializeTask(task),
+          new Error(messages.TASK_NOT_FOUND(task.label)).toString()
+        )
       );
     }
   });
@@ -85,7 +98,9 @@ describe("tasks executor - terminateVScodeTask", () => {
       await terminateVScodeTask(task);
       fail("should fail");
     } catch (e: any) {
-      expect(e.message).to.be.equal(messages.TERMINATE_FAILURE(serializeTask(task), error.toString()));
+      expect(e.message).to.be.equal(
+        messages.TERMINATE_FAILURE(serializeTask(task), error.toString())
+      );
     }
   });
 });

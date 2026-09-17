@@ -1,5 +1,8 @@
 import { Uri, workspace, window, WebviewPanel } from "vscode";
-import { ConfiguredTask, TaskEditorContributionAPI } from "@sap_oss/task_contrib_types";
+import {
+  ConfiguredTask,
+  TaskEditorContributionAPI,
+} from "@sap_oss/task_contrib_types";
 
 import { AppEvents } from "./app-events";
 import { Contributors } from "./services/contributors";
@@ -21,7 +24,11 @@ export class VSCodeEvents implements AppEvents {
     return executeVScodeTask(task);
   }
 
-  async updateTaskInConfiguration(path: string, task: ConfiguredTask, index: number): Promise<void> {
+  async updateTaskInConfiguration(
+    path: string,
+    task: ConfiguredTask,
+    index: number
+  ): Promise<void> {
     const tasksConfig = workspace.getConfiguration("tasks", Uri.file(path));
     const tasks: ConfiguredTask[] = tasksConfig.get("tasks") ?? [];
     if (tasks.length > index) {
@@ -29,7 +36,10 @@ export class VSCodeEvents implements AppEvents {
       cleanTasks(tasks);
       await updateTasksConfiguration(path, tasks);
     } else {
-      getLogger().error(messages.TASK_UPDATE_FAILED(), { taskIndex: index, length: tasks.length });
+      getLogger().error(messages.TASK_UPDATE_FAILED(), {
+        taskIndex: index,
+        length: tasks.length,
+      });
       window.showErrorMessage(messages.TASK_UPDATE_FAILED());
       return;
     }
@@ -40,11 +50,16 @@ export class VSCodeEvents implements AppEvents {
     }
   }
 
-  getTasksEditorContributor(type: string): TaskEditorContributionAPI<ConfiguredTask> {
+  getTasksEditorContributor(
+    type: string
+  ): TaskEditorContributionAPI<ConfiguredTask> {
     return this.contributors.getTaskEditorContributor(type);
   }
 
-  async addTaskToConfiguration(path: string, task: ConfiguredTask): Promise<number> {
+  async addTaskToConfiguration(
+    path: string,
+    task: ConfiguredTask
+  ): Promise<number> {
     const tasksConfig = workspace.getConfiguration("tasks", Uri.file(path));
     let configuredTasks: ConfiguredTask[] = tasksConfig.get("tasks") ?? [];
     configuredTasks = configuredTasks.concat(task);

@@ -1,5 +1,11 @@
 import { find } from "lodash";
-import { TreeItem, TreeItemCollapsibleState, Command, tasks, ThemeIcon } from "vscode";
+import {
+  TreeItem,
+  TreeItemCollapsibleState,
+  Command,
+  tasks,
+  ThemeIcon,
+} from "vscode";
 import { isMatchBuild, isMatchDeploy } from "../../src/utils/ws-folder";
 
 type TaskStatus = "idle" | "running";
@@ -17,7 +23,7 @@ class BranchTreeItem extends TreeTooltiplessItem {
     label: string,
     collapsibleState: TreeItemCollapsibleState,
     context: string,
-    public readonly parent?: TreeItem,
+    public readonly parent?: TreeItem
   ) {
     super(label, collapsibleState);
     this.contextValue = context;
@@ -29,7 +35,7 @@ class FolderTreeItem extends BranchTreeItem {
     public fqn: string,
     context: string,
     collapsibleState: TreeItemCollapsibleState,
-    parent?: TreeItem,
+    parent?: TreeItem
   ) {
     super(label, collapsibleState, context, parent);
   }
@@ -38,7 +44,7 @@ export class RootTreeItem extends FolderTreeItem {
   constructor(
     label: string,
     fqn: string,
-    collapsibleState: TreeItemCollapsibleState = TreeItemCollapsibleState.Expanded,
+    collapsibleState: TreeItemCollapsibleState = TreeItemCollapsibleState.Expanded
   ) {
     super(label, fqn, "root", collapsibleState, undefined);
     this.iconPath = new ThemeIcon("folder");
@@ -49,7 +55,7 @@ export class ProjectTreeItem extends FolderTreeItem {
     label: string,
     fqn: string,
     parent?: TreeItem,
-    collapsibleState: TreeItemCollapsibleState = TreeItemCollapsibleState.Expanded,
+    collapsibleState: TreeItemCollapsibleState = TreeItemCollapsibleState.Expanded
   ) {
     super(label, fqn, "project", collapsibleState, parent);
     this.iconPath = new ThemeIcon("folder");
@@ -59,7 +65,7 @@ export class IntentTreeItem extends BranchTreeItem {
   constructor(
     label: string,
     collapsibleState: TreeItemCollapsibleState = TreeItemCollapsibleState.Expanded,
-    parent?: TreeItem,
+    parent?: TreeItem
   ) {
     super(label, collapsibleState, "intent", parent);
   }
@@ -73,7 +79,7 @@ export class TaskTreeItem extends TreeTooltiplessItem {
     public wsFolder: string,
     collapsibleState: TreeItemCollapsibleState,
     public readonly parent: TreeItem,
-    command?: Command,
+    command?: Command
   ) {
     super(label, collapsibleState);
     this.command = command;

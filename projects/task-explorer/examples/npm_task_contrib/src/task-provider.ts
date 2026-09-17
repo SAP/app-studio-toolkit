@@ -1,4 +1,11 @@
-import { ShellExecution, Task, TaskProvider, TaskScope, workspace, WorkspaceFolder } from "vscode";
+import {
+  ShellExecution,
+  Task,
+  TaskProvider,
+  TaskScope,
+  workspace,
+  WorkspaceFolder,
+} from "vscode";
 import { NPM_TYPE } from "./definitions";
 import { size } from "lodash";
 import path = require("path");
@@ -16,7 +23,10 @@ export class NpmTaskProvider implements TaskProvider {
       task.scope ?? TaskScope.Workspace,
       task.name,
       NPM_TYPE,
-      new ShellExecution(`npm run ${task.definition.script}`, cwd ? { cwd } : undefined),
+      new ShellExecution(
+        `npm run ${task.definition.script}`,
+        cwd ? { cwd } : undefined
+      )
     );
   }
 

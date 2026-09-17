@@ -1,4 +1,10 @@
-import { RelativePattern, TaskDefinition, Uri, commands, workspace } from "vscode";
+import {
+  RelativePattern,
+  TaskDefinition,
+  Uri,
+  commands,
+  workspace,
+} from "vscode";
 import * as Yaml from "yaml";
 import { concat, find, includes, last, map } from "lodash";
 import { getLogger } from "../logger/logger-wrapper";
@@ -12,7 +18,10 @@ import {
   doesFileExist,
   waitForFileResource,
 } from "./e2e-config";
-import { exceptionToString, getUniqueTaskLabel } from "../../src/utils/task-serializer";
+import {
+  exceptionToString,
+  getUniqueTaskLabel,
+} from "../../src/utils/task-serializer";
 import * as path from "path";
 
 enum FE_DEPLOY_TRG {
@@ -35,39 +44,55 @@ async function readTextFile(uri: Uri): Promise<string> {
   return Buffer.from(buffer).toString("utf8");
 }
 
-async function detectDeployTarget(ui5DeployYaml: Uri): Promise<FE_DEPLOY_TRG | undefined> {
+async function detectDeployTarget(
+  ui5DeployYaml: Uri
+): Promise<FE_DEPLOY_TRG | undefined> {
   try {
     const yamlContext = Yaml.parse(await readTextFile(ui5DeployYaml));
     if (!yamlContext?.builder?.customTasks) {
       throw new Error("Unsupported target configuration found");
     }
-    return find(yamlContext.builder.customTasks, ["name", "deploy-to-abap"]) ? FE_DEPLOY_TRG.ABAP : FE_DEPLOY_TRG.CF;
+    return find(yamlContext.builder.customTasks, ["name", "deploy-to-abap"])
+      ? FE_DEPLOY_TRG.ABAP
+      : FE_DEPLOY_TRG.CF;
   } catch (e: any) {
     getLogger().error(exceptionToString(e));
   }
 }
 
-export async function getFioriE2ePickItems(info: ProjectInfo): Promise<FioriProjectConfigInfo | undefined> {
-  async function isConfigured(target: FE_DEPLOY_TRG | undefined, projectPath: Uri): Promise<boolean> {
+export async function getFioriE2ePickItems(
+  info: ProjectInfo
+): Promise<FioriProjectConfigInfo | undefined> {
+  async function isConfigured(
+    target: FE_DEPLOY_TRG | undefined,
+    projectPath: Uri
+  ): Promise<boolean> {
     if (!target) {
       // error [reading|parsing|unexpected structure] yaml file
       return false;
     }
     const resources: Promise<boolean>[] = [Promise.resolve(true)];
     resources.push(
-      ...map(target === FE_DEPLOY_TRG.ABAP ? trg_files_abap : trg_files_cf, (file) =>
-        doesFileExist(Uri.joinPath(projectPath, file)),
-      ),
+      ...map(
+        target === FE_DEPLOY_TRG.ABAP ? trg_files_abap : trg_files_cf,
+        (file) => doesFileExist(Uri.joinPath(projectPath, file))
+      )
     );
     return Promise.all(resources).then((values) => !includes(values, false));
   }
 
-  async function isConfigRequired(wsFolder: Uri, project: string): Promise<boolean> {
+  async function isConfigRequired(
+    wsFolder: Uri,
+    project: string
+  ): Promise<boolean> {
     let result = true;
     const projectPath = Uri.joinPath(wsFolder, project);
     const path = Uri.joinPath(projectPath, "ui5-deploy.yaml");
     if (await doesFileExist(path)) {
-      result = !(await isConfigured(await detectDeployTarget(path), projectPath));
+      result = !(await isConfigured(
+        await detectDeployTarget(path),
+        projectPath
+      ));
     }
     return result;
   }
@@ -87,8 +112,13 @@ export async function getFioriE2ePickItems(info: ProjectInfo): Promise<FioriProj
   }
 }
 
-export async function fioriE2eConfig(data: { wsFolder: string; project: string }): Promise<void> {
-  async function completeTasksDefinition(target: FE_DEPLOY_TRG | undefined): Promise<any> {
+export async function fioriE2eConfig(data: {
+  wsFolder: string;
+  project: string;
+}): Promise<void> {
+  async function completeTasksDefinition(
+    target: FE_DEPLOY_TRG | undefined
+  ): Promise<any> {
     if (!target) {
       throw new Error(messages.err_task_definition_unsupported_target);
     }
@@ -98,21 +128,31 @@ export async function fioriE2eConfig(data: { wsFolder: string; project: string }
         type: "npm",
         label: getUniqueTaskLabel(`Deploy to ABAP ${data.project}`),
         script: "deploy",
-        options: { cwd: `${Uri.joinPath(Uri.file(data.wsFolder), data.project).fsPath}` },
+        options: {
+          cwd: `${Uri.joinPath(Uri.file(data.wsFolder), data.project).fsPath}`,
+        },
       });
     } else {
-      targetTasks.push(...(await generateMtaDeployTasks(data.wsFolder, data.project)));
+      targetTasks.push(
+        ...(await generateMtaDeployTasks(data.wsFolder, data.project))
+      );
     }
     await addTaskDefinition(data.wsFolder, targetTasks);
     await commands.executeCommand("tasks-explorer.editTask", last(targetTasks));
-    void commands.executeCommand("tasks-explorer.tree.select", last(targetTasks));
+    void commands.executeCommand(
+      "tasks-explorer.tree.select",
+      last(targetTasks)
+    );
   }
 
   const ui5DeployYaml = waitForFileResource(
-    new RelativePattern(data.wsFolder, path.join(`${data.project ? `${data.project}` : ``}`, `ui5-deploy.yaml`)),
+    new RelativePattern(
+      data.wsFolder,
+      path.join(`${data.project ? `${data.project}` : ``}`, `ui5-deploy.yaml`)
+    ),
     false,
     false,
-    true,
+    true
   );
 
   await commands.executeCommand(cmd_launch_deploy_config, {
@@ -121,7 +161,9 @@ export async function fioriE2eConfig(data: { wsFolder: string; project: string }
 
   if (await areResourcesReady([ui5DeployYaml])) {
     return completeTasksDefinition(
-      await detectDeployTarget(Uri.joinPath(Uri.file(data.wsFolder), data.project, "ui5-deploy.yaml")),
+      await detectDeployTarget(
+        Uri.joinPath(Uri.file(data.wsFolder), data.project, "ui5-deploy.yaml")
+      )
     );
   }
 }

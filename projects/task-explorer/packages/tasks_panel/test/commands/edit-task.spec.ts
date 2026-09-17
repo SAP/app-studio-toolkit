@@ -4,13 +4,24 @@
 import { expect } from "chai";
 import { createSandbox } from "sinon";
 
-import { mockVscode, MockVSCodeInfo, resetTestVSCode } from "../utils/mockVSCode";
+import {
+  mockVscode,
+  MockVSCodeInfo,
+  resetTestVSCode,
+} from "../utils/mockVSCode";
 import { MockTasksProvider } from "../utils/mockTasksProvider";
 
 mockVscode("../../src/panels/task-editor-panel");
 import { editTreeItemTask } from "../../src/commands/edit-task";
-import { disposeTaskEditorPanel, getTaskEditor, getTaskEditorPanel } from "../../src/panels/panels-handler";
-import { createLoggerWrapperMock, resetLoggerMessage } from "../utils/loggerWrapperMock";
+import {
+  disposeTaskEditorPanel,
+  getTaskEditor,
+  getTaskEditorPanel,
+} from "../../src/panels/panels-handler";
+import {
+  createLoggerWrapperMock,
+  resetLoggerMessage,
+} from "../utils/loggerWrapperMock";
 
 describe("Command editTask", () => {
   const readFile = async function (path: string): Promise<string> {
@@ -118,7 +129,7 @@ describe("Command editTask", () => {
   it("task not changed, no dialog happens", async () => {
     await editTreeItemTask(mockTaskProvider, readFile, tasks[1]);
     const panel = getTaskEditorPanel();
-    await panel?.dispose();
+    panel?.dispose();
     expect(MockVSCodeInfo.disposeCalled).true;
     expect(MockVSCodeInfo.dialogCalled).false;
   });

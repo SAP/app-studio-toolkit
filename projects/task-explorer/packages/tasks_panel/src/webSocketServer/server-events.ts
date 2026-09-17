@@ -1,6 +1,11 @@
 // eslint-disable-next-line eslint-comments/disable-enable-pair -- suppress the next rule
 /* eslint-disable @typescript-eslint/no-unused-vars -- leave args in function signatures for reference */
-import { ConfiguredTask, FormProperty, TaskEditorContributionAPI, TaskUserInput } from "@sap_oss/task_contrib_types";
+import {
+  ConfiguredTask,
+  FormProperty,
+  TaskEditorContributionAPI,
+  TaskUserInput,
+} from "@sap_oss/task_contrib_types";
 import { AppEvents } from "../app-events";
 
 export class ServerEvents implements AppEvents {
@@ -8,15 +13,24 @@ export class ServerEvents implements AppEvents {
     console.log("execute task");
   }
 
-  getTasksEditorContributor(type: string): TaskEditorContributionAPI<ConfiguredTask> {
+  getTasksEditorContributor(
+    type: string
+  ): TaskEditorContributionAPI<ConfiguredTask> {
     return new MockTaskEditorContributer();
   }
 
-  async updateTaskInConfiguration(path: string, task: ConfiguredTask, index: number): Promise<void> {
+  async updateTaskInConfiguration(
+    path: string,
+    task: ConfiguredTask,
+    index: number
+  ): Promise<void> {
     console.log("save task");
   }
 
-  async addTaskToConfiguration(path: string, task: ConfiguredTask): Promise<number> {
+  async addTaskToConfiguration(
+    path: string,
+    task: ConfiguredTask
+  ): Promise<number> {
     console.log("create task");
     return 0;
   }
@@ -26,7 +40,9 @@ export class ServerEvents implements AppEvents {
   }
 }
 
-export class MockTaskEditorContributer implements TaskEditorContributionAPI<ConfiguredTask> {
+export class MockTaskEditorContributer
+  implements TaskEditorContributionAPI<ConfiguredTask>
+{
   updateTask(task: ConfiguredTask, changes: TaskUserInput): ConfiguredTask {
     return { ...task, ...changes };
   }

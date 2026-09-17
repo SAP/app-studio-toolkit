@@ -43,11 +43,19 @@ export function subscribeTaskRun(context: ExtensionContext): Disposable {
   // keep last run task data persistant between sessions
   return tasks.onDidStartTask(async (e: TaskStartEvent) => {
     const { task } = e.execution;
-    const lastRunTask: { build: TaskData | undefined; deploy: TaskData | undefined } = context.workspaceState.get(
-      LAST_TASK_STATE,
-    ) ?? { build: undefined, deploy: undefined };
+    const lastRunTask: {
+      build: TaskData | undefined;
+      deploy: TaskData | undefined;
+    } = context.workspaceState.get(LAST_TASK_STATE) ?? {
+      build: undefined,
+      deploy: undefined,
+    };
     const runTask = { ...lastRunTask };
-    const taskData = { name: task.name, definition: task.definition, scope: task.scope };
+    const taskData = {
+      name: task.name,
+      definition: task.definition,
+      scope: task.scope,
+    };
     if (isDeployTask(task)) {
       runTask.deploy = taskData;
     } else if (isBuildTask(task)) {
@@ -58,7 +66,9 @@ export function subscribeTaskRun(context: ExtensionContext): Disposable {
       try {
         await context.workspaceState.update(LAST_TASK_STATE, runTask);
       } catch (err) {
-        getLogger().warn(`Failed to update last debug session data`, { reason: exceptionToString(err) });
+        getLogger().warn(`Failed to update last debug session data`, {
+          reason: exceptionToString(err),
+        });
       }
     }
   });
@@ -70,7 +80,7 @@ export const runAction = debounce(
     kind: ActionKind,
     dataProvider: TasksTree,
     taskProvider: ITasksProvider,
-    context: ExtensionContext,
+    context: ExtensionContext
   ): Promise<void> => {
     function getLastRunTaskData(kind: ActionKind): TaskData | undefined {
       const lastRunTaskState: any = context.workspaceState.get(LAST_TASK_STATE);
@@ -79,7 +89,11 @@ export const runAction = debounce(
     async function executeCreateTaskCommand(): Promise<void> {
       return commands.executeCommand(
         "tasks-explorer.createTask",
-        new IntentTreeItem(kind, TreeItemCollapsibleState.Collapsed, new ProjectTreeItem("", "")),
+        new IntentTreeItem(
+          kind,
+          TreeItemCollapsibleState.Collapsed,
+          new ProjectTreeItem("", "")
+        )
       );
     }
 
@@ -89,32 +103,52 @@ export const runAction = debounce(
       const items = reduce(
         tasks,
         (result: QuickPickItem[], task: ConfiguredTask) => {
-          if (lastRun?.name === task.label && lastRun.definition.type === task.type) {
+          if (
+            lastRun?.name === task.label &&
+            lastRun.definition.type === task.type
+          ) {
             lastRunItem = task;
           } else {
-            result.push({ ...task, ...{ description: task.type }, ...{ detail: task.__wsFolder } });
+            result.push({
+              ...task,
+              ...{ description: task.type },
+              ...{ detail: task.__wsFolder },
+            });
           }
           return result;
         },
-        [],
+        []
       );
-      items.push({ kind: QuickPickItemKind.Separator, label: "configure" }, { label: CREATE_TASK });
+      items.push(
+        { kind: QuickPickItemKind.Separator, label: "configure" },
+        { label: CREATE_TASK }
+      );
 
       if (lastRunItem) {
         // pushing the last run item to top of the list (vscode not providing another way to select default item..)
         items.unshift(
           { kind: QuickPickItemKind.Separator, label: "Last Run" },
-          { ...lastRunItem, ...{ description: lastRunItem.type }, ...{ detail: lastRunItem.__wsFolder } },
-          { kind: QuickPickItemKind.Separator, label: "" },
+          {
+            ...lastRunItem,
+            ...{ description: lastRunItem.type },
+            ...{ detail: lastRunItem.__wsFolder },
+          },
+          { kind: QuickPickItemKind.Separator, label: "" }
         );
       }
       return items;
     }
 
     async function showQuickPick(tasks: ConfiguredTask[]): Promise<void> {
-      const identifyConfiguredTaskByPickedItem = (item: QuickPickItem): ConfiguredTask | undefined => {
+      const identifyConfiguredTaskByPickedItem = (
+        item: QuickPickItem
+      ): ConfiguredTask | undefined => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars -- object destructuring is used to exclude the specified properties
-        const { ["description"]: excludedDescription, ["detail"]: excludedDetails, ...task } = item;
+        const {
+          ["description"]: excludedDescription,
+          ["detail"]: excludedDetails,
+          ...task
+        } = item;
         return find(tasks, matches(task));
       };
 
@@ -126,7 +160,8 @@ export const runAction = debounce(
       });
 
       if (lastPickedItem?.["type"]) {
-        const configuredTask = identifyConfiguredTaskByPickedItem(lastPickedItem);
+        const configuredTask =
+          identifyConfiguredTaskByPickedItem(lastPickedItem);
         if (configuredTask) {
           return runTask(configuredTask);
         }
@@ -141,16 +176,21 @@ export const runAction = debounce(
         void commands.executeCommand("tasks-explorer.tree.select", task);
         await commands.executeCommand("tasks-explorer.executeTask", taskItem);
       } else {
-        getLogger().error(`Internal: task not found in the tree data structure`, {
-          label: task.label,
-          type: task.type,
-        });
+        getLogger().error(
+          `Internal: task not found in the tree data structure`,
+          {
+            label: task.label,
+            type: task.type,
+          }
+        );
       }
     }
 
     // if no open workspace - show warning
     if (!workspace.workspaceFolders?.length) {
-      throw new Error(`You have no open projects. Open the project you want to ${kind.toString()} and try again.`);
+      throw new Error(
+        `You have no open projects. Open the project you want to ${kind.toString()} and try again.`
+      );
     }
 
     const allTasks = await taskProvider.getConfiguredTasks();
@@ -171,7 +211,10 @@ export const runAction = debounce(
         const lastRun = getLastRunTaskData(kind);
         if (lastRun) {
           const found = find(tasks, (task) => {
-            return task.label === lastRun.name && task.type === lastRun.definition.type;
+            return (
+              task.label === lastRun.name &&
+              task.type === lastRun.definition.type
+            );
           });
           if (found) {
             return runTask(found);
@@ -184,5 +227,5 @@ export const runAction = debounce(
       return showQuickPick(tasks);
     }
   },
-  500,
+  500
 );

@@ -33,7 +33,7 @@ describe("TaskExplorerContributor unit test scope", () => {
   });
 
   it("convertTaskToFormProperties", async () => {
-    expect(await instance.convertTaskToFormProperties(task)).to.be.deep.equal([
+    expect(instance.convertTaskToFormProperties(task)).to.be.deep.equal([
       {
         type: "input",
         taskProperty: "script",
@@ -63,7 +63,9 @@ describe("TaskExplorerContributor unit test scope", () => {
     const copyTask = clone(task);
     const expectedTask = clone(task);
     expectedTask.label = inputs.label;
-    expect(await instance.updateTask(copyTask, inputs)).to.be.deep.equal(expectedTask);
+    expect(await instance.updateTask(copyTask, inputs)).to.be.deep.equal(
+      expectedTask
+    );
   });
 
   it("onSave", async () => {

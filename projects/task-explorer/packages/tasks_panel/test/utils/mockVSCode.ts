@@ -1,5 +1,10 @@
 import { resolve, join, sep } from "path";
-import { ConfiguredTask, FormProperty, TaskEditorContributionAPI, TaskUserInput } from "@sap_oss/task_contrib_types";
+import {
+  ConfiguredTask,
+  FormProperty,
+  TaskEditorContributionAPI,
+  TaskUserInput,
+} from "@sap_oss/task_contrib_types";
 import * as _ from "lodash";
 
 const Module = require("module");
@@ -15,14 +20,15 @@ export class MockConfigTask {
         path: string;
       };
     },
-    public path?: string,
+    public path?: string
   ) {}
 }
 
 export class MockVSCodeInfo {
   public static allExtensions: any[];
   public static visiblePanel = false;
-  public static configTasks: Map<string, MockConfigTask[]> | undefined = new Map<string, MockConfigTask[]>();
+  public static configTasks: Map<string, MockConfigTask[]> | undefined =
+    new Map<string, MockConfigTask[]>();
   public static allTasks: any[] = [];
   public static fired = false;
   public static updateCalled;
@@ -76,7 +82,10 @@ export const testVscode: any = {
       return { path: args[0], fsPath: args[0] };
     },
     joinPath(root: any, ...args: string[]): any {
-      return { path: join(root.path, ...args), fsPath: join(root.path, ...args) };
+      return {
+        path: join(root.path, ...args),
+        fsPath: join(root.path, ...args),
+      };
     },
   },
   workspace: {
@@ -93,7 +102,11 @@ export const testVscode: any = {
         get: (): any => {
           return MockVSCodeInfo.configTasks?.get(wsFolder.path);
         },
-        update: async (section: string, value: any[], configurationTarget?: number | boolean): Promise<void> => {
+        update: async (
+          section: string,
+          value: any[],
+          configurationTarget?: number | boolean
+        ): Promise<void> => {
           MockVSCodeInfo.updateCalled = { section, value, configurationTarget };
           MockVSCodeInfo.configTasks?.set(wsFolder.path, value);
         },
@@ -115,16 +128,10 @@ export const testVscode: any = {
   },
 
   Selection: class {
-    constructor(
-      public readonly anchor: any,
-      public readonly active: any,
-    ) {}
+    constructor(public readonly anchor: any, public readonly active: any) {}
   },
   Range: class {
-    constructor(
-      public readonly start: any,
-      public readonly end: any,
-    ) {}
+    constructor(public readonly start: any, public readonly end: any) {}
   },
   ConfigurationTarget: {
     WorkspaceFolder: 3,
@@ -141,7 +148,7 @@ export const testVscode: any = {
     constructor(
       public readonly definition: ConfiguredTask,
       source?: string,
-      scope?: any,
+      scope?: any
     ) {
       this.name = definition.label;
       this.source = source === undefined ? definition.type : source;
@@ -149,10 +156,7 @@ export const testVscode: any = {
     }
   },
   RelativePattern: class {
-    constructor(
-      public readonly base: any,
-      public readonly pattern: string,
-    ) {}
+    constructor(public readonly base: any, public readonly pattern: string) {}
   },
   window: {
     showOpenDialog: async (options: {
@@ -180,7 +184,10 @@ export const testVscode: any = {
     createOutputChannel() {
       return new MockOutputChannel();
     },
-    showInformationMessage: async (message: string, options?: any): Promise<string> => {
+    showInformationMessage: async (
+      message: string,
+      options?: any
+    ): Promise<string> => {
       if (options !== undefined) {
         MockVSCodeInfo.dialogCalled = true;
       }
@@ -200,7 +207,7 @@ export const testVscode: any = {
         location: number;
         title: string;
       },
-      task: (progress: any, token: any) => Promise<any>,
+      task: (progress: any, token: any) => Promise<any>
     ) => Promise.resolve(task({}, {})),
     // eslint-disable-next-line @typescript-eslint/no-unused-vars -- disable no-unused-vars for test scope
     showQuickPick: (items: any[], options: any) => {
@@ -228,10 +235,7 @@ export const testVscode: any = {
     },
   },
   TreeItem: class {
-    constructor(
-      public label: string,
-      public collapsibleState: any,
-    ) {}
+    constructor(public label: string, public collapsibleState: any) {}
   },
   EventEmitter: class {
     fire(): void {
@@ -277,7 +281,7 @@ export const testVscode: any = {
               task: MockVSCodeInfo.taskParam,
             },
           }),
-        100,
+        100
       );
       return {
         dispose: () => true,
@@ -308,7 +312,10 @@ export const testVscode: any = {
 
 export const MockApi = {
   getTaskEditorContributors() {
-    const contributors = new Map<string, TaskEditorContributionAPI<ConfiguredTask>>();
+    const contributors = new Map<
+      string,
+      TaskEditorContributionAPI<ConfiguredTask>
+    >();
     const contributor = {
       async init(): Promise<void> {
         return;

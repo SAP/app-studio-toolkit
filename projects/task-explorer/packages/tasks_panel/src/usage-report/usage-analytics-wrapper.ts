@@ -1,4 +1,8 @@
-import { initTelemetrySettings, BASClientFactory, BASTelemetryClient } from "@sap/swa-for-sapbas-vsx";
+import {
+  initTelemetrySettings,
+  BASClientFactory,
+  BASTelemetryClient,
+} from "@sap/swa-for-sapbas-vsx";
 import * as path from "path";
 import { getLogger } from "../logger/logger-wrapper";
 import type { ExtensionContext } from "vscode";
@@ -10,7 +14,8 @@ const dummyClient = { report: () => Promise.resolve() };
  * A Simple Wrapper for reporting usage analytics
  */
 export class AnalyticsWrapper {
-  private static client: BASTelemetryClient = dummyClient as unknown as BASTelemetryClient;
+  private static client: BASTelemetryClient =
+    dummyClient as unknown as BASTelemetryClient;
 
   // Event types used by Application Wizard
   private static readonly EVENT_TYPES = {
@@ -34,11 +39,16 @@ export class AnalyticsWrapper {
     // avoid reports for local VSCode environment
     if (process.env.LANDSCAPE_ENVIRONMENT) {
       try {
-        const packageJson = require(path.join(context.extensionPath, "package.json"));
+        const packageJson = require(path.join(
+          context.extensionPath,
+          "package.json"
+        ));
         const vscodeExtentionFullName = `${packageJson.publisher}.${packageJson.name}`;
         initTelemetrySettings(vscodeExtentionFullName, packageJson.version);
         AnalyticsWrapper.client = BASClientFactory.getBASTelemetryClient();
-        getLogger().info(`SAP Web Analytics tracker was created for ${vscodeExtentionFullName}`);
+        getLogger().info(
+          `SAP Web Analytics tracker was created for ${vscodeExtentionFullName}`
+        );
       } catch (err: any) {
         getLogger().error(err);
       }

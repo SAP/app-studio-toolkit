@@ -39,6 +39,8 @@ export async function terminateVScodeTask(task: any): Promise<void> {
     }
     execution.terminate();
   } catch (e: any) {
-    throw new Error(messages.TERMINATE_FAILURE(serializeTask(task), exceptionToString(e)));
+    throw new Error(
+      messages.TERMINATE_FAILURE(serializeTask(task), exceptionToString(e))
+    );
   }
 }

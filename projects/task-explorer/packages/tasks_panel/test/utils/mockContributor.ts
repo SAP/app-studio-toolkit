@@ -1,8 +1,14 @@
 // eslint-disable-next-line eslint-comments/disable-enable-pair -- suppress next line
 /* eslint-disable @typescript-eslint/no-unused-vars -- disable no-unused-vars rule for test scope */
-import { ConfiguredTask, TaskEditorContributionAPI, FormProperty } from "@sap_oss/task_contrib_types";
+import {
+  ConfiguredTask,
+  TaskEditorContributionAPI,
+  FormProperty,
+} from "@sap_oss/task_contrib_types";
 
-export class MockContributor implements TaskEditorContributionAPI<ConfiguredTask> {
+export class MockContributor
+  implements TaskEditorContributionAPI<ConfiguredTask>
+{
   static failOnValidate: boolean | undefined = false;
 
   updateTask(task: ConfiguredTask, changes: any): ConfiguredTask {

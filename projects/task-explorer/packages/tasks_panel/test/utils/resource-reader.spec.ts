@@ -17,7 +17,10 @@ describe("The resource-reader utils", () => {
 
   it("readResource - success", async () => {
     const content = "file content";
-    mockFsextra.expects("readFile").withExactArgs(file, "utf8").resolves(content);
+    mockFsextra
+      .expects("readFile")
+      .withExactArgs(file, "utf8")
+      .resolves(content);
     expect(await readResource(file)).to.be.equal(content);
   });
 

@@ -14,14 +14,16 @@ let taskEditorPanel: TaskEditorPanel | undefined;
 export async function createTasksSelection(
   tasks: ConfiguredTask[],
   readResource: (file: string) => Promise<string>,
-  treeItem?: ElementTreeItem,
+  treeItem?: ElementTreeItem
 ): Promise<void> {
-  return new TasksSelection(new VSCodeEvents(), tasks, readResource).select(treeItem);
+  return new TasksSelection(new VSCodeEvents(), tasks, readResource).select(
+    treeItem
+  );
 }
 
 export async function createTaskEditorPanel(
   task: ConfiguredTask,
-  readResource: (file: string) => Promise<string>,
+  readResource: (file: string) => Promise<string>
 ): Promise<void> {
   if (!isEqual(taskEditorPanel?.getLoadedTask(), task)) {
     disposeTaskEditorPanel();
@@ -29,7 +31,9 @@ export async function createTaskEditorPanel(
     await taskEditorPanel.initWebviewPanel();
     getLogger().debug(messages.EDIT_TASK(serializeTask(task)));
   } else {
-    getLogger().debug(`Task editor is opened already for ${serializeTask(task)}`);
+    getLogger().debug(
+      `Task editor is opened already for ${serializeTask(task)}`
+    );
   }
 }
 

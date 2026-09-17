@@ -1,5 +1,8 @@
 import { expect } from "chai";
-import { ConfiguredTask, TaskEditorContributionAPI } from "@sap_oss/task_contrib_types";
+import {
+  ConfiguredTask,
+  TaskEditorContributionAPI,
+} from "@sap_oss/task_contrib_types";
 import { AppEvents } from "../../src/app-events";
 import { MockContributor, MockContributorWithOnSave } from "./mockContributor";
 import { keys, without } from "lodash";
@@ -14,7 +17,9 @@ export class MockAppEvents implements AppEvents {
     this.executeCalled = true;
   }
 
-  getTasksEditorContributor(type: string): TaskEditorContributionAPI<ConfiguredTask> | undefined {
+  getTasksEditorContributor(
+    type: string
+  ): TaskEditorContributionAPI<ConfiguredTask> | undefined {
     switch (type) {
       case "testType":
         return new MockContributor();
@@ -26,12 +31,19 @@ export class MockAppEvents implements AppEvents {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars -- suppressed: test scope
-  async updateTaskInConfiguration(path: string, task: ConfiguredTask, index: number): Promise<void> {
+  async updateTaskInConfiguration(
+    path: string,
+    task: ConfiguredTask,
+    index: number
+  ): Promise<void> {
     expectTaskHasNoTechnicalFields(task);
     this.saveCalled = true;
   }
 
-  async addTaskToConfiguration(path: string, task: ConfiguredTask): Promise<number> {
+  async addTaskToConfiguration(
+    path: string,
+    task: ConfiguredTask
+  ): Promise<number> {
     expectTaskHasNoTechnicalFields(task);
     this.createCalled = true;
     return 0;

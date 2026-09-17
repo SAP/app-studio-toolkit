@@ -1,5 +1,11 @@
 import { filter, map, uniq, sortBy, isMatch, isEmpty } from "lodash";
-import { EmptyTaskTreeItem, IntentTreeItem, ProjectTreeItem, RootTreeItem, TaskTreeItem } from "./task-tree-item";
+import {
+  EmptyTaskTreeItem,
+  IntentTreeItem,
+  ProjectTreeItem,
+  RootTreeItem,
+  TaskTreeItem,
+} from "./task-tree-item";
 import {
   Event,
   EventEmitter,
@@ -21,8 +27,10 @@ import { isPathRelatedToFolder } from "../utils/ws-folder";
 const LOGGER_CLASS_NAME = "Tasks Tree";
 
 export class TasksTree implements TreeDataProvider<TreeItem> {
-  private readonly _onDidChangeTreeData: EventEmitter<TaskTreeItem | null> = new EventEmitter<TaskTreeItem | null>();
-  readonly onDidChangeTreeData: Event<TaskTreeItem | null> = this._onDidChangeTreeData.event;
+  private readonly _onDidChangeTreeData: EventEmitter<TaskTreeItem | null> =
+    new EventEmitter<TaskTreeItem | null>();
+  readonly onDidChangeTreeData: Event<TaskTreeItem | null> =
+    this._onDidChangeTreeData.event;
 
   constructor(private readonly tasksProvider: ITasksProvider) {
     this.tasksProvider.registerEventHandler(this);
@@ -36,38 +44,65 @@ export class TasksTree implements TreeDataProvider<TreeItem> {
     this._onDidChangeTreeData.fire(null);
   }
 
-  private filterByFolder(tasks: ConfiguredTask[], parent?: ProjectTreeItem): ConfiguredTask[] {
+  private filterByFolder(
+    tasks: ConfiguredTask[],
+    parent?: ProjectTreeItem
+  ): ConfiguredTask[] {
     return parent
       ? filter(tasks, (task) => {
-          return isPathRelatedToFolder(calculateTaskWsFolder(task), parent.fqn ?? "undefined");
+          return isPathRelatedToFolder(
+            calculateTaskWsFolder(task),
+            parent.fqn ?? "undefined"
+          );
         })
       : tasks;
   }
 
-  private getIntents(tasks: ConfiguredTask[], parent: ProjectTreeItem): IntentTreeItem[] {
-    const intents = sortBy(uniq(map(this.filterByFolder(tasks, parent), "__intent")));
-    getClassLogger(LOGGER_CLASS_NAME).debug(messages.GET_TREE_BRANCHES("intent", intents.length));
+  private getIntents(
+    tasks: ConfiguredTask[],
+    parent: ProjectTreeItem
+  ): IntentTreeItem[] {
+    const intents = sortBy(
+      uniq(map(this.filterByFolder(tasks, parent), "__intent"))
+    );
+    getClassLogger(LOGGER_CLASS_NAME).debug(
+      messages.GET_TREE_BRANCHES("intent", intents.length)
+    );
     return !isEmpty(intents)
-      ? map(intents, (_) => new IntentTreeItem(_, TreeItemCollapsibleState.Expanded, parent))
+      ? map(
+          intents,
+          (_) =>
+            new IntentTreeItem(_, TreeItemCollapsibleState.Expanded, parent)
+        )
       : [new EmptyTaskTreeItem(parent)];
   }
 
   private async getProjects(root: RootTreeItem): Promise<ProjectTreeItem[]> {
-    const projects = filter(await collectProjects(root.fqn), (_) => !!_.project);
-    getClassLogger(LOGGER_CLASS_NAME).debug(messages.GET_TREE_BRANCHES("project", projects.length));
-    return map(projects, (_) => new ProjectTreeItem(_.project, join(_.wsFolder, _.project), root));
+    const projects = filter(
+      await collectProjects(root.fqn),
+      (_) => !!_.project
+    );
+    getClassLogger(LOGGER_CLASS_NAME).debug(
+      messages.GET_TREE_BRANCHES("project", projects.length)
+    );
+    return map(
+      projects,
+      (_) => new ProjectTreeItem(_.project, join(_.wsFolder, _.project), root)
+    );
   }
 
   private getWorkspaces(wsFolders: string[]): RootTreeItem[] {
-    getClassLogger(LOGGER_CLASS_NAME).debug(messages.GET_TREE_BRANCHES("workspace", wsFolders.length));
+    getClassLogger(LOGGER_CLASS_NAME).debug(
+      messages.GET_TREE_BRANCHES("workspace", wsFolders.length)
+    );
     return map(
       wsFolders,
       (wsFolder) =>
         new RootTreeItem(
           /* istanbul ignore next */
           workspace.getWorkspaceFolder(Uri.file(wsFolder))?.name ?? "",
-          wsFolder,
-        ),
+          wsFolder
+        )
     );
   }
 
@@ -76,19 +111,35 @@ export class TasksTree implements TreeDataProvider<TreeItem> {
   }
 
   private async getIntentChildren(tasks: ConfiguredTask[], element: TreeItem) {
-    tasks = this.filterByFolder(tasks, (await this.getParent(element)) as ProjectTreeItem | undefined);
+    tasks = this.filterByFolder(
+      tasks,
+      (await this.getParent(element)) as ProjectTreeItem | undefined
+    );
     const children = map(
       filter(tasks, ["__intent", element.label]),
       (task) =>
-        new TaskTreeItem(task.__index, task.type, task.label, task.__wsFolder, TreeItemCollapsibleState.None, element, {
-          command: "tasks-explorer.editTask",
-          title: "Edit Task",
-          arguments: [task],
-        }),
+        new TaskTreeItem(
+          task.__index,
+          task.type,
+          task.label,
+          task.__wsFolder,
+          TreeItemCollapsibleState.None,
+          element,
+          {
+            command: "tasks-explorer.editTask",
+            title: "Edit Task",
+            arguments: [task],
+          }
+        )
     );
     /* istanbul ignore next */
     getClassLogger(LOGGER_CLASS_NAME).debug(
-      messages.GET_TREE_CHILDREN_BY_INTENT(element.label?.toString() ?? "", children.length),
+      messages.GET_TREE_CHILDREN_BY_INTENT(
+        typeof element.label === "string"
+          ? element.label
+          : element.label?.label ?? "",
+        children.length
+      )
     );
     return children;
   }
@@ -117,11 +168,22 @@ export class TasksTree implements TreeDataProvider<TreeItem> {
       return this.getRoots();
     } else if (element instanceof RootTreeItem) {
       const projects = await this.getProjects(element);
-      return isEmpty(projects) ? this.getIntents(await this.tasksProvider.getConfiguredTasks(), element) : projects;
+      return isEmpty(projects)
+        ? this.getIntents(
+            await this.tasksProvider.getConfiguredTasks(),
+            element
+          )
+        : projects;
     } else if (element instanceof ProjectTreeItem) {
-      return this.getIntents(await this.tasksProvider.getConfiguredTasks(), element);
+      return this.getIntents(
+        await this.tasksProvider.getConfiguredTasks(),
+        element
+      );
     } else {
-      return this.getIntentChildren(await this.tasksProvider.getConfiguredTasks(), element);
+      return this.getIntentChildren(
+        await this.tasksProvider.getConfiguredTasks(),
+        element
+      );
     }
   }
 
@@ -137,8 +199,13 @@ export class TasksTree implements TreeDataProvider<TreeItem> {
     return (element as any).parent;
   }
 
-  public async findTreeItem(task: ConfiguredTask): Promise<TreeItem | undefined> {
-    const findElement = async (items: TreeItem[], task: ConfiguredTask): Promise<TreeItem | undefined> => {
+  public async findTreeItem(
+    task: ConfiguredTask
+  ): Promise<TreeItem | undefined> {
+    const findElement = async (
+      items: TreeItem[],
+      task: ConfiguredTask
+    ): Promise<TreeItem | undefined> => {
       let found: TreeItem | undefined;
       for (const item of items) {
         if (item.collapsibleState !== TreeItemCollapsibleState.None) {

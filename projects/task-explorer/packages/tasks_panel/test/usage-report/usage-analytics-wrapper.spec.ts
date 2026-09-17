@@ -31,7 +31,10 @@ describe("AnalyticsWrapper scope", () => {
 
     it("report succedded, there are properties", () => {
       const properties = { source: "contextMenu" };
-      mockClient.expects("report").withExactArgs("event", properties).resolves();
+      mockClient
+        .expects("report")
+        .withExactArgs("event", properties)
+        .resolves();
       AnalyticsWrapper["report"]("event", properties);
     });
 
@@ -41,7 +44,10 @@ describe("AnalyticsWrapper scope", () => {
     });
 
     it("report failed", () => {
-      mockClient.expects("report").withExactArgs("event", {}).rejects(new Error("error"));
+      mockClient
+        .expects("report")
+        .withExactArgs("event", {})
+        .rejects(new Error("error"));
       AnalyticsWrapper["report"]("event");
     });
   });
@@ -50,7 +56,13 @@ describe("AnalyticsWrapper scope", () => {
     let packageJson: any;
 
     before(() => {
-      packageJson = require(path.join(__dirname, "..", "..", "..", "package.json"));
+      packageJson = require(path.join(
+        __dirname,
+        "..",
+        "..",
+        "..",
+        "package.json"
+      ));
     });
 
     let mockClientFactory: SinonMock;
@@ -73,17 +85,24 @@ describe("AnalyticsWrapper scope", () => {
 
     it("createTracker - allowed, succedded", () => {
       sandbox.stub(process, "env").value({ LANDSCAPE_ENVIRONMENT: "true" });
-      sandbox.stub(testVscode.ExtensionContext, "extensionPath").value(path.join("..", "..", ".."));
+      sandbox
+        .stub(testVscode.ExtensionContext, "extensionPath")
+        .value(path.join("..", "..", ".."));
       mockClientFactory.expects("getBASTelemetryClient").returns({});
       AnalyticsWrapper.createTracker(testVscode.ExtensionContext);
       expect(
-        initTelemetrySettingsSpy.calledOnceWithExactly("SAPSE.vscode-tasks-explorer-tasks-panel", packageJson.version),
+        initTelemetrySettingsSpy.calledOnceWithExactly(
+          "SAPSE.vscode-tasks-explorer-tasks-panel",
+          packageJson.version
+        )
       ).to.be.true;
     });
 
     it("createTracker - exception thrown (package.json path wrong)", () => {
       sandbox.stub(process, "env").value({ LANDSCAPE_ENVIRONMENT: "true" });
-      sandbox.stub(testVscode.ExtensionContext, "extensionPath").value(path.join("..", ".."));
+      sandbox
+        .stub(testVscode.ExtensionContext, "extensionPath")
+        .value(path.join("..", ".."));
       mockClientFactory.expects("getBASTelemetryClient").never();
       AnalyticsWrapper.createTracker(testVscode.ExtensionContext);
     });
@@ -101,12 +120,18 @@ describe("AnalyticsWrapper scope", () => {
     });
 
     it("reportTaskCreate - from the context menu", () => {
-      mockReport.expects("report").withExactArgs("task create initiated", { source: "contextMenu" }).resolves();
+      mockReport
+        .expects("report")
+        .withExactArgs("task create initiated", { source: "contextMenu" })
+        .resolves();
       AnalyticsWrapper.reportTaskCreate({ name: "test" });
     });
 
     it("reportTaskCreate - from the command", () => {
-      mockReport.expects("report").withExactArgs("task create initiated", { source: "command" }).resolves();
+      mockReport
+        .expects("report")
+        .withExactArgs("task create initiated", { source: "command" })
+        .resolves();
       AnalyticsWrapper.reportTaskCreate();
     });
 
@@ -114,7 +139,10 @@ describe("AnalyticsWrapper scope", () => {
       const properties = { taskType: "taskType", type: "type", name: "name" };
       mockReport
         .expects("report")
-        .withExactArgs("task create selected", { intent: properties.taskType, type: properties.type })
+        .withExactArgs("task create selected", {
+          intent: properties.taskType,
+          type: properties.type,
+        })
         .resolves();
       AnalyticsWrapper.reportTaskCreateSelected(properties);
     });
@@ -123,7 +151,10 @@ describe("AnalyticsWrapper scope", () => {
       const properties = { type: "type", name: "name" };
       mockReport
         .expects("report")
-        .withExactArgs("task create selected", { intent: "", type: properties.type })
+        .withExactArgs("task create selected", {
+          intent: "",
+          type: properties.type,
+        })
         .resolves();
       AnalyticsWrapper.reportTaskCreateSelected(properties);
     });
@@ -132,7 +163,10 @@ describe("AnalyticsWrapper scope", () => {
       const properties = { taskType: "taskType", type: "type", name: "name" };
       mockReport
         .expects("report")
-        .withExactArgs("task create finished", { intent: properties.taskType, type: properties.type })
+        .withExactArgs("task create finished", {
+          intent: properties.taskType,
+          type: properties.type,
+        })
         .resolves();
       AnalyticsWrapper.reportTaskCreateFinished(properties);
     });
@@ -141,13 +175,21 @@ describe("AnalyticsWrapper scope", () => {
       const properties = { type: "type", name: "name" };
       mockReport
         .expects("report")
-        .withExactArgs("task create finished", { intent: "", type: properties.type })
+        .withExactArgs("task create finished", {
+          intent: "",
+          type: properties.type,
+        })
         .resolves();
       AnalyticsWrapper.reportTaskCreateFinished(properties);
     });
 
     it("reportTaskSave", () => {
-      const properties = { __intent: "intent", __extensionName: "extName", type: "type", name: "name" };
+      const properties = {
+        __intent: "intent",
+        __extensionName: "extName",
+        type: "type",
+        name: "name",
+      };
       mockReport
         .expects("report")
         .withExactArgs("task save", {
@@ -160,7 +202,12 @@ describe("AnalyticsWrapper scope", () => {
     });
 
     it("reportTaskExecuteEditor", () => {
-      const properties = { __intent: "intent", __extensionName: "extName", type: "type", name: "name" };
+      const properties = {
+        __intent: "intent",
+        __extensionName: "extName",
+        type: "type",
+        name: "name",
+      };
       mockReport
         .expects("report")
         .withExactArgs("task execute", {
@@ -174,7 +221,12 @@ describe("AnalyticsWrapper scope", () => {
     });
 
     it("reportTaskExecuteTree", () => {
-      const properties = { __intent: "intent", __extensionName: "extName", type: "type", name: "name" };
+      const properties = {
+        __intent: "intent",
+        __extensionName: "extName",
+        type: "type",
+        name: "name",
+      };
       mockReport
         .expects("report")
         .withExactArgs("task execute", {
@@ -188,7 +240,12 @@ describe("AnalyticsWrapper scope", () => {
     });
 
     it("reportTaskDelete", () => {
-      const properties = { __intent: "intent", __extensionName: "extName", type: "type", name: "name" };
+      const properties = {
+        __intent: "intent",
+        __extensionName: "extName",
+        type: "type",
+        name: "name",
+      };
       mockReport
         .expects("report")
         .withExactArgs("task delete", {
@@ -201,7 +258,12 @@ describe("AnalyticsWrapper scope", () => {
     });
 
     it("reportTaskDuplicate", () => {
-      const properties = { __intent: "intent", __extensionName: "extName", type: "type", name: "name" };
+      const properties = {
+        __intent: "intent",
+        __extensionName: "extName",
+        type: "type",
+        name: "name",
+      };
       mockReport
         .expects("report")
         .withExactArgs("task duplicate", {
@@ -214,7 +276,12 @@ describe("AnalyticsWrapper scope", () => {
     });
 
     it("reportTaskExecuteTerminate", () => {
-      const properties = { __intent: "intent", __extensionName: "extName", type: "type", name: "name" };
+      const properties = {
+        __intent: "intent",
+        __extensionName: "extName",
+        type: "type",
+        name: "name",
+      };
       mockReport
         .expects("report")
         .withExactArgs("task terminate", {
@@ -227,7 +294,12 @@ describe("AnalyticsWrapper scope", () => {
     });
 
     it("reportTaskReveal", () => {
-      const properties = { __intent: "intent", __extensionName: "extName", type: "type", name: "name" };
+      const properties = {
+        __intent: "intent",
+        __extensionName: "extName",
+        type: "type",
+        name: "name",
+      };
       mockReport
         .expects("report")
         .withExactArgs("task show in file", {
@@ -240,8 +312,16 @@ describe("AnalyticsWrapper scope", () => {
     });
 
     it("reportViewVisibility", () => {
-      const properties = { __intent: "intent", __extensionName: "extName", type: "type", visible: false };
-      mockReport.expects("report").withExactArgs("view visibility", { visible: properties.visible }).resolves();
+      const properties = {
+        __intent: "intent",
+        __extensionName: "extName",
+        type: "type",
+        visible: false,
+      };
+      mockReport
+        .expects("report")
+        .withExactArgs("view visibility", { visible: properties.visible })
+        .resolves();
       AnalyticsWrapper.reportViewVisibility(properties);
     });
   });

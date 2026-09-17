@@ -1,5 +1,10 @@
 import { resolve, join } from "path";
-import { ConfiguredTask, FormProperty, TaskEditorContributionAPI, TaskUserInput } from "@sap_oss/task_contrib_types";
+import {
+  ConfiguredTask,
+  FormProperty,
+  TaskEditorContributionAPI,
+  TaskUserInput,
+} from "@sap_oss/task_contrib_types";
 
 const Module = require("module");
 const originalRequire = Module.prototype.require;
@@ -16,14 +21,15 @@ export class MockConfigTask {
       uri: {
         path: string;
       };
-    },
+    }
   ) {}
 }
 
 export class MockVSCodeInfo {
   public static allExtensions: any[];
   public static visiblePanel = false;
-  public static configTasks: Map<string, MockConfigTask[]> | undefined = new Map<string, MockConfigTask[]>();
+  public static configTasks: Map<string, MockConfigTask[]> | undefined =
+    new Map<string, MockConfigTask[]>();
   public static allTasks: any[] = [];
   public static fired = false;
   public static updateCalled;
@@ -88,7 +94,11 @@ export const testVscode: any = {
         get: (): any => {
           return MockVSCodeInfo.configTasks?.get(wsFolder.path);
         },
-        update: async (section: string, value: any[], configurationTarget?: number | boolean): Promise<void> => {
+        update: async (
+          section: string,
+          value: any[],
+          configurationTarget?: number | boolean
+        ): Promise<void> => {
           MockVSCodeInfo.updateCalled = { section, value, configurationTarget };
           MockVSCodeInfo.configTasks?.set(wsFolder.path, value);
         },
@@ -111,7 +121,7 @@ export const testVscode: any = {
     constructor(
       public readonly definition: ConfiguredTask,
       source?: string,
-      scope?: any,
+      scope?: any
     ) {
       this.name = definition.label;
       this.source = source === undefined ? definition.type : source;
@@ -144,7 +154,10 @@ export const testVscode: any = {
     createOutputChannel() {
       return new MockOutputChannel();
     },
-    showInformationMessage: async (message: string, options?: any): Promise<string> => {
+    showInformationMessage: async (
+      message: string,
+      options?: any
+    ): Promise<string> => {
       if (options !== undefined) {
         MockVSCodeInfo.dialogCalled = true;
       }
@@ -158,7 +171,7 @@ export const testVscode: any = {
         location: number;
         title: string;
       },
-      task: (progress: any, token: any) => Promise<any>,
+      task: (progress: any, token: any) => Promise<any>
     ) => Promise.resolve(task({}, {})),
   },
   ViewColumn: {
@@ -167,7 +180,10 @@ export const testVscode: any = {
   ProgressLocation: {
     Notification: 15,
   },
-  ExtensionContext: { extensionPath: "path", subscriptions: { push: (disposable) => disposable } },
+  ExtensionContext: {
+    extensionPath: "path",
+    subscriptions: { push: (disposable) => disposable },
+  },
   TreeItem: class {},
   EventEmitter: class {
     fire(): void {
@@ -204,16 +220,16 @@ export const testVscode: any = {
     },
   },
   ShellExecution: class {
-    constructor(
-      public script: string,
-      public options?: { cwd?: string },
-    ) {}
+    constructor(public script: string, public options?: { cwd?: string }) {}
   },
 };
 
 export const MockApi = {
   getTaskEditorContributors() {
-    const contributors = new Map<string, TaskEditorContributionAPI<ConfiguredTask>>();
+    const contributors = new Map<
+      string,
+      TaskEditorContributionAPI<ConfiguredTask>
+    >();
     const contributor = {
       async init(): Promise<void> {
         return;

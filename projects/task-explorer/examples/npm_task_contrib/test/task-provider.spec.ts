@@ -41,7 +41,9 @@ describe("TaskProvider unit test scope", () => {
 
   it("resolveCwd, task.scope undefined, but workspace set", async () => {
     const fsFolder = _path.join("/", "project", "my");
-    stub(testVscode.workspace, "workspaceFolders").value([{ uri: { path: fsFolder } }]);
+    stub(testVscode.workspace, "workspaceFolders").value([
+      { uri: { path: fsFolder } },
+    ]);
     const other = cloneDeep(task) as unknown as Task;
     set(other, "scope", TaskScope.Workspace);
     expect(provider["resolveCwd"](other)).to.be.equal(_path.resolve(fsFolder));

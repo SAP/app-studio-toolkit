@@ -2,12 +2,26 @@
 /* eslint-disable @typescript-eslint/no-unused-vars -- leave unused args in function signatures as a reference */
 import { expect } from "chai";
 import { createSandbox, SinonSandbox, SinonSpy } from "sinon";
-import { ConfiguredTask, FormProperty, TaskEditorContributionAPI } from "@sap_oss/task_contrib_types";
-import { MockConfigTask, mockVscode, MockVSCodeInfo, resetTestVSCode, testVscode } from "../utils/mockVSCode";
+import {
+  ConfiguredTask,
+  FormProperty,
+  TaskEditorContributionAPI,
+} from "@sap_oss/task_contrib_types";
+import {
+  MockConfigTask,
+  mockVscode,
+  MockVSCodeInfo,
+  resetTestVSCode,
+  testVscode,
+} from "../utils/mockVSCode";
 
 mockVscode("src/services/tasks-provider");
 import { TasksProvider } from "../../src/services/tasks-provider";
-import { IContributors, ITasksEventHandler, ITaskTypeEventHandler } from "../../src/services/definitions";
+import {
+  IContributors,
+  ITasksEventHandler,
+  ITaskTypeEventHandler,
+} from "../../src/services/definitions";
 import { cloneDeep, find } from "lodash";
 
 const scopeDataTemplate = {
@@ -22,7 +36,9 @@ function resetMockData() {
   scopeData = cloneDeep(scopeDataTemplate);
 }
 
-class MockTaskEditorContribution implements TaskEditorContributionAPI<ConfiguredTask> {
+class MockTaskEditorContribution
+  implements TaskEditorContributionAPI<ConfiguredTask>
+{
   updateTask(task: ConfiguredTask, changes: any): ConfiguredTask {
     return task;
   }
@@ -57,7 +73,9 @@ class MockTaskTypeProvider implements IContributors {
     return scopeData.types;
   }
 
-  getTaskEditorContributor(type: string): TaskEditorContributionAPI<ConfiguredTask> {
+  getTaskEditorContributor(
+    type: string
+  ): TaskEditorContributionAPI<ConfiguredTask> {
     return new MockTaskEditorContribution();
   }
 
@@ -100,7 +118,11 @@ describe("the TasksProvider class", () => {
 
   describe("getTaskWorkspaceFolder method", () => {
     it("returns `undefined` for task with scope different from WorkspaceFolder", () => {
-      const task = new testVscode.Task({ label: "aaa" }, undefined, testVscode.TaskScope.Global);
+      const task = new testVscode.Task(
+        { label: "aaa" },
+        undefined,
+        testVscode.TaskScope.Global
+      );
       expect(TasksProvider["getTaskWorkspaceFolder"](task)).undefined;
     });
 
@@ -127,7 +149,10 @@ describe("the TasksProvider class", () => {
     let spyGetConfiguration: SinonSpy;
 
     beforeEach(() => {
-      spyGetConfiguration = sandbox.spy(testVscode.workspace, "getConfiguration");
+      spyGetConfiguration = sandbox.spy(
+        testVscode.workspace,
+        "getConfiguration"
+      );
     });
 
     afterEach(() => {
@@ -156,19 +181,29 @@ describe("the TasksProvider class", () => {
       expect(tasks.length).eq(1);
       expect(tasks[0].__index).eq(1);
       expect(tasks[0].__intent).eq("abc");
-      expect(spyGetConfiguration.calledOnceWithExactly("tasks", testVscode.workspace.workspaceFolders[0].uri)).to.be
-        .true;
+      expect(
+        spyGetConfiguration.calledOnceWithExactly(
+          "tasks",
+          testVscode.workspace.workspaceFolders[0].uri
+        )
+      ).to.be.true;
     });
 
     it("returns empty result, when tasks configuration does not exist in defined workspace folder", async () => {
       const taskTypesProvider = new MockTaskTypeProvider();
       const taskProvider = new TasksProvider(taskTypesProvider);
       testVscode.workspace.workspaceFolders = [{ uri: { path: "path1" } }];
-      MockVSCodeInfo.configTasks?.set("path2", [new MockConfigTask("task1", "type1")]);
+      MockVSCodeInfo.configTasks?.set("path2", [
+        new MockConfigTask("task1", "type1"),
+      ]);
       const tasks = await taskProvider.getConfiguredTasks();
       expect(tasks.length).eq(0);
-      expect(spyGetConfiguration.calledOnceWithExactly("tasks", testVscode.workspace.workspaceFolders[0].uri)).to.be
-        .true;
+      expect(
+        spyGetConfiguration.calledOnceWithExactly(
+          "tasks",
+          testVscode.workspace.workspaceFolders[0].uri
+        )
+      ).to.be.true;
     });
 
     it("returns configured npm task when it exists in workspace folder", async () => {
@@ -183,10 +218,18 @@ describe("the TasksProvider class", () => {
       ]);
       const tasks = await taskProvider.getConfiguredTasks();
       expect(tasks.length).eq(2);
-      expect((find(tasks, ["label", "task1"]) as any).__intent).to.be.equal("Deploy");
-      expect((find(tasks, ["label", "task2"]) as any).__intent).to.be.equal("Build");
-      expect(spyGetConfiguration.calledOnceWithExactly("tasks", testVscode.workspace.workspaceFolders[0].uri)).to.be
-        .true;
+      expect((find(tasks, ["label", "task1"]) as any).__intent).to.be.equal(
+        "Deploy"
+      );
+      expect((find(tasks, ["label", "task2"]) as any).__intent).to.be.equal(
+        "Build"
+      );
+      expect(
+        spyGetConfiguration.calledOnceWithExactly(
+          "tasks",
+          testVscode.workspace.workspaceFolders[0].uri
+        )
+      ).to.be.true;
     });
   });
 
@@ -202,7 +245,10 @@ describe("the TasksProvider class", () => {
           type: "type1",
           taskType: "taskType",
         }),
-        new testVscode.Task({ label: "task2", type: "type1", taskType: "taskType" }, "Workspace"),
+        new testVscode.Task(
+          { label: "task2", type: "type1", taskType: "taskType" },
+          "Workspace"
+        ),
       ];
       const tasks = await taskProvider.getAutoDectedTasks();
       expect(tasks.length).eq(1);
@@ -219,7 +265,10 @@ describe("the TasksProvider class", () => {
           type: "shell",
           taskType: "type1",
         }),
-        new testVscode.Task({ label: "task2", type: "type1", taskType: "taskType" }, "Workspace"),
+        new testVscode.Task(
+          { label: "task2", type: "type1", taskType: "taskType" },
+          "Workspace"
+        ),
       ];
       const tasks = await taskProvider.getAutoDectedTasks();
       expect(tasks).to.be.empty;
@@ -231,16 +280,27 @@ describe("the TasksProvider class", () => {
       const taskProvider = new TasksProvider(taskTypesProvider);
       testVscode.workspace.workspaceFolders = [{ uri: { path: "path1" } }];
       MockVSCodeInfo.allTasks = [
-        new testVscode.Task({ label: "task1", type: "npm", script: "build-test" }),
+        new testVscode.Task({
+          label: "task1",
+          type: "npm",
+          script: "build-test",
+        }),
         new testVscode.Task({ label: "task1", type: "npm", script: "depLoy" }),
         new testVscode.Task({ label: "task1", type: "npm", script: "install" }),
-        new testVscode.Task({ label: "task2", type: "type1", taskType: "taskType" }, "Workspace"),
+        new testVscode.Task(
+          { label: "task2", type: "type1", taskType: "taskType" },
+          "Workspace"
+        ),
       ];
       const tasks = await taskProvider.getAutoDectedTasks();
       expect(tasks.length).eq(3);
-      expect(find(tasks, ["script", "build-test"])?.taskType).to.be.equal("Build");
+      expect(find(tasks, ["script", "build-test"])?.taskType).to.be.equal(
+        "Build"
+      );
       expect(find(tasks, ["script", "depLoy"])?.taskType).to.be.equal("Deploy");
-      expect(find(tasks, ["script", "install"])?.taskType).to.be.equal("Miscellaneous");
+      expect(find(tasks, ["script", "install"])?.taskType).to.be.equal(
+        "Miscellaneous"
+      );
     });
   });
 });

@@ -6,5 +6,6 @@ module.exports = {
     acquireVsCodeApi: true,
     jest: true,
     window: true,
+    globalThis: true,
   },
 };

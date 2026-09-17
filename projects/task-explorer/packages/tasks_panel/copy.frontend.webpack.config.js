@@ -11,7 +11,13 @@ const config = {
   output: { path: path.resolve(__dirname, "dummy") },
   plugins: [
     new CopyPlugin({
-      patterns: [{ from: "../vue_frontend_rpc/dist/", to: "../dist/media/", force: true }],
+      patterns: [
+        {
+          from: "../vue_frontend_rpc/dist/",
+          to: "../dist/media/",
+          force: true,
+        },
+      ],
     }),
   ],
 };

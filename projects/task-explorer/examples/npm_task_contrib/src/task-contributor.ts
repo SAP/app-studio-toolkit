@@ -8,7 +8,9 @@ import {
 import { NpmDefinitionType } from "./definitions";
 import { getImage } from "./utils";
 
-export class TaskExplorerContributor implements TaskEditorContributionAPI<NpmDefinitionType> {
+export class TaskExplorerContributor
+  implements TaskEditorContributionAPI<NpmDefinitionType>
+{
   private readonly image: string;
   private readonly labelProperty: SimpleFormProperty = {
     type: "label",
@@ -26,7 +28,9 @@ export class TaskExplorerContributor implements TaskEditorContributionAPI<NpmDef
 
   constructor(private readonly extensionPath: string) {
     // TODO: correct the image path when will be provided
-    this.image = getImage(join(this.extensionPath, "resources", "npm_48px.svg"));
+    this.image = getImage(
+      join(this.extensionPath, "resources", "npm_48px.svg")
+    );
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars -- future use
@@ -46,7 +50,10 @@ export class TaskExplorerContributor implements TaskEditorContributionAPI<NpmDef
   }
 
   // syncs task with user's input
-  async updateTask(task: NpmDefinitionType, inputs: TaskUserInput): Promise<NpmDefinitionType> {
+  async updateTask(
+    task: NpmDefinitionType,
+    inputs: TaskUserInput
+  ): Promise<NpmDefinitionType> {
     // set updated task properties
     task.label = inputs.label;
     return task;

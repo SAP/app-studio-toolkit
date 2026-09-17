@@ -55,27 +55,53 @@ describe("Command selectTreeItem", () => {
   it("selectTreeItem - element found, reveal triggered", async () => {
     const treeItem = { label: "element" };
     taskProviderMock.expects("getConfiguredTasks").resolves([task]);
-    dataProviderMock.expects("findTreeItem").withExactArgs(task).resolves(treeItem);
-    viewMock.expects("reveal").withExactArgs(treeItem, { select: true, focus: true, expand: true }).resolves();
-    await selectTreeItem(view as any, dataProvider as TasksTree, taskProvider as ITasksProvider, task);
+    dataProviderMock
+      .expects("findTreeItem")
+      .withExactArgs(task)
+      .resolves(treeItem);
+    viewMock
+      .expects("reveal")
+      .withExactArgs(treeItem, { select: true, focus: true, expand: true })
+      .resolves();
+    await selectTreeItem(
+      view as any,
+      dataProvider as TasksTree,
+      taskProvider as ITasksProvider,
+      task
+    );
   });
 
   it("selectTreeItem - task not recognized", async () => {
     taskProviderMock.expects("getConfiguredTasks").resolves([]);
-    await selectTreeItem(view as any, dataProvider as TasksTree, taskProvider as ITasksProvider, task);
+    await selectTreeItem(
+      view as any,
+      dataProvider as TasksTree,
+      taskProvider as ITasksProvider,
+      task
+    );
   });
 
   it("selectTreeItem - task found, but its representing element not found", async () => {
     taskProviderMock.expects("getConfiguredTasks").resolves([task]);
     dataProviderMock.expects("findTreeItem").withExactArgs(task).resolves();
-    await selectTreeItem(view as any, dataProvider as TasksTree, taskProvider as ITasksProvider, task);
+    await selectTreeItem(
+      view as any,
+      dataProvider as TasksTree,
+      taskProvider as ITasksProvider,
+      task
+    );
   });
 
   it("selectTreeItem - exception thrown", async () => {
     const error = new Error("error");
     taskProviderMock.expects("getConfiguredTasks").rejects(error);
     try {
-      await selectTreeItem(view as any, dataProvider as TasksTree, taskProvider as ITasksProvider, task);
+      await selectTreeItem(
+        view as any,
+        dataProvider as TasksTree,
+        taskProvider as ITasksProvider,
+        task
+      );
       fail("should faile");
     } catch (e: any) {
       expect(e.message).to.be.equal(error.message);

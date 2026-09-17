@@ -8,7 +8,7 @@ import { getTaskEditor } from "../panels/panels-handler";
 export async function showOpenDialog(
   currentPath: string,
   canSelectFiles: boolean,
-  canSelectFolders: boolean,
+  canSelectFolders: boolean
 ): Promise<string> {
   const dialogResourcePath = getDialogResourcePath(currentPath);
   let dialogResourceUri;

@@ -4,7 +4,12 @@ import {
   serializeTask,
   updateTasksConfiguration,
 } from "../../src/utils/task-serializer";
-import { MockVSCodeInfo, mockVscode, resetTestVSCode, testVscode } from "./mockVSCode";
+import {
+  MockVSCodeInfo,
+  mockVscode,
+  resetTestVSCode,
+  testVscode,
+} from "./mockVSCode";
 import { expect } from "chai";
 import * as provider from "../../src/services/tasks-provider";
 import { ConfiguredTask } from "@sap_oss/task_contrib_types";
@@ -19,7 +24,11 @@ describe("task-serializer scope", () => {
   });
 
   it("loading of serialized task data succeeded", () => {
-    const task: ConfiguredTask = { label: "label", type: "type", __intent: "intent" };
+    const task: ConfiguredTask = {
+      label: "label",
+      type: "type",
+      __intent: "intent",
+    };
     expect(JSON.parse(serializeTask(task))).to.deep.equal(task);
   });
 
@@ -34,17 +43,23 @@ describe("task-serializer scope", () => {
     });
 
     it("returns input value if it's unique", () => {
-      mockConfiguredTasks.expects("getConfiguredTasksFromCache").returns([{ label: "label" }]);
+      mockConfiguredTasks
+        .expects("getConfiguredTasksFromCache")
+        .returns([{ label: "label" }]);
       expect(getUniqueTaskLabel("newTask")).to.eq("newTask");
     });
 
     it("returns input value with suffix (2) if it's not unique", () => {
-      mockConfiguredTasks.expects("getConfiguredTasksFromCache").returns([{ label: "label" }]);
+      mockConfiguredTasks
+        .expects("getConfiguredTasksFromCache")
+        .returns([{ label: "label" }]);
       expect(getUniqueTaskLabel("label")).to.eq("label (2)");
     });
 
     it("returns input value with suffix (2) if it's not unique and contains special characters", () => {
-      mockConfiguredTasks.expects("getConfiguredTasksFromCache").returns([{ label: "task (1) /path" }]);
+      mockConfiguredTasks
+        .expects("getConfiguredTasksFromCache")
+        .returns([{ label: "task (1) /path" }]);
       expect(getUniqueTaskLabel("task (1) /path")).to.eq("task (1) /path (2)");
     });
 
@@ -82,7 +97,9 @@ describe("task-serializer scope", () => {
     let mockWindow: SinonMock;
     let mockCommands: SinonMock;
     beforeEach(() => {
-      stubLanguages = stub(languages, "onDidChangeDiagnostics").returns({ dispose: () => true });
+      stubLanguages = stub(languages, "onDidChangeDiagnostics").returns({
+        dispose: () => true,
+      });
       mockWindow = mock(testVscode.window);
       mockCommands = mock(testVscode.commands);
     });
@@ -95,14 +112,18 @@ describe("task-serializer scope", () => {
 
     const wsFolder = "/my/folder";
     const task = { label: "label", type: "type" };
-    const docPath = testVscode.Uri.joinPath(testVscode.Uri.file(wsFolder), ".vscode", "tasks.json").path;
+    const docPath = testVscode.Uri.joinPath(
+      testVscode.Uri.file(wsFolder),
+      ".vscode",
+      "tasks.json"
+    ).path;
 
     it("updateTasksConfiguration called, onDidChangeDiagnostics not triggered", () => {
       updateTasksConfiguration(wsFolder, [task]);
       expect(MockVSCodeInfo.configTasks?.get(wsFolder)).to.deep.equal([task]);
       expect(MockVSCodeInfo.updateCalled.section).to.be.equal("tasks");
       expect(MockVSCodeInfo.updateCalled.configurationTarget).to.be.equal(
-        testVscode.ConfigurationTarget.WorkspaceFolder,
+        testVscode.ConfigurationTarget.WorkspaceFolder
       );
     });
 
@@ -122,10 +143,16 @@ describe("task-serializer scope", () => {
     it.skip("updateTasksConfiguration called, onDidChangeDiagnostics triggered, open problem view", async () => {
       mockWindow
         .expects("showWarningMessage")
-        .withExactArgs(`There are tasks definitions errors. See the problems for details.`, "Show problems")
+        .withExactArgs(
+          `There are tasks definitions errors. See the problems for details.`,
+          "Show problems"
+        )
         .resolves("Show problems");
       mockWindow.expects("showTextDocument").resolves("Show problems");
-      mockCommands.expects("executeCommand").withExactArgs("workbench.actions.view.problems").resolves(true);
+      mockCommands
+        .expects("executeCommand")
+        .withExactArgs("workbench.actions.view.problems")
+        .resolves(true);
       updateTasksConfiguration(wsFolder, [task]);
       const callback: (c) => Promise<void> = stubLanguages.args[0][0];
       await callback({ uris: [{ path: docPath }] });

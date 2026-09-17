@@ -7,18 +7,37 @@ import {
   ProjTypes,
   collectProjects,
 } from "./e2e-config";
-import { FioriProjectConfigInfo, fioriE2eConfig, getFioriE2ePickItems } from "./fiori-e2e-config";
-import { CapProjectConfigInfo, capE2eConfig, getCapE2ePickItems } from "./cap-e2e-config";
-import { HanaProjectConfigInfo, getHanaE2ePickItems, hanaE2eConfig } from "./hana-e2e-config";
+import {
+  FioriProjectConfigInfo,
+  fioriE2eConfig,
+  getFioriE2ePickItems,
+} from "./fiori-e2e-config";
+import {
+  CapProjectConfigInfo,
+  capE2eConfig,
+  getCapE2ePickItems,
+} from "./cap-e2e-config";
+import {
+  HanaProjectConfigInfo,
+  getHanaE2ePickItems,
+  hanaE2eConfig,
+} from "./hana-e2e-config";
 import { getLogger } from "../../src/logger/logger-wrapper";
 import { compact, filter, reduce } from "lodash";
 import { join } from "path";
 import { isPathRelatedToFolder } from "../utils/ws-folder";
 
-export type ProjectConfigInfo = FioriProjectConfigInfo | CapProjectConfigInfo | HanaProjectConfigInfo;
+export type ProjectConfigInfo =
+  | FioriProjectConfigInfo
+  | CapProjectConfigInfo
+  | HanaProjectConfigInfo;
 
 export function isDeploymentConfigTask(task: TaskDefinition): boolean {
-  return [FIORI_DEPLOYMENT_CONFIG, HANA_DEPLOYMENT_CONFIG, CAP_DEPLOYMENT_CONFIG].includes(task.type);
+  return [
+    FIORI_DEPLOYMENT_CONFIG,
+    HANA_DEPLOYMENT_CONFIG,
+    CAP_DEPLOYMENT_CONFIG,
+  ].includes(task.type);
 }
 export async function completeDeployConfig(task: any): Promise<void> {
   if (task.type === FIORI_DEPLOYMENT_CONFIG) {
@@ -29,15 +48,21 @@ export async function completeDeployConfig(task: any): Promise<void> {
     return hanaE2eConfig({ wsFolder: task.wsFolder, project: task.project });
   }
 
-  getLogger().debug("completeDeployConfig:: unsupported configuration task type", { type: task.type });
+  getLogger().debug(
+    "completeDeployConfig:: unsupported configuration task type",
+    { type: task.type }
+  );
 }
 
-export async function getConfigDeployPickItems(project: string): Promise<ProjectConfigInfo[]> {
+export async function getConfigDeployPickItems(
+  project: string
+): Promise<ProjectConfigInfo[]> {
   let items = [] as Promise<ProjectConfigInfo | undefined>[];
   const requestedFolder = workspace.getWorkspaceFolder(Uri.file(project));
   if (requestedFolder) {
-    const projects = filter(await collectProjects(requestedFolder.uri.path), (_) =>
-      isPathRelatedToFolder(join(_.wsFolder, _.project), project),
+    const projects = filter(
+      await collectProjects(requestedFolder.uri.path),
+      (_) => isPathRelatedToFolder(join(_.wsFolder, _.project), project)
     );
     items = reduce(
       projects,
@@ -51,7 +76,7 @@ export async function getConfigDeployPickItems(project: string): Promise<Project
         }
         return acc;
       },
-      items,
+      items
     );
   }
   return Promise.all(items).then((items) => compact(items));

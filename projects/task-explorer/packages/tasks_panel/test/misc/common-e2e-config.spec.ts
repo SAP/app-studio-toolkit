@@ -36,15 +36,19 @@ describe("common-e2e-config scope", () => {
 
   describe("isDeploymentConfigTask function", () => {
     it("isDeploymentConfigTask - FIORI_DEPLOYMENT_CONFIG", async () => {
-      expect(isDeploymentConfigTask({ type: e2eConfig.FIORI_DEPLOYMENT_CONFIG })).to.be.true;
+      expect(
+        isDeploymentConfigTask({ type: e2eConfig.FIORI_DEPLOYMENT_CONFIG })
+      ).to.be.true;
     });
 
     it("isDeploymentConfigTask - HANA_DEPLOYMENT_CONFIG", async () => {
-      expect(isDeploymentConfigTask({ type: e2eConfig.HANA_DEPLOYMENT_CONFIG })).to.be.true;
+      expect(isDeploymentConfigTask({ type: e2eConfig.HANA_DEPLOYMENT_CONFIG }))
+        .to.be.true;
     });
 
     it("isDeploymentConfigTask - CAP_DEPLOYMENT_CONFIG", async () => {
-      expect(isDeploymentConfigTask({ type: e2eConfig.CAP_DEPLOYMENT_CONFIG })).to.be.true;
+      expect(isDeploymentConfigTask({ type: e2eConfig.CAP_DEPLOYMENT_CONFIG }))
+        .to.be.true;
     });
 
     it("isDeploymentConfigTask - other", async () => {
@@ -64,7 +68,7 @@ describe("common-e2e-config scope", () => {
           wsFolder: "ws-folder",
           project: "project",
           type: e2eConfig.FIORI_DEPLOYMENT_CONFIG,
-        }),
+        })
       ).to.be.undefined;
     });
 
@@ -79,7 +83,7 @@ describe("common-e2e-config scope", () => {
           wsFolder: "ws-folder",
           project: "project",
           type: e2eConfig.CAP_DEPLOYMENT_CONFIG,
-        }),
+        })
       ).to.be.undefined;
     });
 
@@ -94,12 +98,18 @@ describe("common-e2e-config scope", () => {
           wsFolder: "ws-folder",
           project: "project",
           type: e2eConfig.HANA_DEPLOYMENT_CONFIG,
-        }),
+        })
       ).to.be.undefined;
     });
 
     it("completeDeployConfig - unsupported", async () => {
-      expect(await completeDeployConfig({ wsFolder: "ws-folder", project: "project", type: "other" })).to.be.undefined;
+      expect(
+        await completeDeployConfig({
+          wsFolder: "ws-folder",
+          project: "project",
+          type: "other",
+        })
+      ).to.be.undefined;
     });
   });
 
@@ -121,7 +131,11 @@ describe("common-e2e-config scope", () => {
     });
 
     it("getConfigDeployPickItems - wrong project path", async () => {
-      mockWorkspace.expects("getWorkspaceFolder").once().withExactArgs(testVscode.Uri.file(project)).returns(undefined);
+      mockWorkspace
+        .expects("getWorkspaceFolder")
+        .once()
+        .withExactArgs(testVscode.Uri.file(project))
+        .returns(undefined);
       mockE2eConfig.expects("collectProjects").never();
       expect(await getConfigDeployPickItems(project)).to.be.empty;
     });
@@ -132,7 +146,11 @@ describe("common-e2e-config scope", () => {
         .once()
         .withExactArgs(testVscode.Uri.file(project))
         .returns(requestedFolder);
-      mockE2eConfig.expects("collectProjects").once().withExactArgs(project).resolves([]);
+      mockE2eConfig
+        .expects("collectProjects")
+        .once()
+        .withExactArgs(project)
+        .resolves([]);
       expect(await getConfigDeployPickItems(project)).to.be.empty;
     });
 
@@ -148,53 +166,109 @@ describe("common-e2e-config scope", () => {
         .once()
         .withExactArgs(requestedFolder.uri.path)
         .resolves([
-          { ...info, ...{ style: e2eConfig.ProjTypes.FIORI_FE }, ...{ project: "project1" } },
-          { ...info, ...{ style: e2eConfig.ProjTypes.CAP }, ...{ project: "project2" } },
+          {
+            ...info,
+            ...{ style: e2eConfig.ProjTypes.FIORI_FE },
+            ...{ project: "project1" },
+          },
+          {
+            ...info,
+            ...{ style: e2eConfig.ProjTypes.CAP },
+            ...{ project: "project2" },
+          },
           { ...info, ...{ style: "other" }, ...{ project: "project4" } },
-          { ...info, ...{ style: e2eConfig.ProjTypes.HANA }, ...{ project: "project3" } },
+          {
+            ...info,
+            ...{ style: e2eConfig.ProjTypes.HANA },
+            ...{ project: "project3" },
+          },
         ]);
 
       mockHanaE2eConfig
         .expects("getHanaE2ePickItems")
         .once()
-        .withExactArgs({ ...info, ...{ style: e2eConfig.ProjTypes.HANA }, ...{ project: "project3" } })
-        .resolves({ ...info, ...{ type: e2eConfig.HANA_DEPLOYMENT_CONFIG }, ...{ project: "project3" } });
+        .withExactArgs({
+          ...info,
+          ...{ style: e2eConfig.ProjTypes.HANA },
+          ...{ project: "project3" },
+        })
+        .resolves({
+          ...info,
+          ...{ type: e2eConfig.HANA_DEPLOYMENT_CONFIG },
+          ...{ project: "project3" },
+        });
 
       mockFioriE2eConfig
         .expects("getFioriE2ePickItems")
         .once()
-        .withExactArgs({ ...info, ...{ style: e2eConfig.ProjTypes.FIORI_FE }, ...{ project: "project1" } })
-        .resolves({ ...info, ...{ type: e2eConfig.FIORI_DEPLOYMENT_CONFIG }, ...{ project: "project1" } });
+        .withExactArgs({
+          ...info,
+          ...{ style: e2eConfig.ProjTypes.FIORI_FE },
+          ...{ project: "project1" },
+        })
+        .resolves({
+          ...info,
+          ...{ type: e2eConfig.FIORI_DEPLOYMENT_CONFIG },
+          ...{ project: "project1" },
+        });
 
       mockCapE2eConfig
         .expects("getCapE2ePickItems")
         .once()
-        .withExactArgs({ ...info, ...{ style: e2eConfig.ProjTypes.CAP }, ...{ project: "project2" } })
-        .resolves({ ...info, ...{ type: e2eConfig.CAP_DEPLOYMENT_CONFIG }, ...{ project: "project2" } });
+        .withExactArgs({
+          ...info,
+          ...{ style: e2eConfig.ProjTypes.CAP },
+          ...{ project: "project2" },
+        })
+        .resolves({
+          ...info,
+          ...{ type: e2eConfig.CAP_DEPLOYMENT_CONFIG },
+          ...{ project: "project2" },
+        });
 
       expect(await getConfigDeployPickItems(info.wsFolder)).to.be.deep.equal([
-        { ...info, ...{ type: e2eConfig.FIORI_DEPLOYMENT_CONFIG }, ...{ project: "project1" } },
-        { ...info, ...{ type: e2eConfig.CAP_DEPLOYMENT_CONFIG }, ...{ project: "project2" } },
-        { ...info, ...{ type: e2eConfig.HANA_DEPLOYMENT_CONFIG }, ...{ project: "project3" } },
+        {
+          ...info,
+          ...{ type: e2eConfig.FIORI_DEPLOYMENT_CONFIG },
+          ...{ project: "project1" },
+        },
+        {
+          ...info,
+          ...{ type: e2eConfig.CAP_DEPLOYMENT_CONFIG },
+          ...{ project: "project2" },
+        },
+        {
+          ...info,
+          ...{ type: e2eConfig.HANA_DEPLOYMENT_CONFIG },
+          ...{ project: "project3" },
+        },
       ]);
     });
   });
 
   describe("composeDeploymentConfigLabel function", () => {
     it("composeDeploymentConfigLabel - unknown type", async () => {
-      expect(composeDeploymentConfigLabel("other")).to.be.equal("Unknown Configuration");
+      expect(composeDeploymentConfigLabel("other")).to.be.equal(
+        "Unknown Configuration"
+      );
     });
 
     it("composeDeploymentConfigLabel - FIORI_DEPLOYMENT_CONFIG type", async () => {
-      expect(composeDeploymentConfigLabel(e2eConfig.FIORI_DEPLOYMENT_CONFIG)).to.be.equal("Fiori Configuration");
+      expect(
+        composeDeploymentConfigLabel(e2eConfig.FIORI_DEPLOYMENT_CONFIG)
+      ).to.be.equal("Fiori Configuration");
     });
 
     it("composeDeploymentConfigLabel - CAP_DEPLOYMENT_CONFIG type", async () => {
-      expect(composeDeploymentConfigLabel(e2eConfig.CAP_DEPLOYMENT_CONFIG)).to.be.equal("Full Stack Configuration");
+      expect(
+        composeDeploymentConfigLabel(e2eConfig.CAP_DEPLOYMENT_CONFIG)
+      ).to.be.equal("Full Stack Configuration");
     });
 
     it("composeDeploymentConfigLabel - HANA_DEPLOYMENT_CONFIG type", async () => {
-      expect(composeDeploymentConfigLabel(e2eConfig.HANA_DEPLOYMENT_CONFIG)).to.be.equal("Hana Configuration");
+      expect(
+        composeDeploymentConfigLabel(e2eConfig.HANA_DEPLOYMENT_CONFIG)
+      ).to.be.equal("Hana Configuration");
     });
   });
 });

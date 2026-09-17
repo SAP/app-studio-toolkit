@@ -5,7 +5,14 @@ import { ServerEvents } from "./server-events";
 import { AppEvents } from "../app-events";
 import { TaskEditor } from "../task-editor";
 
-export const MOCK_FOLDER_PATH = resolve(__dirname, "..", "..", "..", "src", "webSocketServer");
+export const MOCK_FOLDER_PATH = resolve(
+  __dirname,
+  "..",
+  "..",
+  "..",
+  "src",
+  "webSocketServer"
+);
 export const TASKS_JSON_PATH = resolve(MOCK_FOLDER_PATH, "./tasks.json");
 
 class TaskEditorWebSocketServer {

@@ -32,7 +32,10 @@ describe("Command terminateTaskFromTree", () => {
     mockWindow = sandbox.mock(testVscode.window);
   });
 
-  const parentItem = new IntentTreeItem("dummy", testVscode.TreeItemCollapsibleState.None);
+  const parentItem = new IntentTreeItem(
+    "dummy",
+    testVscode.TreeItemCollapsibleState.None
+  );
 
   it("tree item task has valid structure and exists -> terminateVScodeTask() is called", async () => {
     const command = {
@@ -40,9 +43,12 @@ describe("Command terminateTaskFromTree", () => {
       command: ".terminateTask.",
       arguments: [task],
     };
-    sandbox
-      .stub(testVscode.tasks, "taskExecutions")
-      .value([{ task: { name: "label", definition: { type: "type" } }, terminate: () => true }]);
+    sandbox.stub(testVscode.tasks, "taskExecutions").value([
+      {
+        task: { name: "label", definition: { type: "type" } },
+        terminate: () => true,
+      },
+    ]);
     const item = new TaskTreeItem(
       0,
       "type",
@@ -50,7 +56,7 @@ describe("Command terminateTaskFromTree", () => {
       "wsFolder",
       testVscode.TreeItemCollapsibleState.None,
       parentItem,
-      command,
+      command
     );
     await terminateTaskFromTree(item);
   });
@@ -68,20 +74,31 @@ describe("Command terminateTaskFromTree", () => {
       "wsFolder",
       testVscode.TreeItemCollapsibleState.None,
       parentItem,
-      command,
+      command
     );
     mockWindow
       .expects("showErrorMessage")
-      .withExactArgs(new Error("Unexpected error: command event corrupted").toString())
+      .withExactArgs(
+        new Error("Unexpected error: command event corrupted").toString()
+      )
       .resolves();
     await terminateTaskFromTree(item);
   });
 
   it("tree item task has invalid structure (cont.)", async () => {
-    const item = new TaskTreeItem(0, "type", "label", "wsFolder", testVscode.TreeItemCollapsibleState.None, parentItem);
+    const item = new TaskTreeItem(
+      0,
+      "type",
+      "label",
+      "wsFolder",
+      testVscode.TreeItemCollapsibleState.None,
+      parentItem
+    );
     mockWindow
       .expects("showErrorMessage")
-      .withExactArgs(new Error("Unexpected error: command event corrupted").toString())
+      .withExactArgs(
+        new Error("Unexpected error: command event corrupted").toString()
+      )
       .resolves();
     await terminateTaskFromTree(item);
   });
@@ -99,7 +116,7 @@ describe("Command terminateTaskFromTree", () => {
       "wsFolder",
       testVscode.TreeItemCollapsibleState.None,
       parentItem,
-      command,
+      command
     );
     mockWindow.expects("showErrorMessage").resolves();
     await terminateTaskFromTree(item);

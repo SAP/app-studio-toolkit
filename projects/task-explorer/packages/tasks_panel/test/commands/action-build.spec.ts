@@ -38,18 +38,43 @@ describe("action-build scope", () => {
   it("verify arguments chain", async () => {
     mockAction
       .expects("runAction")
-      .withExactArgs("build", dataProvider, mockTaskProvider, testVscode.ExtensionContext)
+      .withExactArgs(
+        "build",
+        dataProvider,
+        mockTaskProvider,
+        testVscode.ExtensionContext
+      )
       .resolves();
-    expect(await actionBuild(dataProvider as TasksTree, mockTaskProvider, testVscode.ExtensionContext)).to.be.undefined;
+    expect(
+      await actionBuild(
+        dataProvider as TasksTree,
+        mockTaskProvider,
+        testVscode.ExtensionContext
+      )
+    ).to.be.undefined;
   });
 
   it("exception thrown", async () => {
     const error = new Error("test");
     mockAction
       .expects("runAction")
-      .withExactArgs("build", dataProvider, mockTaskProvider, testVscode.ExtensionContext)
+      .withExactArgs(
+        "build",
+        dataProvider,
+        mockTaskProvider,
+        testVscode.ExtensionContext
+      )
       .rejects(error);
-    mockWindow.expects("showErrorMessage").withExactArgs(error.toString()).resolves();
-    expect(await actionBuild(dataProvider as TasksTree, mockTaskProvider, testVscode.ExtensionContext)).to.be.undefined;
+    mockWindow
+      .expects("showErrorMessage")
+      .withExactArgs(error.toString())
+      .resolves();
+    expect(
+      await actionBuild(
+        dataProvider as TasksTree,
+        mockTaskProvider,
+        testVscode.ExtensionContext
+      )
+    ).to.be.undefined;
   });
 });
