@@ -17,8 +17,7 @@
       "@vscode-logging/types",
       "@vscode-logging/wrapper"
     ],
-    ["guided-development", "guided-development-frontend"],
-    ["vscode-tasks-explorer-tasks-panel", "@sap_oss/task_contrib_types"]
+    ["guided-development", "guided-development-frontend"]
   ],
   "linked": [],
   "access": "restricted",
