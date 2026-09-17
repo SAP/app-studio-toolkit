@@ -10,6 +10,7 @@ overrides:
   'yeoman-environment@3>mem-fs': '2.3.0'
   'yeoman-environment@3>mem-fs-editor': '9.7.0'
 allowBuilds:
+  '@parcel/watcher': true
   '@vscode/vsce-sign': true
   bufferutil: true
   core-js: true
