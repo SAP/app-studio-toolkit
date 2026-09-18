@@ -570,6 +570,25 @@ importers:
         specifier: 27.5.1
         version: 27.5.1(bufferutil@4.1.0)(ts-node@10.9.2(@types/node@22.20.1)(typescript@5.7.3))(utf-8-validate@5.0.10)
 
+  projects/cloud-foundry-tools-api/packages/cloud-foundry-tools-api:
+    dependencies:
+      comment-json:
+        specifier: 4.2.5
+        version: 4.2.5
+      lodash:
+        specifier: 4.18.1
+        version: 4.18.1
+      properties-reader:
+        specifier: 2.3.0
+        version: 2.3.0
+      url:
+        specifier: 0.11.4
+        version: 0.11.4
+    devDependencies:
+      '@types/properties-reader':
+        specifier: 2.1.3
+        version: 2.1.3
+
   projects/feature-toggle-node/packages/feature-toggle-node:
     dependencies:
       node-cache:
@@ -1729,8 +1748,8 @@ importers:
   projects/vscode-mta-tools:
     dependencies:
       '@sap/cf-tools':
-        specifier: 2.0.1
-        version: 2.0.1
+        specifier: 3.3.1
+        version: 3.3.1
       '@sap/mta-lib':
         specifier: 1.7.4
         version: 1.7.4
@@ -4955,8 +4974,8 @@ packages:
   '@sap/bas-sdk@3.13.7':
     resolution: {integrity: sha512-R7LsbZ1qajZrCTRu0iRpfC7fovdiZ26/mnjlHVAzcEAGgTJoOndR+8QzVZ2z0yiDao7IzJcJP1kDKpKYkV7J0w==}
 
-  '@sap/cf-tools@2.0.1':
-    resolution: {integrity: sha512-J6sgZAXEhNSYxFRpAl++bMWxHO1HYPcTEKNkN8KFh3629A7fiqiJcKADGEyk5f2Pi09LGMngsRygN0M6F+it8g==}
+  '@sap/cf-tools@3.3.1':
+    resolution: {integrity: sha512-hGrpVEoTxUC3IdfwCE30Pm4JV+hNXrJDfYzu7VspZglEZSPnut+MzCnzodRacFzRJ8qAP0MPvrr5PCFMmuBckA==}
 
   '@sap/mta-lib@1.7.4':
     resolution: {integrity: sha512-NBtcVKipYrw9uCiWwH2QVfaVeJC3OV6spAE29TsUKjGzqUrSzMkFi8FtsikvDDDThtysjmcvWN8SDvkK3eQxmg==}
@@ -5431,6 +5450,9 @@ packages:
 
   '@types/prettier@2.7.3':
     resolution: {integrity: sha512-+68kP9yzs4LMp7VNh8gdzMSPZFL44MLGqiHWvttYJe+6qnuVr4Ek9wSBQoveqY/r+LwjCcU29kNVkidwim+kYA==}
+
+  '@types/properties-reader@2.1.3':
+    resolution: {integrity: sha512-k4fBDScfZ9xQjIrZm0HcJlyWVZ5ltE9W8N2AIecsgFXfg5REhKKHEwmpRvSQvEPWnIEsL67K70P1tx7kGo+cjQ==}
 
   '@types/proxyquire@1.3.31':
     resolution: {integrity: sha512-uALowNG2TSM1HNPMMOR0AJwv4aPYPhqB0xlEhkeRTMuto5hjoSPZkvgu1nbPUkz3gEPAHv4sy4DmKsurZiEfRQ==}
@@ -7339,12 +7361,12 @@ packages:
     resolution: {integrity: sha512-OcO+nJnUtp29j9SwHVcP/F8t/9piiOQj7APXTj75cK/qFAgX7PtGV31ullzwZbBwiA5Rmj25C32FaFgwcu1Uwg==}
     engines: {node: '>= 6'}
 
-  comment-json@4.1.0:
-    resolution: {integrity: sha512-WEghmVYaNq9NlWbrkzQTSsya9ycLyxJxpTQfZEan6a5Jomnjw18zS3Podf8q1Zf9BvonvQd/+Z7Z39L7KKzzdQ==}
-    engines: {node: '>= 6'}
-
   comment-json@4.1.1:
     resolution: {integrity: sha512-v8gmtPvxhBlhdRBLwdHSjGy9BgA23t9H1FctdQKyUrErPjSrJcdDMqBq9B4Irtm7w3TNYLQJNH6ARKnpyag1sA==}
+    engines: {node: '>= 6'}
+
+  comment-json@4.2.5:
+    resolution: {integrity: sha512-bKw/r35jR3HGt5PEPm1ljsQQGyCrR8sFGNiN5L+ykDHdpO8Smxkrkla9Yi6NkQyUrb8V54PGhfMs6NrIwtxtdw==}
     engines: {node: '>= 6'}
 
   common-ancestor-path@1.0.1:
@@ -7632,6 +7654,9 @@ packages:
 
   core-util-is@1.0.2:
     resolution: {integrity: sha512-3lqz5YjWTYnW6dlDa5TLaTCcShfar1e40rmcJVwCBJC6mWlFuj0eCHIElmG1g5kyuJ/GD+8Wn4FFCcz4gJPfaQ==}
+
+  core-util-is@1.0.3:
+    resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
 
   cors@2.8.6:
     resolution: {integrity: sha512-tJtZBBHA6vjIAaF6EnIaq6laBBP9aq/Y3ouVJjEfoHbRBcHBAHYcMh/w8LDrk2PvIMMq8gmopa5D4V8RmbrxGw==}
@@ -12785,9 +12810,9 @@ packages:
     resolution: {integrity: sha512-NxNv/kLguCA7p3jE8oL2aEBsrJWgAakBpgmgK6lpPWV+WuOmY6r2/zbAVnP+T8bQlA0nzHXSJSJW0Hq7ylaD2Q==}
     engines: {node: '>= 6'}
 
-  properties-reader@2.2.0:
-    resolution: {integrity: sha512-CgVcr8MwGoBKK24r9TwHfZkLLaNFHQ6y4wgT9w/XzdpacOOi5ciH4hcuLechSDAwXsfrGQtI2JTutY2djOx2Ow==}
-    engines: {node: '>=10'}
+  properties-reader@2.3.0:
+    resolution: {integrity: sha512-z597WicA7nDZxK12kZqHr2TcvwNU1GCfA5UwfDY/HDp3hXPoPlb5rlEx9bwGTiJnc0OqbBTkU975jDToth8Gxw==}
+    engines: {node: '>=14'}
 
   proto-list@1.2.4:
     resolution: {integrity: sha512-vtK/94akxsTMhe0/cbfpR+syPuszcuwhqVjJq26CuNDgFGj682oRBXOP5MJpv2r7JtE8MsiepGIqvvOTBwn2vA==}
@@ -12819,9 +12844,6 @@ packages:
     resolution: {integrity: sha512-uxFIHU0YlHYhDQtV4R9J6a52SLx28BCjT+4ieh7IGbgwVJWO+km431c4yRlREUAsAmt/uMjQUyQHNEPf0M39CA==}
     engines: {node: '>=6'}
 
-  punycode@1.3.2:
-    resolution: {integrity: sha512-RofWgt/7fL5wP1Y7fxE7/EmTLzQVnB0ycyibJ0OOHIlJqTNzglYFxVwETOcIoJqJmpDXJ9xImDv+Fq34F/d4Dw==}
-
   punycode@1.4.1:
     resolution: {integrity: sha512-jmYNElW7yvO7TV33CjSmvSiE2yco3bV2czu/OzDKdMNVZQWfxCblURLhf+47syQRBntjfLdd/H0egrzIG+oaFQ==}
 
@@ -12847,11 +12869,6 @@ packages:
   qs@6.5.3:
     resolution: {integrity: sha512-qxXIEh4pCGfHICj1mAJQ2/2XVZkjCDTcEgfoSQxc/fYivUZxTkk7L3bDBJSoNrEzXI17oUO5Dp07ktqE5KzczA==}
     engines: {node: '>=0.6'}
-
-  querystring@0.2.0:
-    resolution: {integrity: sha512-X/xY82scca2tau62i9mDyU9K+I+djTMUsvwf7xnUX5GLvVzgJybOJf4Y6o9Zx3oJK/LSXg5tTZBjwzqVPaPO2g==}
-    engines: {node: '>=0.4.x'}
-    deprecated: The querystring API is considered Legacy. new code should use the URLSearchParams API instead.
 
   querystringify@2.2.0:
     resolution: {integrity: sha512-FIqgj2EUvTa7R50u0rGsyTftzjYmv/a3hO345bZNrqabNqjtgiDMgmo4mkUjd+nzU5oF3dClKqFIPUKybUyqoQ==}
@@ -14759,8 +14776,9 @@ packages:
     resolution: {integrity: sha512-0kQLIzG4fdk/G5NONku64rSH/x32NOA39LVQqlK8Le6lvTF6GGRJpqaQFGgU+CLwySIqBSMdwYM0sYcW9f6P4A==}
     engines: {node: '>= 4'}
 
-  url@0.11.0:
-    resolution: {integrity: sha512-kbailJa29QrtXnxgq+DdCEGlbTeYM2eJUxsz6vjZavrCYPMIFHMKQmSKYAIuUK2i7hgPm28a8piX5NTUtM/LKQ==}
+  url@0.11.4:
+    resolution: {integrity: sha512-oCwdVC7mTuWiPyjLUz/COz5TLk6wgp0RCsN+wHZ2Ekneac9w8uuV0njcbbie2ME+Vs+d6duwmYuR3HgQXs1fOg==}
+    engines: {node: '>= 0.4'}
 
   use@3.1.1:
     resolution: {integrity: sha512-cwESVXlO3url9YWlFW/TA9cshCEhtu7IKJ/p5soJ/gGpj7vbvFrAY/eIioQ6Dw23KjZhYgiIo8HOs1nQ2vr/oQ==}
@@ -19430,12 +19448,12 @@ snapshots:
       - debug
       - utf-8-validate
 
-  '@sap/cf-tools@2.0.1':
+  '@sap/cf-tools@3.3.1':
     dependencies:
-      comment-json: 4.1.0
-      lodash: 4.17.21
-      properties-reader: 2.2.0
-      url: 0.11.0
+      comment-json: 4.2.5
+      lodash: 4.18.1
+      properties-reader: 2.3.0
+      url: 0.11.4
 
   '@sap/mta-lib@1.7.4':
     dependencies:
@@ -20018,6 +20036,8 @@ snapshots:
   '@types/picomatch@4.0.3': {}
 
   '@types/prettier@2.7.3': {}
+
+  '@types/properties-reader@2.1.3': {}
 
   '@types/proxyquire@1.3.31': {}
 
@@ -22752,7 +22772,7 @@ snapshots:
       has-own-prop: 2.0.0
       repeat-string: 1.6.1
 
-  comment-json@4.1.0:
+  comment-json@4.1.1:
     dependencies:
       array-timsort: 1.0.3
       core-util-is: 1.0.2
@@ -22760,10 +22780,10 @@ snapshots:
       has-own-prop: 2.0.0
       repeat-string: 1.6.1
 
-  comment-json@4.1.1:
+  comment-json@4.2.5:
     dependencies:
       array-timsort: 1.0.3
-      core-util-is: 1.0.2
+      core-util-is: 1.0.3
       esprima: 4.0.1
       has-own-prop: 2.0.0
       repeat-string: 1.6.1
@@ -22920,6 +22940,8 @@ snapshots:
   core-js@3.49.0: {}
 
   core-util-is@1.0.2: {}
+
+  core-util-is@1.0.3: {}
 
   cors@2.8.6:
     dependencies:
@@ -29420,7 +29442,7 @@ snapshots:
       kleur: 3.0.3
       sisteransi: 1.0.5
 
-  properties-reader@2.2.0:
+  properties-reader@2.3.0:
     dependencies:
       mkdirp: 1.0.4
 
@@ -29452,8 +29474,6 @@ snapshots:
 
   punycode.js@2.3.1: {}
 
-  punycode@1.3.2: {}
-
   punycode@1.4.1: {}
 
   punycode@2.3.1: {}
@@ -29471,8 +29491,6 @@ snapshots:
       side-channel: 1.1.0
 
   qs@6.5.3: {}
-
-  querystring@0.2.0: {}
 
   querystringify@2.2.0: {}
 
@@ -31651,10 +31669,10 @@ snapshots:
 
   url-to-options@1.0.1: {}
 
-  url@0.11.0:
+  url@0.11.4:
     dependencies:
-      punycode: 1.3.2
-      querystring: 0.2.0
+      punycode: 1.4.1
+      qs: 6.14.2
 
   use@3.1.1: {}
 
