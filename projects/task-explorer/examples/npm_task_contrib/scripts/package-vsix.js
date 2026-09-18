@@ -24,7 +24,11 @@ packageCommand({
   packagePath: undefined,
   baseContentUrl: undefined,
   baseImagesUrl: undefined,
-  useYarn: true,
+  // The extension is fully webpack-bundled, so vsce does not need to walk
+  // runtime dependencies. Skipping this avoids invoking yarn, which is not
+  // used in this pnpm monorepo.
+  useYarn: false,
+  dependencies: false,
   ignoreFile: undefined,
   expandGitHubIssueLinks: undefined,
 })
