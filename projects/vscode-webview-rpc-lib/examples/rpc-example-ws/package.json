@@ -1,0 +1,27 @@
+{
+  "name": "example-ws",
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "watch": "tsc -w -p .",
+    "compile": "rimraf out && tsc -p . && copyfiles -u 1 ./src/static/** ./out/",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint ./**/*.ts"
+  },
+  "author": "Eyal Barlev",
+  "publisher": "SAP",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@types/ws": "^7.2.3",
+    "copyfiles": "^2.4.1",
+    "eslint": "^8.56.0",
+    "rimraf": "^5.0.5",
+    "typescript": "^4.2.3"
+  },
+  "dependencies": {
+    "ws": "^7.2.3",
+    "@braintree/sanitize-url": "7.0.1"
+  }
+}

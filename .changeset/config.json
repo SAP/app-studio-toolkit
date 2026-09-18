@@ -49,6 +49,8 @@
     "vscode-contrib3",
     "vscode-simple-contrib",
     "vscode-snippet-food-contrib",
+    "rpc-example",
+    "example-ws",
     "sample-app",
     "sample-app-vite",
     "sample-navigator",
