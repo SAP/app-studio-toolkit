@@ -1,7 +1,10 @@
 module.exports = {
   // Common settings for JS Files.
   extends: ["plugin:eslint-comments/recommended", "prettier"],
-  ignorePatterns: ["**/dist/", "**/coverage/"],
+  ignorePatterns: [
+    "projects/task-explorer/**/dist/",
+    "projects/task-explorer/**/coverage/",
+  ],
   env: {
     commonjs: true,
     es6: true,
