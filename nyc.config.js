@@ -16,6 +16,7 @@ module.exports = {
     "packages/vscode-dependencies-validation/src/commands.ts",
     "packages/vscode-dependencies-validation/src/logger/logger.ts",
     "packages/vscode-deps-upgrade-tool/src/logger.ts",
+    "projects/task-explorer/packages/tasks_panel/src/**",
   ],
   //   - https://reflectoring.io/100-percent-test-coverage/
   branches: 100,
