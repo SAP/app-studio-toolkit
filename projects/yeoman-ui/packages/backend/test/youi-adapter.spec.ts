@@ -16,10 +16,13 @@ import { createFlowPromise } from "../src/utils/promise.js";
 
 describe("YouiAdapter", () => {
   class TestEvents implements YouiEvents {
-    public doGeneratorDone(): void {
-      return;
+    public doGeneratorDone(): Thenable<any> {
+      return Promise.resolve();
     }
     public doGeneratorInstall(): void {
+      return;
+    }
+    public doGeneratorProgress(): void {
       return;
     }
     public showProgress(): void {
