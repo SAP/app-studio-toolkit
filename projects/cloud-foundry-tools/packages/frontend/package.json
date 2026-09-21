@@ -42,7 +42,7 @@
     "@sap-devx/webview-rpc": "0.4.1",
     "@vscode-elements/elements": "1.16.1",
     "lodash": "4.17.21",
-    "vue": "3.3.8",
+    "vue": "^3.3.4",
     "vue-loader": "17.2.2",
     "vue-loading-overlay": "6.0.3"
   },
