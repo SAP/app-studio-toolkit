@@ -6,10 +6,15 @@ import { parse } from "comment-json";
 const CONNECTIONS = "connections";
 
 function saveSettings(filePath: string, configuration: any) {
-  const sqltoolsSettings = vscode.workspace.getConfiguration("sqltools", vscode.Uri.file(filePath));
+  const sqltoolsSettings = vscode.workspace.getConfiguration(
+    "sqltools",
+    vscode.Uri.file(filePath)
+  );
   const connections: any[] = sqltoolsSettings.get(CONNECTIONS) || [];
 
-  const existingConnIndex = connections.findIndex((conn: any) => conn.name === configuration.name);
+  const existingConnIndex = connections.findIndex(
+    (conn: any) => conn.name === configuration.name
+  );
   if (existingConnIndex >= 0) {
     connections[existingConnIndex] = configuration;
   } else {
@@ -18,7 +23,9 @@ function saveSettings(filePath: string, configuration: any) {
   void sqltoolsSettings.update(CONNECTIONS, connections);
 }
 
-export async function checkAndCreateSQLToolsSettings(filePath: string): Promise<string> {
+export async function checkAndCreateSQLToolsSettings(
+  filePath: string
+): Promise<string> {
   const envFileContent = await dataContentAsObject(filePath);
   const vcapServicesStr = _.get(envFileContent, "VCAP_SERVICES");
   if (vcapServicesStr) {

@@ -9,7 +9,8 @@ export default defineConfig({
       template: {
         compilerOptions: {
           // Instruct the compiler to treat UI5 Web Components and VSCode Elements Web Components as custom elements.
-          isCustomElement: (tag) => tag.startsWith("ui5-") || tag.startsWith("vscode-"),
+          isCustomElement: (tag) =>
+            tag.startsWith("ui5-") || tag.startsWith("vscode-"),
         },
       },
     }),
@@ -17,8 +18,10 @@ export default defineConfig({
       name: "html-transform",
       transformIndexHtml(html) {
         // Add id="vscode-codicon-stylesheet" to the existing link tag
-        return html.replace(/<link rel="stylesheet" href="\.\/assets\/index-[^"]+\.css">/, (match) =>
-          match.replace("<link", '<link id="vscode-codicon-stylesheet"')
+        return html.replace(
+          /<link rel="stylesheet" href="\.\/assets\/index-[^"]+\.css">/,
+          (match) =>
+            match.replace("<link", '<link id="vscode-codicon-stylesheet"')
         );
       },
     },

@@ -82,7 +82,12 @@ describe("commands unit tests", () => {
       const errorMessage = "login";
       openLoginViewMock
         .expects("openLoginView")
-        .withExactArgs({ isSplit: true, isLoginOnly: true }, "https://example.com", "", "")
+        .withExactArgs(
+          { isSplit: true, isLoginOnly: true },
+          "https://example.com",
+          "",
+          ""
+        )
         .resolves(undefined);
       let expErr: any = null;
       const error = new Error(errorMessage);
@@ -96,7 +101,9 @@ describe("commands unit tests", () => {
     it("should handle undefined error gracefully", async () => {
       const err = new Error("test");
       let expErr: any = null;
-      await internal.onErrorCfLogin(err).catch((errorMessage: Error) => (expErr = errorMessage));
+      await internal
+        .onErrorCfLogin(err)
+        .catch((errorMessage: Error) => (expErr = errorMessage));
 
       // Assert that console.error was not called
       expect(expErr.message).to.exist;
@@ -112,7 +119,11 @@ describe("commands unit tests", () => {
       user: "user",
       "api version": "3.100.0",
     };
-    const cliResult: CliResult = { stdout: "some text", stderr: "", exitCode: 0 };
+    const cliResult: CliResult = {
+      stdout: "some text",
+      stderr: "",
+      exitCode: 0,
+    };
 
     it("ok:: show selection dialog - canceled", async () => {
       vscodeWindowMock
@@ -132,7 +143,11 @@ describe("commands unit tests", () => {
           label: messages.set_targets_save(org, space),
           detail: messages.set_targets_save_details,
         },
-        { id: "pick-save", label: messages.set_targets_pick_save, detail: messages.set_targets_pick_save_details },
+        {
+          id: "pick-save",
+          label: messages.set_targets_pick_save,
+          detail: messages.set_targets_pick_save_details,
+        },
       ];
       vscodeWindowMock
         .expects("showQuickPick")
@@ -186,16 +201,24 @@ describe("commands unit tests", () => {
       //...cmdCreateTarget
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.name_for_target, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.name_for_target,
+          ignoreFocusOut: true,
+        })
         .resolves(label);
       const saveTargetParams = ["save-target", "-f", label];
-      cliMock.expects("execute").withExactArgs(saveTargetParams).resolves(cliResult);
+      cliMock
+        .expects("execute")
+        .withExactArgs(saveTargetParams)
+        .resolves(cliResult);
       cfViewMock.expects("get").returns({
         refresh: () => {
           return;
         },
       });
-      vscodeWindowMock.expects("showInformationMessage").withExactArgs(messages.target_created(label));
+      vscodeWindowMock
+        .expects("showInformationMessage")
+        .withExactArgs(messages.target_created(label));
       //
       expect(await commands.cmdSelectAndSaveTarget()).to.be.equals(label);
     });
@@ -214,7 +237,10 @@ describe("commands unit tests", () => {
       //...cmdCreateTarget canceled
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.name_for_target, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.name_for_target,
+          ignoreFocusOut: true,
+        })
         .resolves();
       //
       expect(await commands.cmdSelectAndSaveTarget()).to.be.undefined;
@@ -230,11 +256,19 @@ describe("commands unit tests", () => {
         })
         .resolves({});
       vscodeWindowMock.expects("showQuickPick").resolves({ id: "save" });
-      const t: ITarget = { "api endpoint": "endPoint", user: "user", "api version": "3.100.0" };
+      const t: ITarget = {
+        "api endpoint": "endPoint",
+        user: "user",
+        "api version": "3.100.0",
+      };
       cfLocalMock.expects("cfGetTarget").resolves(t);
       vscodeWindowMock
         .expects("showWarningMessage")
-        .withExactArgs(messages.target_setup_not_completed(t.org, t.space), "OK", "Cancel")
+        .withExactArgs(
+          messages.target_setup_not_completed(t.org, t.space),
+          "OK",
+          "Cancel"
+        )
         .resolves("Cancel");
       expect(await commands.cmdSelectAndSaveTarget()).to.be.undefined;
     });
@@ -249,11 +283,20 @@ describe("commands unit tests", () => {
         })
         .resolves({});
       vscodeWindowMock.expects("showQuickPick").resolves({ id: "save" });
-      const t: ITarget = { "api endpoint": "endPoint", user: "user", "api version": "3.100.0", org: "test-org" };
+      const t: ITarget = {
+        "api endpoint": "endPoint",
+        user: "user",
+        "api version": "3.100.0",
+        org: "test-org",
+      };
       cfLocalMock.expects("cfGetTarget").resolves(t);
       vscodeWindowMock
         .expects("showWarningMessage")
-        .withExactArgs(messages.target_setup_not_completed(t.org, t.space), "OK", "Cancel")
+        .withExactArgs(
+          messages.target_setup_not_completed(t.org, t.space),
+          "OK",
+          "Cancel"
+        )
         .resolves("Cancel");
       expect(await commands.cmdSelectAndSaveTarget()).to.be.undefined;
     });
@@ -268,16 +311,28 @@ describe("commands unit tests", () => {
         })
         .resolves({});
       vscodeWindowMock.expects("showQuickPick").resolves({ id: "save" });
-      const t: ITarget = { "api endpoint": "endPoint", user: "user", "api version": "3.100.0", space: "test-space" };
+      const t: ITarget = {
+        "api endpoint": "endPoint",
+        user: "user",
+        "api version": "3.100.0",
+        space: "test-space",
+      };
       cfLocalMock.expects("cfGetTarget").resolves(t);
       vscodeWindowMock
         .expects("showWarningMessage")
-        .withExactArgs(messages.target_setup_not_completed(t.org, t.space), "OK", "Cancel")
+        .withExactArgs(
+          messages.target_setup_not_completed(t.org, t.space),
+          "OK",
+          "Cancel"
+        )
         .resolves("OK");
       //...cmdCreateTarget canceled
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.name_for_target, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.name_for_target,
+          ignoreFocusOut: true,
+        })
         .resolves();
       //
       expect(await commands.cmdSelectAndSaveTarget()).to.be.undefined;
@@ -298,10 +353,17 @@ describe("commands unit tests", () => {
       //...cmdCreateTarget
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.name_for_target, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.name_for_target,
+          ignoreFocusOut: true,
+        })
         .resolves(label);
       const saveTargetParams = ["save-target", "-f", label];
-      const cli: CliResult = { exitCode: 1, stdout: "create target command error", stderr: "" };
+      const cli: CliResult = {
+        exitCode: 1,
+        stdout: "create target command error",
+        stderr: "",
+      };
       cliMock.expects("execute").withExactArgs(saveTargetParams).resolves(cli);
       //
       vscodeWindowMock
@@ -325,9 +387,16 @@ describe("commands unit tests", () => {
       const selectedEndPoint = "other-end-point";
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_cf_endpoint, value: target["api endpoint"], ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.enter_cf_endpoint,
+          value: target["api endpoint"],
+          ignoreFocusOut: true,
+        })
         .resolves(selectedEndPoint);
-      cliMock.expects("execute").withExactArgs(["api", selectedEndPoint], undefined, undefined).resolves(cliResult);
+      cliMock
+        .expects("execute")
+        .withExactArgs(["api", selectedEndPoint], undefined, undefined)
+        .resolves(cliResult);
       // ...cmdCFSetOrgSpace
       vscodeWindowMock
         .expects("withProgress")
@@ -339,7 +408,10 @@ describe("commands unit tests", () => {
         .resolves({ data: {} });
       vscodeWindowMock
         .expects("withProgress")
-        .withArgs({ location: nsVsMock.testVscode.ProgressLocation.Window, title: messages.getting_orgs })
+        .withArgs({
+          location: nsVsMock.testVscode.ProgressLocation.Window,
+          title: messages.getting_orgs,
+        })
         .resolves(orgs);
       vscodeWindowMock
         .expects("showQuickPick")
@@ -352,7 +424,10 @@ describe("commands unit tests", () => {
         .resolves(orgs[1]);
       vscodeWindowMock
         .expects("withProgress")
-        .withArgs({ location: nsVsMock.testVscode.ProgressLocation.Window, title: messages.getting_spaces })
+        .withArgs({
+          location: nsVsMock.testVscode.ProgressLocation.Window,
+          title: messages.getting_spaces,
+        })
         .resolves(spaces);
       vscodeWindowMock
         .expects("showQuickPick")
@@ -363,15 +438,24 @@ describe("commands unit tests", () => {
           ignoreFocusOut: true,
         })
         .resolves(spaces[0]);
-      vscodeWindowMock.expects("showInformationMessage").withExactArgs(messages.success_set_org_space).resolves();
+      vscodeWindowMock
+        .expects("showInformationMessage")
+        .withExactArgs(messages.success_set_org_space)
+        .resolves();
       vscodeWindowMock
         .expects("withProgress")
-        .withArgs({ location: nsVsMock.testVscode.ProgressLocation.Window, title: messages.set_org_space })
+        .withArgs({
+          location: nsVsMock.testVscode.ProgressLocation.Window,
+          title: messages.set_org_space,
+        })
         .resolves();
       //...cmdCreateTarget canceled
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.name_for_target, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.name_for_target,
+          ignoreFocusOut: true,
+        })
         .resolves();
       //
       expect(await commands.cmdSelectAndSaveTarget()).to.be.undefined;
@@ -391,9 +475,16 @@ describe("commands unit tests", () => {
       const selectedEndPoint = "other-end-point";
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_cf_endpoint, value: target["api endpoint"], ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.enter_cf_endpoint,
+          value: target["api endpoint"],
+          ignoreFocusOut: true,
+        })
         .resolves(selectedEndPoint);
-      cliMock.expects("execute").withExactArgs(["api", selectedEndPoint], undefined, undefined).resolves(cliResult);
+      cliMock
+        .expects("execute")
+        .withExactArgs(["api", selectedEndPoint], undefined, undefined)
+        .resolves(cliResult);
       // ...cmdCFSetOrgSpace fails
       vscodeWindowMock
         .expects("withProgress")
@@ -405,7 +496,10 @@ describe("commands unit tests", () => {
         .resolves({ data: {} });
       vscodeWindowMock
         .expects("withProgress")
-        .withArgs({ location: nsVsMock.testVscode.ProgressLocation.Window, title: messages.getting_orgs })
+        .withArgs({
+          location: nsVsMock.testVscode.ProgressLocation.Window,
+          title: messages.getting_orgs,
+        })
         .resolves(orgs);
       vscodeWindowMock
         .expects("showQuickPick")
@@ -433,7 +527,11 @@ describe("commands unit tests", () => {
       cfLocalMock.expects("cfGetTarget").resolves(target);
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_cf_endpoint, value: target["api endpoint"], ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.enter_cf_endpoint,
+          value: target["api endpoint"],
+          ignoreFocusOut: true,
+        })
         .resolves();
       expect(await commands.cmdSelectAndSaveTarget()).to.be.undefined;
     });
@@ -451,7 +549,11 @@ describe("commands unit tests", () => {
       cfLocalMock.expects("cfGetTarget").resolves(target);
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_cf_endpoint, value: target["api endpoint"], ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.enter_cf_endpoint,
+          value: target["api endpoint"],
+          ignoreFocusOut: true,
+        })
         .resolves(target["api endpoint"]);
       // ...cmdCFSetOrgSpace
       vscodeWindowMock
@@ -464,7 +566,10 @@ describe("commands unit tests", () => {
         .resolves({ data: {} });
       vscodeWindowMock
         .expects("withProgress")
-        .withArgs({ location: nsVsMock.testVscode.ProgressLocation.Window, title: messages.getting_orgs })
+        .withArgs({
+          location: nsVsMock.testVscode.ProgressLocation.Window,
+          title: messages.getting_orgs,
+        })
         .resolves(orgs);
       vscodeWindowMock
         .expects("showQuickPick")
@@ -477,7 +582,10 @@ describe("commands unit tests", () => {
         .resolves(orgs[1]);
       vscodeWindowMock
         .expects("withProgress")
-        .withArgs({ location: nsVsMock.testVscode.ProgressLocation.Window, title: messages.getting_spaces })
+        .withArgs({
+          location: nsVsMock.testVscode.ProgressLocation.Window,
+          title: messages.getting_spaces,
+        })
         .resolves(spaces);
       vscodeWindowMock
         .expects("showQuickPick")
@@ -488,15 +596,24 @@ describe("commands unit tests", () => {
           ignoreFocusOut: true,
         })
         .resolves(spaces[0]);
-      vscodeWindowMock.expects("showInformationMessage").withExactArgs(messages.success_set_org_space).resolves();
+      vscodeWindowMock
+        .expects("showInformationMessage")
+        .withExactArgs(messages.success_set_org_space)
+        .resolves();
       vscodeWindowMock
         .expects("withProgress")
-        .withArgs({ location: nsVsMock.testVscode.ProgressLocation.Window, title: messages.set_org_space })
+        .withArgs({
+          location: nsVsMock.testVscode.ProgressLocation.Window,
+          title: messages.set_org_space,
+        })
         .resolves();
       //...cmdCreateTarget canceled
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.name_for_target, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.name_for_target,
+          ignoreFocusOut: true,
+        })
         .resolves();
       //
       expect(await commands.cmdSelectAndSaveTarget()).to.be.undefined;

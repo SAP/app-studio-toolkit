@@ -29,7 +29,11 @@ import * as https from "https";
 import * as fspath from "path";
 import { messages } from "../src/messages";
 import { fail } from "assert";
-import { DisplayServices, ServiceQueryOptions, UpsServiceQueryOprions } from "../src/utils";
+import {
+  DisplayServices,
+  ServiceQueryOptions,
+  UpsServiceQueryOprions,
+} from "../src/utils";
 import * as chisel from "../src/chisel";
 import { createSandbox, SinonMock, SinonSandbox } from "sinon";
 
@@ -106,9 +110,14 @@ describe("cfViewCommands tests", () => {
         port: 443,
         method: "get",
         path: target.pathname,
-        headers: { Authorization: testToken.replace("\n", "").replace("\n", "") },
+        headers: {
+          Authorization: testToken.replace("\n", "").replace("\n", ""),
+        },
       };
-      cfLocalUtilsMock.expects("cfGetConfigFileField").withExactArgs("Target").resolves(ap);
+      cfLocalUtilsMock
+        .expects("cfGetConfigFileField")
+        .withExactArgs("Target")
+        .resolves(ap);
       httpsMock.expects("get").withArgs(options).returns(result);
       cfLocalMock.expects("cfGetAuthToken").resolves(testToken);
       try {
@@ -128,9 +137,14 @@ describe("cfViewCommands tests", () => {
         port: target.port,
         method: "get",
         path: urlPath,
-        headers: { Authorization: testToken.replace("\n", "").replace("\n", "") },
+        headers: {
+          Authorization: testToken.replace("\n", "").replace("\n", ""),
+        },
       };
-      cfLocalUtilsMock.expects("cfGetConfigFileField").withExactArgs("Target").resolves(ap);
+      cfLocalUtilsMock
+        .expects("cfGetConfigFileField")
+        .withExactArgs("Target")
+        .resolves(ap);
       httpsMock.expects("get").withArgs(options).returns(result);
       cfLocalMock.expects("cfGetAuthToken").resolves(testToken);
       try {
@@ -150,9 +164,14 @@ describe("cfViewCommands tests", () => {
         port: 80,
         method: "get",
         path: urlPath,
-        headers: { Authorization: testToken.replace("\n", "").replace("\n", "") },
+        headers: {
+          Authorization: testToken.replace("\n", "").replace("\n", ""),
+        },
       };
-      cfLocalUtilsMock.expects("cfGetConfigFileField").withExactArgs("Target").resolves(ap);
+      cfLocalUtilsMock
+        .expects("cfGetConfigFileField")
+        .withExactArgs("Target")
+        .resolves(ap);
       httpsMock.expects("get").withArgs(options).returns(result);
       cfLocalMock.expects("cfGetAuthToken").resolves(testToken);
       try {
@@ -164,7 +183,10 @@ describe("cfViewCommands tests", () => {
     });
 
     it("exception:: no target", async () => {
-      cfLocalUtilsMock.expects("cfGetConfigFileField").withExactArgs("Target").resolves([]);
+      cfLocalUtilsMock
+        .expects("cfGetConfigFileField")
+        .withExactArgs("Target")
+        .resolves([]);
       try {
         await cfViewCommands.cfDeployServiceAPI("");
         fail("should not reach here");
@@ -227,14 +249,22 @@ describe("cfViewCommands tests", () => {
       const message = "myMessage";
       vscodeWindowMock
         .expects("withProgress")
-        .withArgs({ location: nsVsMock.testVscode.ProgressLocation.Notification, title: message, cancellable: false })
+        .withArgs({
+          location: nsVsMock.testVscode.ProgressLocation.Notification,
+          title: message,
+          cancellable: false,
+        })
         .resolves();
       await cfViewCommands.cmdDeployServiceAPI("", message);
     });
   });
 
   describe("cmdSetCurrentTarget scope", () => {
-    const currentTarget: CFTarget = { label: "current Target", isDirty: false, isCurrent: true };
+    const currentTarget: CFTarget = {
+      label: "current Target",
+      isDirty: false,
+      isCurrent: true,
+    };
     const localView = {
       getCurrentTarget: () => currentTarget,
       refresh: () => "",
@@ -244,14 +274,21 @@ describe("cfViewCommands tests", () => {
       cliMock.expects("execute").never();
       cfViewMock.expects("get").never();
       await cfViewCommands.cmdSetCurrentTarget(
-        new cfView.CFTargetTI({ label: "my Target", isDirty: false, isCurrent: true })
+        new cfView.CFTargetTI({
+          label: "my Target",
+          isDirty: false,
+          isCurrent: true,
+        })
       );
     });
 
     it("ok:: target is set, reload called", async () => {
       const target = { label: "my Target", isDirty: false, isCurrent: false };
       cfViewMock.expects("get").twice().returns(localView);
-      cliMock.expects("execute").withExactArgs(["set-target", "-f", target.label]).resolves(cliResult);
+      cliMock
+        .expects("execute")
+        .withExactArgs(["set-target", "-f", target.label])
+        .resolves(cliResult);
       await cfViewCommands.cmdSetCurrentTarget(new cfView.CFTargetTI(target));
     });
 
@@ -262,9 +299,17 @@ describe("cfViewCommands tests", () => {
       cfViewMock.expects("get").twice().returns(localView);
       vscodeWindowMock
         .expects("showWarningMessage")
-        .withExactArgs(messages.target_dirty_save(currentTarget.label), "Yes", "No", "Cancel")
+        .withExactArgs(
+          messages.target_dirty_save(currentTarget.label),
+          "Yes",
+          "No",
+          "Cancel"
+        )
         .resolves("No");
-      cliMock.expects("execute").withExactArgs(["set-target", "-f", target.label]).resolves(cliResult);
+      cliMock
+        .expects("execute")
+        .withExactArgs(["set-target", "-f", target.label])
+        .resolves(cliResult);
       await cfViewCommands.cmdSetCurrentTarget(new cfView.CFTargetTI(target));
     });
 
@@ -275,9 +320,17 @@ describe("cfViewCommands tests", () => {
       cfViewMock.expects("get").returns(localView);
       vscodeWindowMock
         .expects("showWarningMessage")
-        .withExactArgs(messages.target_dirty_save(currentTarget.label), "Yes", "No", "Cancel")
+        .withExactArgs(
+          messages.target_dirty_save(currentTarget.label),
+          "Yes",
+          "No",
+          "Cancel"
+        )
         .resolves(undefined);
-      cliMock.expects("execute").withExactArgs(["set-target", "-f", target.label]).never();
+      cliMock
+        .expects("execute")
+        .withExactArgs(["set-target", "-f", target.label])
+        .never();
       await cfViewCommands.cmdSetCurrentTarget(new cfView.CFTargetTI(target));
     });
 
@@ -288,10 +341,21 @@ describe("cfViewCommands tests", () => {
       cfViewMock.expects("get").twice().returns(localView);
       vscodeWindowMock
         .expects("showWarningMessage")
-        .withExactArgs(messages.target_dirty_save(currentTarget.label), "Yes", "No", "Cancel")
+        .withExactArgs(
+          messages.target_dirty_save(currentTarget.label),
+          "Yes",
+          "No",
+          "Cancel"
+        )
         .resolves("Yes");
-      cliMock.expects("execute").withExactArgs(["set-target", "-f", target.label]).resolves(cliResult);
-      cliMock.expects("execute").withExactArgs(["save-target"]).resolves(cliResult);
+      cliMock
+        .expects("execute")
+        .withExactArgs(["set-target", "-f", target.label])
+        .resolves(cliResult);
+      cliMock
+        .expects("execute")
+        .withExactArgs(["save-target"])
+        .resolves(cliResult);
       await cfViewCommands.cmdSetCurrentTarget(new cfView.CFTargetTI(target));
     });
 
@@ -301,13 +365,25 @@ describe("cfViewCommands tests", () => {
       cfViewMock.expects("get").returns(localView);
       vscodeWindowMock
         .expects("showWarningMessage")
-        .withExactArgs(messages.target_dirty_save(currentTarget.label), "Yes", "No", "Cancel")
+        .withExactArgs(
+          messages.target_dirty_save(currentTarget.label),
+          "Yes",
+          "No",
+          "Cancel"
+        )
         .resolves("Yes");
       const error = new Error("my error");
       cliMock.expects("execute").withExactArgs(["save-target"]).throws(error);
-      vscodeWindowMock.expects("showErrorMessage").withExactArgs(error.message).resolves();
+      vscodeWindowMock
+        .expects("showErrorMessage")
+        .withExactArgs(error.message)
+        .resolves();
       await cfViewCommands.cmdSetCurrentTarget(
-        new cfView.CFTargetTI({ label: "my Target", isDirty: false, isCurrent: false })
+        new cfView.CFTargetTI({
+          label: "my Target",
+          isDirty: false,
+          isCurrent: false,
+        })
       );
     });
 
@@ -318,8 +394,14 @@ describe("cfViewCommands tests", () => {
       cfViewMock.expects("get").returns(localView);
       cliResult.exitCode = 1;
       cliResult.stdout = "any error";
-      cliMock.expects("execute").withExactArgs(["set-target", "-f", target.label]).resolves(cliResult);
-      vscodeWindowMock.expects("showErrorMessage").withExactArgs(cliResult.stdout).resolves();
+      cliMock
+        .expects("execute")
+        .withExactArgs(["set-target", "-f", target.label])
+        .resolves(cliResult);
+      vscodeWindowMock
+        .expects("showErrorMessage")
+        .withExactArgs(cliResult.stdout)
+        .resolves();
       await cfViewCommands.cmdSetCurrentTarget(new cfView.CFTargetTI(target));
     });
 
@@ -329,14 +411,20 @@ describe("cfViewCommands tests", () => {
         new cfView.CFTargetNotCurrent(
           new cfView.CFAppsFolder(
             "apps",
-            new cfView.CFTargetTI({ label: "my Target", isDirty: false, isCurrent: true })
+            new cfView.CFTargetTI({
+              label: "my Target",
+              isDirty: false,
+              isCurrent: true,
+            })
           )
         )
       );
     });
 
     it("ok:: targets tree broken", async () => {
-      await cfViewCommands.cmdSetCurrentTarget(new cfView.CFTargetNotCurrent({ label: "label" } as cfView.CFFolder));
+      await cfViewCommands.cmdSetCurrentTarget(
+        new cfView.CFTargetNotCurrent({ label: "label" } as cfView.CFFolder)
+      );
     });
 
     it("ok:: null received, targets tree broken", async () => {
@@ -345,50 +433,80 @@ describe("cfViewCommands tests", () => {
   });
 
   describe("execSetTarget scope", () => {
-    const item = new cfView.CFTargetTI({ label: "my Target", isCurrent: false, isDirty: true });
+    const item = new cfView.CFTargetTI({
+      label: "my Target",
+      isCurrent: false,
+      isDirty: true,
+    });
 
     it("ok:: silent mode required", async () => {
       const cliResult = { exitCode: -1, stdout: "", stderr: "" };
-      cliMock.expects("execute").withExactArgs(["set-target", "-f", item.target.label]).resolves(cliResult);
+      cliMock
+        .expects("execute")
+        .withExactArgs(["set-target", "-f", item.target.label])
+        .resolves(cliResult);
       vscodeWindowMock.expects("showErrorMessage").never();
       await cfViewCommands.execSetTarget(item, { silent: true });
     });
 
     it("ok:: 'skip-reload' mode required", async () => {
       const cliResult = { exitCode: 0, stdout: "", stderr: "" };
-      cliMock.expects("execute").withExactArgs(["set-target", "-f", item.target.label]).resolves(cliResult);
+      cliMock
+        .expects("execute")
+        .withExactArgs(["set-target", "-f", item.target.label])
+        .resolves(cliResult);
       cfViewMock.expects("get").never();
-      await cfViewCommands.execSetTarget(item, { silent: true, "skip-reload": true });
+      await cfViewCommands.execSetTarget(item, {
+        silent: true,
+        "skip-reload": true,
+      });
     });
   });
 
   describe("execSaveTarget scope", () => {
-    const item = new cfView.CFTargetTI({ label: "my Target", isCurrent: false, isDirty: true });
+    const item = new cfView.CFTargetTI({
+      label: "my Target",
+      isCurrent: false,
+      isDirty: true,
+    });
 
     it("ok:: error occured", async () => {
       const cliResult = { exitCode: -1, stdout: "", stderr: "" };
-      cliMock.expects("execute").withExactArgs(["save-target", "-f", item.target.label]).resolves(cliResult);
+      cliMock
+        .expects("execute")
+        .withExactArgs(["save-target", "-f", item.target.label])
+        .resolves(cliResult);
       vscodeWindowMock.expects("showErrorMessage").resolves();
       await cfViewCommands.execSaveTarget(item);
     });
 
     it("ok:: silent mode required", async () => {
       const cliResult = { exitCode: -1, stdout: "", stderr: "" };
-      cliMock.expects("execute").withExactArgs(["save-target", "-f", item.target.label]).resolves(cliResult);
+      cliMock
+        .expects("execute")
+        .withExactArgs(["save-target", "-f", item.target.label])
+        .resolves(cliResult);
       vscodeWindowMock.expects("showErrorMessage").never();
       await cfViewCommands.execSaveTarget(item, { silent: true });
     });
 
     it("ok:: without args", async () => {
       const cliResult = { exitCode: 0, stdout: "", stderr: "" };
-      cliMock.expects("execute").withExactArgs(["save-target"]).resolves(cliResult);
+      cliMock
+        .expects("execute")
+        .withExactArgs(["save-target"])
+        .resolves(cliResult);
       await cfViewCommands.execSaveTarget();
     });
 
     it("ok:: 'no-targets' node received", async () => {
       cliMock.expects("execute").never();
       await cfViewCommands.execSaveTarget(
-        new cfView.CFTargetTI({ label: "my (no targets)", isCurrent: false, isDirty: true })
+        new cfView.CFTargetTI({
+          label: "my (no targets)",
+          isCurrent: false,
+          isDirty: true,
+        })
       );
     });
   });
@@ -397,19 +515,30 @@ describe("cfViewCommands tests", () => {
     const localView = {
       refresh: () => "",
     };
-    const item = new cfView.CFTargetTI({ label: "other", isCurrent: true, isDirty: false });
+    const item = new cfView.CFTargetTI({
+      label: "other",
+      isCurrent: true,
+      isDirty: false,
+    });
 
     it("ok:: default-target", async () => {
       cliMock.expects("execute").withArgs(["delete-target"]).never();
       await cfViewCommands.cmdDeleteTarget(
-        new cfView.CFTargetTI({ label: DEFAULT_TARGET, isCurrent: true, isDirty: false })
+        new cfView.CFTargetTI({
+          label: DEFAULT_TARGET,
+          isCurrent: true,
+          isDirty: false,
+        })
       );
     });
 
     it("ok:: other deleted", async () => {
       cliResult.exitCode = 0;
       cliResult.stdout = "";
-      cliMock.expects("execute").withArgs(["delete-target", item.target.label]).resolves(cliResult);
+      cliMock
+        .expects("execute")
+        .withArgs(["delete-target", item.target.label])
+        .resolves(cliResult);
       cfViewMock.expects("get").returns(localView);
       vscodeWindowMock
         .expects("showInformationMessage")
@@ -421,18 +550,30 @@ describe("cfViewCommands tests", () => {
     it("ok:: other deleted, silent and 'skip-reload' mode", async () => {
       cliResult.exitCode = 0;
       cliResult.stdout = "";
-      cliMock.expects("execute").withArgs(["delete-target", item.target.label]).resolves(cliResult);
+      cliMock
+        .expects("execute")
+        .withArgs(["delete-target", item.target.label])
+        .resolves(cliResult);
       cfViewMock.expects("get").never();
       vscodeWindowMock.expects("showInformationMessage").never();
-      await cfViewCommands.cmdDeleteTarget(item, { silent: true, "skip-reload": true });
+      await cfViewCommands.cmdDeleteTarget(item, {
+        silent: true,
+        "skip-reload": true,
+      });
     });
 
     it("ok:: other failure", async () => {
       cliResult.stdout = "some error during delete";
       cliResult.exitCode = -1;
-      cliMock.expects("execute").withArgs(["delete-target", item.target.label]).resolves(cliResult);
+      cliMock
+        .expects("execute")
+        .withArgs(["delete-target", item.target.label])
+        .resolves(cliResult);
       cfViewMock.expects("get").never();
-      vscodeWindowMock.expects("showErrorMessage").withExactArgs(cliResult.stdout).resolves();
+      vscodeWindowMock
+        .expects("showErrorMessage")
+        .withExactArgs(cliResult.stdout)
+        .resolves();
       await cfViewCommands.cmdDeleteTarget(item);
     });
   });
@@ -451,14 +592,20 @@ describe("cfViewCommands tests", () => {
         filter.value = encodeURIComponent(filter.value);
       });
       const arg = { query: modified, ups: { isShow: true } };
-      commandsMock.expects("getAvailableServices").withExactArgs(arg, title).resolves();
+      commandsMock
+        .expects("getAvailableServices")
+        .withExactArgs(arg, title)
+        .resolves();
       await cfViewCommands.cmdGetSpaceServices(query, title);
     });
 
     it("ok:: undefined query", async () => {
       const title = "progress title";
       const arg: unknown = { query: undefined, ups: { isShow: true } };
-      commandsMock.expects("getAvailableServices").withExactArgs(arg, title).resolves();
+      commandsMock
+        .expects("getAvailableServices")
+        .withExactArgs(arg, title)
+        .resolves();
       await cfViewCommands.cmdGetSpaceServices(undefined, title);
     });
   });
@@ -472,8 +619,13 @@ describe("cfViewCommands tests", () => {
         { label: "s2", serviceName: "hana" },
         { label: "s2", serviceName: "hanatrial" },
       ];
-      commandsMock.expects("getServiceInstances").withExactArgs(undefined, title).resolves(expServices);
-      expect(await cfViewCommands.cmdGetServiceInstances(undefined, title)).to.deep.equal(expServices);
+      commandsMock
+        .expects("getServiceInstances")
+        .withExactArgs(undefined, title)
+        .resolves(expServices);
+      expect(
+        await cfViewCommands.cmdGetServiceInstances(undefined, title)
+      ).to.deep.equal(expServices);
     });
 
     it("ok:: retrieve 'hana 'services types with 'hdi-shared' plan", async () => {
@@ -481,23 +633,41 @@ describe("cfViewCommands tests", () => {
         { label: "s1", serviceName: "hana", plan: "hdi-shared" },
         { label: "s2", serviceName: "hana", plan: "hdi-shared" },
       ];
-      const serviceQueryOptions: ServiceQueryOptions = { name: "hana", plan: "hdi-shared" };
+      const serviceQueryOptions: ServiceQueryOptions = {
+        name: "hana",
+        plan: "hdi-shared",
+      };
       const plans: PlanInfo[] = [
         { label: "hdi-shared", guid: "ABCD", description: "" },
         { label: "lite", guid: "EFGH", description: "" },
       ];
       const serviceInstanceQuery = {
-        filters: [{ key: eFilters.service_plan_names, value: serviceQueryOptions.plan }],
+        filters: [
+          { key: eFilters.service_plan_names, value: serviceQueryOptions.plan },
+        ],
         per_page: CF_PAGE_SIZE,
       };
       commandsMock
         .expects("fetchServicePlanList")
-        .withExactArgs({ filters: [{ key: eFilters.service_offering_names, value: serviceQueryOptions.name }] })
+        .withExactArgs({
+          filters: [
+            {
+              key: eFilters.service_offering_names,
+              value: serviceQueryOptions.name,
+            },
+          ],
+        })
         .resolves(plans);
       serviceInstanceQuery.filters = _.concat(serviceInstanceQuery.filters, [
-        { key: eFilters.service_plan_guids, value: _.join(_.map(plans, "guid")) },
+        {
+          key: eFilters.service_plan_guids,
+          value: _.join(_.map(plans, "guid")),
+        },
       ]);
-      commandsMock.expects("getServiceInstances").withExactArgs(serviceInstanceQuery, title).resolves(rspServices);
+      commandsMock
+        .expects("getServiceInstances")
+        .withExactArgs(serviceInstanceQuery, title)
+        .resolves(rspServices);
       await cfViewCommands.cmdGetServiceInstances(serviceQueryOptions, title);
     });
 
@@ -508,7 +678,10 @@ describe("cfViewCommands tests", () => {
         { label: "s2", serviceName: "hanatrial" },
       ];
       const serviceQueryOptions: ServiceQueryOptions = {};
-      commandsMock.expects("getServiceInstances").withExactArgs(undefined, title).resolves(expServices);
+      commandsMock
+        .expects("getServiceInstances")
+        .withExactArgs(undefined, title)
+        .resolves(expServices);
       await cfViewCommands.cmdGetServiceInstances(serviceQueryOptions, title);
     });
   });
@@ -517,15 +690,23 @@ describe("cfViewCommands tests", () => {
     const title = "progress title - retrieve all services";
 
     it("ok:: verify calling 'getUserProvidedServiceInstances' happens with specified args", async () => {
-      const options: UpsServiceQueryOprions = { tag: "tags", credentials: { tag: "hana" } };
-      commandsMock.expects("getUserProvidedServiceInstances").withExactArgs(options, title).resolves();
+      const options: UpsServiceQueryOprions = {
+        tag: "tags",
+        credentials: { tag: "hana" },
+      };
+      commandsMock
+        .expects("getUserProvidedServiceInstances")
+        .withExactArgs(options, title)
+        .resolves();
       await cfViewCommands.cmdGetUpsServiceInstances(options, title);
     });
   });
 
   describe("cmdBindLocal scope", () => {
     const path = nsVsMock.testVscode.Uri.file("some/path");
-    const service: ServiceTypeInfo[] = [{ name: "", plan: "hdi-shared", prompt: "", tag: "" }];
+    const service: ServiceTypeInfo[] = [
+      { name: "", plan: "hdi-shared", prompt: "", tag: "" },
+    ];
     let origin: unknown;
     const plans: PlanInfo[] = [
       { label: "hdi-shared", guid: "ABCD", description: "" },
@@ -536,7 +717,10 @@ describe("cfViewCommands tests", () => {
       { serviceName: "type2", label: "service2" },
     ];
     const opts: DisplayServices = {
-      query: { filters: [{ key: eFilters.service_plan_names, value: service[0].plan }], per_page: CF_PAGE_SIZE },
+      query: {
+        filters: [{ key: eFilters.service_plan_names, value: service[0].plan }],
+        per_page: CF_PAGE_SIZE,
+      },
       ups: _.get(service, ["0", "ups"]),
     };
 
@@ -548,7 +732,11 @@ describe("cfViewCommands tests", () => {
       _.set(
         commands,
         "updateInstanceNameAndTags",
-        (availableServices: ServiceInstanceInfo[], serviceTypeInfo: ServiceTypeInfo[], instanceNames: string[]) => {
+        (
+          availableServices: ServiceInstanceInfo[],
+          serviceTypeInfo: ServiceTypeInfo[],
+          instanceNames: string[]
+        ) => {
           instanceNames.push(services[0].label);
           return Promise.resolve(instanceNames[0]);
         }
@@ -571,12 +759,15 @@ describe("cfViewCommands tests", () => {
           defaultUri: nsVsMock.testVscode.workspace.workspaceFolders[0].uri,
         })
         .resolves();
-      expect(await cfViewCommands.cmdBindLocal(service, emptyPath)).to.be.undefined;
+      expect(await cfViewCommands.cmdBindLocal(service, emptyPath)).to.be
+        .undefined;
     });
 
     it("ok:: path selected, service is CFService type, quote-vcap is false", async () => {
       const emptyPath = nsVsMock.testVscode.Uri.file("");
-      sandbox.stub(nsVsMock.testVscode.workspace, "workspaceFolders").value(undefined);
+      sandbox
+        .stub(nsVsMock.testVscode.workspace, "workspaceFolders")
+        .value(undefined);
       vscodeWindowMock
         .expects("showOpenDialog")
         .withExactArgs({
@@ -592,10 +783,13 @@ describe("cfViewCommands tests", () => {
         .expects("showInformationMessage")
         .withExactArgs(messages.service_bound_successful(otherService.label))
         .resolves();
-      const stubWithProgress = sandbox.stub(nsVsMock.testVscode.window, "withProgress");
+      const stubWithProgress = sandbox.stub(
+        nsVsMock.testVscode.window,
+        "withProgress"
+      );
       expect(
         await cfViewCommands.cmdBindLocal(
-          (otherService as unknown) as cfView.CFService,
+          otherService as unknown as cfView.CFService,
           {
             path: emptyPath,
             ignore: true,
@@ -624,12 +818,15 @@ describe("cfViewCommands tests", () => {
         cancellable: false,
       });
       /* eslint-disable-next-line @typescript-eslint/no-unsafe-argument */
-      expect(await stubWithProgress.args[0][1]({} as any, {} as any)).to.be.undefined;
+      expect(await stubWithProgress.args[0][1]({} as any, {} as any)).to.be
+        .undefined;
     });
 
     it("ok:: path selected, service is CFService type", async () => {
       const emptyPath = nsVsMock.testVscode.Uri.file("");
-      sandbox.stub(nsVsMock.testVscode.workspace, "workspaceFolders").value(undefined);
+      sandbox
+        .stub(nsVsMock.testVscode.workspace, "workspaceFolders")
+        .value(undefined);
       vscodeWindowMock
         .expects("showOpenDialog")
         .withExactArgs({
@@ -645,12 +842,18 @@ describe("cfViewCommands tests", () => {
         .expects("showInformationMessage")
         .withExactArgs(messages.service_bound_successful(otherService.label))
         .resolves();
-      const stubWithProgress = sandbox.stub(nsVsMock.testVscode.window, "withProgress");
+      const stubWithProgress = sandbox.stub(
+        nsVsMock.testVscode.window,
+        "withProgress"
+      );
       expect(
-        await cfViewCommands.cmdBindLocal((otherService as unknown) as cfView.CFService, {
-          path: emptyPath,
-          ignore: true,
-        })
+        await cfViewCommands.cmdBindLocal(
+          otherService as unknown as cfView.CFService,
+          {
+            path: emptyPath,
+            ignore: true,
+          }
+        )
       ).deep.equal({ instanceName: otherService.label });
 
       cfLocalMock
@@ -672,24 +875,39 @@ describe("cfViewCommands tests", () => {
         cancellable: false,
       });
       /* eslint-disable-next-line @typescript-eslint/no-unsafe-argument */
-      expect(await stubWithProgress.args[0][1]({} as any, {} as any)).to.be.undefined;
+      expect(await stubWithProgress.args[0][1]({} as any, {} as any)).to.be
+        .undefined;
     });
 
     it("ok:: path selected, service is ServiceTypeInfo type, no ups, no services found", async () => {
-      vscodeWindowMock.expects("showInformationMessage").withExactArgs(messages.no_services_instances_found).resolves();
-      commandsMock.expects("getAvailableServices").withExactArgs(opts).resolves([]);
-      expect(await cfViewCommands.cmdBindLocal(service, { path, ignore: true })).to.be.undefined;
+      vscodeWindowMock
+        .expects("showInformationMessage")
+        .withExactArgs(messages.no_services_instances_found)
+        .resolves();
+      commandsMock
+        .expects("getAvailableServices")
+        .withExactArgs(opts)
+        .resolves([]);
+      expect(await cfViewCommands.cmdBindLocal(service, { path, ignore: true }))
+        .to.be.undefined;
     });
 
     it("ok:: path selected, service is ServiceTypeInfo type, no ups, no services found, creation allowed", async () => {
-      const cloneService = _.merge(_.cloneDeep(service[0]), { allowCreate: { name: "create" } });
-      commandsMock.expects("getAvailableServices").withExactArgs(opts).resolves([]);
+      const cloneService = _.merge(_.cloneDeep(service[0]), {
+        allowCreate: { name: "create" },
+      });
+      commandsMock
+        .expects("getAvailableServices")
+        .withExactArgs(opts)
+        .resolves([]);
       commandsMock
         .expects("updateInstanceNameAndTags")
         .withExactArgs(
           [
             {
-              label: commands.CMD_BIND_TO_DEFAULT_SERVICE + cloneService.allowCreate.name,
+              label:
+                commands.CMD_BIND_TO_DEFAULT_SERVICE +
+                cloneService.allowCreate.name,
               plan: cloneService.allowCreate.plan,
               serviceName: cloneService.allowCreate.serviceName ?? "",
             },
@@ -703,19 +921,31 @@ describe("cfViewCommands tests", () => {
           []
         )
         .resolves(undefined);
-      expect(await cfViewCommands.cmdBindLocal([cloneService], { path, ignore: true })).to.be.undefined;
+      expect(
+        await cfViewCommands.cmdBindLocal([cloneService], {
+          path,
+          ignore: true,
+        })
+      ).to.be.undefined;
     });
 
     it("ok:: path selected, service is ServiceTypeInfo type, no ups, services found, canceled", async () => {
-      commandsMock.expects("getAvailableServices").withExactArgs(opts).resolves(services);
+      commandsMock
+        .expects("getAvailableServices")
+        .withExactArgs(opts)
+        .resolves(services);
       _.set(commands, "updateInstanceNameAndTags", () => {
         return Promise.resolve();
       });
-      expect(await cfViewCommands.cmdBindLocal(service, { path, ignore: true })).to.be.undefined;
+      expect(await cfViewCommands.cmdBindLocal(service, { path, ignore: true }))
+        .to.be.undefined;
     });
 
     it("ok:: path selected, service is ServiceTypeInfo type, no ups, services found, type selected", async () => {
-      commandsMock.expects("getAvailableServices").withExactArgs(opts).resolves(services);
+      commandsMock
+        .expects("getAvailableServices")
+        .withExactArgs(opts)
+        .resolves(services);
       vscodeWindowMock
         .expects("withProgress")
         .withArgs({
@@ -728,13 +958,18 @@ describe("cfViewCommands tests", () => {
         .expects("showInformationMessage")
         .withExactArgs(messages.service_bound_successful(services[0].label))
         .resolves();
-      expect(await cfViewCommands.cmdBindLocal(service, { path, ignore: true })).deep.equal({
+      expect(
+        await cfViewCommands.cmdBindLocal(service, { path, ignore: true })
+      ).deep.equal({
         instanceName: services[0].label,
       });
     });
 
     it("ok:: path selected, service is ServiceTypeInfo type, no ups, services found, required specific service", async () => {
-      commandsMock.expects("getAvailableServices").withExactArgs(opts).resolves(services);
+      commandsMock
+        .expects("getAvailableServices")
+        .withExactArgs(opts)
+        .resolves(services);
       commandsMock.expects("updateInstanceNameAndTags").never();
       vscodeWindowMock
         .expects("withProgress")
@@ -748,30 +983,55 @@ describe("cfViewCommands tests", () => {
         .expects("showInformationMessage")
         .withExactArgs(messages.service_bound_successful(services[0].label))
         .resolves();
-      expect(await cfViewCommands.cmdBindLocal(service, { path, ignore: true }, services[0].label)).deep.equal({
+      expect(
+        await cfViewCommands.cmdBindLocal(
+          service,
+          { path, ignore: true },
+          services[0].label
+        )
+      ).deep.equal({
         instanceName: services[0].label,
       });
     });
 
     it("ok:: path selected, service is ServiceTypeInfo type, no ups, services found, required service not found", async () => {
-      commandsMock.expects("getAvailableServices").withExactArgs(opts).resolves(services);
+      commandsMock
+        .expects("getAvailableServices")
+        .withExactArgs(opts)
+        .resolves(services);
       commandsMock.expects("updateInstanceNameAndTags").never();
-      cfLocalMock.expects("cfGetInstanceMetadata").withExactArgs("not-existed").rejects(new Error("not found"));
+      cfLocalMock
+        .expects("cfGetInstanceMetadata")
+        .withExactArgs("not-existed")
+        .rejects(new Error("not found"));
       vscodeWindowMock
         .expects("showErrorMessage")
         .withArgs(messages.no_services_instance_byname_found("not-existed"))
         .resolves();
-      expect(await cfViewCommands.cmdBindLocal(service, { path, ignore: true }, "not-existed")).to.be.undefined;
+      expect(
+        await cfViewCommands.cmdBindLocal(
+          service,
+          { path, ignore: true },
+          "not-existed"
+        )
+      ).to.be.undefined;
     });
 
     it("ok:: path selected, service is ServiceTypeInfo type, no ups, service not in list but found via direct lookup (CF eventual consistency)", async () => {
       // Simulate CF list API returning stale results: services[0] missing, only services[1] present
-      commandsMock.expects("getAvailableServices").withExactArgs(opts).resolves([services[1]]);
+      commandsMock
+        .expects("getAvailableServices")
+        .withExactArgs(opts)
+        .resolves([services[1]]);
       commandsMock.expects("updateInstanceNameAndTags").never();
       cfLocalMock
         .expects("cfGetInstanceMetadata")
         .withExactArgs(services[0].label)
-        .resolves({ serviceName: services[0].label, service: service[0].plan, plan_guid: "GUID" });
+        .resolves({
+          serviceName: services[0].label,
+          service: service[0].plan,
+          plan_guid: "GUID",
+        });
       vscodeWindowMock
         .expects("withProgress")
         .withArgs({
@@ -784,7 +1044,13 @@ describe("cfViewCommands tests", () => {
         .expects("showInformationMessage")
         .withExactArgs(messages.service_bound_successful(services[0].label))
         .resolves();
-      expect(await cfViewCommands.cmdBindLocal(service, { path, ignore: true }, services[0].label)).deep.equal({
+      expect(
+        await cfViewCommands.cmdBindLocal(
+          service,
+          { path, ignore: true },
+          services[0].label
+        )
+      ).deep.equal({
         instanceName: services[0].label,
       });
     });
@@ -798,27 +1064,45 @@ describe("cfViewCommands tests", () => {
         { serviceName: eServiceTypes.user_provided, label: "ups1" },
         { serviceName: eServiceTypes.user_provided, label: "ups2" },
       ];
-      commandsMock.expects("getAvailableServices").withExactArgs(opts).resolves(services);
+      commandsMock
+        .expects("getAvailableServices")
+        .withExactArgs(opts)
+        .resolves(services);
       _.set(
         commands,
         "updateInstanceNameAndTags",
-        (availableServices: ServiceInstanceInfo[], serviceTypeInfo: ServiceTypeInfo[], instanceNames: string[]) => {
+        (
+          availableServices: ServiceInstanceInfo[],
+          serviceTypeInfo: ServiceTypeInfo[],
+          instanceNames: string[]
+        ) => {
           instanceNames.push(services[0].label);
           return Promise.resolve(instanceNames[0]);
         }
       );
-      const stubWithProgress = sandbox.stub(nsVsMock.testVscode.window, "withProgress");
+      const stubWithProgress = sandbox.stub(
+        nsVsMock.testVscode.window,
+        "withProgress"
+      );
       vscodeWindowMock
         .expects("showInformationMessage")
         .withExactArgs(messages.service_bound_successful(services[0].label))
         .resolves();
       expect(
-        await cfViewCommands.cmdBindLocal(service, { path, ignore: true }, undefined, { "quote-vcap": true })
+        await cfViewCommands.cmdBindLocal(
+          service,
+          { path, ignore: true },
+          undefined,
+          { "quote-vcap": true }
+        )
       ).deep.equal({
         instanceName: services[0].label,
       });
 
-      cfLocalMock.expects("cfBindLocalUps").withExactArgs("some/path", [services[0].label], [], true).resolves();
+      cfLocalMock
+        .expects("cfBindLocalUps")
+        .withExactArgs("some/path", [services[0].label], [], true)
+        .resolves();
       expect(stubWithProgress.calledOnce).to.be.true;
       expect(stubWithProgress.args[0].length).to.be.equal(2);
       expect(stubWithProgress.args[0][0]).to.be.deep.equal({
@@ -827,7 +1111,8 @@ describe("cfViewCommands tests", () => {
         cancellable: false,
       });
       /* eslint-disable-next-line @typescript-eslint/no-unsafe-argument */
-      expect(await stubWithProgress.args[0][1]({} as any, {} as any)).to.be.undefined;
+      expect(await stubWithProgress.args[0][1]({} as any, {} as any)).to.be
+        .undefined;
     });
 
     it("ok:: path selected, service is ServiceTypeInfo type, no services, services found, ups selected", async () => {
@@ -839,25 +1124,40 @@ describe("cfViewCommands tests", () => {
         { serviceName: eServiceTypes.user_provided, label: "ups1" },
         { serviceName: eServiceTypes.user_provided, label: "ups2" },
       ];
-      commandsMock.expects("getAvailableServices").withExactArgs(opts).resolves(services);
+      commandsMock
+        .expects("getAvailableServices")
+        .withExactArgs(opts)
+        .resolves(services);
       _.set(
         commands,
         "updateInstanceNameAndTags",
-        (availableServices: ServiceInstanceInfo[], serviceTypeInfo: ServiceTypeInfo[], instanceNames: string[]) => {
+        (
+          availableServices: ServiceInstanceInfo[],
+          serviceTypeInfo: ServiceTypeInfo[],
+          instanceNames: string[]
+        ) => {
           instanceNames.push(services[0].label);
           return Promise.resolve(instanceNames[0]);
         }
       );
-      const stubWithProgress = sandbox.stub(nsVsMock.testVscode.window, "withProgress");
+      const stubWithProgress = sandbox.stub(
+        nsVsMock.testVscode.window,
+        "withProgress"
+      );
       vscodeWindowMock
         .expects("showInformationMessage")
         .withExactArgs(messages.service_bound_successful(services[0].label))
         .resolves();
-      expect(await cfViewCommands.cmdBindLocal(service, { path, ignore: true })).deep.equal({
+      expect(
+        await cfViewCommands.cmdBindLocal(service, { path, ignore: true })
+      ).deep.equal({
         instanceName: services[0].label,
       });
 
-      cfLocalMock.expects("cfBindLocalUps").withExactArgs("some/path", [services[0].label], [], undefined).resolves();
+      cfLocalMock
+        .expects("cfBindLocalUps")
+        .withExactArgs("some/path", [services[0].label], [], undefined)
+        .resolves();
       expect(stubWithProgress.calledOnce).to.be.true;
       expect(stubWithProgress.args[0].length).to.be.equal(2);
       expect(stubWithProgress.args[0][0]).to.be.deep.equal({
@@ -866,15 +1166,25 @@ describe("cfViewCommands tests", () => {
         cancellable: false,
       });
       /* eslint-disable-next-line @typescript-eslint/no-unsafe-argument */
-      expect(await stubWithProgress.args[0][1]({} as any, {} as any)).to.be.undefined;
+      expect(await stubWithProgress.args[0][1]({} as any, {} as any)).to.be
+        .undefined;
     });
 
     it("ok:: path selected, service is not ServiceTypeInfo type, no ups, services found, type selected", async () => {
       service[0].plan = plans[0].label;
       delete (service[0] as any).name;
-      opts.query = { filters: [{ key: eFilters.service_plan_names, value: service[0].plan }], per_page: CF_PAGE_SIZE };
-      commandsMock.expects("getAvailableServices").withExactArgs(opts).resolves(services);
-      commandsMock.expects("getInstanceName").withExactArgs(services).resolves(services[0].label);
+      opts.query = {
+        filters: [{ key: eFilters.service_plan_names, value: service[0].plan }],
+        per_page: CF_PAGE_SIZE,
+      };
+      commandsMock
+        .expects("getAvailableServices")
+        .withExactArgs(opts)
+        .resolves(services);
+      commandsMock
+        .expects("getInstanceName")
+        .withExactArgs(services)
+        .resolves(services[0].label);
       vscodeWindowMock
         .expects("withProgress")
         .withArgs({
@@ -887,7 +1197,9 @@ describe("cfViewCommands tests", () => {
         .expects("showInformationMessage")
         .withExactArgs(messages.service_bound_successful(services[0].label))
         .resolves();
-      expect(await cfViewCommands.cmdBindLocal(service, { path, ignore: true })).deep.equal({
+      expect(
+        await cfViewCommands.cmdBindLocal(service, { path, ignore: true })
+      ).deep.equal({
         instanceName: services[0].label,
       });
     });
@@ -895,9 +1207,18 @@ describe("cfViewCommands tests", () => {
     it("ok:: path selected, service is not ServiceTypeInfo type, no ups, services found, type selection canceled", async () => {
       service[0].plan = plans[0].label;
       delete (service[0] as any).name;
-      opts.query = { filters: [{ key: eFilters.service_plan_names, value: service[0].plan }], per_page: CF_PAGE_SIZE };
-      commandsMock.expects("getAvailableServices").withExactArgs(opts).resolves(services);
-      commandsMock.expects("getInstanceName").withExactArgs(services).resolves();
+      opts.query = {
+        filters: [{ key: eFilters.service_plan_names, value: service[0].plan }],
+        per_page: CF_PAGE_SIZE,
+      };
+      commandsMock
+        .expects("getAvailableServices")
+        .withExactArgs(opts)
+        .resolves(services);
+      commandsMock
+        .expects("getInstanceName")
+        .withExactArgs(services)
+        .resolves();
       vscodeWindowMock
         .expects("withProgress")
         .withArgs({
@@ -906,19 +1227,30 @@ describe("cfViewCommands tests", () => {
           cancellable: false,
         })
         .never();
-      expect(await cfViewCommands.cmdBindLocal(service, { path, ignore: true })).to.be.undefined;
+      expect(await cfViewCommands.cmdBindLocal(service, { path, ignore: true }))
+        .to.be.undefined;
     });
 
     it("ok:: path selected, service is ServiceTypeInfo type, no ups, services found, selected new", async () => {
       service[0].plan = plans[0].label;
       service[0].name = "";
-      opts.query = { filters: [{ key: eFilters.service_plan_names, value: service[0].plan }], per_page: CF_PAGE_SIZE };
+      opts.query = {
+        filters: [{ key: eFilters.service_plan_names, value: service[0].plan }],
+        per_page: CF_PAGE_SIZE,
+      };
       const newService = "my-service";
-      commandsMock.expects("getAvailableServices").withExactArgs(opts).resolves(services);
+      commandsMock
+        .expects("getAvailableServices")
+        .withExactArgs(opts)
+        .resolves(services);
       _.set(
         commands,
         "updateInstanceNameAndTags",
-        (availableServices: ServiceInstanceInfo[], serviceTypeInfo: ServiceTypeInfo[], instanceNames: string[]) => {
+        (
+          availableServices: ServiceInstanceInfo[],
+          serviceTypeInfo: ServiceTypeInfo[],
+          instanceNames: string[]
+        ) => {
           instanceNames.push(newService);
           return Promise.resolve(instanceNames[0]);
         }
@@ -926,7 +1258,11 @@ describe("cfViewCommands tests", () => {
       cfLocalMock
         .expects("cfGetInstanceMetadata")
         .withExactArgs(newService)
-        .resolves({ serviceName: newService, service: service[0].plan, plan_guid: "GUID" });
+        .resolves({
+          serviceName: newService,
+          service: service[0].plan,
+          plan_guid: "GUID",
+        });
       vscodeWindowMock
         .expects("withProgress")
         .withArgs({
@@ -939,7 +1275,9 @@ describe("cfViewCommands tests", () => {
         .expects("showInformationMessage")
         .withExactArgs(messages.service_bound_successful(newService))
         .resolves();
-      expect(await cfViewCommands.cmdBindLocal(service, { path, ignore: true })).deep.equal({
+      expect(
+        await cfViewCommands.cmdBindLocal(service, { path, ignore: true })
+      ).deep.equal({
         instanceName: newService,
       });
     });
@@ -948,27 +1286,48 @@ describe("cfViewCommands tests", () => {
       service[0].plan = plans[0].label;
       service[0].name = "";
       service[0].allowCreate = {};
-      opts.query = { filters: [{ key: eFilters.service_plan_names, value: service[0].plan }], per_page: CF_PAGE_SIZE };
+      opts.query = {
+        filters: [{ key: eFilters.service_plan_names, value: service[0].plan }],
+        per_page: CF_PAGE_SIZE,
+      };
       let expectedServicesList;
       let servicePlans;
-      commandsMock.expects("getAvailableServices").withExactArgs(opts).resolves(services);
+      commandsMock
+        .expects("getAvailableServices")
+        .withExactArgs(opts)
+        .resolves(services);
       _.set(
         commands,
         "updateInstanceNameAndTags",
-        (availableServices: ServiceInstanceInfo[], serviceTypeInfo: ServiceTypeInfo[]) => {
+        (
+          availableServices: ServiceInstanceInfo[],
+          serviceTypeInfo: ServiceTypeInfo[]
+        ) => {
           expectedServicesList = availableServices;
           servicePlans = _.get(serviceTypeInfo, "plans");
           return Promise.resolve();
         }
       );
-      expect(await cfViewCommands.cmdBindLocal(service, { path, ignore: true })).to.be.undefined;
-      expect(_.has(_.find(expectedServicesList, ["label", commands.CMD_CREATE_SERVICE]), "serviceName")).to.be.true;
+      expect(await cfViewCommands.cmdBindLocal(service, { path, ignore: true }))
+        .to.be.undefined;
+      expect(
+        _.has(
+          _.find(expectedServicesList, ["label", commands.CMD_CREATE_SERVICE]),
+          "serviceName"
+        )
+      ).to.be.true;
       expect(servicePlans).to.be.undefined;
     });
 
     it("ok:: return chisel task", async () => {
-      opts.query = { filters: [{ key: eFilters.service_plan_names, value: service[0].plan }], per_page: CF_PAGE_SIZE };
-      commandsMock.expects("getAvailableServices").withExactArgs(opts).resolves(services);
+      opts.query = {
+        filters: [{ key: eFilters.service_plan_names, value: service[0].plan }],
+        per_page: CF_PAGE_SIZE,
+      };
+      commandsMock
+        .expects("getAvailableServices")
+        .withExactArgs(opts)
+        .resolves(services);
       vscodeWindowMock
         .expects("withProgress")
         .withArgs({
@@ -989,9 +1348,17 @@ describe("cfViewCommands tests", () => {
         problemMatcher: "$chisel-client",
         args: ["client", "--auth"],
       };
-      chiselMock.expects("checkAndCreateChiselTask").withExactArgs(path.fsPath, services[0].label).resolves(chiselTask);
-      chiselMock.expects("deleteChiselParamsFromFile").withExactArgs(path.fsPath).resolves();
-      expect(await cfViewCommands.cmdBindLocal(service, { path, ignore: true })).deep.equal({
+      chiselMock
+        .expects("checkAndCreateChiselTask")
+        .withExactArgs(path.fsPath, services[0].label)
+        .resolves(chiselTask);
+      chiselMock
+        .expects("deleteChiselParamsFromFile")
+        .withExactArgs(path.fsPath)
+        .resolves();
+      expect(
+        await cfViewCommands.cmdBindLocal(service, { path, ignore: true })
+      ).deep.equal({
         instanceName: services[0].label,
         chiselTask: chiselTask,
       });
@@ -1016,7 +1383,11 @@ describe("cfViewCommands tests", () => {
       _.set(
         commands,
         "updateInstanceNameAndTags",
-        (availableServices: ServiceInstanceInfo[], serviceTypeInfo: ServiceTypeInfo[], instanceNames: string[]) => {
+        (
+          availableServices: ServiceInstanceInfo[],
+          serviceTypeInfo: ServiceTypeInfo[],
+          instanceNames: string[]
+        ) => {
           instanceNames.push(services[1].label);
           return Promise.resolve(instanceNames[0]);
         }
@@ -1027,27 +1398,45 @@ describe("cfViewCommands tests", () => {
       _.set(commands, "updateInstanceNameAndTags", origin);
     });
 
-    const service: ServiceTypeInfo[] = [{ name: "", plan: "hdi-shared", prompt: "", tag: "" }];
+    const service: ServiceTypeInfo[] = [
+      { name: "", plan: "hdi-shared", prompt: "", tag: "" },
+    ];
     const opts: DisplayServices = {
-      query: { filters: [{ key: eFilters.service_plan_names, value: service[0].plan }], per_page: CF_PAGE_SIZE },
+      query: {
+        filters: [{ key: eFilters.service_plan_names, value: service[0].plan }],
+        per_page: CF_PAGE_SIZE,
+      },
     };
     const envPath = nsVsMock.testVscode.Uri.file("root/folder");
 
     it("ok:: path is empty", async () => {
       const path = nsVsMock.testVscode.Uri.file("");
-      expect(await cfViewCommands.bindLocalService(service, { path, ignore: true })).to.be.empty;
+      expect(
+        await cfViewCommands.bindLocalService(service, { path, ignore: true })
+      ).to.be.empty;
     });
 
     it("ok:: path defined, plan required, no service selected", async () => {
-      commandsMock.expects("getAvailableServices").withExactArgs(opts).resolves(services);
+      commandsMock
+        .expects("getAvailableServices")
+        .withExactArgs(opts)
+        .resolves(services);
       _.set(commands, "updateInstanceNameAndTags", () => {
         return Promise.resolve([]);
       });
-      expect(await cfViewCommands.bindLocalService(service, { path: envPath, ignore: true })).to.be.undefined;
+      expect(
+        await cfViewCommands.bindLocalService(service, {
+          path: envPath,
+          ignore: true,
+        })
+      ).to.be.undefined;
     });
 
     it("ok:: path defined, plan required, service selected", async () => {
-      commandsMock.expects("getAvailableServices").withExactArgs(opts).resolves(services);
+      commandsMock
+        .expects("getAvailableServices")
+        .withExactArgs(opts)
+        .resolves(services);
       vscodeWindowMock
         .expects("withProgress")
         .withArgs({
@@ -1060,13 +1449,20 @@ describe("cfViewCommands tests", () => {
         .expects("showInformationMessage")
         .withExactArgs(messages.service_bound_successful(services[1].label))
         .resolves();
-      assert.deepEqual(await cfViewCommands.bindLocalService(service, { path: envPath, ignore: true }), [
-        services[1].label,
-      ]);
+      assert.deepEqual(
+        await cfViewCommands.bindLocalService(service, {
+          path: envPath,
+          ignore: true,
+        }),
+        [services[1].label]
+      );
     });
 
     it("ok:: path defined, plan required, service selected, silent mode required", async () => {
-      commandsMock.expects("getAvailableServices").withExactArgs(opts).resolves(services);
+      commandsMock
+        .expects("getAvailableServices")
+        .withExactArgs(opts)
+        .resolves(services);
       vscodeWindowMock
         .expects("withProgress")
         .withArgs({
@@ -1080,15 +1476,25 @@ describe("cfViewCommands tests", () => {
         .withExactArgs(messages.service_bound_successful(services[1].label))
         .never();
       assert.deepEqual(
-        await cfViewCommands.bindLocalService(service, { path: envPath, ignore: true }, { silent: true }),
+        await cfViewCommands.bindLocalService(
+          service,
+          { path: envPath, ignore: true },
+          { silent: true }
+        ),
         [services[1].label]
       );
     });
 
     it("ok:: serviceInfo is not array, service selected", async () => {
       vscodeWorkspaceMock.expects("getWorkspaceFolder").returns(undefined);
-      commandsMock.expects("getAvailableServices").withExactArgs(opts).resolves(services);
-      commandsMock.expects("getInstanceName").withExactArgs(services).resolves(services[1].label);
+      commandsMock
+        .expects("getAvailableServices")
+        .withExactArgs(opts)
+        .resolves(services);
+      commandsMock
+        .expects("getInstanceName")
+        .withExactArgs(services)
+        .resolves(services[1].label);
       vscodeWindowMock
         .expects("withProgress")
         .withArgs({
@@ -1102,34 +1508,70 @@ describe("cfViewCommands tests", () => {
         .withExactArgs(messages.service_bound_successful(services[1].label))
         .resolves();
       delete (service[0] as any).name;
-      assert.deepEqual(await cfViewCommands.bindLocalService(service, envPath), [services[1].label]);
+      assert.deepEqual(
+        await cfViewCommands.bindLocalService(service, envPath),
+        [services[1].label]
+      );
     });
 
     it("ok:: serviceInfo is not array, select service canceled", async () => {
-      const service: ServiceTypeInfo[] = [{ name: "", plan: "hdi-shared", prompt: "", tag: "" }];
+      const service: ServiceTypeInfo[] = [
+        { name: "", plan: "hdi-shared", prompt: "", tag: "" },
+      ];
       delete (service[0] as any).name;
-      commandsMock.expects("getAvailableServices").withExactArgs(opts).resolves(services);
-      commandsMock.expects("getInstanceName").withExactArgs(services).resolves();
-      expect(await cfViewCommands.bindLocalService(service, envPath)).to.be.undefined;
+      commandsMock
+        .expects("getAvailableServices")
+        .withExactArgs(opts)
+        .resolves(services);
+      commandsMock
+        .expects("getInstanceName")
+        .withExactArgs(services)
+        .resolves();
+      expect(await cfViewCommands.bindLocalService(service, envPath)).to.be
+        .undefined;
     });
 
     it("ok:: serviceInfo is array, no services found", async () => {
       service[0].name = "";
-      commandsMock.expects("getAvailableServices").withExactArgs(opts).resolves([]);
+      commandsMock
+        .expects("getAvailableServices")
+        .withExactArgs(opts)
+        .resolves([]);
       vscodeWindowMock.expects("withProgress").never();
-      expect(await cfViewCommands.bindLocalService(service, { path: envPath, ignore: true })).to.be.empty;
+      expect(
+        await cfViewCommands.bindLocalService(service, {
+          path: envPath,
+          ignore: true,
+        })
+      ).to.be.empty;
     });
 
     it("ok:: serviceInfo is array, no services found, plan is not provided", async () => {
-      const copyService: ServiceTypeInfo[] = [{ name: "", plan: "", prompt: "", tag: "" }];
+      const copyService: ServiceTypeInfo[] = [
+        { name: "", plan: "", prompt: "", tag: "" },
+      ];
       const opts: DisplayServices = { query: undefined };
-      commandsMock.expects("getAvailableServices").withExactArgs(opts).resolves([]);
-      expect(await cfViewCommands.bindLocalService(copyService, { path: envPath, ignore: true })).to.be.empty;
+      commandsMock
+        .expects("getAvailableServices")
+        .withExactArgs(opts)
+        .resolves([]);
+      expect(
+        await cfViewCommands.bindLocalService(copyService, {
+          path: envPath,
+          ignore: true,
+        })
+      ).to.be.empty;
     });
 
     it("show error:: serviceInfo is not array, service selected, doBind rejected", async () => {
-      commandsMock.expects("getAvailableServices").withExactArgs(opts).resolves(services);
-      commandsMock.expects("getInstanceName").withExactArgs(services).resolves(services[1].label);
+      commandsMock
+        .expects("getAvailableServices")
+        .withExactArgs(opts)
+        .resolves(services);
+      commandsMock
+        .expects("getInstanceName")
+        .withExactArgs(services)
+        .resolves(services[1].label);
       const error = new Error("error");
       vscodeWindowMock
         .expects("withProgress")
@@ -1139,7 +1581,10 @@ describe("cfViewCommands tests", () => {
           cancellable: false,
         })
         .rejects(error);
-      vscodeWindowMock.expects("showErrorMessage").withExactArgs(error.message).resolves();
+      vscodeWindowMock
+        .expects("showErrorMessage")
+        .withExactArgs(error.message)
+        .resolves();
       delete (service[0] as any).name;
       await cfViewCommands.bindLocalService(service, envPath);
     });
@@ -1149,16 +1594,34 @@ describe("cfViewCommands tests", () => {
       service[0].name = " hana , xsuaa ";
       commandsMock
         .expects("fetchServicePlanList")
-        .withExactArgs(_.cloneDeep({ filters: [{ key: eFilters.service_offering_names, value: "hana,xsuaa" }] }))
+        .withExactArgs(
+          _.cloneDeep({
+            filters: [
+              { key: eFilters.service_offering_names, value: "hana,xsuaa" },
+            ],
+          })
+        )
         .resolves(plans);
       const query: IServiceQuery = {
-        filters: [{ key: eFilters.service_plan_guids, value: _.join(_.map(plans, "guid")) }],
+        filters: [
+          {
+            key: eFilters.service_plan_guids,
+            value: _.join(_.map(plans, "guid")),
+          },
+        ],
         per_page: CF_PAGE_SIZE,
       };
-      commandsMock.expects("getAvailableServices").withExactArgs({ query }).resolves(services);
-      assert.deepEqual(await cfViewCommands.bindLocalService(service, { path: envPath, ignore: true }), [
-        services[1].label,
-      ]);
+      commandsMock
+        .expects("getAvailableServices")
+        .withExactArgs({ query })
+        .resolves(services);
+      assert.deepEqual(
+        await cfViewCommands.bindLocalService(service, {
+          path: envPath,
+          ignore: true,
+        }),
+        [services[1].label]
+      );
     });
 
     it("ok:: serviceInfo is array, service name - ups only requested, no services found", async () => {
@@ -1169,13 +1632,22 @@ describe("cfViewCommands tests", () => {
         { serviceName: eServiceTypes.user_provided, label: "label2" },
       ];
       const query: IServiceQuery = {
-        filters: [{ key: eFilters.service_plan_names, value: "nothing-to-show" }],
+        filters: [
+          { key: eFilters.service_plan_names, value: "nothing-to-show" },
+        ],
         per_page: CF_PAGE_SIZE,
       };
-      commandsMock.expects("getAvailableServices").withExactArgs({ query }).resolves(upsServices);
-      assert.deepEqual(await cfViewCommands.bindLocalService(service, { path: envPath, ignore: true }), [
-        services[1].label,
-      ]);
+      commandsMock
+        .expects("getAvailableServices")
+        .withExactArgs({ query })
+        .resolves(upsServices);
+      assert.deepEqual(
+        await cfViewCommands.bindLocalService(service, {
+          path: envPath,
+          ignore: true,
+        }),
+        [services[1].label]
+      );
     });
   });
 });

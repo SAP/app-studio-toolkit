@@ -8,7 +8,8 @@ import { promisify } from "util";
  * Note that the values of these configuration properties must match those defined in the package.json
  */
 const LOGGING_LEVEL_CONFIG_PROP = "CloudFoundryTools.logging.loggingLevel";
-const SOURCE_TRACKING_CONFIG_PROP = "CloudFoundryTools.logging.sourceLocationTracking";
+const SOURCE_TRACKING_CONFIG_PROP =
+  "CloudFoundryTools.logging.sourceLocationTracking";
 
 const readFile = promisify(readFileCallback);
 // On file load we initialize our logger to `NOOP_LOGGER`
@@ -30,7 +31,9 @@ export function getModuleLogger(name: string): IChildLogger {
 }
 
 export async function initLogger(context: ExtensionContext): Promise<void> {
-  const meta = JSON.parse(await readFile(resolve(context.extensionPath, "package.json"), "utf8")) as {
+  const meta = JSON.parse(
+    await readFile(resolve(context.extensionPath, "package.json"), "utf8")
+  ) as {
     displayName: string;
   };
 

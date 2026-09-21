@@ -7,7 +7,13 @@ import { mockVscode } from "./ext/mockUtil";
 mockVscode(nsVsMock.testVscode, "src/commands.ts");
 import * as commands from "../src/commands";
 import * as cfLocal from "@sap/cf-tools/out/src/cf-local";
-import { ServiceTypeInfo, ServiceInstanceInfo, Cli, CF_PAGE_SIZE, OK } from "@sap/cf-tools";
+import {
+  ServiceTypeInfo,
+  ServiceInstanceInfo,
+  Cli,
+  CF_PAGE_SIZE,
+  OK,
+} from "@sap/cf-tools";
 import { messages } from "../src/messages";
 import * as cfLocalUtils from "@sap/cf-tools/out/src/utils";
 import * as loginTargetView from "../src/loginTargetView/loginTargetView";
@@ -65,7 +71,11 @@ describe("commands unit tests", () => {
   });
 
   describe("cmdLogin", () => {
-    const target = new cfView.CFTargetTI({ label: "target", isCurrent: true, isDirty: false });
+    const target = new cfView.CFTargetTI({
+      label: "target",
+      isCurrent: true,
+      isDirty: false,
+    });
     const parent = new cfView.CFFolder("parent", target);
     const node = new cfView.CFLoginNode(parent);
 
@@ -176,16 +186,24 @@ describe("commands unit tests", () => {
     it("fail:: instanceName is not specified", async () => {
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_service_name, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.enter_service_name,
+          ignoreFocusOut: true,
+        })
         .resolves();
       expect(await commands.cmdCreateService()).to.be.undefined;
     });
 
     it("fail:: withProgress is called, servicesInfo is empty", async () => {
-      vscodeWindowMock.expects("showErrorMessage").withExactArgs(messages.no_services_instances_found);
+      vscodeWindowMock
+        .expects("showErrorMessage")
+        .withExactArgs(messages.no_services_instances_found);
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_service_name, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.enter_service_name,
+          ignoreFocusOut: true,
+        })
         .resolves("instanceName");
       vscodeWindowMock
         .expects("withProgress")
@@ -199,11 +217,18 @@ describe("commands unit tests", () => {
     });
 
     it("fail:: withProgress is called, servicesInfo is not empty, planInfo is empty", async () => {
-      const info = { service_plans_url: "test_service_plans_url", label: "testLabel", ignoreFocusOut: true };
+      const info = {
+        service_plans_url: "test_service_plans_url",
+        label: "testLabel",
+        ignoreFocusOut: true,
+      };
       vscodeWindowMock.expects("showQuickPick").resolves(info);
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_service_name, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.enter_service_name,
+          ignoreFocusOut: true,
+        })
         .resolves("instanceName");
       vscodeWindowMock
         .expects("withProgress")
@@ -232,7 +257,10 @@ describe("commands unit tests", () => {
       vscodeWindowMock.expects("showQuickPick").resolves(undefined);
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_service_name, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.enter_service_name,
+          ignoreFocusOut: true,
+        })
         .resolves("instanceName");
       vscodeWindowMock
         .expects("withProgress")
@@ -249,7 +277,10 @@ describe("commands unit tests", () => {
       vscodeWindowMock.expects("showQuickPick").never();
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_service_name, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.enter_service_name,
+          ignoreFocusOut: true,
+        })
         .resolves("instanceName");
       vscodeWindowMock
         .expects("withProgress")
@@ -282,7 +313,11 @@ describe("commands unit tests", () => {
         .expects("withProgress")
         .withArgs({
           location: nsVsMock.testVscode.ProgressLocation.Notification,
-          title: messages.creating_service("instanceName", "myService", "plan1"),
+          title: messages.creating_service(
+            "instanceName",
+            "myService",
+            "plan1"
+          ),
           cancellable: true,
         })
         .resolves();
@@ -294,7 +329,10 @@ describe("commands unit tests", () => {
       vscodeWindowMock.expects("showQuickPick").never();
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_service_name, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.enter_service_name,
+          ignoreFocusOut: true,
+        })
         .resolves("instanceName");
       vscodeWindowMock
         .expects("withProgress")
@@ -316,22 +354,32 @@ describe("commands unit tests", () => {
       const service = { name: "myService", plan: "wrong", tag: "", prompt: "" };
       vscodeWindowMock
         .expects("showErrorMessage")
-        .withExactArgs(messages.no_service_plan_info_found(service.plan, "myService"))
+        .withExactArgs(
+          messages.no_service_plan_info_found(service.plan, "myService")
+        )
         .resolves();
       expect(await commands.cmdCreateService(service)).to.be.undefined;
     });
 
     it("ok:: withProgress is called, servicesInfo is not empty, planInfo is not empty", async () => {
+      vscodeWindowMock.expects("showQuickPick").resolves({
+        service_plans_url: "test_service_plans_url",
+        label: "testServiceInfoLabel",
+        ignoreFocusOut: true,
+      });
       vscodeWindowMock
         .expects("showQuickPick")
-        .resolves({ service_plans_url: "test_service_plans_url", label: "testServiceInfoLabel", ignoreFocusOut: true });
-      vscodeWindowMock
-        .expects("showQuickPick")
-        .withExactArgs([{}], { placeHolder: messages.select_service_plan, ignoreFocusOut: true })
+        .withExactArgs([{}], {
+          placeHolder: messages.select_service_plan,
+          ignoreFocusOut: true,
+        })
         .resolves({ label: "testPlanInfoLabel", guid: "plan-guid" });
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_service_name, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.enter_service_name,
+          ignoreFocusOut: true,
+        })
         .resolves("instanceName");
       vscodeWindowMock
         .expects("showInputBox")
@@ -355,7 +403,11 @@ describe("commands unit tests", () => {
         .expects("withProgress")
         .withArgs({
           location: nsVsMock.testVscode.ProgressLocation.Notification,
-          title: messages.creating_service("instanceName", "testServiceInfoLabel", "testPlanInfoLabel"),
+          title: messages.creating_service(
+            "instanceName",
+            "testServiceInfoLabel",
+            "testPlanInfoLabel"
+          ),
           cancellable: true,
         })
         .resolves("instanceName");
@@ -371,16 +423,24 @@ describe("commands unit tests", () => {
     });
 
     it("fail:: withProgress is called, servicesInfo is not empty, planInfo is not empty, params canceled", async () => {
+      vscodeWindowMock.expects("showQuickPick").resolves({
+        service_plans_url: "test_service_plans_url",
+        label: "testServiceInfoLabel",
+        ignoreFocusOut: true,
+      });
       vscodeWindowMock
         .expects("showQuickPick")
-        .resolves({ service_plans_url: "test_service_plans_url", label: "testServiceInfoLabel", ignoreFocusOut: true });
-      vscodeWindowMock
-        .expects("showQuickPick")
-        .withExactArgs([{}], { placeHolder: messages.select_service_plan, ignoreFocusOut: true })
+        .withExactArgs([{}], {
+          placeHolder: messages.select_service_plan,
+          ignoreFocusOut: true,
+        })
         .resolves({ label: "testPlanInfoLabel" });
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_service_name, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.enter_service_name,
+          ignoreFocusOut: true,
+        })
         .resolves("instanceName");
       vscodeWindowMock
         .expects("showInputBox")
@@ -412,16 +472,24 @@ describe("commands unit tests", () => {
     });
 
     it("fail:: withProgress is called, servicesInfo is not empty, select plan canceled", async () => {
+      vscodeWindowMock.expects("showQuickPick").resolves({
+        service_plans_url: "test_service_plans_url",
+        label: "testServiceInfoLabel",
+        ignoreFocusOut: true,
+      });
       vscodeWindowMock
         .expects("showQuickPick")
-        .resolves({ service_plans_url: "test_service_plans_url", label: "testServiceInfoLabel", ignoreFocusOut: true });
-      vscodeWindowMock
-        .expects("showQuickPick")
-        .withExactArgs([{}], { placeHolder: messages.select_service_plan, ignoreFocusOut: true })
+        .withExactArgs([{}], {
+          placeHolder: messages.select_service_plan,
+          ignoreFocusOut: true,
+        })
         .resolves(undefined);
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_service_name, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.enter_service_name,
+          ignoreFocusOut: true,
+        })
         .resolves("instanceName");
       vscodeWindowMock
         .expects("withProgress")
@@ -455,7 +523,9 @@ describe("commands unit tests", () => {
       };
       vscodeWindowMock
         .expects("showErrorMessage")
-        .withExactArgs(messages.no_services_instances_found_for_type(info.name));
+        .withExactArgs(
+          messages.no_services_instances_found_for_type(info.name)
+        );
       vscodeWindowMock
         .expects("showInputBox")
         .withExactArgs({
@@ -479,7 +549,10 @@ describe("commands unit tests", () => {
       vscodeWindowMock.expects("showQuickPick").never();
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_service_name, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.enter_service_name,
+          ignoreFocusOut: true,
+        })
         .resolves("instanceName");
       vscodeWindowMock
         .expects("withProgress")
@@ -511,7 +584,11 @@ describe("commands unit tests", () => {
         .expects("withProgress")
         .withArgs({
           location: nsVsMock.testVscode.ProgressLocation.Notification,
-          title: messages.creating_service("instanceName", "myService", "plan1"),
+          title: messages.creating_service(
+            "instanceName",
+            "myService",
+            "plan1"
+          ),
           cancellable: true,
         })
         .resolves();
@@ -531,7 +608,10 @@ describe("commands unit tests", () => {
       const error = new Error("withProgress error");
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_service_name, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.enter_service_name,
+          ignoreFocusOut: true,
+        })
         .resolves("instanceName");
       vscodeWindowMock
         .expects("withProgress")
@@ -541,7 +621,10 @@ describe("commands unit tests", () => {
           cancellable: true,
         })
         .rejects(error);
-      vscodeWindowMock.expects("showErrorMessage").withExactArgs(error.message).resolves();
+      vscodeWindowMock
+        .expects("showErrorMessage")
+        .withExactArgs(error.message)
+        .resolves();
       const result = await commands.cmdCreateService();
       expect(result).to.be.undefined;
     });
@@ -556,7 +639,10 @@ describe("commands unit tests", () => {
       vscodeWindowMock.expects("showQuickPick").never();
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_service_name, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.enter_service_name,
+          ignoreFocusOut: true,
+        })
         .resolves(expectedInstanceName);
       vscodeWindowMock
         .expects("withProgress")
@@ -587,7 +673,11 @@ describe("commands unit tests", () => {
         .expects("withProgress")
         .withArgs({
           location: nsVsMock.testVscode.ProgressLocation.Notification,
-          title: messages.creating_service(expectedInstanceName, expectedServiceName, expectedPlanName),
+          title: messages.creating_service(
+            expectedInstanceName,
+            expectedServiceName,
+            expectedPlanName
+          ),
           cancellable: true,
         })
         .resolves(expectedServiceName);
@@ -610,7 +700,13 @@ describe("commands unit tests", () => {
       };
       const plans = [{ label: expectedPlanName }];
 
-      await testAllowCreateParams(expectedInstanceName, expectedServiceName, expectedPlanName, info, plans);
+      await testAllowCreateParams(
+        expectedInstanceName,
+        expectedServiceName,
+        expectedPlanName,
+        info,
+        plans
+      );
     });
 
     it("ok:: use allowCreate serviceName, plan and tag because they are defined in allowCreate ", async () => {
@@ -631,7 +727,13 @@ describe("commands unit tests", () => {
       };
       const plans = [{ label: expectedPlanName }];
 
-      await testAllowCreateParams(expectedInstanceName, expectedServiceName, expectedPlanName, info, plans);
+      await testAllowCreateParams(
+        expectedInstanceName,
+        expectedServiceName,
+        expectedPlanName,
+        info,
+        plans
+      );
     });
   });
 
@@ -645,8 +747,11 @@ describe("commands unit tests", () => {
           "testInstance",
           undefined,
           undefined,
-          (undefined as unknown) as Progress<{ message?: string; increment?: number }>,
-          (undefined as unknown) as CancellationToken
+          undefined as unknown as Progress<{
+            message?: string;
+            increment?: number;
+          }>,
+          undefined as unknown as CancellationToken
         );
         fail("test should not reach here");
       } catch (e) {
@@ -682,8 +787,11 @@ describe("commands unit tests", () => {
         "testInstance",
         params,
         tags,
-        (undefined as unknown) as Progress<{ message?: string; increment?: number }>,
-        (undefined as unknown) as CancellationToken
+        undefined as unknown as Progress<{
+          message?: string;
+          increment?: number;
+        }>,
+        undefined as unknown as CancellationToken
       );
     });
   });
@@ -828,7 +936,10 @@ describe("commands unit tests", () => {
           cancellable: true,
         })
         .rejects(new Error(errorMessage));
-      vscodeCommandsMock.expects("executeCommand").withExactArgs(commandId).resolves(OK);
+      vscodeCommandsMock
+        .expects("executeCommand")
+        .withExactArgs(commandId)
+        .resolves(OK);
       vscodeWindowMock
         .expects("withProgress")
         .withArgs({
@@ -852,7 +963,10 @@ describe("commands unit tests", () => {
         })
         .rejects(new Error(errorMessage));
       cfLocalMock.expects("cfGetTarget").resolves({ user: "bag023" });
-      vscodeCommandsMock.expects("executeCommand").withExactArgs(commandId).resolves(undefined); // canceled by user
+      vscodeCommandsMock
+        .expects("executeCommand")
+        .withExactArgs(commandId)
+        .resolves(undefined); // canceled by user
       try {
         await commands.getAvailableServices();
         fail("should fail");
@@ -871,7 +985,10 @@ describe("commands unit tests", () => {
           cancellable: true,
         })
         .rejects(new Error(errorMessage));
-      vscodeCommandsMock.expects("executeCommand").withExactArgs(commandId).resolves(OK);
+      vscodeCommandsMock
+        .expects("executeCommand")
+        .withExactArgs(commandId)
+        .resolves(OK);
       vscodeWindowMock
         .expects("withProgress")
         .withArgs({
@@ -880,7 +997,9 @@ describe("commands unit tests", () => {
           cancellable: true,
         })
         .resolves([{}]);
-      cfLocalMock.expects("cfGetTarget").resolves({ user: "bag023", org: "org" });
+      cfLocalMock
+        .expects("cfGetTarget")
+        .resolves({ user: "bag023", org: "org" });
       const result = await commands.getAvailableServices();
       expect(result).to.have.lengthOf(1);
     });
@@ -896,7 +1015,9 @@ describe("commands unit tests", () => {
           cancellable: true,
         })
         .rejects(new Error(errorMessage));
-      cfLocalMock.expects("cfGetTarget").resolves({ user: "bag023", org: "org", space: "space" });
+      cfLocalMock
+        .expects("cfGetTarget")
+        .resolves({ user: "bag023", org: "org", space: "space" });
       try {
         await commands.getAvailableServices();
         fail("should fail");
@@ -975,8 +1096,16 @@ describe("commands unit tests", () => {
   describe("updateInstanceNameAndTags", () => {
     it("ok:: availableServices is empty", async () => {
       vscodeWindowMock.expects("showQuickPick").never();
-      vscodeWindowMock.expects("showErrorMessage").withExactArgs(messages.no_services_instances_found).resolves();
-      const result = await commands.updateInstanceNameAndTags([], undefined, [], []);
+      vscodeWindowMock
+        .expects("showErrorMessage")
+        .withExactArgs(messages.no_services_instances_found)
+        .resolves();
+      const result = await commands.updateInstanceNameAndTags(
+        [],
+        undefined,
+        [],
+        []
+      );
       expect(result).to.be.undefined;
     });
 
@@ -987,18 +1116,37 @@ describe("commands unit tests", () => {
         .expects("showErrorMessage")
         .withExactArgs(messages.no_services_instances_found_for_type(name))
         .resolves();
-      const result = await commands.updateInstanceNameAndTags([], { name, plan: "", tag: "", prompt: "" }, [], []);
+      const result = await commands.updateInstanceNameAndTags(
+        [],
+        { name, plan: "", tag: "", prompt: "" },
+        [],
+        []
+      );
       expect(result).to.be.undefined;
     });
 
     it("ok:: availableServices is not empty", async () => {
-      const plans = [{ guid: "plan_guid_1", label: "uuaa", description: "plan_description_1" }];
+      const plans = [
+        {
+          guid: "plan_guid_1",
+          label: "uuaa",
+          description: "plan_description_1",
+        },
+      ];
       const availableServices = [
-        { serviceName: "testServiceName1", label: "testLabel1", plan_guid: "plan_guid_1", plan: plans[0].label },
+        {
+          serviceName: "testServiceName1",
+          label: "testLabel1",
+          plan_guid: "plan_guid_1",
+          plan: plans[0].label,
+        },
         { serviceName: "testServiceName2", label: "More results..." },
       ];
       const pickItems = [
-        { description: `testServiceName1 (${plans[0].label})`, label: "testLabel1" },
+        {
+          description: `testServiceName1 (${plans[0].label})`,
+          label: "testLabel1",
+        },
         { description: "testServiceName2", label: "More results..." },
       ];
       vscodeWindowMock
@@ -1012,7 +1160,12 @@ describe("commands unit tests", () => {
         .resolves(pickItems[0]);
       const result = await commands.updateInstanceNameAndTags(
         availableServices,
-        { tag: "testTag", name: "testServiceName1", plan: "testPlan", prompt: "testPrompt" },
+        {
+          tag: "testTag",
+          name: "testServiceName1",
+          plan: "testPlan",
+          prompt: "testPrompt",
+        },
         [],
         []
       );
@@ -1020,8 +1173,12 @@ describe("commands unit tests", () => {
     });
 
     it("ok:: availableServices have more services", async () => {
-      const availableServices = [{ serviceName: "testServiceName1", label: "More results..." }];
-      const pickItems = [{ description: "testServiceName1", label: "More results..." }];
+      const availableServices = [
+        { serviceName: "testServiceName1", label: "More results..." },
+      ];
+      const pickItems = [
+        { description: "testServiceName1", label: "More results..." },
+      ];
 
       vscodeWindowMock
         .expects("showQuickPick")
@@ -1034,7 +1191,12 @@ describe("commands unit tests", () => {
         .resolves(pickItems[0]);
       const result = await commands.updateInstanceNameAndTags(
         availableServices,
-        { tag: "testTag", name: "testName", plan: "testPlan", prompt: "testPrompt" },
+        {
+          tag: "testTag",
+          name: "testName",
+          plan: "testPlan",
+          prompt: "testPrompt",
+        },
         [],
         []
       );
@@ -1101,7 +1263,12 @@ describe("commands unit tests", () => {
           ignoreFocusOut: true,
         })
         .resolves(pickItems[0]);
-      const result = await commands.updateInstanceNameAndTags(availableServices, info, [], []);
+      const result = await commands.updateInstanceNameAndTags(
+        availableServices,
+        info,
+        [],
+        []
+      );
       expect(result).to.be.equal(infoName);
     });
 
@@ -1126,11 +1293,17 @@ describe("commands unit tests", () => {
 
       const infoName = info?.allowCreate?.name || "";
       const availableServices = [
-        { label: commands.CMD_BIND_TO_DEFAULT_SERVICE + infoName, serviceName: "" },
+        {
+          label: commands.CMD_BIND_TO_DEFAULT_SERVICE + infoName,
+          serviceName: "",
+        },
         { label: commands.CMD_CREATE_SERVICE, serviceName: "" },
       ];
       const pickItems = [
-        { description: "", label: commands.CMD_BIND_TO_DEFAULT_SERVICE + infoName },
+        {
+          description: "",
+          label: commands.CMD_BIND_TO_DEFAULT_SERVICE + infoName,
+        },
         { description: "", label: commands.CMD_CREATE_SERVICE },
       ];
 
@@ -1165,12 +1338,21 @@ describe("commands unit tests", () => {
         .expects("withProgress")
         .withArgs({
           location: nsVsMock.testVscode.ProgressLocation.Notification,
-          title: messages.creating_service(expectedInstanceName, expectedServiceName, expectedPlanName),
+          title: messages.creating_service(
+            expectedInstanceName,
+            expectedServiceName,
+            expectedPlanName
+          ),
           cancellable: true,
         })
         .resolves(expectedInstanceName);
 
-      const result = await commands.updateInstanceNameAndTags(availableServices, info, [], []);
+      const result = await commands.updateInstanceNameAndTags(
+        availableServices,
+        info,
+        [],
+        []
+      );
       expect(result).to.be.equal(infoName);
     });
 
@@ -1187,11 +1369,17 @@ describe("commands unit tests", () => {
 
       const infoName = info?.allowCreate?.name || "";
       const availableServices = [
-        { label: commands.CMD_BIND_TO_DEFAULT_SERVICE + infoName, serviceName: "" },
+        {
+          label: commands.CMD_BIND_TO_DEFAULT_SERVICE + infoName,
+          serviceName: "",
+        },
         { label: commands.CMD_CREATE_SERVICE, serviceName: "" },
       ];
       const pickItems = [
-        { description: "", label: commands.CMD_BIND_TO_DEFAULT_SERVICE + infoName },
+        {
+          description: "",
+          label: commands.CMD_BIND_TO_DEFAULT_SERVICE + infoName,
+        },
         { description: "", label: commands.CMD_CREATE_SERVICE },
       ];
 
@@ -1205,7 +1393,10 @@ describe("commands unit tests", () => {
         })
         .resolves(pickItems[0]);
 
-      vscodeWindowMock.expects("showInformationMessage").withExactArgs(messages.service_created(infoName)).resolves();
+      vscodeWindowMock
+        .expects("showInformationMessage")
+        .withExactArgs(messages.service_created(infoName))
+        .resolves();
       cfLocalMock
         .expects("cfCreateUpsInstance")
         .withExactArgs({
@@ -1223,7 +1414,12 @@ describe("commands unit tests", () => {
           links: {},
         });
 
-      const result = await commands.updateInstanceNameAndTags(availableServices, info, [], []);
+      const result = await commands.updateInstanceNameAndTags(
+        availableServices,
+        info,
+        [],
+        []
+      );
       expect(result).to.be.equal(infoName);
     });
   });
@@ -1233,7 +1429,11 @@ describe("commands unit tests", () => {
       label: "test",
       guid: "plan-guid",
       description: "",
-      service_offering: { guid: "service-guid", name: "service-name", description: "service-description" },
+      service_offering: {
+        guid: "service-guid",
+        name: "service-name",
+        description: "service-description",
+      },
     };
 
     it("ok:: on success", async () => {
@@ -1260,7 +1460,10 @@ describe("commands unit tests", () => {
         })
         .rejects(new Error(errorMessage));
       cfLocalMock.expects("cfGetTarget").rejects();
-      vscodeCommandsMock.expects("executeCommand").withExactArgs("cf.login", true).resolves(OK);
+      vscodeCommandsMock
+        .expects("executeCommand")
+        .withExactArgs("cf.login", true)
+        .resolves(OK);
       vscodeWindowMock
         .expects("withProgress")
         .withArgs({
@@ -1283,7 +1486,10 @@ describe("commands unit tests", () => {
         })
         .rejects(new Error(errorMessage));
       cfLocalMock.expects("cfGetTarget").rejects();
-      vscodeCommandsMock.expects("executeCommand").withExactArgs("cf.login", true).resolves(undefined);
+      vscodeCommandsMock
+        .expects("executeCommand")
+        .withExactArgs("cf.login", true)
+        .resolves(undefined);
       try {
         await commands.fetchServicePlanList();
         fail("should fail");
@@ -1320,12 +1526,24 @@ describe("commands unit tests", () => {
       { label: MORE_RESULTS, serviceName: "more:2", alwaysShow: true },
     ];
     const items = [
-      { label: availableServices[0].label, description: availableServices[0].serviceName },
-      { label: availableServices[1].label, description: availableServices[1].serviceName },
+      {
+        label: availableServices[0].label,
+        description: availableServices[0].serviceName,
+      },
+      {
+        label: availableServices[1].label,
+        description: availableServices[1].serviceName,
+      },
     ];
     const allItems = [
-      { label: availableServices[0].label, description: availableServices[0].serviceName },
-      { label: servicesPage2[0].label, description: servicesPage2[0].serviceName },
+      {
+        label: availableServices[0].label,
+        description: availableServices[0].serviceName,
+      },
+      {
+        label: servicesPage2[0].label,
+        description: servicesPage2[0].serviceName,
+      },
     ];
 
     it("ok:: success", async () => {
@@ -1360,8 +1578,13 @@ describe("commands unit tests", () => {
     });
 
     it("fail:: no avialable services", async () => {
-      vscodeWindowMock.expects("showErrorMessage").withExactArgs(messages.no_services_instances_found).resolves();
-      const result = await commands.getInstanceName((undefined as unknown) as ServiceInstanceInfo[]);
+      vscodeWindowMock
+        .expects("showErrorMessage")
+        .withExactArgs(messages.no_services_instances_found)
+        .resolves();
+      const result = await commands.getInstanceName(
+        undefined as unknown as ServiceInstanceInfo[]
+      );
       expect(result).to.undefined;
     });
   });
@@ -1396,7 +1619,10 @@ describe("commands unit tests", () => {
       const instanceUpsName = "myUps";
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_service_name, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.enter_service_name,
+          ignoreFocusOut: true,
+        })
         .resolves(instanceUpsName);
       vscodeWindowMock
         .expects("showInputBox")
@@ -1413,13 +1639,21 @@ describe("commands unit tests", () => {
         .resolves("");
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_sys_log_url, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.enter_sys_log_url,
+          ignoreFocusOut: true,
+        })
         .resolves("");
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_route_service_url, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.enter_route_service_url,
+          ignoreFocusOut: true,
+        })
         .resolves("");
-      vscodeWindowMock.expects("showInformationMessage").withExactArgs(messages.service_created(instanceUpsName));
+      vscodeWindowMock
+        .expects("showInformationMessage")
+        .withExactArgs(messages.service_created(instanceUpsName));
       cfLocalMock
         .expects("cfCreateUpsInstance")
         .withExactArgs({
@@ -1448,7 +1682,10 @@ describe("commands unit tests", () => {
     it("fail:: no name provided", async () => {
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_service_name, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.enter_service_name,
+          ignoreFocusOut: true,
+        })
         .resolves(undefined);
       cfLocalMock.expects("cfCreateUpsInstance").never();
       expect(await commands.cmdCreateUps()).to.be.equal(undefined);
@@ -1457,7 +1694,10 @@ describe("commands unit tests", () => {
     it("fail:: enter credentials canceled", async () => {
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_service_name, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.enter_service_name,
+          ignoreFocusOut: true,
+        })
         .resolves("name");
       vscodeWindowMock
         .expects("showInputBox")
@@ -1475,7 +1715,10 @@ describe("commands unit tests", () => {
     it("fail:: enter tags canceled", async () => {
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_service_name, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.enter_service_name,
+          ignoreFocusOut: true,
+        })
         .resolves("name");
       vscodeWindowMock
         .expects("showInputBox")
@@ -1497,7 +1740,10 @@ describe("commands unit tests", () => {
     it("fail:: entering enter_sys_log_url canceled", async () => {
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_service_name, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.enter_service_name,
+          ignoreFocusOut: true,
+        })
         .resolves("name");
       vscodeWindowMock
         .expects("showInputBox")
@@ -1514,7 +1760,10 @@ describe("commands unit tests", () => {
         .resolves("");
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_sys_log_url, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.enter_sys_log_url,
+          ignoreFocusOut: true,
+        })
         .resolves(undefined);
       cfLocalMock.expects("cfCreateUpsInstance").never();
       expect(await commands.cmdCreateUps()).to.be.equal(undefined);
@@ -1523,7 +1772,10 @@ describe("commands unit tests", () => {
     it("fail:: entering enter_route_service_url canceled", async () => {
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_service_name, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.enter_service_name,
+          ignoreFocusOut: true,
+        })
         .resolves("name");
       vscodeWindowMock
         .expects("showInputBox")
@@ -1540,11 +1792,17 @@ describe("commands unit tests", () => {
         .resolves("");
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_sys_log_url, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.enter_sys_log_url,
+          ignoreFocusOut: true,
+        })
         .resolves("");
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_route_service_url, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.enter_route_service_url,
+          ignoreFocusOut: true,
+        })
         .resolves(undefined);
       cfLocalMock.expects("cfCreateUpsInstance").never();
       expect(await commands.cmdCreateUps()).to.be.equal(undefined);
@@ -1553,7 +1811,10 @@ describe("commands unit tests", () => {
     it("fail:: no info data - unexpected response format", async () => {
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_service_name, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.enter_service_name,
+          ignoreFocusOut: true,
+        })
         .resolves("instanceUpsName");
       vscodeWindowMock
         .expects("showInputBox")
@@ -1570,14 +1831,23 @@ describe("commands unit tests", () => {
         .resolves("");
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_sys_log_url, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.enter_sys_log_url,
+          ignoreFocusOut: true,
+        })
         .resolves("");
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_route_service_url, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.enter_route_service_url,
+          ignoreFocusOut: true,
+        })
         .resolves("");
       const response = { label: "name", metadata: {} };
-      vscodeWindowMock.expects("showInformationMessage").withExactArgs(_.toString(response)).resolves();
+      vscodeWindowMock
+        .expects("showInformationMessage")
+        .withExactArgs(_.toString(response))
+        .resolves();
       cfLocalMock.expects("cfCreateUpsInstance").resolves(response);
       expect(await commands.cmdCreateUps()).to.be.equal(undefined);
     });
@@ -1585,7 +1855,10 @@ describe("commands unit tests", () => {
     it("exception:: no info data, show error message", async () => {
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_service_name, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.enter_service_name,
+          ignoreFocusOut: true,
+        })
         .resolves("instanceUpsName");
       vscodeWindowMock
         .expects("showInputBox")
@@ -1602,11 +1875,17 @@ describe("commands unit tests", () => {
         .resolves("");
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_sys_log_url, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.enter_sys_log_url,
+          ignoreFocusOut: true,
+        })
         .resolves("");
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_route_service_url, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.enter_route_service_url,
+          ignoreFocusOut: true,
+        })
         .resolves("");
       vscodeWindowMock.expects("showInformationMessage").never();
       const error = new Error("runtime error");
@@ -1618,7 +1897,10 @@ describe("commands unit tests", () => {
     it("exception:: no info data, exception no error thrown", async () => {
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_service_name, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.enter_service_name,
+          ignoreFocusOut: true,
+        })
         .resolves("instanceUpsName");
       vscodeWindowMock
         .expects("showInputBox")
@@ -1635,11 +1917,17 @@ describe("commands unit tests", () => {
         .resolves("");
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_sys_log_url, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.enter_sys_log_url,
+          ignoreFocusOut: true,
+        })
         .resolves("");
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_route_service_url, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.enter_route_service_url,
+          ignoreFocusOut: true,
+        })
         .resolves("");
       vscodeWindowMock.expects("showInformationMessage").never();
       vscodeWindowMock.expects("showErrorMessage").once().resolves();
@@ -1660,9 +1948,16 @@ describe("commands unit tests", () => {
       const infoName = info?.allowCreate?.name || "";
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_service_name, ignoreFocusOut: true, value: infoName })
+        .withExactArgs({
+          prompt: messages.enter_service_name,
+          ignoreFocusOut: true,
+          value: infoName,
+        })
         .resolves(infoName);
-      vscodeWindowMock.expects("showInformationMessage").withExactArgs(messages.service_created(infoName)).resolves();
+      vscodeWindowMock
+        .expects("showInformationMessage")
+        .withExactArgs(messages.service_created(infoName))
+        .resolves();
       cfLocalMock
         .expects("cfCreateUpsInstance")
         .withExactArgs({
@@ -1692,7 +1987,10 @@ describe("commands unit tests", () => {
       const instanceUpsName = "myUps";
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_service_name, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.enter_service_name,
+          ignoreFocusOut: true,
+        })
         .resolves(instanceUpsName);
       vscodeWindowMock
         .expects("showInputBox")
@@ -1705,15 +2003,25 @@ describe("commands unit tests", () => {
         .resolves("{}");
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_tags, ignoreFocusOut: true, value: info.tag })
+        .withExactArgs({
+          prompt: messages.enter_tags,
+          ignoreFocusOut: true,
+          value: info.tag,
+        })
         .resolves("");
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_sys_log_url, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.enter_sys_log_url,
+          ignoreFocusOut: true,
+        })
         .resolves("");
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_route_service_url, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.enter_route_service_url,
+          ignoreFocusOut: true,
+        })
         .resolves("");
       vscodeWindowMock
         .expects("showInformationMessage")
@@ -1742,7 +2050,10 @@ describe("commands unit tests", () => {
       const instanceUpsName = "myUps";
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_service_name, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.enter_service_name,
+          ignoreFocusOut: true,
+        })
         .resolves(instanceUpsName);
       vscodeWindowMock
         .expects("showInputBox")
@@ -1759,14 +2070,23 @@ describe("commands unit tests", () => {
         .resolves([]);
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_sys_log_url, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.enter_sys_log_url,
+          ignoreFocusOut: true,
+        })
         .resolves("");
       vscodeWindowMock
         .expects("showInputBox")
-        .withExactArgs({ prompt: messages.enter_route_service_url, ignoreFocusOut: true })
+        .withExactArgs({
+          prompt: messages.enter_route_service_url,
+          ignoreFocusOut: true,
+        })
         .resolves("");
       const response: any = null;
-      vscodeWindowMock.expects("showInformationMessage").withExactArgs(_.toString(response)).resolves();
+      vscodeWindowMock
+        .expects("showInformationMessage")
+        .withExactArgs(_.toString(response))
+        .resolves();
       cfLocalMock
         .expects("cfCreateUpsInstance")
         .withExactArgs({

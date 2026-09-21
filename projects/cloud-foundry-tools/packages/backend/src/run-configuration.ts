@@ -16,13 +16,16 @@ export class DependencyHandler implements types.IDependencyHandler {
     this.id = id;
   }
 
-  public async getBindState(bindContext: types.IBindContext): Promise<types.BindState> {
+  public async getBindState(
+    bindContext: types.IBindContext
+  ): Promise<types.BindState> {
     let bindState = types.BindState.notbound;
 
     try {
       if (
         _.get(
-          (await getEnvResources(_.get(bindContext, ["envPath", "fsPath"]))).vcapObject,
+          (await getEnvResources(_.get(bindContext, ["envPath", "fsPath"])))
+            .vcapObject,
           _.get(bindContext, ["depContext", "type"])
         )
       ) {
@@ -32,7 +35,10 @@ export class DependencyHandler implements types.IDependencyHandler {
       /* eslint-disable-next-line @typescript-eslint/no-unsafe-argument */
       void vscode.window.showErrorMessage(toText(e));
       /* eslint-disable-next-line @typescript-eslint/no-unsafe-argument */
-      getModuleLogger(DependencyHandler.MODULE_NAME).error("getBindState: processing failed", { exception: toText(e) });
+      getModuleLogger(DependencyHandler.MODULE_NAME).error(
+        "getBindState: processing failed",
+        { exception: toText(e) }
+      );
     }
     return bindState;
   }
@@ -41,29 +47,46 @@ export class DependencyHandler implements types.IDependencyHandler {
     bindContext: types.IBindContext,
     options?: cfViewCommands.CmdOptions
   ): Promise<void | types.IBindResult> {
-    const resourceTag: string = _.get(bindContext, "depContext.data.resourceTag");
+    const resourceTag: string = _.get(
+      bindContext,
+      "depContext.data.resourceTag"
+    );
     const serviceType: cfLocal.ServiceTypeInfo[] = [
       {
         name: _.get(bindContext.depContext, ["type"], ""),
         plan: _.get(bindContext.depContext, ["data", "plan"], ""),
         // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
-        tag: resourceTag ? resourceTag + _.get(bindContext, "depContext.data.resourceName") : "",
+        tag: resourceTag
+          ? resourceTag + _.get(bindContext, "depContext.data.resourceName")
+          : "",
         prompt: "",
       },
     ];
     try {
-      const instanceNames = await cfViewCommands.bindLocalService(serviceType, bindContext.envPath, options);
+      const instanceNames = await cfViewCommands.bindLocalService(
+        serviceType,
+        bindContext.envPath,
+        options
+      );
       let chiselTask;
       if (_.size(instanceNames)) {
         // Get metadata of service instance by service name
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        const instanceType: string = (await cfLocal.cfGetInstanceMetadata(_.get(instanceNames, "[0]"))).service;
+        const instanceType: string = (
+          await cfLocal.cfGetInstanceMetadata(_.get(instanceNames, "[0]"))
+        ).service;
 
         // Create chisel task if neccessary
-        if (_.get(bindContext, "depContext.data.isCreateChiselTask") || /^hana(trial)?$/.test(instanceType)) {
+        if (
+          _.get(bindContext, "depContext.data.isCreateChiselTask") ||
+          /^hana(trial)?$/.test(instanceType)
+        ) {
           // Create it in dependent task
           const chiselTaskNameSuffix = instanceNames?.join("&") || "";
-          chiselTask = await checkAndCreateChiselTask(bindContext.envPath?.fsPath, chiselTaskNameSuffix);
+          chiselTask = await checkAndCreateChiselTask(
+            bindContext.envPath?.fsPath,
+            chiselTaskNameSuffix
+          );
           if (chiselTask) {
             if (!options?.silent) {
               // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
@@ -98,7 +121,10 @@ export class DependencyHandler implements types.IDependencyHandler {
       /* eslint-disable-next-line @typescript-eslint/no-unsafe-argument */
       void vscode.window.showErrorMessage(toText(e));
       /* eslint-disable-next-line @typescript-eslint/no-unsafe-argument */
-      getModuleLogger(DependencyHandler.MODULE_NAME).error("bind: processing failed", { exception: toText(e) });
+      getModuleLogger(DependencyHandler.MODULE_NAME).error(
+        "bind: processing failed",
+        { exception: toText(e) }
+      );
     }
   }
 
@@ -106,13 +132,21 @@ export class DependencyHandler implements types.IDependencyHandler {
     bindContext: types.IBindContext,
     options?: cfViewCommands.CmdOptions
   ): Promise<void | types.IBindResult> {
-    const configObject = new types.ConfigObject({}, types.ConfigurationTarget.launch);
-    const configurationData: types.IConfigurationData = { config: configObject, dependentTasks: [] };
+    const configObject = new types.ConfigObject(
+      {},
+      types.ConfigurationTarget.launch
+    );
+    const configurationData: types.IConfigurationData = {
+      config: configObject,
+      dependentTasks: [],
+    };
     try {
       const removedResourceDetails = await removeResourceFromEnv(bindContext);
       if (!options?.silent) {
         void vscode.window.showInformationMessage(
-          messages.service_unbound_successful(_.get(removedResourceDetails, "resourceName"))
+          messages.service_unbound_successful(
+            _.get(removedResourceDetails, "resourceName")
+          )
         );
       }
       getModuleLogger(DependencyHandler.MODULE_NAME).info(
@@ -131,7 +165,10 @@ export class DependencyHandler implements types.IDependencyHandler {
       /* eslint-disable-next-line @typescript-eslint/no-unsafe-argument */
       void vscode.window.showErrorMessage(toText(e));
       /* eslint-disable-next-line @typescript-eslint/no-unsafe-argument */
-      getModuleLogger(DependencyHandler.MODULE_NAME).error("unbind: processing failed", { exception: toText(e) });
+      getModuleLogger(DependencyHandler.MODULE_NAME).error(
+        "unbind: processing failed",
+        { exception: toText(e) }
+      );
     }
   }
 

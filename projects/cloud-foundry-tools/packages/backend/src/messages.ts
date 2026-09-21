@@ -3,7 +3,16 @@ import * as _ from "lodash";
 export const messages = {
   enter_cf_endpoint: "Enter Cloud Foundry endpoint",
   enter_user_email: "Enter e-mail address",
-  label_enter_password: `Enter ${_.reverse(["d", "r", "o", "w", "s", "s", "a", "p"]).join("")}`,
+  label_enter_password: `Enter ${_.reverse([
+    "d",
+    "r",
+    "o",
+    "w",
+    "s",
+    "s",
+    "a",
+    "p",
+  ]).join("")}`,
   login: "You need to login to Cloud Foundry to continue.",
   loggin_in: "Logging in...",
   logout: "Logging out...",
@@ -26,7 +35,8 @@ export const messages = {
   loading_services: "Loading Cloud Foundry services...",
   loading_ups_services: "Loading Cloud Foundry user provided services...",
   loading_service_plan_list: "Loading Cloud Foundry service plans...",
-  binding_service_to_file: "Binding the service instance to a local '.env' file...",
+  binding_service_to_file:
+    "Binding the service instance to a local '.env' file...",
   select_service: "Select a Cloud Foundry service instance",
   select_services: "Select a Cloud Foundry service",
   select_service_plan: "Select a Cloud Foundry service plan",
@@ -43,35 +53,62 @@ export const messages = {
   set_targets_pick_save: `Create new ...`,
   set_targets_pick_save_details: `Create and save a new target`,
   set_targets_choose_the_operation: `Save your current target or specify a new one`,
-  no_services_instance_byname_found: (name: string): string => `Could not find the ${name} service instance`,
+  no_services_instance_byname_found: (name: string): string =>
+    `Could not find the ${name} service instance`,
   login_failed: `Authentication failed.`,
-  authentication_failed: (result: string): string => `Authentication failed: ${result}`,
-  targeting: (orgField: string, spaceField: string): string => `Targeting CF ${orgField}/${spaceField}`,
-  service_created: (instanceName: string): string => `The ${instanceName} service has been created.`,
-  target_created: (targetName: string): string => `The '${targetName}' target has been created.`,
-  creating_service: (instanceName: string, servieInfoLabel: string, planInfoLabel: string): string =>
+  authentication_failed: (result: string): string =>
+    `Authentication failed: ${result}`,
+  targeting: (orgField: string, spaceField: string): string =>
+    `Targeting CF ${orgField}/${spaceField}`,
+  service_created: (instanceName: string): string =>
+    `The ${instanceName} service has been created.`,
+  target_created: (targetName: string): string =>
+    `The '${targetName}' target has been created.`,
+  creating_service: (
+    instanceName: string,
+    servieInfoLabel: string,
+    planInfoLabel: string
+  ): string =>
     `Creating the ${instanceName}(${servieInfoLabel} - ${planInfoLabel}) service...`,
-  target_deleted: (targetLabel: string): string => `The '${targetLabel}' target has been deleted.`,
-  activation_extension: (extname: string): string => `Activating the "${extname}" extension`,
-  no_services_found: (plan: string): string => `No services were found for the '${plan}' service_plan`,
-  no_services_instances_found_for_type: (name: string): string => `No service instances found for the ${name} type`,
-  extension_active: (extname: string): string => `The "${extname}" extension is now active.`,
-  error_service_params_mandatory: (name: string): string => `You must provide a value for the ${name}`,
+  target_deleted: (targetLabel: string): string =>
+    `The '${targetLabel}' target has been deleted.`,
+  activation_extension: (extname: string): string =>
+    `Activating the "${extname}" extension`,
+  no_services_found: (plan: string): string =>
+    `No services were found for the '${plan}' service_plan`,
+  no_services_instances_found_for_type: (name: string): string =>
+    `No service instances found for the ${name} type`,
+  extension_active: (extname: string): string =>
+    `The "${extname}" extension is now active.`,
+  error_service_params_mandatory: (name: string): string =>
+    `You must provide a value for the ${name}`,
   error_service_params_max_length: (name: string, length: number): string =>
     `The ${name} may be composed of up to ${length} characters`,
-  error_service_params_value_not_allowed: (name: string): string => `Invalid value for the ${name}`,
-  service_bound_successful: (service: string): string => `The ${service} service has been bound.`,
-  service_unbound_successful: (service: string): string => `The ${service} service has been unbound.`,
+  error_service_params_value_not_allowed: (name: string): string =>
+    `Invalid value for the ${name}`,
+  service_bound_successful: (service: string): string =>
+    `The ${service} service has been bound.`,
+  service_unbound_successful: (service: string): string =>
+    `The ${service} service has been unbound.`,
   no_service_plan_info_found: (plan: string, service: string): string =>
     `Could not find the ${plan} service plan info for the ${service} service`,
-  no_service_plans_found: (service: string): string => `Could not find a service plan for the ${service} service`,
+  no_service_plans_found: (service: string): string =>
+    `Could not find a service plan for the ${service} service`,
   target_dirty_save: (name: string): string =>
     `The ${name} target has been modified. Would you like to save the changes?`,
   service_instances_list_incomplete: (list: string[]): string =>
     `Could not get the details of ${
-      _.size(list) > 3 ? "some service instances" : "the following service instances: '" + list.join() + "'"
-    }. Try to verify the ${_.size(list) > 3 ? "" : "specified "}service instances, then log in again to Cloud Foundry.`,
-  target_setup_not_completed: (org: string | undefined, space: string | undefined): string =>
+      _.size(list) > 3
+        ? "some service instances"
+        : "the following service instances: '" + list.join() + "'"
+    }. Try to verify the ${
+      _.size(list) > 3 ? "" : "specified "
+    }service instances, then log in again to Cloud Foundry.`,
+  target_setup_not_completed: (
+    org: string | undefined,
+    space: string | undefined
+  ): string =>
     `The CF target definition is incomplete - org='${org}', space='${space}'. Do you want to continue?`,
-  set_targets_save: (org: string, space: string): string => `Save current target (${org}/${space})`,
+  set_targets_save: (org: string, space: string): string =>
+    `Save current target (${org}/${space})`,
 };

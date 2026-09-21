@@ -46,7 +46,9 @@ describe("CFHeader.vue", () => {
     const computedStyle = window.getComputedStyle(subtitleField);
 
     // Assert the computed style properties
-    expect(computedStyle.getPropertyValue("--vscode-descriptionForeground")).to.equal("#717171");
+    expect(
+      computedStyle.getPropertyValue("--vscode-descriptionForeground")
+    ).to.equal("#717171");
   });
 
   it("renders the correct HTML structure", () => {

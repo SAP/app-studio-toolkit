@@ -29,7 +29,10 @@ export default {
               case "top":
                 targetEl.style.setProperty("--v-tooltip-left", "50%");
                 targetEl.style.setProperty("--v-tooltip-top", "0%");
-                targetEl.style.setProperty("--v-tooltip-translate", "translate(-50%, -110%)");
+                targetEl.style.setProperty(
+                  "--v-tooltip-translate",
+                  "translate(-50%, -110%)"
+                );
                 if (value.displayArrow || modifiers.arrow) {
                   targetEl.style.setProperty(
                     "--v-tooltip-arrow-border-color",
@@ -44,7 +47,10 @@ export default {
               case "bottom":
                 targetEl.style.setProperty("--v-tooltip-left", "50%");
                 targetEl.style.setProperty("--v-tooltip-top", "100%");
-                targetEl.style.setProperty("--v-tooltip-translate", "translate(-50%, 10%)");
+                targetEl.style.setProperty(
+                  "--v-tooltip-translate",
+                  "translate(-50%, 10%)"
+                );
                 if (value.displayArrow || modifiers.arrow) {
                   targetEl.style.setProperty(
                     "--v-tooltip-arrow-border-color",
@@ -59,13 +65,19 @@ export default {
               case "left":
                 targetEl.style.setProperty("--v-tooltip-left", "0%");
                 targetEl.style.setProperty("--v-tooltip-top", "50%");
-                targetEl.style.setProperty("--v-tooltip-translate", "translate(-110%, -50%)");
+                targetEl.style.setProperty(
+                  "--v-tooltip-translate",
+                  "translate(-110%, -50%)"
+                );
                 if (value.displayArrow || modifiers.arrow) {
                   targetEl.style.setProperty(
                     "--v-tooltip-arrow-border-color",
                     "transparent transparent transparent var(--v-tooltip-background-color)"
                   );
-                  targetEl.style.setProperty("--v-tooltip-arrow-top", "calc(var(--v-tooltip-top)");
+                  targetEl.style.setProperty(
+                    "--v-tooltip-arrow-top",
+                    "calc(var(--v-tooltip-top)"
+                  );
                   targetEl.style.setProperty(
                     "--v-tooltip-arrow-left",
                     "calc( var(--v-tooltip-left) - var(--v-tooltip-left-offset) + 1.5px)"
@@ -75,13 +87,19 @@ export default {
               case "right":
                 targetEl.style.setProperty("--v-tooltip-left", "100%");
                 targetEl.style.setProperty("--v-tooltip-top", "50%");
-                targetEl.style.setProperty("--v-tooltip-translate", "translate(3%, -50%)");
+                targetEl.style.setProperty(
+                  "--v-tooltip-translate",
+                  "translate(3%, -50%)"
+                );
                 if (value.displayArrow || modifiers.arrow) {
                   targetEl.style.setProperty(
                     "--v-tooltip-arrow-border-color",
                     "transparent var(--v-tooltip-background-color) transparent  transparent"
                   );
-                  targetEl.style.setProperty("--v-tooltip-arrow-top", "calc(var(--v-tooltip-top)");
+                  targetEl.style.setProperty(
+                    "--v-tooltip-arrow-top",
+                    "calc(var(--v-tooltip-top)"
+                  );
                   targetEl.style.setProperty(
                     "--v-tooltip-arrow-left",
                     "calc( var(--v-tooltip-left) - var(--v-tooltip-left-offset) - 2px)"

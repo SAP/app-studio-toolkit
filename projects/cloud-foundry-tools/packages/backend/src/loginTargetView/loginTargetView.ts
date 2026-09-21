@@ -25,7 +25,11 @@ import { toText } from "../utils";
 import * as cheerio from "cheerio";
 
 let loginTarget: LoginTarget | undefined;
-let initTarget: { endpoint: string | undefined; org?: string | undefined; space?: string | undefined };
+let initTarget: {
+  endpoint: string | undefined;
+  org?: string | undefined;
+  space?: string | undefined;
+};
 let panel: vscode.WebviewPanel | undefined;
 let isLoginOnly: boolean | undefined;
 let cmdLoginResult: string | undefined;
@@ -50,13 +54,22 @@ export function openLoginView(
 
   return new Promise<string | undefined>((resolve, reject) => {
     try {
-      const split = opts.isSplit ? vscode.ViewColumn.Beside : vscode.ViewColumn.One;
+      const split = opts.isSplit
+        ? vscode.ViewColumn.Beside
+        : vscode.ViewColumn.One;
       panel = panel
         ? panel
-        : vscode.window.createWebviewPanel("cfLogin", "Cloud Foundry Sign In", split, {
-            enableScripts: true,
-            localResourceRoots: [vscode.Uri.file(join(extension.getPath(), "dist", "media"))],
-          });
+        : vscode.window.createWebviewPanel(
+            "cfLogin",
+            "Cloud Foundry Sign In",
+            split,
+            {
+              enableScripts: true,
+              localResourceRoots: [
+                vscode.Uri.file(join(extension.getPath(), "dist", "media")),
+              ],
+            }
+          );
       panel.reveal();
       panel.onDidDispose(() => {
         resolve(cmdLoginResult);
@@ -120,11 +133,16 @@ class LoginTarget {
   private async getTarget(): Promise<ITarget | undefined> {
     // TODO: need to pass the endpoint to check if logged-in to correct endpoint.
     try {
-      return (await this.invokeLongFunctionWithProgressForm(cfGetTarget, false)) as ITarget;
+      return (await this.invokeLongFunctionWithProgressForm(
+        cfGetTarget,
+        false
+      )) as ITarget;
     } catch (e) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       const errText = toText(e);
-      getModuleLogger(LOGGER_MODULE).error("getTarget failed", { exception: errText });
+      getModuleLogger(LOGGER_MODULE).error("getTarget failed", {
+        exception: errText,
+      });
       return undefined;
     }
   }
@@ -162,7 +180,10 @@ class LoginTarget {
 
   async loginClick(payload: SSOLoginOptions | CredentialsLoginOptions) {
     try {
-      cmdLoginResult = await this.invokeLongFunctionWithProgressForm(cfLogin, payload);
+      cmdLoginResult = await this.invokeLongFunctionWithProgressForm(
+        cfLogin,
+        payload
+      );
       if (OK !== cmdLoginResult) {
         void vscode.window.showErrorMessage(messages.login_failed);
         return false;
@@ -190,7 +211,10 @@ class LoginTarget {
       getModuleLogger(LOGGER_MODULE).debug("executeLogout: logout succeeded");
       return true;
     } catch (error) {
-      getModuleLogger(LOGGER_MODULE).error("executeLogout: logout error", error);
+      getModuleLogger(LOGGER_MODULE).error(
+        "executeLogout: logout error",
+        error
+      );
       return false;
     }
   }
@@ -206,11 +230,16 @@ class LoginTarget {
   getOrgs(): Promise<Organization[]> {
     return cfGetAvailableOrgs()
       .then((orgs: Organization[]) => {
-        getModuleLogger(LOGGER_MODULE).debug("executeGetAvaliableOrgs: get avaliable orgs succeeded");
+        getModuleLogger(LOGGER_MODULE).debug(
+          "executeGetAvaliableOrgs: get avaliable orgs succeeded"
+        );
         return orgs;
       })
       .catch((error) => {
-        getModuleLogger(LOGGER_MODULE).error("executeGetAvaliableOrgs: get avaliable orgs failed", error);
+        getModuleLogger(LOGGER_MODULE).error(
+          "executeGetAvaliableOrgs: get avaliable orgs failed",
+          error
+        );
         return [];
       });
   }
@@ -218,11 +247,16 @@ class LoginTarget {
   getSpaces(org: string): Promise<Space[]> {
     return cfGetAvailableSpaces(org)
       .then((spaces: Space[]) => {
-        getModuleLogger(LOGGER_MODULE).debug("executeGetAvaliableSpaces: get avaliable spaces succeeded");
+        getModuleLogger(LOGGER_MODULE).debug(
+          "executeGetAvaliableSpaces: get avaliable spaces succeeded"
+        );
         return spaces;
       })
       .catch((error) => {
-        getModuleLogger(LOGGER_MODULE).error("executeGetAvaliableSpaces: get avaliable spaces failed", error);
+        getModuleLogger(LOGGER_MODULE).error(
+          "executeGetAvaliableSpaces: get avaliable spaces failed",
+          error
+        );
         return [];
       });
   }
@@ -232,21 +266,32 @@ class LoginTarget {
       await cfSetOrgSpace(org, space);
       cmdLoginResult = OK;
       void vscode.window.showInformationMessage(messages.success_set_org_space);
-      getModuleLogger(LOGGER_MODULE).debug("executeSetOrgSpace: set org & spaces succeeded");
+      getModuleLogger(LOGGER_MODULE).debug(
+        "executeSetOrgSpace: set org & spaces succeeded"
+      );
       panel?.dispose();
       return cmdLoginResult;
     } catch (error) {
       cmdLoginResult = undefined;
-      getModuleLogger(LOGGER_MODULE).error("executeSetOrgSpace: set org & spaces failed", error);
+      getModuleLogger(LOGGER_MODULE).error(
+        "executeSetOrgSpace: set org & spaces failed",
+        error
+      );
       return "Error";
     }
   }
 
   openPasscodeLink(endpoint: string) {
-    void vscode.commands.executeCommand("vscode.open", vscode.Uri.parse(this.calculatePasscodeUrl(endpoint)));
+    void vscode.commands.executeCommand(
+      "vscode.open",
+      vscode.Uri.parse(this.calculatePasscodeUrl(endpoint))
+    );
   }
 
-  async invokeLongFunctionWithProgressForm(longFunction: Function, ...args: any): Promise<any> {
+  async invokeLongFunctionWithProgressForm(
+    longFunction: Function,
+    ...args: any
+  ): Promise<any> {
     try {
       await this.rpc.invoke("setBusyIndicator", [true]);
       /* eslint-disable-next-line @typescript-eslint/no-unsafe-argument */

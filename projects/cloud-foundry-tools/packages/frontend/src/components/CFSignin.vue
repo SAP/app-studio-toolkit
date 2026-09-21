@@ -6,7 +6,10 @@
     <div :style="{ display: loggedInVisibility }" class="logged-in-visibility">
       <div style="display: flex">
         <span className="codicon codicon-pass signin-icon" />
-        {{ "You are signed in to Cloud Foundry." + (orgAndSpaceSet ? "" : " You can now set the Org and Space.") }}
+        {{
+          "You are signed in to Cloud Foundry." +
+          (orgAndSpaceSet ? "" : " You can now set the Org and Space.")
+        }}
       </div>
     </div>
     <br /><br />
@@ -24,7 +27,8 @@
     <!-- authentication area -->
     <div id="authenticationDiv" :style="{ display: notLoggedInVisibility }">
       <br />
-      <span class="subtitle-color-field">Enter Cloud Foundry Endpoint </span><span class="text-danger">*</span>
+      <span class="subtitle-color-field">Enter Cloud Foundry Endpoint </span
+      ><span class="text-danger">*</span>
       <br />
       <vscode-textfield
         id="cfEndpointInput"
@@ -45,8 +49,7 @@
         <span class="subtitle-color-field">Select authentication method </span>
         <span
           v-tooltip="{
-            text:
-              'Single sign-on (SSO) is a token-based authentication method in which an SSO token is passed in an HTTP header or cookie.',
+            text: 'Single sign-on (SSO) is a token-based authentication method in which an SSO token is passed in an HTTP header or cookie.',
             theme: {
               placement: 'right',
               width: '300px',
@@ -58,20 +61,35 @@
         </span>
       </div>
 
-      <vscode-radio-group orientation="horizontal" :value="ssoOrCredentials" @change="setSSO">
-        <vscode-radio id="radioCredentials" value="Credentials" :checked="ssoOrCredentials === 'Credentials'">
+      <vscode-radio-group
+        orientation="horizontal"
+        :value="ssoOrCredentials"
+        @change="setSSO"
+      >
+        <vscode-radio
+          id="radioCredentials"
+          value="Credentials"
+          :checked="ssoOrCredentials === 'Credentials'"
+        >
           Credentials
         </vscode-radio>
-        <vscode-radio id="radioSSO" value="SSO" :checked="ssoOrCredentials === 'SSO'"> SSO Passcode </vscode-radio>
+        <vscode-radio
+          id="radioSSO"
+          value="SSO"
+          :checked="ssoOrCredentials === 'SSO'"
+        >
+          SSO Passcode
+        </vscode-radio>
       </vscode-radio-group>
 
       <div id="sso-div" :style="{ display: ssoVisibility }">
         <div style="display: flex; margin-top: 16px">
-          <a @click="openPasscodeLink"> Open a new browser page to generate your SSO passcode </a>
+          <a @click="openPasscodeLink">
+            Open a new browser page to generate your SSO passcode
+          </a>
           <span
             v-tooltip="{
-              text:
-                'Your SSO passcode is generated in a seperate browser page. Copy it and paste it back in SAP Business Application Studio.',
+              text: 'Your SSO passcode is generated in a seperate browser page. Copy it and paste it back in SAP Business Application Studio.',
               theme: {
                 placement: 'right',
                 width: '300px',
@@ -85,7 +103,8 @@
 
         <br /><br /><br />
 
-        <span class="subtitle-color-field">Enter your SSO Passcode </span><span class="text-danger">*</span>
+        <span class="subtitle-color-field">Enter your SSO Passcode </span
+        ><span class="text-danger">*</span>
         <br />
 
         <vscode-textfield
@@ -117,7 +136,8 @@
       <br />
 
       <div id="credentials-div" :style="{ display: credentialsVisibility }">
-        <span class="subtitle-color-field">Enter your username </span><span class="text-danger">*</span>
+        <span class="subtitle-color-field">Enter your username </span
+        ><span class="text-danger">*</span>
         <br />
         <vscode-textfield
           v-model="username"
@@ -129,7 +149,8 @@
         />
         <br /><br />
 
-        <span class="subtitle-color-field">Enter your password </span><span class="text-danger">*</span>
+        <span class="subtitle-color-field">Enter your password </span
+        ><span class="text-danger">*</span>
         <br />
         <vscode-textfield
           v-model="password"
@@ -141,14 +162,20 @@
         />
       </div>
       <br />
-      <span :style="{ display: authFailedVisibility }" style="color: var(--vscode-errorForeground, #b80000)">
+      <span
+        :style="{ display: authFailedVisibility }"
+        style="color: var(--vscode-errorForeground, #b80000)"
+      >
         <div style="display: flex">
-          <span className="codicon codicon-error signinerror-icon" /> Authentication failed. Please try again.
+          <span className="codicon codicon-error signinerror-icon" />
+          Authentication failed. Please try again.
         </div>
         <br />
       </span>
       <br />
-      <vscode-button :disabled="disableButton" @click="SigninClicked"> Sign in </vscode-button>
+      <vscode-button :disabled="disableButton" @click="SigninClicked">
+        Sign in
+      </vscode-button>
     </div>
 
     <br /><br />
@@ -216,7 +243,11 @@ export default {
   methods: {
     btnStatus() {
       if (this.endpoint && this.isCFEndpointValid) {
-        if (this.ssoOrCredentials == "Credentials" && this.username != "" && this.password != "") {
+        if (
+          this.ssoOrCredentials == "Credentials" &&
+          this.username != "" &&
+          this.password != ""
+        ) {
           this.disableButton = false;
         } else if (this.ssoOrCredentials == "SSO" && this.passcode != "") {
           this.disableButton = false;
@@ -229,7 +260,8 @@ export default {
     },
     setEndpoint(val) {
       this.endpoint = val.target.value.replace(/ /g, "").replace(/\/$/, "");
-      this.isCFEndpointValid = this.endpoint !== "" && this.$refs?.cfendpointInput?.validity?.valid;
+      this.isCFEndpointValid =
+        this.endpoint !== "" && this.$refs?.cfendpointInput?.validity?.valid;
     },
     paste() {
       navigator.clipboard.readText().then((clipText) => {
@@ -247,7 +279,8 @@ export default {
     },
     SigninClicked() {
       let payload = {};
-      payload.endpoint = this.endpoint !== "" ? this.endpoint : this.target.defaultEndpoint;
+      payload.endpoint =
+        this.endpoint !== "" ? this.endpoint : this.target.defaultEndpoint;
       if (this.ssoOrCredentials === "SSO") {
         payload.ssoPasscode = `"${this.passcode}"`;
       } else {
@@ -289,7 +322,10 @@ a {
 }
 a:hover {
   text-decoration: underline; /* Show underline on hover */
-  color: var(--vscode-textLink-activeForeground, #1e50a2); /* Active link color */
+  color: var(
+    --vscode-textLink-activeForeground,
+    #1e50a2
+  ); /* Active link color */
 }
 .signinerror-icon {
   padding-top: 1px;
@@ -319,7 +355,10 @@ a:hover {
   display: flex;
 }
 .clippy-button:hover {
-  background-color: var(--vscode-toolbar-hoverBackground, rgba(184, 184, 184, 0.31));
+  background-color: var(
+    --vscode-toolbar-hoverBackground,
+    rgba(184, 184, 184, 0.31)
+  );
 }
 .tooltip {
   display: flex;

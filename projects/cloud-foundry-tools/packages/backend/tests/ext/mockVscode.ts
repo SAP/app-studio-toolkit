@@ -67,7 +67,13 @@ class Uri {
   public readonly fragment: string;
   public readonly fsPath: string;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  private constructor(scheme: string, authority: string, testpath: string, query: string, fragment: string) {
+  private constructor(
+    scheme: string,
+    authority: string,
+    testpath: string,
+    query: string,
+    fragment: string
+  ) {
     this.fsPath = testpath;
     this.scheme = scheme;
     this.path = "";
@@ -75,7 +81,13 @@ class Uri {
     this.query = "";
     this.fragment = "";
   }
-  public with(change: { scheme?: string; authority?: string; path?: string; query?: string; fragment?: string }): Uri {
+  public with(change: {
+    scheme?: string;
+    authority?: string;
+    path?: string;
+    query?: string;
+    fragment?: string;
+  }): Uri {
     return new Uri("", "", change.path || "", "", "");
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -98,9 +110,16 @@ class RelativePattern {
 }
 
 function _path2Uri(extPath: string): { uri: Uri; name: string; index: number } {
-  return _.set({ uri: Uri.file(extPath), name: extPath, index: 0 }, ["uri", "fsPath"], extPath);
+  return _.set(
+    { uri: Uri.file(extPath), name: extPath, index: 0 },
+    ["uri", "fsPath"],
+    extPath
+  );
 }
-const roots = [_path2Uri(path.resolve("workspace")), _path2Uri(path.resolve("project-test"))];
+const roots = [
+  _path2Uri(path.resolve("workspace")),
+  _path2Uri(path.resolve("project-test")),
+];
 
 let selectedQuickPicks: any;
 export function getTestSelectedQuickPicks() {
@@ -193,7 +212,11 @@ export const testVscode = {
     getWorkspaceFolder: (folderPath: vscode.Uri) => {
       const fsPath = _.get(folderPath, "fsPath");
       return _.set(
-        { uri: testVscode.Uri.file(fsPath), name: _.last(_.split(fsPath, "\\")), index: 0 },
+        {
+          uri: testVscode.Uri.file(fsPath),
+          name: _.last(_.split(fsPath, "\\")),
+          index: 0,
+        },
         ["uri", "fsPath"],
         fsPath
       );

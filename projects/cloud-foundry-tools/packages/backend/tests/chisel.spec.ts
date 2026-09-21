@@ -11,7 +11,10 @@ import { mockVscode } from "./ext/mockUtil";
 mockVscode(nsVsMock.testVscode, "src/chisel.ts");
 
 import * as utils from "../src/utils";
-import { deleteChiselParamsFromFile, checkAndCreateChiselTask } from "../src/chisel";
+import {
+  deleteChiselParamsFromFile,
+  checkAndCreateChiselTask,
+} from "../src/chisel";
 
 describe("chisel unit tests", () => {
   const serviceName = "chisel-service-name";
@@ -58,21 +61,26 @@ describe("chisel unit tests", () => {
     };
     it("ok:: verify created chisel task structure", async () => {
       await utils.writeProperties(envFilePath, envWithChisel);
-      expect(await checkAndCreateChiselTask(envFilePath, serviceName)).deep.equal(expectedChiselTask);
+      expect(
+        await checkAndCreateChiselTask(envFilePath, serviceName)
+      ).deep.equal(expectedChiselTask);
     });
 
     it("ok:: create 'undefined' when chisel params not appear in the environment file", async () => {
       await utils.writeProperties(envFilePath, {});
-      expect(await checkAndCreateChiselTask(envFilePath, serviceName)).to.be.undefined;
+      expect(await checkAndCreateChiselTask(envFilePath, serviceName)).to.be
+        .undefined;
     });
 
     it("ok:: create 'undefined' chisel URL is empty", async () => {
       await utils.writeProperties(envFilePath, { CHISEL_URL: "" });
-      expect(await checkAndCreateChiselTask(envFilePath, serviceName)).to.be.undefined;
+      expect(await checkAndCreateChiselTask(envFilePath, serviceName)).to.be
+        .undefined;
     });
 
     it("ok:: create 'undefined' when .env file does not exists", async () => {
-      expect(await checkAndCreateChiselTask(envFilePath, serviceName)).to.be.undefined;
+      expect(await checkAndCreateChiselTask(envFilePath, serviceName)).to.be
+        .undefined;
     });
 
     it("ok:: create chisel task and ignore from invalid format text in the .env file", async () => {
@@ -85,7 +93,9 @@ describe("chisel unit tests", () => {
         "VCAP_SERVICES= VCAP_SERVICES_VALUE";
 
       await fs.promises.writeFile(envFilePath, text);
-      expect(await checkAndCreateChiselTask(envFilePath, serviceName)).deep.equal(expectedChiselTask);
+      expect(
+        await checkAndCreateChiselTask(envFilePath, serviceName)
+      ).deep.equal(expectedChiselTask);
     });
   });
 
@@ -97,7 +107,9 @@ describe("chisel unit tests", () => {
       await utils.writeProperties(envFilePath, envWithChisel);
       expect(await deleteChiselParamsFromFile(envFilePath)).to.be.true;
       const actualProperties = PropertiesReader(envFilePath);
-      expect(actualProperties.getAllProperties()).deep.equal(expectedProperties);
+      expect(actualProperties.getAllProperties()).deep.equal(
+        expectedProperties
+      );
     });
 
     it("ok:: return true and ignored from empty properties when override the .env file", async () => {
@@ -113,14 +125,18 @@ describe("chisel unit tests", () => {
       await fs.promises.writeFile(envFilePath, text);
       expect(await deleteChiselParamsFromFile(envFilePath)).to.be.true;
       const actualProperties = PropertiesReader(envFilePath);
-      expect(actualProperties.getAllProperties()).deep.equal(expectedProperties);
+      expect(actualProperties.getAllProperties()).deep.equal(
+        expectedProperties
+      );
     });
 
     it("ok:: return false when chisel params does not exists in .env file", async () => {
       await utils.writeProperties(envFilePath, expectedProperties);
       expect(await deleteChiselParamsFromFile(envFilePath)).to.be.false;
       const actualProperties = PropertiesReader(envFilePath);
-      expect(actualProperties.getAllProperties()).deep.equal(expectedProperties);
+      expect(actualProperties.getAllProperties()).deep.equal(
+        expectedProperties
+      );
     });
 
     it("ok:: return false when .env file does not exists ", async () => {

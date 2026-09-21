@@ -2,7 +2,10 @@
   <div id="targetDiv" class="loggedIn">
     <br />
     <div class="cloud-foundry-target">Cloud Foundry Target</div>
-    <div :style="{ display: orgAndSpaceSetVisibility }" class="org-and-space-visibility">
+    <div
+      :style="{ display: orgAndSpaceSetVisibility }"
+      class="org-and-space-visibility"
+    >
       <span className="codicon codicon-pass signin-icon-target" />
       Target is set to: {{ currentOrg }} org and {{ currentSpace }} space.
     </div>
@@ -16,8 +19,9 @@
     </div>
     <br /><br />
     <template v-if="!orgMissing">
-      <span class="subtitle-color-field">Select Cloud Foundry Organization </span><span class="text-danger">*</span
-      ><br />
+      <span class="subtitle-color-field"
+        >Select Cloud Foundry Organization </span
+      ><span class="text-danger">*</span><br />
       <vscode-single-select
         ref="orgSelect"
         :value="selectedOrg.label"
@@ -25,12 +29,17 @@
         @change="updateSelectedOrg"
       >
         <vscode-option disabled value=""></vscode-option>
-        <vscode-option v-for="org in optOrganizations" :key="org.guid" :value="org.label" :selected="org.selected">{{
-          org.label
-        }}</vscode-option>
+        <vscode-option
+          v-for="org in optOrganizations"
+          :key="org.guid"
+          :value="org.label"
+          :selected="org.selected"
+          >{{ org.label }}</vscode-option
+        >
       </vscode-single-select>
       <br /><br />
-      <span class="subtitle-color-field">Select Cloud Foundry Space </span><span class="text-danger">*</span><br />
+      <span class="subtitle-color-field">Select Cloud Foundry Space </span
+      ><span class="text-danger">*</span><br />
       <vscode-single-select
         ref="spaceSelect"
         :disabled="!optSpaces.length"
@@ -39,12 +48,22 @@
         @change="updateSelectedSpace"
       >
         <vscode-option disabled value=""></vscode-option>
-        <vscode-option v-for="space in optSpaces" :key="space.guid" :value="space.label" :selected="space.selected">{{
-          space.label
-        }}</vscode-option>
+        <vscode-option
+          v-for="space in optSpaces"
+          :key="space.guid"
+          :value="space.label"
+          :selected="space.selected"
+          >{{ space.label }}</vscode-option
+        >
       </vscode-single-select>
       <br /><br />
-      <vscode-button class="mt-8" :disabled="isApplyButtonDisabled" @click="setTarget"> Apply </vscode-button>
+      <vscode-button
+        class="mt-8"
+        :disabled="isApplyButtonDisabled"
+        @click="setTarget"
+      >
+        Apply
+      </vscode-button>
     </template>
   </div>
 </template>
@@ -86,13 +105,17 @@ export default {
       return !this.isLoggedIn ? "none" : "";
     },
     orgAndSpaceSetVisibility() {
-      return this.areOrgAndSpaceSet || (this.target?.currentOrg && this.target?.currentSpace) ? "" : "none";
+      return this.areOrgAndSpaceSet ||
+        (this.target?.currentOrg && this.target?.currentSpace)
+        ? ""
+        : "none";
     },
     isApplyButtonDisabled() {
       return (
         this.selectedOrg.label === undefined ||
         this.selectedSpace.label === undefined ||
-        (this.selectedOrg.label === this.currentOrg && this.selectedSpace.label === this.currentSpace)
+        (this.selectedOrg.label === this.currentOrg &&
+          this.selectedSpace.label === this.currentSpace)
       );
     },
     optOrganizations() {
@@ -126,7 +149,11 @@ export default {
   },
   methods: {
     injectOptionStyle(ref, type) {
-      if (ref && ref.shadowRoot && !ref.shadowRoot.querySelector(`style[data-${type}-option-style]`)) {
+      if (
+        ref &&
+        ref.shadowRoot &&
+        !ref.shadowRoot.querySelector(`style[data-${type}-option-style]`)
+      ) {
         const style = document.createElement("style");
         style.setAttribute(`data-${type}-option-style`, "true");
         style.textContent = `
@@ -138,11 +165,17 @@ export default {
       }
     },
     updateSelectedOrg(newOrg) {
-      this.selectedOrg = _.find(this.orgs, (org) => org.label === newOrg.target.value);
+      this.selectedOrg = _.find(
+        this.orgs,
+        (org) => org.label === newOrg.target.value
+      );
       this.selectSpace(undefined);
     },
     updateSelectedSpace(newSpace) {
-      this.selectedSpace = _.find(this.spaces, (space) => space.label === newSpace.target.value);
+      this.selectedSpace = _.find(
+        this.spaces,
+        (space) => space.label === newSpace.target.value
+      );
     },
     getOrgAndSpace() {
       this.rpc.invoke("getSelectedTarget").then((target) => {
@@ -161,7 +194,9 @@ export default {
               selected: org.label === target.org,
             };
           });
-          this.orgs = _.sortBy(orgsWithSelected, (item) => item.label.toLowerCase());
+          this.orgs = _.sortBy(orgsWithSelected, (item) =>
+            item.label.toLowerCase()
+          );
 
           // If no org could be selected from the current target, set it to the first org if exists
           if (!this.selectedOrg?.label && this.orgs.length === 1) {
@@ -188,10 +223,14 @@ export default {
             selected: targetSpace ? space.label === targetSpace : false,
           };
         });
-        this.spaces = _.sortBy(spacesWithSelected, (item) => item.label.toLowerCase());
+        this.spaces = _.sortBy(spacesWithSelected, (item) =>
+          item.label.toLowerCase()
+        );
         // If a specific space should be selected - choose it, otherwise take the first if exists and is the only one, otherwise fallback to an empty selection object.
         this.selectedSpace =
-          this.spaces.length === 1 ? this.spaces[0] : _.find(this.spaces, (space) => space.selected === true) ?? {};
+          this.spaces.length === 1
+            ? this.spaces[0]
+            : _.find(this.spaces, (space) => space.selected === true) ?? {};
         this.spaceMissing = this.spaces.length === 0;
       });
     },

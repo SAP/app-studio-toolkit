@@ -1,6 +1,12 @@
 import * as vscode from "vscode";
 import * as path from "path";
-import { CFView, CFService, CFTargetTI, CFTargetNotCurrent, getTargetRoot } from "./cfView";
+import {
+  CFView,
+  CFService,
+  CFTargetTI,
+  CFTargetNotCurrent,
+  getTargetRoot,
+} from "./cfView";
 import { messages } from "./messages";
 import * as https from "https";
 import {
@@ -88,7 +94,11 @@ async function execHttp(options: https.RequestOptions): Promise<string> {
         });
       })
       .on("error", (err) => {
-        getModuleLogger(LOGGER_MODULE).error("execHttp: get failed", { error: toText(err) }, { host: options.host });
+        getModuleLogger(LOGGER_MODULE).error(
+          "execHttp: get failed",
+          { error: toText(err) },
+          { host: options.host }
+        );
         reject(err.message);
       });
   });
@@ -100,7 +110,9 @@ async function askUserForPath(): Promise<vscode.Uri[] | undefined> {
     canSelectFiles: false,
     canSelectFolders: true,
     canSelectMany: false,
-    defaultUri: vscode.workspace.workspaceFolders ? vscode.workspace.workspaceFolders[0].uri : undefined,
+    defaultUri: vscode.workspace.workspaceFolders
+      ? vscode.workspace.workspaceFolders[0].uri
+      : undefined,
   });
 }
 
@@ -111,7 +123,12 @@ async function getToBindInstances(
   tags: string[]
 ) {
   for (const serviceTypeInfo of serviceInfos) {
-    await updateInstanceNameAndTags(availableServices, serviceTypeInfo, instanceNames, tags);
+    await updateInstanceNameAndTags(
+      availableServices,
+      serviceTypeInfo,
+      instanceNames,
+      tags
+    );
   }
 }
 
@@ -141,12 +158,20 @@ async function doBind(opts: BindArgs) {
     );
     const serviceNames = _.join(services, ",");
     if (!opts.options?.silent) {
-      void vscode.window.showInformationMessage(messages.service_bound_successful(serviceNames));
+      void vscode.window.showInformationMessage(
+        messages.service_bound_successful(serviceNames)
+      );
     }
-    getModuleLogger(LOGGER_MODULE).info("The service %s has been bound.", serviceNames);
+    getModuleLogger(LOGGER_MODULE).info(
+      "The service %s has been bound.",
+      serviceNames
+    );
   }
 
-  const ups = _.filter(opts.instances, ["serviceName", eServiceTypes.user_provided]);
+  const ups = _.filter(opts.instances, [
+    "serviceName",
+    eServiceTypes.user_provided,
+  ]);
   const services = _.difference(opts.instances, ups);
   if (_.size(services)) {
     const labels = _.map(services, "label");
@@ -163,7 +188,13 @@ async function doBind(opts: BindArgs) {
   }
   if (_.size(ups)) {
     const labels = _.map(ups, "label");
-    const cb = () => cfBindLocalUps(opts.envPath.path.fsPath, labels, opts.tags, opts.options?.["quote-vcap"]);
+    const cb = () =>
+      cfBindLocalUps(
+        opts.envPath.path.fsPath,
+        labels,
+        opts.tags,
+        opts.options?.["quote-vcap"]
+      );
     await withProgress(cb, labels);
   }
   if (!opts.envPath.ignore) {
@@ -171,7 +202,9 @@ async function doBind(opts: BindArgs) {
   }
 }
 
-async function getServiceInstanceInfo(instanceName: string): Promise<ServiceInstanceInfo> {
+async function getServiceInstanceInfo(
+  instanceName: string
+): Promise<ServiceInstanceInfo> {
   const data = await cfGetInstanceMetadata(instanceName);
   return {
     label: _.get(data, "serviceName"),
@@ -187,7 +220,9 @@ export async function cfDeployServiceAPI(urlPath: string): Promise<string> {
     // https://api.cf.<cf domain>
     const deployServiceUrl = cfApi.replace("api.cf", "deploy-service.cfapps");
 
-    const accessToken = (await cfGetAuthToken()).replace("\n", "").replace("\n", ""); // lgtm [js/incomplete-sanitization]
+    const accessToken = (await cfGetAuthToken())
+      .replace("\n", "")
+      .replace("\n", ""); // lgtm [js/incomplete-sanitization]
 
     const urlObj = new URL(deployServiceUrl);
 
@@ -207,7 +242,10 @@ export async function cfDeployServiceAPI(urlPath: string): Promise<string> {
   throw new Error(messages.no_cf_api_endpoint);
 }
 
-export async function cmdDeployServiceAPI(servicePath: string, message: string): Promise<string | undefined> {
+export async function cmdDeployServiceAPI(
+  servicePath: string,
+  message: string
+): Promise<string | undefined> {
   if (await verifyLoginRetry()) {
     return vscode.window.withProgress<string>(
       {
@@ -220,15 +258,25 @@ export async function cmdDeployServiceAPI(servicePath: string, message: string):
   }
 }
 
-export async function execSetTarget(item: CFTargetTI, options?: CmdOptions): Promise<void> {
-  const response: CliResult = await Cli.execute(["set-target", "-f", item.target.label]);
+export async function execSetTarget(
+  item: CFTargetTI,
+  options?: CmdOptions
+): Promise<void> {
+  const response: CliResult = await Cli.execute([
+    "set-target",
+    "-f",
+    item.target.label,
+  ]);
   if (response.exitCode !== 0) {
     if (!options?.silent) {
       void vscode.window.showErrorMessage(response.stdout);
     }
-    getModuleLogger(LOGGER_MODULE).error(`execSetTarget:: run 'set-target -f' with lable ${item.target.label} failed`, {
-      output: response.stdout,
-    });
+    getModuleLogger(LOGGER_MODULE).error(
+      `execSetTarget:: run 'set-target -f' with lable ${item.target.label} failed`,
+      {
+        output: response.stdout,
+      }
+    );
   } else {
     if (!options?.["skip-reload"]) {
       await cmdReloadTargets();
@@ -236,10 +284,16 @@ export async function execSetTarget(item: CFTargetTI, options?: CmdOptions): Pro
   }
 }
 
-export async function execSaveTarget(item?: CFTargetTI, options?: CmdOptions): Promise<void> {
+export async function execSaveTarget(
+  item?: CFTargetTI,
+  options?: CmdOptions
+): Promise<void> {
   if (item?.contextValue !== "cf-target-notargets") {
     const response: CliResult = await Cli.execute(
-      _.concat(["save-target"], item?.target.label ? ["-f", item.target.label] : [])
+      _.concat(
+        ["save-target"],
+        item?.target.label ? ["-f", item.target.label] : []
+      )
     );
     if (response.exitCode !== 0) {
       if (!options?.silent) {
@@ -265,7 +319,12 @@ export async function cmdSetCurrentTarget(
       const currTarget = CFView.get().getCurrentTarget();
       if (currTarget?.isDirty) {
         answer = await vscode.window
-          .showWarningMessage(messages.target_dirty_save(currTarget.label), YES, NO, CANCEL)
+          .showWarningMessage(
+            messages.target_dirty_save(currTarget.label),
+            YES,
+            NO,
+            CANCEL
+          )
           .then((selection) => {
             if (selection === YES) {
               return execSaveTarget().then(() => selection);
@@ -287,7 +346,9 @@ export async function cmdSetCurrentTarget(
       void vscode.window.showErrorMessage(toText(e));
       /* eslint-disable-next-line @typescript-eslint/no-unsafe-argument */
       getModuleLogger(LOGGER_MODULE).error(
-        `cmdSetCurrentTargetCommand with new target ${stringify(newTarget)} exception thrown`,
+        `cmdSetCurrentTargetCommand with new target ${stringify(
+          newTarget
+        )} exception thrown`,
         /* eslint-disable-next-line @typescript-eslint/no-unsafe-argument */
         { error: toText(e) }
       );
@@ -295,7 +356,10 @@ export async function cmdSetCurrentTarget(
   }
 }
 
-export async function cmdDeleteTarget(item: CFTargetTI, options?: CmdOptions): Promise<void> {
+export async function cmdDeleteTarget(
+  item: CFTargetTI,
+  options?: CmdOptions
+): Promise<void> {
   const targetLabel = item.target.label;
   if (targetLabel === DEFAULT_TARGET) {
     return;
@@ -306,14 +370,21 @@ export async function cmdDeleteTarget(item: CFTargetTI, options?: CmdOptions): P
       await cmdReloadTargets();
     }
     if (!options?.silent) {
-      void vscode.window.showInformationMessage(messages.target_deleted(targetLabel));
+      void vscode.window.showInformationMessage(
+        messages.target_deleted(targetLabel)
+      );
     }
-    getModuleLogger(LOGGER_MODULE).debug(`cmdDeleteTarget:: command "delete-target" of ${targetLabel} succeeded.`);
+    getModuleLogger(LOGGER_MODULE).debug(
+      `cmdDeleteTarget:: command "delete-target" of ${targetLabel} succeeded.`
+    );
   } else {
     void vscode.window.showErrorMessage(cliResult.stdout);
-    getModuleLogger(LOGGER_MODULE).error(`cmdSetCurrentTargetCommand:: run 'delete-target of ${targetLabel} failed`, {
-      output: cliResult.stdout,
-    });
+    getModuleLogger(LOGGER_MODULE).error(
+      `cmdSetCurrentTargetCommand:: run 'delete-target of ${targetLabel} failed`,
+      {
+        output: cliResult.stdout,
+      }
+    );
   }
 }
 
@@ -327,26 +398,36 @@ export async function cmdGetSpaceServices(
   return getAvailableServices({ query, ups: { isShow: true } }, progressTitle);
 }
 
-async function composeQueryToObtainInstances(serviceInfos: ServiceTypeInfo[]): Promise<IServiceQuery | undefined> {
+async function composeQueryToObtainInstances(
+  serviceInfos: ServiceTypeInfo[]
+): Promise<IServiceQuery | undefined> {
   let query;
   if (_.get(serviceInfos, ["0", "plan"])) {
-    query = padQuery((query as unknown) as IServiceQuery, [
-      { key: eFilters.service_plan_names, value: resolveFilterValue(serviceInfos[0].plan) },
+    query = padQuery(query as unknown as IServiceQuery, [
+      {
+        key: eFilters.service_plan_names,
+        value: resolveFilterValue(serviceInfos[0].plan),
+      },
     ]);
   }
   if (/*!_.size(plans) &&*/ _.get(serviceInfos, "[0].name")) {
     if (eServiceTypes.user_provided === serviceInfos[0].name) {
-      query = padQuery((query as unknown) as IServiceQuery, [
+      query = padQuery(query as unknown as IServiceQuery, [
         { key: eFilters.service_plan_names, value: "nothing-to-show" },
       ]); // tricky - to show the only user-provided instances
     } else {
       const guids = _.map(
         await fetchServicePlanList({
-          filters: [{ key: eFilters.service_offering_names, value: resolveFilterValue(serviceInfos[0].name) }],
+          filters: [
+            {
+              key: eFilters.service_offering_names,
+              value: resolveFilterValue(serviceInfos[0].name),
+            },
+          ],
         }),
         "guid"
       );
-      query = padQuery((query as unknown) as IServiceQuery, [
+      query = padQuery(query as unknown as IServiceQuery, [
         { key: eFilters.service_plan_guids, value: _.join(guids) },
       ]);
     }
@@ -360,19 +441,36 @@ async function collectBindDetails(
 ): Promise<BindDetails | undefined> {
   let details;
 
-  if (_.get(service, "contextValue") === "cf-service" && _.get(service, "label")) {
+  if (
+    _.get(service, "contextValue") === "cf-service" &&
+    _.get(service, "label")
+  ) {
     details = {
-      instances: [{ label: (service as CFService).label, serviceName: (service as CFService).type || "unknown" }],
+      instances: [
+        {
+          label: (service as CFService).label,
+          serviceName: (service as CFService).type || "unknown",
+        },
+      ],
     };
   } else {
     // service is ServiceTypeInfo
-    const query = await composeQueryToObtainInstances(service as ServiceTypeInfo[]);
-    let availableServices = await getAvailableServices({ query, ups: _.get(service, ["0", "ups"]) });
+    const query = await composeQueryToObtainInstances(
+      service as ServiceTypeInfo[]
+    );
+    let availableServices = await getAvailableServices({
+      query,
+      ups: _.get(service, ["0", "ups"]),
+    });
     if (_.isEmpty(availableServices)) {
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-      getModuleLogger(LOGGER_MODULE).debug(`No services found for plan ${_.get(service, "[0].plan")}`);
+      getModuleLogger(LOGGER_MODULE).debug(
+        `No services found for plan ${_.get(service, "[0].plan")}`
+      );
       if (!_.find(service as ServiceTypeInfo[], "allowCreate")) {
-        void vscode.window.showInformationMessage(messages.no_services_instances_found);
+        void vscode.window.showInformationMessage(
+          messages.no_services_instances_found
+        );
         return details;
       }
     }
@@ -387,8 +485,14 @@ async function collectBindDetails(
         for (const serviceTypeInfo of serviceTypeInfos) {
           if (serviceTypeInfo.allowCreate) {
             // add 'create service' menu item
-            availableServices = _.concat([{ label: CMD_CREATE_SERVICE, serviceName: "" }], availableServices);
-            if (_.size(availableServices) && !_.isEmpty(serviceTypeInfo.allowCreate.name)) {
+            availableServices = _.concat(
+              [{ label: CMD_CREATE_SERVICE, serviceName: "" }],
+              availableServices
+            );
+            if (
+              _.size(availableServices) &&
+              !_.isEmpty(serviceTypeInfo.allowCreate.name)
+            ) {
               // add 'Bind to the default service instance' menu item
               availableServices = _.concat(
                 [
@@ -403,14 +507,26 @@ async function collectBindDetails(
               );
             }
           }
-          await updateInstanceNameAndTags(availableServices, serviceTypeInfo, instanceNames, tags);
+          await updateInstanceNameAndTags(
+            availableServices,
+            serviceTypeInfo,
+            instanceNames,
+            tags
+          );
         }
       } else {
-        let foundInstance = _.find(availableServices, ["label", requstedInstance]);
+        let foundInstance = _.find(availableServices, [
+          "label",
+          requstedInstance,
+        ]);
         if (!foundInstance) {
-          foundInstance = await getServiceInstanceInfo(requstedInstance).catch(() => undefined);
+          foundInstance = await getServiceInstanceInfo(requstedInstance).catch(
+            () => undefined
+          );
           if (!foundInstance) {
-            throw new Error(messages.no_services_instance_byname_found(requstedInstance));
+            throw new Error(
+              messages.no_services_instance_byname_found(requstedInstance)
+            );
           }
           availableServices.push(foundInstance);
         }
@@ -420,9 +536,14 @@ async function collectBindDetails(
 
       if (_.size(instanceNames) > 0) {
         const serviceKeyNames: string[] = _.compact(
-          _.flatMap(serviceTypeInfos, (serviceTypeInfo) => serviceTypeInfo.serviceKeyName)
+          _.flatMap(
+            serviceTypeInfos,
+            (serviceTypeInfo) => serviceTypeInfo.serviceKeyName
+          )
         );
-        const serviceKeyParams: unknown[] = _.compact(_.map(serviceTypeInfos, "serviceKeyParam"));
+        const serviceKeyParams: unknown[] = _.compact(
+          _.map(serviceTypeInfos, "serviceKeyParam")
+        );
         const instances = [];
         for (const name of instanceNames) {
           let serviceInstance = _.find(availableServices, ["label", name]);
@@ -442,7 +563,9 @@ async function collectBindDetails(
     } else {
       const instanceName = await getInstanceName(availableServices);
       if (instanceName) {
-        details = { instances: [{ label: instanceName, serviceName: "unknown" }] };
+        details = {
+          instances: [{ label: instanceName, serviceName: "unknown" }],
+        };
       }
     }
   }
@@ -480,7 +603,9 @@ export async function cmdBindLocal(
       return;
     }
     /* eslint-disable-next-line @typescript-eslint/no-unsafe-argument */
-    filePath = vscode.Uri.file(path.join(_.get(uriArray, "[0].fsPath"), ".env"));
+    filePath = vscode.Uri.file(
+      path.join(_.get(uriArray, "[0].fsPath"), ".env")
+    );
   }
   try {
     const bindDetails = await collectBindDetails(service, instanceName);
@@ -495,7 +620,10 @@ export async function cmdBindLocal(
       });
       const instanceName = _.get(_.head(bindDetails.instances), "label");
       if (instanceName) {
-        const chiselTask = await checkAndCreateChiselTask(filePath.fsPath, instanceName);
+        const chiselTask = await checkAndCreateChiselTask(
+          filePath.fsPath,
+          instanceName
+        );
         if (chiselTask) {
           await deleteChiselParamsFromFile(filePath.fsPath);
         }
@@ -531,13 +659,19 @@ export async function bindLocalService(
       return [];
     }
     const query = await composeQueryToObtainInstances(serviceInfos);
-    const availableServices: ServiceInstanceInfo[] = await getAvailableServices({ query });
+    const availableServices: ServiceInstanceInfo[] = await getAvailableServices(
+      { query }
+    );
     if (_.isEmpty(availableServices)) {
       if (!_.isEmpty(_.get(serviceInfos, ["0", "plan"]))) {
-        getModuleLogger(LOGGER_MODULE).debug(`No service found for the plan ${serviceInfos[0].plan}`);
+        getModuleLogger(LOGGER_MODULE).debug(
+          `No service found for the plan ${serviceInfos[0].plan}`
+        );
       }
       if (!_.find(serviceInfos, "allowCreate")) {
-        void vscode.window.showInformationMessage(messages.no_services_instances_found);
+        void vscode.window.showInformationMessage(
+          messages.no_services_instances_found
+        );
       }
       return [];
     }
@@ -547,7 +681,12 @@ export async function bindLocalService(
     if (isServiceTypeInfoInArray(serviceInfos)) {
       const instanceNames: string[] = [];
       const tags: string[] = [];
-      await getToBindInstances(serviceInfos, availableServices, instanceNames, tags);
+      await getToBindInstances(
+        serviceInfos,
+        availableServices,
+        instanceNames,
+        tags
+      );
       const instances = _.reduce(
         instanceNames,
         (result, name) => {

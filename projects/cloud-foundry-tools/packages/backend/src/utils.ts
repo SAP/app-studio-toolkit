@@ -59,7 +59,9 @@ export function toText(e: Error): string {
   return _.get(e, "message") || _.get(e, "name", _.toString(e));
 }
 
-export function getEnvResources(envFilePath: string): Promise<{ vcapObject: any; isQuotedVcap: boolean }> {
+export function getEnvResources(
+  envFilePath: string
+): Promise<{ vcapObject: any; isQuotedVcap: boolean }> {
   try {
     let isQuotedVcap = false;
     if (existsSync(envFilePath)) {
@@ -71,7 +73,10 @@ export function getEnvResources(envFilePath: string): Promise<{ vcapObject: any;
           vcapProperty = vcapProperty.substring(1, vcapProperty.length - 1);
           isQuotedVcap = true;
         }
-        return Promise.resolve({ vcapObject: JSON.parse(vcapProperty), isQuotedVcap });
+        return Promise.resolve({
+          vcapObject: JSON.parse(vcapProperty),
+          isQuotedVcap,
+        });
       } else {
         getModuleLogger(LOGGER_MODULE).debug(
           "getEnvResources: the '.env' file is missing a key <%s>",
@@ -81,9 +86,12 @@ export function getEnvResources(envFilePath: string): Promise<{ vcapObject: any;
         return Promise.resolve({ vcapObject: null, isQuotedVcap });
       }
     } else {
-      getModuleLogger(LOGGER_MODULE).debug("getEnvResources: the '.env' file does not exist", {
-        filePath: envFilePath,
-      });
+      getModuleLogger(LOGGER_MODULE).debug(
+        "getEnvResources: the '.env' file does not exist",
+        {
+          filePath: envFilePath,
+        }
+      );
       return Promise.resolve({ vcapObject: null, isQuotedVcap });
     }
   } catch (error) {
@@ -98,13 +106,21 @@ export function getEnvResources(envFilePath: string): Promise<{ vcapObject: any;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function findServiceByResourceNameTag(vcapServices: any, yamlResourceName: string, resourceTag: string): any {
+function findServiceByResourceNameTag(
+  vcapServices: any,
+  yamlResourceName: string,
+  resourceTag: string
+): any {
   for (const key in vcapServices) {
     for (const service of vcapServices[key]) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       if (
         service.tags &&
-        service.tags.find((t: string) => t.startsWith(resourceTag) && t.substr(resourceTag.length) === yamlResourceName)
+        service.tags.find(
+          (t: string) =>
+            t.startsWith(resourceTag) &&
+            t.substr(resourceTag.length) === yamlResourceName
+        )
       ) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         return [key, service];
@@ -129,9 +145,16 @@ export async function removeResourceFromEnv(
   let instanceName = "";
   // If this is a tagged resource - remove by tag
   const resourceTag: string = _.get(bindContext, "depContext.data.resourceTag");
-  const resourceName: string = _.get(bindContext, "depContext.data.resourceName");
+  const resourceName: string = _.get(
+    bindContext,
+    "depContext.data.resourceName"
+  );
   if (!_.isEmpty(resourceTag)) {
-    const keyAndService = findServiceByResourceNameTag(vcapServicesObj, resourceName, resourceTag);
+    const keyAndService = findServiceByResourceNameTag(
+      vcapServicesObj,
+      resourceName,
+      resourceTag
+    );
     if (!_.isEmpty(keyAndService)) {
       const resourceTypeKey = keyAndService[0];
       instanceData = keyAndService[1];
@@ -146,9 +169,7 @@ export async function removeResourceFromEnv(
         delete vcapServicesObj[resourceTypeKey];
       }
     } else {
-      getModuleLogger(
-        LOGGER_MODULE
-      ).debug(
+      getModuleLogger(LOGGER_MODULE).debug(
         "removeResourceFromEnv: the <%s> tagged <%s> resource was not found in the '.env' file",
         resourceTag,
         resourceName,
@@ -170,14 +191,24 @@ export async function removeResourceFromEnv(
 
   // If VCAP_SERVICES was already wrapped with single quotes - maintain them when writing back
   const quote = envResources.isQuotedVcap ? "'" : "";
-  envProperties.set(ENV_VCAP_RESOURCES, quote + JSON.stringify(vcapServicesObj) + quote);
+  envProperties.set(
+    ENV_VCAP_RESOURCES,
+    quote + JSON.stringify(vcapServicesObj) + quote
+  );
 
   await envProperties.save(envFilePath);
-  return { resourceName: instanceName, envPath: envFilePath, resourceData: instanceData };
+  return {
+    resourceName: instanceName,
+    envPath: envFilePath,
+    resourceData: instanceData,
+  };
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function generateParams4Service(serviceLabel: string, plan: string): any {
+export function generateParams4Service(
+  serviceLabel: string,
+  plan: string
+): any {
   if ("xsuaa" === serviceLabel && "application" === plan) {
     return {
       xsappname: `xsuaa_${_.now()}`,
@@ -205,8 +236,13 @@ export function generateParams4Service(serviceLabel: string, plan: string): any 
 }
 
 function validateXsuaaTenantMode(value: string) {
-  if (!_.isUndefined(value) && !["shared", "dedicated", "external"].includes(_.trim(value))) {
-    throw new Error(messages.error_service_params_value_not_allowed("tenant-mode"));
+  if (
+    !_.isUndefined(value) &&
+    !["shared", "dedicated", "external"].includes(_.trim(value))
+  ) {
+    throw new Error(
+      messages.error_service_params_value_not_allowed("tenant-mode")
+    );
   }
 }
 
@@ -214,7 +250,9 @@ function validateXsuaaOauth2Configuration(value: unknown) {
   for (const uri of _.get(value, "redirect-uris", [])) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     if (!_.startsWith(uri, "http") && !_.startsWith(uri, "localhost")) {
-      throw new Error(messages.error_service_params_value_not_allowed("redirect-uris"));
+      throw new Error(
+        messages.error_service_params_value_not_allowed("redirect-uris")
+      );
     }
   }
 }
@@ -228,7 +266,9 @@ function validateXsuaaName(value: string) {
     throw new Error(messages.error_service_params_max_length("xsappname", 100));
   }
   if (/[^a-zA-Z0-9_\-"]/gm.test(value)) {
-    throw new Error(messages.error_service_params_value_not_allowed("xsappname"));
+    throw new Error(
+      messages.error_service_params_value_not_allowed("xsappname")
+    );
   }
 }
 
@@ -259,8 +299,13 @@ function validateParamsJson(value: string): TypeValidationResult {
   return result;
 }
 
-export function validateParams(serviceLabel: string, plan?: string): (value: string) => TypeValidationResult {
-  return "xsuaa" === serviceLabel && "application" === plan ? validateParamsXsuaa : validateParamsJson;
+export function validateParams(
+  serviceLabel: string,
+  plan?: string
+): (value: string) => TypeValidationResult {
+  return "xsuaa" === serviceLabel && "application" === plan
+    ? validateParamsXsuaa
+    : validateParamsJson;
 }
 
 export function isRegexExpression(statement: string): boolean {
@@ -268,27 +313,43 @@ export function isRegexExpression(statement: string): boolean {
 }
 
 export function composeFilterPattern(value: string): string {
-  return value ? (isRegexExpression(value) ? _.trim(value, "/") : `^${value}$`) : value;
+  return value
+    ? isRegexExpression(value)
+      ? _.trim(value, "/")
+      : `^${value}$`
+    : value;
 }
 
-async function doGetUpsServiceInstances(query?: IServiceQuery, filterCredTag?: string): Promise<ServiceInstanceInfo[]> {
+async function doGetUpsServiceInstances(
+  query?: IServiceQuery,
+  filterCredTag?: string
+): Promise<ServiceInstanceInfo[]> {
   const upsServices = await cfGetUpsInstances(query);
-  const pattern = _.size(upsServices) && filterCredTag ? composeFilterPattern(filterCredTag) : undefined;
+  const pattern =
+    _.size(upsServices) && filterCredTag
+      ? composeFilterPattern(filterCredTag)
+      : undefined;
   const ups2Show = pattern
     ? upsServices.filter((service) => {
         // cretentials.tags can be 'string', 'string array' or 'array of objects' only
-        const tags = _.isString(service.credentials?.tags) ? [service.credentials.tags] : service.credentials?.tags;
+        const tags = _.isString(service.credentials?.tags)
+          ? [service.credentials.tags]
+          : service.credentials?.tags;
         return _.find(tags, (tag: string) => new RegExp(pattern).test(tag));
       })
     : upsServices;
   return ups2Show;
 }
 
-export async function getUpsServiceInstances(options?: UpsServiceQueryOprions): Promise<ServiceInstanceInfo[]> {
+export async function getUpsServiceInstances(
+  options?: UpsServiceQueryOprions
+): Promise<ServiceInstanceInfo[]> {
   return doGetUpsServiceInstances(undefined, options?.credentials?.tag);
 }
 
-export async function getAllServiceInstances(opts?: DisplayServices): Promise<ServiceInstanceInfo[]> {
+export async function getAllServiceInstances(
+  opts?: DisplayServices
+): Promise<ServiceInstanceInfo[]> {
   let ups2Show: ServiceInstanceInfo[] = [];
   if (opts?.ups?.isShow || opts?.ups?.tag) {
     const copyQuery = _.cloneDeep(opts.query);
@@ -326,7 +387,12 @@ export async function updateGitIgnoreList(envPath: string): Promise<void> {
         if (
           isNotEmptyPattern(pattern) &&
           _.includes(
-            _.map(await vscode.workspace.findFiles(new vscode.RelativePattern(project, pattern)), "fsPath"),
+            _.map(
+              await vscode.workspace.findFiles(
+                new vscode.RelativePattern(project, pattern)
+              ),
+              "fsPath"
+            ),
             envPath
           )
         ) {
@@ -335,30 +401,44 @@ export async function updateGitIgnoreList(envPath: string): Promise<void> {
       }
       return false;
     };
-    const ignoreFiles = await vscode.workspace.findFiles(new vscode.RelativePattern(project, GITIGNORE));
+    const ignoreFiles = await vscode.workspace.findFiles(
+      new vscode.RelativePattern(project, GITIGNORE)
+    );
     if (!_.size(ignoreFiles)) {
       try {
         // .gitignore file not exists -> create one
-        const filePath = path.normalize(path.join(project.uri.fsPath, GITIGNORE));
+        const filePath = path.normalize(
+          path.join(project.uri.fsPath, GITIGNORE)
+        );
         await fs.promises.open(filePath, "w");
         ignoreFiles.push(vscode.Uri.file(filePath));
       } catch (e) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        getModuleLogger(LOGGER_MODULE).error("updateGitIgnoreList: creation .gitignore file failed", {
-          exception: toText(new Error(e?.message as string)),
-        });
+        getModuleLogger(LOGGER_MODULE).error(
+          "updateGitIgnoreList: creation .gitignore file failed",
+          {
+            exception: toText(new Error(e?.message as string)),
+          }
+        );
       }
     }
     for (const file of ignoreFiles) {
       try {
-        const patterns = _.split(await fs.promises.readFile(file.fsPath, { encoding: UTF8 }), EOL);
+        const patterns = _.split(
+          await fs.promises.readFile(file.fsPath, { encoding: UTF8 }),
+          EOL
+        );
         if (!(await isPatternFound(patterns))) {
           await fs.promises.writeFile(
             file.fsPath,
             _.join(
               _.concat(patterns, [
                 `# auto generated wildcard`,
-                _.replace(path.relative(project.uri.fsPath, envPath), /\\/g, "/"),
+                _.replace(
+                  path.relative(project.uri.fsPath, envPath),
+                  /\\/g,
+                  "/"
+                ),
               ]),
               EOL
             ),
@@ -377,7 +457,10 @@ export async function updateGitIgnoreList(envPath: string): Promise<void> {
   }
 }
 
-export async function writeProperties(filePath: string, properties: Record<string, string>): Promise<void> {
+export async function writeProperties(
+  filePath: string,
+  properties: Record<string, string>
+): Promise<void> {
   let text = "";
   Object.keys(properties).forEach((key) => {
     const value = properties[key];
@@ -410,14 +493,20 @@ export function notifyWhenServicesInfoResultIncomplete(
       <string[]>[]
     );
     if (_.size(results)) {
-      void vscode.window.showWarningMessage(messages.service_instances_list_incomplete(results));
+      void vscode.window.showWarningMessage(
+        messages.service_instances_list_incomplete(results)
+      );
     }
     return infos;
   });
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function examCFTarget(errorMessage: string, keys: string[], weak: boolean): Promise<any> {
+export async function examCFTarget(
+  errorMessage: string,
+  keys: string[],
+  weak: boolean
+): Promise<any> {
   const target = await cfGetTarget();
   if (weak) {
     return target;
@@ -435,7 +524,10 @@ export async function examCFTarget(errorMessage: string, keys: string[], weak: b
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function invokeLongFunctionWithProgress(longFunction: any, progressMessage: string): Thenable<any> {
+export function invokeLongFunctionWithProgress(
+  longFunction: any,
+  progressMessage: string
+): Thenable<any> {
   return vscode.window.withProgress(
     {
       location: vscode.ProgressLocation.Window,

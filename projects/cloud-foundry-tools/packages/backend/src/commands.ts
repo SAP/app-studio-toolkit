@@ -45,11 +45,14 @@ const OK = "OK";
 const Cancel = "Cancel";
 const MORE_RESULTS = "More results...";
 export const CMD_CREATE_SERVICE = "+ Create a new service instance";
-export const CMD_BIND_TO_DEFAULT_SERVICE = "Bind to the default service instance: ";
+export const CMD_BIND_TO_DEFAULT_SERVICE =
+  "Bind to the default service instance: ";
 const LOGGER_MODULE = "commands";
 
 export function isCFResource(obj: unknown): boolean {
-  return _.has(obj, "relationships") && _.has(obj, "links") && _.has(obj, "guid");
+  return (
+    _.has(obj, "relationships") && _.has(obj, "links") && _.has(obj, "guid")
+  );
 }
 
 export function isServiceTypeInfoInArray(obj: unknown): boolean {
@@ -57,7 +60,10 @@ export function isServiceTypeInfoInArray(obj: unknown): boolean {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function invokeLongFunctionWithProgress(longFunction: any, progressMessage: string): Thenable<any> {
+function invokeLongFunctionWithProgress(
+  longFunction: any,
+  progressMessage: string
+): Thenable<any> {
   return vscode.window.withProgress(
     {
       location: vscode.ProgressLocation.Window,
@@ -86,7 +92,11 @@ async function setCfTarget(message: string) {
   } else if (!target.space) {
     commandId = "cf.select.space";
   } else {
-    getModuleLogger(LOGGER_MODULE).error("setCfTarget: cfGetTarget failed", { target: target }, { output: message });
+    getModuleLogger(LOGGER_MODULE).error(
+      "setCfTarget: cfGetTarget failed",
+      { target: target },
+      { output: message }
+    );
     return Promise.reject(new Error(message));
   }
 
@@ -116,7 +126,11 @@ async function runBaseWithProgressAndLoginRetry(
           cancellable: isCancelable,
           // eslint-disable-next-line prefer-spread
         },
-        (progress, token) => longFunction.apply(null, <[]>(_.isArray(args) ? _.concat(args, token) : [args, token]))
+        (progress, token) =>
+          longFunction.apply(
+            null,
+            <[]>(_.isArray(args) ? _.concat(args, token) : [args, token])
+          )
       );
     } catch (error) {
       // eslint-disable-next-line prefer-spread
@@ -146,10 +160,18 @@ async function runWithProgressAndLoginRetry(
   longFunction: () => Promise<any>,
   args?: any
 ): Promise<any[]> {
-  return runBaseWithProgressAndLoginRetry(isCancelable, titleMessage, longFunction, onErrorSetCfTarget, args);
+  return runBaseWithProgressAndLoginRetry(
+    isCancelable,
+    titleMessage,
+    longFunction,
+    onErrorSetCfTarget,
+    args
+  );
 }
 
-export async function verifyLoginRetry(options?: { weak?: boolean }): Promise<unknown | undefined> {
+export async function verifyLoginRetry(options?: {
+  weak?: boolean;
+}): Promise<unknown | undefined> {
   let result: unknown;
   try {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -162,7 +184,11 @@ export async function verifyLoginRetry(options?: { weak?: boolean }): Promise<un
     );
   } catch (e) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    getModuleLogger(LOGGER_MODULE).error("verifyLoginRetry failed", { exception: toText(e) }, { options: options });
+    getModuleLogger(LOGGER_MODULE).error(
+      "verifyLoginRetry failed",
+      { exception: toText(e) },
+      { options: options }
+    );
   }
   return result;
 }
@@ -180,7 +206,9 @@ async function onErrorCfLogin(error: Error, endPoint?: string): Promise<any> {
   }
 }
 
-async function verifyLoginRetryPartial(opts?: { endPoint?: string }): Promise<unknown | undefined> {
+async function verifyLoginRetryPartial(opts?: {
+  endPoint?: string;
+}): Promise<unknown | undefined> {
   let result: unknown;
   try {
     result = await runBaseWithProgressAndLoginRetry(
@@ -195,7 +223,9 @@ async function verifyLoginRetryPartial(opts?: { endPoint?: string }): Promise<un
     );
   } catch (e) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    getModuleLogger(LOGGER_MODULE).error("verifyLoginRetryPartial failed", { exception: toText(e) });
+    getModuleLogger(LOGGER_MODULE).error("verifyLoginRetryPartial failed", {
+      exception: toText(e),
+    });
   }
   return result;
 }
@@ -207,7 +237,9 @@ export async function cmdCFSetOrgSpace(): Promise<string | undefined> {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     void vscode.window.showErrorMessage(toText(e));
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    getModuleLogger(LOGGER_MODULE).error("cmdCFSetOrgSpace failed", { exception: toText(e) });
+    getModuleLogger(LOGGER_MODULE).error("cmdCFSetOrgSpace failed", {
+      exception: toText(e),
+    });
     return "";
   }
 }
@@ -240,13 +272,19 @@ export async function cmdLogin(
 
     opts = opts ?? { isSplit: true, isLoginOnly: true };
 
-    let result = weak ? (_.get(await pickCfTargetWithProgress(), "user") ? OK : undefined) : undefined;
+    let result = weak
+      ? _.get(await pickCfTargetWithProgress(), "user")
+        ? OK
+        : undefined
+      : undefined;
     if (!result) {
       const node = weak as unknown;
       if (node instanceof CFLoginNode) {
         // attempt to login from targets tree
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-        const configJson = await cfGetConfigFileJson(_.get(getTargetRoot(node), ["target", "label"]));
+        const configJson = await cfGetConfigFileJson(
+          _.get(getTargetRoot(node), ["target", "label"])
+        );
         if (configJson) {
           endpoint = _.get(configJson, "Target");
           space = _.get(configJson, ["SpaceFields", "Name"]);
@@ -267,8 +305,13 @@ export async function cmdLogin(
 
       // Need only to set active target
       if (endpoint && org && space) {
-        await invokeLongFunctionWithProgress(cfSetOrgSpace.bind(undefined, org, space), messages.set_org_space);
-        void vscode.window.showInformationMessage(messages.success_set_org_space);
+        await invokeLongFunctionWithProgress(
+          cfSetOrgSpace.bind(undefined, org, space),
+          messages.set_org_space
+        );
+        void vscode.window.showInformationMessage(
+          messages.success_set_org_space
+        );
         getModuleLogger(LOGGER_MODULE).debug(
           "cmdCFSetOrgSpace: Organization <%s> and space <%s> have been set",
           org,
@@ -286,7 +329,11 @@ export async function cmdLogin(
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const errText = toText(e);
     void vscode.window.showErrorMessage(errText);
-    getModuleLogger(LOGGER_MODULE).error("cmdLogin failed", { weak: weak }, { exception: errText });
+    getModuleLogger(LOGGER_MODULE).error(
+      "cmdLogin failed",
+      { weak: weak },
+      { exception: errText }
+    );
     return "";
   }
 }
@@ -298,30 +345,51 @@ export async function cmdSelectSpace(): Promise<string | undefined> {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const errText = toText(e);
     void vscode.window.showErrorMessage(errText);
-    getModuleLogger(LOGGER_MODULE).error("cmdSelectSpace failed", { exception: errText });
+    getModuleLogger(LOGGER_MODULE).error("cmdSelectSpace failed", {
+      exception: errText,
+    });
     return "";
   }
 }
 
 async function cmdCreateTarget(): Promise<string | undefined> {
-  const targetName = await vscode.window.showInputBox({ prompt: messages.name_for_target, ignoreFocusOut: true });
+  const targetName = await vscode.window.showInputBox({
+    prompt: messages.name_for_target,
+    ignoreFocusOut: true,
+  });
   if (targetName) {
-    const cliResult: CliResult = await Cli.execute(["save-target", "-f", targetName]);
+    const cliResult: CliResult = await Cli.execute([
+      "save-target",
+      "-f",
+      targetName,
+    ]);
     if (cliResult.exitCode !== 0) {
-      getModuleLogger(LOGGER_MODULE).error("cmdCreateTarget : command 'save-target -f <%s>' failed", targetName, {
-        output: cliResult.stdout,
-      });
+      getModuleLogger(LOGGER_MODULE).error(
+        "cmdCreateTarget : command 'save-target -f <%s>' failed",
+        targetName,
+        {
+          output: cliResult.stdout,
+        }
+      );
       return Promise.reject(new Error(cliResult.stdout));
     }
 
     await cmdReloadTargets();
-    void vscode.window.showInformationMessage(messages.target_created(targetName));
-    getModuleLogger(LOGGER_MODULE).debug("cmdCreateTarget: the <%s> target has been created", targetName);
+    void vscode.window.showInformationMessage(
+      messages.target_created(targetName)
+    );
+    getModuleLogger(LOGGER_MODULE).debug(
+      "cmdCreateTarget: the <%s> target has been created",
+      targetName
+    );
     return targetName;
   }
 }
 
-function ask4ArbitraryParams(serviceInfo: ServiceInfo, plan: PlanInfo): Thenable<string | undefined> {
+function ask4ArbitraryParams(
+  serviceInfo: ServiceInfo,
+  plan: PlanInfo
+): Thenable<string | undefined> {
   const data = generateParams4Service(serviceInfo.label, plan.label);
   const value = stringify(data);
   const xsappname: string = _.get(data, "xsappname");
@@ -331,7 +399,10 @@ function ask4ArbitraryParams(serviceInfo: ServiceInfo, plan: PlanInfo): Thenable
     prompt: messages.create_service_enter_params,
     value,
     valueSelection: pos > 0 ? [pos, pos + _.size(xsappname)] : undefined,
-    validateInput: validateParams(_.get(serviceInfo, "label"), _.get(plan, "label")),
+    validateInput: validateParams(
+      _.get(serviceInfo, "label"),
+      _.get(plan, "label")
+    ),
   });
 }
 
@@ -346,8 +417,18 @@ async function onGetServicePlansFromCF(
     title || messages.loading_service_plan_list,
     cfGetServicePlansList as () => Promise<unknown>,
     _.merge(
-      { filters: [{ key: eFilters.service_offering_guids, value: opt.serviceGuid }] },
-      opt.planName ? { filters: [{ key: eFilters.names, value: resolveFilterValue(opt.planName) }] } : {}
+      {
+        filters: [
+          { key: eFilters.service_offering_guids, value: opt.serviceGuid },
+        ],
+      },
+      opt.planName
+        ? {
+            filters: [
+              { key: eFilters.names, value: resolveFilterValue(opt.planName) },
+            ],
+          }
+        : {}
     )
   );
 }
@@ -360,16 +441,30 @@ export async function onCreateService(
   progress: vscode.Progress<{ message?: string; increment?: number }>,
   cancelToken: vscode.CancellationToken
 ): Promise<string> {
-  const response = await cfCreateService(planInfo.guid, instanceName, params || {}, tags || [], {
-    progress: progress,
-    cancelToken: cancelToken,
-  });
-  void vscode.window.showInformationMessage(messages.service_created(response.name));
-  getModuleLogger(LOGGER_MODULE).debug("onCreateService: the service has been created", { response: response });
+  const response = await cfCreateService(
+    planInfo.guid,
+    instanceName,
+    params || {},
+    tags || [],
+    {
+      progress: progress,
+      cancelToken: cancelToken,
+    }
+  );
+  void vscode.window.showInformationMessage(
+    messages.service_created(response.name)
+  );
+  getModuleLogger(LOGGER_MODULE).debug(
+    "onCreateService: the service has been created",
+    { response: response }
+  );
   return response.name;
 }
 
-async function createUpsInstance(name: string, info?: ServiceTypeInfo): Promise<string | undefined> {
+async function createUpsInstance(
+  name: string,
+  info?: ServiceTypeInfo
+): Promise<string | undefined> {
   let result;
   const quietMode = info?.tag && info.allowCreate?.name;
   const credentials = quietMode
@@ -384,16 +479,25 @@ async function createUpsInstance(name: string, info?: ServiceTypeInfo): Promise<
     const tags = quietMode
       ? info?.tag
       : await vscode.window.showInputBox(
-          _.merge({ prompt: messages.enter_tags, ignoreFocusOut: true }, info?.tag ? { value: info.tag } : {})
+          _.merge(
+            { prompt: messages.enter_tags, ignoreFocusOut: true },
+            info?.tag ? { value: info.tag } : {}
+          )
         );
     if (undefined !== tags) {
       const sysLogUrl = quietMode
         ? ""
-        : await vscode.window.showInputBox({ prompt: messages.enter_sys_log_url, ignoreFocusOut: true });
+        : await vscode.window.showInputBox({
+            prompt: messages.enter_sys_log_url,
+            ignoreFocusOut: true,
+          });
       if (undefined !== sysLogUrl) {
         const routeUrl = quietMode
           ? ""
-          : await vscode.window.showInputBox({ prompt: messages.enter_route_service_url, ignoreFocusOut: true });
+          : await vscode.window.showInputBox({
+              prompt: messages.enter_route_service_url,
+              ignoreFocusOut: true,
+            });
         if (undefined !== routeUrl) {
           // canceled
           const response = await cfCreateUpsInstance({
@@ -404,11 +508,16 @@ async function createUpsInstance(name: string, info?: ServiceTypeInfo): Promise<
             tags: _.compact(_.split(tags, /[,\s]/)),
           });
           void vscode.window.showInformationMessage(
-            isCFResource(response) ? messages.service_created(response.name) : _.toString(response)
+            isCFResource(response)
+              ? messages.service_created(response.name)
+              : _.toString(response)
           );
-          getModuleLogger(LOGGER_MODULE).debug("createUpsInstance: the service has been created", {
-            response: response,
-          });
+          getModuleLogger(LOGGER_MODULE).debug(
+            "createUpsInstance: the service has been created",
+            {
+              response: response,
+            }
+          );
           result = response?.name;
         }
       }
@@ -417,7 +526,10 @@ async function createUpsInstance(name: string, info?: ServiceTypeInfo): Promise<
   return result;
 }
 
-async function createServiceInstance(name: string, info?: ServiceTypeInfo): Promise<string | undefined> {
+async function createServiceInstance(
+  name: string,
+  info?: ServiceTypeInfo
+): Promise<string | undefined> {
   const serviceName = info?.allowCreate?.serviceName || info?.name;
   const servicePlan = info?.allowCreate?.plan || info?.plan;
   const serviceTag = info?.allowCreate?.tag || info?.tag;
@@ -426,7 +538,11 @@ async function createServiceInstance(name: string, info?: ServiceTypeInfo): Prom
     true,
     messages.loading_services,
     cfGetServices,
-    { filters: [{ key: eFilters.names, value: resolveFilterValue(serviceName) }] }
+    {
+      filters: [
+        { key: eFilters.names, value: resolveFilterValue(serviceName) },
+      ],
+    }
   );
   if (_.size(servicesInfo)) {
     const serviceInfo =
@@ -459,7 +575,11 @@ async function createServiceInstance(name: string, info?: ServiceTypeInfo): Prom
             return vscode.window.withProgress(
               {
                 location: vscode.ProgressLocation.Notification,
-                title: messages.creating_service(name, serviceInfo.label, planInfo.label),
+                title: messages.creating_service(
+                  name,
+                  serviceInfo.label,
+                  planInfo.label
+                ),
                 cancellable: true,
               },
               (progress, cancelToken) =>
@@ -490,10 +610,17 @@ async function createServiceInstance(name: string, info?: ServiceTypeInfo): Prom
   }
 }
 
-async function createService(isUps: boolean, info?: ServiceTypeInfo): Promise<string | undefined> {
+async function createService(
+  isUps: boolean,
+  info?: ServiceTypeInfo
+): Promise<string | undefined> {
   // first ask for service-name
   const options = _.merge(
-    { prompt: info?.allowCreate?.namePrompt ? `${info.allowCreate.namePrompt}` : messages.enter_service_name },
+    {
+      prompt: info?.allowCreate?.namePrompt
+        ? `${info.allowCreate.namePrompt}`
+        : messages.enter_service_name,
+    },
     info?.allowCreate?.name ? { value: `${info.allowCreate.name}` } : {},
     { ignoreFocusOut: true }
   );
@@ -501,7 +628,9 @@ async function createService(isUps: boolean, info?: ServiceTypeInfo): Promise<st
   const instanceName = await vscode.window.showInputBox(options);
   if (instanceName) {
     try {
-      return await (isUps ? createUpsInstance(instanceName, info) : createServiceInstance(instanceName, info));
+      return await (isUps
+        ? createUpsInstance(instanceName, info)
+        : createServiceInstance(instanceName, info));
     } catch (error) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       const errText = toText(error);
@@ -517,27 +646,46 @@ async function createService(isUps: boolean, info?: ServiceTypeInfo): Promise<st
   }
 }
 
-export async function cmdCreateService(info?: ServiceTypeInfo): Promise<string | undefined> {
+export async function cmdCreateService(
+  info?: ServiceTypeInfo
+): Promise<string | undefined> {
   if (await verifyLoginRetry()) {
     return createService(false, info);
   }
 }
 
-export async function cmdCreateUps(info?: ServiceTypeInfo): Promise<string | undefined> {
+export async function cmdCreateUps(
+  info?: ServiceTypeInfo
+): Promise<string | undefined> {
   if (await verifyLoginRetry()) {
     return createService(true, info);
   }
 }
 
-export async function fetchServicePlanList(query?: IServiceQuery): Promise<PlanInfo[]> {
+export async function fetchServicePlanList(
+  query?: IServiceQuery
+): Promise<PlanInfo[]> {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-  return runWithProgressAndLoginRetry(false, messages.loading_service_plan_list, cfGetServicePlansList, query);
+  return runWithProgressAndLoginRetry(
+    false,
+    messages.loading_service_plan_list,
+    cfGetServicePlansList,
+    query
+  );
 }
 
-export function getAvailableServices(opts?: DisplayServices, progressTitle?: string): Promise<ServiceInstanceInfo[]> {
+export function getAvailableServices(
+  opts?: DisplayServices,
+  progressTitle?: string
+): Promise<ServiceInstanceInfo[]> {
   return notifyWhenServicesInfoResultIncomplete(
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    runWithProgressAndLoginRetry(true, progressTitle || messages.loading_services, getAllServiceInstances, opts)
+    runWithProgressAndLoginRetry(
+      true,
+      progressTitle || messages.loading_services,
+      getAllServiceInstances,
+      opts
+    )
   );
 }
 
@@ -547,7 +695,12 @@ export async function getServiceInstances(
 ): Promise<ServiceInstanceInfo[]> {
   return notifyWhenServicesInfoResultIncomplete(
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    runWithProgressAndLoginRetry(true, progressTitle || messages.loading_services, cfGetServiceInstances, query)
+    runWithProgressAndLoginRetry(
+      true,
+      progressTitle || messages.loading_services,
+      cfGetServiceInstances,
+      query
+    )
   );
 }
 
@@ -557,7 +710,12 @@ export async function getUserProvidedServiceInstances(
 ): Promise<ServiceInstanceInfo[]> {
   return notifyWhenServicesInfoResultIncomplete(
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    runWithProgressAndLoginRetry(true, progressTitle || messages.loading_ups_services, getUpsServiceInstances, options)
+    runWithProgressAndLoginRetry(
+      true,
+      progressTitle || messages.loading_ups_services,
+      getUpsServiceInstances,
+      options
+    )
   );
 }
 
@@ -582,7 +740,10 @@ async function askUserForServiceInstanceName(
   }
 
   const pickItems = _.map(availableServicesToShow, (s) => {
-    return { label: s.label, description: s.serviceName + (s.plan ? ` (${s.plan})` : "") };
+    return {
+      label: s.label,
+      description: s.serviceName + (s.plan ? ` (${s.plan})` : ""),
+    };
   });
 
   return vscode.window
@@ -610,7 +771,10 @@ async function checkForMoreServices(
       return false;
     }
     // it is more:<next page>
-    const nextPage = Number.parseInt(_.get(lastElem, 'serviceName.split(":")[1]') as string, 10);
+    const nextPage = Number.parseInt(
+      _.get(lastElem, 'serviceName.split(":")[1]') as string,
+      10
+    );
 
     const nextAvailableServices = await getAvailableServices({
       query: { page: nextPage },
@@ -636,9 +800,17 @@ export async function getInstanceName(
   availableServices: ServiceInstanceInfo[],
   serviceType?: ServiceTypeInfo
 ): Promise<string | undefined> {
-  let instanceName = await askUserForServiceInstanceName(availableServices, serviceType);
-  while (await checkForMoreServices(instanceName, availableServices, serviceType)) {
-    instanceName = await askUserForServiceInstanceName(availableServices, serviceType);
+  let instanceName = await askUserForServiceInstanceName(
+    availableServices,
+    serviceType
+  );
+  while (
+    await checkForMoreServices(instanceName, availableServices, serviceType)
+  ) {
+    instanceName = await askUserForServiceInstanceName(
+      availableServices,
+      serviceType
+    );
   }
   return instanceName;
 }
@@ -654,7 +826,10 @@ export async function updateInstanceNameAndTags(
     instanceName = await (serviceTypeInfo?.name === eServiceTypes.user_provided
       ? cmdCreateUps(serviceTypeInfo)
       : cmdCreateService(serviceTypeInfo));
-  } else if (instanceName === `${CMD_BIND_TO_DEFAULT_SERVICE}${serviceTypeInfo?.allowCreate?.name}`) {
+  } else if (
+    instanceName ===
+    `${CMD_BIND_TO_DEFAULT_SERVICE}${serviceTypeInfo?.allowCreate?.name}`
+  ) {
     const defaultInstance = _.find(availableServices, {
       label: serviceTypeInfo?.allowCreate?.name,
       plan: serviceTypeInfo?.allowCreate?.plan,
@@ -663,9 +838,16 @@ export async function updateInstanceNameAndTags(
     if (defaultInstance) {
       instanceName = defaultInstance.label;
     } else {
-      instanceName = await (serviceTypeInfo?.name === eServiceTypes.user_provided
-        ? createUpsInstance(serviceTypeInfo?.allowCreate?.name || "", serviceTypeInfo)
-        : createServiceInstance(serviceTypeInfo?.allowCreate?.name || "", serviceTypeInfo));
+      instanceName = await (serviceTypeInfo?.name ===
+      eServiceTypes.user_provided
+        ? createUpsInstance(
+            serviceTypeInfo?.allowCreate?.name || "",
+            serviceTypeInfo
+          )
+        : createServiceInstance(
+            serviceTypeInfo?.allowCreate?.name || "",
+            serviceTypeInfo
+          ));
     }
   }
   if (_.size(instanceName) > 0) {
@@ -675,9 +857,15 @@ export async function updateInstanceNameAndTags(
   return instanceName;
 }
 
-export function updateServicesOnCFPageSize(availableServices: ServiceInstanceInfo[]): void {
+export function updateServicesOnCFPageSize(
+  availableServices: ServiceInstanceInfo[]
+): void {
   if (_.size(availableServices) === CF_PAGE_SIZE) {
-    availableServices.push({ label: MORE_RESULTS, serviceName: "more:2", alwaysShow: true });
+    availableServices.push({
+      label: MORE_RESULTS,
+      serviceName: "more:2",
+      alwaysShow: true,
+    });
   }
 }
 
@@ -689,10 +877,17 @@ export async function cmdSelectAndSaveTarget(): Promise<string | undefined> {
       const affairs = [
         {
           id: "save",
-          label: messages.set_targets_save(target.org || "undefined", target.space || "undefined"),
+          label: messages.set_targets_save(
+            target.org || "undefined",
+            target.space || "undefined"
+          ),
           detail: messages.set_targets_save_details,
         },
-        { id: "pick-save", label: messages.set_targets_pick_save, detail: messages.set_targets_pick_save_details },
+        {
+          id: "pick-save",
+          label: messages.set_targets_pick_save,
+          detail: messages.set_targets_pick_save_details,
+        },
       ];
       let result;
       const action = await vscode.window.showQuickPick(affairs, {
@@ -727,7 +922,10 @@ export async function cmdSelectAndSaveTarget(): Promise<string | undefined> {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const errText = toText(e);
     void vscode.window.showErrorMessage(errText);
-    getModuleLogger(LOGGER_MODULE).error(`cmdSelectAndSaveTarget exception thrown`, { error: errText });
+    getModuleLogger(LOGGER_MODULE).error(
+      `cmdSelectAndSaveTarget exception thrown`,
+      { error: errText }
+    );
   }
 }
 

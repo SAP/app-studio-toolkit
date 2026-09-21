@@ -97,7 +97,8 @@ describe("loginTargetView tests", () => {
     sandbox.restore();
   });
 
-  const htmlContext = "<html><link href=</link><script src=></script><img src=></img></html>";
+  const htmlContext =
+    "<html><link href=</link><script src=></script><img src=></img></html>";
 
   describe("openLoginView", () => {
     it("should open login view and handle login", async () => {
@@ -106,20 +107,34 @@ describe("loginTargetView tests", () => {
       sandbox.stub(panelObj, "onDidDispose").yields();
       vscodeWindowMock
         .expects("createWebviewPanel")
-        .withExactArgs("cfLogin", "Cloud Foundry Sign In", nsVsMock.testVscode.ViewColumn.Beside, {
-          enableScripts: true,
-          localResourceRoots: [nsVsMock.testVscode.Uri.file(path.join(extensionPath, "dist", "media"))],
-        })
+        .withExactArgs(
+          "cfLogin",
+          "Cloud Foundry Sign In",
+          nsVsMock.testVscode.ViewColumn.Beside,
+          {
+            enableScripts: true,
+            localResourceRoots: [
+              nsVsMock.testVscode.Uri.file(
+                path.join(extensionPath, "dist", "media")
+              ),
+            ],
+          }
+        )
         .returns(panelObj);
       cfFsMock
         .expects("readFileSync")
-        .withExactArgs(path.join(extensionPath, "dist", "media", "index.html"), "utf8")
+        .withExactArgs(
+          path.join(extensionPath, "dist", "media", "index.html"),
+          "utf8"
+        )
         .returns(htmlContext);
 
       // Stub the rpcInvokeStub for invoking long function with progress form
       sandbox.stub(RpcExtension.prototype, "invoke").resolves(OK);
 
-      expect(await internalModule.openLoginView({ isSplit: true })).to.equal(undefined);
+      expect(await internalModule.openLoginView({ isSplit: true })).to.equal(
+        undefined
+      );
     });
   });
 
@@ -138,7 +153,9 @@ describe("loginTargetView tests", () => {
     it("should handle error when fetching orgs", async () => {
       loginTargetInstance = new internal.LoginTarget(panelObj);
 
-      cfApiMock.expects("cfGetAvailableOrgs").rejects(new Error("Failed to fetch orgs"));
+      cfApiMock
+        .expects("cfGetAvailableOrgs")
+        .rejects(new Error("Failed to fetch orgs"));
 
       const result = await loginTargetInstance.getOrgs();
 
@@ -155,7 +172,11 @@ describe("loginTargetView tests", () => {
       };
 
       const cfLogoutStub = sandbox.stub().resolves(api);
-      mockPrivateMethod(loginTargetInstance, cfLogoutStub, "invokeLongFunctionWithProgressForm");
+      mockPrivateMethod(
+        loginTargetInstance,
+        cfLogoutStub,
+        "invokeLongFunctionWithProgressForm"
+      );
 
       const result = await loginTargetInstance.getTarget();
 
@@ -166,7 +187,11 @@ describe("loginTargetView tests", () => {
     it("should handle error when fetching target", async () => {
       loginTargetInstance = new internal.LoginTarget(panelObj);
       const cfLogoutStub = sandbox.stub().rejects(new Error("Logout error"));
-      mockPrivateMethod(loginTargetInstance, cfLogoutStub, "invokeLongFunctionWithProgressForm");
+      mockPrivateMethod(
+        loginTargetInstance,
+        cfLogoutStub,
+        "invokeLongFunctionWithProgressForm"
+      );
 
       const result = await loginTargetInstance.getTarget();
 
@@ -180,17 +205,27 @@ describe("loginTargetView tests", () => {
 
       const cfGetTargetStub = sandbox
         .stub(loginTargetInstance, "getTarget")
-        .resolves({ "api endpoint": extensionPath, org: "my-org", space: "my-space" });
+        .resolves({
+          "api endpoint": extensionPath,
+          org: "my-org",
+          space: "my-space",
+        });
       mockPrivateMethod(loginTargetInstance, cfGetTargetStub, "getTarget");
 
       const cfDefaultLandscape = sandbox.stub().resolves(extensionPath);
-      mockPrivateMethod(loginTargetInstance, cfDefaultLandscape, "getCFDefaultLandscape");
+      mockPrivateMethod(
+        loginTargetInstance,
+        cfDefaultLandscape,
+        "getCFDefaultLandscape"
+      );
 
       const result = await loginTargetInstance.init();
 
       expect(result.defaultEndpoint).to.equal(extensionPath);
       expect(result.isLoggedIn).to.be.true;
-      expect(result.passcodeUrl).to.equal("login.sap.test.ondemand.com/passcode");
+      expect(result.passcodeUrl).to.equal(
+        "login.sap.test.ondemand.com/passcode"
+      );
       expect(result.currentOrg).to.equal("my-org");
       expect(result.currentSpace).to.equal("my-space");
     });
@@ -199,10 +234,15 @@ describe("loginTargetView tests", () => {
   describe("getSpaces", () => {
     it("should fetch spaces successfully", async () => {
       const org = "org-1";
-      const spaces: Space[] = [{ label: "space", guid: "guid", orgGUID: "orgGUID" }];
+      const spaces: Space[] = [
+        { label: "space", guid: "guid", orgGUID: "orgGUID" },
+      ];
       loginTargetInstance = new internal.LoginTarget(panelObj);
 
-      cfApiMock.expects("cfGetAvailableSpaces").withExactArgs(org).resolves(spaces);
+      cfApiMock
+        .expects("cfGetAvailableSpaces")
+        .withExactArgs(org)
+        .resolves(spaces);
 
       const result = await loginTargetInstance.getSpaces(org);
 
@@ -213,7 +253,10 @@ describe("loginTargetView tests", () => {
       const org = "org-1";
       loginTargetInstance = new internal.LoginTarget(panelObj);
 
-      cfApiMock.expects("cfGetAvailableSpaces").withExactArgs(org).rejects(new Error("Failed to fetch spaces"));
+      cfApiMock
+        .expects("cfGetAvailableSpaces")
+        .withExactArgs(org)
+        .rejects(new Error("Failed to fetch spaces"));
 
       const result = await loginTargetInstance.getSpaces(org);
 
@@ -256,7 +299,11 @@ describe("loginTargetView tests", () => {
       loginTargetInstance = new internal.LoginTarget(panelObj);
 
       const cfLogoutStub = sandbox.stub().rejects(new Error("Logout error"));
-      mockPrivateMethod(loginTargetInstance, cfLogoutStub, "invokeLongFunctionWithProgressForm");
+      mockPrivateMethod(
+        loginTargetInstance,
+        cfLogoutStub,
+        "invokeLongFunctionWithProgressForm"
+      );
 
       const result = await loginTargetInstance.logoutClick();
 
@@ -270,7 +317,10 @@ describe("loginTargetView tests", () => {
       // Mock the cfLogout function to resolve successfully
       const cfLogoutStub = sandbox.stub().resolves();
       loginTargetInstance.invokeLongFunctionWithProgressForm = cfLogoutStub;
-      vscodeWindowMock.expects("showInformationMessage").withExactArgs(messages.logout_success).resolves();
+      vscodeWindowMock
+        .expects("showInformationMessage")
+        .withExactArgs(messages.logout_success)
+        .resolves();
 
       const result = await loginTargetInstance.logoutClick();
 
@@ -286,13 +336,19 @@ describe("loginTargetView tests", () => {
 
       // Mock the long function (cfLogin) to return a success result
       const cfLoginStub = sandbox.stub().resolves(OK);
-      mockPrivateMethod(loginTargetInstance, cfLoginStub, "invokeLongFunctionWithProgressForm");
+      mockPrivateMethod(
+        loginTargetInstance,
+        cfLoginStub,
+        "invokeLongFunctionWithProgressForm"
+      );
       const showMessageStub = vscodeWindowMock
         .expects("showInformationMessage")
         .withExactArgs(messages.login_success)
         .resolves();
 
-      const result = await loginTargetInstance.loginClick({} as SSOLoginOptions);
+      const result = await loginTargetInstance.loginClick(
+        {} as SSOLoginOptions
+      );
 
       expect(result).to.be.true;
       expect(showMessageStub.calledOnceWith(messages.login_success)).to.be.true;
@@ -310,9 +366,15 @@ describe("loginTargetView tests", () => {
 
       // Mock the long function (cfLogin) to return a failure result
       const cfLoginStub = sandbox.stub().resolves(loginResult);
-      mockPrivateMethod(loginTargetInstance, cfLoginStub, "invokeLongFunctionWithProgressForm");
+      mockPrivateMethod(
+        loginTargetInstance,
+        cfLoginStub,
+        "invokeLongFunctionWithProgressForm"
+      );
 
-      const result = await loginTargetInstance.loginClick({} as SSOLoginOptions);
+      const result = await loginTargetInstance.loginClick(
+        {} as SSOLoginOptions
+      );
 
       expect(result).to.be.false;
       expect(showMessageStub.calledOnceWith(messages.login_failed)).to.be.true;
@@ -324,9 +386,15 @@ describe("loginTargetView tests", () => {
 
       // Mock the long function (cfLogin) to throw an error
       const cfLoginStub = sandbox.stub().rejects(new Error("Login error"));
-      mockPrivateMethod(loginTargetInstance, cfLoginStub, "invokeLongFunctionWithProgressForm");
+      mockPrivateMethod(
+        loginTargetInstance,
+        cfLoginStub,
+        "invokeLongFunctionWithProgressForm"
+      );
 
-      const result = await loginTargetInstance.loginClick({} as SSOLoginOptions);
+      const result = await loginTargetInstance.loginClick(
+        {} as SSOLoginOptions
+      );
 
       expect(result).to.be.false;
       expect(cfLoginStub.calledOnce).to.be.true;
@@ -343,7 +411,10 @@ describe("loginTargetView tests", () => {
       const cfSetOrgSpaceStub = sandbox.stub().resolves(OK);
       cfApiProxy.cfSetOrgSpace = cfSetOrgSpaceStub;
 
-      vscodeWindowMock.expects("showInformationMessage").withExactArgs(messages.success_set_org_space).resolves();
+      vscodeWindowMock
+        .expects("showInformationMessage")
+        .withExactArgs(messages.success_set_org_space)
+        .resolves();
 
       const result = await loginTargetInstance.applyTarget(org, space);
 
@@ -380,27 +451,42 @@ describe("loginTargetView tests", () => {
       const longFunctionStub = sandbox.stub().resolves("result");
       const rpcInvokeStub = sandbox.stub(RpcExtension.prototype, "invoke");
 
-      const result = await loginTargetInstance.invokeLongFunctionWithProgressForm(longFunctionStub, "arg1", "arg2");
+      const result =
+        await loginTargetInstance.invokeLongFunctionWithProgressForm(
+          longFunctionStub,
+          "arg1",
+          "arg2"
+        );
 
       expect(result).to.equal("result");
       expect(rpcInvokeStub.calledTwice).to.be.true;
-      expect(rpcInvokeStub.firstCall.calledWith("setBusyIndicator", [true])).to.be.true;
-      expect(rpcInvokeStub.secondCall.calledWith("setBusyIndicator", [false])).to.be.true;
+      expect(rpcInvokeStub.firstCall.calledWith("setBusyIndicator", [true])).to
+        .be.true;
+      expect(rpcInvokeStub.secondCall.calledWith("setBusyIndicator", [false]))
+        .to.be.true;
     });
 
     it("should handle error when invoking long function", async () => {
       loginTargetInstance = new internal.LoginTarget(panelObj);
-      const longFunctionStub = sandbox.stub().rejects(new Error("Function failed"));
+      const longFunctionStub = sandbox
+        .stub()
+        .rejects(new Error("Function failed"));
       const rpcInvokeStub = sandbox.stub(RpcExtension.prototype, "invoke");
 
       try {
-        await loginTargetInstance.invokeLongFunctionWithProgressForm(longFunctionStub, "arg1", "arg2");
+        await loginTargetInstance.invokeLongFunctionWithProgressForm(
+          longFunctionStub,
+          "arg1",
+          "arg2"
+        );
         fail("Should have thrown an error");
       } catch (error) {
         expect(error.message).to.equal("Function failed");
         expect(rpcInvokeStub.calledTwice).to.be.true;
-        expect(rpcInvokeStub.firstCall.calledWith("setBusyIndicator", [true])).to.be.true;
-        expect(rpcInvokeStub.secondCall.calledWith("setBusyIndicator", [false])).to.be.true;
+        expect(rpcInvokeStub.firstCall.calledWith("setBusyIndicator", [true]))
+          .to.be.true;
+        expect(rpcInvokeStub.secondCall.calledWith("setBusyIndicator", [false]))
+          .to.be.true;
       }
     });
   });
@@ -411,21 +497,34 @@ describe("loginTargetView tests", () => {
 
     it("ok:: getCFDefaultLandscape - 'Target' is defined in .cf config file - return it first", async () => {
       const loginTargetInstance = new internal.LoginTarget(panelObj);
-      cfApiMock.expects("cfGetConfigFileField").withExactArgs("Target").resolves(fileEndpoint);
-      expect(await loginTargetInstance.getCFDefaultLandscape()).to.be.equal(fileEndpoint);
+      cfApiMock
+        .expects("cfGetConfigFileField")
+        .withExactArgs("Target")
+        .resolves(fileEndpoint);
+      expect(await loginTargetInstance.getCFDefaultLandscape()).to.be.equal(
+        fileEndpoint
+      );
     });
 
     it("ok:: getCFDefaultLandscape - 'Target' is undefined in .cf config file - fetch from env", async () => {
       const loginTargetInstance = new internal.LoginTarget(panelObj);
-      cfApiMock.expects("cfGetConfigFileField").withExactArgs("Target").resolves();
+      cfApiMock
+        .expects("cfGetConfigFileField")
+        .withExactArgs("Target")
+        .resolves();
       cfendpointMock.expects("getCFEndpoint").resolves(envEndpoint);
-      expect(await loginTargetInstance.getCFDefaultLandscape()).to.be.equal(envEndpoint);
+      expect(await loginTargetInstance.getCFDefaultLandscape()).to.be.equal(
+        envEndpoint
+      );
     });
 
     it("fail:: getCFDefaultLandscape - cfGetConfigFileField is rejected", () => {
       const loginTargetInstance = new internal.LoginTarget(panelObj);
       const error = new Error("cfGetConfigFileField rejected");
-      cfApiMock.expects("cfGetConfigFileField").withExactArgs("Target").rejects(error);
+      cfApiMock
+        .expects("cfGetConfigFileField")
+        .withExactArgs("Target")
+        .rejects(error);
       return loginTargetInstance
         .getCFDefaultLandscape()
         .then(() => {
@@ -440,9 +539,9 @@ describe("loginTargetView tests", () => {
   describe("calculatePasscodeUrl", () => {
     it("ok:: calculatePasscodeUrl", () => {
       loginTargetInstance = new internal.LoginTarget(panelObj);
-      expect(loginTargetInstance.calculatePasscodeUrl(extensionPath)).to.be.equal(
-        "login.sap.test.ondemand.com/passcode"
-      );
+      expect(
+        loginTargetInstance.calculatePasscodeUrl(extensionPath)
+      ).to.be.equal("login.sap.test.ondemand.com/passcode");
     });
   });
 

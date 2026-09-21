@@ -33,7 +33,13 @@ import {
   execSaveTarget,
 } from "./cfViewCommands";
 
-import { cfGetConfigFilePath, cfGetConfigFileField, ITarget, cfGetTarget, OK } from "@sap/cf-tools";
+import {
+  cfGetConfigFilePath,
+  cfGetConfigFileField,
+  ITarget,
+  cfGetTarget,
+  OK,
+} from "@sap/cf-tools";
 import * as fs from "fs";
 import { DependencyHandler } from "./run-configuration";
 import { IRunConfigRegistry } from "@sap/wing-run-config-types";
@@ -52,11 +58,18 @@ const onDidChangeTarget = targetChangedEventEmitter.event;
 async function updateStatusBar(): Promise<boolean | undefined> {
   let isUpdated;
   const beforeText = _.get(cfStatusBarItem, "text");
-  const results = await Promise.all([cfGetConfigFileField("OrganizationFields"), cfGetConfigFileField("SpaceFields")]);
+  const results = await Promise.all([
+    cfGetConfigFileField("OrganizationFields"),
+    cfGetConfigFileField("SpaceFields"),
+  ]);
   const orgField: string = _.get(results, "[0].Name");
   const spaceField: string = _.get(results, "[1].Name");
   const isNoTarget = _.isEmpty(orgField) && _.isEmpty(spaceField);
-  const updatedText = `${isNoTarget ? messages.not_targeted : messages.targeting(orgField, spaceField)}`;
+  const updatedText = `${
+    isNoTarget
+      ? messages.not_targeted
+      : messages.targeting(orgField, spaceField)
+  }`;
 
   if (beforeText !== updatedText) {
     _.set(cfStatusBarItem, "text", updatedText);
@@ -89,7 +102,9 @@ export function onCFConfigFileChange(): void {
 }
 
 function displayTargetWhenAllowed(): void {
-  if (workspace.getConfiguration().get("CloudFoundryTools.showTargetInformation")) {
+  if (
+    workspace.getConfiguration().get("CloudFoundryTools.showTargetInformation")
+  ) {
     cfStatusBarItem.show();
   } else {
     cfStatusBarItem.hide();
@@ -97,13 +112,19 @@ function displayTargetWhenAllowed(): void {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function callbackOnDidChangeConfiguration(e: ConfigurationChangeEvent, context: ExtensionContext): void {
+export function callbackOnDidChangeConfiguration(
+  e: ConfigurationChangeEvent,
+  context: ExtensionContext
+): void {
   if (e.affectsConfiguration("CloudFoundryTools.showTargetInformation")) {
     displayTargetWhenAllowed();
   }
 }
 
-async function init(context: ExtensionContext, cfConfigFilePath: string): Promise<void> {
+async function init(
+  context: ExtensionContext,
+  cfConfigFilePath: string
+): Promise<void> {
   cfStatusBarItem = window.createStatusBarItem(StatusBarAlignment.Left, 100);
   context.subscriptions.push(cfStatusBarItem);
 
@@ -111,7 +132,9 @@ async function init(context: ExtensionContext, cfConfigFilePath: string): Promis
   // cfStatusBarItem.command = {command: loginCmdId, arguments: [true], title: ""};
   // start workarround  --> remove following workarround in future theia releases
   /* eslint-disable-next-line @typescript-eslint/no-unsafe-argument */
-  context.subscriptions.push(commands.registerCommand("cf.login.weak", cmdLogin.bind(null, true)));
+  context.subscriptions.push(
+    commands.registerCommand("cf.login.weak", cmdLogin.bind(null, true))
+  );
   cfStatusBarItem.command = "cf.login";
   // end workarround
 
@@ -123,32 +146,55 @@ async function init(context: ExtensionContext, cfConfigFilePath: string): Promis
 
   displayTargetWhenAllowed();
 
-  let platformExtension = extensions.getExtension<IRunConfigRegistry>(runConfigExtName);
+  let platformExtension =
+    extensions.getExtension<IRunConfigRegistry>(runConfigExtName);
   if (platformExtension) {
     if (!platformExtension.isActive) {
       try {
         await platformExtension.activate();
       } catch (e) {
         platformExtension = undefined;
-        getModuleLogger(LOGGER_MODULE).error("activate <%s> extension fails", runConfigExtName, {
-          exception: toText(new Error(e?.message as string)),
-        });
+        getModuleLogger(LOGGER_MODULE).error(
+          "activate <%s> extension fails",
+          runConfigExtName,
+          {
+            exception: toText(new Error(e?.message as string)),
+          }
+        );
       }
     }
     if (platformExtension) {
-      const genericDependencyHandler = new DependencyHandler("cf-tools-rsource-dependency");
+      const genericDependencyHandler = new DependencyHandler(
+        "cf-tools-rsource-dependency"
+      );
       platformExtension.exports.registerDependency(genericDependencyHandler);
       // eslint-disable-next-line @typescript-eslint/unbound-method
-      context.subscriptions.push(commands.registerCommand("cf.services.bind", genericDependencyHandler.bind));
-      // eslint-disable-next-line @typescript-eslint/unbound-method
-      context.subscriptions.push(commands.registerCommand("cf.services.unbind", genericDependencyHandler.unbind));
+      context.subscriptions.push(
+        commands.registerCommand(
+          "cf.services.bind",
+          genericDependencyHandler.bind
+        )
+      );
       // eslint-disable-next-line @typescript-eslint/unbound-method
       context.subscriptions.push(
-        commands.registerCommand("cf.services.binding.state", genericDependencyHandler.getBindState)
+        commands.registerCommand(
+          "cf.services.unbind",
+          genericDependencyHandler.unbind
+        )
+      );
+      // eslint-disable-next-line @typescript-eslint/unbound-method
+      context.subscriptions.push(
+        commands.registerCommand(
+          "cf.services.binding.state",
+          genericDependencyHandler.getBindState
+        )
       );
     }
   } else {
-    getModuleLogger(LOGGER_MODULE).error("activate: the <%s> extension has not been set", runConfigExtName);
+    getModuleLogger(LOGGER_MODULE).error(
+      "activate: the <%s> extension has not been set",
+      runConfigExtName
+    );
   }
 }
 
@@ -158,32 +204,56 @@ export async function activate(context: ExtensionContext): Promise<unknown> {
 
   const cfConfigFilePath: string = cfGetConfigFilePath();
   treeDataProvider = new CFView(context, cfConfigFilePath);
-  const view = window.createTreeView("cfView", { treeDataProvider, showCollapseAll: true });
+  const view = window.createTreeView("cfView", {
+    treeDataProvider,
+    showCollapseAll: true,
+  });
 
   context.subscriptions.push(
-    commands.registerCommand("cf.login", (weak: boolean, target: boolean, extEndPoint: string | undefined) => {
-      return cmdLogin(weak, target, extEndPoint, { isSplit: !!weak }).then((result) => {
-        if (OK === result) {
-          const active = _.find(treeDataProvider.getTargets(), "target.isCurrent");
-          if (active) {
-            // after re-login the target data become invalid -> perform re-create target
-            void cmdDeleteTarget(active, { "skip-reload": true, silent: true }).then(() => {
-              void execSaveTarget(active, { "skip-reload": true, silent: true }).then(() => {
-                void execSetTarget(active, { silent: true });
-              });
-            });
+    commands.registerCommand(
+      "cf.login",
+      (weak: boolean, target: boolean, extEndPoint: string | undefined) => {
+        return cmdLogin(weak, target, extEndPoint, { isSplit: !!weak }).then(
+          (result) => {
+            if (OK === result) {
+              const active = _.find(
+                treeDataProvider.getTargets(),
+                "target.isCurrent"
+              );
+              if (active) {
+                // after re-login the target data become invalid -> perform re-create target
+                void cmdDeleteTarget(active, {
+                  "skip-reload": true,
+                  silent: true,
+                }).then(() => {
+                  void execSaveTarget(active, {
+                    "skip-reload": true,
+                    silent: true,
+                  }).then(() => {
+                    void execSetTarget(active, { silent: true });
+                  });
+                });
+              }
+            }
+            return result;
           }
-        }
-        return result;
-      });
-    })
+        );
+      }
+    )
   );
 
-  context.subscriptions.push(workspace.onDidChangeConfiguration((e) => callbackOnDidChangeConfiguration(e, context)));
+  context.subscriptions.push(
+    workspace.onDidChangeConfiguration((e) =>
+      callbackOnDidChangeConfiguration(e, context)
+    )
+  );
 
   function revealTargetItem(label?: string) {
     setTimeout(() => {
-      const treeItem = _.find(treeDataProvider.getTargets(), label ? ["label", label] : "target.isCurrent");
+      const treeItem = _.find(
+        treeDataProvider.getTargets(),
+        label ? ["label", label] : "target.isCurrent"
+      );
       if (treeItem) {
         void view.reveal(treeItem, { select: true, focus: true, expand: true });
       }
@@ -191,15 +261,26 @@ export async function activate(context: ExtensionContext): Promise<unknown> {
   }
 
   context.subscriptions.push(
-    commands.registerCommand("cf.target.set", async (item: CFTargetTI | CFTargetNotCurrent) => {
-      await cmdSetCurrentTarget(item);
-      revealTargetItem();
-    })
+    commands.registerCommand(
+      "cf.target.set",
+      async (item: CFTargetTI | CFTargetNotCurrent) => {
+        await cmdSetCurrentTarget(item);
+        revealTargetItem();
+      }
+    )
   );
-  context.subscriptions.push(commands.registerCommand("cf.services.create", cmdCreateService));
-  context.subscriptions.push(commands.registerCommand("cf.ups.create", cmdCreateUps));
-  context.subscriptions.push(commands.registerCommand("cf.services.bind.local", cmdBindLocal));
-  context.subscriptions.push(commands.registerCommand("cf.set.orgspace", cmdCFSetOrgSpace));
+  context.subscriptions.push(
+    commands.registerCommand("cf.services.create", cmdCreateService)
+  );
+  context.subscriptions.push(
+    commands.registerCommand("cf.ups.create", cmdCreateUps)
+  );
+  context.subscriptions.push(
+    commands.registerCommand("cf.services.bind.local", cmdBindLocal)
+  );
+  context.subscriptions.push(
+    commands.registerCommand("cf.set.orgspace", cmdCFSetOrgSpace)
+  );
   context.subscriptions.push(
     commands.registerCommand("cf.targets.create", async () => {
       const label = await cmdSelectAndSaveTarget();
@@ -208,13 +289,33 @@ export async function activate(context: ExtensionContext): Promise<unknown> {
       }
     })
   );
-  context.subscriptions.push(commands.registerCommand("cf.target.delete", cmdDeleteTarget));
-  context.subscriptions.push(commands.registerCommand("cf.targets.reload", cmdReloadTargets));
-  context.subscriptions.push(commands.registerCommand("cf.select.space", cmdSelectSpace));
-  context.subscriptions.push(commands.registerCommand("cf.deploy-service.api", cmdDeployServiceAPI));
-  context.subscriptions.push(commands.registerCommand("cf.services.get-space-services", cmdGetSpaceServices));
-  context.subscriptions.push(commands.registerCommand("cf.services.get-ups-services", cmdGetUpsServiceInstances));
-  context.subscriptions.push(commands.registerCommand("cf.services.get-services", cmdGetServiceInstances));
+  context.subscriptions.push(
+    commands.registerCommand("cf.target.delete", cmdDeleteTarget)
+  );
+  context.subscriptions.push(
+    commands.registerCommand("cf.targets.reload", cmdReloadTargets)
+  );
+  context.subscriptions.push(
+    commands.registerCommand("cf.select.space", cmdSelectSpace)
+  );
+  context.subscriptions.push(
+    commands.registerCommand("cf.deploy-service.api", cmdDeployServiceAPI)
+  );
+  context.subscriptions.push(
+    commands.registerCommand(
+      "cf.services.get-space-services",
+      cmdGetSpaceServices
+    )
+  );
+  context.subscriptions.push(
+    commands.registerCommand(
+      "cf.services.get-ups-services",
+      cmdGetUpsServiceInstances
+    )
+  );
+  context.subscriptions.push(
+    commands.registerCommand("cf.services.get-services", cmdGetServiceInstances)
+  );
 
   // postpone the rest of initialization after the extension is activated
   setTimeout(() => {

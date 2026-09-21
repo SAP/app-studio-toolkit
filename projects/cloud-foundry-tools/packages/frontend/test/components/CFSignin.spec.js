@@ -201,7 +201,10 @@ describe("CFSignin.vue", () => {
     });
 
     // Set invalid username and password or passcode
-    wrapper.setData({ username: "invalidUsername", password: "invalidPassword" });
+    wrapper.setData({
+      username: "invalidUsername",
+      password: "invalidPassword",
+    });
 
     // Trigger the SigninClicked method
     await wrapper.vm.SigninClicked();

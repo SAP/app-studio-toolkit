@@ -3,7 +3,10 @@
   <div id="app">
     <CFHeader class="app" />
 
-    <vscode-progress-ring class="progress-ring" :style="{ display: progressVisibility }" />
+    <vscode-progress-ring
+      class="progress-ring"
+      :style="{ display: progressVisibility }"
+    />
 
     <div class="app" :style="{ display: formVisibility }">
       <div style="visibility: none">

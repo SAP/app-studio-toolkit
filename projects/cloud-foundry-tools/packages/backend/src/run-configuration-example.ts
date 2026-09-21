@@ -30,7 +30,15 @@ export class RunConfigContext implements IRunConfigContext {
   public displayName = "CF Tools Example";
   public groupName = this.appId;
   public envPath: vscode.Uri = vscode.Uri.file(
-    path.join("C:", "Users", "your-i-number", "devx-wing", "test-run-config", "env", ".env")
+    path.join(
+      "C:",
+      "Users",
+      "your-i-number",
+      "devx-wing",
+      "test-run-config",
+      "env",
+      ".env"
+    )
   );
   public path: vscode.Uri;
   public dependencies = [new DependencyContext()];
@@ -56,7 +64,10 @@ export class RunConfigHandler implements IRunConfigHandler {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public getRunConfigContext(runnableId: string, confData: IConfigurationData): Promise<IRunConfigContext> {
+  public getRunConfigContext(
+    runnableId: string,
+    confData: IConfigurationData
+  ): Promise<IRunConfigContext> {
     return Promise.resolve(new RunConfigContext(this.id, "Cf App"));
   }
 

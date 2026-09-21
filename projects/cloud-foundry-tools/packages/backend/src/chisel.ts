@@ -27,12 +27,18 @@ function initReader(filePath: string): PropertiesReader.Reader | undefined {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function checkAndCreateChiselTask(filePath: string, name: string): any | undefined {
+export function checkAndCreateChiselTask(
+  filePath: string,
+  name: string
+): any | undefined {
   const envProperties = initReader(filePath);
   if (envProperties) {
     const chiselUrl = envProperties.get(ChiselKeys.CHISEL_URL);
     if (_.isEmpty(chiselUrl)) {
-      getModuleLogger(LOGGER_MODULE).debug("checkAndCreateChiselTask: empty chisel_url", { filePath: filePath });
+      getModuleLogger(LOGGER_MODULE).debug(
+        "checkAndCreateChiselTask: empty chisel_url",
+        { filePath: filePath }
+      );
       return undefined;
     }
     getModuleLogger(LOGGER_MODULE).debug(
@@ -50,7 +56,9 @@ export function checkAndCreateChiselTask(filePath: string, name: string): any | 
         "client",
         "--auth",
         // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-        `${envProperties.get(ChiselKeys.CHISEL_USER)}:${envProperties.get(ChiselKeys.CHISEL_PASSWORD)}`,
+        `${envProperties.get(ChiselKeys.CHISEL_USER)}:${envProperties.get(
+          ChiselKeys.CHISEL_PASSWORD
+        )}`,
         chiselUrl,
         envProperties.get(ChiselKeys.TUNNEL_PARAM),
       ],
@@ -73,7 +81,9 @@ function dropChiselProperties(propObj: any): Record<string, string> {
   return properties;
 }
 
-export async function deleteChiselParamsFromFile(filePath: string): Promise<boolean> {
+export async function deleteChiselParamsFromFile(
+  filePath: string
+): Promise<boolean> {
   const envProperties = initReader(filePath);
   if (!envProperties) {
     return false;
@@ -83,16 +93,17 @@ export async function deleteChiselParamsFromFile(filePath: string): Promise<bool
     return false;
   }
   try {
-    await writeProperties(filePath, dropChiselProperties(envProperties.getAllProperties()));
+    await writeProperties(
+      filePath,
+      dropChiselProperties(envProperties.getAllProperties())
+    );
     getModuleLogger(LOGGER_MODULE).debug(
       `deleteChiselParamsFromFile: override the paramters to ${filePath} file without chisel parameters`
     );
     return true;
   } catch (err) {
     /* eslint-disable-next-line @typescript-eslint/no-unsafe-argument */
-    getModuleLogger(
-      LOGGER_MODULE
-    ).error(
+    getModuleLogger(LOGGER_MODULE).error(
       `deleteChiselParamsFromFile: failed to override the paramters to ${filePath} file without chisel parameters`,
       { exception: toText(new Error(err?.message as string)) }
     );

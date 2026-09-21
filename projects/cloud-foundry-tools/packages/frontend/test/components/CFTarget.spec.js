@@ -163,7 +163,9 @@ describe("CFTarget.vue", () => {
     await wrapper.vm.$nextTick();
 
     // Simulate selecting an organization
-    await wrapper.setData({ selectedOrg: { guid: "org-guid", label: "Org Label" } });
+    await wrapper.setData({
+      selectedOrg: { guid: "org-guid", label: "Org Label" },
+    });
 
     // Wait for Vue to update the component
     await wrapper.vm.$nextTick();
@@ -259,7 +261,11 @@ describe("CFTarget.vue", () => {
     const orgsList = wrapper.vm.$data.orgs;
     expect(orgsList[0]?.label).equal("aaaaa");
     expect(orgsList[1]?.label).equal("bbbb");
-    expect(wrapper.vm.selectedOrg).to.deep.equal({ label: "aaaaa", guid: "32432423", selected: true });
+    expect(wrapper.vm.selectedOrg).to.deep.equal({
+      label: "aaaaa",
+      guid: "32432423",
+      selected: true,
+    });
   });
 
   it("does not select Organizaion when multiple Organizaions returned and unknown Organizaion from selectedTarget", async () => {
@@ -351,7 +357,10 @@ describe("CFTarget.vue", () => {
     // Wait for Vue to update the component
     await wrapper.vm.$nextTick();
 
-    expect(wrapper.vm.selectedOrg).to.deep.equal({ label: "aaaaa", guid: "32432423" });
+    expect(wrapper.vm.selectedOrg).to.deep.equal({
+      label: "aaaaa",
+      guid: "32432423",
+    });
     expect(wrapper.vm.selectedSpace).to.deep.equal({});
   });
 
@@ -391,9 +400,16 @@ describe("CFTarget.vue", () => {
     // Wait for Vue to update the component
     await wrapper.vm.$nextTick();
 
-    expect(wrapper.vm.selectedOrg).to.deep.equal({ label: "aaaaa", guid: "32432423" });
+    expect(wrapper.vm.selectedOrg).to.deep.equal({
+      label: "aaaaa",
+      guid: "32432423",
+    });
     await wrapper.vm.$nextTick();
-    expect(wrapper.vm.selectedSpace).to.deep.equal({ guid: "xxxxxxxx", label: "space1", selected: false });
+    expect(wrapper.vm.selectedSpace).to.deep.equal({
+      guid: "xxxxxxxx",
+      label: "space1",
+      selected: false,
+    });
   });
 
   it("does select Organisaion and Space when one Organisation and multiple Space and known org from selectedTarget", async () => {
@@ -402,7 +418,11 @@ describe("CFTarget.vue", () => {
         if (funcName === "getOrgs") {
           return Promise.resolve([{ guid: "32432423", label: "aaaaa" }]);
         } else if (funcName === "getSelectedTarget") {
-          return Promise.resolve({ guid: "32432423", org: "aaaaa", space: "space1" });
+          return Promise.resolve({
+            guid: "32432423",
+            org: "aaaaa",
+            space: "space1",
+          });
         } else if (funcName === "getSpaces") {
           return Promise.resolve([
             {
@@ -437,9 +457,17 @@ describe("CFTarget.vue", () => {
     // Wait for Vue to update the component
     await wrapper.vm.$nextTick();
 
-    expect(wrapper.vm.selectedOrg).to.deep.equal({ label: "aaaaa", guid: "32432423", selected: true });
+    expect(wrapper.vm.selectedOrg).to.deep.equal({
+      label: "aaaaa",
+      guid: "32432423",
+      selected: true,
+    });
     await wrapper.vm.$nextTick();
-    expect(wrapper.vm.selectedSpace).to.deep.equal({ guid: "xxxxxxxx", label: "space1", selected: true });
+    expect(wrapper.vm.selectedSpace).to.deep.equal({
+      guid: "xxxxxxxx",
+      label: "space1",
+      selected: true,
+    });
   });
 
   it("does show error message when no Organisations are returned", async () => {
@@ -479,7 +507,9 @@ describe("CFTarget.vue", () => {
     // Trigger watch by changing isLoggedIn prop
     expect(wrapper.vm.selectedOrg).to.deep.equal({});
     expect(wrapper.vm.selectedSpace).to.deep.equal({});
-    expect(wrapper.text()).contain("There is no Org defined for this landscape.");
+    expect(wrapper.text()).contain(
+      "There is no Org defined for this landscape."
+    );
   });
 
   it("does show error message when there is Organisaion but no Spaces are returned", async () => {
@@ -516,10 +546,15 @@ describe("CFTarget.vue", () => {
     // Wait for Vue to update the component
     await wrapper.vm.$nextTick();
 
-    expect(wrapper.vm.selectedOrg).to.deep.equal({ label: "aaaaa", guid: "32432423" });
+    expect(wrapper.vm.selectedOrg).to.deep.equal({
+      label: "aaaaa",
+      guid: "32432423",
+    });
     await wrapper.vm.$nextTick();
     expect(wrapper.vm.selectedSpace).to.deep.equal({});
-    expect(wrapper.text()).contain("There is no Space defined for the org you selected.");
+    expect(wrapper.text()).contain(
+      "There is no Space defined for the org you selected."
+    );
   });
 
   it("updates selectedOrg when an organization is selected", async () => {
@@ -539,10 +574,15 @@ describe("CFTarget.vue", () => {
     await wrapper.vm.$nextTick();
 
     // Simulate selecting an organization
-    await wrapper.setData({ selectedOrg: { guid: "org-guid", label: "Org Label" } });
+    await wrapper.setData({
+      selectedOrg: { guid: "org-guid", label: "Org Label" },
+    });
 
     // Assert that selectedOrg is updated correctly
-    expect(wrapper.vm.selectedOrg).to.deep.equal({ guid: "org-guid", label: "Org Label" });
+    expect(wrapper.vm.selectedOrg).to.deep.equal({
+      guid: "org-guid",
+      label: "Org Label",
+    });
   });
 
   it("selects a space when an organization is selected", async () => {
@@ -574,7 +614,9 @@ describe("CFTarget.vue", () => {
     await wrapper.vm.$nextTick();
 
     // Simulate selecting an organization
-    await wrapper.setData({ selectedOrg: { guid: "org-guid", label: "Org Label" } });
+    await wrapper.setData({
+      selectedOrg: { guid: "org-guid", label: "Org Label" },
+    });
 
     // Wait for Vue to update the component
     await wrapper.vm.$nextTick();
@@ -584,10 +626,15 @@ describe("CFTarget.vue", () => {
     expect(spaceDropdown.exists()).to.be.true;
 
     // Simulate selecting a space
-    await wrapper.setData({ selectedSpace: { guid: "space-guid-1", label: "Space 1" } });
+    await wrapper.setData({
+      selectedSpace: { guid: "space-guid-1", label: "Space 1" },
+    });
 
     // Assert that selectedSpace is updated correctly
-    expect(wrapper.vm.selectedSpace).to.deep.equal({ guid: "space-guid-1", label: "Space 1" });
+    expect(wrapper.vm.selectedSpace).to.deep.equal({
+      guid: "space-guid-1",
+      label: "Space 1",
+    });
   });
 
   it("update selectedOrg and clears selected space when Organization is changed", async () => {
@@ -631,7 +678,11 @@ describe("CFTarget.vue", () => {
 
     wrapper.vm.updateSelectedOrg({ target: { value: "bbbb" } });
 
-    expect(wrapper.vm.selectedOrg).to.deep.equal({ guid: "47423742", label: "bbbb", selected: false });
+    expect(wrapper.vm.selectedOrg).to.deep.equal({
+      guid: "47423742",
+      label: "bbbb",
+      selected: false,
+    });
     expect(wrapper.vm.selectedSpace).to.deep.equal({});
   });
 
@@ -682,6 +733,10 @@ describe("CFTarget.vue", () => {
 
     wrapper.vm.updateSelectedSpace({ target: { value: "space2" } });
 
-    expect(wrapper.vm.selectedSpace).to.deep.equal({ guid: "yyyyyyyy", label: "space2", orgGUID: "47423742" });
+    expect(wrapper.vm.selectedSpace).to.deep.equal({
+      guid: "yyyyyyyy",
+      label: "space2",
+      orgGUID: "47423742",
+    });
   });
 });
