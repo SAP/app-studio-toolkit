@@ -1,0 +1,42 @@
+{
+  "name": "@xml-tools/ast-position",
+  "version": "2.0.8",
+  "description": "XML Ast Position APIs",
+  "keywords": [
+    "xml",
+    "position"
+  ],
+  "main": "lib/api.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/app-studio-toolkit.git",
+    "directory": "projects/xml-tools/packages/ast-position"
+  },
+  "license": "Apache-2.0",
+  "typings": "./api.d.ts",
+  "files": [
+    "lib",
+    "api.d.ts",
+    "CHANGELOG.md",
+    "CHANGELOG.old.md"
+  ],
+  "dependencies": {
+    "@xml-tools/ast": "workspace:*"
+  },
+  "devDependencies": {
+    "@xml-tools/parser": "workspace:*"
+  },
+  "scripts": {
+    "ci": "npm-run-all type-check coverage:*",
+    "test": "mocha \"./test/**/*spec.js\"",
+    "coverage:run": "nyc mocha \"./test/**/*spec.js\"",
+    "coverage:check": "nyc check-coverage --lines 100 --branches 100 --statements 100 --functions 100",
+    "type-check": "tsc"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "bugs": {
+    "url": "https://github.com/SAP/app-studio-toolkit/issues"
+  }
+}
