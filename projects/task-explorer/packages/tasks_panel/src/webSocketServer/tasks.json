@@ -1,0 +1,29 @@
+[
+  {
+    "task": {
+      "task": {
+        "task": {
+          "type": "test-deploy",
+          "label": "test-deploy: task 1",
+          "path": "aaa"
+        },
+        "label": "test-deploy: task 1",
+        "prop1": "rr"
+      },
+      "label": "test-deploy: task 1",
+      "prop1": "rrr"
+    },
+    "label": "test-deploy: task 1",
+    "prop1": "xxx",
+    "prop2": ""
+  },
+  {
+    "task": {
+      "type": "test-deploy",
+      "label": "test-deploy: task 2",
+      "path": "bbb"
+    },
+    "label": "test-deploy: task 2",
+    "prop1": "rr"
+  }
+]

@@ -1,0 +1,24 @@
+{
+  "name": "@sap_oss/task_contrib_types",
+  "version": "4.7.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/app-studio-toolkit.git",
+    "directory": "projects/task-explorer/packages/task_contrib_types"
+  },
+  "license": "Apache-2.0",
+  "types": "./api.d.ts",
+  "files": [
+    "api.d.ts",
+    "CHANGELOG.md",
+    "CHANGELOG.old.md"
+  ],
+  "scripts": {
+    "ci": "npm-run-all compile",
+    "ci:artifacts_only": "npm-run-all compile",
+    "compile": "tsc"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

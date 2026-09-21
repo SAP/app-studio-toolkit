@@ -1,0 +1,9 @@
+# NYC
+.nyc_output
+coverage
+
+# tests
+test
+
+# contributing
+CONTRIBUTING.md

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60">
+  <g id="abap_icon" transform="translate(-696 -201)">
+    <rect id="Rectangle_603" data-name="Rectangle 603" width="60" height="60" transform="translate(696 201)" fill="rgba(30,30,30,0)"/>
+    <g id="Group_3339" data-name="Group 3339" transform="translate(696.521 210.095)">
+      <path id="Path_1404" data-name="Path 1404" d="M263.154,158.836a16.134,16.134,0,0,0-10.362,4.656c-5.025-2.139-11.17-1.155-14.862,2.38a9.551,9.551,0,0,0-2.68,4.706h-.435c-5.831.05-10.51,3.993-10.45,8.809s4.836,8.679,10.668,8.629l1.087-2.217h-.051c-4.289.173-7.965-2.507-8.289-6.043s2.823-6.641,7.1-7h3.236a6.936,6.936,0,0,1,2.19-5.144,10.032,10.032,0,0,1,6.4-2.631,10.489,10.489,0,0,1,6.752,1.93l1.871-1.829a12.7,12.7,0,0,1,7.985-3.611,13.67,13.67,0,0,1,8.733,2.125,9.721,9.721,0,0,1,4.48,6.986l3.12-.246a12.016,12.016,0,0,0-5.347-8.579,17.433,17.433,0,0,0-11.139-2.916Z" transform="translate(-224.363 -158.789)" fill="#fff"/>
+      <g id="Group_3338" data-name="Group 3338" transform="translate(12.923 19.046)">
+        <text id="AB" transform="translate(0 16)" fill="#0a81bf" stroke="#0a81bf" stroke-miterlimit="10" stroke-width="0.06" font-size="17" font-family="BentonSans-Regular, BentonSans" style="isolation: isolate"><tspan x="0" y="0">ABAP</tspan></text>
+      </g>
+    </g>
+  </g>
+</svg>

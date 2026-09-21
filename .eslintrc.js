@@ -2,6 +2,8 @@ module.exports = {
   // Common settings for JS Files.
   extends: ["plugin:eslint-comments/recommended", "prettier"],
   ignorePatterns: [
+    "projects/task-explorer/**/dist/",
+    "projects/task-explorer/**/coverage/",
     // Vendored compiled outputs of the RPC library bundled into rpc-example-ws for demo purposes.
     "projects/vscode-webview-rpc-lib/examples/rpc-example-ws/src/static/rpc/",
   ],
@@ -284,6 +286,41 @@ module.exports = {
       // Using the smaller vue rule subset (essential) to avoid including formatting rules
       // as formatting is handled by prettier **directly**.
       extends: ["plugin:vue/vue3-essential"],
+    },
+    {
+      // task-explorer was integrated with these rules relaxed for the migrated code.
+      // TODO: clean up violations and tighten incrementally.
+      files: ["projects/task-explorer/**"],
+      rules: {
+        "eslint-comments/require-description": "off",
+        "no-unused-vars": "off",
+      },
+    },
+    {
+      // Additional TypeScript rules for task-explorer packages.
+      // Legacy code migrated as-is; relaxed to match the historical behaviour.
+      // TODO: clean up violations and tighten incrementally.
+      files: ["projects/task-explorer/**/*.ts"],
+      rules: {
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-require-imports": "off",
+        "@typescript-eslint/no-unused-vars": "off",
+        "@typescript-eslint/no-unsafe-argument": "off",
+        "@typescript-eslint/no-unsafe-return": "off",
+        "@typescript-eslint/no-unsafe-assignment": "off",
+        "@typescript-eslint/no-unsafe-member-access": "off",
+        "@typescript-eslint/no-unsafe-call": "off",
+        "@typescript-eslint/no-unused-expressions": "off",
+        "@typescript-eslint/no-misused-promises": "off",
+        "@typescript-eslint/unbound-method": "off",
+        "@typescript-eslint/require-await": "off",
+        "@typescript-eslint/no-floating-promises": "off",
+        "@typescript-eslint/no-unnecessary-type-assertion": "off",
+        "@typescript-eslint/no-redundant-type-constituents": "off",
+        "@typescript-eslint/no-empty-object-type": "off",
+        "@typescript-eslint/prefer-promise-reject-errors": "off",
+        "@typescript-eslint/only-throw-error": "off",
+      },
     },
     {
       // vscode-webview-rpc-lib was integrated with these rules relaxed for the migrated code.
