@@ -31,7 +31,6 @@
     "test": "node test/runTest.js",
     "coverage:run": "nyc node test/runTest.js",
     "coverage:check": "nyc check-coverage --lines 100 --branches 100 --statements 100 --functions 100",
-    "vsix:prepare": "sh prepare-vsix-package.sh",
     "bundle": "webpack --mode production",
     "package": "node ./scripts/package-vsix"
   },
