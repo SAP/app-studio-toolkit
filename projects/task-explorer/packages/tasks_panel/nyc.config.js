@@ -1,0 +1,22 @@
+module.exports = {
+  reporter: ["text", "lcov"],
+  "check-coverage": true,
+  all: true,
+  branches: 99,
+  lines: 99,
+  functions: 99,
+  statements: 99,
+  extension: [".js", ".ts", ".vue"],
+  exclude: [
+    "src/logger/**",
+    "test/**",
+    "*.js",
+    "scripts/**",
+    "coverage/lcov-report/**",
+    "dummy/main.js",
+    "src/dummy.js",
+    "dist/test/**",
+    "dist/media/**",
+    "src/webSocketServer/**",
+  ],
+};

@@ -1,0 +1,41 @@
+{
+  "type": "test-deploy",
+  "label": "test-deploy: task 1",
+  "taskType": "deploy",
+  "prop1": "prop1a",
+  "taskIntent": "Deploy",
+  "taskImage": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgdmlld0JveD0iMCAwIDYwIDYwIj4KICA8ZyBpZD0iYWJhcF9pY29uIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtNjk2IC0yMDEpIj4KICAgIDxyZWN0IGlkPSJSZWN0YW5nbGVfNjAzIiBkYXRhLW5hbWU9IlJlY3RhbmdsZSA2MDMiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNjk2IDIwMSkiIGZpbGw9InJnYmEoMzAsMzAsMzAsMCkiLz4KICAgIDxnIGlkPSJHcm91cF8zMzM5IiBkYXRhLW5hbWU9Ikdyb3VwIDMzMzkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDY5Ni41MjEgMjEwLjA5NSkiPgogICAgICA8cGF0aCBpZD0iUGF0aF8xNDA0IiBkYXRhLW5hbWU9IlBhdGggMTQwNCIgZD0iTTI2My4xNTQsMTU4LjgzNmExNi4xMzQsMTYuMTM0LDAsMCwwLTEwLjM2Miw0LjY1NmMtNS4wMjUtMi4xMzktMTEuMTctMS4xNTUtMTQuODYyLDIuMzhhOS41NTEsOS41NTEsMCwwLDAtMi42OCw0LjcwNmgtLjQzNWMtNS44MzEuMDUtMTAuNTEsMy45OTMtMTAuNDUsOC44MDlzNC44MzYsOC42NzksMTAuNjY4LDguNjI5bDEuMDg3LTIuMjE3aC0uMDUxYy00LjI4OS4xNzMtNy45NjUtMi41MDctOC4yODktNi4wNDNzMi44MjMtNi42NDEsNy4xLTdoMy4yMzZhNi45MzYsNi45MzYsMCwwLDEsMi4xOS01LjE0NCwxMC4wMzIsMTAuMDMyLDAsMCwxLDYuNC0yLjYzMSwxMC40ODksMTAuNDg5LDAsMCwxLDYuNzUyLDEuOTNsMS44NzEtMS44MjlhMTIuNywxMi43LDAsMCwxLDcuOTg1LTMuNjExLDEzLjY3LDEzLjY3LDAsMCwxLDguNzMzLDIuMTI1LDkuNzIxLDkuNzIxLDAsMCwxLDQuNDgsNi45ODZsMy4xMi0uMjQ2YTEyLjAxNiwxMi4wMTYsMCwwLDAtNS4zNDctOC41NzksMTcuNDMzLDE3LjQzMywwLDAsMC0xMS4xMzktMi45MTZaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMjI0LjM2MyAtMTU4Ljc4OSkiIGZpbGw9IiNmZmYiLz4KICAgICAgPGcgaWQ9Ikdyb3VwXzMzMzgiIGRhdGEtbmFtZT0iR3JvdXAgMzMzOCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTIuOTIzIDE5LjA0NikiPgogICAgICAgIDx0ZXh0IGlkPSJBQiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAxNikiIGZpbGw9IiMwYTgxYmYiIHN0cm9rZT0iIzBhODFiZiIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBzdHJva2Utd2lkdGg9IjAuMDYiIGZvbnQtc2l6ZT0iMTciIGZvbnQtZmFtaWx5PSJCZW50b25TYW5zLVJlZ3VsYXIsIEJlbnRvblNhbnMiIHN0eWxlPSJpc29sYXRpb246IGlzb2xhdGUiPjx0c3BhbiB4PSIwIiB5PSIwIj5BQkFQPC90c3Bhbj48L3RleHQ+CiAgICAgIDwvZz4KICAgIDwvZz4KICA8L2c+Cjwvc3ZnPgo=",
+  "content": [
+    {
+      "name": "label",
+      "message": "Label",
+      "type": "input",
+      "default": "test-deploy: task 1"
+    },
+    {
+      "name": "system",
+      "message": "System",
+      "type": "input",
+      "default": "default system"
+    },
+    {
+      "name": "transport",
+      "message": "Transport Package",
+      "type": "input",
+      "default": "default transport package"
+    },
+    {
+      "name": "user",
+      "message": "User",
+      "type": "input",
+      "default": "default user"
+    },
+    {
+      "name": "password",
+      "message": "Password",
+      "type": "input",
+      "default": "",
+      "validate": "__Function"
+    }
+  ]
+}
