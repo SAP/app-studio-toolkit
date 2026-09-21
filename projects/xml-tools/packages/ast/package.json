@@ -7,22 +7,29 @@
     "ast"
   ],
   "main": "lib/api.js",
-  "repository": "https://github.com/sap/xml-tools/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/app-studio-toolkit.git",
+    "directory": "projects/xml-tools/packages/ast"
+  },
   "license": "Apache-2.0",
   "typings": "./api.d.ts",
   "files": [
     "lib",
     ".reuse",
     "LICENSES",
-    "api.d.ts"
+    "api.d.ts",
+    "CHANGELOG.md",
+    "CHANGELOG.old.md"
   ],
   "dependencies": {
-    "@xml-tools/common": "^0.2.0",
-    "@xml-tools/parser": "^1.0.11",
+    "@xml-tools/common": "workspace:*",
+    "@xml-tools/parser": "workspace:*",
     "lodash": "4.17.23"
   },
   "devDependencies": {
-    "klaw-sync": "6.0.0"
+    "klaw-sync": "6.0.0",
+    "chevrotain": "7.1.1"
   },
   "scripts": {
     "ci": "npm-run-all clean type-check coverage:*",
@@ -31,18 +38,12 @@
     "coverage:run": "nyc mocha \"./test/**/*spec.js\"",
     "coverage:check": "nyc check-coverage --lines 100 --branches 100 --statements 100 --functions 100",
     "snapshots:update": "node ./scripts/update-snapshots.js",
-    "type-check": "tsc api.d.ts"
+    "type-check": "tsc"
   },
   "publishConfig": {
     "access": "public"
   },
-  "nyc": {
-    "include": [
-      "lib/**/*.js"
-    ],
-    "reporter": [
-      "text",
-      "lcov"
-    ]
+  "bugs": {
+    "url": "https://github.com/SAP/app-studio-toolkit/issues"
   }
 }

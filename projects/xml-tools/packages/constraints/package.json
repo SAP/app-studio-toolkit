@@ -7,21 +7,27 @@
     "validation"
   ],
   "main": "lib/api.js",
-  "repository": "https://github.com/sap/xml-tools/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/app-studio-toolkit.git",
+    "directory": "projects/xml-tools/packages/constraints"
+  },
   "license": "Apache-2.0",
   "typings": "./api.d.ts",
   "files": [
     "lib",
     ".reuse",
     "LICENSES",
-    "api.d.ts"
+    "api.d.ts",
+    "CHANGELOG.md",
+    "CHANGELOG.old.md"
   ],
   "dependencies": {
-    "@xml-tools/validation": "^1.1.0",
+    "@xml-tools/validation": "workspace:*",
     "lodash": "4.17.23"
   },
   "devDependencies": {
-    "@xml-tools/ast": "^5.1.0"
+    "@xml-tools/ast": "workspace:*"
   },
   "scripts": {
     "ci": "npm-run-all clean type-check coverage:*",
@@ -29,18 +35,12 @@
     "test": "mocha \"./test/**/*spec.js\"",
     "coverage:run": "nyc mocha \"./test/**/*spec.js\"",
     "coverage:check": "nyc check-coverage --lines 100 --branches 100 --statements 100 --functions 100",
-    "type-check": "tsc api.d.ts"
+    "type-check": "tsc"
   },
   "publishConfig": {
     "access": "public"
   },
-  "nyc": {
-    "include": [
-      "lib/**/*.js"
-    ],
-    "reporter": [
-      "text",
-      "lcov"
-    ]
+  "bugs": {
+    "url": "https://github.com/SAP/app-studio-toolkit/issues"
   }
 }

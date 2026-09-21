@@ -1,5 +1,5 @@
 const path = require("path");
-const baseConfig = require("../../webpack.config.base");
+const baseConfig = require("../../../../webpack.config.vscode.base");
 
 const config = {
   ...baseConfig,

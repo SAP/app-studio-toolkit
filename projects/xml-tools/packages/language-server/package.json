@@ -11,7 +11,8 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/SAP/xml-tools/"
+    "url": "https://github.com/SAP/app-studio-toolkit.git",
+    "directory": "projects/xml-tools/packages/language-server"
   },
   "typings": "./api.d.ts",
   "files": [
@@ -19,14 +20,14 @@
     "lib",
     ".reuse",
     "LICENSES",
-    "api.d.ts"
+    "api.d.ts",
+    "CHANGELOG.md",
+    "CHANGELOG.old.md"
   ],
-  "engines": {
-    "node": ">=10.0.0"
-  },
   "dependencies": {
-    "@xml-tools/constraints": "^1.2.0",
-    "@xml-tools/parser": "^1.0.11",
+    "@xml-tools/ast": "workspace:*",
+    "@xml-tools/constraints": "workspace:*",
+    "@xml-tools/parser": "workspace:*",
     "lodash": "4.17.23",
     "vscode-languageserver": "7.0.0",
     "vscode-languageserver-textdocument": "1.0.1"
@@ -40,10 +41,13 @@
     "clean": "rimraf ./dist ./coverage ./nyc_output",
     "test": "mocha \"./test/**/*spec.js\"",
     "coverage": "nyc mocha \"./test/**/*spec.js\"",
-    "type-check": "tsc api.d.ts",
+    "type-check": "tsc",
     "bundle": "webpack --mode production"
   },
   "publishConfig": {
     "access": "public"
+  },
+  "bugs": {
+    "url": "https://github.com/SAP/app-studio-toolkit/issues"
   }
 }

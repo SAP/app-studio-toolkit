@@ -1,56 +1,46 @@
 /* istanbul ignore file */
 /**
  * Workaround to: https://github.com/microsoft/vscode-vsce/issues/300
- * This "sorts of" implements the (broken) `yarn list` with support for workspaces
- * by hot-patching VSCE cli tool in combination with yarn's workspaces `nohoist` option.
  *
- * See code comments for details.
+ * The extension is webpack-bundled, but it loads the language server in a
+ * separate process from `@xml-tools/language-server`'s bundled `dist/server.js`
+ * (webpack marks that package as `external`). So the VSIX must include the
+ * language-server package's `dist/` alongside the extension bundle.
  *
- * Possible disadvantages:
- * - Some dev artifacts (e.g coverage reports) may be included in the VSIX.
- * - Need to ensure assumptions this logic relies on, (e.g nohoist configuration details).
- * - Could break when VSCE dep version changes.
+ * vsce derives the files to package from the package manager's dependency
+ * listing, which does not work reliably here (pnpm's symlinked node_modules).
+ * We therefore hot-patch vsce's dependency resolution to include exactly the
+ * extension root plus the resolved language-server package directory.
+ *
+ * Migrated from the standalone SAP/xml-tools repo, which relied on yarn's
+ * `nohoist`. Under pnpm we resolve the sibling package via `require.resolve`
+ * instead, which follows pnpm's symlinks correctly.
  */
 const proxyquire = require("proxyquire");
-const { expect } = require("chai");
 const { resolve } = require("path");
-const { forEach } = require("lodash");
-const { readFileSync, writeFileSync, copyFileSync } = require("fs");
-const { writeJsonSync, copySync, emptyDirSync } = require("fs-extra");
+const {
+  readFileSync,
+  writeFileSync,
+  copyFileSync,
+  rmSync,
+  cpSync,
+} = require("fs");
 
-const extensionRootPkg = require("../package.json");
-const monoRepoRootPkg = require("../../../package.json");
+const rootExtDir = resolve(__dirname, "..");
 
-const extName = extensionRootPkg.name;
-const monoRepoNoHoist = monoRepoRootPkg.workspaces.nohoist;
-
-// ensure nohoist is configured correctly so the `language-server` dependency
-// of the VSCode extension would be present in the extensions's **own** node_modules dir.
-// - https://classic.yarnpkg.com/blog/2018/02/15/nohoist/
-forEach(["@xml-tools/language-server"], (_) => {
-  // Shallow
-  expect(
-    monoRepoNoHoist,
-    `Add "${extName}/${_}" to root monorepo package.json[workspaces.nohoist]`
-  ).to.include(`${extName}/${_}`);
-  // Transitive
-  expect(
-    monoRepoNoHoist,
-    `Add "${extName}/${_}/**" to root monorepo package.json[workspaces.nohoist]`
-  ).to.include(`${extName}/${_}/**`);
-});
-
-// The path to the language server must be resolved from **inside** the VSCode Ext's node_modules.
+// Resolve the language-server package via the extension's OWN node_modules
+// symlink (pnpm creates node_modules/@xml-tools/language-server -> the sibling
+// package). We deliberately use this symlink path rather than its realpath:
+// vsce rejects file paths that escape the extension root ("../language-server/..."),
+// so the package must appear as a CHILD of the extension dir.
 const langServerDir = resolve(
-  __dirname,
-  "..",
+  rootExtDir,
   "node_modules",
   "@xml-tools",
   "language-server"
 );
 
-// **Hot-Patching** VSCE using proxyquire.
-const rootExtDir = resolve(__dirname, "..");
+// **Hot-Patching** vsce using proxyquire so it packages exactly these dirs.
 const getDepsStub = {
   getDependencies: async () => [rootExtDir, langServerDir],
 };
@@ -60,39 +50,37 @@ const { packageCommand } = proxyquire("vsce/out/package", {
 
 const pkgJsonPath = resolve(rootExtDir, "package.json");
 // Read & save the original literal representation of the pkg.json
-// To avoid dealing with re-formatting (prettier) later on.
+// to avoid dealing with re-formatting (prettier) later on.
 const pkgJsonOrgStr = readFileSync(pkgJsonPath, "utf8");
 const pkgJson = JSON.parse(pkgJsonOrgStr);
-// During development flows the `main` should point to the compiled sourced
-// for fast dev feedback loops.
-expect(pkgJson.main).to.equal("./lib/extension");
-// During production flows the main should point to the bundled sources
-// to reduce loading time.
-pkgJson.main = "./dist/extension";
-writeJsonSync(pkgJsonPath, pkgJson, { spaces: 2, EOF: "\n" });
 
-// Ensure License and copywrite related files are part of the packaged .vsix
-const rootMonoRepoDir = resolve(__dirname, "..", "..", "..");
-const licenseRootMonoRepoPath = resolve(rootMonoRepoDir, "LICENSE");
-const licenseExtPath = resolve(rootExtDir, "LICENSE");
-copyFileSync(licenseRootMonoRepoPath, licenseExtPath);
+// Ensure License / copyright files are part of the packaged .vsix.
+// Done BEFORE mutating package.json so a copy failure leaves pkg.json pristine.
+// Sourced from the monorepo root (five levels up: scripts -> xml-toolkit ->
+// packages -> xml-tools -> projects -> repo root).
+const rootMonoRepoDir = resolve(__dirname, "..", "..", "..", "..", "..");
+copyFileSync(
+  resolve(rootMonoRepoDir, "LICENSE"),
+  resolve(rootExtDir, "LICENSE")
+);
 
-const licensesDirPath = resolve(rootMonoRepoDir, "LICENSES");
 const licensesDirExtPath = resolve(rootExtDir, "LICENSES");
-emptyDirSync(licensesDirExtPath);
-copySync(licensesDirPath, licensesDirExtPath);
+rmSync(licensesDirExtPath, { recursive: true, force: true });
+cpSync(resolve(rootMonoRepoDir, "LICENSES"), licensesDirExtPath, {
+  recursive: true,
+});
 
-const reuseDirPath = resolve(rootMonoRepoDir, ".reuse");
-const reuseDirExtPath = resolve(rootExtDir, "LICENSES");
-emptyDirSync(reuseDirExtPath);
-copySync(reuseDirPath, reuseDirExtPath);
+// During development flows the `main` points to the compiled sources for fast
+// dev feedback loops; for the packaged .vsix it must point to the bundle.
+pkgJson.main = "./dist/extension";
+writeFileSync(pkgJsonPath, JSON.stringify(pkgJson, null, 2) + "\n");
 
 packageCommand({
   cwd: rootExtDir,
   packagePath: undefined,
   baseContentUrl: undefined,
   baseImagesUrl: undefined,
-  useYarn: true,
+  useYarn: false,
   ignoreFile: undefined,
   expandGitHubIssueLinks: undefined,
 })

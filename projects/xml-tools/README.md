@@ -1,10 +1,4 @@
-[![CircleCI](https://circleci.com/gh/SAP/xml-tools.svg?style=svg)](https://circleci.com/gh/SAP/xml-tools)
-[![Coverage Status](https://coveralls.io/repos/github/SAP/xml-tools/badge.svg?branch=master)](https://coveralls.io/github/SAP/xml-tools?branch=master)
-[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/SAP/xml-tools.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/SAP/xml-tools/context:javascript)
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
-[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
-[![dependentbot](https://api.dependabot.com/badges/status?host=github&repo=SAP/xml-tools)](https://dependabot.com/)
-[![REUSE status](https://api.reuse.software/badge/github.com/SAP/xml-tools)](https://api.reuse.software/info/github.com/SAP/xml-tools)
 
 # XML-Tools
 
@@ -45,11 +39,11 @@ It currently contains the following packages:
 
 ## Support
 
-Please open [issues](https://github.com/SAP/xml-tools/issues) on github.
+Please report issues [here](https://github.com/SAP/app-studio-toolkit/issues/new/choose) and label them with `project:xml-tools`.
 
 ## Contributing
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md).
+See [CONTRIBUTING.md](https://github.com/SAP/app-studio-toolkit/blob/main/CONTRIBUTING.md).
 
 [mono-repo]: https://github.com/babel/babel/blob/master/doc/design/monorepo.md
 [xml]: https://github.com/babel/babel/blob/master/doc/design/monorepo.md

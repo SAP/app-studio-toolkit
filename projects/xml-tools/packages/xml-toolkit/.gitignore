@@ -1,4 +1,10 @@
-# These files will be copied from the root package during bundling.
+# These files are copied/generated from the monorepo root during VSIX packaging.
 /LICENSE
+/LICENSES
+/NOTICE
+
+# Build output
+/dist
+*.vsix
 
 .cache

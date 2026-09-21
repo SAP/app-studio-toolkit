@@ -63,8 +63,8 @@ console.log(issues[0].node.position.endLine); // -> 3
 
 ## Support
 
-Please open [issues](https://github.com/SAP/xml-tols/issues) on github.
+Please report issues [here](https://github.com/SAP/app-studio-toolkit/issues/new/choose) and label them with `project:xml-tools`.
 
 ## Contributing
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md).
+See [CONTRIBUTING.md](https://github.com/SAP/app-studio-toolkit/blob/main/CONTRIBUTING.md).

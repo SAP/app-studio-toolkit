@@ -16,7 +16,7 @@ the detection of **multiple** syntax errors.
 
 #### Preview
 
-![](https://raw.githubusercontent.com/SAP/xml-tools/master/packages/xml-toolkit/resources/readme/preview-syntax-validation.png)
+![](./resources/readme/preview-syntax-validation.png)
 
 ## Installation
 
@@ -27,7 +27,7 @@ page, click **Install**.
 
 ### From Github releases
 
-1. Go to [GitHub Releases](https://github.com/sap/xml-tools/releases).
+1. Go to [GitHub Releases](https://github.com/SAP/app-studio-toolkit/releases).
 2. Search for the `.vsix` archive under `xml-toolkit\@x.y.z` releases.
    - Replace `x.y.z` with the desired version number.
 3. Follow the instructions for installing an extension from a `.vsix`
@@ -41,8 +41,8 @@ and in the Problems view.
 
 ## Support
 
-You can open [issues](https://github.com/SAP/xml-tools/issues) on GitHub.
+Please report issues [here](https://github.com/SAP/app-studio-toolkit/issues/new/choose) and label them with `project:xml-tools`.
 
 ## Contributing
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md).
+See [CONTRIBUTING.md](https://github.com/SAP/app-studio-toolkit/blob/main/CONTRIBUTING.md).

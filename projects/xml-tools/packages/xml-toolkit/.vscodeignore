@@ -2,13 +2,20 @@
 # We are bundling our extension so no need to include the dependencies separately.
 node_modules
 
-# Except a **subset** language-server package which is executed as a separate process
-# Note only one star (*) is expended in these dirs.
-!**/@xml-tools/language-server/*
-!**/@xml-tools/language-server/dist/*
-
-# For debugging of bundled language-server in production (source maps)
+# Except the language-server package, which runs as a separate process and is
+# loaded by path at runtime. Include only what that needs: its package.json (for
+# resolution), its lib/ (api.js computes the server path), and its bundled dist/.
+!**/@xml-tools/language-server/package.json
 !**/@xml-tools/language-server/lib/**
+!**/@xml-tools/language-server/dist/**
+
+# Exclude the language-server's own dev/meta files that the broad rules above pull back in.
+**/@xml-tools/language-server/.gitignore
+**/@xml-tools/language-server/*.md
+**/@xml-tools/language-server/nyc.config.js
+**/@xml-tools/language-server/tsconfig.json
+**/@xml-tools/language-server/webpack.config.js
+**/@xml-tools/language-server/api.d.ts
 
 # The VSCode Extension's dev artifacts
 coverage/**

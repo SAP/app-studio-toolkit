@@ -7,14 +7,20 @@
     "parser"
   ],
   "main": "lib/api.js",
-  "repository": "https://github.com/sap/xml-tools/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/app-studio-toolkit.git",
+    "directory": "projects/xml-tools/packages/parser"
+  },
   "license": "Apache-2.0",
   "typings": "./api.d.ts",
   "files": [
     "lib",
     ".reuse",
     "LICENSES",
-    "api.d.ts"
+    "api.d.ts",
+    "CHANGELOG.md",
+    "CHANGELOG.old.md"
   ],
   "dependencies": {
     "chevrotain": "7.1.1"
@@ -29,18 +35,12 @@
     "coverage:run": "nyc mocha \"./test/**/*spec.js\"",
     "coverage:check": "nyc check-coverage --lines 100 --branches 100 --statements 100 --functions 100",
     "snapshots:update": "node ./scripts/update-snapshots.js",
-    "type-check": "tsc api.d.ts"
+    "type-check": "tsc"
   },
   "publishConfig": {
     "access": "public"
   },
-  "nyc": {
-    "include": [
-      "lib/**/*.js"
-    ],
-    "reporter": [
-      "text",
-      "lcov"
-    ]
+  "bugs": {
+    "url": "https://github.com/SAP/app-studio-toolkit/issues"
   }
 }
