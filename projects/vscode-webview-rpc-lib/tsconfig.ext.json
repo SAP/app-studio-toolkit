@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "out.ext",
+    "rootDir": "src",
+    "declaration": true,
+    "types": ["node", "vscode"]
+  },
+  "exclude": [
+    "node_modules",
+    "src/rpc-browser.ts",
+    "src/rpc-browser-ws.ts",
+    "src/rpc-browser-ws-multi.ts",
+    "src/test",
+    "examples"
+  ]
+}

@@ -149,7 +149,7 @@
   },
   "dependencies": {
     "@sap-devx/app-studio-toolkit-types": "2.11.4",
-    "@sap-devx/webview-rpc": "0.3.1",
+    "@sap-devx/webview-rpc": "1.1.0",
     "@sap_oss/guided-development-types": "workspace:*",
     "@vscode-logging/logger": "2.0.10",
     "chalk": "^4.0.0",

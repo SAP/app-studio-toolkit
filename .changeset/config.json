@@ -52,6 +52,8 @@
     "@vscode-tasks-explorer/vue_frontend_rpc",
     "npm-task-contrib",
     "vscode-task-contrib",
+    "rpc-example",
+    "example-ws",
     "sample-app",
     "sample-app-vite",
     "sample-navigator",

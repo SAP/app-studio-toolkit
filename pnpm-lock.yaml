@@ -805,8 +805,8 @@ importers:
         specifier: 2.11.4
         version: 2.11.4
       '@sap-devx/webview-rpc':
-        specifier: 0.3.1
-        version: 0.3.1(bufferutil@4.1.0)(utf-8-validate@5.0.10)
+        specifier: 1.1.0
+        version: 1.1.0(bufferutil@4.1.0)(utf-8-validate@5.0.10)
       '@sap_oss/guided-development-types':
         specifier: workspace:*
         version: link:../types
@@ -912,8 +912,8 @@ importers:
         specifier: ^7.9.5
         version: 7.11.5(@babel/core@7.29.0)
       '@sap-devx/webview-rpc':
-        specifier: ^0.3.1
-        version: 0.3.1(bufferutil@4.1.0)(utf-8-validate@5.0.10)
+        specifier: 1.1.0
+        version: 1.1.0(bufferutil@4.1.0)(utf-8-validate@5.0.10)
       '@typescript-eslint/eslint-plugin':
         specifier: ^6.2.0
         version: 6.21.0(@typescript-eslint/parser@6.21.0(eslint@7.32.0)(typescript@5.7.3))(eslint@7.32.0)(typescript@5.7.3)
@@ -1853,7 +1853,7 @@ importers:
         version: 0.4.1(bufferutil@4.1.0)(utf-8-validate@5.0.10)
       '@testing-library/jest-dom':
         specifier: 6.1.6
-        version: 6.1.6(@jest/globals@29.7.0)(jest@29.7.0(@types/node@22.20.1)(ts-node@10.9.2(@types/node@22.20.1)(typescript@5.7.3)))
+        version: 6.1.6(@jest/globals@29.7.0)(@types/jest@29.5.14)(jest@29.7.0(@types/node@22.20.1)(ts-node@10.9.2(@types/node@22.20.1)(typescript@5.7.3)))
       '@testing-library/vue':
         specifier: 8.0.1
         version: 8.0.1(@vue/compiler-sfc@3.4.3)(vue@3.4.3(typescript@5.7.3))
@@ -2072,6 +2072,90 @@ importers:
         specifier: 1.5.2
         version: 1.5.2
 
+  projects/vscode-webview-rpc-lib:
+    dependencies:
+      ws:
+        specifier: ^7.2.3
+        version: 7.4.6(bufferutil@4.1.0)(utf-8-validate@5.0.10)
+    devDependencies:
+      '@types/jest':
+        specifier: ^29.5.12
+        version: 29.5.14
+      '@types/vscode':
+        specifier: 1.75.0
+        version: 1.75.0
+      '@types/ws':
+        specifier: ^7.4.0
+        version: 7.4.7
+      '@vscode-logging/types':
+        specifier: 2.0.10
+        version: 2.0.10
+      jest:
+        specifier: ^29.7.0
+        version: 29.7.0(@types/node@22.20.1)(ts-node@10.9.2(@types/node@22.20.1)(typescript@5.7.3))
+      rimraf:
+        specifier: ^5.0.5
+        version: 5.0.10
+      ts-jest:
+        specifier: ^29.1.2
+        version: 29.4.11(@babel/core@7.29.0)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.29.0))(jest-util@29.7.0)(jest@29.7.0(@types/node@22.20.1)(ts-node@10.9.2(@types/node@22.20.1)(typescript@5.7.3)))(typescript@5.7.3)
+
+  projects/vscode-webview-rpc-lib/examples/rpc-example:
+    dependencies:
+      '@sap-devx/webview-rpc':
+        specifier: workspace:*
+        version: link:../..
+    devDependencies:
+      '@types/glob':
+        specifier: ^7.1.1
+        version: 7.2.0
+      '@types/vscode':
+        specifier: 1.75.0
+        version: 1.75.0
+      copyfiles:
+        specifier: ^2.4.1
+        version: 2.4.1
+      glob:
+        specifier: ^7.1.6
+        version: 7.2.0
+      mocha:
+        specifier: ^10.4.0
+        version: 10.7.3
+      rimraf:
+        specifier: ^5.0.5
+        version: 5.0.10
+      typescript:
+        specifier: ^4.2.3
+        version: 4.9.5
+      vscode-test:
+        specifier: ^1.6.1
+        version: 1.6.1
+
+  projects/vscode-webview-rpc-lib/examples/rpc-example-ws:
+    dependencies:
+      '@braintree/sanitize-url':
+        specifier: 7.0.1
+        version: 7.0.1
+      ws:
+        specifier: ^7.2.3
+        version: 7.4.6(bufferutil@4.1.0)(utf-8-validate@5.0.10)
+    devDependencies:
+      '@types/ws':
+        specifier: ^7.2.3
+        version: 7.4.7
+      copyfiles:
+        specifier: ^2.4.1
+        version: 2.4.1
+      eslint:
+        specifier: ^8.56.0
+        version: 8.57.1
+      rimraf:
+        specifier: ^5.0.5
+        version: 5.0.10
+      typescript:
+        specifier: ^4.2.3
+        version: 4.9.5
+
   projects/yeoman-ui:
     devDependencies:
       null-loader:
@@ -2096,8 +2180,8 @@ importers:
   projects/yeoman-ui/packages/backend:
     dependencies:
       '@sap-devx/webview-rpc':
-        specifier: 0.4.1
-        version: 0.4.1(bufferutil@4.1.0)(utf-8-validate@5.0.10)
+        specifier: 1.1.0
+        version: 1.1.0(bufferutil@4.1.0)(utf-8-validate@5.0.10)
       '@sap-devx/yeoman-ui-types':
         specifier: workspace:^
         version: link:../types
@@ -2268,8 +2352,8 @@ importers:
         specifier: 3.4.14
         version: 3.4.14(typescript@5.7.3)
       '@sap-devx/webview-rpc':
-        specifier: 0.4.1
-        version: 0.4.1(bufferutil@4.1.0)(utf-8-validate@5.0.10)
+        specifier: 1.1.0
+        version: 1.1.0(bufferutil@4.1.0)(utf-8-validate@5.0.10)
       '@sap-devx/yeoman-ui-types':
         specifier: workspace:^
         version: link:../types
@@ -3532,6 +3616,9 @@ packages:
   '@bcoe/v8-coverage@1.0.2':
     resolution: {integrity: sha512-6zABk/ECA/QYSCQ1NGiVwwbQerUCZ+TQbp64Q3AgmfNvurHH0j8TtXa1qbShXA6qqkpAj4V5W8pP6mLe1mcMqA==}
     engines: {node: '>=18'}
+
+  '@braintree/sanitize-url@7.0.1':
+    resolution: {integrity: sha512-URg8UM6lfC9ZYqFipItRSxYJdgpU5d2Z4KnjsJ+rj6tgAmGme7E+PQNCiud8g0HDaZKMovu2qjfa0f5Ge0Vlsg==}
 
   '@changesets/apply-release-plan@7.1.1':
     resolution: {integrity: sha512-9qPCm/rLx/xoOFXIHGB229+4GOL76S4MC+7tyOuTsR6+1jYlfFDQORdvwR5hDA6y4FL2BPt3qpbcQIS+dW85LA==}
@@ -5298,6 +5385,9 @@ packages:
   '@sap-devx/webview-rpc@0.4.1':
     resolution: {integrity: sha512-FznAh7u1qZh4VWle6wxCmXL2/qI0QigRx67jsL/Eyn7lW1e+6CO2vShond5IjS6+YKpXL7WFwK2MnU08kqqM6A==}
 
+  '@sap-devx/webview-rpc@1.1.0':
+    resolution: {integrity: sha512-K4h8pHSXRVLA8U19sLmEM+53DfY6A9/4UOFfTgdZh4t+hm4LCRMksjbvGM1yAJx1h6VhT0BczwPtURYjLMjCew==}
+
   '@sap/artifact-management-base-types@1.33.0':
     resolution: {integrity: sha512-3qmDE2IFILFDA2h8vTFSM/aVDjJqpiUurkKQHNQqI2vlUzmyA4R7h2q9DBftQuYjeh7StfVgk6h2V/fwEGeAGA==}
 
@@ -5747,6 +5837,9 @@ packages:
 
   '@types/jest@27.5.2':
     resolution: {integrity: sha512-mpT8LJJ4CMeeahobofYWIjFo0xonRS/HfxnVEPMPFSQdGUt1uHCnoPT7Zhb+sjDU2wz0oKV0OLUR0WzrHNgfeA==}
+
+  '@types/jest@29.5.14':
+    resolution: {integrity: sha512-ZN+4sdnLUbo8EVvVc2ao0GFW6oVrQRPn4K2lglySj7APvSrgzxHiNNK99us4WDMi57xxA2yggblIAMNhXOotLQ==}
 
   '@types/jsdom@20.0.1':
     resolution: {integrity: sha512-d0r18sZPmMQr1eG35u12FZfhIXNrnsPU/g5wvRKCUf/tOGilKKwYMYGqh33BNR6ba+2gkHw1EUiHoN3mn7E5IQ==}
@@ -13876,6 +13969,10 @@ packages:
     deprecated: Rimraf versions prior to v4 are no longer supported
     hasBin: true
 
+  rimraf@5.0.10:
+    resolution: {integrity: sha512-l0OE8wL34P4nJH/H2ffoaniAokM2qSmrtXHmlpvYr5AVVX8msAyW0l8NVJFDxlSK4u3Uh/f41cQheDVdnYijwQ==}
+    hasBin: true
+
   roarr@7.15.0:
     resolution: {integrity: sha512-CV9WefQfUXTX6wr8CrEMhfNef3sjIt9wNhE/5PNu4tNWsaoDNDXqq+OGn/RW9A1UPb0qc7FQlswXRaJJJsqn8A==}
     engines: {node: '>=12.0'}
@@ -15259,6 +15356,11 @@ packages:
   typedarray-to-buffer@3.1.5:
     resolution: {integrity: sha512-zdu8XMNEDepKKR+XYOXAVPtWui0ly0NtohUscw+UmaHiAWT8hrV1rr//H6V+0DvJ3OQ19S979M0laLfX8rm82Q==}
 
+  typescript@4.9.5:
+    resolution: {integrity: sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==}
+    engines: {node: '>=4.2.0'}
+    hasBin: true
+
   typescript@5.7.3:
     resolution: {integrity: sha512-84MVSjMEHP+FQRPy3pX9sTVV/INIex71s9TL2Gm5FG/WG1SqXeKyZ0k7/blY/4FdOzI12CBy1vGc4og/eus0fw==}
     engines: {node: '>=14.17'}
@@ -15720,6 +15822,11 @@ packages:
 
   vscode-test@1.5.2:
     resolution: {integrity: sha512-x9PVfKxF6EInH9iSFGQi0V8H5zIW1fC7RAer6yNQR6sy3WyOwlWkuT3I+wf75xW/cO53hxMi1aj/EvqQfDFOAg==}
+    engines: {node: '>=8.9.3'}
+    deprecated: This package has been renamed to @vscode/test-electron, please update to the new name
+
+  vscode-test@1.6.1:
+    resolution: {integrity: sha512-086q88T2ca1k95mUzffvbzb7esqQNvJgiwY4h29ukPhFo8u+vXOOmelUoU5EQUHs3Of8+JuQ3oGdbVCqaxuTXA==}
     engines: {node: '>=8.9.3'}
     deprecated: This package has been renamed to @vscode/test-electron, please update to the new name
 
@@ -16202,18 +16309,6 @@ packages:
 
   ws@7.4.6:
     resolution: {integrity: sha512-YmhHDO4MzaDLB+M9ym/mDA5z0naX8j7SIlT8f8z+I0VtzsRbekxEutHSme7NPS2qE8StCYQNUnfWdXta/Yu85A==}
-    engines: {node: '>=8.3.0'}
-    peerDependencies:
-      bufferutil: ^4.0.1
-      utf-8-validate: ^5.0.2
-    peerDependenciesMeta:
-      bufferutil:
-        optional: true
-      utf-8-validate:
-        optional: true
-
-  ws@7.5.10:
-    resolution: {integrity: sha512-+dbF1tHwZpXcbOJdVOkzLDxZP1ailvSxM6ZweXTegylPny803bFhA+vqBYw4s31NSAk4S2Qz+AKXK9a4wkdjcQ==}
     engines: {node: '>=8.3.0'}
     peerDependencies:
       bufferutil: ^4.0.1
@@ -18002,6 +18097,8 @@ snapshots:
   '@bcoe/v8-coverage@0.2.3': {}
 
   '@bcoe/v8-coverage@1.0.2': {}
+
+  '@braintree/sanitize-url@7.0.1': {}
 
   '@changesets/apply-release-plan@7.1.1':
     dependencies:
@@ -20256,12 +20353,19 @@ snapshots:
 
   '@sap-devx/webview-rpc@0.3.1(bufferutil@4.1.0)(utf-8-validate@5.0.10)':
     dependencies:
-      ws: 7.5.10(bufferutil@4.1.0)(utf-8-validate@5.0.10)
+      ws: 7.4.6(bufferutil@4.1.0)(utf-8-validate@5.0.10)
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
 
   '@sap-devx/webview-rpc@0.4.1(bufferutil@4.1.0)(utf-8-validate@5.0.10)':
+    dependencies:
+      ws: 7.4.6(bufferutil@4.1.0)(utf-8-validate@5.0.10)
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+
+  '@sap-devx/webview-rpc@1.1.0(bufferutil@4.1.0)(utf-8-validate@5.0.10)':
     dependencies:
       ws: 7.4.6(bufferutil@4.1.0)(utf-8-validate@5.0.10)
     transitivePeerDependencies:
@@ -20653,7 +20757,7 @@ snapshots:
       lz-string: 1.5.0
       pretty-format: 27.5.1
 
-  '@testing-library/jest-dom@6.1.6(@jest/globals@29.7.0)(jest@29.7.0(@types/node@22.20.1)(ts-node@10.9.2(@types/node@22.20.1)(typescript@5.7.3)))':
+  '@testing-library/jest-dom@6.1.6(@jest/globals@29.7.0)(@types/jest@29.5.14)(jest@29.7.0(@types/node@22.20.1)(ts-node@10.9.2(@types/node@22.20.1)(typescript@5.7.3)))':
     dependencies:
       '@adobe/css-tools': 4.5.0
       '@babel/runtime': 7.26.0
@@ -20665,6 +20769,7 @@ snapshots:
       redent: 3.0.0
     optionalDependencies:
       '@jest/globals': 29.7.0
+      '@types/jest': 29.5.14
       jest: 29.7.0(@types/node@22.20.1)(ts-node@10.9.2(@types/node@22.20.1)(typescript@5.7.3))
 
   '@testing-library/vue@8.0.1(@vue/compiler-sfc@3.4.3)(vue@3.4.3(typescript@5.7.3))':
@@ -20918,6 +21023,11 @@ snapshots:
     dependencies:
       jest-matcher-utils: 27.5.1
       pretty-format: 27.5.1
+
+  '@types/jest@29.5.14':
+    dependencies:
+      expect: 29.7.0
+      pretty-format: 29.7.0
 
   '@types/jsdom@20.0.1':
     dependencies:
@@ -31361,6 +31471,10 @@ snapshots:
     dependencies:
       glob: 7.2.0
 
+  rimraf@5.0.10:
+    dependencies:
+      glob: 10.5.0
+
   roarr@7.15.0:
     dependencies:
       boolean: 3.2.0
@@ -32992,6 +33106,8 @@ snapshots:
     dependencies:
       is-typedarray: 1.0.0
 
+  typescript@4.9.5: {}
+
   typescript@5.7.3: {}
 
   ua-parser-js@0.7.41: {}
@@ -33410,6 +33526,15 @@ snapshots:
   vscode-languageserver-types@3.17.5: {}
 
   vscode-test@1.5.2:
+    dependencies:
+      http-proxy-agent: 4.0.1
+      https-proxy-agent: 5.0.1
+      rimraf: 3.0.2
+      unzipper: 0.10.14
+    transitivePeerDependencies:
+      - supports-color
+
+  vscode-test@1.6.1:
     dependencies:
       http-proxy-agent: 4.0.1
       https-proxy-agent: 5.0.1
@@ -34210,11 +34335,6 @@ snapshots:
       signal-exit: 4.1.0
 
   ws@7.4.6(bufferutil@4.1.0)(utf-8-validate@5.0.10):
-    optionalDependencies:
-      bufferutil: 4.1.0
-      utf-8-validate: 5.0.10
-
-  ws@7.5.10(bufferutil@4.1.0)(utf-8-validate@5.0.10):
     optionalDependencies:
       bufferutil: 4.1.0
       utf-8-validate: 5.0.10

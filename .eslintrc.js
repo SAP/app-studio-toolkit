@@ -4,6 +4,8 @@ module.exports = {
   ignorePatterns: [
     "projects/task-explorer/**/dist/",
     "projects/task-explorer/**/coverage/",
+    // Vendored compiled outputs of the RPC library bundled into rpc-example-ws for demo purposes.
+    "projects/vscode-webview-rpc-lib/examples/rpc-example-ws/src/static/rpc/",
   ],
   env: {
     commonjs: true,
@@ -40,7 +42,12 @@ module.exports = {
       plugins: ["@typescript-eslint"],
       parser: "@typescript-eslint/parser",
       parserOptions: {
-        project: ["./tsconfig.base.json", "./tsconfig.json"],
+        project: [
+          "./tsconfig.base.json",
+          "./tsconfig.json",
+          "./projects/vscode-webview-rpc-lib/examples/rpc-example-ws/tsconfig.json",
+          "./projects/vscode-webview-rpc-lib/examples/rpc-example/tsconfig.json",
+        ],
       },
       extends: [
         "plugin:@typescript-eslint/eslint-recommended",
@@ -313,6 +320,52 @@ module.exports = {
         "@typescript-eslint/no-empty-object-type": "off",
         "@typescript-eslint/prefer-promise-reject-errors": "off",
         "@typescript-eslint/only-throw-error": "off",
+      },
+    },
+    {
+      // vscode-webview-rpc-lib was integrated with these rules relaxed for the migrated code.
+      // TODO: clean up violations and tighten incrementally.
+      files: ["projects/vscode-webview-rpc-lib/**"],
+      rules: {
+        "eslint-comments/require-description": "off",
+        "prefer-const": "off",
+        indent: "off",
+        "no-undef": "off",
+      },
+    },
+    {
+      // rpc-example/src/media/main.js is a browser-side webview script using ES module syntax.
+      files: [
+        "projects/vscode-webview-rpc-lib/examples/rpc-example/src/media/*.js",
+      ],
+      parserOptions: {
+        ecmaVersion: 2018,
+        sourceType: "module",
+      },
+      env: {
+        browser: true,
+      },
+    },
+    {
+      // Additional TypeScript rules for vscode-webview-rpc-lib packages.
+      // Legacy code migrated as-is; relaxed to match historical behaviour.
+      // TODO: clean up violations and tighten incrementally.
+      files: ["projects/vscode-webview-rpc-lib/**/*.ts"],
+      rules: {
+        indent: "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-floating-promises": "off",
+        "@typescript-eslint/no-unsafe-function-type": "off",
+        "@typescript-eslint/no-unused-vars": "off",
+        "@typescript-eslint/no-misused-promises": "off",
+        "@typescript-eslint/no-unsafe-argument": "off",
+        "@typescript-eslint/no-unsafe-return": "off",
+        "@typescript-eslint/no-unsafe-call": "off",
+        "@typescript-eslint/no-unsafe-member-access": "off",
+        "@typescript-eslint/only-throw-error": "off",
+        "@typescript-eslint/require-await": "off",
+        "@typescript-eslint/unbound-method": "off",
+        "@typescript-eslint/no-unused-expressions": "off",
       },
     },
   ],
