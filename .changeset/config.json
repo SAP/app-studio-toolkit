@@ -29,6 +29,17 @@
       "@sap-devx/inquirer-gui-single-checkbox-plugin",
       "@sap-devx/inquirer-gui-tiles-plugin",
       "@sap-devx/controls-navigator"
+    ],
+    [
+      "@xml-tools/ast",
+      "@xml-tools/ast-position",
+      "@xml-tools/common",
+      "@xml-tools/constraints",
+      "@xml-tools/content-assist",
+      "@xml-tools/language-server",
+      "@xml-tools/parser",
+      "@xml-tools/simple-schema",
+      "@xml-tools/validation"
     ]
   ],
   "linked": [],
