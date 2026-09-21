@@ -44,9 +44,7 @@ declare type XSSValue = RegExp | XSSValueEnum;
 
 declare type XSSValueEnum = string[];
 
-declare function getSchemaValidators(
-  schema: SimpleSchema
-): {
+declare function getSchemaValidators(schema: SimpleSchema): {
   attribute: AttributeValidator;
   element: ElementValidator;
 };
@@ -66,9 +64,7 @@ interface CompletionSuggestion {
   confidence?: number;
 }
 
-declare function getSchemaSuggestionsProviders(
-  schema: SimpleSchema
-): {
+declare function getSchemaSuggestionsProviders(schema: SimpleSchema): {
   // TBD in the future...
   // schemaElementContentCompletion: ElementContentCompletion;
   schemaElementNameCompletion: ElementNameCompletion<CompletionSuggestion>;
