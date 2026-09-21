@@ -1,0 +1,9 @@
+# ignore all files:
+**/**
+
+# except for:
+!resources
+!dist
+!LICENSE
+!README.md
+!package.json

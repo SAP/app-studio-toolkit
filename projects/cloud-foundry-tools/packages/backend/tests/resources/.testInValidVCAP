@@ -1,0 +1,5 @@
+TUNNEL_PARAM=30041:10.253.222.111:30041
+CHISEL_URL=https://chisel6bb53d2a-6429e0cba998.test.ondemand.com
+CHISEL_USER=chisel-user
+VCAP_SERVICES={"test":"}
+JBP_CONFIG_RESOURCE_CONFIGURATION=[tomcat/webapps/ROOT/META-INF/context.xml: {"service_name_for_DefaultDB" : "hdi-test-instance"}]
