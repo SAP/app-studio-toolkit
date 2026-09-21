@@ -17,8 +17,6 @@
   "typings": "./api.d.ts",
   "files": [
     "lib",
-    ".reuse",
-    "LICENSES",
     "api.d.ts",
     "CHANGELOG.md",
     "CHANGELOG.old.md"
@@ -27,6 +25,7 @@
     "@xml-tools/ast": "workspace:*",
     "@xml-tools/common": "workspace:*",
     "@xml-tools/parser": "workspace:*",
+    "chevrotain": "7.1.1",
     "lodash": "4.17.23"
   },
   "scripts": {
@@ -42,8 +41,5 @@
   },
   "bugs": {
     "url": "https://github.com/SAP/app-studio-toolkit/issues"
-  },
-  "devDependencies": {
-    "chevrotain": "7.1.1"
   }
 }

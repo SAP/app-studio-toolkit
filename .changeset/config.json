@@ -40,7 +40,8 @@
       "@xml-tools/parser",
       "@xml-tools/simple-schema",
       "@xml-tools/validation"
-    ]
+    ],
+    ["xml-toolkit"]
   ],
   "linked": [],
   "access": "restricted",

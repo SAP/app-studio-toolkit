@@ -18,8 +18,6 @@
   "files": [
     "dist",
     "lib",
-    ".reuse",
-    "LICENSES",
     "api.d.ts",
     "CHANGELOG.md",
     "CHANGELOG.old.md"

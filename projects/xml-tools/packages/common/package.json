@@ -16,18 +16,16 @@
   "typings": "./api.d.ts",
   "files": [
     "lib",
-    ".reuse",
-    "LICENSES",
     "api.d.ts",
     "CHANGELOG.md",
     "CHANGELOG.old.md"
   ],
   "dependencies": {
+    "chevrotain": "7.1.1",
     "lodash": "4.17.23"
   },
   "devDependencies": {
-    "@xml-tools/parser": "workspace:*",
-    "chevrotain": "7.1.1"
+    "@xml-tools/parser": "workspace:*"
   },
   "scripts": {
     "ci": "npm-run-all clean type-check coverage:*",
