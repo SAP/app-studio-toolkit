@@ -28,7 +28,7 @@
     "@types/jest": "^29.5.12",
     "@types/vscode": "1.75.0",
     "@types/ws": "^7.4.0",
-    "@vscode-logging/types": "2.0.10",
+    "@vscode-logging/types": "workspace:*",
     "jest": "^29.7.0",
     "rimraf": "^5.0.5",
     "ts-jest": "^29.1.2"
