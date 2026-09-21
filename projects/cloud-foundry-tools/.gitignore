@@ -1,0 +1,2 @@
+# nyc coverage reports (redirected here so extension packages stay out of the root merged gate)
+**/reports

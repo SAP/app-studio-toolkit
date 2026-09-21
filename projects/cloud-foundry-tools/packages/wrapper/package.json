@@ -21,9 +21,9 @@
   "scripts": {
     "build": "npm-run-all clean compile webpack-dev",
     "bundle": "webpack --mode production",
-    "ci": "npm-run-all clean compile coverage bundle package",
+    "ci": "npm-run-all clean compile coverage bundle package coverage:copy",
     "ci:artifacts_only": "npm-run-all clean compile webpack-dev package",
-    "clean": "npm-run-all clean:dist clean:out clean:vsix",
+    "clean": "npm-run-all clean:dist clean:out clean:vsix clean:reports",
     "clean:dist": "rimraf ./dist",
     "clean:out": "rimraf ./out",
     "clean:vsix": "rimraf ./*.vsix",
@@ -33,7 +33,9 @@
     "test": "mocha --colors",
     "watch": "tsc -watch -p ./",
     "webpack-dev": "webpack --mode development",
-    "webpack-dev:watch": "webpack --mode development --watch"
+    "webpack-dev:watch": "webpack --mode development --watch",
+    "clean:reports": "rimraf ./reports",
+    "coverage:copy": "shx mkdir -p ../../../../coverage && shx cp -u ./reports/coverage/lcov.info ../../../../coverage/lcov_cf_wrapper.info"
   },
   "activationEvents": [
     "onStartupFinished"
