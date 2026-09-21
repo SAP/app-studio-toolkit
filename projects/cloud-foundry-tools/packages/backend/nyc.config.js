@@ -1,10 +1,12 @@
-const baseNycConfig = require("../../nyc.config");
-
-module.exports = Object.assign(baseNycConfig, {
+module.exports = {
+  reporter: ["text", "lcov"],
+  "check-coverage": true,
+  all: true,
+  extension: [".js", ".ts", ".vue"],
   branches: 90,
   lines: 95,
   functions: 91,
   statements: 95,
   include: ["**/src/**"],
   exclude: ["**/src/run-configuration-*", "**/src/sql-tools.ts", "**/src/logger/logger-wrapper.ts", "**/usage/*.ts"],
-});
+};
