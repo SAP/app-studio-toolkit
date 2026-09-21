@@ -1,0 +1,20 @@
+
+# We are bundling our extension so no need to include the dependencies separately.
+node_modules
+
+# Except a **subset** language-server package which is executed as a separate process
+# Note only one star (*) is expended in these dirs.
+!**/@xml-tools/language-server/*
+!**/@xml-tools/language-server/dist/*
+
+# For debugging of bundled language-server in production (source maps)
+!**/@xml-tools/language-server/lib/**
+
+# The VSCode Extension's dev artifacts
+coverage/**
+.nyc_output/**
+test/**
+scripts
+
+# Loaded via gitcdn.xyz in the README, avoid packaging to reduce .vsix size
+resources/readme/**

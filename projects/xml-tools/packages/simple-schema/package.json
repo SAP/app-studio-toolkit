@@ -1,0 +1,48 @@
+{
+  "name": "@xml-tools/simple-schema",
+  "version": "3.1.0",
+  "description": "XML Simple Schema",
+  "keywords": [
+    "xml",
+    "validation"
+  ],
+  "main": "lib/api.js",
+  "repository": "https://github.com/sap/xml-tools/",
+  "license": "Apache-2.0",
+  "typings": "./api.d.ts",
+  "files": [
+    "lib",
+    ".reuse",
+    "LICENSES",
+    "api.d.ts"
+  ],
+  "dependencies": {
+    "@xml-tools/ast": "^5.1.0",
+    "@xml-tools/content-assist": "^3.2.0",
+    "lodash": "4.17.23"
+  },
+  "devDependencies": {
+    "@xml-tools/parser": "^1.0.11",
+    "@xml-tools/validation": "^1.1.0"
+  },
+  "scripts": {
+    "ci": "npm-run-all clean type-check coverage:*",
+    "clean": "rimraf ./coverage ./nyc_output",
+    "test": "mocha \"./test/**/*spec.js\"",
+    "coverage:run": "nyc mocha \"./test/**/*spec.js\"",
+    "coverage:check": "nyc check-coverage --lines 100 --branches 100 --statements 100 --functions 100",
+    "type-check": "tsc api.d.ts"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "nyc": {
+    "include": [
+      "lib/**/*.js"
+    ],
+    "reporter": [
+      "text",
+      "lcov"
+    ]
+  }
+}

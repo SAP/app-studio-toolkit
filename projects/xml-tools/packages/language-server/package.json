@@ -1,0 +1,49 @@
+{
+  "name": "@xml-tools/language-server",
+  "version": "1.2.0",
+  "description": "XML language server",
+  "keywords": [
+    "LSP",
+    "language-server",
+    "XML"
+  ],
+  "main": "lib/api.js",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/xml-tools/"
+  },
+  "typings": "./api.d.ts",
+  "files": [
+    "dist",
+    "lib",
+    ".reuse",
+    "LICENSES",
+    "api.d.ts"
+  ],
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "dependencies": {
+    "@xml-tools/constraints": "^1.2.0",
+    "@xml-tools/parser": "^1.0.11",
+    "lodash": "4.17.23",
+    "vscode-languageserver": "7.0.0",
+    "vscode-languageserver-textdocument": "1.0.1"
+  },
+  "devDependencies": {
+    "chevrotain": "^7.0.1",
+    "vscode-languageserver-types": "3.16.0"
+  },
+  "scripts": {
+    "ci": "npm-run-all clean type-check coverage bundle",
+    "clean": "rimraf ./dist ./coverage ./nyc_output",
+    "test": "mocha \"./test/**/*spec.js\"",
+    "coverage": "nyc mocha \"./test/**/*spec.js\"",
+    "type-check": "tsc api.d.ts",
+    "bundle": "webpack --mode production"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
