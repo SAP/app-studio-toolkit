@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 16 16">
+  <defs>
+    <clipPath id="clip-set_target__light2">
+      <rect width="16" height="16"/>
+    </clipPath>
+  </defs>
+  <g id="set_target__light2" data-name="set_target _light2" clip-path="url(#clip-set_target__light2)">
+    <g id="Group_3548" data-name="Group 3548" transform="translate(0.425 6.73)">
+      <line id="Line_104" data-name="Line 104" x2="9.441" transform="translate(0 2.12)" fill="none" stroke="#5d5d5d" stroke-width="1"/>
+      <path id="Path_1649" data-name="Path 1649" d="M677.737,867.285l2.085,2.12-1.982,2.282" transform="translate(-670.426 -867.285)" fill="none" stroke="#5d5d5d" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+    </g>
+    <path id="Path_1653" data-name="Path 1653" d="M1782.534-2673.55h10.018v10.488h-10.018" transform="translate(-1777.388 2677)" fill="none" stroke="#5d5d5d" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+  </g>
+</svg>

@@ -1,0 +1,68 @@
+{
+  "name": "vscode-wing-cf-tools",
+  "displayName": "Cloud Foundry Tools",
+  "version": "8.1.2",
+  "private": true,
+  "description": "Wrapper for vscode extension of Cloud Foundry tools",
+  "categories": [
+    "Other"
+  ],
+  "bugs": {
+    "url": "https://github.com/SAP/app-studio-toolkit/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/app-studio-toolkit.git",
+    "directory": "projects/cloud-foundry-tools/packages/wrapper"
+  },
+  "license": "Apache 2.0",
+  "publisher": "SAP",
+  "main": "./dist/extension.js",
+  "scripts": {
+    "build": "npm-run-all clean compile webpack-dev",
+    "bundle": "webpack --mode production",
+    "ci": "npm-run-all clean compile coverage bundle package coverage:copy",
+    "ci:artifacts_only": "npm-run-all clean compile webpack-dev package",
+    "clean": "npm-run-all clean:dist clean:out clean:vsix clean:reports",
+    "clean:dist": "rimraf ./dist",
+    "clean:out": "rimraf ./out",
+    "clean:vsix": "rimraf ./*.vsix",
+    "compile": "tsc -p ./",
+    "coverage": "nyc mocha --colors",
+    "package": "vsce package --no-dependencies",
+    "test": "mocha --colors",
+    "watch": "tsc -watch -p ./",
+    "webpack-dev": "webpack --mode development",
+    "webpack-dev:watch": "webpack --mode development --watch",
+    "clean:reports": "rimraf ./reports",
+    "coverage:copy": "shx mkdir -p ../../../../coverage && shx cp -u ./reports/coverage/lcov.info ../../../../coverage/lcov_cf_wrapper.info"
+  },
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "extensionDependencies": [
+    "saposs.vscode-cf-tools"
+  ],
+  "devDependencies": {
+    "@types/node": "^14.14.6",
+    "@types/sinon": "^17.0.3",
+    "@types/vscode": "^1.43.0",
+    "@vscode-logging/types": "^2.0.0",
+    "@vscode/vsce": "2.24.0",
+    "mocha": "^9.2.2",
+    "sinon": "^19.0.2",
+    "ts-loader": "^9.2.8",
+    "ts-node": "^10.7.0",
+    "webpack": "^5.94.0",
+    "webpack-cli": "^4.9.2"
+  },
+  "engines": {
+    "vscode": "^1.50.0"
+  },
+  "icon": "resources/icon.png"
+}

@@ -1,0 +1,4 @@
+# Build + coverage output (redirected here so extension packages stay out of the root merged gate)
+**/reports
+# Compiled TypeScript output (backend/wrapper compile to out/ before webpack bundles to dist/)
+**/out
