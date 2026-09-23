@@ -856,6 +856,9 @@ importers:
       '@types/yeoman-generator':
         specifier: 4.11.3
         version: 4.11.3(@types/node@22.20.1)(mem-fs@4.1.4)
+      '@vscode/vsce':
+        specifier: 2.24.0
+        version: 2.24.0
       code-snippet-frontend:
         specifier: workspace:*
         version: link:../frontend
@@ -877,9 +880,6 @@ importers:
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@22.20.1)(typescript@5.7.3)
-      vsce:
-        specifier: ^1.100.1
-        version: 1.100.1
       webpack:
         specifier: ^5.89.0
         version: 5.106.2(webpack-cli@5.1.4)
