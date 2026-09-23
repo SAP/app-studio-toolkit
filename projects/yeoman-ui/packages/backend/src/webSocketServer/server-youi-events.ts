@@ -49,8 +49,13 @@ export class ServerYouiEvents implements YouiEvents {
     phase: "writing" | "install" | "end",
     showProgress: boolean = false
   ): void {
-    // Only invoke if generator opts in (WebSocket doesn't have VS Code settings)
+    // Backward compatibility: if generator doesn't opt in, fall back to classic behavior
+    // (only show toast on "install" phase)
     if (!showProgress) {
+      if (phase === "install") {
+        // Show classic "Installing dependencies..." event
+        this.doGeneratorInstall();
+      }
       return;
     }
     // WebSocket implementation - invoke RPC method with progress info

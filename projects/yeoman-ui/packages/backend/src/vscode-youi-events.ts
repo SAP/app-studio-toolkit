@@ -68,6 +68,7 @@ export class VSCodeYouiEvents implements YouiEvents {
   private phaseStartTime: number = 0;
   private currentPhase: "writing" | "install" | "end" | null = null;
   private isEnhancedProgressMode: boolean = false; // Track if enhanced progress is active
+  private pendingPhaseTimer: NodeJS.Timeout | null = null; // Track pending timer to allow cancellation
   public output: GeneratorOutput;
   private readonly logger: IChildLogger;
   private readonly appWizard: AppWizard;
@@ -102,6 +103,12 @@ export class VSCodeYouiEvents implements YouiEvents {
     type: string,
     targetFolderPath?: string
   ): Promise<any> {
+    // Cancel any pending phase transition timer
+    if (this.pendingPhaseTimer) {
+      clearTimeout(this.pendingPhaseTimer);
+      this.pendingPhaseTimer = null;
+    }
+
     // Show "Finalising..." before closing (only if enhanced progress mode is active)
     if (this.progressReporter && this.isEnhancedProgressMode) {
       this.progressReporter.report({
@@ -164,12 +171,20 @@ export class VSCodeYouiEvents implements YouiEvents {
     // If this is the first phase AND no progress notification exists yet
     if (!this.progressReporter) {
       // Close the webview panel (showing the question form) before showing progress
+      // Set GENERATOR_COMPLETED first to prevent false "manual close" telemetry
+      set(this.webviewPanel, Constants.GENERATOR_COMPLETED, true);
       this.doClose();
       this.isEnhancedProgressMode = true; // Enhanced mode active
       this.currentPhase = phase;
       this.phaseStartTime = Date.now();
       this.showInstallMessage(projectName, message);
     } else if (this.progressReporter) {
+      // Cancel any pending phase transition timer before scheduling a new one
+      if (this.pendingPhaseTimer) {
+        clearTimeout(this.pendingPhaseTimer);
+        this.pendingPhaseTimer = null;
+      }
+
       // Calculate time elapsed in current phase
       const elapsed = Date.now() - this.phaseStartTime;
       const minDuration = this.currentPhase
@@ -181,7 +196,9 @@ export class VSCodeYouiEvents implements YouiEvents {
         // Wait for minimum duration before showing next phase
         // Capture current reporter instance to prevent race conditions
         const currentReporter = this.progressReporter;
-        setTimeout(() => {
+        this.pendingPhaseTimer = setTimeout(() => {
+          // Clear the timer reference since it has fired
+          this.pendingPhaseTimer = null;
           // Only update if reporter hasn't changed (generator still running)
           if (this.progressReporter === currentReporter) {
             this.progressReporter.report({ message });
@@ -316,6 +333,11 @@ export class VSCodeYouiEvents implements YouiEvents {
         this.currentPhase = null;
         this.phaseStartTime = 0;
         this.currentProjectName = undefined;
+        // Clear any pending phase timer
+        if (this.pendingPhaseTimer) {
+          clearTimeout(this.pendingPhaseTimer);
+          this.pendingPhaseTimer = null;
+        }
       }
     );
   }

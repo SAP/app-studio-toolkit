@@ -625,6 +625,19 @@ export default {
       this.doneStatus = true;
       this.isDone = true;
     },
+    generatorProgress(projectName, phase) {
+      // Handle progress notifications for new multi-phase progress system
+      const phaseNames = {
+        writing: "Writing files",
+        install: "Installing",
+        end: "Finalising",
+      };
+      this.currentPrompt.name = phaseNames[phase] || "Processing";
+      this.doneMessage = phaseNames[phase] || "Processing";
+      this.donePath = "";
+      this.doneStatus = true;
+      this.isDone = true;
+    },
     generatorDone(succeeded, message, targetPath) {
       this.currentPrompt.name = "Summary";
       this.doneMessage = message;
@@ -667,6 +680,7 @@ export default {
         "showPrompt",
         "setPromptList",
         "generatorInstall",
+        "generatorProgress",
         "generatorDone",
         "log",
         "updateGeneratorsPrompt",
