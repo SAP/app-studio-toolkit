@@ -1,0 +1,40 @@
+[
+  {
+    "intent": "Deploy",
+    "tasksByIntent": [
+      {
+        "label": "Deploy to ABAP: task 1",
+        "prop1": "prop1a",
+        "prop2": "prop2",
+        "taskType": "deploy",
+        "type": "test-deploy"
+      },
+      {
+        "label": "Deploy to ABAP: task 2",
+        "prop1": "prop1a",
+        "prop2": "prop2",
+        "taskType": "deploy",
+        "type": "test-deploy"
+      }
+    ]
+  },
+  {
+    "intent": "Build",
+    "tasksByIntent": [
+      {
+        "label": "MTA Build: task 1",
+        "prop1": "prop1a",
+        "prop2": "prop2",
+        "taskType": "build",
+        "type": "test-deploy"
+      },
+      {
+        "label": "MTA Build: task 2",
+        "prop1": "prop1a",
+        "prop2": "prop2",
+        "taskType": "build",
+        "type": "test-deploy"
+      }
+    ]
+  }
+]

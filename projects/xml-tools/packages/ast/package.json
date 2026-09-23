@@ -1,0 +1,47 @@
+{
+  "name": "@xml-tools/ast",
+  "version": "5.1.0",
+  "description": "XML Ast and Utilities",
+  "keywords": [
+    "xml",
+    "ast"
+  ],
+  "main": "lib/api.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/app-studio-toolkit.git",
+    "directory": "projects/xml-tools/packages/ast"
+  },
+  "license": "Apache-2.0",
+  "typings": "./api.d.ts",
+  "files": [
+    "lib",
+    "api.d.ts",
+    "CHANGELOG.md",
+    "CHANGELOG.old.md"
+  ],
+  "dependencies": {
+    "@xml-tools/common": "workspace:*",
+    "@xml-tools/parser": "workspace:*",
+    "chevrotain": "7.1.1",
+    "lodash": "4.17.23"
+  },
+  "devDependencies": {
+    "klaw-sync": "6.0.0"
+  },
+  "scripts": {
+    "ci": "npm-run-all clean type-check coverage:*",
+    "clean": "rimraf ./coverage ./nyc_output",
+    "test": "mocha \"./test/**/*spec.js\"",
+    "coverage:run": "nyc mocha \"./test/**/*spec.js\"",
+    "coverage:check": "nyc check-coverage --lines 100 --branches 100 --statements 100 --functions 100",
+    "snapshots:update": "node ./scripts/update-snapshots.js",
+    "type-check": "tsc"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "bugs": {
+    "url": "https://github.com/SAP/app-studio-toolkit/issues"
+  }
+}

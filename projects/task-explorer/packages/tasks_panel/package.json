@@ -1,0 +1,277 @@
+{
+  "name": "vscode-tasks-explorer-tasks-panel",
+  "displayName": "Task Explorer",
+  "version": "4.9.0",
+  "private": true,
+  "categories": [],
+  "keywords": [
+    "BAS"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/app-studio-toolkit.git",
+    "directory": "projects/task-explorer/packages/tasks_panel"
+  },
+  "license": "Apache-2.0",
+  "publisher": "SAPSE",
+  "main": "./dist/src/extension",
+  "files": [
+    "dist",
+    "src",
+    "*.vsix",
+    "CHANGELOG.md",
+    "CHANGELOG.old.md"
+  ],
+  "scripts": {
+    "bundle": "webpack --mode production",
+    "ci": "npm-run-all clean compile coverage bundle frontend:copy package",
+    "ci:artifacts_only": "npm-run-all clean compile bundle frontend:copy package",
+    "clean": "shx rm -rf dist coverage *.vsix LICENSE",
+    "compile": "tsc",
+    "coverage": "nyc mocha",
+    "frontend:copy": "webpack --mode none --config ./copy.frontend.webpack.config.js",
+    "package": "node ./scripts/package-vsix.js",
+    "test": "mocha",
+    "watch": "tsc -watch -p ./"
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "tasks-explorer.executeTask",
+        "title": "Run",
+        "icon": "$(play)"
+      },
+      {
+        "command": "tasks-explorer.createTask",
+        "title": "Create Task",
+        "icon": {
+          "light": "resources/create_task_light.svg",
+          "dark": "resources/create_task_dark.svg"
+        }
+      },
+      {
+        "command": "tasks-explorer.editTask",
+        "title": "Open"
+      },
+      {
+        "command": "tasks-explorer.deleteTask",
+        "title": "Delete"
+      },
+      {
+        "command": "tasks-explorer.revealTask",
+        "title": "Show in File"
+      },
+      {
+        "command": "tasks-explorer.duplicateTask",
+        "title": "Duplicate"
+      },
+      {
+        "command": "tasks-explorer.tree.refresh",
+        "title": "Refresh",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "tasks-explorer.tree.select",
+        "title": "Select"
+      },
+      {
+        "command": "tasks-explorer.stopTask",
+        "title": "Stop",
+        "icon": "$(chrome-maximize)"
+      },
+      {
+        "command": "tasks-explorer.action.build",
+        "title": "Run Build"
+      },
+      {
+        "command": "tasks-explorer.action.deploy",
+        "title": "Run Deploy"
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "TaskExplorer",
+      "properties": {
+        "vscode-tasks-explorer-tasks-panel.loggingLevel": {
+          "type": "string",
+          "enum": [
+            "off",
+            "fatal",
+            "error",
+            "warn",
+            "info",
+            "debug",
+            "trace"
+          ],
+          "default": "error",
+          "description": "The verbosity of logging according to the following order: trace > debug > info > warn > error > fatal > off.",
+          "scope": "resource"
+        },
+        "vscode-tasks-explorer-tasks-panel.sourceLocationTracking": {
+          "type": "boolean",
+          "default": false,
+          "description": "If chosen, the location of the source code is added to log entries. Warning – this action may slow your extension. We recommend you use it only for debugging.",
+          "scope": "resource"
+        }
+      }
+    },
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "tasks-explorer.editTask",
+          "when": "false"
+        },
+        {
+          "command": "tasks-explorer.deleteTask",
+          "when": "false"
+        },
+        {
+          "command": "tasks-explorer.revealTask",
+          "when": "false"
+        },
+        {
+          "command": "tasks-explorer.executeTask",
+          "when": "false"
+        },
+        {
+          "command": "tasks-explorer.stopTask",
+          "when": "false"
+        },
+        {
+          "command": "tasks-explorer.createTask",
+          "when": "false"
+        },
+        {
+          "command": "tasks-explorer.duplicateTask",
+          "when": "false"
+        },
+        {
+          "command": "tasks-explorer.tree.refresh",
+          "when": "false"
+        },
+        {
+          "command": "tasks-explorer.tree.select",
+          "when": "false"
+        },
+        {
+          "command": "tasks-explorer.action.build",
+          "when": "false"
+        },
+        {
+          "command": "tasks-explorer.action.deploy",
+          "when": "false"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "tasks-explorer.createTask",
+          "when": "view == tasksPanel",
+          "group": "navigation"
+        },
+        {
+          "command": "tasks-explorer.tree.refresh",
+          "when": "view == tasksPanel",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "tasks-explorer.deleteTask",
+          "group": "main@4",
+          "when": "view == tasksPanel && viewItem =~ /^task--idle$/"
+        },
+        {
+          "command": "tasks-explorer.revealTask",
+          "group": "main@2",
+          "when": "view == tasksPanel && viewItem =~ /^task--idle$/"
+        },
+        {
+          "command": "tasks-explorer.duplicateTask",
+          "group": "main@3",
+          "when": "view == tasksPanel && viewItem =~ /^task--idle$/"
+        },
+        {
+          "command": "tasks-explorer.executeTask",
+          "when": "view == tasksPanel && viewItem =~ /^task--idle$/",
+          "group": "inline"
+        },
+        {
+          "command": "tasks-explorer.stopTask",
+          "when": "view == tasksPanel && viewItem =~ /^task--running$/",
+          "group": "inline"
+        },
+        {
+          "command": "tasks-explorer.createTask",
+          "when": "view == tasksPanel && viewItem =~ /^(root|project|intent)$/",
+          "group": "inline"
+        }
+      ]
+    },
+    "views": {
+      "tasks-explorer": [
+        {
+          "id": "tasksPanel",
+          "name": "",
+          "when": "ext.isViewVisible"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "tasks-explorer",
+          "title": "Task Explorer",
+          "icon": "resources/task_explorer.svg",
+          "when": "ext.isViewVisible"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "tasksPanel",
+        "contents": "You have not created a task yet.\nLearn more about the [Task Explorer](https://help.sap.com/docs/bas/sap-business-application-studio/task-explorer?version=Cloud).\n[Create Task](command:tasks-explorer.createTask)",
+        "when": "ext.isNoTasksFound"
+      }
+    ]
+  },
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "dependencies": {
+    "@sap-devx/app-studio-toolkit-types": "1.16.1",
+    "@sap-devx/webview-rpc": "0.4.1",
+    "@sap/cf-tools": "3.2.0",
+    "@sap/swa-for-sapbas-vsx": "2.0.4",
+    "@sap_oss/task_contrib_types": "workspace:*",
+    "@vscode-logging/logger": "2.0.10",
+    "cheerio": "^1.0.0-rc.12",
+    "datauri": "4.1.0",
+    "escape-string-regexp": "4.0.0",
+    "lodash": "4.17.21",
+    "strip-ansi": "7.1.0",
+    "ws": "8.8.1",
+    "yaml": "2.4.1"
+  },
+  "devDependencies": {
+    "@types/cheerio": "^0.22.35",
+    "@types/fs-extra": "^9.0.13",
+    "@types/inquirer": "8.2.13",
+    "@types/lodash": "^4.14.184",
+    "@types/sinon": "17.0.2",
+    "@types/vscode": "1.75.0",
+    "@types/ws": "^7.2.3",
+    "@vscode-tasks-explorer/vue_frontend_rpc": "workspace:*",
+    "@vscode/vsce": "2.22.0",
+    "copy-webpack-plugin": "^11.0.0",
+    "fs-extra": "10.1.0",
+    "proxyquire": "2.1.3",
+    "sinon": "17.0.1",
+    "string-replace-loader": "3.1.0",
+    "webpack": "5.89.0",
+    "webpack-cli": "5.1.4"
+  },
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "icon": "icon.png"
+}
