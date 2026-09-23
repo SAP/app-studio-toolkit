@@ -116,8 +116,7 @@
     "strip-ansi": "6.0.0",
     "ws": "7.4.4",
     "yeoman-environment": "2.10.3",
-    "inquirer": "7.3.3",
-    "yeoman-generator": "4.12.0"
+    "inquirer": "7.3.3"
   },
   "devDependencies": {
     "@types/fs-extra": "^9.0.4",

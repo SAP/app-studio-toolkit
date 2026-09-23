@@ -650,9 +650,6 @@ importers:
       yeoman-environment:
         specifier: 2.10.3
         version: 2.10.3(@types/node@22.20.1)(encoding@0.1.13)
-      yeoman-generator-v4:
-        specifier: npm:yeoman-generator@4.13.0
-        version: yeoman-generator@4.13.0(@types/node@22.20.1)(encoding@0.1.13)(mem-fs@4.1.4)
     devDependencies:
       '@types/fs-extra':
         specifier: ^9.0.4
