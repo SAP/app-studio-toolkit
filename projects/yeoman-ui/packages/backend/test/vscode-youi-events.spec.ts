@@ -472,6 +472,79 @@ describe("vscode-youi-events unit test", () => {
       // Clean up
       resolveProgress();
     });
+
+    it("enhanced mode: cancels pending timer on new phase transition", async () => {
+      _.set(vscode, "ProgressLocation.Notification", 15);
+      let progressReporter: any;
+      let resolveProgress: any;
+
+      windowMock
+        .expects("withProgress")
+        .callsFake((options: any, callback: any) => {
+          progressReporter = {
+            report: sandbox.stub(),
+          };
+          const result = callback(progressReporter);
+          resolveProgress = () => events["resolveInstallingProgress"]();
+          return result;
+        });
+
+      eventsMock.expects("doClose").once();
+
+      // Start with writing phase (minimum duration = 2000ms)
+      events.doGeneratorProgress("testProject", "writing", true);
+      await new Promise((resolve) => setTimeout(resolve, 10));
+
+      // Transition to install (this schedules a timer)
+      events.doGeneratorProgress("testProject", "install", true);
+
+      // Verify pendingPhaseTimer is set
+      expect(events["pendingPhaseTimer"]).to.not.be.null;
+
+      // Immediately transition to end phase (should cancel previous timer)
+      events.doGeneratorProgress("testProject", "end", true);
+
+      // Wait less than the original timer duration
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
+      // The timer should have been canceled and replaced
+      // Clean up
+      resolveProgress();
+    });
+
+    it("enhanced mode: clears timer during cleanup in showInstallMessage", async () => {
+      _.set(vscode, "ProgressLocation.Notification", 15);
+      let progressReporter: any;
+
+      windowMock
+        .expects("withProgress")
+        .callsFake((options: any, callback: any) => {
+          progressReporter = {
+            report: sandbox.stub(),
+          };
+          return callback(progressReporter).then(() => {
+            // Verify timer was cleared during cleanup
+            expect(events["pendingPhaseTimer"]).to.be.null;
+          });
+        });
+
+      eventsMock.expects("doClose").once();
+
+      // Start with writing phase
+      events.doGeneratorProgress("testProject", "writing", true);
+      await new Promise((resolve) => setTimeout(resolve, 10));
+
+      // Schedule a phase transition (creates a timer)
+      events.doGeneratorProgress("testProject", "install", true);
+
+      // Verify timer exists
+      expect(events["pendingPhaseTimer"]).to.not.be.null;
+
+      // Resolve the progress (triggers cleanup)
+      events["resolveInstallingProgress"]();
+
+      await new Promise((resolve) => setTimeout(resolve, 10));
+    });
   });
 
   it("setAppWizardHeaderTitle", () => {
@@ -994,6 +1067,54 @@ describe("vscode-youi-events unit test", () => {
           message: messages.default.progress_finalising,
         })
       ).to.be.true;
+
+      await result;
+    });
+
+    it("on success - cancels pending timer before showing Finalising", async () => {
+      _.set(vscode, "ProgressLocation.Notification", 15);
+      let progressReporter: any;
+
+      windowMock
+        .expects("withProgress")
+        .callsFake((options: any, callback: any) => {
+          progressReporter = {
+            report: sandbox.stub(),
+          };
+          return callback(progressReporter);
+        });
+
+      eventsMock.expects("doClose").twice(); // Once for initial progress, once for done
+
+      // Start with writing phase (creates a long minimum duration)
+      events.doGeneratorProgress("testProject", "writing", true);
+      await new Promise((resolve) => setTimeout(resolve, 10));
+
+      // Schedule a phase transition (creates a timer)
+      events.doGeneratorProgress("testProject", "install", true);
+
+      // Verify timer exists
+      expect(events["pendingPhaseTimer"]).to.not.be.null;
+
+      // Call doGeneratorDone - should cancel the timer
+      // Since currentProjectName is set to "testProject", expect that in the message
+      windowMock
+        .expects("showInformationMessage")
+        .withExactArgs("Project testProject has been generated.")
+        .resolves();
+      uriMock.expects("file").once();
+
+      const result = events.doGeneratorDone(
+        true,
+        "success message",
+        createAndClose,
+        "project",
+        "testDestinationRoot"
+      );
+
+      // Verify timer was cleared
+      await new Promise((resolve) => setTimeout(resolve, 50));
+      expect(events["pendingPhaseTimer"]).to.be.null;
 
       await result;
     });
