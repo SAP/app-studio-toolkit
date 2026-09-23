@@ -408,5 +408,29 @@ module.exports = {
         "@typescript-eslint/no-unused-expressions": "off",
       },
     },
+    {
+      // xml-tools was integrated with these rules relaxed for the migrated code.
+      // TODO: clean up violations and tighten incrementally.
+      files: ["projects/xml-tools/**"],
+      rules: {
+        "eslint-comments/require-description": "off",
+        // chevrotain-generated parser sources use generator syntax without yield
+        // and switch/case lexical declarations.
+        "require-yield": "off",
+        "no-case-declarations": "off",
+        "no-useless-escape": "off",
+      },
+    },
+    {
+      // Additional TypeScript rules for xml-tools packages (api.d.ts type surfaces).
+      // Legacy code migrated as-is; relaxed to match historical behaviour.
+      // TODO: clean up violations and tighten incrementally.
+      files: ["projects/xml-tools/**/*.ts"],
+      rules: {
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-unused-vars": "off",
+        "@typescript-eslint/no-redundant-type-constituents": "off",
+      },
+    },
   ],
 };
