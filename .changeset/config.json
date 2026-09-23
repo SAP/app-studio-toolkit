@@ -19,6 +19,7 @@
     ],
     ["guided-development", "guided-development-frontend"],
     ["code-snippet-tool", "code-snippet-frontend"],
+    ["vscode-cf-tools", "cloud-foundry-tools-frontend"],
     [
       "@sap-devx/inquirer-gui",
       "@sap-devx/inquirer-gui-auto-complete-plugin",
@@ -62,7 +63,8 @@
     "sample-navigator",
     "@sap-devx/inquirer-gui-date-plugin",
     "sample-inquirer-gui-vscode-extension",
-    "websocketserver"
+    "websocketserver",
+    "vscode-wing-cf-tools"
   ],
   "privatePackages": {
     "version": true,

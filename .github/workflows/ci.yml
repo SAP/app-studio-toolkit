@@ -60,6 +60,8 @@ jobs:
             projects/task-explorer/packages/tasks_panel/*.vsix
             projects/task-explorer/examples/npm_task_contrib/*.vsix
             projects/task-explorer/examples/vscode_task_contrib/*.vsix
+            projects/cloud-foundry-tools/packages/backend/*.vsix
+            projects/cloud-foundry-tools/packages/wrapper/*.vsix
           # default is 90 days; however, we want to avoid excessive storage usage...
           retention-days: ${{ env.artifact-retention-days }}
 

@@ -1,0 +1,365 @@
+{
+  "name": "vscode-cf-tools",
+  "displayName": "Cloud Foundry Tools",
+  "version": "8.1.2",
+  "private": true,
+  "description": "Vscode extension of Cloud Foundry tools",
+  "categories": [
+    "Other"
+  ],
+  "bugs": {
+    "url": "https://github.com/SAP/app-studio-toolkit/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/app-studio-toolkit.git",
+    "directory": "projects/cloud-foundry-tools/packages/backend"
+  },
+  "license": "Apache 2.0",
+  "publisher": "SAPOSS",
+  "main": "./dist/extension.js",
+  "scripts": {
+    "build": "npm-run-all clean compile webpack-dev frontend:all",
+    "bundle": "webpack --mode production",
+    "ci": "npm-run-all clean compile copy:test-resources coverage bundle frontend:all package coverage:copy",
+    "ci:artifacts_only": "npm-run-all clean compile webpack-dev frontend:all package",
+    "clean": "npm-run-all clean:dist clean:out clean:vsix clean:reports",
+    "clean:dist": "rimraf ./dist",
+    "clean:frontend": "cd dist/ && shx rm -rf ./media",
+    "clean:out": "rimraf ./out",
+    "clean:vsix": "rimraf ./*.vsix",
+    "compile": "tsc -p ./",
+    "copy:test-resources": "shx cp -r ./tests/resources ./out/tests/resources",
+    "coverage": "nyc mocha --colors",
+    "frontend:all": "cd ../frontend && npm-run-all clean build && cd ../backend && npm run frontend:copy",
+    "frontend:copy": "npm-run-all clean:frontend && shx cp -r ../frontend/dist/. ./dist/media/",
+    "package": "vsce package --no-dependencies",
+    "test": "mocha --colors",
+    "watch": "tsc -watch -p ./",
+    "webpack-dev": "webpack --mode development",
+    "webpack-dev:watch": "webpack --mode development --watch",
+    "clean:reports": "rimraf ./reports",
+    "coverage:copy": "shx mkdir -p ../../../../coverage && shx cp -u ./reports/coverage/lcov.info ../../../../coverage/lcov_cf_backend.info"
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "cf.login",
+        "category": "CF",
+        "title": "Login to Cloud Foundry",
+        "icon": {
+          "light": "resources/light/login.svg",
+          "dark": "resources/dark/login.svg"
+        }
+      },
+      {
+        "command": "cf.login.weak",
+        "category": "CF",
+        "title": "Login to Cloud Foundry",
+        "icon": {
+          "light": "resources/light/login.svg",
+          "dark": "resources/dark/login.svg"
+        }
+      },
+      {
+        "command": "cf.set.orgspace",
+        "category": "CF",
+        "title": "Set Org and Space"
+      },
+      {
+        "command": "cf.select.space",
+        "category": "CF",
+        "title": "Select a space from your allowed spaces"
+      },
+      {
+        "command": "cf.targets.create",
+        "category": "CF",
+        "title": "Create a Cloud Foundry target",
+        "icon": {
+          "light": "resources/light/add.svg",
+          "dark": "resources/dark/add.svg"
+        }
+      },
+      {
+        "command": "cf.targets.reload",
+        "category": "CF",
+        "title": "Reload Targets Tree",
+        "icon": {
+          "light": "resources/light/reload.svg",
+          "dark": "resources/dark/reload.svg"
+        }
+      },
+      {
+        "command": "cf.target.set",
+        "category": "CF",
+        "title": "Set Cloud Foundry Target",
+        "icon": {
+          "light": "resources/light/set-target.svg",
+          "dark": "resources/dark/set-target.svg"
+        }
+      },
+      {
+        "command": "cf.target.delete",
+        "category": "CF",
+        "title": "Delete Cloud Foundry Target"
+      },
+      {
+        "command": "cf.services.bind.local",
+        "category": "CF",
+        "title": "Bind a service to a locally run application"
+      },
+      {
+        "command": "cf.services.unbind",
+        "title": "Unbind a service from a locally run application - (Hidden from command palette)"
+      },
+      {
+        "command": "cf.services.bind",
+        "title": "Bind a service to a locally run application - (Hidden from command palette)"
+      },
+      {
+        "command": "cf.services.binding.state",
+        "title": "Get bind state to a service - (Hidden from command palette)"
+      },
+      {
+        "command": "cf.services.create",
+        "category": "CF",
+        "title": "Create a service instance",
+        "icon": {
+          "light": "resources/light/add.svg",
+          "dark": "resources/dark/add.svg"
+        }
+      },
+      {
+        "command": "cf.ups.create",
+        "category": "CF",
+        "title": "Create a user provided service instance"
+      },
+      {
+        "command": "cf.deploy-service.api",
+        "category": "CF",
+        "title": "Make a rest API call to the Deploy Service"
+      },
+      {
+        "command": "cf.services.get-space-services",
+        "category": "CF",
+        "title": "Fetch available services (and ups) from particular space"
+      },
+      {
+        "command": "cf.services.get-ups-services",
+        "category": "CF",
+        "title": "Fetch available User Provided services from particular space"
+      },
+      {
+        "command": "cf.services.get-services",
+        "category": "CF",
+        "title": "Fetch available services from particular space"
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "CloudFoundryTools",
+      "properties": {
+        "CloudFoundryTools.logging.loggingLevel": {
+          "type": "string",
+          "enum": [
+            "off",
+            "fatal",
+            "error",
+            "warn",
+            "info",
+            "debug",
+            "trace"
+          ],
+          "default": "error",
+          "description": "The verbosity of logging. The Order is None < fatal < error < warn < info < debug < trace.",
+          "scope": "resource"
+        },
+        "CloudFoundryTools.logging.sourceLocationTracking": {
+          "type": "boolean",
+          "default": false,
+          "description": "Should Source Code Location Info be added to log entries, DANGER - May be very slow, only use in debugging scenarios",
+          "scope": "resource"
+        },
+        "CloudFoundryTools.showTargetInformation": {
+          "type": "boolean",
+          "default": false,
+          "description": "Display the current Cloud Foundry target information in the status bar",
+          "scope": "resource"
+        }
+      }
+    },
+    "menus": {
+      "commandPalette": [
+        {
+          "when": "false",
+          "command": "cf.login.weak"
+        },
+        {
+          "when": "false",
+          "command": "cf.target.delete"
+        },
+        {
+          "when": "false",
+          "command": "cf.targets.create"
+        },
+        {
+          "when": "false",
+          "command": "cf.deploy-service.api"
+        },
+        {
+          "when": "false",
+          "command": "cf.target.set"
+        },
+        {
+          "when": "false",
+          "command": "cf.services.unbind"
+        },
+        {
+          "when": "false",
+          "command": "cf.services.bind"
+        },
+        {
+          "when": "false",
+          "command": "cf.services.binding.state"
+        },
+        {
+          "when": "false",
+          "command": "cf.services.get-space-services"
+        },
+        {
+          "when": "false",
+          "command": "cf.services.get-ups-services"
+        },
+        {
+          "when": "false",
+          "command": "cf.services.get-services"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "cf.targets.create",
+          "when": "view == cfView",
+          "group": "navigation@1"
+        },
+        {
+          "command": "cf.targets.reload",
+          "when": "view == cfView",
+          "group": "navigation@2"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "cf.services.create",
+          "when": "view == cfView && viewItem =~ /^services-active$/",
+          "group": "inline"
+        },
+        {
+          "command": "cf.login",
+          "when": "view == cfView && viewItem == cf-login-required",
+          "group": "inline"
+        },
+        {
+          "command": "cf.services.bind.local",
+          "when": "view == cfView && viewItem == cf-service"
+        },
+        {
+          "command": "cf.target.set",
+          "when": "view == cfView && viewItem =~ /^cf-target$|^cf-target-not-current$/",
+          "group": "inline"
+        },
+        {
+          "command": "cf.target.set",
+          "when": "view == cfView && viewItem =~ /^cf-target$/",
+          "group": "appearance@1"
+        },
+        {
+          "command": "cf.target.delete",
+          "when": "view == cfView && viewItem =~ /^cf-target(-active)?$/",
+          "group": "appearance@2"
+        }
+      ]
+    },
+    "problemMatchers": [
+      {
+        "name": "chisel-client",
+        "pattern": [
+          {
+            "regexp": "!!!DO NOT MATCH ME!!!",
+            "file": 1,
+            "location": 2,
+            "message": 3
+          }
+        ],
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^.+client: Connecting.+",
+          "endsPattern": "^.+client: Connected.+"
+        }
+      }
+    ],
+    "views": {
+      "cf-view": [
+        {
+          "id": "cfView",
+          "name": "Targets"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "cf-view",
+          "title": "Cloud Foundry",
+          "icon": "resources/common/cf.svg"
+        }
+      ]
+    }
+  },
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "dependencies": {
+    "@sap-devx/webview-rpc": "0.4.1",
+    "@sap/bas-sdk": "^3.13.2",
+    "@sap/cf-tools": "^3.2.2",
+    "@sap/swa-for-sapbas-vsx": "^2.0.7",
+    "@sap/wing-run-config-types": "^4.2.0",
+    "@vscode-logging/types": "2.0.0",
+    "@vscode-logging/wrapper": "2.0.0",
+    "cheerio": "^1.0.0",
+    "comment-json": "^4.2.2",
+    "lodash": "4.17.21",
+    "properties-reader": "2.3.0"
+  },
+  "devDependencies": {
+    "@types/cheerio": "^0.22.35",
+    "@types/comment-json": "2.4.2",
+    "@types/node": "^14.14.6",
+    "@types/properties-reader": "^2.1.3",
+    "@types/proxyquire": "^1.3.28",
+    "@types/rimraf": "3.0.0",
+    "@types/sinon": "^17.0.3",
+    "@types/vscode": "^1.43.0",
+    "@vscode-logging/types": "^2.0.0",
+    "@vscode/vsce": "2.24.0",
+    "clean-webpack-plugin": "^4.0.0",
+    "mocha": "^9.2.2",
+    "proxyquire": "2.1.3",
+    "sinon": "^19.0.2",
+    "standard-version": "^9.5.0",
+    "temp-dir": "^2.0.0",
+    "ts-loader": "^9.2.8",
+    "ts-node": "^10.7.0",
+    "webpack": "^5.94.0",
+    "webpack-cli": "^4.9.2"
+  },
+  "engines": {
+    "vscode": "^1.50.0"
+  },
+  "icon": "resources/icon.png"
+}

@@ -68,7 +68,10 @@ yarn.lock
 .vscode-test
 
 # tsc incremental build artifacts
-tsconfig.tsbuildinfo
+*.tsbuildinfo
+
+# task-explorer dummy webpack output (entrypoint used only to copy frontend files)
+projects/task-explorer/packages/tasks_panel/dummy/
 
 # Built VSCode exts
 *.vsix
