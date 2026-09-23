@@ -109,6 +109,10 @@ describe("vscode-youi-events unit test", () => {
     wsFileMockUri = vscode.Uri.file("/tmp/workspace.code-workspace");
     sandbox.stub(WorkspaceFile, "createWsWithPath").returns(wsFileMockUri);
     sandbox.stub(WorkspaceFile, "createWsWithUri").returns(wsFileMockUri);
+    // Default stub for workspace.getConfiguration - returns true for showGeneratorProgress
+    sandbox.stub(vscode.workspace, "getConfiguration").returns({
+      get: sandbox.stub().returns(true),
+    } as any);
   });
 
   afterEach(() => {
@@ -337,6 +341,49 @@ describe("vscode-youi-events unit test", () => {
       windowMock.expects("withProgress").never();
 
       events.doGeneratorProgress("testProject", "end", false);
+    });
+
+    it("backward compatibility: showProgress=true but setting disabled, falls back to classic on install", () => {
+      // Override the default stub to return false for the setting
+      (vscode.workspace.getConfiguration as any).returns({
+        get: sandbox
+          .stub()
+          .withArgs("ApplicationWizard.showGeneratorProgress", true)
+          .returns(false),
+      });
+      eventsMock.expects("doGeneratorInstall").once();
+
+      events.doGeneratorProgress("testProject", "install", true);
+    });
+
+    it("backward compatibility: showProgress=true but setting disabled, does nothing on writing", () => {
+      // Override the default stub to return false for the setting
+      (vscode.workspace.getConfiguration as any).returns({
+        get: sandbox
+          .stub()
+          .withArgs("ApplicationWizard.showGeneratorProgress", true)
+          .returns(false),
+      });
+      eventsMock.expects("doGeneratorInstall").never();
+      windowMock.expects("withProgress").never();
+
+      events.doGeneratorProgress("testProject", "writing", true);
+    });
+
+    it("setting enabled: showProgress=true enters enhanced mode", () => {
+      _.set(vscode, "ProgressLocation.Notification", 15);
+      // Default stub already returns true, so no need to override
+      eventsMock.expects("doClose").once();
+      windowMock
+        .expects("withProgress")
+        .withArgs({
+          location: 15,
+          title: "Generating testProject",
+          cancellable: false,
+        })
+        .resolves();
+
+      events.doGeneratorProgress("testProject", "writing", true);
     });
 
     it("enhanced mode: showProgress=true on writing phase shows progress with project name", () => {

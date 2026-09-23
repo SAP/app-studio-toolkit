@@ -143,9 +143,20 @@ export class VSCodeYouiEvents implements YouiEvents {
     phase: "writing" | "install" | "end",
     showProgress: boolean = false
   ): void {
-    // Backward compatibility: if generator doesn't opt in, fall back to classic behavior
-    // (only show toast on "install" phase)
-    if (!showProgress) {
+    // Check VS Code setting (default: true)
+    // Note: This setting is not declared in yeoman-ui's package.json - consumers
+    // (e.g., application-modeler, app-generator) declare it in their package.json
+    // if they want users to control it. The true default is safe - actual gating
+    // happens via the per-generator showProgress option passed by consumers.
+    const config = vscode.workspace.getConfiguration();
+    const settingEnabled = config.get<boolean>(
+      "ApplicationWizard.showGeneratorProgress",
+      true
+    );
+
+    // Backward compatibility: if setting is disabled OR generator doesn't opt in,
+    // fall back to classic behavior (only show toast on "install" phase)
+    if (!settingEnabled || !showProgress) {
       if (phase === "install") {
         // Show classic "Installing dependencies..." toast
         this.doGeneratorInstall();
