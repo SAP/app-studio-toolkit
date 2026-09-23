@@ -48,7 +48,7 @@ This VS Code extension provides tools for easy application development with Clou
 
 You can configure logger preferences in the extension settings:
 
-![Screenshot showing the settings of the Cloud Foundry Tools extension](https://raw.githubusercontent.com/SAP/cloud-foundry-tools/main/packages/backend/media/settings.png)
+![Screenshot showing the settings of the Cloud Foundry Tools extension](https://raw.githubusercontent.com/SAP/app-studio-toolkit/main/projects/cloud-foundry-tools/packages/backend/media/settings.png)
 
 ---
 
@@ -60,4 +60,4 @@ You can configure logger preferences in the extension settings:
 
 ## Contributing
 
-See [CONTRIBUTING.md](https://github.com/SAP/cloud-foundry-tools/blob/main/CONTRIBUTING.md) for contribution guidelines.
+See [CONTRIBUTING.md](https://github.com/SAP/app-studio-toolkit/blob/main/CONTRIBUTING.md) for contribution guidelines.
