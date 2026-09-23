@@ -207,7 +207,7 @@
     "@types/npm-registry-fetch": "^8.0.0",
     "@types/object-hash": "^2.1.0",
     "@types/sinon": "^17.0.3",
-    "@types/vscode": "^1.50.0",
+    "@types/vscode": "^1.100.0",
     "@types/webpack-env": "^1.16.2",
     "@types/ws": "^8.5.14",
     "@vscode/vsce": "2.24.0",
