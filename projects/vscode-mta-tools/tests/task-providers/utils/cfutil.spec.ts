@@ -57,7 +57,7 @@ describe("test cfutil ", () => {
       SpaceFields: { Name: "testspace" },
     };
     const buf = JSON.stringify(testFile) as unknown as Buffer;
-    stub(fsextra, "readFile").returns(Promise.resolve(buf));
+    stub(fsextra, "readFile").resolves(buf);
     const result = await isLoggedInToCF();
     expect(result).to.be.true;
   });
@@ -68,13 +68,13 @@ describe("test cfutil ", () => {
       SpaceFields: [{ Name: "" }],
     };
     const buf = JSON.stringify(testFile) as unknown as Buffer;
-    stub(fsextra, "readFile").returns(Promise.resolve(buf));
+    stub(fsextra, "readFile").resolves(buf);
     const result = await isLoggedInToCF();
     expect(result).to.be.false;
   });
 
   it("isLoggedInToCF - cfconfig file doesnt exist - should return false", async () => {
-    stub(fsextra, "readFile").returns(Promise.reject(new Error("aaa")));
+    stub(fsextra, "readFile").rejects(new Error("aaa"));
     const result = await isLoggedInToCF();
     expect(result).to.be.false;
   });
