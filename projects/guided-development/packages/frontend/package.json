@@ -42,7 +42,7 @@
     "@typescript-eslint/eslint-plugin": "^6.2.0",
     "@typescript-eslint/parser": "^6.2.0",
     "@babel/preset-env": "^7.9.5",
-    "@sap-devx/webview-rpc": "^0.3.1",
+    "@sap-devx/webview-rpc": "1.1.0",
     "@vue/cli-plugin-babel": "^5.0.0",
     "@vue/cli-plugin-eslint": "^5.0.0",
     "@vue/cli-plugin-unit-jest": "~5.0.0",
