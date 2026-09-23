@@ -4,6 +4,9 @@ module.exports = {
   ignorePatterns: [
     "projects/task-explorer/**/dist/",
     "projects/task-explorer/**/coverage/",
+    "projects/cloud-foundry-tools/**/dist/",
+    "projects/cloud-foundry-tools/**/coverage/",
+    "projects/cloud-foundry-tools/**/out/",
     // Vendored compiled outputs of the RPC library bundled into rpc-example-ws for demo purposes.
     "projects/vscode-webview-rpc-lib/examples/rpc-example-ws/src/static/rpc/",
   ],
@@ -349,6 +352,43 @@ module.exports = {
         "@typescript-eslint/no-empty-object-type": "off",
         "@typescript-eslint/prefer-promise-reject-errors": "off",
         "@typescript-eslint/only-throw-error": "off",
+      },
+    },
+    {
+      // cloud-foundry-tools was integrated with these rules relaxed for the migrated code.
+      // TODO: clean up violations and tighten incrementally.
+      files: ["projects/cloud-foundry-tools/**"],
+      rules: {
+        "eslint-comments/require-description": "off",
+        "no-unused-vars": "off",
+        "prefer-spread": "off",
+        "prefer-rest-params": "off",
+      },
+    },
+    {
+      // Additional TypeScript rules for cloud-foundry-tools packages.
+      // Legacy code migrated as-is; relaxed to match the historical behaviour.
+      // TODO: clean up violations and tighten incrementally.
+      files: ["projects/cloud-foundry-tools/**/*.ts"],
+      rules: {
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-require-imports": "off",
+        "@typescript-eslint/no-unused-vars": "off",
+        "@typescript-eslint/no-unused-expressions": "off",
+        "@typescript-eslint/no-unsafe-argument": "off",
+        "@typescript-eslint/no-unsafe-return": "off",
+        "@typescript-eslint/no-unsafe-assignment": "off",
+        "@typescript-eslint/no-unsafe-member-access": "off",
+        "@typescript-eslint/no-unsafe-call": "off",
+        "@typescript-eslint/unbound-method": "off",
+        "@typescript-eslint/prefer-promise-reject-errors": "off",
+        "@typescript-eslint/no-redundant-type-constituents": "off",
+        "@typescript-eslint/no-unnecessary-type-assertion": "off",
+        "@typescript-eslint/no-unsafe-enum-comparison": "off",
+        "@typescript-eslint/no-base-to-string": "off",
+        "@typescript-eslint/no-unsafe-function-type": "off",
+        "@typescript-eslint/no-this-alias": "off",
+        "@typescript-eslint/no-duplicate-type-constituents": "off",
       },
     },
     {

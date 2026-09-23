@@ -1,0 +1,6 @@
+TUNNEL_PARAM=31111:10.255.008.222:35555
+CHISEL_URL=https://chisel6bb53d2a.test.hana.ondemand.com
+CHISEL_USER=chisel-xxx
+CHISEL_PASSWORD=6test5
+VCAP_SERVICES={"naha":[{"name":"hdi-test-instance","instance_name":"hdi-test-instance","label":"hana","tags":["database","relational","mta-resource-name:bookshop-hdi-container"],"plan":"hdi-shared"}],"hanatest":[{"name":"hana-1","instance_name":"hana-1","label":"hanatest","tags":["mta-resource-name:hana1-mta"]},{"name":"hana-2","instance_name":"hana-2","label":"hanatest","tags":["mta-resource-name:hana2-mta"]}],"xsuaa":[{"name":"xsuaa-myser","instance_name":"xsuaa-myser","label":"xsuaa","tags":["xsuaa"],"plan":"application"}]}
+JBP_CONFIG_RESOURCE_CONFIGURATION=[tomcat/webapps/ROOT/META-INF/context.xml: {"service_test" : "hdi-test-instance"}]
