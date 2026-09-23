@@ -1148,6 +1148,57 @@ describe("App.vue", () => {
     });
   });
 
+  describe("generatorProgress", () => {
+    it("updates prompt with writing phase", () => {
+      wrapper = initComponent(App, {}, false, ["vscode-textfield"]);
+      wrapper.vm.rpc = {
+        invoke: jest.fn(),
+      };
+      wrapper.vm.prompts = [{}, { questions: [] }];
+      wrapper.vm.promptIndex = 1;
+      wrapper.vm.generatorProgress("testProject", "writing");
+      expect(wrapper.vm.currentPrompt.name).toBe("Writing files");
+      expect(wrapper.vm.doneMessage).toBe("Writing files");
+      expect(wrapper.vm.doneStatus).toBe(true);
+      expect(wrapper.vm.isDone).toBe(true);
+    });
+
+    it("updates prompt with install phase", () => {
+      wrapper = initComponent(App, {}, false, ["vscode-textfield"]);
+      wrapper.vm.rpc = {
+        invoke: jest.fn(),
+      };
+      wrapper.vm.prompts = [{}, { questions: [] }];
+      wrapper.vm.promptIndex = 1;
+      wrapper.vm.generatorProgress("testProject", "install");
+      expect(wrapper.vm.currentPrompt.name).toBe("Installing");
+      expect(wrapper.vm.doneMessage).toBe("Installing");
+    });
+
+    it("updates prompt with end phase", () => {
+      wrapper = initComponent(App, {}, false, ["vscode-textfield"]);
+      wrapper.vm.rpc = {
+        invoke: jest.fn(),
+      };
+      wrapper.vm.prompts = [{}, { questions: [] }];
+      wrapper.vm.promptIndex = 1;
+      wrapper.vm.generatorProgress("testProject", "end");
+      expect(wrapper.vm.currentPrompt.name).toBe("Finalising");
+      expect(wrapper.vm.doneMessage).toBe("Finalising");
+    });
+
+    it("handles undefined project name", () => {
+      wrapper = initComponent(App, {}, false, ["vscode-textfield"]);
+      wrapper.vm.rpc = {
+        invoke: jest.fn(),
+      };
+      wrapper.vm.prompts = [{}, { questions: [] }];
+      wrapper.vm.promptIndex = 1;
+      wrapper.vm.generatorProgress(undefined, "writing");
+      expect(wrapper.vm.currentPrompt.name).toBe("Writing files");
+    });
+  });
+
   describe("setGenInWriting", () => {
     // TODO - check the error
     it("in writing state", () => {
