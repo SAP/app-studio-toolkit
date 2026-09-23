@@ -21,8 +21,8 @@ See [api.d.ts](./api.d.ts) for the full definitions.
 
 ## Support
 
-Please open [issues](https://github.com/SAP/code-snippet/issues) on github.
+Please open [issues](https://github.com/SAP/app-studio-toolkit/issues) on github.
 
 ## Contributing
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md).
+See [CONTRIBUTING.md](https://github.com/SAP/app-studio-toolkit/blob/main/CONTRIBUTING.md).

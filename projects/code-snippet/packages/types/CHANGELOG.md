@@ -1,1 +1,1 @@
-# types
+# @sap-devx/code-snippet-types

@@ -2,7 +2,7 @@
 
 ## Preview
 
-![Form GUI Screenshot](https://raw.githubusercontent.com/SAP/code-snippet/master/packages/backend/resources/preview.png)
+![Form GUI Screenshot](https://raw.githubusercontent.com/SAP/app-studio-toolkit/main/projects/code-snippet/packages/backend/resources/preview.png)
 
 ## Overview
 
