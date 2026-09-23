@@ -87,12 +87,6 @@
           "description": "Enable collecting usage analytics data for Application Wizard.  If enabled, non-personally identifiable information is used to help understand the product usage and improve the tool.",
           "scope": "resource"
         },
-        "ApplicationWizard.showGeneratorProgress": {
-          "type": "boolean",
-          "default": true,
-          "description": "Show enhanced multi-phase progress notifications during project generation (Writing files, Installing, Finalising). When disabled, shows classic 'Installing dependencies...' notification.",
-          "scope": "resource"
-        },
         "ApplicationWizard.loggingLevel": {
           "type": "string",
           "enum": [
