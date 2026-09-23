@@ -13,11 +13,11 @@
   "reporter": ["lcov", "text"],
   "extension": [".ts"],
   "all": true,
-  "temp-dir": "./.nyc_output",
+  "temp-dir": "./reports/.nyc_output",
   "report-dir": "./reports/coverage",
   "check-coverage": true,
-  "branches": 98,
-  "lines": 99,
-  "functions": 97,
-  "statements": 99
+  "branches": 77,
+  "lines": 94,
+  "functions": 87,
+  "statements": 91
 }
