@@ -1,15 +1,6 @@
 {
   "name": "root",
   "private": true,
-  "workspaces": {
-    "packages": [
-      "packages/*",
-      "projects/*/packages/*",
-      "projects/*",
-      "projects/*/examples/*",
-      "examples/*"
-    ]
-  },
   "scripts": {
     "ci": "npm-run-all legal:* format:validate lint:validate ci:subpackages coverage:merge",
     "ci:release": "pnpm changeset publish",
