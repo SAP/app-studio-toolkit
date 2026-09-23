@@ -1898,8 +1898,8 @@ importers:
         specifier: 7.0.0
         version: 7.0.0
       happy-dom:
-        specifier: 12.10.3
-        version: 12.10.3
+        specifier: 20.8.9
+        version: 20.8.9(bufferutil@4.1.0)(utf-8-validate@5.0.10)
       istanbul-instrumenter-loader:
         specifier: 3.0.1
         version: 3.0.1(webpack@5.104.1(webpack-cli@6.0.1))
@@ -6257,6 +6257,9 @@ packages:
   '@types/websocket@1.0.5':
     resolution: {integrity: sha512-NbsqiNX9CnEfC1Z0Vf4mE1SgAJ07JnRYcNex7AJ9zAVzmiGHmjKFEk7O4TJIsgv2B1sLEb6owKFZrACwdYngsQ==}
 
+  '@types/whatwg-mimetype@3.0.2':
+    resolution: {integrity: sha512-c2AKvDT8ToxLIOUlN51gTiHXflsfIFisS4pO7pDPoKouJCESkhZnEy623gwP9laCy5lnLDAw1vAzu2vM2YLOrA==}
+
   '@types/ws@7.4.7':
     resolution: {integrity: sha512-JQbbmxZTZehdc2iszGKs5oC3NFnjeay7mtAWrdt7qNtAVK0g19muApzAy4bm9byz79xa2ZnO/BOBC2R8RC5Lww==}
 
@@ -10282,8 +10285,9 @@ packages:
     engines: {node: '>=0.4.7'}
     hasBin: true
 
-  happy-dom@12.10.3:
-    resolution: {integrity: sha512-JzUXOh0wdNGY54oKng5hliuBkq/+aT1V3YpTM+lrN/GoLQTANZsMaIvmHiHe612rauHvPJnDZkZ+5GZR++1Abg==}
+  happy-dom@20.8.9:
+    resolution: {integrity: sha512-Tz23LR9T9jOGVZm2x1EPdXqwA37G/owYMxRwU0E4miurAtFsPMQ1d2Jc2okUaSjZqAFz2oEn3FLXC5a0a+siyA==}
+    engines: {node: '>=20.0.0'}
 
   har-schema@2.0.0:
     resolution: {integrity: sha512-Oqluz6zhGX8cyRaTQlFMPw80bSJVG2x/cFb8ZPhUILGgHka9SsokCCOQgpveePerqidZOrT14ipqfJb7ILcW5Q==}
@@ -21519,6 +21523,8 @@ snapshots:
     dependencies:
       '@types/node': 22.20.1
 
+  '@types/whatwg-mimetype@3.0.2': {}
+
   '@types/ws@7.4.7':
     dependencies:
       '@types/node': 22.20.1
@@ -26879,14 +26885,17 @@ snapshots:
     optionalDependencies:
       uglify-js: 3.19.3
 
-  happy-dom@12.10.3:
+  happy-dom@20.8.9(bufferutil@4.1.0)(utf-8-validate@5.0.10):
     dependencies:
-      css.escape: 1.5.1
-      entities: 4.5.0
-      iconv-lite: 0.6.3
-      webidl-conversions: 7.0.0
-      whatwg-encoding: 2.0.0
+      '@types/node': 22.20.1
+      '@types/whatwg-mimetype': 3.0.2
+      '@types/ws': 8.18.1
+      entities: 7.0.1
       whatwg-mimetype: 3.0.0
+      ws: 8.18.3(bufferutil@4.1.0)(utf-8-validate@5.0.10)
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
 
   har-schema@2.0.0: {}
 
