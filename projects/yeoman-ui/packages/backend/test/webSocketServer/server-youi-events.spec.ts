@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { createSandbox, SinonSandbox, SinonMock } from "sinon";
-import type { RpcCommon } from "@sap-devx/webview-rpc/out.ext/rpc-common.js";
+import { RpcCommon } from "@sap-devx/webview-rpc/out.ext/rpc-common.js";
 import { ServerYouiEvents } from "../../src/webSocketServer/server-youi-events.js";
 
 describe("ServerYouiEvents unit test", () => {
@@ -8,39 +8,23 @@ describe("ServerYouiEvents unit test", () => {
   let sandbox: SinonSandbox;
   let rpcMock: SinonMock;
 
-  class TestRpc implements RpcCommon {
-    public timeout: number;
-    public promiseCallbacks: any;
-    public methods: any;
+  class TestRpc extends RpcCommon {
+    constructor() {
+      super({
+        debug: () => {},
+        error: () => {},
+        fatal: () => {},
+        warn: () => {},
+        info: () => {},
+        trace: () => {},
+        getChildLogger: () => ({}),
+      } as any);
+    }
     public sendRequest(): void {
       return;
     }
     public sendResponse(): void {
       return;
-    }
-    public setResponseTimeout(): void {
-      return;
-    }
-    public registerMethod(): void {
-      return;
-    }
-    public unregisterMethod(): void {
-      return;
-    }
-    public listLocalMethods(): string[] {
-      return [];
-    }
-    public handleResponse(): void {
-      return;
-    }
-    public listRemoteMethods(): Promise<string[]> {
-      return Promise.resolve([]);
-    }
-    public invoke(): Promise<any> {
-      return Promise.resolve();
-    }
-    public handleRequest(): Promise<void> {
-      return Promise.resolve();
     }
   }
 
