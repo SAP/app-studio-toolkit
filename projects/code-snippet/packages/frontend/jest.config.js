@@ -14,7 +14,9 @@ module.exports = {
     "^@/(.*)$": "<rootDir>/src/$1",
   },
   moduleFileExtensions: ["js", "vue", "json"],
-  transformIgnorePatterns: ["<rootDir>/node_modules/(?!(.+)/)"],
+  transformIgnorePatterns: [
+    "/node_modules/.pnpm/(?!(@sap-devx\\+|vuetify@|lodash@))",
+  ],
   modulePaths: ["<rootDir>/src", "<rootDir>/node_modules"],
   transform: {
     "^.+\\.vue$": "@vue/vue3-jest",
