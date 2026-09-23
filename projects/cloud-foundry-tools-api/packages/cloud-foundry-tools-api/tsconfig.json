@@ -1,0 +1,22 @@
+{
+  "extends": "../../../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "./out",
+    // The source repo (SAP/cloud-foundry-tools-api) compiled under PARTIAL strict:
+    // noImplicitAny + noImplicitThis + alwaysStrict, but NOT strictNullChecks.
+    // The monorepo base sets "strict": true; forcing full strict here would require
+    // rewriting library logic (a relocation must not change behaviour), so we reproduce
+    // the source's exact contract instead. Mirrors guided-development's strict:false.
+    // TODO: tighten to full strict incrementally.
+    "strict": false,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "noFallthroughCasesInSwitch": true,
+    "experimentalDecorators": true,
+    "removeComments": true,
+    "skipLibCheck": true
+  },
+  "include": ["./src/**/*", "./tests/**/*"]
+}

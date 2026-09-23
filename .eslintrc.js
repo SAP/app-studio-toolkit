@@ -100,6 +100,17 @@ module.exports = {
       },
     },
     {
+      // cloud-foundry-tools-api was integrated with these eslint-comments rules relaxed
+      // for the migrated code (the source carried its own eslint-disable comments).
+      // TODO: annotate/clean up and tighten incrementally.
+      files: ["projects/cloud-foundry-tools-api/**"],
+      rules: {
+        "eslint-comments/require-description": "off",
+        "eslint-comments/disable-enable-pair": "off",
+        "eslint-comments/no-duplicate-disable": "off",
+      },
+    },
+    {
       // vscode-logging was integrated with these rules relaxed for the migrated code.
       // TODO: clean up violations and tighten incrementally.
       files: ["projects/vscode-logging/**"],
@@ -264,6 +275,24 @@ module.exports = {
         "@typescript-eslint/no-array-constructor": "off",
         "@typescript-eslint/ban-ts-comment": "off",
         "@typescript-eslint/prefer-promise-reject-errors": "off",
+      },
+    },
+    {
+      // Additional TypeScript rules for cloud-foundry-tools-api package.
+      // Legacy library + chai test suite migrated as-is; relaxed to match the historical
+      // behaviour without rewriting source logic. TODO: tighten incrementally.
+      files: ["projects/cloud-foundry-tools-api/**/*.ts"],
+      rules: {
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-redundant-type-constituents": "off",
+        "@typescript-eslint/no-unsafe-argument": "off",
+        "@typescript-eslint/no-unsafe-return": "off",
+        // chai assertions (e.g. expect(x).to.be.true) read as unused expressions
+        "@typescript-eslint/no-unused-expressions": "off",
+        "@typescript-eslint/no-unused-vars": [
+          "error",
+          { argsIgnorePattern: "^_", caughtErrors: "none" },
+        ],
       },
     },
     {
