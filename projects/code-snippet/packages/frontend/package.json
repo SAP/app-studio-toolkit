@@ -13,7 +13,6 @@
     "ci": "npm-run-all clean build test coverage:copy",
     "clean": "rimraf ./dist ./coverage",
     "coverage:copy": "shx mkdir -p ../../../../coverage && shx cp -u ./coverage/lcov.info ../../../../coverage/lcov_frontend.info",
-    "lint": "vue-cli-service lint",
     "serve": "vite",
     "test": "jest -w 1 --colors"
   },

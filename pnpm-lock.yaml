@@ -807,6 +807,9 @@ importers:
       '@types/vscode':
         specifier: ^1.48.0
         version: 1.138.0
+      '@vscode/vsce':
+        specifier: 2.24.0
+        version: 2.24.0
 
   projects/code-snippet/packages/backend:
     dependencies:

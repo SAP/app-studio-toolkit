@@ -4,6 +4,7 @@ const path = require("path");
 
 const config = {
   target: "node", // vscode extensions run in a Node.js-context 📖 -> https://webpack.js.org/configuration/node/
+  node: { global: true },
   entry: ["./src/extension.ts"], // the entry point of this extension, 📖 -> https://webpack.js.org/configuration/entry-context/
   devtool: "source-map",
   output: {

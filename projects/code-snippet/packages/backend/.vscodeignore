@@ -1,9 +1,4 @@
-../../../../**
-../../../**
-../../**
-../**
 **
-node_modules/**
 !LICENSES
 !.reuse
 !LICENSE
