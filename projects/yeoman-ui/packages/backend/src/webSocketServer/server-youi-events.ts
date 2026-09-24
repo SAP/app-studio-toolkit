@@ -30,18 +30,36 @@ export class ServerYouiEvents implements YouiEvents {
     selectedWorkspace: string,
     type: string,
     targetPath = ""
-  ): void {
-    void this.rpc.invoke("generatorDone", [
+  ): Promise<void> {
+    return this.rpc.invoke("generatorDone", [
       suceeded,
       message,
       selectedWorkspace,
       type,
       targetPath,
-    ]);
+    ]) as Promise<void>;
   }
 
   public doGeneratorInstall(): void {
     void this.rpc.invoke("generatorInstall");
+  }
+
+  public doGeneratorProgress(
+    projectName: string | undefined,
+    phase: "writing" | "install" | "end",
+    showProgress: boolean = false
+  ): void {
+    // Backward compatibility: if generator doesn't opt in, fall back to classic behavior
+    // (only show toast on "install" phase)
+    if (!showProgress) {
+      if (phase === "install") {
+        // Show classic "Installing dependencies..." event
+        this.doGeneratorInstall();
+      }
+      return;
+    }
+    // WebSocket implementation - invoke RPC method with progress info
+    void this.rpc.invoke("generatorProgress", [projectName, phase]);
   }
 
   public showProgress(): void {

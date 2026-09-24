@@ -7,8 +7,13 @@ export interface YouiEvents {
     selectedWorkspace: string,
     type: string,
     targetFolderPath?: string
-  ): void;
+  ): Thenable<any>;
   doGeneratorInstall(): void;
+  doGeneratorProgress(
+    projectName: string | undefined,
+    phase: "writing" | "install" | "end",
+    showProgress: boolean
+  ): void;
   showProgress(message?: string): void;
   getAppWizard(): AppWizard;
   executeCommand(id: string, ...args: any[]): Thenable<any>;
