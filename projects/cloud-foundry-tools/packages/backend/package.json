@@ -325,7 +325,7 @@
   },
   "dependencies": {
     "@sap-devx/webview-rpc": "0.4.1",
-    "@sap/bas-sdk": "^3.13.2",
+    "@sap/bas-sdk": "^3.13.7",
     "@sap/cf-tools": "^3.2.2",
     "@sap/swa-for-sapbas-vsx": "^2.0.7",
     "@sap/wing-run-config-types": "^4.2.0",
