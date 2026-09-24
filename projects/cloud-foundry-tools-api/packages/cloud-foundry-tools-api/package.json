@@ -1,6 +1,6 @@
 {
   "name": "@sap/cf-tools",
-  "version": "3.3.1",
+  "version": "3.3.2",
   "description": "A set of APIs for easy application development with Cloud Foundry.",
   "main": "out/src/index.js",
   "types": "out/src/index.d.ts",
