@@ -1,0 +1,39 @@
+module.exports = {
+  verbose: true,
+  testRegex: "(/test/(.*).(test|spec)).[jt]sx?$",
+  collectCoverage: true,
+  coverageProvider: "v8",
+  collectCoverageFrom: [
+    "src/**/*.{js,vue}",
+    "!**/node_modules/**",
+    "!<rootDir>/src/main.js",
+    "!<rootDir>/src/assets/**",
+    "!<rootDir>/src/plugins/**",
+  ],
+  moduleNameMapper: {
+    "^@/(.*)$": "<rootDir>/src/$1",
+  },
+  moduleFileExtensions: ["js", "vue", "json"],
+  transformIgnorePatterns: [
+    "/node_modules/.pnpm/(?!(@sap-devx\\+|vuetify@|lodash@))",
+  ],
+  modulePaths: ["<rootDir>/src", "<rootDir>/node_modules"],
+  transform: {
+    "^.+\\.vue$": "@vue/vue3-jest",
+    "^.+\\.tsx?$": "ts-jest",
+    "^.+\\.js$": "babel-jest",
+    "^.+\\.jsx?$": "babel-jest",
+  },
+  testEnvironmentOptions: {
+    customExportConditions: ["node", "node-addons"],
+  },
+  testEnvironment: "jsdom",
+  coverageThreshold: {
+    global: {
+      branches: 82,
+      functions: 70,
+      lines: 89,
+      statements: 89,
+    },
+  },
+};
