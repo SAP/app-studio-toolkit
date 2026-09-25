@@ -20,7 +20,7 @@
     "compile": "tsc -p ./"
   },
   "dependencies": {
-    "@types/vscode": "^1.48.0"
+    "@types/vscode": "1.75.0"
   },
   "publishConfig": {
     "access": "public"

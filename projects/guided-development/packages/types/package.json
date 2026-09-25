@@ -43,7 +43,7 @@
     "@sap-devx/app-studio-toolkit-types": "workspace:*"
   },
   "devDependencies": {
-    "@types/vscode": "^1.46.0",
+    "@types/vscode": "1.75.0",
     "esbuild": "0.25.5"
   },
   "publishConfig": {
