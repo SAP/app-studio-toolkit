@@ -1,5 +1,12 @@
 # yeoman-ui-frontend
 
+## 1.27.3
+
+### Patch Changes
+
+- Updated dependencies [4c193d3]
+  - @sap-devx/webview-rpc@1.1.1
+
 ## 1.27.2
 
 ## 1.27.1
