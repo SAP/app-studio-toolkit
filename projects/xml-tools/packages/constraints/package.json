@@ -1,6 +1,6 @@
 {
   "name": "@xml-tools/constraints",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "XML constraints validations",
   "keywords": [
     "xml",

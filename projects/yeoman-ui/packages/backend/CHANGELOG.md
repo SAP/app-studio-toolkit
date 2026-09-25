@@ -1,5 +1,13 @@
 # yeoman-ui
 
+## 1.27.3
+
+### Patch Changes
+
+- d51dbd3: Implements enhanced multi-phase progress notifications for Yeoman generators with zero breaking changes. Generators that don't opt in still receive the classic "Installing dependencies..." toast.
+- Updated dependencies [4c193d3]
+  - @sap-devx/webview-rpc@1.1.1
+
 ## 1.27.2
 
 ### Patch Changes
