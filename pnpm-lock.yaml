@@ -12,6 +12,7 @@ overrides:
   vue: 3.5.34
   '@sap-devx/code-snippet-types>@types/vscode': 1.75.0
   '@sap/artifact-management-base-types>@types/vscode': 1.75.0
+  vscode-languageserver-protocol: 3.16.0
 
 importers:
 
@@ -17215,19 +17216,12 @@ packages:
     resolution: {integrity: sha512-wnJA4BnEjOSyFMvjZdpiOwhSq9uDoK8e/kpRJDTaMYzwlkrhG1fwDIZI94CLsLzlCK5cIbMMtFlJlfR57Lavmg==}
     engines: {node: '>=8.0.0 || >=10.0.0'}
 
-  vscode-jsonrpc@9.0.2:
-    resolution: {integrity: sha512-SbQSV9yRemARxeXw6LU5sS6Zq0e9/DgCCX5yelH263ZQWukbTk8EF8fjTrr1dziasf4GwlJbvTwFnTrnQFWZXQ==}
-    engines: {node: '>=14.0.0'}
-
   vscode-languageclient@6.1.3:
     resolution: {integrity: sha512-YciJxk08iU5LmWu7j5dUt9/1OLjokKET6rME3cI4BRpiF6HZlusm2ZwPt0MYJ0lV5y43sZsQHhyon2xBg4ZJVA==}
     engines: {vscode: ^1.41.0}
 
   vscode-languageserver-protocol@3.16.0:
     resolution: {integrity: sha512-sdeUoAawceQdgIfTI+sdcwkiK2KU+2cbEYA0agzM2uqaUy2UpnnGHtWTHVEtS0ES4zHU0eMFRGN+oQgDxlD66A==}
-
-  vscode-languageserver-protocol@3.18.3:
-    resolution: {integrity: sha512-DF49+WeV5py4zO5hhobp60jjsDSK0lAqA0OuKBLBvp423HPWQcCbhZz3JgyfIewsEz2f8U+X75xNIFHdiXZm2w==}
 
   vscode-languageserver-textdocument@1.0.1:
     resolution: {integrity: sha512-UIcJDjX7IFkck7cSkNNyzIz5FyvpQfY7sdzVy+wkKN/BLaD4DQ0ppXQrKePomCxTS7RrolK1I0pey0bG9eh8dA==}
@@ -17240,9 +17234,6 @@ packages:
 
   vscode-languageserver-types@3.17.5:
     resolution: {integrity: sha512-Ld1VelNuX9pdF39h2Hgaeb5hEZM2Z3jUrrMgWQAu82jMtZp7p3vJT3BzToKtZI7NgQssZje5o0zryOrhQvzQAg==}
-
-  vscode-languageserver-types@3.18.3:
-    resolution: {integrity: sha512-XIlzJ7Qp/jzSI1ds7/FwPAWrPeTZA7pAtlW4hdJ1J6xXWJL6dR9QYnDhJOdLzdKhUQ5Mm6mvUMw+3DcOQQasPw==}
 
   vscode-languageserver@7.0.0:
     resolution: {integrity: sha512-60HTx5ID+fLRcgdHfmz0LDZAXYEV68fzwG0JWwEPBode9NuMYTIxuYXPg4ngO8i8+Ou0lM7y6GzaYWbiDL0drw==}
@@ -35926,22 +35917,15 @@ snapshots:
 
   vscode-jsonrpc@6.0.0: {}
 
-  vscode-jsonrpc@9.0.2: {}
-
   vscode-languageclient@6.1.3:
     dependencies:
       semver: 6.3.1
-      vscode-languageserver-protocol: 3.18.3
+      vscode-languageserver-protocol: 3.16.0
 
   vscode-languageserver-protocol@3.16.0:
     dependencies:
       vscode-jsonrpc: 6.0.0
       vscode-languageserver-types: 3.16.0
-
-  vscode-languageserver-protocol@3.18.3:
-    dependencies:
-      vscode-jsonrpc: 9.0.2
-      vscode-languageserver-types: 3.18.3
 
   vscode-languageserver-textdocument@1.0.1: {}
 
@@ -35950,8 +35934,6 @@ snapshots:
   vscode-languageserver-types@3.16.0: {}
 
   vscode-languageserver-types@3.17.5: {}
-
-  vscode-languageserver-types@3.18.3: {}
 
   vscode-languageserver@7.0.0:
     dependencies:
