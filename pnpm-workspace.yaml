@@ -17,7 +17,6 @@ overrides:
   # version the rest of the workspace already uses.
   '@sap-devx/code-snippet-types>@types/vscode': '1.75.0'
   '@sap/artifact-management-base-types>@types/vscode': '1.75.0'
-  'vscode-languageserver-protocol': '3.16.0'
 allowBuilds:
   '@parcel/watcher': true
   '@vscode/vsce-sign': true

@@ -36,7 +36,8 @@
   },
   "dependencies": {
     "@xml-tools/language-server": "workspace:*",
-    "vscode-languageclient": "6.1.3"
+    "vscode-languageclient": "6.1.3",
+    "vscode-languageserver-protocol": "3.16.0"
   },
   "//@types/vscode": "Pinned to the minimum VS Code API version supported here (kept from the standalone xml-tools repo). Intentionally not raised to the monorepo root version, which would allow newer APIs and break support for older VS Code.",
   "devDependencies": {
