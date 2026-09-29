@@ -36,8 +36,10 @@
   },
   "dependencies": {
     "@xml-tools/language-server": "workspace:*",
-    "vscode-languageclient": "6.1.3"
+    "vscode-languageclient": "6.1.3",
+    "vscode-languageserver-protocol": "3.16.0"
   },
+  "//vscode-languageserver-protocol": "Pinned to 3.16.0: vscode-languageclient 6.1.3 bare-imports the Node entry (IPCMessageReader), which 3.18.x moved behind an exports subpath. Do not raise until the client is upgraded.",
   "//@types/vscode": "Pinned to the minimum VS Code API version supported here (kept from the standalone xml-tools repo). Intentionally not raised to the monorepo root version, which would allow newer APIs and break support for older VS Code.",
   "devDependencies": {
     "@types/vscode": "1.56.0",
