@@ -21,6 +21,10 @@
     ["code-snippet-tool", "code-snippet-frontend"],
     ["vscode-cf-tools", "cloud-foundry-tools-frontend"],
     [
+      "vscode-tasks-explorer-tasks-panel",
+      "@vscode-tasks-explorer/vue_frontend_rpc"
+    ],
+    [
       "@sap-devx/inquirer-gui",
       "@sap-devx/inquirer-gui-auto-complete-plugin",
       "@sap-devx/inquirer-gui-file-browser-plugin",
@@ -53,7 +57,6 @@
     "vscode-snippet-food-contrib",
     "code-snippet",
     "vscode-snippet-contrib",
-    "@vscode-tasks-explorer/vue_frontend_rpc",
     "npm-task-contrib",
     "vscode-task-contrib",
     "rpc-example",
