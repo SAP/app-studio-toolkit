@@ -39,5 +39,8 @@
     ".reuse",
     "LICENSES",
     "CHANGELOG.md"
-  ]
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }

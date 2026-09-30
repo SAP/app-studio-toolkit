@@ -40,5 +40,8 @@
     "dist",
     "CHANGELOG.md",
     "CHANGELOG.old.md"
-  ]
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }
