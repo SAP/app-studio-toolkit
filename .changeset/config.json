@@ -67,7 +67,9 @@
     "@sap-devx/inquirer-gui-date-plugin",
     "sample-inquirer-gui-vscode-extension",
     "websocketserver",
-    "vscode-wing-cf-tools"
+    "vscode-wing-cf-tools",
+    "@sap/cf-tools",
+    "@sap_oss/task_contrib_types"
   ],
   "privatePackages": {
     "version": true,
