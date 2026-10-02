@@ -1,6 +1,9 @@
 {
   "name": "@sap-devx/inquirer-gui-tiles-plugin",
   "version": "3.4.14",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Tiles plugin for inquirer-gui",
   "repository": {
     "type": "git",

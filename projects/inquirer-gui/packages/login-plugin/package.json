@@ -1,6 +1,9 @@
 {
   "name": "@sap-devx/inquirer-gui-login-plugin",
   "version": "3.4.14",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Login plugin for inquirer-gui",
   "repository": {
     "type": "git",
