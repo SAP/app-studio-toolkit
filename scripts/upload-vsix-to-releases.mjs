@@ -17,12 +17,24 @@ const repoRoot = resolve(__dirname, "..");
 // dontenv is only used in local testing flows, so local scripts dir is used for `.env` file
 dotenv.config({ path: resolve(__dirname, ".env") });
 
-const rootPackageJson = JSON.parse(
-  await readFile(resolve(repoRoot, "package.json"), "utf8")
+// Workspace globs live in pnpm-workspace.yaml (pnpm monorepo; root package.json
+// has no `workspaces` field — removed in #626). The `packages:` block is a flat
+// list of quoted glob strings, so parse those lines directly, no YAML dep.
+const pnpmWorkspaceYaml = await readFile(
+  resolve(repoRoot, "pnpm-workspace.yaml"),
+  "utf8"
 );
-const workspacePackageGlobs = rootPackageJson.workspaces.packages;
+const packagesBlock = pnpmWorkspaceYaml.match(
+  /^packages:\s*\n((?:\s*-\s.*\n?)+)/m
+);
+const workspacePackageGlobs = packagesBlock
+  ? [...packagesBlock[1].matchAll(/^\s*-\s*['"]?([^'"\n]+?)['"]?\s*$/gm)].map(
+      (m) => m[1]
+    )
+  : [];
 if (
   !Array.isArray(workspacePackageGlobs) ||
+  workspacePackageGlobs.length === 0 ||
   workspacePackageGlobs.some(
     (workspacePackageGlob) =>
       typeof workspacePackageGlob !== "string" ||
@@ -31,7 +43,7 @@ if (
   )
 ) {
   throw new Error(
-    "package.json workspaces.packages must contain non-empty positive glob strings"
+    "pnpm-workspace.yaml packages must contain non-empty positive glob strings"
   );
 }
 
