@@ -1,6 +1,9 @@
 {
   "name": "@sap-devx/inquirer-gui-folder-browser-plugin",
   "version": "3.4.15",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Folder browser plugin for inquirer-gui",
   "keywords": [
     "inquirer",

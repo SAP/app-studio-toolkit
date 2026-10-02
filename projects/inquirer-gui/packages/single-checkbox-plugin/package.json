@@ -1,6 +1,9 @@
 {
   "name": "@sap-devx/inquirer-gui-single-checkbox-plugin",
   "version": "3.4.15",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Sample single checkbox plugin for inquirer-gui",
   "repository": {
     "type": "git",
