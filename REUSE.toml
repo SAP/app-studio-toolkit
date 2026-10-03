@@ -1,0 +1,10 @@
+version = 1
+SPDX-PackageName = "app-studio-toolkit"
+SPDX-PackageSupplier = "Tomer Epstein <tomer.epstein@sap.com>"
+SPDX-PackageDownloadLocation = "https://github.com/SAP/app-studio-toolkit"
+
+[[annotations]]
+path = "**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2021 SAP SE or an SAP affiliate company and app-studio-toolkit contributors"
+SPDX-License-Identifier = "Apache-2.0"
