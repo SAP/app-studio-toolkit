@@ -61,7 +61,7 @@ This is managed automatically via https://cla-assistant.io/ pull request voter.
 
 ### pre-requisites
 
-- [pnpm](https://pnpm.io/installation#using-npm) > 6.x
+- [pnpm](https://pnpm.io/installation#using-npm) v11 or later (see `packageManager` field in `package.json`)
 - A [Long-Term Support version](https://nodejs.org/en/about/releases/) of node.js
 - (optional) [commitizen](https://github.com/commitizen/cz-cli#installing-the-command-line-tool) for managing commit messages.
 
@@ -107,11 +107,13 @@ use the top-level compilation scripts to avoid forgetting to (re-)compile a sub-
 
 ### Testing
 
-[Mocha][mocha] and [Chai][chai] are used for unit-testing and [Istanbul/Nyc][istanbul] for coverage reports.
+Most packages use [Mocha][mocha] + [Chai][chai] + [Sinon][sinon] for unit-testing and [Istanbul/Nyc][istanbul] for coverage reports. `packages/webide-client-tools` uses [Jest][jest] instead.
 
 [mocha]: https://mochajs.org/
 [chai]: https://www.chaijs.com
+[sinon]: https://sinonjs.org/
 [istanbul]: https://istanbul.js.org/
+[jest]: https://jestjs.io/
 
 - To run the tests execute `pnpm test` in a specific sub-package.
 - To run the tests with **coverage** run `pnpm coverage` in a specific sub-package.
