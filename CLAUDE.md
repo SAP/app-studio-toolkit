@@ -71,7 +71,7 @@ Each is a self-contained project with its own sub-packages:
 
 ## Testing
 
-Most packages use **Mocha + Chai + Sinon** for unit tests and **nyc/Istanbul** for coverage. `packages/webide-client-tools` uses **Jest** instead. Coverage is enforced at 100% for all branches/lines/functions/statements (configured in each package's `nyc.config.js`).
+Most packages use **Mocha + Chai + Sinon** for unit tests and **nyc/Istanbul** for coverage. `packages/webide-client-tools` uses **Jest** instead. Coverage is enforced at 100% for all branches/lines/functions/statements (configured in the root `nyc.config.js`; some packages have their own `nyc.config.js` to override).
 
 ```bash
 pnpm test       # run tests (in a sub-package)
