@@ -22,7 +22,7 @@
     "watch-test": "tsc -w -p ./tsconfig.test.json"
   },
   "dependencies": {
-    "ws": "^7.2.3"
+    "ws": "^8.0.0"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",
