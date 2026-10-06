@@ -12,7 +12,7 @@ This is a pnpm monorepo of VS Code extensions and supporting libraries for SAP B
 
 ```bash
 pnpm install        # install all dependencies
-pnpm compile        # clean + TypeScript build for all packages
+pnpm compile        # clean + TypeScript build for packages/* only (excludes projects/*, vscode-disk-usage, vsix-zst — use pnpm ci for full validation)
 pnpm compile:watch  # watch mode — recompiles on change
 pnpm ci             # full CI build (compile + lint + test + bundle + package)
 ```
@@ -39,14 +39,14 @@ pnpm workspace with packages under `packages/` and nested sub-projects under `pr
 | `app-studio-toolkit-themes`      | VS Code theme for BAS                                                                      |
 | `vscode-dependencies-validation` | Diagnostics and quick-fixes for npm dependency issues                                      |
 | `npm-dependencies-validation`    | Core npm dependency detection logic (used by `vscode-dependencies-validation`)             |
-| `vscode-deps-upgrade-tool`       | Upgrades `package.json` dependencies via `BASContributes.upgrade.node` metadata            |
+| `vscode-deps-upgrade-tool`       | Upgrades `package.json` dependencies via `BASContributes.upgrade.nodejs` metadata          |
 | `vscode-disk-usage`              | Disk usage reports for BAS dev spaces                                                      |
 | `vsix-zst`                       | Repackages VSIX archives as Zstandard-compressed TAR files                                 |
 | `webide-client-tools`            | Client-side tools for web IDE integrations                                                 |
 
 ### `projects/` — nested sub-projects
 
-Each is a self-contained project with its own sub-packages:
+Most are self-contained projects with their own sub-packages:
 
 | Project                   | Description                                       |
 | ------------------------- | ------------------------------------------------- |
@@ -74,13 +74,13 @@ Each is a self-contained project with its own sub-packages:
 Most packages use **Mocha + Chai + Sinon** for unit tests and **nyc/Istanbul** for coverage. `packages/webide-client-tools` uses **Jest** instead. Coverage thresholds vary: most packages enforce 100% (root `nyc.config.js`), but some override this — e.g. `projects/vscode-mta-tools` uses 90–95%, and some packages (e.g. `packages/vsix-zst`) collect no coverage.
 
 ```bash
-pnpm test       # run tests (in a sub-package)
-pnpm coverage   # run tests with coverage enforcement
+pnpm test       # run tests (in a sub-package — not all packages have this script; check package.json first)
+pnpm coverage   # run tests with coverage enforcement (not all packages have this script; check package.json first)
 ```
 
 ## Configuration
 
-The following environment variables are read at runtime (injected by BAS, not set by developers):
+The following environment variables are read at runtime (injected by BAS, not set by developers). This table is not exhaustive — additional variables are consumed by specific packages (e.g. telemetry variables in `app-studio-toolkit/src/telemetry/utils.ts`, feature-toggle context variables in `feature-toggle-node`):
 
 | Variable       | Package                                   | Description                                                                |
 | -------------- | ----------------------------------------- | -------------------------------------------------------------------------- |
@@ -95,6 +95,6 @@ No secrets or config files are required for local development or CI. The only pr
 ## Development Notes
 
 - Use **pnpm** (not npm or yarn). The `packageManager` field pins `pnpm@11.1.1`.
-- Node.js **≥20** is required (`engines.node` in root `package.json`).
-- Commit messages must follow [conventional-commits](https://www.conventionalcommits.org/) format — enforced by a pre-commit hook and CI. Use `git cz` (requires commitizen) to construct valid messages.
+- Node.js **≥20** is required by the root `package.json`; `packages/vsix-zst` requires **≥22.15** (`engines.node` in its own `package.json`).
+- Commit messages must follow [conventional-commits](https://www.conventionalcommits.org/) format — enforced by the `.husky/commit-msg` hook (runs `commitlint`) and CI. Use `git cz` (requires commitizen) to construct valid messages.
 - Versioning and releases are managed via [ChangeSets](https://github.com/changesets/changesets). Merge the auto-generated "Version Packages" PR to trigger a release.

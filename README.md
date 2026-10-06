@@ -30,7 +30,7 @@ This is a pnpm monorepo. Primary packages live under `packages/`; additional nes
 | `app-studio-toolkit-themes`      | VS Code theme for BAS                                                                      |
 | `vscode-dependencies-validation` | Diagnostics and quick-fixes for npm dependency issues                                      |
 | `npm-dependencies-validation`    | Core npm dependency detection logic (used by `vscode-dependencies-validation`)             |
-| `vscode-deps-upgrade-tool`       | Upgrades `package.json` dependencies via `BASContributes.upgrade.node` metadata            |
+| `vscode-deps-upgrade-tool`       | Upgrades `package.json` dependencies via `BASContributes.upgrade.nodejs` metadata          |
 | `vscode-disk-usage`              | Disk usage reports for BAS dev spaces                                                      |
 | `vsix-zst`                       | Repackages VSIX archives as Zstandard-compressed TAR files                                 |
 | `webide-client-tools`            | Client-side tools for web IDE integrations                                                 |
