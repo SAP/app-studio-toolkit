@@ -20,14 +20,14 @@ pnpm ci             # full CI build (compile + lint + test + bundle + package)
 ### Per sub-package (run inside `packages/<name>/`)
 
 ```bash
-pnpm test           # run unit tests
-pnpm coverage       # run tests with coverage report
+pnpm test           # run unit tests (not all packages have this script — check package.json first)
+pnpm coverage       # run tests with coverage report (not all packages have this script — check package.json first)
 pnpm ci             # full CI build for this package only
 ```
 
 ## Architecture
 
-pnpm workspace with packages under `packages/` and nested sub-projects under `projects/`. Each `projects/*` directory is itself a mini-monorepo with its own `packages/` sub-directories.
+pnpm workspace with packages under `packages/` and nested sub-projects under `projects/`. Most `projects/*` directories are themselves mini-monorepos with their own `packages/` sub-directories; `projects/vscode-mta-tools` and `projects/vscode-webview-rpc-lib` are root packages without one.
 
 ### `packages/` — primary packages
 
@@ -71,7 +71,7 @@ Each is a self-contained project with its own sub-packages:
 
 ## Testing
 
-Most packages use **Mocha + Chai + Sinon** for unit tests and **nyc/Istanbul** for coverage. `packages/webide-client-tools` uses **Jest** instead. Coverage is enforced at 100% for all branches/lines/functions/statements (configured in the root `nyc.config.js`; some packages have their own `nyc.config.js` to override).
+Most packages use **Mocha + Chai + Sinon** for unit tests and **nyc/Istanbul** for coverage. `packages/webide-client-tools` uses **Jest** instead. Coverage thresholds vary: most packages enforce 100% (root `nyc.config.js`), but some override this — e.g. `projects/vscode-mta-tools` uses 90–95%, and some packages (e.g. `packages/vsix-zst`) collect no coverage.
 
 ```bash
 pnpm test       # run tests (in a sub-package)

@@ -18,7 +18,7 @@ Contributing information can be found in the [CONTRIBUTING.md](CONTRIBUTING.md) 
 
 ## Architecture
 
-This is a pnpm monorepo. Primary packages live under `packages/`; additional nested sub-projects live under `projects/` (each is a self-contained mini-monorepo with its own sub-packages).
+This is a pnpm monorepo. Primary packages live under `packages/`; additional nested sub-projects live under `projects/`. Most projects are self-contained mini-monorepos with their own sub-packages; `vscode-mta-tools` and `vscode-webview-rpc-lib` are single root packages without a nested `packages/` structure.
 
 ### `packages/`
 
