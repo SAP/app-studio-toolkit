@@ -1,5 +1,11 @@
 # xml-toolkit
 
+## 1.3.3
+
+### Patch Changes
+
+- 2b2b4ce: Fix release to include .vsix after monorepo migration. No functional changes.
+
 ## 1.3.2
 
 ### Patch Changes
