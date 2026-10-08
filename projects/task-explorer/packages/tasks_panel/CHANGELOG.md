@@ -1,5 +1,11 @@
 # vscode-tasks-explorer-tasks-panel
 
+## 4.9.2
+
+### Patch Changes
+
+- ad7195f: Re-release vsix after monorepo migration. No functional changes.
+
 ## 4.9.1
 
 ### Patch Changes
