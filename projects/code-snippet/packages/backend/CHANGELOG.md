@@ -1,5 +1,11 @@
 # code-snippet-tool
 
+## 2.1.2
+
+### Patch Changes
+
+- f4bea42: Re-release vsix after monorepo migration. No functional changes.
+
 ## 2.1.1
 
 ### Patch Changes
