@@ -1,5 +1,11 @@
 # yeoman-ui
 
+## 1.27.4
+
+### Patch Changes
+
+- b8f247d: Implements enhanced multi-phase progress notifications for Yeoman generators with zero breaking changes. Generators that don't opt in still receive the classic "Installing dependencies..." toast.
+
 ## 1.27.3
 
 ### Patch Changes
