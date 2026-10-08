@@ -1,7 +1,7 @@
 {
   "name": "vscode-cf-tools",
   "displayName": "Cloud Foundry Tools",
-  "version": "8.1.2",
+  "version": "8.1.3",
   "private": true,
   "description": "Vscode extension of Cloud Foundry tools",
   "categories": [
