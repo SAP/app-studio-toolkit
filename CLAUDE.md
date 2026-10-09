@@ -53,7 +53,6 @@ Most are self-contained projects with their own sub-packages:
 | `cloud-foundry-tools`     | VS Code tools for Cloud Foundry                   |
 | `cloud-foundry-tools-api` | API types for Cloud Foundry tools                 |
 | `code-snippet`            | Code snippet launcher framework                   |
-| `feature-toggle-node`     | Feature flag/toggle library for Node.js           |
 | `guided-development`      | Guided development framework                      |
 | `inquirer-gui`            | VS Code GUI renderer for Inquirer.js prompts      |
 | `task-explorer`           | Task explorer VS Code extension                   |
@@ -80,7 +79,7 @@ pnpm coverage   # run tests with coverage enforcement (not all packages have thi
 
 ## Configuration
 
-The following environment variables are read at runtime (injected by BAS, not set by developers). This table is not exhaustive — additional variables are consumed by specific packages (e.g. telemetry variables in `app-studio-toolkit/src/telemetry/utils.ts`, feature-toggle context variables in `feature-toggle-node`):
+The following environment variables are read at runtime (injected by BAS, not set by developers). This table is not exhaustive — additional variables are consumed by specific packages (e.g. telemetry variables in `app-studio-toolkit/src/telemetry/utils.ts`):
 
 | Variable       | Package                                   | Description                                                                |
 | -------------- | ----------------------------------------- | -------------------------------------------------------------------------- |
