@@ -1,5 +1,12 @@
 # xml-toolkit
 
+## 1.3.4
+
+### Patch Changes
+
+- Updated dependencies [ea4e235]
+  - @xml-tools/language-server@1.1.2
+
 ## 1.3.3
 
 ### Patch Changes

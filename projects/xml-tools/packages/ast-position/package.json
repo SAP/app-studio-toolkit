@@ -1,6 +1,6 @@
 {
   "name": "@xml-tools/ast-position",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "description": "XML Ast Position APIs",
   "keywords": [
     "xml",
