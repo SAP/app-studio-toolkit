@@ -42,7 +42,6 @@ This is a pnpm monorepo. Primary packages live under `packages/`; additional nes
 | `cloud-foundry-tools`     | VS Code tools for Cloud Foundry                   |
 | `cloud-foundry-tools-api` | API types for Cloud Foundry tools                 |
 | `code-snippet`            | Code snippet launcher framework                   |
-| `feature-toggle-node`     | Feature flag/toggle library for Node.js           |
 | `guided-development`      | Guided development framework                      |
 | `inquirer-gui`            | VS Code GUI renderer for Inquirer.js prompts      |
 | `task-explorer`           | Task explorer VS Code extension                   |
