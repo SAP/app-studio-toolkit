@@ -26,7 +26,7 @@
     "@sap-devx/inquirer-gui-login-plugin": "3.0.3",
     "@sap-devx/inquirer-gui-radio-plugin": "3.0.3",
     "@sap-devx/inquirer-gui-tiles-plugin": "3.0.3",
-    "lodash": "4.17.23",
+    "lodash": "4.18.1",
     "material-design-icons-iconfont": "5.0.1",
     "vue": "3.2.36",
     "vue-loader": "17.2.2",
