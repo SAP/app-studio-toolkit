@@ -72,6 +72,6 @@ The following background tasks are available in the **Terminal → Run Task** me
 
 ## Contributing
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md).
+See [CONTRIBUTING.md](../../CONTRIBUTING.md).
 
 [mono-repo]: https://github.com/babel/babel/blob/master/doc/design/monorepo.md

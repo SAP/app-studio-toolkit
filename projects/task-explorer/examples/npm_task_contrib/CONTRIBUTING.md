@@ -1,6 +1,6 @@
 # Contribution Guide
 
-Please see the top-level [Contribution Guide](../../CONTRIBUTING.md) for the project setup and all development flows.
+Please see the top-level [Contribution Guide](../../../../CONTRIBUTING.md) for the project setup and all development flows.
 
 ## Compiling
 
@@ -10,7 +10,7 @@ as it will compile **all** the projects in this monorepo at the same time (incre
 
 ## Running & Debugging
 
-A VSCode launch configuration [./.vscode/launch.json](./.vscode/launch.json)
+A VSCode launch configuration `.vscode/launch.json`
 is included in this sub-package.
 
 Open this sub-package directly (**not** the monorepo root) in VSCode to use it.

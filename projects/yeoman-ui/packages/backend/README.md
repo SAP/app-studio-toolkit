@@ -9,7 +9,7 @@ With the Application Wizard extension, you can benefit from a rich user experien
 ## Requirements
 
 - [node.js](https://www.npmjs.com/package/node) version 10 or higher.
-- [VSCode](https://code.visualstudio.com/) 1.39.2 or higher or [Theia](https://www.theia-ide.org/) 0.12 or higher.
+- [VSCode](https://code.visualstudio.com/) 1.100.0 or higher or [Theia](https://www.theia-ide.org/) 0.12 or higher.
 
 ## Installation
 
@@ -42,4 +42,4 @@ To get more help, support, and information please open a github [issue](https://
 
 ## Contributing
 
-Contributing information can be found in the [CONTRIBUTING.md](../../CONTRIBUTING.md) file.
+Contributing information can be found in the [CONTRIBUTING.md](../../../../CONTRIBUTING.md) file.

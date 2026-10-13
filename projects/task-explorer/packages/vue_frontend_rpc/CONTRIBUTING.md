@@ -1,6 +1,6 @@
 # Contribution Guide
 
-Please see the top-level [Contribution Guide](../../CONTRIBUTING.md) for the project setup and all development flows.
+Please see the top-level [Contribution Guide](../../../../CONTRIBUTING.md) for the project setup and all development flows.
 
 ## Local Development Playground
 
@@ -40,4 +40,4 @@ This methodology helps achieve:
 - navigate to this folder in your terminal.
 - execute `yarn build` and leave the process running.
 
-The build results can be found in the [./dist](./dist) folder.
+The build results can be found in the `./dist` folder.
