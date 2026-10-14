@@ -1,5 +1,11 @@
 # yeoman-ui
 
+## 1.27.5
+
+### Patch Changes
+
+- 6dc5b95: Downgrade @sap-devx/webview-rpc to fix broken invoke calls.
+
 ## 1.27.4
 
 ### Patch Changes
