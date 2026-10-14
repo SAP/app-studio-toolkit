@@ -18,7 +18,7 @@ Four packages + one example under root:
 # Backend
 cd packages/backend
 pnpm compile          # tsc compile
-pnpm ci               # clean + compile + coverage + bundle + frontend:copy + package
+pnpm ci               # clean + compile + coverage + bundle + frontend:copy + package + coverage (second run) + coverage:copy
 pnpm bundle           # webpack --mode production
 pnpm package          # vsce package
 

@@ -16,7 +16,7 @@ Three packages under `packages/`:
 # Backend
 cd packages/backend
 pnpm compile          # tsc compile
-pnpm ci               # clean + compile + coverage + bundle + frontend:all + package
+pnpm ci               # clean + compile + copy:test-resources + coverage + bundle + frontend:all + package + coverage:copy
 pnpm ci:artifacts_only # clean + compile + webpack-dev + frontend:all + package
 pnpm bundle           # webpack --mode production
 pnpm package          # vsce package
