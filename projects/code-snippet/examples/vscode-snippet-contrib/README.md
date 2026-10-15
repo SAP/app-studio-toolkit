@@ -44,14 +44,14 @@ In your "root" VSCode instance:
 
 This will open a **new VSCode instance** in which you should now:
 
-1. `File` Menu --> `Open Folder` --> <the [`dummy-scripts`](../dummy-scripts) folder>.
+1. `File` Menu --> `Open Folder` --> <the `dummy-scripts` folder (not included in this repo — create a folder with a `hello-world.js` file)>.
 1. `View` --> `Command Palette` --> `Create Launch Configuration`.
 
 This will open the snippet GUI in which you should now:
 
 1. For `Type` dropdown --> choose "node".
 1. For `Name` input field --> enter "foo".
-1. For `Program` value --> use the file explorer to choose the [hello-world.js](../dummy-scripts/hello-world.js).
+1. For `Program` value --> use the file explorer to choose a `hello-world.js` file in the `dummy-scripts` folder.
 1. Click the `Create` Button.
 1. Approve the VSCode refactoring preview.
 
