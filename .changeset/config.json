@@ -3,14 +3,8 @@
   "changelog": "@changesets/cli/changelog",
   "commit": false,
   "fixed": [
-    ["vscode-deps-upgrade-tool", "vscode-using-upgrade-tool"],
     ["@sap-devx/npm-dependencies-validation", "vscode-dependencies-validation"],
-    [
-      "app-studio-toolkit",
-      "@sap-devx/app-studio-toolkit-types",
-      "sample-action-client",
-      "vscode-using-workspace-api"
-    ],
+    ["app-studio-toolkit", "@sap-devx/app-studio-toolkit-types"],
     ["yeoman-ui", "yeoman-ui-frontend"],
     [
       "@vscode-logging/logger",
@@ -67,6 +61,11 @@
     "@sap-devx/inquirer-gui-date-plugin",
     "sample-inquirer-gui-vscode-extension",
     "websocketserver",
+    "sample-action-client",
+    "vscode-using-workspace-api",
+    "vscode-using-upgrade-tool",
+    "telemetry-reporter-sample",
+    "generator-foodq",
     "vscode-wing-cf-tools",
     "@sap/cf-tools",
     "@sap_oss/task_contrib_types"
