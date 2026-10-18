@@ -3,13 +3,16 @@
 ## Project setup
 
 ```
-npm install
+# From the monorepo root:
+pnpm install
+pnpm ci
 ```
 
 ### Compile
 
 ```
-npm run compile
+# From this example directory:
+pnpm compile
 ```
 
 ## Usage

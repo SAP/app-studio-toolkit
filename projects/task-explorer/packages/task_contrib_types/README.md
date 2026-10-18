@@ -1,4 +1,4 @@
-# @task-explorer/task_contrib_types
+# @sap_oss/task_contrib_types
 
 Type Definitions for Task Providers contributing to the Task Explorer.
 

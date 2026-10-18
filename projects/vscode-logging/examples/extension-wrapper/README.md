@@ -7,7 +7,7 @@ how to integrate @vscode-logging/**wrapper** in a VSCode extension.
 
 ### Initial setup (once)
 
-- `yarn` in this repository's **root**.
+- Run `pnpm install` and `pnpm ci` in the monorepo **root** to build the example's workspace dependencies.
 
 ### Run/Debug the Example Extension in VSCode
 

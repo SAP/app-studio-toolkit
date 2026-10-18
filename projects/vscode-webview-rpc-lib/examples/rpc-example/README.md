@@ -1,65 +1,28 @@
-# rpc-example README
+# VS Code Webview RPC Example
 
-This is the README for your extension "rpc-example". After writing up a brief description, we recommend including the following sections.
+This extension demonstrates bidirectional calls between a VS Code extension and a webview.
+`src/extension.ts` registers `RpcExtension` methods and opens the HTML in `src/media/`.
 
-## Features
+## Setup and build
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+Use Node 24.x and pnpm 11.1.1. Run `pnpm install` and `pnpm ci` at the monorepo root
+first to compile the RPC library and workspace dependencies. Inside this example:
 
-For example if there is an image subfolder under your extension project workspace:
+```sh
+pnpm compile
+pnpm copy
+```
 
-\!\[feature X\]\(images/feature-x.png\)
+`compile` builds the extension into `out/`; `copy` places the webview assets in
+`out/media/`, which the extension reads when opening the panel.
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+## Run the example
 
-## Requirements
+Open this example folder in VS Code and launch its extension-host debug configuration.
+In the Extension Development Host, run **Open Webview** before **Send Message to Webview**.
+The latter invokes `runFunctionInWebview`; the extension also registers `showMessage`
+so the webview can call back and display a VS Code information prompt.
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
-
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-- `myExtension.enable`: enable/disable this extension
-- `myExtension.thing`: set to `blah` to do something
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-- Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-- Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-- Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-- [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-- [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+The manifest requires VS Code compatible with `^1.38.0` and declares no extension
+settings. This example has no `test` script; library tests run in the parent RPC package.
+It is private and ignored by the monorepo's Changesets releases.

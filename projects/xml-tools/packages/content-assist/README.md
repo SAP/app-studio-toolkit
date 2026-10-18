@@ -60,7 +60,7 @@ const xmlDocAst = buildAst(cst, tokenVector);
 const suggestions = getSuggestions({
   ast: xmlDocAst,
   cst: cst,
-  tokVector: tokenVector,
+  tokenVector: tokenVector,
   offset: 66, // Right after the '<ad` element start.
   providers: {
     // 1. There are more types(scenarios) of suggestions providers (see api.d.ts)

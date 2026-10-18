@@ -8,11 +8,11 @@ Shared Utilities for XML-Tools
 
 With npm:
 
-- `npm install @xml-tools/Common`
+- `npm install @xml-tools/common`
 
 With Yarn
 
-- `yarn add @xml-tools/Common`
+- `yarn add @xml-tools/common`
 
 ## Usage
 

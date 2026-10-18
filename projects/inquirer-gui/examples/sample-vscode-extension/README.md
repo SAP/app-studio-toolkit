@@ -4,13 +4,15 @@
 
 ## Requirements
 
-You should first build the `sample-app` for production:
+Run `pnpm install` and `pnpm ci` at the monorepo root first to build the UI libraries.
+Then, inside this example directory, build/copy the Vite sample and compile the extension:
 
 ```sh
-cd sample-app
-npm run build
+pnpm copy-dist
+pnpm compile
 ```
 
-Then copy the `sample-app\dist` to this folder `sample-vscode-extension`.
+`copy-dist` builds the sibling `sample-app-vite` and copies its `dist/` into this
+extension's `dist/` directory.
 
-Then launch the `Launch Extension` debug configuation.
+Then launch the `Launch Extension` debug configuration.

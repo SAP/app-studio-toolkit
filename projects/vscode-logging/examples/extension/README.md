@@ -7,7 +7,7 @@ how to integrate @vscode-logging/logger in a VSCode extension.
 
 ### Initial setup (once)
 
-- `yarn` in this repository's **root**.
+- `pnpm install` in the monorepo **root**.
 
 ### Run/Debug the Example Extension in VSCode
 

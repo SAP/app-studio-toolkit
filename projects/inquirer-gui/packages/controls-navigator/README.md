@@ -32,7 +32,7 @@ It can display the groups in a way like wizard steps or tabs control
   It is the groups array, for example:
 
 ```js
-  [{name:”database”},{name:”authorization”}]
+[{ name: "database" }, { name: "authorization" }];
 ```
 
 - prompt-answers<br/>

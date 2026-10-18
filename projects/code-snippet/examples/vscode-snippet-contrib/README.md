@@ -24,18 +24,18 @@ A code snippet contribution is a VSCode extension which:
 
 ### pre-requisites
 
-- [Yarn](https://yarnpkg.com/lang/en/docs/install/) >= 1.4.2
+- pnpm 11.1.1 (pinned by the monorepo root)
 - A [Long-Term Support version](https://nodejs.org/en/about/releases/) of node.js
-- [VSCode](https://code.visualstudio.com/) 1.39.2 or higher or [Theia](https://www.theia-ide.org/) 0.12 or higher.
-- `saposs.code-snippet` (framework) extension installed in your VSCode instance.
-  - Available on [github releases](https://github.com/SAP/code-snippet/releases).
+- [VSCode](https://code.visualstudio.com/) compatible with the manifest's `^1.46.0` requirement.
+- `saposs.code-snippet-tool` (framework) extension installed in your VSCode instance.
 
 ### Demo Flow
 
 In your terminal:
 
-1. `yarn` (install/update dependencies)
-1. `yarn compile`
+1. Run `pnpm install` at the monorepo root.
+1. Run `pnpm ci` at the monorepo root to build the framework and its workspace dependencies.
+1. In this example directory, run `pnpm compile` after subsequent example-only changes.
 
 In your "root" VSCode instance:
 
@@ -44,14 +44,14 @@ In your "root" VSCode instance:
 
 This will open a **new VSCode instance** in which you should now:
 
-1. `File` Menu --> `Open Folder` --> <the [`dummy-scripts`](../dummy-scripts) folder>.
+1. `File` Menu --> `Open Folder` --> <the `dummy-scripts` folder (not included in this repo — create a folder with a `hello-world.js` file)>.
 1. `View` --> `Command Palette` --> `Create Launch Configuration`.
 
 This will open the snippet GUI in which you should now:
 
 1. For `Type` dropdown --> choose "node".
 1. For `Name` input field --> enter "foo".
-1. For `Program` value --> use the file explorer to choose the [hello-world.js](../dummy-scripts/hello-world.js).
+1. For `Program` value --> use the file explorer to choose a `hello-world.js` file in the `dummy-scripts` folder.
 1. Click the `Create` Button.
 1. Approve the VSCode refactoring preview.
 
