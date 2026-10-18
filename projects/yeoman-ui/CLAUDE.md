@@ -10,7 +10,7 @@ Mini-monorepo under `projects/yeoman-ui/`. Five sub-packages under `packages/`:
 | -------------------------- | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `packages/backend`         | `yeoman-ui`                 | VS Code extension (TypeScript/ESM). Entry point: `src/extension.ts`, compiled to `dist/extension.js`. Registers commands, manages `YeomanUIPanel` and `ExploreGensPanel` webview panels, and exposes a WebSocket server mode (`src/webSocketServer/`). |
 | `packages/frontend`        | `yeoman-ui-frontend`        | Vue 3 + Vite webview UI. Two apps: `src/youi/` (wizard form) and `src/exploregens/` (generator browser). Built to `dist/`, then copied into backend's `dist/media/` via `frontend:copy` script.                                                        |
-| `packages/types`           | `@sap-devx/yeoman-ui-types` | TypeScript type definitions for generator authors (e.g. `IPrompt`, `IQuestionsPrompt`). Published to npm.                                                                                                                                              |
+| `packages/types`           | `@sap-devx/yeoman-ui-types` | Types and runtime helpers for generator authors (e.g. `IPrompt`, `Prompts`, `AppWizard`). Published to npm.                                                                                                                                            |
 | `packages/generator-foodq` | (private)                   | Sample Yeoman generator used for manual testing and demos.                                                                                                                                                                                             |
 | `packages/yeoman-env-v3`   | `yeoman-env-v3`             | Workspace-local fork/wrapper of Yeoman environment v3 for backward compatibility with older generators.                                                                                                                                                |
 
@@ -34,16 +34,18 @@ pnpm install                    # install all workspace dependencies
 pnpm compile                    # tsc (outputs to dist/)
 pnpm webpack                    # webpack dev bundle → dist/extension.js
 pnpm bundle                     # webpack production bundle
-pnpm ci                         # clean + compile + coverage + bundle + frontend:copy + package
+pnpm ci                         # clean + compile + coverage + bundle + frontend:copy + package + coverage:copy
 
 # Inside packages/frontend:
 pnpm build                      # vite production build → dist/
 pnpm build-dev                  # vite dev build
 pnpm serve                      # vite dev server (http://localhost:5173)
-pnpm ci                         # clean + build + coverage
+pnpm ci                         # clean + build + coverage + coverage:copy
 ```
 
-The full CI build from repo root (`pnpm ci`) runs all sub-packages in order.
+The full CI build from repo root (`pnpm ci`) runs package CI scripts in dependency
+order. Run it before backend-only builds, which require the frontend output and
+workspace dependencies to have been built already.
 
 ## Testing
 

@@ -17,6 +17,57 @@ It currently contains the following packages:
 - [![npm-xml-tools-simple-schema][npm-xml-tools-simple-schema-image]][npm-xml-tools-simple-schema-url] [@xml-tools/simple-schema](./packages/simple-schema) Simple XML Schema represented as a JavaScript object literal.
 - [![npm-xml-tools-language-server][npm-xml-tools-language-server-image]][npm-xml-tools-language-server-url] [@xml-tools/language-server](./packages/language-server) XML Language Server.
 - [![npm-xml-tools-common][npm-xml-tools-common-image]][npm-xml-tools-common-url] [@xml-tools/common](./packages/common) Shared Utilities for xml-tools packages.
+- [XML Toolkit](./packages/xml-toolkit) A private VS Code extension using the language server.
+
+## Architecture
+
+The parser returns a fault-tolerant CST and tokens. `ast` converts these into an
+AST, and `ast-position` maps source positions. `validation`, `constraints`, and
+`simple-schema` provide checks; `content-assist` and `simple-schema` expose
+completion APIs for consumers. The language server currently uses parsing and
+well-formedness checks to publish diagnostics. It does not register completion or
+hover handlers. XML Toolkit starts that server when an XML document is opened.
+
+## Build and testing
+
+Use Node 24.x and pnpm 11.1.1. Run `pnpm install` and `pnpm ci` at the monorepo
+root for workspace validation. Core libraries are JavaScript with TypeScript
+declarations; their checks do not require a TypeScript compilation step:
+
+```sh
+# Inside projects/xml-tools/packages/parser (also applies to most core libraries):
+pnpm type-check
+pnpm test
+pnpm coverage:run
+pnpm coverage:check
+pnpm ci
+```
+
+Core tests use Mocha and nyc with 100% coverage thresholds. Scripts vary: language-server
+uses `pnpm coverage` and `pnpm bundle`; XML Toolkit uses `pnpm bundle` and
+`pnpm package`, with VS Code extension tests under `pnpm test`. XML Toolkit's CI
+packages the extension but does not run its extension-host test suite. Inspect
+the relevant manifest before selecting a command.
+
+## Configuration
+
+Library consumers pass XML text, CST/tokens, ASTs, schemas, validators, and suggestion
+providers through the APIs. See [simple-schema](./packages/simple-schema/README.md)
+for schema configuration and [content-assist](./packages/content-assist/README.md)
+for provider configuration. The libraries need no BAS credentials or project `.env`.
+XML Toolkit requires VS Code compatible with `^1.56.0`, activates on XML documents,
+and declares no `contributes.configuration` settings. The language server accepts
+an optional `initializationOptions.consumer` identifier.
+
+## CI and release
+
+The root [CI workflow](../../.github/workflows/ci.yml) runs workspace CI on Node
+24.x for pushes and PRs targeting `main`. The [release workflow](../../.github/workflows/release.yml)
+uses Changesets on pushes to `main`. XML packages are independently versioned under
+[the root configuration](../../.changeset/config.json); eligible libraries publish
+to npm and the private XML Toolkit builds a VSIX. Matching VSIX artifacts are uploaded
+to GitHub Releases; the workflow does not publish to Marketplace. Follow the root
+[release process](../../CONTRIBUTING.md#release-process).
 
 [npm-xml-tools-parser-image]: https://img.shields.io/npm/v/@xml-tools/parser.svg
 [npm-xml-tools-parser-url]: https://www.npmjs.com/package/@xml-tools/parser
@@ -46,6 +97,6 @@ Please report issues [here](https://github.com/SAP/app-studio-toolkit/issues/new
 See [CONTRIBUTING.md](https://github.com/SAP/app-studio-toolkit/blob/main/CONTRIBUTING.md).
 
 [mono-repo]: https://github.com/babel/babel/blob/master/doc/design/monorepo.md
-[xml]: https://github.com/babel/babel/blob/master/doc/design/monorepo.md
+[xml]: https://www.w3.org/XML/
 [ast]: https://en.wikipedia.org/wiki/Abstract_syntax_tree
 [cst]: https://en.wikipedia.org/wiki/Parse_tree

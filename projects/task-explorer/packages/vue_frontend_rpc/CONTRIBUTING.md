@@ -7,21 +7,20 @@ Please see the top-level [Contribution Guide](../../../../CONTRIBUTING.md) for t
 To run the Frontend locally to enable fast development feedback loops:
 
 - navigate to this folder in your terminal.
-- execute `yarn backend:mock` and leave the process running.
+- execute `pnpm backend:mock:editor` and leave the process running.
 - navigate to this folder in another terminal.
-- execute `yarn serve`
+- execute `pnpm serve`
 
 ## Testing
 
 Testing is implemented using:
 
 - `@vue/test-utils`
-- `vue-cli-service`
-- `@vue/cli-plugin-unit-mocha`
-- `chai`
+- Jest
+- jsdom
 
-Vue testing is often implemented using [Jest](https://jestjs.io) rather than [Mocha](https://mochajs.org).
-However, This project is using Mocha to avoid dealing with **multiple** test runner libraries in a **single** monorepo.
+Run `pnpm test` for the Jest suite. The frontend uses Vite for development and
+production builds; the extension backend uses Mocha independently.
 
 ### Functional Flows
 
@@ -38,6 +37,6 @@ This methodology helps achieve:
 ## Building & Bundling the project
 
 - navigate to this folder in your terminal.
-- execute `yarn build` and leave the process running.
+- execute `pnpm build` for a production build (the command exits when complete).
 
 The build results can be found in the `./dist` folder.

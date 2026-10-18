@@ -38,7 +38,7 @@ This VS Code extension provides tools for easy application development with Clou
 
 1. Clone the repository
 2. Open it in VS Code
-3. Run `yarn` and then `yarn ci:artifacts_only`
+3. Run `pnpm install` at the monorepo root, then `pnpm ci:artifacts_only` in `projects/cloud-foundry-tools/packages/backend`
 4. Launch the extension using the 'Run Extension' launch configuration
 5. Access available commands via the Command Palette (prefix: `CF`)
 

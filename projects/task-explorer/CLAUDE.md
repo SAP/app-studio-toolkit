@@ -12,7 +12,8 @@ Three packages + two examples under root:
 - **`examples/npm_task_contrib/`** — sample npm task contributor extension.
 - **`examples/vscode_task_contrib/`** — sample VSCode task contributor extension.
 
-Extension declares `extensionDependencies` on `app-studio-toolkit`.
+The tasks_panel manifest does not declare `extensionDependencies`. Contributor
+extensions expose task-provider APIs that the backend discovers at runtime.
 
 ## Build
 

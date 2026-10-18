@@ -95,7 +95,9 @@ Please see the [TypeScript Definitions](./api.d.ts) for full API details.
   const schemaSuggestionsProviders = getSchemaSuggestionsProviders(schema);
 
   const suggestions = getSuggestions({
-    text: xmlText,
+    ast: xmlDoc,
+    cst: cst,
+    tokenVector: tokenVector,
     offset: 47, // within the eyeColor quoted value
     providers: {
       attributeValue: [

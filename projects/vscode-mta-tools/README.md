@@ -19,6 +19,51 @@ Make sure the following tools are installed in your environment:
 - [MTA tool](https://github.com/SAP/cloud-mta) to add MTA modules.
 - [Yeoman-ui extension](https://github.com/SAP/app-studio-toolkit) to add MTA modules.
 
+## Architecture
+
+This is a single extension package. `src/extension.ts` registers commands for MTA
+build, MTAR deployment, and adding modules, along with build/deploy task providers
+and validation. Command implementations live in `src/commands/`, task providers
+in `src/task-providers/`, and validation logic in `src/validations/`. The commands
+invoke external MTA/CF tools; the extension also contributes task-editor interfaces
+for Task Explorer. TypeScript compilation and webpack produce the extension bundle
+at `dist/extension.js`.
+
+## Build and testing
+
+Use Node 24.x and pnpm 11.1.1. Run `pnpm install` and `pnpm ci` at the monorepo
+root first to build workspace dependencies. Inside `projects/vscode-mta-tools`:
+
+```sh
+pnpm compile
+pnpm test
+pnpm coverage
+pnpm ci
+```
+
+Tests use Mocha/Chai and nyc. `nyc.config.js` enforces 90% branches/functions and
+95% lines/statements. Package `ci` cleans, compiles, runs coverage, bundles, and
+creates a VSIX with `scripts/package-vsix.js`. Runtime build/deploy operations
+require the external tools listed above; unit tests use mocks for external operations.
+
+## Configuration
+
+Install the external tools above on PATH and log in to CF before deploying.
+The [manifest](./package.json) exposes `MTA Tools.loggingLevel` (default `error`)
+and `MTA Tools.sourceLocationTracking` (default `false`) through VS Code Settings.
+Use source tracking only for debugging. The extension depends on `sapos.yeoman-ui`
+for generator-based module creation. No project `.env` is required for unit tests.
+
+## CI and release
+
+The root [CI workflow](../../.github/workflows/ci.yml) runs workspace CI on Node
+24.x for pushes and PRs targeting `main`. The [release workflow](../../.github/workflows/release.yml)
+runs on pushes to `main` and uses Changesets to create a version PR or release.
+This private extension is versioned under [the root Changesets configuration](../../.changeset/config.json)
+and packaged as a VSIX. The release workflow uploads matching VSIX artifacts to
+GitHub Releases; it does not publish to VS Code Marketplace. Follow the root
+[release process](../../CONTRIBUTING.md#release-process).
+
 ### Support
 
 Please report issues [here](https://github.com/SAP/app-studio-toolkit/issues/new/choose) and label them with `project:vscode-mta-tools`.

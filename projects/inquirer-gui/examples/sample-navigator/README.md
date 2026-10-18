@@ -3,20 +3,20 @@
 ## Project setup
 
 ```
-# npm
-npm install
+# From the monorepo root:
+pnpm install
+pnpm ci
 ```
 
 ### Compiles and hot-reloads for development
 
 ```
-# npm
-npm run dev
+# From this example directory:
+pnpm dev
 ```
 
 ### Compiles and minifies for production
 
 ```
-# npm
-npm run build
+pnpm build
 ```

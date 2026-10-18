@@ -8,8 +8,8 @@ With the Application Wizard extension, you can benefit from a rich user experien
 
 ## Requirements
 
-- [node.js](https://www.npmjs.com/package/node) version 10 or higher.
-- [VSCode](https://code.visualstudio.com/) 1.100.0 or higher or [Theia](https://www.theia-ide.org/) (version TBD).
+- For development, use Node.js 24.x (the CI version) and pnpm 11.1.1 from the monorepo root.
+- [VSCode](https://code.visualstudio.com/) compatible with the manifest's `^1.100.0` requirement.
 
 ## Installation
 

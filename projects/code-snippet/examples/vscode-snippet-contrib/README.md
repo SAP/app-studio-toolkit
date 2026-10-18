@@ -24,18 +24,18 @@ A code snippet contribution is a VSCode extension which:
 
 ### pre-requisites
 
-- [Yarn](https://yarnpkg.com/lang/en/docs/install/) >= 1.4.2
+- pnpm 11.1.1 (pinned by the monorepo root)
 - A [Long-Term Support version](https://nodejs.org/en/about/releases/) of node.js
-- [VSCode](https://code.visualstudio.com/) 1.39.2 or higher or [Theia](https://www.theia-ide.org/) 0.12 or higher.
-- `saposs.code-snippet` (framework) extension installed in your VSCode instance.
-  - Available on [github releases](https://github.com/SAP/code-snippet/releases).
+- [VSCode](https://code.visualstudio.com/) compatible with the manifest's `^1.46.0` requirement.
+- `saposs.code-snippet-tool` (framework) extension installed in your VSCode instance.
 
 ### Demo Flow
 
 In your terminal:
 
-1. `yarn` (install/update dependencies)
-1. `yarn compile`
+1. Run `pnpm install` at the monorepo root.
+1. Run `pnpm ci` at the monorepo root to build the framework and its workspace dependencies.
+1. In this example directory, run `pnpm compile` after subsequent example-only changes.
 
 In your "root" VSCode instance:
 

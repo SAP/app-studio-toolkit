@@ -16,7 +16,7 @@ Ten packages under `packages/` (the VS Code extension is private):
 
 - **`content-assist/`** (`@xml-tools/content-assist`) — Extensible Content Assist APIs for XML completion suggestions (elements, attributes, values).
 - **`validation/`** (`@xml-tools/validation`) — Extensible Validation APIs for XML document validation against schemas.
-- **`constraints/`** (`@xml-tools/constraints`) — XML constraint validations (uniqueness, referential integrity, cardinality).
+- **`constraints/`** (`@xml-tools/constraints`) — Checks unique attribute names and matching opening/closing tag names. Schema cardinality checks belong to `simple-schema`.
 
 ### Schema & Common
 
@@ -25,7 +25,7 @@ Ten packages under `packages/` (the VS Code extension is private):
 
 ### Language Server & Extension
 
-- **`language-server/`** (`@xml-tools/language-server`) — XML Language Server (LSP) implementation providing diagnostics, completion, and hover support.
+- **`language-server/`** (`@xml-tools/language-server`) — XML Language Server (LSP) implementation providing syntax and well-formedness diagnostics. Completion APIs are available separately in `content-assist`; the server does not register completion or hover handlers.
 - **`xml-toolkit/`** — VS Code extension wrapping the language server; provides XML editing features in VS Code.
 
 **Dependency flow:** parser → ast → ast-position → validation/content-assist → language-server → xml-toolkit (VS Code extension).

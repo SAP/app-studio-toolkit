@@ -60,4 +60,6 @@ Release flow uses Changesets. Backend and frontend versions are grouped in the r
 
 The extension reads VS Code settings (declared under `contributes.configuration` in `packages/backend/package.json`). Logger preferences are configurable via VS Code Settings UI (search "CF").
 
-No `.env` files or secrets are required for local development. Runtime dependency: **CF CLI v8** — install from https://github.com/cloudfoundry/cli/releases.
+No `.env` files or secrets are required for local development. Runtime dependencies
+include **CF CLI v8**, the `targets` plugin, and the service-info plugin documented
+in `packages/backend/README.md`. CF operations use the CLI's login and target state.

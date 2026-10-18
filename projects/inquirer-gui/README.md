@@ -40,6 +40,57 @@ Usage examples are available in the [examples](./examples) folder.
 [npm-tiles-plugin-image]: https://img.shields.io/npm/v/@sap-devx/inquirer-gui-tiles-plugin.svg
 [npm-tiles-plugin-url]: https://www.npmjs.com/package/@sap-devx/inquirer-gui-tiles-plugin
 
+## Architecture
+
+The core `packages/inquirer-gui/src/Form.vue` renders Inquirer-compatible questions
+and coordinates answer validation. Plugins register Vue components for GUI question
+types such as `file-browser`, `folder-browser`, `label`, and `tiles`.
+`controls-navigator` renders prompt groups as tabs or steps. Consumers provide
+question data, callbacks, and navigation state; the library does not run a backend
+itself. Packages use Vite library builds to produce distributable JavaScript and
+CSS in `dist/`. The examples demonstrate browser and VS Code integrations.
+
+## Build and testing
+
+Use Node 24.x and pnpm 11.1.1. Run `pnpm install` and `pnpm ci` from the monorepo
+root to build the workspace and run the package CI scripts. For focused changes:
+
+```sh
+# Inside projects/inquirer-gui/packages/inquirer-gui:
+pnpm build
+pnpm test
+# Inside projects/inquirer-gui/packages/controls-navigator:
+pnpm build
+pnpm test
+```
+
+The core, navigator, and most plugins use Jest with Vue test utilities. Coverage
+settings live in the package Jest configuration and shared `jest.config.base.js`.
+Scripts vary: for example, `tiles-plugin` has build-only CI and no test script.
+Use `pnpm ci` inside the package you changed to run its declared checks.
+
+## Configuration
+
+Consumers install the Vue plugins and supply Inquirer question objects. Set
+`guiOptions.type` to select a GUI plugin; callbacks such as `getFilePath`, `getPath`,
+and `validate` connect questions to application behavior. These are application
+callbacks, not environment variables. The [navigator guide](./packages/controls-navigator/README.md)
+documents `promptIndex`, `prompts`, answers, navigation type, and navigation events.
+The [file browser](./packages/file-browser-plugin/README.md),
+[folder browser](./packages/folder-browser-plugin/README.md), and
+[label](./packages/label-plugin/README.md) guides include question examples.
+No BAS credentials or project `.env` are required to build the UI libraries.
+
+## CI and release
+
+The root [CI workflow](../../.github/workflows/ci.yml) runs `pnpm run ci` on Node
+24.x for pushes and PRs targeting `main`. The [release workflow](../../.github/workflows/release.yml)
+uses Changesets on pushes to `main`. The core, navigator, and production plugins
+share a fixed group in [the Changesets configuration](../../.changeset/config.json);
+examples are ignored. Eligible library packages are published to npm, with no
+standalone service or VSIX deployment for the libraries. Follow the shared
+[release process](../../CONTRIBUTING.md#release-process).
+
 ## Support
 
 Please report issues [here](https://github.com/SAP/app-studio-toolkit/issues/new/choose) and label them with `project:inquirer-gui`.

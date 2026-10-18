@@ -24,7 +24,10 @@ pnpm run ci              # full CI: type-check + coverage:run + coverage:check
 pnpm run type-check      # TypeScript compilation check (tsc)
 ```
 
-Development workflow: edit TypeScript sources, run `pnpm run type-check` to verify compilation, then `pnpm run ci` for full validation.
+Development workflow: the logger implementation lives in `packages/logger/lib/*.js`
+with declarations in `api.d.ts`; `type-check` checks JavaScript and declarations
+without emitting output. The wrapper has TypeScript sources compiled to `dist/`.
+Run the relevant package's `ci` script for its type checks and tests.
 
 ## Testing
 

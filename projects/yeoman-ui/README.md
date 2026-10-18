@@ -28,16 +28,71 @@ To get more help, support, and information please open a GitHub [issue](https://
 
 See [reporting and handling issues](../../CONTRIBUTING.md#report-an-issue) in the root CONTRIBUTING.md.
 
-## Compatibility matrix
+## Architecture
 
-| Generator  | yo@4.3.1 | yo@5.1.0 | yo@6.0.0 |
-| ---------- | -------- | -------- | -------- |
-| cjs 5.10.0 | ✅       | ✅       | ✅       |
-| mjs 5.10.0 | ❌       | ✅       | ✅       |
-| cjs 6.0.1  | ❌       | ❌       | ❌       |
-| mjs 6.0.1  | ❌       | ✅       | ✅       |
-| cjs 7.5.1  | ❌       | ❌       | ❌       |
-| mjs 7.5.1  | ❌       | ❌       | ✅       |
+`packages/backend/src/extension.ts` registers the Application Wizard and generator
+browser. Backend panels exchange questions and answers with the Vue 3/Vite apps in
+`packages/frontend/src/youi/` and `src/exploregens/`; the backend runs the selected
+Yeoman generator and its prompt callbacks. `packages/types` provides interfaces and
+runtime helpers for generator authors. `packages/yeoman-env-v3` supports older
+generators alongside the newer environment dependency, and `generator-foodq` is a
+manual demonstration. The frontend's `dist/` is copied into backend `dist/media/`.
+
+## Build and testing
+
+Use Node 24.x and pnpm 11.1.1. Run `pnpm install` and `pnpm ci` at the monorepo root
+to build workspace dependencies before package-only development. For focused changes:
+
+```sh
+# Inside projects/yeoman-ui/packages/frontend:
+pnpm build
+pnpm test
+pnpm coverage
+# Inside projects/yeoman-ui/packages/backend:
+pnpm compile
+pnpm test
+pnpm coverage
+```
+
+Backend tests use Mocha/Chai/Sinon with c8 coverage; frontend tests use Jest and Vue
+Test Utils. Backend `pnpm ci` cleans, compiles, tests, bundles, copies the existing
+frontend output, packages a VSIX, and copies coverage for the root merge. It does
+not build frontend output or workspace dependencies. Frontend `pnpm ci` cleans,
+builds, runs coverage, and copies coverage. The debug configurations below support
+the extension, unit tests, standalone WebSocket servers, and sample generator.
+
+## Configuration
+
+The [backend manifest](./packages/backend/package.json) declares VS Code settings
+under `ApplicationWizard`: logging level (default `error`), source-location tracking
+(default `false`), usage analytics, hidden generators, target folder, workspace
+opening behavior, generator installation location, automatic updates, and search queries.
+Configure these through VS Code Settings. `WS_BASE_URL` identifies a BAS remote
+environment at runtime; ordinary local development needs no BAS credentials or `.env`.
+Standalone WebSocket development uses `PORT` (defaults: 8081 for the wizard and
+8082 for the generator browser), as set by the launch configurations.
+
+## CI and release
+
+The root [CI workflow](../../.github/workflows/ci.yml) runs workspace CI on Node
+24.x for pushes and PRs targeting `main`. The [release workflow](../../.github/workflows/release.yml)
+uses Changesets on pushes to `main`. Backend and frontend share a fixed version
+group in [the Changesets configuration](../../.changeset/config.json); types are
+eligible for npm publishing. The root placeholder package and `yeoman-env-v3` are
+ignored. The backend is private and produces a VSIX; the release workflow uploads
+matching VSIX files to GitHub Releases. It does not publish to Marketplace.
+Follow the root [release process](../../CONTRIBUTING.md#release-process).
+
+## Generator runtime compatibility
+
+The wizard runs generators through its own environment selection, not through a
+globally installed `yo` CLI. `EnvUtil.createRunGen` in
+`packages/backend/src/utils/env.ts` first tries yeoman-environment v3. If generator
+construction signals runtime incompatibility (for example, a modern generator
+base or ESM generator), it falls back to v6. Other construction errors are surfaced.
+Composed generators share the selected runtime, so every sub-generator must support
+that runtime. See the [composition fixtures](./packages/backend/test/fixtures/compose/README.md)
+for tested success and failure cases across older and newer generator bases.
 
 ## Debugging
 

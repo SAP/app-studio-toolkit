@@ -33,7 +33,9 @@ cd ../types
 pnpm compile          # tsc compile
 ```
 
-Run extension locally: open project in VS Code, run `pnpm ci` in backend, then launch **Run Extension** from Run panel.
+Run extension locally: install and run `pnpm ci` at the monorepo root first, then
+launch **Run Extension** from the Run panel. Backend-only `pnpm ci` requires the
+frontend's `dist/` output and workspace dependencies to have already been built.
 
 ## Testing
 
