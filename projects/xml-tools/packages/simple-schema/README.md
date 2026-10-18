@@ -86,19 +86,45 @@ Please see the [TypeScript Definitions](./api.d.ts) for full API details.
   console.log(issues[0].position); // { startOffset: 46, endOffset: 53 }
   ```
 
-- Using Content Assist APIs
+- Using Content Assist APIs (standalone example)
 
   ```javascript
+  const { parse } = require("@xml-tools/parser");
+  const { buildAst } = require("@xml-tools/ast");
   const { getSuggestions } = require("@xml-tools/content-assist");
   const { getSchemaSuggestionsProviders } = require("@xml-tools/simple-schema");
 
+  const schema = {
+    name: "people",
+    required: true,
+    cardinality: "single",
+    attributes: {},
+    elements: {
+      person: {
+        name: "person",
+        required: false,
+        cardinality: "many",
+        attributes: {
+          eyeColor: {
+            key: "eyeColor",
+            required: false,
+            value: ["grey", "blue", "green", "red"],
+          },
+        },
+        elements: {},
+      },
+    },
+  };
+  const xmlText = '<people><person eyeColor=""/></people>';
+  const { cst, tokenVector } = parse(xmlText);
+  const xmlDoc = buildAst(cst, tokenVector);
   const schemaSuggestionsProviders = getSchemaSuggestionsProviders(schema);
 
   const suggestions = getSuggestions({
     ast: xmlDoc,
     cst: cst,
     tokenVector: tokenVector,
-    offset: 47, // within the eyeColor quoted value
+    offset: xmlText.indexOf('""') + 1, // cursor inside the empty eyeColor value
     providers: {
       attributeValue: [
         schemaSuggestionsProviders.schemaAttributeValueCompletion,

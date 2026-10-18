@@ -94,6 +94,21 @@ Composed generators share the selected runtime, so every sub-generator must supp
 that runtime. See the [composition fixtures](./packages/backend/test/fixtures/compose/README.md)
 for tested success and failure cases across older and newer generator bases.
 
+### Historical standalone yo compatibility matrix
+
+The previously documented per-version results are retained below for standalone
+`yo` CLI combinations. They describe a different execution path from the wizard's
+v3/v6 environment routing above and are not a compatibility matrix for that routing.
+
+| Generator  | yo@4.3.1 | yo@5.1.0 | yo@6.0.0 |
+| ---------- | -------- | -------- | -------- |
+| cjs 5.10.0 | ✅       | ✅       | ✅       |
+| mjs 5.10.0 | ❌       | ✅       | ✅       |
+| cjs 6.0.1  | ❌       | ❌       | ❌       |
+| mjs 6.0.1  | ❌       | ✅       | ✅       |
+| cjs 7.5.1  | ❌       | ❌       | ❌       |
+| mjs 7.5.1  | ❌       | ❌       | ✅       |
+
 ## Debugging
 
 The debug configurations live in [`.vscode/launch.json`](./.vscode/launch.json) and are designed to be used with the [`app-studio-toolkit.code-workspace`](../../app-studio-toolkit.code-workspace) file at the repository root. Open that workspace file in VS Code to ensure `${workspaceFolder}` resolves to this directory (`projects/yeoman-ui`) and all configurations work correctly.

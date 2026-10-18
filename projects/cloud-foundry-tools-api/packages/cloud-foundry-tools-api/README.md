@@ -2,7 +2,7 @@
 
 # @sap/cf-tools
 
-This package provides a set of APIs to help you develop applications in Cloud Foundry. You can use these APIs to manage apps, service instances, orgs, spaces, and users in your environment. Mostly, this is a wrapper of the CF command line client, which runs a particular command and parses the output to the suitable JSON file. Many operations reject with an Error on failure; cfLogin returns "OK" on success, or the raw CF CLI output string on failure (may be empty if the CLI produced no output).
+This package provides a set of APIs to help you develop applications in Cloud Foundry. You can use these APIs to manage apps, service instances, orgs, spaces, and users in your environment. Mostly, this is a wrapper of the CF command line client, which runs a particular command and parses the output to the suitable JSON file. Many operations reject with an Error on failure; `cfLogin` returns `"OK"` on success and CLI output or an error message on failure. Every result other than `"OK"`, including the empty string `""`, means failure. An empty result means there is no failure message available; it does not indicate successful login. Check `result === "OK"` rather than relying on truthiness.
 
 ## Prerequisite
 
@@ -21,7 +21,7 @@ const result = await cfLogin({
 if (result === "OK") {
   // successful
 } else {
-  // display or/and log error: result contains the failure message
+  console.error(result || "Cloud Foundry login failed without a message.");
 }
 ```
 

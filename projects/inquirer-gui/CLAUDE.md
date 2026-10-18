@@ -1,7 +1,7 @@
 # Inquirer GUI
 
 This component belongs to the app-studio-toolkit pnpm workspace. Read the root
-agent guidance and this project's README before changing it.
+`CLAUDE.md` and this project's README before changing it.
 
 - Architecture: Vue 3 form rendering lives in `packages/inquirer-gui/src/Form.vue`;
   navigation lives in `packages/controls-navigator/src/NavigatorControl.vue`.

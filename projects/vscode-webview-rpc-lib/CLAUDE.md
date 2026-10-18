@@ -1,7 +1,7 @@
 # Webview RPC
 
 This is the `@sap-devx/webview-rpc` library inside the app-studio-toolkit pnpm
-workspace. Read the root guidance and this project's README.
+workspace. Read the root `CLAUDE.md` and this project's README.
 
 - The shared protocol is in `src/rpc-common.ts`. `src/rpc-extension.ts` and
   `src/rpc-browser.ts` adapt it to VS Code and browser messages; WebSocket adapters
