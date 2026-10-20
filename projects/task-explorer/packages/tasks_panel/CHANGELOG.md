@@ -1,5 +1,11 @@
 # vscode-tasks-explorer-tasks-panel
 
+## 4.9.3
+
+### Patch Changes
+
+- 632f320: Re-release following monorepo migration to produce a correct .vsix.
+
 ## 4.9.2
 
 ### Patch Changes
