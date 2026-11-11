@@ -20,7 +20,7 @@
     "ci": "pnpm run clean && pnpm run bundle && pnpm run test"
   },
   "dependencies": {
-    "yeoman-environment": "3.19.3"
+    "yeoman-environment": "6.0.1"
   },
   "devDependencies": {
     "@types/yeoman-environment": "2.10.11"
