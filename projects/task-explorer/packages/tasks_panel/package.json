@@ -249,7 +249,7 @@
     "escape-string-regexp": "4.0.0",
     "lodash": "4.17.21",
     "strip-ansi": "7.1.0",
-    "ws": "8.8.1",
+    "ws": "8.21.0",
     "yaml": "2.8.3"
   },
   "devDependencies": {
