@@ -90,14 +90,23 @@ class EnvUtil {
   //    write a "resolved" property onto the generator module's frozen ESM
   //    namespace object, which throws. This is an ESM/CJS incompatibility, not
   //    a version guard.
+  //
+  // 3. "Cannot require() ES Module ... because it is not yet fully loaded" -
+  //    surfaces when Node's CJS loader (used by v3) tries to require() an ESM
+  //    generator module that is still being loaded (circular ESM/CJS boundary).
+  //    This is another ESM/CJS incompatibility that means the generator needs v6.
   private isV3RuntimeIncompatibilityError(error: unknown): boolean {
     const message = (error as Error)?.message ?? "";
     const isFrozenEsmNamespaceError =
       message.includes("object is not extensible") &&
       message.includes("resolved");
+    const isEsmNotFullyLoadedError =
+      message.includes("Cannot require() ES Module") &&
+      message.includes("not yet fully loaded");
     return (
       message.includes("requires yeoman-environment") ||
-      isFrozenEsmNamespaceError
+      isFrozenEsmNamespaceError ||
+      isEsmNotFullyLoadedError
     );
   }
 
