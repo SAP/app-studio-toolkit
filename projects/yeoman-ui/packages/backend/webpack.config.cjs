@@ -101,6 +101,22 @@ const config = {
           flags: "g",
         },
       },
+      // store.js only catches ERR_REQUIRE_ESM / ERR_REQUIRE_ASYNC_MODULE before
+      // falling back to import(). ERR_REQUIRE_CYCLE_MODULE (Node 22+: "Cannot
+      // require() ES Module … because it is not yet fully loaded") also signals
+      // that the generator is ESM-only and needs the import() path, so extend
+      // the catch to include it.
+      {
+        test: /yeoman-environment[/|\\]dist[/|\\]store\.js/,
+        loader: "string-replace-loader",
+        options: {
+          search:
+            "error\\.code === 'ERR_REQUIRE_ESM' \\|\\| error\\.code === 'ERR_REQUIRE_ASYNC_MODULE'",
+          replace:
+            "error.code === 'ERR_REQUIRE_ESM' || error.code === 'ERR_REQUIRE_ASYNC_MODULE' || error.code === 'ERR_REQUIRE_CYCLE_MODULE'",
+          flags: "g",
+        },
+      },
       // store.js falls back to dynamic import() for ESM generators. Webpack
       // would turn this into its own chunk loader, breaking runtime loading of
       // generators from disk. Wrap in Function() to hide it from webpack.

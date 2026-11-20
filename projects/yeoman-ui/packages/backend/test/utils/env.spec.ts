@@ -269,6 +269,30 @@ describe("Env.createRunGen()", () => {
     expect(prepare.firstCall.args[1]).to.deep.equal({ id: "v6" });
   });
 
+  it("runs on v6 when v3 rejects with 'Cannot require() ES Module ... not yet fully loaded'", async () => {
+    sandbox
+      .stub(Env as any, "createLegacyV3EnvAndGen")
+      .rejects(
+        new Error(
+          "Cannot require() ES Module /path/to/generator/index.js because it is not yet fully loaded"
+        )
+      );
+    const v6Create = sandbox
+      .stub(Env as any, "createV6EnvAndGen")
+      .resolves({ env: fakeEnv({}), gen: { id: "v6" } });
+
+    const prepare = sandbox.stub();
+    await Env.createRunGen(
+      standaloneGenV8Fixture.namespace,
+      { silent: true },
+      fakeAdapter(),
+      prepare
+    );
+
+    expect(v6Create.calledOnce, "the generator fell back to v6").to.equal(true);
+    expect(prepare.firstCall.args[1]).to.deep.equal({ id: "v6" });
+  });
+
   it("surfaces the v6 error when the generator fails on v3 create AND on v6", async () => {
     sandbox
       .stub(Env as any, "createLegacyV3EnvAndGen")
